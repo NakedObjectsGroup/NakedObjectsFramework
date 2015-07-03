@@ -13,13 +13,17 @@ open MultiDatabaseTestCode
 open DomainTestCode
 open CodeOnlyTestCode
 open NakedObjects.Persistor.Entity.Configuration
+open System
+open AdventureWorksModel
 
 let multiDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
 
     let c = new EntityObjectStoreConfiguration()
     c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
-    c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    let f = (fun () -> new AdventureWorksDbContext() :> Data.Entity.DbContext)
+    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 

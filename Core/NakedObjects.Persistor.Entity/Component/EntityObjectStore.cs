@@ -425,7 +425,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = config as CodeFirstEntityContextConfiguration;
-            context = codeFirstEntityContextConfiguration != null ? CreateCodeOnlyContext(codeFirstEntityContextConfiguration) : CreatePocoContext(config as PocoEntityContextConfiguration);
+            context = CreateCodeOnlyContext(codeFirstEntityContextConfiguration);
             context.DefaultMergeOption = config.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;

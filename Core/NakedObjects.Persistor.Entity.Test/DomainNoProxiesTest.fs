@@ -12,13 +12,18 @@ open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
+open System
+open AdventureWorksModel
+
 
 let persistor =
     EntityObjectStoreConfiguration.NoValidate <- true
  
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
-    c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    let f = (fun () -> new AdventureWorksDbContext() :> Data.Entity.DbContext)
+    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     let p = setupPersistorForTesting p
     p
@@ -28,7 +33,9 @@ let overwritePersistor =
 
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
-    c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
+    let f = (fun () -> new AdventureWorksDbContext() :> Data.Entity.DbContext)
+    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
     let p = getEntityObjectStore c
     let p = setupPersistorForTesting p

@@ -25,8 +25,9 @@ open NakedObjects.Persistor.Entity.Component
 
 
 let ModelConfig = 
-    let pc = new PocoEntityContextConfiguration()
-    pc.ContextName <- "Model1Container"
+    let pc = new CodeFirstEntityContextConfiguration()
+    let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+    pc.DbContext <-  Func<Data.Entity.DbContext>(f)
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 

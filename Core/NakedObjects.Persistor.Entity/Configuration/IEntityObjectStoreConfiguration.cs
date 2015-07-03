@@ -84,7 +84,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         EntityObjectStoreConfiguration.EntityContextConfigurator UsingEdmxContext(string name);
 
         void ForceContextSet();
-        IEnumerable<EntityContextConfiguration> PocoConfiguration();
+        //IEnumerable<EntityContextConfiguration> PocoConfiguration();
         void FlagConnectionStringMismatches(string[] connectionStringNames);
         string[] GetConnectionStringNamesFromConfig();
         void AssertSetup();

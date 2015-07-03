@@ -21,6 +21,7 @@ open System.Data.Entity.Core.Objects.DataClasses
 open System.Linq
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Persistor.Entity.Configuration
+open System
 
 [<TestFixture>]
 type ModelSystemTests() = 
@@ -32,7 +33,10 @@ type ModelSystemTests() =
 
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
-        config.UsingEdmxContext "Model1Container" |> ignore
+
+        let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+        config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
         let types = [| typeof<ModelFirst.Fruit>;typeof<List<ModelFirst.Food>> |]
         ReflectorConfiguration.NoValidate <- true

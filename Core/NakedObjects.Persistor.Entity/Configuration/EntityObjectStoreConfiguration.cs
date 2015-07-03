@@ -45,8 +45,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
                     NotPersistedTypes = NotPersistedTypes,
                     CustomConfig = CustomConfig
                 });
-                IEnumerable<EntityContextConfiguration> config = PocoConfiguration().Union(cfConfigs);
-                return config;
+                return cfConfigs;
             }
             set {
                 // leave for moment for compiling
@@ -137,24 +136,24 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             isContextSet = true;
         }
 
-        public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
-            string[] connectionStringNames = GetConnectionStringNamesFromConfig();
+        //public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
+        //    string[] connectionStringNames = GetConnectionStringNamesFromConfig();
 
-            FlagConnectionStringMismatches(connectionStringNames);
+        //    FlagConnectionStringMismatches(connectionStringNames);
 
-            if (connectionStringNames.Any()) {
-                Dictionary<string, Func<Type[]>> defaultedData = connectionStringNames.ToDictionary(s => s, s => NamedContextTypes.ContainsKey(s) ? NamedContextTypes[s] : () => new Type[] {});
+        //    if (connectionStringNames.Any()) {
+        //        Dictionary<string, Func<Type[]>> defaultedData = connectionStringNames.ToDictionary(s => s, s => NamedContextTypes.ContainsKey(s) ? NamedContextTypes[s] : () => new Type[] {});
 
-                return connectionStringNames.Select(s => new PocoEntityContextConfiguration {
-                    DefaultMergeOption = DefaultMergeOption,
-                    ContextName = s,
-                    PreCachedTypes = defaultedData[s],
-                    NotPersistedTypes = NotPersistedTypes,
-                    CustomConfig = CustomConfig
-                });
-            }
-            return new EntityContextConfiguration[] {};
-        }
+        //        return connectionStringNames.Select(s => new PocoEntityContextConfiguration {
+        //            DefaultMergeOption = DefaultMergeOption,
+        //            ContextName = s,
+        //            PreCachedTypes = defaultedData[s],
+        //            NotPersistedTypes = NotPersistedTypes,
+        //            CustomConfig = CustomConfig
+        //        });
+        //    }
+        //    return new EntityContextConfiguration[] {};
+        //}
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
             ICollection<string> configuredContextNames = NamedContextTypes.Keys;
