@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -16,7 +17,7 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("Shift", "HumanResources");
-            Property(t => t.ShiftID).HasColumnName("ShiftID");
+            Property(t => t.ShiftID).HasColumnName("ShiftID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.Times.StartTime).HasColumnName("StartTime");
             Property(t => t.Times.EndTime).HasColumnName("EndTime");

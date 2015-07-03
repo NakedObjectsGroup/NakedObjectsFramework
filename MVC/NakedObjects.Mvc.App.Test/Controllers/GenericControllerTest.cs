@@ -1176,7 +1176,6 @@ namespace MvcTestApp.Tests.Controllers {
         }
 
         [Test]
-        [Ignore] //todo still fails something to do with mappings ? 
         public void EditInlineSaveValidationOkForTransient() {
             EditInlineSaveValidationOk(TransientShift, 1);
         }
