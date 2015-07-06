@@ -28,12 +28,6 @@ open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
 
 
-let PocoConfig = 
-    let pc = new PocoEntityContextConfiguration()
-    pc.ContextName <- "AdventureWorksEntities"
-    pc.DefaultMergeOption <- MergeOption.AppendOnly
-    pc
-
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
 
@@ -560,7 +554,9 @@ let CanDetectConcurrency(persistor : EntityObjectStore) =
     let otherPersistor =
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
-        c.ContextConfiguration <- [| (box PocoConfig :?> EntityContextConfiguration) |]
+        let f = fun () -> new AdventureWorksEntities("AdventureWorksEntities2") :> Data.Entity.DbContext   
+        c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
+        c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
         setupPersistorForTesting p
     
@@ -620,7 +616,9 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
         EntityObjectStoreConfiguration.NoValidate <- true
 
         let c = new EntityObjectStoreConfiguration()
-        c.ContextConfiguration <- [| (box PocoConfig :?> EntityContextConfiguration) |]
+        let f = fun () -> new AdventureWorksEntities("AdventureWorksEntities2") :> Data.Entity.DbContext   
+        c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
+        c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
         setupPersistorForTesting p
     

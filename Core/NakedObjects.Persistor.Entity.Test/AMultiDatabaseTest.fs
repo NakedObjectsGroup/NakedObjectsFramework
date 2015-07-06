@@ -22,7 +22,7 @@ let multiDatabasePersistor =
     let c = new EntityObjectStoreConfiguration()
     c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities() :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p

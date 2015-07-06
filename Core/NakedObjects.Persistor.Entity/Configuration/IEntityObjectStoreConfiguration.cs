@@ -18,13 +18,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         Func<Type[]> NotPersistedTypes { get; set; }
 
         /// <summary>
-        ///     Indicates that persistor will run in code first mode.
-        ///     1. Any connection strings in App.Config will still be picked up for model first contexts
-        ///     2. If CodeFirstConfig is NOT set then the entry assembly will be used
-        /// </summary>
-        bool CodeFirst { get; set; }
-
-        /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
         ///     This is true by default.
         /// </summary>
@@ -73,18 +66,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
         EntityObjectStoreConfiguration.EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f);
 
-        /// <summary>
-        ///     Call for each .edmx (ie Model First or Database First) context in solution. Warns if context name does not exist if
-        ///     Web.Config
-        ///     or if contexts in Web.Config are not identified by this method.
-        /// </summary>
-        /// <param name="name">Name of context in Web.Config file</param>
-        /// <returns>A ContextInstaller that allows further configuration.</returns>
-        /// <example>UsingEdmxContext("Model1")</example>
-        EntityObjectStoreConfiguration.EntityContextConfigurator UsingEdmxContext(string name);
-
         void ForceContextSet();
-        //IEnumerable<EntityContextConfiguration> PocoConfiguration();
+        
         void FlagConnectionStringMismatches(string[] connectionStringNames);
         string[] GetConnectionStringNamesFromConfig();
         void AssertSetup();

@@ -30,9 +30,9 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         }
     }
 
-    public class PocoEntityContextConfiguration : EntityContextConfiguration {
-        public string ContextName { get; set; }
-    }
+    //public class PocoEntityContextConfiguration : EntityContextConfiguration {
+    //    public string ContextName { get; set; }
+    //}
 
     public class CodeFirstEntityContextConfiguration : EntityContextConfiguration {
         public Func<DbContext> DbContext { get; set; }

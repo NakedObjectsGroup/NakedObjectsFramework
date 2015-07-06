@@ -9,10 +9,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
     [Table("Sales.SpecialOfferProduct")]
     public partial class SpecialOfferProduct
     {
-        public SpecialOfferProduct()
-        {
-            SalesOrderDetails = new HashSet<SalesOrderDetail>();
-        }
+        private ICollection<SalesOrderDetail> salesOrderDetails = new List<SalesOrderDetail>();     
 
         [Key]
         [Column(Order = 0)]
@@ -30,7 +27,10 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
         public virtual Product Product { get; set; }
 
-        public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; }
+        public virtual ICollection<SalesOrderDetail> SalesOrderDetails {
+            get { return salesOrderDetails; }
+            set { salesOrderDetails = value; }
+        }
 
         public virtual SpecialOffer SpecialOffer { get; set; }
     }

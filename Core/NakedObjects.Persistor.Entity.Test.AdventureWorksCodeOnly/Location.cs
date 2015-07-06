@@ -19,6 +19,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
         [Required]
         [StringLength(50)]
+        [ConcurrencyCheck]
         public string Name { get; set; }
 
         [Column(TypeName = "smallmoney")]

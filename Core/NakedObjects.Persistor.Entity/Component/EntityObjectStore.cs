@@ -551,15 +551,15 @@ namespace NakedObjects.Persistor.Entity.Component {
             return createAdapter(null, trigger);
         }
 
-        private LocalContext CreatePocoContext(PocoEntityContextConfiguration pocoConfig) {
-            try {
-                return new LocalContext(pocoConfig, session) {IsInitialized = true};
-            }
-            catch (Exception e) {
-                string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
-                throw new InitialisationException(explain, e);
-            }
-        }
+        //private LocalContext CreatePocoContext(PocoEntityContextConfiguration pocoConfig) {
+        //    try {
+        //        return new LocalContext(pocoConfig, session) {IsInitialized = true};
+        //    }
+        //    catch (Exception e) {
+        //        string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
+        //        throw new InitialisationException(explain, e);
+        //    }
+        //}
 
         private LocalContext CreateCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
@@ -1067,12 +1067,12 @@ namespace NakedObjects.Persistor.Entity.Component {
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
 
-            public LocalContext(PocoEntityContextConfiguration config, ISession session)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
-                WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
-                Name = config.ContextName;
-                Log.DebugFormat("Context {0} Created", Name);
-            }
+            //public LocalContext(PocoEntityContextConfiguration config, ISession session)
+            //    : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
+            //    WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
+            //    Name = config.ContextName;
+            //    Log.DebugFormat("Context {0} Created", Name);
+            //}
 
             public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
                 : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {

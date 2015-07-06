@@ -29,7 +29,7 @@ type DomainSystemTests() =
         base.RegisterTypes(container)
 
         let config = new EntityObjectStoreConfiguration()
-        let f = (fun () -> new AdventureWorksEntities() :> Data.Entity.DbContext)
+        let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
 

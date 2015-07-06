@@ -43,7 +43,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
                     DbContext = f.Item1,
                     PreCachedTypes = f.Item2,
                     NotPersistedTypes = NotPersistedTypes,
-                    CustomConfig = CustomConfig
+                    CustomConfig = CustomConfig, 
+                    DefaultMergeOption = DefaultMergeOption
                 });
                 return cfConfigs;
             }
@@ -56,12 +57,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
-        /// <summary>
-        ///     Indicates that persistor will run in code first mode.
-        ///     1. Any connection strings in App.Config will still be picked up for model first contexts
-        ///     2. If CodeFirstConfig is NOT set then the entry assembly will be used
-        /// </summary>
-        public bool CodeFirst { get; set; }
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
@@ -114,46 +109,13 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
         public EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f) {
             isContextSet = true;
-            CodeFirst = true;
             return new EntityContextConfigurator(this, f);
-        }
-
-        /// <summary>
-        ///     Call for each .edmx (ie Model First or Database First) context in solution. Warns if context name does not exist if
-        ///     Web.Config
-        ///     or if contexts in Web.Config are not identified by this method.
-        /// </summary>
-        /// <param name="name">Name of context in Web.Config file</param>
-        /// <returns>A ContextInstaller that allows further configuration.</returns>
-        /// <example>UsingEdmxContext("Model1")</example>
-        public EntityContextConfigurator UsingEdmxContext(string name) {
-            isContextSet = true;
-            return new EntityContextConfigurator(this, name);
         }
 
         // for testing
         public void ForceContextSet() {
             isContextSet = true;
         }
-
-        //public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
-        //    string[] connectionStringNames = GetConnectionStringNamesFromConfig();
-
-        //    FlagConnectionStringMismatches(connectionStringNames);
-
-        //    if (connectionStringNames.Any()) {
-        //        Dictionary<string, Func<Type[]>> defaultedData = connectionStringNames.ToDictionary(s => s, s => NamedContextTypes.ContainsKey(s) ? NamedContextTypes[s] : () => new Type[] {});
-
-        //        return connectionStringNames.Select(s => new PocoEntityContextConfiguration {
-        //            DefaultMergeOption = DefaultMergeOption,
-        //            ContextName = s,
-        //            PreCachedTypes = defaultedData[s],
-        //            NotPersistedTypes = NotPersistedTypes,
-        //            CustomConfig = CustomConfig
-        //        });
-        //    }
-        //    return new EntityContextConfiguration[] {};
-        //}
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
             ICollection<string> configuredContextNames = NamedContextTypes.Keys;
@@ -167,10 +129,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public string[] GetConnectionStringNamesFromConfig() {
             ConnectionStringSettings[] connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
-
-            if (!connectionStrings.Any() && !CodeFirst) {
-                throw new InitialisationException(Resources.NakedObjects.NoConnectionString);
-            }
 
             return connectionStrings.Select(cs => cs.Name).ToArray();
         }

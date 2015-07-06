@@ -9,23 +9,20 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
     [Table("Production.Product")]
     public partial class Product
     {
-        public Product()
-        {
-            BillOfMaterials = new HashSet<BillOfMaterial>();
-            BillOfMaterials1 = new HashSet<BillOfMaterial>();
-            ProductCostHistories = new HashSet<ProductCostHistory>();
-            ProductDocuments = new HashSet<ProductDocument>();
-            ProductInventories = new HashSet<ProductInventory>();
-            ProductListPriceHistories = new HashSet<ProductListPriceHistory>();
-            ProductProductPhotoes = new HashSet<ProductProductPhoto>();
-            ProductReviews = new HashSet<ProductReview>();
-            ProductVendors = new HashSet<ProductVendor>();
-            PurchaseOrderDetails = new HashSet<PurchaseOrderDetail>();
-            ShoppingCartItems = new HashSet<ShoppingCartItem>();
-            SpecialOfferProducts = new HashSet<SpecialOfferProduct>();
-            TransactionHistories = new HashSet<TransactionHistory>();
-            WorkOrders = new HashSet<WorkOrder>();
-        }
+        private ICollection<WorkOrder> workOrders =new List<WorkOrder>();
+        private ICollection<TransactionHistory> transactionHistories = new List<TransactionHistory>();
+        private ICollection<SpecialOfferProduct> specialOfferProducts = new List<SpecialOfferProduct>();
+        private ICollection<ShoppingCartItem> shoppingCartItems = new List<ShoppingCartItem>();
+        private ICollection<PurchaseOrderDetail> purchaseOrderDetails =new List<PurchaseOrderDetail>();
+        private ICollection<ProductVendor> productVendors =new List<ProductVendor>();
+        private ICollection<ProductReview> productReviews = new List<ProductReview>();
+        private ICollection<ProductProductPhoto> productProductPhotoes =new List<ProductProductPhoto>();
+        private ICollection<ProductListPriceHistory> productListPriceHistories = new List<ProductListPriceHistory>();
+        private ICollection<ProductInventory> productInventories = new List<ProductInventory>();
+        private ICollection<ProductDocument> productDocuments = new List<ProductDocument>();
+        private ICollection<ProductCostHistory> productCostHistories =new List<ProductCostHistory>();
+        private ICollection<BillOfMaterial> billOfMaterials1 = new List<BillOfMaterial>();
+        private ICollection<BillOfMaterial> billOfMaterials =new List<BillOfMaterial>();  
 
         public int ProductID { get; set; }
 
@@ -90,9 +87,15 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<BillOfMaterial> BillOfMaterials { get; set; }
+        public virtual ICollection<BillOfMaterial> BillOfMaterials {
+            get { return billOfMaterials; }
+            set { billOfMaterials = value; }
+        }
 
-        public virtual ICollection<BillOfMaterial> BillOfMaterials1 { get; set; }
+        public virtual ICollection<BillOfMaterial> BillOfMaterials1 {
+            get { return billOfMaterials1; }
+            set { billOfMaterials1 = value; }
+        }
 
         public virtual ProductModel ProductModel { get; set; }
 
@@ -102,28 +105,64 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
         public virtual UnitMeasure UnitMeasure1 { get; set; }
 
-        public virtual ICollection<ProductCostHistory> ProductCostHistories { get; set; }
+        public virtual ICollection<ProductCostHistory> ProductCostHistories {
+            get { return productCostHistories; }
+            set { productCostHistories = value; }
+        }
 
-        public virtual ICollection<ProductDocument> ProductDocuments { get; set; }
+        public virtual ICollection<ProductDocument> ProductDocuments {
+            get { return productDocuments; }
+            set { productDocuments = value; }
+        }
 
-        public virtual ICollection<ProductInventory> ProductInventories { get; set; }
+        public virtual ICollection<ProductInventory> ProductInventories {
+            get { return productInventories; }
+            set { productInventories = value; }
+        }
 
-        public virtual ICollection<ProductListPriceHistory> ProductListPriceHistories { get; set; }
+        public virtual ICollection<ProductListPriceHistory> ProductListPriceHistories {
+            get { return productListPriceHistories; }
+            set { productListPriceHistories = value; }
+        }
 
-        public virtual ICollection<ProductProductPhoto> ProductProductPhotoes { get; set; }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhotoes {
+            get { return productProductPhotoes; }
+            set { productProductPhotoes = value; }
+        }
 
-        public virtual ICollection<ProductReview> ProductReviews { get; set; }
+        public virtual ICollection<ProductReview> ProductReviews {
+            get { return productReviews; }
+            set { productReviews = value; }
+        }
 
-        public virtual ICollection<ProductVendor> ProductVendors { get; set; }
+        public virtual ICollection<ProductVendor> ProductVendors {
+            get { return productVendors; }
+            set { productVendors = value; }
+        }
 
-        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails {
+            get { return purchaseOrderDetails; }
+            set { purchaseOrderDetails = value; }
+        }
 
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItems {
+            get { return shoppingCartItems; }
+            set { shoppingCartItems = value; }
+        }
 
-        public virtual ICollection<SpecialOfferProduct> SpecialOfferProducts { get; set; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProducts {
+            get { return specialOfferProducts; }
+            set { specialOfferProducts = value; }
+        }
 
-        public virtual ICollection<TransactionHistory> TransactionHistories { get; set; }
+        public virtual ICollection<TransactionHistory> TransactionHistories {
+            get { return transactionHistories; }
+            set { transactionHistories = value; }
+        }
 
-        public virtual ICollection<WorkOrder> WorkOrders { get; set; }
+        public virtual ICollection<WorkOrder> WorkOrders {
+            get { return workOrders; }
+            set { workOrders = value; }
+        }
     }
 }

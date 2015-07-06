@@ -5,8 +5,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     using System.Linq;
 
     public partial class AdventureWorksEntities : DbContext {
-        public AdventureWorksEntities()
-            : base("name=AdventureWorksEntities") {
+        public AdventureWorksEntities(string name)
+            : base(name) {
         }
 
         public virtual DbSet<AWBuildVersion> AWBuildVersions { get; set; }
