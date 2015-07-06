@@ -2,7 +2,7 @@ using System.Data.Entity;
 
 namespace ModelFirst {
 
-    public class ModefFirstInitializer : DropCreateDatabaseAlways<ModelFirstDbContext> {
+    public class ModefFirstInitializer : DropCreateDatabaseIfModelChanges<ModelFirstDbContext> {
         protected override void Seed(ModelFirstDbContext context) {
 
             var food = new Food() {Name = "Steak"};
