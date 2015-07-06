@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
-using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public abstract class EntityContextConfiguration {
@@ -16,7 +15,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         private Func<Type[]> preCachedTypes = () => new Type[] {};
         internal bool Validated { get; set; }
         public MergeOption DefaultMergeOption { get; set; }
-
         public Action<ObjectContext> CustomConfig { get; set; }
 
         public Func<Type[]> PreCachedTypes {
@@ -29,10 +27,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             set { notPersistedTypes = value; }
         }
     }
-
-    //public class PocoEntityContextConfiguration : EntityContextConfiguration {
-    //    public string ContextName { get; set; }
-    //}
 
     public class CodeFirstEntityContextConfiguration : EntityContextConfiguration {
         public Func<DbContext> DbContext { get; set; }

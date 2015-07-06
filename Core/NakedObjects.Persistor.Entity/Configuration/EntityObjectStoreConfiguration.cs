@@ -37,7 +37,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         #region IEntityObjectStoreConfiguration Members
 
-        public IEnumerable<EntityContextConfiguration> ContextConfiguration {
+        public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration {
             get {
                 IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
                     DbContext = f.Item1,
@@ -135,7 +135,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
-                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call either ""UsingCodeFirstContext"" or ""UsingEdmxContext""");
+                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext""");
             }
         }
 

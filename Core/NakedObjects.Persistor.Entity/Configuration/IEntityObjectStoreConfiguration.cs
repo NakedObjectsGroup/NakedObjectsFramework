@@ -12,7 +12,7 @@ using System.Data.Entity.Core.Objects;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public interface IEntityObjectStoreConfiguration {
-        IEnumerable<EntityContextConfiguration> ContextConfiguration { get; set; }
+        IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration { get; set; }
         IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
         IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         Func<Type[]> NotPersistedTypes { get; set; }

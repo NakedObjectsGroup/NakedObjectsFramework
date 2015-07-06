@@ -61,7 +61,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private readonly INakedObjectManager nakedObjectManager;
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
-        private IDictionary<EntityContextConfiguration, LocalContext> contexts = new Dictionary<EntityContextConfiguration, LocalContext>();
+        private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
         private IDomainObjectInjector injector;
 
         internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager) {
@@ -84,7 +84,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             : this(metamodel, session, injector, nakedObjectManager) {
             config.AssertSetup();
             this.oidGenerator = oidGenerator;
-            contexts = config.ContextConfiguration.ToDictionary<EntityContextConfiguration, EntityContextConfiguration, LocalContext>(c => c, c => null);
+            contexts = config.ContextConfiguration.ToDictionary<CodeFirstEntityContextConfiguration, CodeFirstEntityContextConfiguration, LocalContext>(c => c, c => null);
 
             EnforceProxies = config.EnforceProxies;
             RequireExplicitAssociationOfTypes = config.RequireExplicitAssociationOfTypes;
@@ -416,17 +416,16 @@ namespace NakedObjects.Persistor.Entity.Component {
             return GetContext(nakedObjectAdapter.Object);
         }
 
-        private LocalContext PrepareContextForNewTransaction(KeyValuePair<EntityContextConfiguration, LocalContext> kvp) {
+        private LocalContext PrepareContextForNewTransaction(KeyValuePair<CodeFirstEntityContextConfiguration, LocalContext> kvp) {
             LocalContext context = kvp.Value;
-            EntityContextConfiguration config = kvp.Key;
+            CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = kvp.Key;
 
             if (context != null) {
                 context.Dispose();
             }
 
-            CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = config as CodeFirstEntityContextConfiguration;
             context = CreateCodeOnlyContext(codeFirstEntityContextConfiguration);
-            context.DefaultMergeOption = config.DefaultMergeOption;
+            context.DefaultMergeOption = codeFirstEntityContextConfiguration.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;
             context.WrappedObjectContext.SavingChanges += savingChangesHandlerDelegate;
@@ -436,7 +435,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
             };
 
-            config.CustomConfig(context.WrappedObjectContext);
+            codeFirstEntityContextConfiguration.CustomConfig(context.WrappedObjectContext);
 
             context.Manager = nakedObjectManager;
             return context;
@@ -550,16 +549,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             object trigger = oce.StateEntries.Where(e => !e.IsRelationship).Select(e => e.Entity).SingleOrDefault();
             return createAdapter(null, trigger);
         }
-
-        //private LocalContext CreatePocoContext(PocoEntityContextConfiguration pocoConfig) {
-        //    try {
-        //        return new LocalContext(pocoConfig, session) {IsInitialized = true};
-        //    }
-        //    catch (Exception e) {
-        //        string explain = string.Format(Resources.NakedObjects.StartPersistorErrorMessage, pocoConfig.ContextName);
-        //        throw new InitialisationException(explain, e);
-        //    }
-        //}
 
         private LocalContext CreateCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
@@ -1066,13 +1055,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
-
-            //public LocalContext(PocoEntityContextConfiguration config, ISession session)
-            //    : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
-            //    WrappedObjectContext = new ObjectContext("name=" + config.ContextName);
-            //    Name = config.ContextName;
-            //    Log.DebugFormat("Context {0} Created", Name);
-            //}
 
             public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
                 : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
