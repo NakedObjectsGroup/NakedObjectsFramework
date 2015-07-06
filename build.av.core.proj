@@ -45,7 +45,7 @@
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Test.Data\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.CodeOnly\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\*.csproj"/>
-    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.ModelFirst\*.csproj"/>   
+    <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test.SimpleDatabase\*.csproj"/>   
     <FWTFiles Include="$(CorePath)\NakedObjects.Persistor.Entity.Test\*.fsproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Metamodel.Test\*.csproj"/>
     <FWTFiles Include="$(CorePath)\NakedObjects.Reflector.Test\*.csproj"/>

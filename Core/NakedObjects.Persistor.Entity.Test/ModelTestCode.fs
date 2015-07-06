@@ -7,7 +7,7 @@
 module NakedObjects.ModelTestCode
 
 open NUnit.Framework
-open ModelFirst
+open SimpleDatabase
 open TestCode
 open TestTypes
 open System
@@ -26,7 +26,7 @@ open NakedObjects.Persistor.Entity.Component
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
-    let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+    let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
     pc.DbContext <-  Func<Data.Entity.DbContext>(f)
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc

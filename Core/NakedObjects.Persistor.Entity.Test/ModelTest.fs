@@ -11,11 +11,11 @@ open TestCode
 open ModelTestCode
 open NakedObjects.Persistor.Entity.Configuration
 open System
-open ModelFirst
+open SimpleDatabase
 
 let persistor = 
     let c = new EntityObjectStoreConfiguration()
-    let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+    let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForInjectorTesting p

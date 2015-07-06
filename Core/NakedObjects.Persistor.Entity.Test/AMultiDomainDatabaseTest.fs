@@ -11,7 +11,7 @@ open TestTypes
 open TestCode
 open MultiDatabaseTestCode
 open CodeOnlyTestCode
-open ModelFirst
+open SimpleDatabase
 open NakedObjects.Persistor.Entity.Configuration
 open System
 open TestCodeOnly
@@ -22,7 +22,7 @@ let multiDomainDatabasePersistor =
 
     let c = new EntityObjectStoreConfiguration()
 
-    let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+    let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
 

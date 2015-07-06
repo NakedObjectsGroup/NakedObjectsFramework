@@ -7,7 +7,7 @@
 module NakedObjects.ModelSystemTest
 
 open NUnit.Framework
-open ModelFirst
+open SimpleDatabase
 open NakedObjects.Services
 open NakedObjects.Core.Util
 open SystemTestCode
@@ -34,15 +34,15 @@ type ModelSystemTests() =
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
 
-        let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
+        let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
 
         container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-        let types = [| typeof<ModelFirst.Fruit>;typeof<List<ModelFirst.Food>> |]
+        let types = [| typeof<SimpleDatabase.Fruit>;typeof<List<SimpleDatabase.Food>> |]
         ReflectorConfiguration.NoValidate <- true
 
         let services = [| typeof<SimpleRepository<Person>> |]
-        let namespaces = [| "ModelFirst"   |]
+        let namespaces = [| "SimpleDatabase"   |]
         let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
 
         container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore

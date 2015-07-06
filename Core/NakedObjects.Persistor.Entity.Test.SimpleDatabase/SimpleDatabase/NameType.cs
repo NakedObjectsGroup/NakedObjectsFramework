@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Services;
 
-namespace ModelFirst {
+namespace SimpleDatabase {
     [ComplexType]
     public class NameType : AbstractTestCode {
         [Root]

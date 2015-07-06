@@ -161,8 +161,8 @@
       <Project>{55cc4d02-0ee3-481e-8938-6743c2e29fcd}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.ModelFirst\NakedObjects.Persistor.Entity.Test.ModelFirst.csproj">
-      <Name>NakedObjects.Persistor.Entity.Test.ModelFirst</Name>
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedObjects.Persistor.Entity.Test.SimpleDatabase.csproj">
+      <Name>NakedObjects.Persistor.Entity.Test.SimpleDatabase</Name>
       <Project>{4e38bdd7-d725-4b31-8809-b03e2f121004}</Project>
       <Private>True</Private>
     </ProjectReference>

@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using NakedObjects;
 
-namespace ModelFirst {
+namespace SimpleDatabase {
     public abstract class AbstractTestCode {
         #region test code
 

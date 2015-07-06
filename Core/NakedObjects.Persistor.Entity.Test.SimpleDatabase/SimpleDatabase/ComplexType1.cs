@@ -5,19 +5,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace ModelFirst {
-    public class Food {
-        #region Navigation Properties
+using System.ComponentModel.DataAnnotations.Schema;
+using NakedObjects;
 
-        public virtual Person Person { get; set; }
-
-        #endregion
+namespace SimpleDatabase {
+    [ComplexType]
+    public class ComplexType1 {
+        [Root]
+        [NotMapped]
+        public object Parent { get; set; }
 
         #region Primitive Properties
 
-        public virtual int Id { get; set; }
-
-        public virtual string Name { get; set; }
+        // ReSharper disable InconsistentNaming
+        public string s1 { get; set; }
+        public string s2 { get; set; }
+        // ReSharper restore InconsistentNaming
 
         #endregion
     }

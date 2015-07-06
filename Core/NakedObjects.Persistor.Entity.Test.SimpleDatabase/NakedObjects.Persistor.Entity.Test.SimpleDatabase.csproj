@@ -5,15 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0205FC6A-B2C4-43B9-BEAF-7760E58D4320}</ProjectGuid>
+    <ProjectGuid>{4E38BDD7-D725-4B31-8809-B03E2F121004}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AdventureWorksModel</RootNamespace>
-    <AssemblyName>NakedObjects.Persistor.Entity.Test.Domain</AssemblyName>
+    <RootNamespace>SimpleDatabase</RootNamespace>
+    <AssemblyName>NakedObjects.Persistor.Entity.Test.SimpleDatabase</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PlatformTarget>x86</PlatformTarget>
-    <StartupObject />
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -41,7 +40,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -74,7 +72,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>default</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -101,9 +98,9 @@
     <Reference Include="NakedObjects.Helpers">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NakedObjects.PMResources">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types">
       <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.1.0-beta\lib\net40\NakedObjects.Types.dll</HintPath>
@@ -111,17 +108,36 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimpleDatabaseDbContext.cs" />
+    <Compile Include="SimpleDatabase\ComplexType1.cs" />
+    <Compile Include="SimpleDatabase\Food.cs" />
+    <Compile Include="SimpleDatabase\Fruit.cs" />
+    <Compile Include="SimpleDatabase\NameType.cs" />
+    <Compile Include="SimpleDatabase\Person.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="App.Config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -144,77 +160,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdventureWorksDbContext.cs" />
-    <Compile Include="Entities\Address.cs" />
-    <Compile Include="Entities\AddressType.cs" />
-    <Compile Include="Entities\AWBuildVersion.cs" />
-    <Compile Include="Entities\BillOfMaterial.cs" />
-    <Compile Include="Entities\Contact.cs" />
-    <Compile Include="Entities\ContactCreditCard.cs" />
-    <Compile Include="Entities\ContactType.cs" />
-    <Compile Include="Entities\CountryRegion.cs" />
-    <Compile Include="Entities\CountryRegionCurrency.cs" />
-    <Compile Include="Entities\CreditCard.cs" />
-    <Compile Include="Entities\Culture.cs" />
-    <Compile Include="Entities\Currency.cs" />
-    <Compile Include="Entities\CurrencyRate.cs" />
-    <Compile Include="Entities\Customer.cs" />
-    <Compile Include="Entities\CustomerAddress.cs" />
-    <Compile Include="Entities\DatabaseLog.cs" />
-    <Compile Include="Entities\Department.cs" />
-    <Compile Include="Entities\Document.cs" />
-    <Compile Include="Entities\Employee.cs" />
-    <Compile Include="Entities\EmployeeAddress.cs" />
-    <Compile Include="Entities\EmployeeDepartmentHistory.cs" />
-    <Compile Include="Entities\EmployeePayHistory.cs" />
-    <Compile Include="Entities\ErrorLog.cs" />
-    <Compile Include="Entities\Illustration.cs" />
-    <Compile Include="Entities\Individual.cs" />
-    <Compile Include="Entities\JobCandidate.cs" />
-    <Compile Include="Entities\Location.cs" />
-    <Compile Include="Entities\Product.cs" />
-    <Compile Include="Entities\ProductCategory.cs" />
-    <Compile Include="Entities\ProductCostHistory.cs" />
-    <Compile Include="Entities\ProductDescription.cs" />
-    <Compile Include="Entities\ProductDocument.cs" />
-    <Compile Include="Entities\ProductInventory.cs" />
-    <Compile Include="Entities\ProductListPriceHistory.cs" />
-    <Compile Include="Entities\ProductModel.cs" />
-    <Compile Include="Entities\ProductModelIllustration.cs" />
-    <Compile Include="Entities\ProductModelProductDescriptionCulture.cs" />
-    <Compile Include="Entities\ProductPhoto.cs" />
-    <Compile Include="Entities\ProductProductPhoto.cs" />
-    <Compile Include="Entities\ProductReview.cs" />
-    <Compile Include="Entities\ProductSubcategory.cs" />
-    <Compile Include="Entities\ProductVendor.cs" />
-    <Compile Include="Entities\PurchaseOrderDetail.cs" />
-    <Compile Include="Entities\PurchaseOrderHeader.cs" />
-    <Compile Include="Entities\SalesOrderDetail.cs" />
-    <Compile Include="Entities\SalesOrderHeader.cs" />
-    <Compile Include="Entities\SalesOrderHeaderSalesReason.cs" />
-    <Compile Include="Entities\SalesPerson.cs" />
-    <Compile Include="Entities\SalesPersonQuotaHistory.cs" />
-    <Compile Include="Entities\SalesReason.cs" />
-    <Compile Include="Entities\SalesTaxRate.cs" />
-    <Compile Include="Entities\SalesTerritory.cs" />
-    <Compile Include="Entities\SalesTerritoryHistory.cs" />
-    <Compile Include="Entities\ScrapReason.cs" />
-    <Compile Include="Entities\Shift.cs" />
-    <Compile Include="Entities\ShipMethod.cs" />
-    <Compile Include="Entities\ShoppingCartItem.cs" />
-    <Compile Include="Entities\SpecialOffer.cs" />
-    <Compile Include="Entities\SpecialOfferProduct.cs" />
-    <Compile Include="Entities\StateProvince.cs" />
-    <Compile Include="Entities\Store.cs" />
-    <Compile Include="Entities\StoreContact.cs" />
-    <Compile Include="Entities\TransactionHistory.cs" />
-    <Compile Include="Entities\TransactionHistoryArchive.cs" />
-    <Compile Include="Entities\UnitMeasure.cs" />
-    <Compile Include="Entities\Vendor.cs" />
-    <Compile Include="Entities\VendorAddress.cs" />
-    <Compile Include="Entities\VendorContact.cs" />
-    <Compile Include="Entities\WorkOrder.cs" />
-    <Compile Include="Entities\WorkOrderRouting.cs" />
+    <Content Include="CreateModelFirstTestDatabaseWithData.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />

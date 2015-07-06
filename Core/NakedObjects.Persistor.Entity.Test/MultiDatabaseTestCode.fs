@@ -43,7 +43,7 @@ let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(mult
     Assert.AreNotEqual(p1, p2)
 
 let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
-let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<ModelFirst.Person, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
+let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<SimpleDatabase.Person, NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 
 let CanCreateEachConnection(multiDatabasePersistor : EntityObjectStore) = 
     let productSetter (pr : TestCodeOnly.Product) = 
