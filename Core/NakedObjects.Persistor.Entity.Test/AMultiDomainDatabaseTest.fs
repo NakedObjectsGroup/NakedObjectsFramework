@@ -11,10 +11,11 @@ open TestTypes
 open TestCode
 open MultiDatabaseTestCode
 open CodeOnlyTestCode
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open ModelFirst
 open NakedObjects.Persistor.Entity.Configuration
 open System
+open TestCodeOnly
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
 
 let multiDomainDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
@@ -24,6 +25,10 @@ let multiDomainDatabasePersistor =
     let f = (fun () -> new ModelFirstDbContext("Model1Container") :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
+
+    let f1 = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
+    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f1)) |> ignore
+
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 
@@ -45,10 +50,8 @@ type AMultiDomainDatabaseTests() =
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor multiDomainDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
         member x.TestCanQueryEachConnection() = CanQueryEachDomainConnection multiDomainDatabasePersistor
         
-        [<Test>]
-        [<Ignore>]
+        [<Test>]     
         member x.TestCanQueryEachConnectionMultiTimes() = CanQueryEachDomainConnectionMultiTimes multiDomainDatabasePersistor
     end

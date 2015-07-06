@@ -44,16 +44,13 @@ type AMultiDatabaseTests() =
         [<Test>]
         member x.CanQueryEachConnection() = CanQueryEachConnectionMulti multiDatabasePersistor
         
-        [<Test>]
-        [<Ignore>]
+        [<Test>]     
         member x.TestCanCreateEachConnection() = CanCreateEachConnection multiDatabasePersistor
         
         [<Test>]
         member x.TestCanQueryEachConnectionMultiTimes() = CanQueryEachConnectionMultiTimes multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
-
         member x.TestCanCreateEachConnectionMultiTimes() = CanCreateEachConnectionMultiTimes multiDatabasePersistor
         
         [<Test>]
@@ -91,7 +88,7 @@ type AMultiDatabaseTests() =
         member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject multiDatabasePersistor
         
         [<Test>]
-                [<Ignore>]
+                
 
         member x.TestSaveTransientObjectWithScalarProperties() = DomainTestCode.CanSaveTransientObjectWithScalarProperties multiDatabasePersistor
         
@@ -100,12 +97,12 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanSaveTransientObjectWithPersistentReferenceProperty multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferenceProperty multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies multiDatabasePersistor
         
@@ -138,21 +135,21 @@ type AMultiDatabaseTests() =
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesIgnore multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestPersistingPersistedCalledForCreateInstance() = DomainTestCode.CanPersistingPersistedCalledForCreateInstance multiDatabasePersistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = 
             DomainTestCode.CanPersistingPersistedCalledForCreateInstanceWithReference multiDatabasePersistor
         
@@ -172,7 +169,7 @@ type AMultiDatabaseTests() =
         member x.TestContainerInjectionCalledForGetInstance() = DomainTestCode.CanContainerInjectionCalledForGetInstance(resetPersistor multiDatabasePersistor)
         
         [<Test>]
-                [<Ignore>]
+                
 
         member x.TestCreateManyToMany() = DomainTestCode.CanCreateManyToMany multiDatabasePersistor
         

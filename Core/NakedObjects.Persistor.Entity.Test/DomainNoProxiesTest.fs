@@ -42,7 +42,7 @@ let overwritePersistor =
     p
 
 [<TestFixture>]
-[<Ignore>]
+
 
 type DomainNoProxiesTests() = 
     class
@@ -195,11 +195,11 @@ type DomainNoProxiesTests() =
         member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError persistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError persistor
         
         [<Test>]
-        [<Ignore>]
+        
         member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject overwritePersistor
         
         [<Test>]

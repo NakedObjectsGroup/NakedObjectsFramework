@@ -21,7 +21,6 @@ open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
 
 [<TestFixture>]
-[<Ignore>]
 type DomainSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
 
