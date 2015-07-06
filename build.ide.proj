@@ -63,7 +63,6 @@
     <MSBuild Properties="template=Repository" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=Fixture" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=XAT" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
-    <MSBuild Properties="template=Default_T4Template" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
     <MSBuild Properties="template=CodeFirstReverseEngineerTemplate" Projects="$(MSBuildProjectFile)" Targets="ZipTemplate"/>
   </Target>
 
