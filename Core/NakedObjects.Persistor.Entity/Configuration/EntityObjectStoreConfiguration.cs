@@ -57,6 +57,11 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
+        [Obsolete("No longer used as always code first")]
+        public bool CodeFirst {
+            get { return true; }
+            set { }
+        }
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
@@ -112,9 +117,19 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             return new EntityContextConfigurator(this, f);
         }
 
+        [Obsolete("Use Code First")]
+        public EntityContextConfigurator UsingEdmxContext(string name) {
+            throw new NotImplementedException("edmx configuration of EF no longer supported - use code first");
+        }
+
         // for testing
         public void ForceContextSet() {
             isContextSet = true;
+        }
+
+        [Obsolete("No longer used")]
+        public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
+            throw new NotImplementedException("edmx configuration of EF no longer supported - use code first");
         }
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
