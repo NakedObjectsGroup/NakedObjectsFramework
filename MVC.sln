@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D26083
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.DatabaseHelpers", "Test\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj", "{DDE874EE-B28B-4577-A28A-6D35690D6310}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector", "Core\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{91153C56-313C-426E-8B0D-43FA39BD567A}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = development.vsmdi
@@ -96,6 +98,12 @@ Global
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDE874EE-B28B-4577-A28A-6D35690D6310}.Release|x86.ActiveCfg = Release|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91153C56-313C-426E-8B0D-43FA39BD567A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
