@@ -11,8 +11,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class FinderActionFacet : FacetAbstract, IFinderActionFacet {
-        public FinderActionFacet(ISpecification holder)
-            : base(typeof (IFinderActionFacet), holder) {}
+    public sealed class FinderActionFacet : SingleStringValueFacetAbstract, IFinderActionFacet {
+        public FinderActionFacet(string value, ISpecification holder)
+            : base(typeof(IFinderActionFacet), holder, value) { }
+
     }
 }

@@ -1779,7 +1779,7 @@ namespace SystemTest.Attributes {
 
     public class TestServiceFinderAction {
 
-        [FinderAction()]
+        [FinderAction("Foo")] //The Foo prefix is not tested here, but included to ensure that the overloaded constructor is being used in code.
         public FinderAction1 FinderAction1() {
             return null;
         }

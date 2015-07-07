@@ -52,13 +52,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [FinderAction]
 // ReSharper disable once UnusedMember.Local
             public void SomeAction() {}
+
+            [FinderAction("Foo")]
+            // ReSharper disable once UnusedMember.Local
+            public void SomeOtherAction() { }
         }
 
         [TestMethod]
         public void TestFinderActionFacetNullByDefault() {
             MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -70,6 +74,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof (IFinderActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FinderActionFacet);
+            Assert.IsNull((facet as FinderActionFacet).Value); //Prefix is null by default
+            AssertNoMethodsRemoved();
+        }
+
+        [TestMethod]
+        public void TestFinderActionPrefixPickedUp() {
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeOtherAction");
+            facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is FinderActionFacet);
+            Assert.AreEqual("Foo", (facet as FinderActionFacet).Value); //Prefix is null by default
             AssertNoMethodsRemoved();
         }
 

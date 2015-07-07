@@ -2497,6 +2497,10 @@ namespace NakedObjects.Web.Mvc.Html {
                 INakedObjectAdapter service = html.Framework().ServicesManager.GetService((IServiceSpec) finderAction.OnSpec);
                 ActionContext targetActionContext = new ActionContext(service, finderAction);
                 var ed = html.GetActionElementDescriptor(new ActionContext(service, finderAction), actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
+                var prefix = finderAction.GetFacet<IFinderActionFacet>().Value;
+                if (prefix != null) {
+                    ed.Value = prefix +" "+ ed.Value;
+                }
                 descriptors.Add(ed);
             }
             return descriptors;
