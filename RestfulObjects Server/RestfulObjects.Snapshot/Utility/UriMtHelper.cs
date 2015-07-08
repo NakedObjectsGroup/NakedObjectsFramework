@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Facade;
@@ -440,10 +442,27 @@ namespace RestfulObjects.Snapshot.Utility {
             return RepresentationTypes.PropertyDescription;
         }
 
+        private string DefaultMimeType(AttachmentContextFacade attachment) {
+            //attempt an intelligent default
+
+            var ext = (attachment == null ? "" : Path.GetExtension(attachment.FileName)) ?? "";
+
+            switch (ext) {
+                case "jpg":
+                case "jpeg":
+                    return MediaTypeNames.Image.Jpeg;
+                case "gif":
+                    return MediaTypeNames.Image.Gif;
+                default:
+                    return "image/bmp";
+            }
+        }
+
         public MediaTypeHeaderValue GetAttachmentMediaType() {
             IObjectFacade no = assoc.GetValue(objectFacade);
-            string mtv = no == null  || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? ""  : no.GetAttachment().MimeType;
-            return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? "image/bmp" : mtv);
+            var attachment = no == null ? null : no.GetAttachment();
+            string mtv = attachment == null  || string.IsNullOrWhiteSpace(attachment.MimeType) ? ""  : attachment.MimeType;
+            return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? DefaultMimeType(attachment) : mtv);
         }
 
         public MediaTypeHeaderValue GetIconMediaType() {
