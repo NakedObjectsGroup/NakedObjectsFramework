@@ -180,6 +180,10 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Jillian Carson", br.FindElement(By.CssSelector("#Store-SalesPerson")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
             var finder = wait.ClickAndWait(".nof-edit", "#Store-SalesPerson-SalesRepository-FindSalesPersonByName");
+
+            //Test that prefix is being applied
+            Assert.AreEqual("WithPrefix Find Sales Person By Name", br.FindElement(By.CssSelector("#Store-SalesPerson-SalesRepository-FindSalesPersonByName")).Text);
+
             var lastName = wait.ClickAndWait(finder, "#SalesRepository-FindSalesPersonByName-LastName-Input");
 
             lastName.TypeText("Vargas" + Keys.Tab);

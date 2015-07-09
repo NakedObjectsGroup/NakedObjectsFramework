@@ -26,7 +26,7 @@ namespace AdventureWorksModel {
 
         #region FindSalesPersonByName
 
-        [FinderAction]
+        [FinderAction("WithPrefix")]
         [TableView(true, "SalesTerritory")]
         public IQueryable<SalesPerson> FindSalesPersonByName([Optionally] string firstName, string lastName) {
             IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
