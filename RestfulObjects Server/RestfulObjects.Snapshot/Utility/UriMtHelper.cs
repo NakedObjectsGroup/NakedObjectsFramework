@@ -448,10 +448,10 @@ namespace RestfulObjects.Snapshot.Utility {
             var ext = (attachment == null ? "" : Path.GetExtension(attachment.FileName)) ?? "";
 
             switch (ext) {
-                case "jpg":
-                case "jpeg":
+                case ".jpg":
+                case ".jpeg":
                     return MediaTypeNames.Image.Jpeg;
-                case "gif":
+                case ".gif":
                     return MediaTypeNames.Image.Gif;
                 default:
                     return "image/bmp";
