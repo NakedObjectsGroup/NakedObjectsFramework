@@ -12,6 +12,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 using NakedObjects.Util;
+using System.Text;
 
 namespace AdventureWorksModel {
     public enum ProductLineEnum {
@@ -251,5 +252,33 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+      
+      #region Inventory
+        /// <summary>
+        /// Action is intended to test the returing of a scalar (large multi-line string).
+        /// </summary>
+        /// <returns></returns>
+      public string StockReport()
+      {
+          var inventories = Container.Instances<ProductInventory>().Select(pi => new InventoryLine {ProductName = pi.Product.Name, Quantity = pi.Quantity});
+          var sb = new StringBuilder();
+          sb.AppendLine(@"<h1 id=""report"">Stock Report</h1>");
+          sb.AppendLine("<table>");
+          sb.AppendLine("<tr><th>Product</th><th>Quantity</th></tr>");
+          foreach (var i in inventories) {
+              sb.AppendLine("<tr><td>"+i.ProductName+"</td><td>"+i.Quantity+"</td></tr>");
+          }
+          sb.AppendLine("</table>");
+          return sb.ToString();
+
+      }
+      #endregion
+
+      private class InventoryLine {
+          public string ProductName { get; set; }
+          public int Quantity { get; set; }
+      }
+      
     }
+
 }

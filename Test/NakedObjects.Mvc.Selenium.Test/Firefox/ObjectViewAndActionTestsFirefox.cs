@@ -45,6 +45,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
+        public override void ViewScalar() {
+            DoViewScalar();
+        }
+
+        [TestMethod]
         public override void InvokeActionNoParmsNoReturn() {
             DoInvokeActionNoParmsNoReturn();
         }
