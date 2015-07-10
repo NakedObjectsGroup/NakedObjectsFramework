@@ -47,6 +47,11 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         }
 
         [TestMethod]
+        public override void ViewScalar() {
+            DoViewScalar();
+        }
+
+        [TestMethod]
         public override void InvokeActionNoParmsNoReturn() {
             DoInvokeActionNoParmsNoReturn();
         }

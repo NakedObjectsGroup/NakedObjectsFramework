@@ -106,6 +106,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
             wait.ClickAndWait("#Store-QuickOrder button", wd => wd.Title == "AW00000546");
         }
 
+        public abstract void ViewScalar();
+
+        public void DoViewScalar() {
+            Login();
+            wait.ClickAndWait("#ProductRepository-StockReport button", "#report");
+        }
+
         public abstract void InvokeActionNoParmsNoReturn();
 
         public void DoInvokeActionNoParmsNoReturn() {
