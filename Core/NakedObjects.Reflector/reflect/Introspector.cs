@@ -201,8 +201,15 @@ namespace NakedObjects.Reflect {
                 // create a reference property spec
                 var identifier = new IdentifierImpl(FullName, property.Name);
                 Type propertyType = property.PropertyType;
-                var propertySpec = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType);
-                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+                var propertySpec = reflector.LoadSpecification(propertyType);
+                if (propertySpec is IServiceSpecImmutable) {
+                    throw new ReflectionException(string.Format(
+                        "Type {0} is a service and cannot be used in public property {1} on type {2}."+ 
+                    " If the property is intended to be an injected service it should have a protected get.",
+                    propertyType.Name, property.Name, property.DeclaringType.Name
+                    ));
+                }
+                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
 
                 // Process facets for the property
                 FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties);
