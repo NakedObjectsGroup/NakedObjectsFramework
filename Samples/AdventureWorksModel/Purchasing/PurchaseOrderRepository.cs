@@ -97,6 +97,17 @@ namespace AdventureWorksModel {
             return Container.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
 
+        // for autoautocomplete testing
+        public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendorAndProduct(Vendor vendor, Product product) {
+
+            return from obj in Instances<PurchaseOrderDetail>()
+                   where obj.Product.ProductID == product.ProductID &&
+                         obj.PurchaseOrderHeader.Status <= 2 && 
+                         obj.PurchaseOrderHeader.Vendor.VendorID == vendor.VendorID
+                   select obj.PurchaseOrderHeader;
+        }
+
+
         #endregion
 
         
