@@ -55,7 +55,7 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -63,7 +63,7 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
@@ -346,7 +346,7 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -354,7 +354,7 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
@@ -618,7 +618,7 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -626,7 +626,7 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
@@ -703,7 +703,7 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -711,7 +711,7 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
@@ -792,7 +792,7 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -800,7 +800,7 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
@@ -877,7 +877,7 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                       
@@ -885,7 +885,7 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
                            :: TProperty
                                   (JsonPropertyNames.Arguments, 
-                                   TObjectJson([ TProperty(JsonPropertyNames.SuperType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
