@@ -18,6 +18,8 @@ open RestTestFunctions
 
 let invokeRelTypeSb = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSubtypeOf"
 let invokeRelTypeSp = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSupertypeOf"
+let invokeRelTypeFb = RelValues.Invoke + makeParm RelParamValues.TypeAction "filterSubtypesFrom"
+let invokeRelTypeFp = RelValues.Invoke + makeParm RelParamValues.TypeAction "filterSupertypesFrom"
 
 let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -65,7 +67,28 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                              
+                              
+                                     
+                                     
+                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
@@ -356,7 +379,28 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "") 
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                                     
+                                     
+                                     
+                                     ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
@@ -628,7 +672,27 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                                     
+                                     
+                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
@@ -713,7 +777,26 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                                     
+                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
@@ -802,7 +885,26 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "") 
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                                     
+                                     ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
@@ -887,7 +989,29 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
                                   (JsonPropertyNames.Arguments, 
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
-                                     RepresentationTypes.TypeActionResult "") ]))
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                                     
+                                     
+                                     
+                                     
+                                     
+                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
