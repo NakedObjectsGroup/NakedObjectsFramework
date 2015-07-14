@@ -26,7 +26,7 @@
     {
       "id": "isSubtypeOf",
       "arguments": {
-        "subtype": {
+        "supertype": {
           "href": null
         }
       },
@@ -38,7 +38,7 @@
     {
       "id": "isSupertypeOf",
       "arguments": {
-        "supertype": {
+        "subtype": {
           "href": null
         }
       },
