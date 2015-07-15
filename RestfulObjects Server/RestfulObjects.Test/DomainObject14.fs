@@ -5128,7 +5128,9 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     
     let arr1 = [ for i in 1 .. 3 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
@@ -5142,14 +5144,22 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
+    let expected3 = 
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, TArray(arr3))
+          TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     
-    // match arrays 3 and 6 deep
     try
         compareObject expected1 parsedResult
     with e -> 
-        compareObject expected2 parsedResult
+        try 
+            compareObject expected2 parsedResult
+        with e -> 
+            compareObject expected3 parsedResult
 
 let PutWithValueObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"

@@ -2647,7 +2647,9 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     
     let arr1 = [ for i in 1 .. 3 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
@@ -2661,6 +2663,11 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
+    let expected3 = 
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace,  TArray(arr2))
+          TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
@@ -2670,7 +2677,10 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     try
         compareObject expected1 parsedResult
     with e -> 
-        compareObject expected2 parsedResult
+        try 
+            compareObject expected2 parsedResult
+        with e -> 
+            compareObject expected3 parsedResult
 
 // 401    
 let DeleteValuePropertyDisabledValue(api : RestfulObjectsControllerBase) = 
@@ -2981,7 +2991,8 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     
     let arr1 = [ for i in 1 .. 3 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
@@ -2995,14 +3006,23 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
+    let expected3 = 
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, TArray(arr2))
+          TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+
     Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 
-    // match arrays 3 and 6 deep
+    // match arrays 3 , 4 and 6 deep
     try
         compareObject expected1 parsedResult
     with e -> 
-        compareObject expected2 parsedResult
+        try 
+            compareObject expected2 parsedResult
+        with e -> 
+            compareObject expected3 parsedResult
 
 // 406
 let VerifyNotAcceptableGetPropertyWrongMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 
