@@ -38,7 +38,7 @@ namespace MvcTestApp {
 
         private static Type[] Types {
             get {
-                return new[] { typeof(WithAction) };
+                return new[] { typeof(WithAction), typeof(WithAttachments) };
             }
         }
 

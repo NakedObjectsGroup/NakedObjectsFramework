@@ -29,5 +29,9 @@ namespace RestfulObjects.Test.Data {
         public virtual Image Image {
             get { return new Image(attachment, "animage", "image/jpeg"); }
         }
+
+        public virtual Image ImageWithDefault {
+            get { return new Image(attachment, "animage.gif"); }
+        }
     }
 }

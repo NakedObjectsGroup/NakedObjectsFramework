@@ -75,6 +75,7 @@ let GetWithAttachmentsObject(api : RestfulObjectsControllerBase) =
                                       ("FileAttachment", 
                                        TObjectJson(makePropertyMemberFullAttachment "FileAttachment" oid "File Attachment" "afile" "application/pdf"))
                                   TProperty("Image", TObjectJson(makePropertyMemberFullAttachment "Image" oid "Image" "animage" "image/jpeg"))
+                                  TProperty("ImageWithDefault", TObjectJson(makePropertyMemberFullAttachment "ImageWithDefault" oid "Image With Default" "animage.gif" "image/gif"))
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))

@@ -8,8 +8,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility.Restricted;
@@ -284,6 +286,22 @@ namespace RestfulObjects.Snapshot.Utility {
 
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
                 new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
+        }
+
+        public static string DefaultMimeType(this AttachmentContextFacade attachment) {
+            //attempt an intelligent default
+
+            var ext = (attachment == null ? "" : Path.GetExtension(attachment.FileName)) ?? "";
+
+            switch (ext) {
+                case ".jpg":
+                case ".jpeg":
+                    return MediaTypeNames.Image.Jpeg;
+                case ".gif":
+                    return MediaTypeNames.Image.Gif;
+                default:
+                    return AttachmentContextFacade.DefaultMimeType;
+            }
         }
     }
 }

@@ -676,6 +676,10 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy , GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
         }
 
+        public virtual HttpResponseMessage GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetFilterFrom(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
+        }
+
         #endregion
 
         #region helpers
@@ -916,6 +920,23 @@ namespace RestfulObjects.Mvc {
             context.OtherSpecification = otherSpecification;
             return context;
         }
+
+        private TypeActionInvokeContext GetFilterFrom(TypeActionInvokeContext context, ArgumentMap arguments) {
+            ValidateArguments(arguments);
+
+            if (!arguments.Map.ContainsKey(context.ParameterId)) {
+                throw new BadRequestNOSException("Malformed arguments");
+            }
+
+            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
+            IValue parameter = arguments.Map[context.ParameterId];
+            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
+            var otherSpecification = (ITypeFacade)(value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string)value));
+            context.ThisSpecification = thisSpecification;
+            context.OtherSpecification = otherSpecification;
+            return context;
+        }
+
 
 
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {

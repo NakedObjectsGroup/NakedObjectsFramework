@@ -52,7 +52,8 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetContentType(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
-            string mtv = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().MimeType;
+            Func<string> defaultMimeType = () =>  no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
+            string mtv = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 

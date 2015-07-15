@@ -169,6 +169,7 @@
     <Compile Include="RelTypes\TypeActionInvokeRelType.cs" />
     <Compile Include="RelTypes\ParamTypeRelType.cs" />
     <Compile Include="Constants\ResultTypes.cs" />
+    <Compile Include="Utility\FilterFromInvokeContext.cs" />
     <Compile Include="Utility\TypeActionInvokeContext.cs" />
     <Compile Include="RelTypes\TypeActionRelType.cs" />
     <Compile Include="Exception\TypeActionResourceNotFoundException.cs" />

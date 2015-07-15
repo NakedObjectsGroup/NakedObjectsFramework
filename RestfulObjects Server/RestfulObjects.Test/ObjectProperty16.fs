@@ -220,6 +220,25 @@ let GetImageAttachmentValue(api : RestfulObjectsControllerBase) =
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     Assert.AreEqual("", content)
 
+let GetImageAttachmentValueWithDefault(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
+    let oid = ktc "1"
+    let pid = "ImageWithDefault"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let mt = "image/gif"
+    let args = CreateReservedArgs ""
+    api.Request <- jsonGetMsgAndMediaType mt (sprintf "http://localhost/%s" purl)
+    let result = api.GetProperty(oType, oid, pid, args)
+    let content = result.Content.ReadAsStringAsync().Result
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(mt, result.Content.Headers.ContentType.ToString())
+    Assert.AreEqual("attachment; filename=animage.gif", result.Content.Headers.ContentDisposition.ToString())
+    assertTransactionalCache result
+    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    Assert.AreEqual("", content)
+
+
 let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()

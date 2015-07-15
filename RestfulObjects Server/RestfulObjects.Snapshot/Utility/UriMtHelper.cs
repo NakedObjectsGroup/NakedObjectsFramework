@@ -442,27 +442,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return RepresentationTypes.PropertyDescription;
         }
 
-        private string DefaultMimeType(AttachmentContextFacade attachment) {
-            //attempt an intelligent default
-
-            var ext = (attachment == null ? "" : Path.GetExtension(attachment.FileName)) ?? "";
-
-            switch (ext) {
-                case ".jpg":
-                case ".jpeg":
-                    return MediaTypeNames.Image.Jpeg;
-                case ".gif":
-                    return MediaTypeNames.Image.Gif;
-                default:
-                    return "image/bmp";
-            }
-        }
-
         public MediaTypeHeaderValue GetAttachmentMediaType() {
             IObjectFacade no = assoc.GetValue(objectFacade);
             var attachment = no == null ? null : no.GetAttachment();
             string mtv = attachment == null  || string.IsNullOrWhiteSpace(attachment.MimeType) ? ""  : attachment.MimeType;
-            return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? DefaultMimeType(attachment) : mtv);
+            return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? attachment.DefaultMimeType() : mtv);
         }
 
         public MediaTypeHeaderValue GetIconMediaType() {

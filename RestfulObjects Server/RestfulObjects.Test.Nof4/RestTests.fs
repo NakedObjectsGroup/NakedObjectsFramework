@@ -563,6 +563,9 @@ type Nof4Tests() =
         member x.GetImageAttachmentValue() = ObjectProperty16.GetImageAttachmentValue x.api
         
         [<Test>]
+        member x.GetImageAttachmentValueWithDefault() = ObjectProperty16.GetImageAttachmentValueWithDefault x.api
+
+        [<Test>]
         member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel x.api
         
         [<Test>]
