@@ -18,7 +18,7 @@ namespace RestfulObjects.Test.EndToEnd {
     public static class Helpers {
         private const string SourceFiles = @"..\..\Json reference files";
         private const string Txt = ".txt";
-        private static bool WriteFileIfNoneExists = true;
+        private static bool WriteFileIfNoneExists = false;
         private static bool WriteFileIfResponseDiffersFromExisting = false;
 
         public static bool UrlExistsForGet(string url) {
