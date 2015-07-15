@@ -2665,7 +2665,7 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
 
     let expected3 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
-          TProperty(JsonPropertyNames.StackTrace,  TArray(arr2))
+          TProperty(JsonPropertyNames.StackTrace,  TArray(arr3))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
@@ -3008,7 +3008,7 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
 
     let expected3 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
-          TProperty(JsonPropertyNames.StackTrace, TArray(arr2))
+          TProperty(JsonPropertyNames.StackTrace, TArray(arr3))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
