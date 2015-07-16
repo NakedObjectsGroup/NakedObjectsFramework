@@ -163,15 +163,9 @@ namespace MvcTestApp.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeIsTypeOf(string typeName, string actionName, [ModelBinder(typeof (ArgumentMapUrlBinder))] ArgumentMap arguments) {
-            return base.GetInvokeIsTypeOf(typeName, actionName, arguments);
+        public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, [ModelBinder(typeof(ArgumentMapUrlBinder))] ArgumentMap arguments) {
+            return base.GetInvokeTypeActions(typeName, actionName, arguments);
         }
-
-        [HttpGet]
-        public override HttpResponseMessage GetInvokeFilterFrom(string typeName, string actionName, [ModelBinder(typeof(ArgumentMapUrlBinder))] ArgumentMap arguments) {
-            return base.GetInvokeIsTypeOf(typeName, actionName, arguments);
-        }
-
 
         [HttpGet]
         public override HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ArgumentMapUrlBinder))] ArgumentMap arguments) {

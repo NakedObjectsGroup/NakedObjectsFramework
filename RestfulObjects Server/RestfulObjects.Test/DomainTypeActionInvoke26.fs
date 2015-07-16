@@ -51,7 +51,7 @@ let GetIsSubTypeOfReturnFalseSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSuperTypeOfReturnFalseSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -64,7 +64,7 @@ let GetIsSuperTypeOfReturnFalseSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSubTypeOfReturnTrueSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -77,7 +77,7 @@ let GetIsSubTypeOfReturnTrueSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSuperTypeOfReturnTrueSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -90,7 +90,7 @@ let GetIsSuperTypeOfReturnTrueSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) = 
@@ -105,7 +105,7 @@ let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSuperTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) = 
@@ -120,7 +120,7 @@ let GetIsSuperTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSubTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) = 
@@ -135,7 +135,7 @@ let GetIsSubTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let GetIsSuperTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) = 
@@ -150,7 +150,7 @@ let GetIsSuperTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
 let NotFoundTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -162,7 +162,7 @@ let NotFoundTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -177,7 +177,7 @@ let NotFoundTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -195,7 +195,7 @@ let NotFoundTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -213,7 +213,7 @@ let NotFoundTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -228,7 +228,7 @@ let NotFoundActionSimpleParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -246,7 +246,7 @@ let NotFoundActionFormalParms(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
@@ -261,7 +261,7 @@ let NotFoundSuperTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) 
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
@@ -276,7 +276,7 @@ let NotFoundSubTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) 
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
@@ -294,7 +294,7 @@ let NotFoundSuperTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) 
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
@@ -312,7 +312,7 @@ let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) 
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
@@ -325,7 +325,7 @@ let MissingParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke" oType oRel
     let args = CreateArgMapFromUrl ""
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.First().ToString())
@@ -340,7 +340,7 @@ let MalformedSimpleParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel qs
     let args = CreateArgMapFromUrl qs
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.First().ToString())
@@ -358,7 +358,7 @@ let MalformedFormalParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (url)
-    let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
     let jsonResult = readSnapshotToJson result
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.First().ToString())
@@ -376,7 +376,7 @@ let NotAcceptableIsSubTypeOf(api : RestfulObjectsControllerBase) =
         let msg = jsonGetMsg (url)
         msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ActionDescription)))
         api.Request <- msg
-        let result = api.GetInvokeIsTypeOf(oType, oRel, args)
+        let result = api.GetInvokeTypeActions(oType, oRel, args)
         readSnapshotToJson result |> ignore
         Assert.Fail("expect exception")
     with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)

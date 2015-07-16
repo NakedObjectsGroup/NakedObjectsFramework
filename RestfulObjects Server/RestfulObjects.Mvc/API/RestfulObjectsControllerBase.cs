@@ -87,7 +87,7 @@ namespace RestfulObjects.Mvc {
             // ReSharper disable RedundantArgumentName
             routes.MapHttpRoute("GetInvokeIsTypeOf",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
-                defaults: new {controller = "RestfulObjects", action = "GetInvokeIsTypeOf"},
+                defaults: new { controller = "RestfulObjects", action = "GetInvokeTypeActions" },
                 constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
@@ -672,12 +672,28 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-        public virtual HttpResponseMessage GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy , GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
+        public virtual HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
+
+            return InitAndHandleErrors(() => {
+
+                switch (actionName) {
+                    case WellKnownIds.IsSubtypeOf:
+                    case WellKnownIds.IsSupertypeOf:
+                        return GetInvokeIsTypeOf(typeName, actionName, arguments);
+                    case WellKnownIds.FilterSubtypesFrom:
+                    case WellKnownIds.FilterSupertypesFrom:
+                        return GetInvokeFilterFrom(typeName, actionName, arguments);
+                }
+                throw new TypeActionResourceNotFoundException(actionName, typeName);
+            });
         }
 
-        public virtual HttpResponseMessage GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetFilterFrom(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments)));
+        private RestSnapshot GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
+            return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
+        }
+
+        private RestSnapshot GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
+            return  new RestSnapshot(OidStrategy, GetFilterFrom(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }
 
         #endregion
