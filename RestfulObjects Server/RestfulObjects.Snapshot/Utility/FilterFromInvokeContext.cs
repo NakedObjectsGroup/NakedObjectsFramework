@@ -49,11 +49,11 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private ITypeFacade[] Subtypes() {
-            return OtherSpecifications.Where(os => ThisSpecification.IsOfType(os)).ToArray();
+            return OtherSpecifications.Where(os => os.IsOfType(ThisSpecification)).ToArray();
         }
 
         private ITypeFacade[] Supertypes() {
-            return OtherSpecifications.Where(os => os.IsOfType(ThisSpecification)).ToArray();
+            return OtherSpecifications.Where(os => ThisSpecification.IsOfType(os)).ToArray();
         }
 
         public ITypeFacade[] Value {

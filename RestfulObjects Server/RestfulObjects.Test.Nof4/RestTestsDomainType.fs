@@ -2898,4 +2898,27 @@ type Nof4TestsDomainType() =
         
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
+
+        // filter extensions
+
+        [<Test>]
+        member x.GetFilterSubTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnEmptyFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSuperTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnEmptyFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSubTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnSingleFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSuperTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnSingleFormalParms x.api
+
+
+        [<Test>]
+        member x.GetFilterSubTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromMultipleReturnSingleFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSuperTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromMultipleReturnSingleFormalParms x.api
+
+
     end
