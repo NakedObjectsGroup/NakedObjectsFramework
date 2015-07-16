@@ -145,6 +145,43 @@
         "maxLength": 0,
         "pattern": ""
       }
+    },
+    "ImageWithDefault": {
+      "disabledReason": "Field not editable",
+      "hasChoices": false,
+      "memberType": "property",
+      "id": "ImageWithDefault",
+      "links": [
+        {
+          "rel": "urn:org.restfulobjects:rels/details;property=\"ImageWithDefault\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/ImageWithDefault"
+        },
+        {
+          "title": "animage.gif",
+          "rel": "urn:org.restfulobjects:rels/attachment;property=\"ImageWithDefault\"",
+          "method": "GET",
+          "type": "image/gif",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithAttachments/1/properties/ImageWithDefault"
+        },
+        {
+          "rel": "describedby",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithAttachments/properties/ImageWithDefault"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "Image With Default",
+        "description": "",
+        "optional": false,
+        "memberOrder": 0,
+        "returnType": "string",
+        "format": "blob",
+        "maxLength": 0,
+        "pattern": ""
+      }
     }
   }
 }
