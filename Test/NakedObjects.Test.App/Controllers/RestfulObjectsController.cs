@@ -164,8 +164,8 @@ namespace NakedObjects.Test.App.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeIsTypeOf(string typeName, string actionName, [ModelBinder(typeof (ArgumentMapUrlBinder))] ArgumentMap arguments) {
-            return base.GetInvokeIsTypeOf(typeName, actionName, arguments);
+        public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, [ModelBinder(typeof(ArgumentMapUrlBinder))] ArgumentMap arguments) {
+            return base.GetInvokeTypeActions(typeName, actionName, arguments);
         }
 
         [HttpGet]
