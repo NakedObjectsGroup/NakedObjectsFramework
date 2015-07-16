@@ -52,8 +52,7 @@ let VerifyFilterResult result resultValue oType oRel ooType ooRel =
           TProperty(JsonPropertyNames.Value, TArray(resultValue))
           
           TProperty
-              (JsonPropertyNames.Links, 
-               
+              (JsonPropertyNames.Links,            
                TArray
                    ([ TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) 
@@ -202,7 +201,53 @@ let GetFilterSubTypesFromReturnEmptyFormalParms(api : RestfulObjectsControllerBa
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyFilterResult result resultValue oType oRel ooType ooRel
 
+let GetFilterSubTypesFromReturnSingleFormalParms(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithAction"
+    let ooType = ttc "RestfulObjects.Test.Data.WithAction"
+    let oRel = "filterSubtypesFrom"
+    let ooRel = JsonPropertyNames.SubTypes
+    let resultValue = [ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]
+    let oourl = sprintf "http://localhost/domain-types/%s" ooType
+    let parms = 
+        new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JArray(new JObject(new JProperty(JsonPropertyNames.Href, oourl)))))))
+    let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
+    VerifyFilterResult result resultValue oType oRel ooType ooRel
 
+let GetFilterSuperTypesFromReturnSingleFormalParms(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithAction"
+    let ooType = ttc "RestfulObjects.Test.Data.WithAction"
+    let oRel = "filterSupertypesFrom"
+    let ooRel = JsonPropertyNames.SuperTypes
+    let resultValue = [ TObjectJson(makeGetLinkProp RelValues.DomainType (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "") ]
+    let oourl = sprintf "http://localhost/domain-types/%s" ooType
+    let parms = 
+        new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JArray(new JObject(new JProperty(JsonPropertyNames.Href, oourl)))))))
+    let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
+    VerifyFilterResult result resultValue oType oRel ooType ooRel
+
+
+
+
+let GetFilterSuperTypesFromReturnEmptyFormalParms(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let ooType = ttc "RestfulObjects.Test.Data.WithAction"
+    let oRel = "filterSupertypesFrom"
+    let ooRel = JsonPropertyNames.SuperTypes
+    let resultValue = []
+    let oourl = sprintf "http://localhost/domain-types/%s" ooType
+    let parms = 
+        new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JArray(new JObject(new JProperty(JsonPropertyNames.Href, oourl)))))))
+    let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
+    VerifyFilterResult result resultValue oType oRel ooType ooRel
 
 
 

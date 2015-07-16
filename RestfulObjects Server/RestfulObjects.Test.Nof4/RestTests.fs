@@ -2903,5 +2903,13 @@ type Nof4Tests() =
         [<Test>]
         member x.GetFilterSubTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnEmptyFormalParms x.api
 
+        [<Test>]
+        member x.GetFilterSuperTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnEmptyFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSubTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnSingleFormalParms x.api
+
+        [<Test>]
+        member x.GetFilterSuperTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnSingleFormalParms x.api
 
     end
