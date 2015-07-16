@@ -209,6 +209,17 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
+        public RestSnapshot(IOidStrategy oidStrategy, FilterFromInvokeContext filterFromInvokeContext, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy, req, true) {
+            logger.DebugFormat("RestSnapshot:{0}", filterFromInvokeContext.GetType().FullName);
+
+            populator = () => {
+                representation = FilterFromInvokeRepresentation.Create(oidStrategy, req, filterFromInvokeContext, flags);
+                SetHeaders();
+            };
+        }
+
+
         public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequestMessage req)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:Exception");

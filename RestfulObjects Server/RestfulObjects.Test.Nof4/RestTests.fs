@@ -2897,4 +2897,11 @@ type Nof4Tests() =
         
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
+
+        // for filter extensions 
+
+        [<Test>]
+        member x.GetFilterSubTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnEmptyFormalParms x.api
+
+
     end

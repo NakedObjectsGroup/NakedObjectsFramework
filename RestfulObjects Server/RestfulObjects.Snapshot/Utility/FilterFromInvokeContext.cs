@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using NakedObjects.Facade;
 using RestfulObjects.Snapshot.Constants;
 
@@ -44,14 +45,24 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public string ParameterId {
-            get { return aType == ActionType.FilterSubtypesFrom ? JsonPropertyNames.SuperType : JsonPropertyNames.SubType; }
+            get { return aType == ActionType.FilterSubtypesFrom ? JsonPropertyNames.SubTypes : JsonPropertyNames.SuperTypes; }
         }
 
-        public bool Value {
-            get { return aType == ActionType.FilterSubtypesFrom ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification); }
+        private ITypeFacade[] Subtypes() {
+            return OtherSpecifications.Where(os => ThisSpecification.IsOfType(os)).ToArray();
+        }
+
+        private ITypeFacade[] Supertypes() {
+            return OtherSpecifications.Where(os => os.IsOfType(ThisSpecification)).ToArray();
+        }
+
+        public ITypeFacade[] Value {
+            get {
+                return aType == ActionType.FilterSubtypesFrom ? Subtypes() : Supertypes();
+            }
         }
 
         public ITypeFacade ThisSpecification { get; set; }
-        public ITypeFacade OtherSpecification { get; set; }
+        public ITypeFacade[] OtherSpecifications { get; set; }
     }
 }

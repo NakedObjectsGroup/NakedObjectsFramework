@@ -27,5 +27,10 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string Prompt = "prompt";
         public const string CollectionValue = "collection-value";
         public const string BadArguments = "bad-arguments";
+
+        // custom 
+
+        public const string TypeActionFilterResult = "type-action-filter-result";
+
     }
 }

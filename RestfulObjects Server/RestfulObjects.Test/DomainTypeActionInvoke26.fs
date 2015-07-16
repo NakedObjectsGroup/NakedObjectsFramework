@@ -41,6 +41,31 @@ let VerifyResult result resultValue oType oRel ooType ooRel =
     assertNonExpiringCache result
     compareObject expected parsedResult
 
+let VerifyFilterResult result resultValue oType oRel ooType ooRel = 
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let rurl = sprintf "http://localhost/domain-types/%s" ooType
+    let args = TObjectJson([ TProperty(ooRel, TArray([TObjectJson([TProperty(JsonPropertyNames.Href, TObjectVal(rurl)) ])]) )])
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(oRel))
+          TProperty(JsonPropertyNames.Value, TArray(resultValue))
+          
+          TProperty
+              (JsonPropertyNames.Links, 
+               
+               TArray
+                   ([ TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, args) 
+                           :: makeGetLinkProp RelValues.Self (sprintf "domain-types/%s/type-actions/%s/invoke" oType oRel) RepresentationTypes.TypeActionFilterResult 
+                                  "") ]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(new typeType(RepresentationTypes.TypeActionFilterResult), result.Content.Headers.ContentType)
+    assertNonExpiringCache result
+    compareObject expected parsedResult
+
+
 let GetIsSubTypeOfReturnFalseSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let ooType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -93,6 +118,8 @@ let GetIsSuperTypeOfReturnTrueSimpleParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
 
+
+
 let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let ooType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -107,6 +134,11 @@ let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
+
+
+
+
+
 
 let GetIsSuperTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -152,6 +184,29 @@ let GetIsSuperTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel
+
+// filters 
+
+let GetFilterSubTypesFromReturnEmptyFormalParms(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let ooType = ttc "RestfulObjects.Test.Data.WithAction"
+    let oRel = "filterSubtypesFrom"
+    let ooRel = JsonPropertyNames.SubTypes
+    let resultValue = []
+    let oourl = sprintf "http://localhost/domain-types/%s" ooType
+    let parms = 
+        new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JArray(new JObject(new JProperty(JsonPropertyNames.Href, oourl)))))))
+    let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (url)
+    let result = api.GetInvokeTypeActions(oType, oRel, args)
+    VerifyFilterResult result resultValue oType oRel ooType ooRel
+
+
+
+
+
+
 
 let NotFoundTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.NoSuchType"

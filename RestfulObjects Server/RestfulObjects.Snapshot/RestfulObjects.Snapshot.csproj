@@ -118,8 +118,10 @@
     <Compile Include="RelTypes\PromptRelType.cs" />
     <Compile Include="RelTypes\AttachmentRelType.cs" />
     <Compile Include="RelTypes\ServiceRelType.cs" />
+    <Compile Include="RelTypes\TypeActionFilterInvokeRelType.cs" />
     <Compile Include="RelTypes\ValueRelType.cs" />
     <Compile Include="RelTypes\DefaultRelType.cs" />
+    <Compile Include="Representation\FilterFromInvokeRepresentation.cs" />
     <Compile Include="Strategies\AbstractStrategy.cs" />
     <Compile Include="Representation\ActionResultRepresentation.cs" />
     <Compile Include="Representation\ArgumentsRepresentation.cs" />

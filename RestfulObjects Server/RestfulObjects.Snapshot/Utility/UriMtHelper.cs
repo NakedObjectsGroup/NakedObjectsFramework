@@ -143,6 +143,13 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
         }
 
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, FilterFromInvokeContext context)
+            : this(oidStrategy, req) {
+            typeAction = context.Id;
+            cachedId = "";
+            CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
+        }
+
         private string CachedType {
             get { return cachedType; }
             set {

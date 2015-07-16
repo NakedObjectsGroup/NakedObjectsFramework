@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -693,7 +694,7 @@ namespace RestfulObjects.Mvc {
         }
 
         private RestSnapshot GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
-            return  new RestSnapshot(OidStrategy, GetFilterFrom(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
+            return  new RestSnapshot(OidStrategy, GetFilterFrom(new FilterFromInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }
 
         #endregion
@@ -937,7 +938,7 @@ namespace RestfulObjects.Mvc {
             return context;
         }
 
-        private TypeActionInvokeContext GetFilterFrom(TypeActionInvokeContext context, ArgumentMap arguments) {
+        private FilterFromInvokeContext GetFilterFrom(FilterFromInvokeContext context, ArgumentMap arguments) {
             ValidateArguments(arguments);
 
             if (!arguments.Map.ContainsKey(context.ParameterId)) {
@@ -946,10 +947,10 @@ namespace RestfulObjects.Mvc {
 
             ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
             IValue parameter = arguments.Map[context.ParameterId];
-            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
-            var otherSpecification = (ITypeFacade)(value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string)value));
+            var values = ((IEnumerable) parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy)).Cast<object>();
+            var otherSpecifications = values.Select(value => (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value))).ToArray();
             context.ThisSpecification = thisSpecification;
-            context.OtherSpecification = otherSpecification;
+            context.OtherSpecifications = otherSpecifications;
             return context;
         }
 
