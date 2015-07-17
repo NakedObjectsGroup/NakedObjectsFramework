@@ -86,10 +86,6 @@ namespace AdventureWorksModel {
 
         public virtual byte PayFrequency { get; set; }
 
-        public byte[] ChoicesPropertyName() {
-            return new byte[] {1, 2};
-        }
-
         #endregion
     }
 }
