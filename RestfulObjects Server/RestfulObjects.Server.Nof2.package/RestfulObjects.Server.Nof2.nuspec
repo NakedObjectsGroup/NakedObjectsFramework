@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Add to an ASP.NET Empty Web Application project to auto-create a Restful Objects API for a domain model running under NOF2</description>
     <dependencies>
-      <dependency id="RestfulObjects.Mvc" version="[7.1.0-beta, 8)" />
+      <dependency id="RestfulObjects.Mvc" version="[7.1.0, 8)" />
       <dependency id="WebActivator" version="1.5" />
     </dependencies>
     <frameworkAssemblies>
