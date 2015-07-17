@@ -26,7 +26,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static IteratorFilteringFacetFactory() {
-            FixedPrefixes = new[] {PrefixesAndRecognisedMethods.GetEnumeratorMethod};
+            FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
         }
 
         public IteratorFilteringFacetFactory(int numericOrder)
@@ -38,7 +38,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof (IEnumerable).IsAssignableFrom(type) && !TypeUtils.IsSystem(type)) {
-                MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.GetEnumeratorMethod, null, Type.EmptyTypes);
+                MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {
                     methodRemover.RemoveMethod(method);
                 }

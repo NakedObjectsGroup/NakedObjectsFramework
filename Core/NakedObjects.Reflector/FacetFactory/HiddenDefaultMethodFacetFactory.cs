@@ -23,8 +23,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         static HiddenDefaultMethodFacetFactory() {
             FixedPrefixes = new[] {
-                PrefixesAndRecognisedMethods.HidePrefix + "Action" + PrefixesAndRecognisedMethods.DefaultPrefix,
-                PrefixesAndRecognisedMethods.HidePrefix + "Property" + PrefixesAndRecognisedMethods.DefaultPrefix
+                RecognisedMethodsAndPrefixes.HidePrefix + "Action" + RecognisedMethodsAndPrefixes.DefaultPrefix,
+                RecognisedMethodsAndPrefixes.HidePrefix + "Property" + RecognisedMethodsAndPrefixes.DefaultPrefix
             };
         }
 

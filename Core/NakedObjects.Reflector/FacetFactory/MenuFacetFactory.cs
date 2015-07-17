@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static MenuFacetFactory() {
-            FixedPrefixes = new[] {PrefixesAndRecognisedMethods.MenuMethod};
+            FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
         }
 
         public MenuFacetFactory(int numericOrder)
@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Class, PrefixesAndRecognisedMethods.MenuMethod, null, null);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));

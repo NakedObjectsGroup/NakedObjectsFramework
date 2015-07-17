@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateObjectFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
-            PrefixesAndRecognisedMethods.ValidatePrefix
+            RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
         public ValidateObjectFacetFactory(int numericOrder)
@@ -49,7 +49,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
-            MethodInfo[] methods = FindMethods(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ValidatePrefix, typeof (string));
+            MethodInfo[] methods = FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof (string));
 
             if (methods.Any()) {
                 foreach (MethodInfo method in methods) {

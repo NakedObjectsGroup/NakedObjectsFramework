@@ -28,13 +28,13 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public sealed class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
-            PrefixesAndRecognisedMethods.AutoCompletePrefix,
-            PrefixesAndRecognisedMethods.ParameterDefaultPrefix,
-            PrefixesAndRecognisedMethods.ParameterChoicesPrefix,
-            PrefixesAndRecognisedMethods.DisablePrefix,
-            PrefixesAndRecognisedMethods.HidePrefix,
-            PrefixesAndRecognisedMethods.ValidatePrefix,
-            PrefixesAndRecognisedMethods.DisablePrefix
+            RecognisedMethodsAndPrefixes.AutoCompletePrefix,
+            RecognisedMethodsAndPrefixes.ParameterDefaultPrefix,
+            RecognisedMethodsAndPrefixes.ParameterChoicesPrefix,
+            RecognisedMethodsAndPrefixes.DisablePrefix,
+            RecognisedMethodsAndPrefixes.HidePrefix,
+            RecognisedMethodsAndPrefixes.ValidatePrefix,
+            RecognisedMethodsAndPrefixes.DisablePrefix
         };
 
         private static readonly ILog Log = LogManager.GetLogger(typeof (ActionMethodsFacetFactory));
@@ -144,7 +144,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
-            MethodInfo method = FindMethod(reflector, type, methodType, PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName, typeof (string), parms);
+            MethodInfo method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof (string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action));
@@ -159,7 +159,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ParameterDefaultPrefix + i + capitalizedName,
+                    RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName,
                     paramType,
                     paramTypes);
 
@@ -167,7 +167,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ParameterDefaultPrefix + capitalizedName,
+                    RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + capitalizedName,
                     paramType,
                     new[] {paramType},
                     new[] {paramName});
@@ -201,7 +201,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
 
                 Type returnType = typeof (IEnumerable<>).MakeGenericType(paramType);
-                string methodName = PrefixesAndRecognisedMethods.ParameterChoicesPrefix + i + capitalizedName;
+                string methodName = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
 
                 MethodInfo[] methods = FindMethods(
                     reflector,
@@ -223,7 +223,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ParameterChoicesPrefix + capitalizedName,
+                    RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + capitalizedName,
                     returnType,
                     new[] {paramType},
                     new[] {paramName});
@@ -288,7 +288,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             MethodInfo method = FindMethod(reflector,
                 type,
                 MethodType.Object,
-                PrefixesAndRecognisedMethods.AutoCompletePrefix + i + capitalizedName,
+                RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName,
                 returnType,
                 new[] { typeof(string) });
             return method;
@@ -299,14 +299,14 @@ namespace NakedObjects.Reflect.FacetFactory {
                 MethodInfo methodUsingIndex = FindMethod(reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ValidatePrefix + i + capitalizedName,
+                    RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName,
                     typeof (string),
                     new[] {paramTypes[i]});
 
                 MethodInfo methodUsingName = FindMethod(reflector,
                     type,
                     MethodType.Object,
-                    PrefixesAndRecognisedMethods.ValidatePrefix + capitalizedName,
+                    RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName,
                     typeof (string),
                     new[] {paramTypes[i]},
                     new[] {paramNames[i]});

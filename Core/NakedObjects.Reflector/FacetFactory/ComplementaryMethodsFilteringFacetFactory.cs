@@ -24,27 +24,27 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ComplementaryMethodsFilteringFacetFactory));
 
         private static readonly string[] PropertyPrefixes = {
-            PrefixesAndRecognisedMethods.AutoCompletePrefix,
-            PrefixesAndRecognisedMethods.ModifyPrefix,
-            PrefixesAndRecognisedMethods.ClearPrefix,
-            PrefixesAndRecognisedMethods.ChoicesPrefix,
-            PrefixesAndRecognisedMethods.DefaultPrefix,
-            PrefixesAndRecognisedMethods.ValidatePrefix,
-            PrefixesAndRecognisedMethods.HidePrefix,
-            PrefixesAndRecognisedMethods.DisablePrefix
+            RecognisedMethodsAndPrefixes.AutoCompletePrefix,
+            RecognisedMethodsAndPrefixes.ModifyPrefix,
+            RecognisedMethodsAndPrefixes.ClearPrefix,
+            RecognisedMethodsAndPrefixes.ChoicesPrefix,
+            RecognisedMethodsAndPrefixes.DefaultPrefix,
+            RecognisedMethodsAndPrefixes.ValidatePrefix,
+            RecognisedMethodsAndPrefixes.HidePrefix,
+            RecognisedMethodsAndPrefixes.DisablePrefix
         };
 
         private static readonly string[] ActionPrefixes = {
-            PrefixesAndRecognisedMethods.ValidatePrefix,
-            PrefixesAndRecognisedMethods.HidePrefix,
-            PrefixesAndRecognisedMethods.DisablePrefix
+            RecognisedMethodsAndPrefixes.ValidatePrefix,
+            RecognisedMethodsAndPrefixes.HidePrefix,
+            RecognisedMethodsAndPrefixes.DisablePrefix
         };
 
         private static readonly string[] ParameterPrefixes = {
-            PrefixesAndRecognisedMethods.AutoCompletePrefix,
-            PrefixesAndRecognisedMethods.ParameterChoicesPrefix,
-            PrefixesAndRecognisedMethods.ParameterDefaultPrefix,
-            PrefixesAndRecognisedMethods.ValidatePrefix
+            RecognisedMethodsAndPrefixes.AutoCompletePrefix,
+            RecognisedMethodsAndPrefixes.ParameterChoicesPrefix,
+            RecognisedMethodsAndPrefixes.ParameterDefaultPrefix,
+            RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
         /// <summary>

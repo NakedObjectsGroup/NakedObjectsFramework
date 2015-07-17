@@ -5,8 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Reflect.FacetFactory {
-    public static class PrefixesAndRecognisedMethods {
+namespace NakedObjects {
+    /// <summary>
+    /// Defines all the domain model methods recognised by NakedObjects, and the prefixes for 'complementary' methods
+    /// (associated with an action or property).
+    /// </summary>
+    public static class RecognisedMethodsAndPrefixes {
         public static readonly string AutoCompletePrefix;
         public static readonly string ChoicesPrefix;
         public static readonly string ClearPrefix;
@@ -34,7 +38,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public static readonly string OnPersistingErrorMethod;
         public static readonly string OnUpdatingErrorMethod;
 
-        static PrefixesAndRecognisedMethods() {
+        static RecognisedMethodsAndPrefixes() {
             ParameterDefaultPrefix = "Default";
             ParameterChoicesPrefix = "Choices";
             ClearPrefix = "Clear";
@@ -62,5 +66,47 @@ namespace NakedObjects.Reflect.FacetFactory {
             OnPersistingErrorMethod = "OnPersistingError";
             OnUpdatingErrorMethod = "OnUpdatingError";
         }
+
+        //Defines methods in domain models that are recognised by the NOF and result in
+        //specific behaviour. (See also OtherIgnoredMethods).
+        public static string[] RecognisedMethods = new string[] {
+                CreatedMethod,
+                DeletedMethod,
+                DeletingMethod,
+                IconNameMethod,
+                LoadedMethod,
+                LoadingMethod,
+                MenuMethod,
+                OnPersistingErrorMethod,
+                OnUpdatingErrorMethod,
+                PersistedMethod,
+                PersistingMethod,
+                TitleMethod,
+                ToStringMethod,
+                UpdatedMethod,
+                UpdatingMethod
+            };
+
+        //Defines the prefixes recognised by NOF for 'complementary' methods associated
+        //with an action or property.
+        public static string[] RecognisedPrefixes = new string[] {
+                AutoCompletePrefix,
+                ChoicesPrefix,
+                ClearPrefix,
+                DefaultPrefix,
+                DisablePrefix,
+                HidePrefix,
+                ModifyPrefix,
+                ParameterChoicesPrefix,
+                ParameterDefaultPrefix,
+                ValidatePrefix
+            };
+
+        //Defines any other methods (not included in AllRecognisedMethods) that are
+        //recognised by the NOF but solely for the purpose of not rendering them
+        //as user-visible actions.
+        public static string[] OtherIgnoredMethods = new string[] {
+            GetEnumeratorMethod
+        };
     }
 }

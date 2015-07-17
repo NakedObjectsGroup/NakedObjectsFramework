@@ -23,8 +23,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof (TitleMethodFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
-            PrefixesAndRecognisedMethods.ToStringMethod,
-            PrefixesAndRecognisedMethods.TitleMethod
+            RecognisedMethodsAndPrefixes.ToStringMethod,
+            RecognisedMethodsAndPrefixes.TitleMethod
         };
 
         public TitleMethodFacetFactory(int numericOrder)
@@ -56,7 +56,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
 
             try {
-                MethodInfo titleMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.TitleMethod, typeof (string), Type.EmptyTypes);
+                MethodInfo titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof (string), Type.EmptyTypes);
                 IFacet titleFacet = null;
 
                 if (titleMethod != null) {
@@ -64,7 +64,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification);
                 }
 
-                MethodInfo toStringMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof (string), Type.EmptyTypes);
+                MethodInfo toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof (string), Type.EmptyTypes);
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof (object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
@@ -73,7 +73,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     toStringMethod = null;
                 }
 
-                MethodInfo maskMethod = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.ToStringMethod, typeof(string), new[] { typeof(string) });
+                MethodInfo maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] { typeof(string) });
 
                 if (maskMethod != null) {
                     methodRemover.RemoveMethod(maskMethod);

@@ -17,7 +17,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private static readonly string[] FixedPrefixes = {PrefixesAndRecognisedMethods.IconNameMethod};
+        private static readonly string[] FixedPrefixes = {RecognisedMethodsAndPrefixes.IconNameMethod};
 
         public IconMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
@@ -27,7 +27,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, PrefixesAndRecognisedMethods.IconNameMethod, typeof (string), Type.EmptyTypes);
+            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof (string), Type.EmptyTypes);
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
