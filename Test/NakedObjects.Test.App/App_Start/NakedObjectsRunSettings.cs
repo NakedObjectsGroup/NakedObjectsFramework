@@ -34,6 +34,7 @@ namespace NakedObjects.Test.App {
                     typeof (ActionResultModelQ<object>),
                     typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
+                    typeof( OrderStatus),
                     typeof (QuickOrderForm),
                     typeof (ActionResultModelQ<>),
                     typeof (ActionResultModel<>)

@@ -68,6 +68,7 @@ namespace NakedObjects.Mvc.App {
                     //Add any types here that cannot be reached by traversing model from the registered services
                     typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
+                    typeof (OrderStatus),
                     typeof (QuickOrderForm)
                 };
             }
