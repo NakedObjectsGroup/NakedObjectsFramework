@@ -51,7 +51,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
 
-        //protected const string url = "http://localhost:53624/";
+        //protected const string url = "http://localhost:56696/";
         //protected const string server = @".\SQLEXPRESS";
         //protected const string server = @"(localdb)\ProjectsV12";
 
