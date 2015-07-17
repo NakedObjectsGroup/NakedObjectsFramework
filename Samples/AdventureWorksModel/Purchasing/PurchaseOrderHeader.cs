@@ -142,7 +142,7 @@ namespace AdventureWorksModel {
         [MemberOrder(12)]
         public virtual Employee OrderPlacedBy { get; set; }
 
-        public Employee DefaultEmployee() {
+        public Employee DefaultOrderPlacedBy() {
             return EmployeeRepository.CurrentUserAsEmployee();
         }
 

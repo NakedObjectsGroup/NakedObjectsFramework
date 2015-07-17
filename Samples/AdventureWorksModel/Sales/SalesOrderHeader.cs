@@ -101,8 +101,8 @@ namespace AdventureWorksModel {
         [MemberOrder(1.1), TypicalLength(12), EnumDataType(typeof (OrderStatus))]
         public virtual byte Status { get; set; }
 
-        public OrderStatus DefaultStatus() {
-            return OrderStatus.InProcess;
+        public byte DefaultStatus() {
+            return (byte) OrderStatus.InProcess;
         }
 
         [Hidden(WhenTo.Always)]
@@ -720,7 +720,7 @@ namespace AdventureWorksModel {
             return null;
         }
 
-        public virtual bool HideMarkAsShipped(DateTime shipDate) {
+        public virtual bool HideMarkAsShipped() {
             return IsRejected() || IsShipped() || IsCancelled();
         }
 
