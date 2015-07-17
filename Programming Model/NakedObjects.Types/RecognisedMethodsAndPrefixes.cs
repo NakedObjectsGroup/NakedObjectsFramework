@@ -11,61 +11,44 @@ namespace NakedObjects {
     /// (associated with an action or property).
     /// </summary>
     public static class RecognisedMethodsAndPrefixes {
+
+        #region Type-level methods
+        public static readonly string TitleMethod;
+        public static readonly string ToStringMethod;
+        public static readonly string MenuMethod;
+        public static readonly string IconNameMethod;
+        #endregion
+
+        #region LifeCycle methods
+        public static readonly string CreatedMethod;
+        public static readonly string DeletedMethod;
+        public static readonly string DeletingMethod;
+        public static readonly string LoadedMethod;
+        public static readonly string LoadingMethod;
+        public static readonly string PersistedMethod;
+        public static readonly string PersistingMethod;
+        public static readonly string UpdatedMethod;
+        public static readonly string UpdatingMethod;
+        public static readonly string OnPersistingErrorMethod;
+        public static readonly string OnUpdatingErrorMethod;
+        #endregion
+
+        #region Complementary methods for actions or properties
         public static readonly string AutoCompletePrefix;
         public static readonly string ChoicesPrefix;
         public static readonly string ClearPrefix;
-        public static readonly string CreatedMethod;
         public static readonly string DefaultPrefix;
-        public static readonly string DeletedMethod;
-        public static readonly string DeletingMethod;
         public static readonly string DisablePrefix;
-        public static readonly string GetEnumeratorMethod;
         public static readonly string HidePrefix;
-        public static readonly string IconNameMethod;
-        public static readonly string LoadedMethod;
-        public static readonly string LoadingMethod;
-        public static readonly string MenuMethod;
         public static readonly string ModifyPrefix;
         public static readonly string ParameterDefaultPrefix;
         public static readonly string ParameterChoicesPrefix;
-        public static readonly string PersistedMethod;
-        public static readonly string PersistingMethod;
-        public static readonly string TitleMethod;
-        public static readonly string ToStringMethod;
-        public static readonly string UpdatedMethod;
-        public static readonly string UpdatingMethod;
         public static readonly string ValidatePrefix;
-        public static readonly string OnPersistingErrorMethod;
-        public static readonly string OnUpdatingErrorMethod;
+        #endregion
 
-        static RecognisedMethodsAndPrefixes() {
-            ParameterDefaultPrefix = "Default";
-            ParameterChoicesPrefix = "Choices";
-            ClearPrefix = "Clear";
-            ModifyPrefix = "Modify";
-            ValidatePrefix = "Validate";
-            ChoicesPrefix = "Choices";
-            AutoCompletePrefix = "AutoComplete";
-            DefaultPrefix = "Default";
-            DisablePrefix = "Disable";
-            HidePrefix = "Hide";
-            CreatedMethod = "Created";
-            DeletedMethod = "Deleted";
-            DeletingMethod = "Deleting";
-            LoadedMethod = "Loaded";
-            LoadingMethod = "Loading";
-            PersistedMethod = "Persisted";
-            PersistingMethod = "Persisting";
-            UpdatedMethod = "Updated";
-            UpdatingMethod = "Updating";
-            IconNameMethod = "IconName";
-            MenuMethod = "Menu";
-            TitleMethod = "Title";
-            ToStringMethod = "ToString";
-            GetEnumeratorMethod = "GetEnumerator";
-            OnPersistingErrorMethod = "OnPersistingError";
-            OnUpdatingErrorMethod = "OnUpdatingError";
-        }
+        #region Standard methods ignored as actions
+        public static readonly string GetEnumeratorMethod;
+        #endregion
 
         //Defines methods in domain models that are recognised by the NOF and result in
         //specific behaviour. (See also OtherIgnoredMethods).
@@ -108,5 +91,36 @@ namespace NakedObjects {
         public static string[] OtherIgnoredMethods = new string[] {
             GetEnumeratorMethod
         };
+
+        #region Value definitions
+        static RecognisedMethodsAndPrefixes() {
+            ParameterDefaultPrefix = "Default";
+            ParameterChoicesPrefix = "Choices";
+            ClearPrefix = "Clear";
+            ModifyPrefix = "Modify";
+            ValidatePrefix = "Validate";
+            ChoicesPrefix = "Choices";
+            AutoCompletePrefix = "AutoComplete";
+            DefaultPrefix = "Default";
+            DisablePrefix = "Disable";
+            HidePrefix = "Hide";
+            CreatedMethod = "Created";
+            DeletedMethod = "Deleted";
+            DeletingMethod = "Deleting";
+            LoadedMethod = "Loaded";
+            LoadingMethod = "Loading";
+            PersistedMethod = "Persisted";
+            PersistingMethod = "Persisting";
+            UpdatedMethod = "Updated";
+            UpdatingMethod = "Updating";
+            IconNameMethod = "IconName";
+            MenuMethod = "Menu";
+            TitleMethod = "Title";
+            ToStringMethod = "ToString";
+            GetEnumeratorMethod = "GetEnumerator";
+            OnPersistingErrorMethod = "OnPersistingError";
+            OnUpdatingErrorMethod = "OnUpdatingError";
+        }
+        #endregion
     }
 }
