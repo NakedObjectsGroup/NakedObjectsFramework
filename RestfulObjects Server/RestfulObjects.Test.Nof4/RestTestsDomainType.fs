@@ -2902,23 +2902,27 @@ type Nof4TestsDomainType() =
         // filter extensions
 
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSubTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnEmptyFormalParms x.api
 
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSuperTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnEmptyFormalParms x.api
 
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSubTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnSingleFormalParms x.api
 
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSuperTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnSingleFormalParms x.api
 
-
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSubTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromMultipleReturnSingleFormalParms x.api
 
         [<Test>]
+        [<Ignore>] // temp removed pending 7.1 release
         member x.GetFilterSuperTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromMultipleReturnSingleFormalParms x.api
-
 
     end
