@@ -1761,7 +1761,7 @@ namespace MvcTestApp.Tests.Controllers {
             var arm = (ActionResultModel)result.ViewData.Model;
 
             Assert.AreEqual(10, ((IQueryable<SalesOrderHeader>)arm.Result).Count());
-            Assert.AreEqual("CommentAsUsersUnhappy", arm.Action.Id);
+            Assert.AreEqual("RecentOrders", arm.Action.Id);
 
             AssertPagingData(result, 1, 20, 10);
         }
