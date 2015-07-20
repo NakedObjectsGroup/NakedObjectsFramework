@@ -56,14 +56,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
-        
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }
 
         [TestMethod]
-        
-
         public override void InvokeContributedActionParmsNoReturn() {
             DoInvokeContributedActionParmsNoReturn();
         }
@@ -91,6 +88,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         [TestMethod]
         public override void PagingWithFormat() {
             DoPagingWithFormat();
+        }
+
+        [TestMethod]
+        public override void InvokeActionNoResultAfterCollection() {
+            DoInvokeActionNoResultAfterCollection();
         }
     }
 }

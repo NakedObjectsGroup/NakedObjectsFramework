@@ -124,6 +124,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.IsTrue(string.IsNullOrEmpty(br.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(2, 6)));
             Assert.AreEqual("User unhappy", br.FindElement(By.CssSelector(".nof-collection-table")).TextContentsOfCell(3, 6));
+
+            Assert.IsTrue(br.FindElement(By.CssSelector(".nof-standalonetable .nof-object")).Text.StartsWith("Highest Value Orders: Query Result: Viewing 20 of "));
         }
 
         public abstract void InvokeContributedActionParmsNoReturn();
@@ -150,6 +152,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.IsTrue(string.IsNullOrEmpty(coll.TextContentsOfCell(8, 6)));
             Assert.AreEqual("Foo", coll.TextContentsOfCell(9, 6));
+            Assert.IsTrue(br.FindElement(By.CssSelector(".nof-standalonetable .nof-object")).Text.StartsWith("Highest Value Orders: Query Result: Viewing 20 of "));
         }
 
         public abstract void InvokeContributedActionParmsValidateFail();
@@ -183,6 +186,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
             wait.ClickAndWait(table, ".nof-collection-table");
             wait.ClickAndWait("#ObjectQuery-SalesOrderHeader-AppendComment", wd => wd.Title == "20 Sales Orders" && wd.FindElement(By.CssSelector(".Nof-Warnings")).Text == "No objects selected");
+            Assert.IsTrue(br.FindElement(By.CssSelector(".nof-standalonetable .nof-object")).Text.StartsWith("Highest Value Orders: Query Result: Viewing 20 of "));
+
         }
 
         public abstract void PagingWithDefaultPageSize();
@@ -324,6 +329,28 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("2 Stores", br.Title);
 
             Assert.AreEqual(2, br.FindElement(By.TagName("tr")).FindElements(By.TagName("th")).Count());
+        }
+
+        public abstract void InvokeActionNoResultAfterCollection();
+
+        public void DoInvokeActionNoResultAfterCollection() {
+            Login();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+            var coll = wait.ClickAndWait(table, ".nof-collection-table");
+
+            coll.GetRow(1).CheckRow(br);
+            coll.GetRow(3).CheckRow(br);
+
+            // fail to find customer
+           
+            var field = wait.ClickAndWait("#CustomerRepository-FindCustomerByAccountNumber button", "#CustomerRepository-FindCustomerByAccountNumber-AccountNumber-Input");
+            field.TypeText("AW" + Keys.Tab);
+            wait.ClickAndWait(".nof-ok", ".Nof-Warnings");
+
+            Assert.AreEqual("No matching object found", br.FindElement(By.CssSelector(".Nof-Warnings")).Text);
+
+            Assert.IsTrue(br.FindElement(By.CssSelector(".nof-standalonetable .nof-object")).Text.StartsWith("Highest Value Orders: Query Result: Viewing 20 of "));
         }
     }
 }
