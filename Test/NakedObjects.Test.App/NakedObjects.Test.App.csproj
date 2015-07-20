@@ -150,11 +150,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Mvc">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.3\lib\net451\NakedObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.4\lib\net451\NakedObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.MvcResources">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.3\lib\net451\NakedObjects.MvcResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.4\lib\net451\NakedObjects.MvcResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity">
