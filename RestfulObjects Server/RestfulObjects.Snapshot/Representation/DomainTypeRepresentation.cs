@@ -90,12 +90,13 @@ namespace RestfulObjects.Snapshot.Representations {
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
                 
                 // extensions to 1.1 spec    
-                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.FilterSubtypesFrom), Flags,
-                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.FilterSubtypesFrom),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubTypes, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
-                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.FilterSupertypesFrom), Flags,
-                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.FilterSupertypesFrom),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperTypes, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
+                // temp hide for 7.1 release
+                //LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.FilterSubtypesFrom), Flags,
+                //    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.FilterSubtypesFrom),
+                //    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubTypes, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
+                //LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.FilterSupertypesFrom), Flags,
+                //    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.FilterSupertypesFrom),
+                //    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperTypes, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
             };
         }
 
