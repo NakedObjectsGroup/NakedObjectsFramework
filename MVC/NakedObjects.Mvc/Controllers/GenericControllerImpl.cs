@@ -203,7 +203,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
                 if (!filteredNakedObject.GetAsEnumerable(NakedObjectsContext.NakedObjectManager).Any()) {
                     NakedObjectsContext.MessageBroker.AddWarning("No objects selected");
-                    return AppropriateView(controlData, targetNakedObject, targetAction);
+                    return AppropriateView(controlData, targetNakedObject);
                 }
                 // force any result to not be queryable
                 filteredNakedObject.SetNotQueryable(true);

@@ -111,7 +111,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
                     }
 
                     nakedObject = NakedObjectsContext.GetNakedObject(lastObject);
+
+                   
                 }
+
+                if (nakedObject.Oid is ICollectionMemento) {
+                    // if we have returned null and existsing object is collection memento need to make 
+                    // sure action remaains action from original collectionMemento.
+                    action = ((ICollectionMemento)nakedObject.Oid).Action;
+                }
+
             }
 
             if (nakedObject.Spec.IsCollection && !nakedObject.Spec.IsParseable) {
