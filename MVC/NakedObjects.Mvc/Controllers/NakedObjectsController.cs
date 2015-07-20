@@ -109,8 +109,15 @@ namespace NakedObjects.Web.Mvc.Controllers {
                         return RedirectHome();
                     }
 
-                    nakedObject = Facade.GetObject(lastObject);
+                    nakedObject = Facade.GetObject(lastObject);                  
                 }
+
+                if (nakedObject.IsCollectionMemento) {
+                    // if we have returned null and existing object is collection memento need to make 
+                    // sure action remains action from original collectionMemento.
+                    action = nakedObject.MementoAction;
+                }
+
             }
 
             if (nakedObject.Specification.IsCollection && !nakedObject.Specification.IsParseable) {
