@@ -45,11 +45,14 @@ namespace NakedObjects.Core.Component {
             }
         }
 
+        // cache the adapters
+        private INakedObjectAdapter[] serviceAdapters;
+
         #region IServicesManager Members
 
         public INakedObjectAdapter GetService(string id) {
             Log.DebugFormat("GetService: {0}", id);
-            return Services.Where(service => id.Equals(ServiceUtils.GetId(service))).Select(service => manager.GetServiceAdapter(service)).FirstOrDefault();
+            return GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
         }
 
         public INakedObjectAdapter GetService(IServiceSpec spec) {
@@ -58,14 +61,12 @@ namespace NakedObjects.Core.Component {
 
         public INakedObjectAdapter[] GetServices() {
             Log.Debug("GetServices");
-            return Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
+            return serviceAdapters ?? (serviceAdapters = Services.Select(service => manager.GetServiceAdapter(service)).ToArray());
         }
 
         public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
             Log.DebugFormat("GetServicesWithVisibleActions");
-            return Services.
-                Select(service => manager.GetServiceAdapter(service)).
-                Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
+            return GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
         }
 
         #endregion
