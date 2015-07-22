@@ -234,10 +234,27 @@ namespace NakedObjects.Reflect.Test {
         [TestMethod]
         public void ReflectWhereIterator() {
             IUnityContainer container = GetContainer();
+            IEnumerable<int> it = new List<int> { 1, 2, 3 }.Where(i => i == 2);
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(Object) }, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
+
+            container.RegisterInstance<IReflectorConfiguration>(rc);
+
+            var reflector = container.Resolve<IReflector>();
+            reflector.Reflect();
+            Assert.AreEqual(2, reflector.AllObjectSpecImmutables.Count());
+        }
+
+
+        [TestMethod]
+        public void ReflectWhereSelectIterator() {
+            IUnityContainer container = GetContainer();
             IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType(), typeof (int)}, new Type[] {}, new string[] {});
+            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof (Object)}, new Type[] {}, new string[] {});
             rc.SupportedSystemTypes.Clear();
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
@@ -261,6 +278,7 @@ namespace NakedObjects.Reflect.Test {
             reflector.Reflect();
             Assert.AreEqual(31, reflector.AllObjectSpecImmutables.Count());
         }
+
 
         [TestMethod]
         public void ReflectStringArray() {
