@@ -72,7 +72,11 @@ namespace NakedObjects.Core.Configuration {
             typeof (IEnumerable<>),
             typeof (IQueryable<>),
             typeof (HashSet<>),
-            typeof (EntityCollection<>)
+            typeof (EntityCollection<>),
+            // WhereEnumerableIterator
+            new List<int>().Where(i => true).GetType().GetGenericTypeDefinition(),
+            // WhereSelectEnumerableIterator
+            new List<int>().Where(i => true).Select(i => i).GetType().GetGenericTypeDefinition()
         };
 
         public ReflectorConfiguration(Type[] typesToIntrospect,

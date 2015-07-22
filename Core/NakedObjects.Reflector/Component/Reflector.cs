@@ -134,7 +134,10 @@ namespace NakedObjects.Reflect.Component {
 
         private Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
-                return type.GetGenericTypeDefinition().MakeGenericType(typeof(object));
+                var genericType = type.GetGenericTypeDefinition();
+                var genericParms = genericType.GetGenericArguments().Select(a => typeof (Object)).ToArray();
+
+                return type.GetGenericTypeDefinition().MakeGenericType(genericParms);
             }
             return type;
         }

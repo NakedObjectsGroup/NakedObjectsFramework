@@ -38,7 +38,7 @@ namespace NakedObjects.Reflect.Component {
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
-                   (!IsGenericCollection(type) || IsTypeToBeIntrospected(type.GetGenericArguments()[0]));
+                   (!IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
         }
 
         public Type GetType(Type type) {
