@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Common.Logging.Configuration;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
@@ -47,18 +48,38 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
+            MvcHtmlString menus;
+
+            const string key = "NofCachedMenus";
+            var session = html.ViewContext.HttpContext.Session;
+
+            var cachedmenus = session == null ? null : session[key] as string;
+
+            if (!string.IsNullOrEmpty(cachedmenus)) {
+                return new MvcHtmlString(cachedmenus);
+            }
+
             var mainMenusFromViewData = (IEnumerable) html.ViewData[IdHelper.NofMainMenus];
-            if (mainMenusFromViewData != null && mainMenusFromViewData.Cast<IMenuImmutable>().Any()) {
-                return RenderMainMenus(html, mainMenusFromViewData.Cast<IMenuImmutable>());
+            var immutableMenus = mainMenusFromViewData != null ? mainMenusFromViewData.Cast<IMenuImmutable>().ToArray() :  new IMenuImmutable[]{};
+            if (immutableMenus.Any()) {
+                menus = RenderMainMenus(html, immutableMenus);
             }
-            //Use the MenuServices to derive the menus
-            var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
-            var mainMenus = new List<IMenuImmutable>();
-            foreach (object service in services.Cast<object>()) {
-                var menu = GetMenu(html, service);
-                mainMenus.Add(menu);
+            else {
+                //Use the MenuServices to derive the menus
+                var services = (IEnumerable) html.ViewData[IdHelper.NofServices];
+                var mainMenus = new List<IMenuImmutable>();
+                foreach (object service in services.Cast<object>()) {
+                    var menu = GetMenu(html, service);
+                    mainMenus.Add(menu);
+                }
+                menus = RenderMainMenus(html, mainMenus);
             }
-            return RenderMainMenus(html, mainMenus);
+
+            if (session != null) {
+                session.Add(key, menus.ToString());
+            }
+
+            return menus;
         }
 
         private static IMenuImmutable GetMenu(HtmlHelper html, object service) {
@@ -86,7 +107,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuImmutable menu, INakedObjectAdapter nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItemImmutable item in menu.MenuItems) {
-                var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+                ElementDescriptor descriptor;
+
                 if (IsDuplicateAndIsVisibleActions(html, item, menu.MenuItems, nakedObject)) {
                     //Test that both items are in fact visible
                     //The Id is set just to preseve backwards compatiblity
@@ -104,6 +126,10 @@ namespace NakedObjects.Web.Mvc.Html {
                         })
                     };
                 }
+                else {
+                    descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+                }
+
                 if (descriptor != null) {
                     //Would be null for an invisible action
                     descriptors.Add(descriptor);

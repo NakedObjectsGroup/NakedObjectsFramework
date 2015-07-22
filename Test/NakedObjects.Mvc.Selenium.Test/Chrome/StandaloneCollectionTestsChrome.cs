@@ -88,5 +88,10 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         public override void PagingWithFormat() {
             DoPagingWithFormat();
         }
+
+        [TestMethod]
+        public override void InvokeActionNoResultAfterCollection() {
+            DoInvokeActionNoResultAfterCollection();
+        }
     }
 }
