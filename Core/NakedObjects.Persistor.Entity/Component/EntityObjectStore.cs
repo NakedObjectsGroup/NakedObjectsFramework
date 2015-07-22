@@ -34,7 +34,7 @@ using NakedObjects.Persistor.Entity.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Entity.Component {
-    public sealed class EntityObjectStore : IObjectStore {
+    public sealed class EntityObjectStore : IObjectStore, IDisposable {
         #region Delegates
 
         public delegate INakedObjectAdapter CreateAdapterDelegate(IOid oid, object domainObject);
@@ -417,14 +417,9 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private LocalContext PrepareContextForNewTransaction(KeyValuePair<CodeFirstEntityContextConfiguration, LocalContext> kvp) {
-            LocalContext context = kvp.Value;
             CodeFirstEntityContextConfiguration codeFirstEntityContextConfiguration = kvp.Key;
 
-            if (context != null) {
-                context.Dispose();
-            }
-
-            context = CreateCodeOnlyContext(codeFirstEntityContextConfiguration);
+            var context = CreateCodeOnlyContext(codeFirstEntityContextConfiguration);
             context.DefaultMergeOption = codeFirstEntityContextConfiguration.DefaultMergeOption;
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = true;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = true;
@@ -1036,7 +1031,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region Nested type: LocalContext
 
-        public class LocalContext {
+        public class LocalContext : IDisposable {
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
             private readonly ISet<INakedObjectAdapter> deletedNakedObjects = new HashSet<INakedObjectAdapter>();
@@ -1192,11 +1187,20 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             public void Dispose() {
-                WrappedObjectContext.Dispose();
-                baseTypeMap.Clear();
+                try {
+                    WrappedObjectContext.Dispose();
+                    baseTypeMap.Clear();
+                }
+                catch (Exception e) {
+                    Log.ErrorFormat("Exception disposing context: {0}", e, Name);
+                }
             }
         }
 
         #endregion
+
+        public void Dispose() {
+           contexts.Values.ForEach(c => c.Dispose());
+        }
     }
 }

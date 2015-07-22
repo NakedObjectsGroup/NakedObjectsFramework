@@ -43,8 +43,23 @@ namespace NakedObjects.Web.Mvc.Html {
         /// <param name="html"></param>
         /// <returns></returns>
         public static MvcHtmlString MainMenus(this HtmlHelper html) {
+            const string key = "NofCachedMenus";
+
+            var session = html.ViewContext.HttpContext.Session;
+            var cachedmenus = session == null ? null : session[key] as string;
+
+            if (!string.IsNullOrEmpty(cachedmenus)) {
+                return new MvcHtmlString(cachedmenus);
+            }
+
             var mainMenus = html.Facade().GetMainMenus();
-            return RenderMainMenus(html, mainMenus);
+            var menus = RenderMainMenus(html, mainMenus);
+
+            if (session != null) {
+                session.Add(key, menus.ToString());
+            }
+
+            return menus;
         }
 
         private static IMenuFacade GetMenu(HtmlHelper html, object service) {
@@ -72,7 +87,8 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString MenuAsHtml(this HtmlHelper html, IMenuFacade menu, IObjectFacade nakedObject, bool isEdit, bool defaultToEmptyMenu) {
             var descriptors = new List<ElementDescriptor>();
             foreach (IMenuItemFacade item in menu.MenuItems) {
-                var descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+                ElementDescriptor descriptor;
+
                 if (IsDuplicateAndIsVisibleActions(html, item, menu.MenuItems, nakedObject)) {
                     //Test that both items are in fact visible
                     //The Id is set just to preseve backwards compatiblity
@@ -90,6 +106,10 @@ namespace NakedObjects.Web.Mvc.Html {
                         })
                     };
                 }
+                else {
+                    descriptor = MenuItemAsElementDescriptor(html, item, nakedObject, isEdit);
+                }
+
                 if (descriptor != null) {
                     //Would be null for an invisible action
                     descriptors.Add(descriptor);

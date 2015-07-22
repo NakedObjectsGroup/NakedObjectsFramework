@@ -208,7 +208,6 @@ namespace MvcTestApp.Tests.Helpers {
         }
 
         public static IEnumerable<object> GetServices(this INakedObjectsFramework framework) {
-            framework.GetAllServices();
             return framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).Where(x => framework.GetActions(x).Any()).Select(x => x.Object);
         }
 
