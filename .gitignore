@@ -18,3 +18,4 @@ Core - Richard.sln
 nog-packages.txt
 *.orig
 *.DotSettings
+.vs/config/applicationhost.config
