@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Architecture", "Core\NakedObjects.Architecture\NakedObjects.Architecture.csproj", "{BF6D9655-B873-4980-ACE7-A122EA45F045}"
 EndProject
@@ -30,9 +30,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Snapshot.Xml.Test.Data", "Core\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj", "{80269255-D420-463D-92DA-6CD1137C4633}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F2DD8060-CA53-4D89-8CDE-32F0BC6DED80}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{DBFA505D-69DC-4D19-BE1B-80767874366F}"
 	ProjectSection(SolutionItems) = preProject
