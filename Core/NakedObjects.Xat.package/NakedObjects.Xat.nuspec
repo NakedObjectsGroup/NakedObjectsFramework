@@ -12,7 +12,7 @@
     <description>Add to an MS Test project to create eXecutable Application Tests against a domain model.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[7.1.0, 8)" />
+      <dependency id="NakedObjects.Core" version="[7.1.1, 8)" />
     </dependencies>
   </metadata>
 </package>
