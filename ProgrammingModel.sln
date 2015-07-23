@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Helpers", "Programming Model\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{8B62CB10-ECD9-4814-9211-D252E5B5D48B}"
 EndProject
@@ -12,9 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Types", "Programming Model\NakedObjects.Types\NakedObjects.Types.csproj", "{F67B7823-5A02-41E0-B0AF-08AC438AA882}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FAF45D98-C6D6-48FF-A4F2-05BBE3A555E4}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{39EBF706-CB34-4F21-B00A-A7851955E391}"
 	ProjectSection(SolutionItems) = preProject
