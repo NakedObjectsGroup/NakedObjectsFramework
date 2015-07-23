@@ -20,3 +20,4 @@ nog-packages.txt
 *.DotSettings
 *.dll
 RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
+.vs/config/applicationhost.config
