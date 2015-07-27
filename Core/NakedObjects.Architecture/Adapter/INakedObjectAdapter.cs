@@ -49,20 +49,6 @@ namespace NakedObjects.Architecture.Adapter {
         IVersion OptimisticLock { set; }
 
         /// <summary>
-        ///     Gets and sets the element type facet, typically by copying it from the method or association
-        ///     information, defaulting to the facet held by the underlying specification
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         This is needed by collections that can have an element type but is not held by the collection
-        ///     </para>
-        ///     <para>
-        ///         REVIEW should this be more generic allowing other facets to be added to adapters
-        ///     </para>
-        /// </remarks>
-        ITypeOfFacet TypeOfFacet { get; set; }
-
-        /// <summary>
         ///     Returns a list in priority order of names of icons to use if this object is to be displayed graphically
         /// </summary>
         /// <para>
