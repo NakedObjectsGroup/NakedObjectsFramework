@@ -30,7 +30,6 @@ namespace NakedObjects.Core.Adapter {
         private string defaultTitle;
         private object poco;
         private ITypeSpec spec;
-        private ITypeOfFacet typeOfFacet;
         private IVersion version;
 
         static NakedObjectAdapter() {
@@ -62,15 +61,8 @@ namespace NakedObjects.Core.Adapter {
 
         #region INakedObjectAdapter Members
 
-        public ITypeOfFacet TypeOfFacet {
-            get {
-                if (typeOfFacet == null) {
-                    return Spec.GetFacet<ITypeOfFacet>();
-                }
-                return typeOfFacet;
-            }
-
-            set { typeOfFacet = value; }
+        private ITypeOfFacet TypeOfFacet {
+            get { return Spec.GetFacet<ITypeOfFacet>(); }
         }
 
         public object Object {

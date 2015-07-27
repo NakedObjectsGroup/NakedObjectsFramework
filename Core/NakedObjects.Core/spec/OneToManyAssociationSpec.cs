@@ -98,7 +98,6 @@ namespace NakedObjects.Core.Spec {
                 return null;
             }
             INakedObjectAdapter adapterFor = Manager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
-            adapterFor.TypeOfFacet = GetFacet<ITypeOfFacet>();
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;
         }
