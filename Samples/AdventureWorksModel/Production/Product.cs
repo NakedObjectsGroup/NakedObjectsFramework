@@ -350,7 +350,7 @@ namespace AdventureWorksModel {
 
         [TableView(true, "Rating", "Comments")]
         public virtual ICollection<ProductReview> ProductReviews {
-            get { return _ProductReviews; }
+            get { return _ProductReviews.ToArray(); } //deliberately returned as array to test Bug #13269
             set { _ProductReviews = value; }
         }
 
