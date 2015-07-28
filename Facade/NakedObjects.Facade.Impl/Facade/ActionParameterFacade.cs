@@ -257,9 +257,9 @@ namespace NakedObjects.Facade.Impl {
             }
 
             if (parm.Specification.IsParseable) {
-                return nakedObjectActionParameter.Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
+                return parm.WrappedSpec().Spec.GetFacet<IParseableFacet>().ParseTextEntry((string) rawValue, framework.NakedObjectManager);
             }
-            var collectionParm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
+            var collectionParm = parm.WrappedSpec() as IOneToManyActionParameterSpec;
 
             if (collectionParm != null && collectionParm.ElementSpec.IsParseable) {
                 var stringArray = rawValue as string[];
