@@ -1405,7 +1405,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         private static IObjectFacade GetAndParseValueAsNakedObject(this HtmlHelper html, ITypeFacade spec, object value) {
-            return html.Facade().GetObject(spec, value);
+            try {
+                return html.Facade().GetObject(spec, value);
+            }
+            catch (Exception) {
+                return null;
+            }
         }
 
         private static IObjectFacade GetAndParseValueAsNakedObject(this HtmlHelper html, ParameterContext context, object value) {

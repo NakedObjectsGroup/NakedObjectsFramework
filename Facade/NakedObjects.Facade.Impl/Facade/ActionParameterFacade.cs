@@ -135,7 +135,7 @@ namespace NakedObjects.Facade.Impl {
         public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
             var otherParms = parameterNameValues == null ? null : parameterNameValues.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
 
-            var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => GetValue(a.parm, a.Value));
+            var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => SafeGetValue(a.parm, a.Value));
 
             return nakedObjectActionParameter.GetChoices(((ObjectFacade) objectFacade).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
@@ -250,6 +250,15 @@ namespace NakedObjects.Facade.Impl {
         }
 
         #endregion
+
+        private INakedObjectAdapter SafeGetValue(IActionParameterFacade parm, object rawValue) {
+            try {
+                return GetValue(parm, rawValue);
+            }
+            catch (Exception) {
+                return null;
+            }
+        }
 
         private INakedObjectAdapter GetValue(IActionParameterFacade parm, object rawValue) {
             if (rawValue == null || rawValue is string && string.IsNullOrEmpty(rawValue as string)) {
