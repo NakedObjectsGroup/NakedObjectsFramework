@@ -41,7 +41,7 @@ namespace MvcTestApp.Tests.Helpers {
         private const string CustomHtmlReferenceFiles = @"..\..\Custom Html reference files";
         // for testcreation 
 
-        private static readonly bool Writetests = false;
+        private static readonly bool Writetests = true;
         private DummyController controller;
         private ContextMocks mocks;
 
@@ -1590,6 +1590,13 @@ namespace MvcTestApp.Tests.Helpers {
             CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit("TestCollectionOne", PropertyExtensions.CollectionFormat.List).ToString(),
                 "PropertyListEditList");
         }
+
+        [Test]
+        public void PropertyListEditListHidden() {
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().PropertyListEdit("TestCollectionHidden", PropertyExtensions.CollectionFormat.List).ToString(),
+                "PropertyListEditListHidden");
+        }
+
 
         [Test]
         public void PropertyListEditListDict() {

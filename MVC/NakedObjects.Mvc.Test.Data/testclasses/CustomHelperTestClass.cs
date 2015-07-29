@@ -22,6 +22,8 @@ namespace MvcTestApp.Tests.Helpers {
         public int TestInt { get; set; }
         public string TestString { get; set; }
 
+        public string TestStringInitEmpty { get;  } = "";
+
         [FindMenu]
         public CustomHelperTestClass TestRef { get; set; }
 
@@ -59,6 +61,13 @@ namespace MvcTestApp.Tests.Helpers {
             get { return testCollectionOne; }
             set { testCollectionOne = value; }
         }
+
+        [Hidden(WhenTo.Always)]
+        public ICollection<CustomHelperTestClass> TestCollectionHidden {
+            get { return testCollectionOne; }
+            set { testCollectionOne = value; }
+        }
+
 
         public int DefaultTestIntDefault() {
             return 0;
