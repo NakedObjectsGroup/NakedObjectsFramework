@@ -209,7 +209,7 @@ namespace NakedObjects.Facade.Impl {
         public string TitleString {
             get {
                 var title = WrappedNakedObject.TitleString();
-                return string.IsNullOrWhiteSpace(title) ? WrappedNakedObject.Spec.UntitledName : title;
+                return string.IsNullOrWhiteSpace(title) && !WrappedNakedObject.Spec.IsParseable ? WrappedNakedObject.Spec.UntitledName : title;
             }
         }
 
