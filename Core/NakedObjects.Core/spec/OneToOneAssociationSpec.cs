@@ -162,7 +162,7 @@ namespace NakedObjects.Core.Spec {
 
         private INakedObjectAdapter GetAssociation(INakedObjectAdapter fromObjectAdapter) {
             object obj = GetFacet<IPropertyAccessorFacet>().GetProperty(fromObjectAdapter);
-            if (obj == null) {
+            if (obj == null || (obj is string && string.IsNullOrEmpty(obj as string))) {
                 return null;
             }
             var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
