@@ -394,7 +394,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<ElementDescriptor> visibleElements = visibleFields.Select(property => html.EditObjectField(new PropertyContext(html.IdHelper(), nakedObject, property, true, parentContext), noFinder, childElements, idToAddTo));
 
             if (nakedObject.IsTransient) {
-                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsVisible(nakedObject)).
+                IEnumerable<ElementDescriptor> hiddenElements = nakedObject.Specification.Properties.Where(p => !p.IsCollection && !p.IsVisible(nakedObject)).
                     Select(property => new ElementDescriptor {
                         TagType = "div",
                         Value = html.GetEditValue(new PropertyContext(html.IdHelper(), nakedObject, property, true, parentContext), childElements, property.Id == idToAddTo, noFinder)
