@@ -15,6 +15,7 @@ namespace MvcTestApp.Tests.Helpers {
         private ICollection<CustomHelperTestClass> testCollectionOne = new List<CustomHelperTestClass>();
         private ICollection<CustomHelperTestClass> testCollectionTwo = new List<CustomHelperTestClass>();
         private InlineTestClass testInline = new InlineTestClass();
+        private readonly string testStringInitEmpty = "";
 
         [Hidden(WhenTo.Always), Key]
         public int Id { get; set; }
@@ -22,7 +23,9 @@ namespace MvcTestApp.Tests.Helpers {
         public int TestInt { get; set; }
         public string TestString { get; set; }
 
-        public string TestStringInitEmpty { get;  } = "";
+        public string TestStringInitEmpty {
+            get { return testStringInitEmpty; }
+        }
 
         [FindMenu]
         public CustomHelperTestClass TestRef { get; set; }
