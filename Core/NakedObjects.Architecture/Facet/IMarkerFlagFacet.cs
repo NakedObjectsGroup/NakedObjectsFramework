@@ -5,18 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Spec;
-
-namespace NakedObjects.Meta.Facet {
-    [Serializable]
-    public sealed class TypeIsAbstractFacet : MarkerFlagFacetAbstract, ITypeIsAbstractFacet {
-        public TypeIsAbstractFacet(ISpecification holder, bool flag)
-            : base(Type, holder, flag) {}
-
-        public static Type Type {
-            get { return typeof (ITypeIsAbstractFacet); }
-        }
+namespace NakedObjects.Architecture.Facet {
+    public interface IMarkerFlagFacet : IFacet {
+        bool Flag { get; }
     }
 }

@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class TypeIsVoidFacet : MarkerFacetAbstract, ITypeIsVoidFacet {
-        public TypeIsVoidFacet(ISpecification holder)
-            : base(Type, holder) {}
+    public sealed class TypeIsVoidFacet : MarkerFlagFacetAbstract, ITypeIsVoidFacet {
+        public TypeIsVoidFacet(ISpecification holder, bool flag)
+            : base(Type, holder, flag) {}
 
         public static Type Type {
             get { return typeof (ITypeIsVoidFacet); }
