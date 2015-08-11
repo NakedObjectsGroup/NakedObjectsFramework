@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class TypeIsInterfaceFacet : MarkerFacetAbstract, ITypeIsInterfaceFacet {
-        public TypeIsInterfaceFacet(ISpecification holder)
-            : base(Type, holder) {}
+    public sealed class TypeIsInterfaceFacet : MarkerFlagFacetAbstract, ITypeIsInterfaceFacet {
+        public TypeIsInterfaceFacet(ISpecification holder, bool flag)
+            : base(Type, holder, flag) {}
 
         public static Type Type {
             get { return typeof (ITypeIsInterfaceFacet); }

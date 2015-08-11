@@ -12,7 +12,7 @@
     <description>Add to a Windows Application project to create an executable version of Naked Objects with no UI.</description>
     <tags>naked objects nakedobjects batch</tags>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[7.0.6, 8)" />
+      <dependency id="NakedObjects.Core" version="[7.0.7, 8)" />
     </dependencies>
   </metadata>
 </package>

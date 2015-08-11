@@ -153,6 +153,7 @@
       <SubType>
       </SubType>
     </Compile>
+    <Compile Include="Facet\IMarkerFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Interactions\IInteractionBuffer.cs" />
     <Compile Include="Interactions\IInteractionContext.cs" />
@@ -247,7 +248,7 @@
     <Compile Include="Facet\IHideForSessionFacet.cs" />
     <Compile Include="Adapter\IIdentifier.cs" />
     <Compile Include="FacetFactory\IInterfaceBasedFacetFactory.cs" />
-    <Compile Include="Facet\IMarkerFacet.cs" />
+    <Compile Include="Facet\IMarkerFlagFacet.cs" />
     <Compile Include="FacetFactory\IMethodFilteringFacetFactory.cs" />
     <Compile Include="FacetFactory\IMethodRemover.cs" />
     <Compile Include="Facet\IDescribedAsFacet.cs" />
