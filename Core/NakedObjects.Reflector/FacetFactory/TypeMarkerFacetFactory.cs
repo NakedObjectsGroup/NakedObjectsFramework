@@ -18,26 +18,15 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public TypeMarkerFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
+            : base(numericOrder, FeatureType.ObjectsAndInterfaces) {}
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var facets = new List<IFacet>();
-
-            if (IsAbstract(type)) {
-                facets.Add(new TypeIsAbstractFacet(specification));
-            }
-
-            if (IsInterface(type)) {
-                facets.Add(new TypeIsInterfaceFacet(specification));
-            }
-
-            if (IsSealed(type)) {
-                facets.Add(new TypeIsSealedFacet(specification));
-            }
-
-            if (IsVoid(type)) {
-                facets.Add(new TypeIsVoidFacet(specification));
-            }
+            var facets = new List<IFacet> {
+                new TypeIsAbstractFacet(specification, IsAbstract(type)),
+                new TypeIsInterfaceFacet(specification, IsInterface(type)),
+                new TypeIsSealedFacet(specification, IsSealed(type)),
+                new TypeIsVoidFacet(specification, IsVoid(type))
+            };
 
             FacetUtils.AddFacets(facets);
         }

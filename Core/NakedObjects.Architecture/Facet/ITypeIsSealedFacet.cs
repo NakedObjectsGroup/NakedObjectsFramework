@@ -6,5 +6,5 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Architecture.Facet {
-    public interface ITypeIsSealedFacet : IMarkerFacet {}
+    public interface ITypeIsSealedFacet : IMarkerFlagFacet {}
 }

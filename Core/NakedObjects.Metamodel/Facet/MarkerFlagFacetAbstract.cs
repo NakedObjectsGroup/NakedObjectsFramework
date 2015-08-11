@@ -11,12 +11,12 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class TypeIsAbstractFacet : MarkerFlagFacetAbstract, ITypeIsAbstractFacet {
-        public TypeIsAbstractFacet(ISpecification holder, bool flag)
-            : base(Type, holder, flag) {}
-
-        public static Type Type {
-            get { return typeof (ITypeIsAbstractFacet); }
+    public abstract class MarkerFlagFacetAbstract : FacetAbstract, IMarkerFlagFacet {
+        protected MarkerFlagFacetAbstract(Type facetType, ISpecification holder, bool flag)
+            : base(facetType, holder) {
+            Flag = flag;
         }
+
+        public bool Flag { get; }
     }
 }
