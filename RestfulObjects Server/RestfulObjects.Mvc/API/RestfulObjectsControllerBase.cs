@@ -681,10 +681,9 @@ namespace RestfulObjects.Mvc {
                     case WellKnownIds.IsSubtypeOf:
                     case WellKnownIds.IsSupertypeOf:
                         return GetInvokeIsTypeOf(typeName, actionName, arguments);
-                    // temp disable for 7.1 release
-                    //case WellKnownIds.FilterSubtypesFrom:
-                    //case WellKnownIds.FilterSupertypesFrom:
-                    //    return GetInvokeFilterFrom(typeName, actionName, arguments);
+                    case WellKnownIds.FilterSubtypesFrom:
+                    case WellKnownIds.FilterSupertypesFrom:
+                        return GetInvokeFilterFrom(typeName, actionName, arguments);
                 }
                 throw new TypeActionResourceNotFoundException(actionName, typeName);
             });

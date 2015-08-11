@@ -69,22 +69,21 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
 
-// temp ignore for 7.1 release                                     
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
                               
                               
                                      
@@ -381,23 +380,22 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") 
-                             // temp ignore for 7.1 release                                     
         
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
                                      
                                      
                                      
@@ -676,23 +674,22 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                            
-                           // temp ignore for 7.1 release                                     
           
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
                                      
                                      
                                      
@@ -783,23 +780,22 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                               
-                              // temp ignore for 7.1 release                                     
        
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
                                      
                                      
                                       ]))
@@ -892,24 +888,22 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
                                    TObjectJson([ TProperty(JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "") 
-                                
-                                // temp ignore for 7.1 release                                     
-     
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
+                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
                                      
                                      
                                      ]))
@@ -999,24 +993,22 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
                               :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
                                      RepresentationTypes.TypeActionResult "")
                                
-                               // temp ignore for 7.1 release                                     
       
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
-//                           :: TProperty
-//                                  (JsonPropertyNames.Arguments, 
-//                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
-//                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
-//                                     RepresentationTypes.TypeActionResult "")
-//                                     
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSubtypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SubTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFb (sprintf "domain-types/%s/type-actions/filterSubtypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")
+                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Id, TObjectVal("filterSupertypesFrom")) 
+                           :: TProperty
+                                  (JsonPropertyNames.Arguments, 
+                                   TObjectJson([ TProperty(JsonPropertyNames.SuperTypes, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(null)) ])) ])) 
+                              :: makeGetLinkProp invokeRelTypeFp (sprintf "domain-types/%s/type-actions/filterSupertypesFrom/invoke" oType) 
+                                     RepresentationTypes.TypeActionResult "")                                    
                                      
                                      
                                      
