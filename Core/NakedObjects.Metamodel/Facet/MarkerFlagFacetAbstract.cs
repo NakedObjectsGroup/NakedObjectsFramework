@@ -17,6 +17,6 @@ namespace NakedObjects.Meta.Facet {
             Flag = flag;
         }
 
-        public bool Flag { get; }
+        public bool Flag { get; private set; }
     }
 }
