@@ -1505,16 +1505,16 @@
         "memberOrder": 0
       }
     },
-    "AnActionReturnsWithDateTimeKey": {
+    "AnActionReturnsWithDateTimeKeyQueryOnly": {
       "parameters": {},
       "memberType": "action",
-      "id": "AnActionReturnsWithDateTimeKey",
+      "id": "AnActionReturnsWithDateTimeKeyQueryOnly",
       "links": [
         {
-          "rel": "urn:org.restfulobjects:rels/details;action=\"AnActionReturnsWithDateTimeKey\"",
+          "rel": "urn:org.restfulobjects:rels/details;action=\"AnActionReturnsWithDateTimeKeyQueryOnly\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionViewModel/1/actions/AnActionReturnsWithDateTimeKey"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionViewModel/1/actions/AnActionReturnsWithDateTimeKeyQueryOnly"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1526,11 +1526,11 @@
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionViewModel/actions/AnActionReturnsWithDateTimeKey"
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionViewModel/actions/AnActionReturnsWithDateTimeKeyQueryOnly"
         }
       ],
       "extensions": {
-        "friendlyName": "An Action Returns With Date Time Key",
+        "friendlyName": "An Action Returns With Date Time Key Query Only",
         "description": "",
         "hasParams": false,
         "memberOrder": 0,
