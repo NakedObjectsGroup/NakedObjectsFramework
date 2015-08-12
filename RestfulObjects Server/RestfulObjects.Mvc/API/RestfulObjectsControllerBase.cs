@@ -434,7 +434,7 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetMenus(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetVersion(ReservedArguments arguments) {

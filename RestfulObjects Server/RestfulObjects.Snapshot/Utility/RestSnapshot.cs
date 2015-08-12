@@ -76,6 +76,16 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
+        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags)
+            : this(oidStrategy, req, true) {
+            logger.DebugFormat("RestSnapshot:MenuList");
+            populator = () => {
+                representation = ListRepresentation.Create(oidStrategy, menus, req, flags);
+                SetHeaders();
+            };
+        }
+
+
         public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,req, true) {
             logger.DebugFormat("RestSnapshot:propertyprompt");

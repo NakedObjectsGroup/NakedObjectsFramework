@@ -26,6 +26,16 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(listContext.IsListOfServices);
         }
 
+        protected ListRepresentation(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags)
+           : base(oidStrategy, flags) {
+            Value = menus.Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
+            SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req));
+            SetLinks(req);
+            SetExtensions();
+            SetHeader(true);
+        }
+
+
         protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
             IObjectFacade list;
@@ -96,6 +106,15 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
+        private LinkRepresentation CreateMenuLink(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menu) {
+            //var helper = new UriMtHelper(oidStrategy, req, no);
+            //ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
+
+            //return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+            return null;
+        }
+
+
         private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec) {
             return LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
         }
@@ -114,6 +133,10 @@ namespace RestfulObjects.Snapshot.Representations {
             // filter out predefined types
             specs = specs.Where(s => !RestUtils.IsPredefined(s)).ToArray();
             return new ListRepresentation(oidStrategy ,specs, req, flags);
+        }
+
+        public static ListRepresentation Create(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags) {
+            return new ListRepresentation(oidStrategy, menus, req, flags);
         }
     }
 }
