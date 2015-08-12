@@ -43,10 +43,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req) {
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
-                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy ,req)), Flags),
-                LinkRepresentation.Create(OidStrategy,new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy ,req)), Flags),
-                LinkRepresentation.Create(OidStrategy,new VersionRelType(new UriMtHelper(OidStrategy ,req)), Flags)
+                LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
+                LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags),
+                LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Services, SegmentValues.Services, new UriMtHelper(OidStrategy, req)), Flags),
+                LinkRepresentation.Create(OidStrategy, new ListRelType(RelValues.Menus, SegmentValues.Menus, new UriMtHelper(OidStrategy, req)), Flags),
+                LinkRepresentation.Create(OidStrategy, new VersionRelType(new UriMtHelper(OidStrategy, req)), Flags)
             };
 
             if (Flags.FormalDomainModel) {

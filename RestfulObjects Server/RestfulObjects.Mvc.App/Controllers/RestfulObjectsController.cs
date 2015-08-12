@@ -33,6 +33,11 @@ namespace MvcTestApp.Controllers {
         }
 
         [HttpGet]
+        public override HttpResponseMessage GetMenus([ModelBinder(typeof(ReservedArgumentsBinder))] ReservedArguments arguments) {
+            return base.GetMenus(arguments);
+        }
+
+        [HttpGet]
         public override HttpResponseMessage GetVersion([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetVersion(arguments);
         }
@@ -50,6 +55,11 @@ namespace MvcTestApp.Controllers {
         [HttpGet]
         public override HttpResponseMessage GetService(string serviceName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetService(serviceName, arguments);
+        }
+
+        [HttpGet]
+        public override HttpResponseMessage GetMenu(string menuName, [ModelBinder(typeof(ReservedArgumentsBinder))] ReservedArguments arguments) {
+            return base.GetMenu(menuName, arguments);
         }
 
         [HttpGet]

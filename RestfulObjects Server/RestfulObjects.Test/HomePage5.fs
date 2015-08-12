@@ -20,12 +20,14 @@ let simpleLinks =
     [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
       TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
       TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" true)
+      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
       TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "") ]
 
 let formalLinks = 
     [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
       TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
       TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" false)
+      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" false)
       TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "")
       TObjectJson(makeGetLinkProp RelValues.DomainTypes SegmentValues.DomainTypes RepresentationTypes.TypeList "") ]
 
@@ -33,6 +35,7 @@ let bothLinks =
     [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
       TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
       TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" true)
+      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
       TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "")
       TObjectJson(makeGetLinkProp RelValues.DomainTypes SegmentValues.DomainTypes RepresentationTypes.TypeList "") ]
 

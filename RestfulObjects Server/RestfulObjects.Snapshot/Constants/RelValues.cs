@@ -46,5 +46,10 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string User = Prfx + "user";
         public const string Value = Prfx + "value";
         public const string Version = Prfx + "version";
+
+        // custom extension 
+        public const string Menus = Prfx + "menus";
+        public const string Menu = Prfx + "menu";
+
     }
 }

@@ -22,5 +22,10 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string Params = "params";
         public const string Prompt = "prompt";
         public const string CollectionValue = "value";
+
+        // custom extension
+        public const string Menus = "menus";
+
+
     }
 }

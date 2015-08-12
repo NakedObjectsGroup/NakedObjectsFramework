@@ -85,6 +85,10 @@ namespace RestfulObjects.Mvc {
             var version = PrefixRoute(SegmentValues.Version, routePrefix);
             var home = PrefixRoute(SegmentValues.HomePage, routePrefix);
 
+            // custom extension 
+            var menus = PrefixRoute(SegmentValues.Menus, routePrefix);
+
+
             // ReSharper disable RedundantArgumentName
             routes.MapHttpRoute("GetInvokeIsTypeOf",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
@@ -330,6 +334,16 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: services + "/{serviceName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
+            routes.MapHttpRoute("Menu",
+                routeTemplate: menus + "/{menuName}",
+                defaults: new { controller = "RestfulObjects", action = "GetMenu" },
+                constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+                );
+
+            routes.MapHttpRoute("InvalidMenu",
+                routeTemplate: menus + "/{menuName}",
+                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
+
             routes.MapHttpRoute("DomainType",
                 routeTemplate: domainTypes + "/{typeName}",
                 defaults: new {controller = "RestfulObjects", action = "GetDomainType"},
@@ -370,6 +384,17 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: services,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
+            routes.MapHttpRoute("Menus",
+               routeTemplate: menus,
+               defaults: new { controller = "RestfulObjects", action = "GetMenus" },
+               constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+               );
+
+            routes.MapHttpRoute("InvalidMenus",
+                routeTemplate: menus,
+                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
+
+
             routes.MapHttpRoute("User",
                 routeTemplate: user,
                 defaults: new {controller = "RestfulObjects", action = "GetUser"},
@@ -408,6 +433,10 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
         }
 
+        public virtual HttpResponseMessage GetMenus(ReservedArguments arguments) {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
+        }
+
         public virtual HttpResponseMessage GetVersion(ReservedArguments arguments) {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
         }
@@ -426,6 +455,13 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetService(string serviceName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
+            });
+        }
+
+        public virtual HttpResponseMessage GetMenu(string menuName, ReservedArguments arguments) {
+            return InitAndHandleErrors(() => {
+                var oid = FrameworkFacade.OidTranslator.GetOidTranslation(menuName);
                 return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
             });
         }
