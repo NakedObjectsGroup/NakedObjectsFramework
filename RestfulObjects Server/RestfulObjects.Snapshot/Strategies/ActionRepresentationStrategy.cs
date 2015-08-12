@@ -84,9 +84,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                     }
                 }
                 tempLinks.Add(CreateDescribedByLink());
-                if (standalone) {
-                    tempLinks.AddRange(actionContext.VisibleParameters.Select(CreateActionParamLink));
-                }
+                tempLinks.AddRange(actionContext.VisibleParameters.Select(CreateActionParamLink));
             }
 
             return tempLinks.ToArray();

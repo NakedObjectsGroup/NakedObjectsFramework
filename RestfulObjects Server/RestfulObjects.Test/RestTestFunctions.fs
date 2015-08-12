@@ -347,6 +347,16 @@ let makeArgs parms =
     let argVals = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> getArg s)
     TObjectJson(argVals) 
 
+let makeActionParams oName mName parms = 
+    let makeActionParm pmid =
+         let dburl = sprintf "domain-types/%s/actions/%s" oName mName
+         let pmurl = sprintf "%s/params/%s" dburl pmid
+         TObjectJson(TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "")
+         
+    let pps = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> makeActionParm s)
+    pps
+
+
 let makeActionMemberFormal oType  mName (oName : string) rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
@@ -355,7 +365,6 @@ let makeActionMemberFormal oType  mName (oName : string) rType parms =
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
 
-
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -363,7 +372,7 @@ let makeActionMemberFormal oType  mName (oName : string) rType parms =
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeActionMemberVoidFormal oType  mName (oName : string) parms=
         let index = oName.IndexOf("/")
@@ -380,7 +389,7 @@ let makeActionMemberVoidFormal oType  mName (oName : string) parms=
           TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 
     
@@ -412,7 +421,7 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
@@ -470,7 +479,7 @@ let makeActionMemberString oType mName (oName : string) fName desc rType parms =
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
@@ -495,7 +504,7 @@ let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 
 let makeActionMemberStringSimple oType mName (oName : string) fName desc rType parms =
@@ -570,7 +579,7 @@ let makeActionMemberWithType oType mName (oName : string) fName desc rType parms
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeVoidActionMember oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
@@ -592,7 +601,7 @@ let makeVoidActionMember oType mName (oName : string) fName desc parms =
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");                                     
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
@@ -642,7 +651,7 @@ let makeActionMemberCollection oType  mName (oName : string)  fName desc rType e
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
                                                       TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" eType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc rType eType parms =
         let index = oName.IndexOf("/")
@@ -687,7 +696,7 @@ let makeActionMemberCollectionFormal oType  mName (oName : string)  fName desc r
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
                                                       TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" eType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ]))]
+                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 
 
