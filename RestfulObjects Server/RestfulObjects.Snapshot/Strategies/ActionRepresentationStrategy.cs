@@ -68,11 +68,12 @@ namespace RestfulObjects.Snapshot.Strategies {
             if (standalone) {
                 tempLinks.Add(CreateSelfLink());
                 tempLinks.Add(CreateUpLink());
-                tempLinks.Add(CreateActionLink());
             }
             else {
                 tempLinks.Add(CreateDetailsLink());
             }
+
+            tempLinks.Add(CreateActionLink());
 
             if (Flags.FormalDomainModel) {
                 if (!actionContext.Specification.IsVoid) {

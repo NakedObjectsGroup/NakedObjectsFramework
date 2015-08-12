@@ -260,7 +260,7 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                                RepresentationTypes.ActionDescription "")
                       
                       TObjectJson
-                          (makeGetLinkProp RelValues.Action (sprintf "domain-types/%s/actions/%s" oType "AnActionReturnsWithDateTimeKey") 
+                          (makeGetLinkProp RelValues.Action (sprintf "domain-types/%s/actions/%s" oType "AnActionReturnsWithDateTimeKeyQueryOnly") 
                                RepresentationTypes.ActionDescription "")
                       
                       TObjectJson
@@ -569,7 +569,7 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                                RepresentationTypes.ActionDescription "")
                       
                       TObjectJson
-                          (makeGetLinkProp RelValues.Action (sprintf "domain-types/%s/actions/%s" oType "AnActionReturnsWithDateTimeKey") 
+                          (makeGetLinkProp RelValues.Action (sprintf "domain-types/%s/actions/%s" oType "AnActionReturnsWithDateTimeKeyQueryOnly") 
                                RepresentationTypes.ActionDescription "")
                       
                       TObjectJson

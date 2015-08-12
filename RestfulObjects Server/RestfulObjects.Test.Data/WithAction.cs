@@ -34,7 +34,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [QueryOnly]
-        public virtual WithDateTimeKey AnActionReturnsWithDateTimeKey() {
+        public virtual WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() {
             return Container.Instances<WithDateTimeKey>().FirstOrDefault();
         }
 

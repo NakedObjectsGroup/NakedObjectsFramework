@@ -942,10 +942,10 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                                 (ttc "RestfulObjects.Test.Data.RedirectedObject")))
                                   
                                   TProperty
-                                      ("AnActionReturnsWithDateTimeKey", 
+                                      ("AnActionReturnsWithDateTimeKeyQueryOnly", 
                                        
                                        TObjectJson
-                                           (makeServiceActionMemberNoParms "AnActionReturnsWithDateTimeKey" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
+                                           (makeServiceActionMemberNoParms "AnActionReturnsWithDateTimeKeyQueryOnly" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
                                   TProperty("AnActionAnnotatedIdempotent", TObjectJson(makeServiceActionMemberNoParms "AnActionAnnotatedIdempotent" oid mst))
                                   
                                   TProperty

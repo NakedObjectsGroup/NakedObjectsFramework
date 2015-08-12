@@ -47,7 +47,7 @@ namespace RestfulObjects.Test.Data {
 
 
         [QueryOnly]
-        public override WithDateTimeKey AnActionReturnsWithDateTimeKey() {
+        public override WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() {
             return dt1;
         }
 

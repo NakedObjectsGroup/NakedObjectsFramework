@@ -2036,8 +2036,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                            TObjectJson(makeObjectActionMemberNoParms "AnActionReturnsRedirectedObject" oid (ttc "RestfulObjects.Test.Data.RedirectedObject")))
                       
                       TProperty
-                          ("AnActionReturnsWithDateTimeKey", 
-                           TObjectJson(makeObjectActionMemberNoParms "AnActionReturnsWithDateTimeKey" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
+                          ("AnActionReturnsWithDateTimeKeyQueryOnly", 
+                           TObjectJson(makeObjectActionMemberNoParms "AnActionReturnsWithDateTimeKeyQueryOnly" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
                       TProperty("AnActionAnnotatedIdempotent", TObjectJson(makeObjectActionMemberNoParms "AnActionAnnotatedIdempotent" oid mst))
                       
                       TProperty
@@ -2643,10 +2643,10 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                (makeObjectActionMemberNoParmsSimple "AnActionReturnsRedirectedObject" oid (ttc "RestfulObjects.Test.Data.RedirectedObject")))
                       
                       TProperty
-                          ("AnActionReturnsWithDateTimeKey", 
+                          ("AnActionReturnsWithDateTimeKeyQueryOnly", 
                            
                            TObjectJson
-                               (makeObjectActionMemberNoParmsSimple "AnActionReturnsWithDateTimeKey" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
+                               (makeObjectActionMemberNoParmsSimple "AnActionReturnsWithDateTimeKeyQueryOnly" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey")))
                       TProperty("AnActionAnnotatedIdempotent", TObjectJson(makeObjectActionMemberNoParmsSimple "AnActionAnnotatedIdempotent" oid mst))
                       
                       TProperty
@@ -3256,10 +3256,10 @@ let GetWithActionObjectFormalOnly(api : RestfulObjectsControllerBase) =
                                (makeActionMemberFormal "objects" "AnActionReturnsRedirectedObject" oid (ttc "RestfulObjects.Test.Data.RedirectedObject") []))
                       
                       TProperty
-                          ("AnActionReturnsWithDateTimeKey", 
+                          ("AnActionReturnsWithDateTimeKeyQueryOnly", 
                            
                            TObjectJson
-                               (makeActionMemberFormal "objects" "AnActionReturnsWithDateTimeKey" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey") []))
+                               (makeActionMemberFormal "objects" "AnActionReturnsWithDateTimeKeyQueryOnly" oid (ttc "RestfulObjects.Test.Data.WithDateTimeKey") []))
                       TProperty("AnActionAnnotatedIdempotent", TObjectJson(makeActionMemberFormal "objects" "AnActionAnnotatedIdempotent" oid mst []))
                       
                       TProperty
