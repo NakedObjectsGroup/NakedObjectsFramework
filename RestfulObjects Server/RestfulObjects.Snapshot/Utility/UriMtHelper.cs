@@ -54,6 +54,14 @@ namespace RestfulObjects.Snapshot.Utility {
             DebugLogRequest(req);
         }
 
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menuFacade) : this(oidStrategy, req) {
+            //this.objectFacade = objectFacade;
+            //spec = objectFacade.Specification;
+            //IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            //cachedId = oid.InstanceId;
+            CachedType = menuFacade.Id;
+        }
+
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy ,req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
@@ -490,6 +498,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return RepresentationTypes.Object;
         }
 
+        public string GetMenuMediaType() {
+            return RepresentationTypes.Menu;
+        }
+
+
         private string GetParameterValue(RestControlFlags flags, string parameterValue) {
             if (flags.SimpleDomainModel) {
                 return parameterValue;
@@ -577,6 +590,13 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public string GetRelParametersFor(string name) {
             return FormatParameter(RelParamValues.TypeAction, name);
+        }
+
+        public Uri GetMenuUri() {
+            CheckArgumentNotNull(CachedType, "service type");
+
+            var template = new UriTemplate(SegmentValues.Menus + "/{oid}");
+            return template.BindByPosition(prefix, CachedType);
         }
     }
 }

@@ -107,11 +107,10 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private LinkRepresentation CreateMenuLink(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menu) {
-            //var helper = new UriMtHelper(oidStrategy, req, no);
-            //ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
+            var helper = new UriMtHelper(oidStrategy, req, menu);
+            var rt =  new MenuRelType(helper);
 
-            //return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
-            return null;
+            return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
 

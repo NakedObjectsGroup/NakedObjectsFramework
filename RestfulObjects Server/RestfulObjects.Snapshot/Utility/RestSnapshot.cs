@@ -59,6 +59,16 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
+        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+            : this(oidStrategy, req, true) {
+            populator = () => {
+                this.httpStatusCode = httpStatusCode;
+                representation = MenuRepresentation.Create(oidStrategy, menu, req, flags);
+                SetHeaders();
+            };
+        }
+
+
         public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy,actionResultContext, req, true) {
             populator = () => {

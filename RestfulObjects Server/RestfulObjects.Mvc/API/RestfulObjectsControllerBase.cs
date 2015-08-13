@@ -461,8 +461,8 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetMenu(string menuName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
-                var oid = FrameworkFacade.OidTranslator.GetOidTranslation(menuName);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
+                
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus().Single(m => m.Id == menuName), Request, GetFlags(arguments));
             });
         }
 

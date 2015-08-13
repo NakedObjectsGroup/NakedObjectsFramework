@@ -31,6 +31,6 @@ namespace RestfulObjects.Snapshot.Constants {
         // custom 
 
         public const string TypeActionFilterResult = "type-action-filter-result";
-
+        public const string Menu = "menu";
     }
 }
