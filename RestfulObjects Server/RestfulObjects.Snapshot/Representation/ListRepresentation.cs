@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class ListRepresentation : Representation {
         protected ListRepresentation(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Value = listContext.List.Select(c => CreateObjectLink(oidStrategy ,req, c)).ToArray();
+            Value = listContext.List.Select(c => CreateObjectLink(oidStrategy, req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req, listContext.ElementType));
             SetLinks(req);
             SetExtensions();
@@ -27,14 +27,13 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected ListRepresentation(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags)
-           : base(oidStrategy, flags) {
+            : base(oidStrategy, flags) {
             Value = menus.Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
             SetExtensions();
             SetHeader(true);
         }
-
 
         protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
@@ -48,7 +47,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 list = objectContext.Target;
             }
 
-            Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy ,req, no)).ToArray();
+            Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no)).ToArray();
 
             SetLinks(req, actionContext);
             SetExtensions();
@@ -57,7 +56,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private ListRepresentation(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Value = specs.Select(s => CreateDomainLink(oidStrategy ,req, s)).ToArray();
+            Value = specs.Select(s => CreateDomainLink(oidStrategy, req, s)).ToArray();
             SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
             SetExtensions();
@@ -78,14 +77,14 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
+            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
         }
 
         private void SetLinks(HttpRequestMessage req, ITypeFacade spec) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy , new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
             }
 
             Links = tempLinks.ToArray();
@@ -100,30 +99,29 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no) {
-            var helper = new UriMtHelper(oidStrategy ,req, no);
+            var helper = new UriMtHelper(oidStrategy, req, no);
             ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 
-            return LinkRepresentation.Create(oidStrategy ,rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+            return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
         private LinkRepresentation CreateMenuLink(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menu) {
             var helper = new UriMtHelper(oidStrategy, req, menu);
-            var rt =  new MenuRelType(helper);
+            var rt = new MenuRelType(helper);
 
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
-
         private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec) {
-            return LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
+            return LinkRepresentation.Create(oidStrategy, new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ListRepresentation(oidStrategy ,listContext, req, flags);
+            return new ListRepresentation(oidStrategy, listContext, req, flags);
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ListRepresentation(oidStrategy ,actionResultContext.Result, req, flags, actionResultContext.ActionContext);
+            return new ListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
 
         internal static Representation Create(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags) {
@@ -131,7 +129,7 @@ namespace RestfulObjects.Snapshot.Representations {
             specs = specs.Where(s => !s.FullName.StartsWith("System.") && !s.FullName.StartsWith("Microsoft.")).ToArray();
             // filter out predefined types
             specs = specs.Where(s => !RestUtils.IsPredefined(s)).ToArray();
-            return new ListRepresentation(oidStrategy ,specs, req, flags);
+            return new ListRepresentation(oidStrategy, specs, req, flags);
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags) {

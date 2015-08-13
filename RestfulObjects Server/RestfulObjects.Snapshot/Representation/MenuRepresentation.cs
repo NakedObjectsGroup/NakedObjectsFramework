@@ -65,14 +65,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private ActionContextFacade ActionContext(IMenuActionFacade actionFacade) {
             return new ActionContextFacade {
-                Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType) ),
+                Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
                 Action = actionFacade.Action,
                 VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
             };
         }
 
         private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
-
             var actionFacades = menu.MenuItems.OfType<IMenuActionFacade>().Select(ActionContext).ToArray();
 
             InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
