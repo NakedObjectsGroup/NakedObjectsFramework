@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects;
@@ -56,6 +57,12 @@ namespace MvcTestApp.Tests.Controllers {
         public ChoicesObject GetChoicesObject() {
             var co = Container.NewTransientInstance<ChoicesObject>();
             return co;
+        }
+
+        public void AnActionConditionalChoices(string parm1, int parm2, DateTime parm3) { }
+
+        public string[] Choices0AnActionConditionalChoices(int parm2, DateTime parm3) {
+            return new string[] { "value1", "value2" };
         }
     }
 }

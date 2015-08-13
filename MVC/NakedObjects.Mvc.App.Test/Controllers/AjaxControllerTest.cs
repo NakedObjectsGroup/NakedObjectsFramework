@@ -499,7 +499,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual("Mandatory", result.Data);
         }
 
-        [Test] //TODO: Failing due to issue with TimePeriod Complex Type?
+        [Test] 
         public void TestValidateOkInlineValueProperty() {
             TimePeriod timePeriod = NakedObjectsFramework.Persistor.Instances<Shift>().First().Times;
             string id = NakedObjectsFramework.GetObjectId(timePeriod);
@@ -567,6 +567,61 @@ namespace MvcTestApp.Tests.Controllers {
             JsonResult result = controller.ValidateProperty(id, null, propertyName);
             Assert.IsTrue((bool) result.Data);
         }
+
+        [Test]
+        public void TestGetActionChoicesConditional() {
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+
+            const string actionName = "AnActionConditionalChoices";
+
+            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
+
+            const string parm1Id = "ChoicesRepository-AnActionConditionalChoices-Parm1-Input0";
+            const string parm2Id = "ChoicesRepository-AnActionConditionalChoices-Parm2-Input0";
+            const string parm3Id = "ChoicesRepository-AnActionConditionalChoices-Parm3-Input0";
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "Fred" }, { parm2Id, "1" }, { parm3Id, "1/1/2015" } });
+
+            JsonResult result = controller.GetActionChoices(id, actionName);
+            Assert.IsInstanceOf<IDictionary<string, string[][]>>(result.Data);
+
+            var dict = result.Data as IDictionary<string, string[][]>;
+
+            Assert.AreEqual(1, dict.Count);
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionConditionalChoices-Parm1-Input"));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnActionConditionalChoices-Parm1-Input"][0].SequenceEqual(new[] { "value1", "value2" }));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnActionConditionalChoices-Parm1-Input"][1].SequenceEqual(new[] { "value1", "value2" }));
+        }
+
+        [Test]
+        public void TestGetActionChoicesConditionalFailParse() {
+            INakedObjectAdapter choicesRepo = NakedObjectsFramework.GetAdaptedService("ChoicesRepository");
+
+            const string actionName = "AnActionConditionalChoices";
+
+            string id = NakedObjectsFramework.GetObjectId(choicesRepo);
+
+            const string parm1Id = "ChoicesRepository-AnActionConditionalChoices-Parm1-Input0";
+            const string parm2Id = "ChoicesRepository-AnActionConditionalChoices-Parm2-Input0";
+            const string parm3Id = "ChoicesRepository-AnActionConditionalChoices-Parm3-Input0";
+
+            mocks.Request.Setup(x => x.Params).Returns(new NameValueCollection { { parm1Id, "Fred" }, { parm2Id, "1" }, { parm3Id, "cannotparseasdate" } });
+
+            JsonResult result = controller.GetActionChoices(id, actionName);
+            Assert.IsInstanceOf<IDictionary<string, string[][]>>(result.Data);
+
+            var dict = result.Data as IDictionary<string, string[][]>;
+
+            Assert.AreEqual(1, dict.Count);
+            Assert.IsTrue(dict.ContainsKey("ChoicesRepository-AnActionConditionalChoices-Parm1-Input"));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnActionConditionalChoices-Parm1-Input"][0].SequenceEqual(new[] { "value1", "value2" }));
+
+            Assert.IsTrue(dict["ChoicesRepository-AnActionConditionalChoices-Parm1-Input"][1].SequenceEqual(new[] { "value1", "value2" }));
+        }
+
 
         #region Setup/Teardown
 
