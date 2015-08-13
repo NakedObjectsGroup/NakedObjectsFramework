@@ -162,11 +162,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.5\lib\net451\NakedObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.6\lib\net451\NakedObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.MvcResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.5\lib\net451\NakedObjects.MvcResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Mvc-Assemblies.7.0.6\lib\net451\NakedObjects.MvcResources.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Persistor.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

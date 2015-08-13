@@ -112,5 +112,11 @@ namespace AdventureWorksModel {
         public void TestIgnoredAction1(IDictionary<string, object> unrecognizedParm) {}
 
         #endregion test code ignore
+
+        public void TestAction(string p1, int p2, DateTime p3) { }
+
+        public string[] Choices0TestAction(int p2, DateTime p3) {
+            return new string[] { "c1", "c2" };
+        }
     }
 }

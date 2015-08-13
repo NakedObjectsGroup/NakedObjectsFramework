@@ -124,7 +124,12 @@ namespace NakedObjects.Web.Mvc.Controllers {
             }
 
             if (spec.IsParseable) {
-                return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.NakedObjectManager);
+                try {
+                    return spec.GetFacet<IParseableFacet>().ParseTextEntry(values.First(), NakedObjectsContext.NakedObjectManager);
+                }
+                catch (Exception) {
+                    return null; 
+                }
             }
             if (spec.IsCollection) {
                 return NakedObjectsContext.GetTypedCollection(featureSpec, values);

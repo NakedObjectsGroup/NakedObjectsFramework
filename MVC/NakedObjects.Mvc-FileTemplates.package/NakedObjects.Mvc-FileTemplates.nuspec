@@ -12,7 +12,7 @@
     <description>Naked Objects MVC will auto-create a complete web UI from a domain model. Add this package to an empty MVC 5 project.</description>
     <tags>naked objects nakedobjects asp.net mvc ddd domain driven design</tags>
     <dependencies>
-      <dependency id="NakedObjects.Mvc-Assemblies" version="[7.0.4, 8)" />
+      <dependency id="NakedObjects.Mvc-Assemblies" version="[7.0.6, 8)" />
       <dependency id="NakedObjects.Surface.Nof4" version="[7.0.0, 8)" />
       <dependency id="WebActivatorEx" version="[2.0.6, 3.0)" />
       <dependency id="jQuery" version="[2.1.3, 3.0)" />
