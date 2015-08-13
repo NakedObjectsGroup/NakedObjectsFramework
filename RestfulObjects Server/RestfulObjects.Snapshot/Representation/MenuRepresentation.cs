@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Representations {
             tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, menu.Specification)), Flags));
+                //tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, menu.Specification)), Flags));
             }
 
             // temp disable icons 
@@ -63,10 +63,21 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
-            //InlineActionRepresentation[] actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade) {
+            return new ActionContextFacade {
+                Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType) ),
+                Action = actionFacade.Action,
+                VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
+            };
+        }
 
-            //Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
+        private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
+
+            var actionFacades = menu.MenuItems.OfType<IMenuActionFacade>().Select(ActionContext).ToArray();
+
+            InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+
+            Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
@@ -76,6 +87,7 @@ namespace RestfulObjects.Snapshot.Representations {
         private void SetExtensions(IMenuFacade menu) {
             if (Flags.SimpleDomainModel) {
                 //Extensions = RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy);
+                Extensions = MapRepresentation.Create();
             }
             else {
                 Extensions = MapRepresentation.Create();
