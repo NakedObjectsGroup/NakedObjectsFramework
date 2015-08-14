@@ -200,11 +200,11 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Mvc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.1.0\lib\net452\RestfulObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.2.0\lib\net452\RestfulObjects.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.1.0\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.2.0\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable">

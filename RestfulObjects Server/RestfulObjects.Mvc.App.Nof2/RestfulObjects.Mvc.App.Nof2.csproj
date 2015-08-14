@@ -118,7 +118,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.1.0\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.2.0\lib\net451\RestfulObjects.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
