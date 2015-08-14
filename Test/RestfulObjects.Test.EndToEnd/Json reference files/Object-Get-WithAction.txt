@@ -118,10 +118,38 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsVoidWithParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsVoidWithParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsVoidWithParameters/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsVoidWithParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsVoidWithParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsVoidWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -142,6 +170,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledAction"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"ADisabledAction\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledAction/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -175,6 +210,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledCollectionAction"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"ADisabledCollectionAction\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledCollectionAction/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -218,6 +260,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledQueryAction"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"ADisabledQueryAction\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/ADisabledQueryAction/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -258,6 +307,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnAction"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnAction\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnAction/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -289,6 +345,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedIdempotent\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotent/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -323,6 +386,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotentReturnsNull"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedIdempotentReturnsNull\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotentReturnsNull/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -353,6 +423,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotentReturnsViewModel"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedIdempotentReturnsViewModel\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedIdempotentReturnsViewModel/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -387,6 +464,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnly"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedQueryOnly\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnly/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -417,6 +501,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnlyReturnsNull"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedQueryOnlyReturnsNull\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnlyReturnsNull/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -451,6 +542,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnlyReturnsViewModel"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionAnnotatedQueryOnlyReturnsViewModel\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionAnnotatedQueryOnlyReturnsViewModel/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -481,6 +579,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollection"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollection\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollection/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -523,6 +628,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionEmpty"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollectionEmpty\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionEmpty/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -561,6 +673,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionNull"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollectionNull\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionNull/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -637,6 +756,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionWithParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollectionWithParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionWithParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -653,6 +786,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -715,6 +862,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionWithScalarParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollectionWithScalarParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsCollectionWithScalarParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -731,6 +892,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithScalarParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithScalarParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsCollectionWithScalarParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -753,6 +928,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsNull"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsNull\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsNull/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -785,6 +967,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsNullViewModel"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsNullViewModel\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsNullViewModel/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -837,6 +1026,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParameterAnnotatedQueryOnly"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsObjectWithParameterAnnotatedQueryOnly\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParameterAnnotatedQueryOnly/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -847,6 +1047,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParameterAnnotatedQueryOnly"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParameterAnnotatedQueryOnly/params/parm1"
         }
       ],
       "extensions": {
@@ -903,6 +1110,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsObjectWithParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -913,6 +1134,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -969,6 +1204,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParametersAnnotatedIdempotent"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsObjectWithParametersAnnotatedIdempotent\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParametersAnnotatedIdempotent/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -979,6 +1228,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedIdempotent"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedIdempotent/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedIdempotent/params/parm2"
         }
       ],
       "extensions": {
@@ -1035,6 +1298,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParametersAnnotatedQueryOnly"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsObjectWithParametersAnnotatedQueryOnly\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsObjectWithParametersAnnotatedQueryOnly/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1045,6 +1322,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedQueryOnly"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedQueryOnly/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsObjectWithParametersAnnotatedQueryOnly/params/parm2"
         }
       ],
       "extensions": {
@@ -1065,6 +1356,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryable"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsQueryable\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryable/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1141,6 +1439,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsQueryableWithParameters\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1157,6 +1469,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -1218,6 +1544,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithScalarParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsQueryableWithScalarParameters\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithScalarParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1234,6 +1574,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithScalarParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithScalarParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsQueryableWithScalarParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -1256,6 +1610,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsRedirectedObject"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsRedirectedObject\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsRedirectedObject/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1288,6 +1649,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalar"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalar\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalar/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1323,6 +1691,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarEmpty"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalarEmpty\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarEmpty/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1356,6 +1731,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarNull"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalarNull\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarNull/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1427,6 +1809,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarWithParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalarWithParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsScalarWithParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1437,6 +1833,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsScalarWithParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsScalarWithParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionReturnsScalarWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -1458,6 +1868,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsViewModel"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsViewModel\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsViewModel/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1492,6 +1909,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsVoid"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsVoid\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsVoid/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
@@ -1515,6 +1939,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsWithDateTimeKeyQueryOnly"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsWithDateTimeKeyQueryOnly\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsWithDateTimeKeyQueryOnly/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -1584,6 +2015,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionValidateParameters"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionValidateParameters\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionValidateParameters/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1594,6 +2039,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionValidateParameters"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionValidateParameters/params/parm1"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionValidateParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -1650,10 +2109,28 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithCollectionParameter"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithCollectionParameter\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithCollectionParameter/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithCollectionParameter"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithCollectionParameter/params/parm"
         }
       ],
       "extensions": {
@@ -1726,10 +2203,28 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithCollectionParameterRef"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithCollectionParameterRef\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithCollectionParameterRef/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithCollectionParameterRef"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithCollectionParameterRef/params/parm"
         }
       ],
       "extensions": {
@@ -1772,10 +2267,28 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithDateTimeParm\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
         }
       ],
       "extensions": {
@@ -1817,6 +2330,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithOptionalParm"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithOptionalParm\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithOptionalParm/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1827,6 +2351,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithOptionalParm"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithOptionalParm/params/parm"
         }
       ],
       "extensions": {
@@ -1869,6 +2400,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithOptionalParmQueryOnly"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithOptionalParmQueryOnly\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithOptionalParmQueryOnly/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -1879,6 +2421,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithOptionalParmQueryOnly"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithOptionalParmQueryOnly/params/parm"
         }
       ],
       "extensions": {
@@ -2002,6 +2551,26 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithParametersWithChoicesWithDefaults"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            },
+            "parm7": {
+              "value": null
+            },
+            "parm2": {
+              "value": null
+            },
+            "parm8": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithParametersWithChoicesWithDefaults\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithParametersWithChoicesWithDefaults/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2012,6 +2581,34 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithParametersWithChoicesWithDefaults"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithParametersWithChoicesWithDefaults/params/parm1"
+        },
+        {
+          "id": "parm7",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithParametersWithChoicesWithDefaults/params/parm7"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithParametersWithChoicesWithDefaults/params/parm2"
+        },
+        {
+          "id": "parm8",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithParametersWithChoicesWithDefaults/params/parm8"
         }
       ],
       "extensions": {
@@ -2051,6 +2648,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameter"
         },
         {
+          "arguments": {
+            "parm2": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithReferenceParameter\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameter/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2061,6 +2669,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameter"
+        },
+        {
+          "id": "parm2",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameter/params/parm2"
         }
       ],
       "extensions": {
@@ -2116,6 +2731,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithChoices"
         },
         {
+          "arguments": {
+            "parm4": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithReferenceParameterWithChoices\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithChoices/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2126,6 +2752,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithChoices"
+        },
+        {
+          "id": "parm4",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithChoices/params/parm4"
         }
       ],
       "extensions": {
@@ -2184,6 +2817,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithConditionalChoices"
         },
         {
+          "arguments": {
+            "parm4": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithReferenceParameterWithConditionalChoices\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithConditionalChoices/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2194,6 +2838,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithConditionalChoices"
+        },
+        {
+          "id": "parm4",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithConditionalChoices/params/parm4"
         }
       ],
       "extensions": {
@@ -2240,6 +2891,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithDefault"
         },
         {
+          "arguments": {
+            "parm6": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithReferenceParameterWithDefault\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParameterWithDefault/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2250,6 +2912,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithDefault"
+        },
+        {
+          "id": "parm6",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParameterWithDefault/params/parm6"
         }
       ],
       "extensions": {
@@ -2333,6 +3002,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParametersWithAutoComplete"
         },
         {
+          "arguments": {
+            "parm0": {
+              "value": null
+            },
+            "parm1": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithReferenceParametersWithAutoComplete\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithReferenceParametersWithAutoComplete/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2343,6 +3026,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParametersWithAutoComplete"
+        },
+        {
+          "id": "parm0",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParametersWithAutoComplete/params/parm0"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithReferenceParametersWithAutoComplete/params/parm1"
         }
       ],
       "extensions": {
@@ -2383,6 +3080,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameter"
         },
         {
+          "arguments": {
+            "parm1": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithValueParameter\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameter/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2393,6 +3101,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameter"
+        },
+        {
+          "id": "parm1",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameter/params/parm1"
         }
       ],
       "extensions": {
@@ -2443,6 +3158,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameterWithChoices"
         },
         {
+          "arguments": {
+            "parm3": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithValueParameterWithChoices\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameterWithChoices/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2453,6 +3179,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameterWithChoices"
+        },
+        {
+          "id": "parm3",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameterWithChoices/params/parm3"
         }
       ],
       "extensions": {
@@ -2494,6 +3227,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameterWithDefault"
         },
         {
+          "arguments": {
+            "parm5": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithValueParameterWithDefault\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParameterWithDefault/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2504,6 +3248,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameterWithDefault"
+        },
+        {
+          "id": "parm5",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParameterWithDefault/params/parm5"
         }
       ],
       "extensions": {
@@ -2623,6 +3374,20 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParametersWithConditionalChoices"
         },
         {
+          "arguments": {
+            "parm3": {
+              "value": null
+            },
+            "parm4": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithValueParametersWithConditionalChoices\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithValueParametersWithConditionalChoices/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2633,6 +3398,20 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParametersWithConditionalChoices"
+        },
+        {
+          "id": "parm3",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParametersWithConditionalChoices/params/parm3"
+        },
+        {
+          "id": "parm4",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithValueParametersWithConditionalChoices/params/parm4"
         }
       ],
       "extensions": {
@@ -2653,6 +3432,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnError"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnError\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnError/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -2686,6 +3472,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnErrorCollection"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnErrorCollection\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnErrorCollection/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -2728,6 +3521,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnErrorQuery"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnErrorQuery\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnErrorQuery/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2766,6 +3566,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnOverloadedAction0"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnOverloadedAction0\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnOverloadedAction0/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -2820,6 +3627,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnOverloadedAction1"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnOverloadedAction1\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnOverloadedAction1/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2830,6 +3648,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnOverloadedAction1"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnOverloadedAction1/params/parm"
         }
       ],
       "extensions": {
@@ -2850,6 +3675,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedAction"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AzContributedAction\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedAction/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -2882,6 +3714,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionOnBaseClass"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AzContributedActionOnBaseClass\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionOnBaseClass/invoke"
         },
         {
           "rel": "urn:org.restfulobjects:rels/return-type",
@@ -2933,6 +3772,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionWithRefParm"
         },
         {
+          "arguments": {
+            "withOtherAction": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AzContributedActionWithRefParm\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionWithRefParm/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2943,6 +3793,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AzContributedActionWithRefParm"
+        },
+        {
+          "id": "withOtherAction",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AzContributedActionWithRefParm/params/withOtherAction"
         }
       ],
       "extensions": {
@@ -2985,6 +3842,17 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionWithValueParm"
         },
         {
+          "arguments": {
+            "parm": {
+              "value": null
+            }
+          },
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"AzContributedActionWithValueParm\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AzContributedActionWithValueParm/invoke"
+        },
+        {
           "rel": "urn:org.restfulobjects:rels/return-type",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
@@ -2995,6 +3863,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AzContributedActionWithValueParm"
+        },
+        {
+          "id": "parm",
+          "rel": "urn:org.restfulobjects:rels/action-param",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AzContributedActionWithValueParm/params/parm"
         }
       ],
       "extensions": {

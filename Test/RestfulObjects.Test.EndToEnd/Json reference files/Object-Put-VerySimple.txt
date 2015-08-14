@@ -205,6 +205,13 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/2/actions/EmptyTheList"
         },
         {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"EmptyTheList\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/2/actions/EmptyTheList/invoke"
+        },
+        {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
@@ -228,6 +235,13 @@
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/2/actions/EmptyTheSet"
+        },
+        {
+          "arguments": {},
+          "rel": "urn:org.restfulobjects:rels/invoke;action=\"EmptyTheSet\"",
+          "method": "POST",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/VerySimple/2/actions/EmptyTheSet/invoke"
         },
         {
           "rel": "describedby",
