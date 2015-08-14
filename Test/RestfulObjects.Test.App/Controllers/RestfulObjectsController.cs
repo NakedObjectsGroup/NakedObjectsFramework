@@ -1,4 +1,4 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +13,9 @@ using NakedObjects.Facade;
 using RestfulObjects.Mvc;
 using RestfulObjects.Mvc.Model;
 
-namespace RestfulObjects.Test.App.Controllers {
+namespace MvcTestApp.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade facade) : base(facade) {}
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
@@ -30,6 +30,11 @@ namespace RestfulObjects.Test.App.Controllers {
         [HttpGet]
         public override HttpResponseMessage GetServices([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetServices(arguments);
+        }
+
+        [HttpGet]
+        public override HttpResponseMessage GetMenus([ModelBinder(typeof(ReservedArgumentsBinder))] ReservedArguments arguments) {
+            return base.GetMenus(arguments);
         }
 
         [HttpGet]
@@ -50,6 +55,11 @@ namespace RestfulObjects.Test.App.Controllers {
         [HttpGet]
         public override HttpResponseMessage GetService(string serviceName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetService(serviceName, arguments);
+        }
+
+        [HttpGet]
+        public override HttpResponseMessage GetMenu(string menuName, [ModelBinder(typeof(ReservedArgumentsBinder))] ReservedArguments arguments) {
+            return base.GetMenu(menuName, arguments);
         }
 
         [HttpGet]
