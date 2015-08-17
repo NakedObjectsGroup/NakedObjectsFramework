@@ -30,6 +30,9 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Title)]
         public string Title { get; set; }
 
+        [DataMember(Name = JsonPropertyNames.MenuId)]
+        public string MenuId { get; set; }
+
         [DataMember(Name = JsonPropertyNames.Links)]
         public LinkRepresentation[] Links { get; set; }
 
@@ -41,6 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(IMenuFacade menu) {
             Title = menu.Name;
+            MenuId = menu.Id;
         }
 
         private void SetHeader(IMenuFacade menu) {
