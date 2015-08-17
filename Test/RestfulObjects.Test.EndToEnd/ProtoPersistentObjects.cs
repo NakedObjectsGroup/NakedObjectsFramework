@@ -69,6 +69,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
         [TestMethod]
+        [Ignore] // temp ignore 
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimple", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation);

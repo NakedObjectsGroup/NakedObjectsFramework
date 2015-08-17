@@ -598,5 +598,9 @@ namespace RestfulObjects.Snapshot.Utility {
             var template = new UriTemplate(SegmentValues.Menus + "/{oid}");
             return template.BindByPosition(prefix, CachedType);
         }
+
+        public object GetMenuRelParameter() {
+            return FormatParameter(RelParamValues.MenuId, CachedType);
+        }
     }
 }

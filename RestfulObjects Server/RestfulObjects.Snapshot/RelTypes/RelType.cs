@@ -15,7 +15,7 @@ namespace RestfulObjects.Snapshot.Utility {
         private static readonly HashSet<string> HasRelParameterSet = new HashSet<string> {
             RelValues.AddTo, RelValues.Attachment, RelValues.Choice, RelValues.Clear, RelValues.Collection,
             RelValues.Default, RelValues.Details, RelValues.Invoke, RelValues.Modify, RelValues.RemoveFrom,
-            RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue
+            RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue, RelValues.Menu
         };
 
         protected readonly UriMtHelper helper;

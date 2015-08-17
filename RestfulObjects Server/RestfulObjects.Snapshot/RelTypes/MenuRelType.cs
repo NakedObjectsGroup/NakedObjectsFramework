@@ -14,6 +14,10 @@ namespace RestfulObjects.Snapshot.Utility {
         public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) {}
         public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
+        public override string Name {
+            get { return base.Name + (HasRelParameter ? helper.GetMenuRelParameter() : ""); }
+        }
+
         public override Uri GetUri() {
             return helper.GetMenuUri();
         }

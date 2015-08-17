@@ -13,5 +13,6 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string Param = "param";
         public const string TypeAction = "typeaction";
         public const string ServiceId = "serviceId";
+        public const string MenuId = "menuId";
     }
 }
