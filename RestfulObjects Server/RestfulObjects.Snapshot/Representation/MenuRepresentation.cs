@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
         private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) {
 
             if (!string.IsNullOrEmpty(menuPath)) {
-                actionFacade.Action.ExtensionData["x-ro-nof-menuPath"] = menuPath;
+                actionFacade.Action.ExtensionData[IdConstants.MenuPath] = menuPath;
             }
 
             return new ActionContextFacade {
