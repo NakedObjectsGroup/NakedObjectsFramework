@@ -49,7 +49,9 @@ namespace $rootnamespace$ {
                     //These types must be registered because they are defined in
                     //NakedObjects.Mvc, not in Core.
                     typeof (ActionResultModelQ<>),
-                    typeof (ActionResultModel<>)
+                    typeof (ActionResultModel<>),
+					typeof (PropertyViewModel),
+                    typeof (FindViewModel)
                     //Add any domain types that cannot be reached by traversing model from the registered services
                 };
             }
@@ -62,6 +64,7 @@ namespace $rootnamespace$ {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
 			//config.UsingCodeFirstContext(() => new MyDbContext());
+			config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(PropertyViewModel), typeof(FindViewModel) });
 			return config;
         }
 
