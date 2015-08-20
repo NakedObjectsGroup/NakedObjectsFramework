@@ -11,6 +11,8 @@ namespace NakedObjects.Facade.Utility {
         public const string ServiceType = "x-ro-nof-serviceType";
         public const string RenderInEditMode = "x-ro-nof-renderInEditMode";
         public const string PresentationHint = "x-ro-nof-presentationHint";
+        public const string MenuPath = "x-ro-nof-menuPath";
+
         // viewdata keys 
         public const string NofMessages = "Nof-Messages";
         public const string NofWarnings = "Nof-Warnings";

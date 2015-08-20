@@ -18,6 +18,7 @@ namespace NakedObjects.Facade.Impl {
         private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
+        private IDictionary<string, object> extensionData; 
 
         public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
             FacadeUtils.AssertNotNull(action, "Action is null");
@@ -51,13 +52,16 @@ namespace NakedObjects.Facade.Impl {
 
         public IDictionary<string, object> ExtensionData {
             get {
-                var extData = new Dictionary<string, object>();
+                if (extensionData == null) {
 
-                if (action.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[IdConstants.PresentationHint] = action.GetFacet<IPresentationHintFacet>().Value;
+                    extensionData = new Dictionary<string, object>();
+
+                    if (action.ContainsFacet<IPresentationHintFacet>()) {
+                        extensionData[IdConstants.PresentationHint] = action.GetFacet<IPresentationHintFacet>().Value;
+                    }
                 }
 
-                return extData.Any() ? extData : null;
+                return extensionData;
             }
         }
 

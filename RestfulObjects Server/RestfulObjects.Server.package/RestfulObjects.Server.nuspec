@@ -16,7 +16,7 @@
     <description>Restful Objects Server. Add to an ASP.NET MVC4 (Empty) Web Application project to auto-create a restful interface for a domain model.</description>
     <dependencies>
       <dependency id="RestfulObjects.Mvc" version="[7.2.0, 8)" />
-      <dependency id="NakedObjects.Facade.Impl" version="[1.0.0, 2)" />
+      <dependency id="NakedObjects.Facade.Impl" version="[1.0.2, 2)" />
       <dependency id="WebActivatorEx" version="[2.0.6, 3.0)" />
       <dependency id="Unity.AspNet.WebApi" version="[3.5.1404.0, 4.0)" />
     </dependencies>

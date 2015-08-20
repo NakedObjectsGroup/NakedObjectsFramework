@@ -5,12 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
@@ -67,7 +69,12 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade) {
+        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) {
+
+            if (!string.IsNullOrEmpty(menuPath)) {
+                actionFacade.Action.ExtensionData["x-ro-nof-menuPath"] = menuPath;
+            }
+
             return new ActionContextFacade {
                 Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
                 Action = actionFacade.Action,
@@ -75,10 +82,31 @@ namespace RestfulObjects.Snapshot.Representations {
             };
         }
 
-        private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
-            var actionFacades = menu.MenuItems.OfType<IMenuActionFacade>().Select(ActionContext).ToArray();
+        private Tuple<string, ActionContextFacade>[] GetMenuItem(IMenuItemFacade item, string parent = "") {
 
-            InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+            
+            var menuActionFacade= item as IMenuActionFacade;
+
+            if (menuActionFacade != null) {
+                return new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))};
+            }
+
+            var menuFacade = item as IMenuFacade;
+
+            if (menuFacade != null) {
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "-") + menuFacade.Name;
+                return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
+            }
+
+            return new Tuple<string, ActionContextFacade>[] {};
+        }
+
+
+
+        private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i));
+
+            InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
 
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
