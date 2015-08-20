@@ -60,6 +60,8 @@ namespace NakedObjects.Mvc.App {
                     //NakedObjects.Mvc, not in Core.
                     typeof (ActionResultModelQ<>),
                     typeof (ActionResultModel<>),
+                    typeof (PropertyViewModel),
+                    typeof (FindViewModel),
                     //Add any types here that cannot be reached by traversing model from the registered services
                     typeof (CustomerCollectionViewModel),
                     typeof (OrderLine),
@@ -77,6 +79,7 @@ namespace NakedObjects.Mvc.App {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
             config.UsingCodeFirstContext(() => new AdventureWorksContext());
+            config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] { typeof(AWDomainObject), typeof(PropertyViewModel), typeof(FindViewModel) });
             return config;
         }
 
@@ -85,7 +88,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-                return null;
+            return null;
         }
 
         public static IProfileConfiguration ProfileConfig() {
