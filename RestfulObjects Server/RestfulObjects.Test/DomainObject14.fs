@@ -653,6 +653,8 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
+    let emptyValue = TArray([])
+
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -711,11 +713,11 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(7.3))))
                       TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
                       TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(8))))
-                      TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0))
+                      TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(9))))
                       TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(10))))
                       //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
-                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0))
+                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0 emptyValue))
                       TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(12))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("13"))))
                       TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(14))))
@@ -1246,6 +1248,8 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     
+    let emptyValue = TArray([])
+
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -1304,11 +1308,11 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(300.7))))
                       TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
                       TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(400))))
-                      TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0))
+                      TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(500))))
                       TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(3))))
                       //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
-                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0))
+                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0 emptyValue))
                       TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(4))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("44"))))
                       TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(5))))
@@ -3580,11 +3584,16 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
     let moid1 = mst + "/" + ktc "1"
     let moid2 = mst + "/" + ktc "2"
     let valueRel = RelValues.Value + makeParm RelParamValues.Collection "AnEagerCollection"
+    
     let val1 = 
         TObjectJson(TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid1) RepresentationTypes.Object mst)
     let val2 = 
         TObjectJson(TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid2) RepresentationTypes.Object mst)
     
+    let value = TArray([ val1; val2 ])
+    let emptyValue = TArray([ ])
+
+
     let details = 
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
           TProperty(JsonPropertyNames.Extensions, 
@@ -3595,7 +3604,7 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(mst)) ]))
           TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
-          TProperty(JsonPropertyNames.Value, TArray([ val1; val2 ]))
+          TProperty(JsonPropertyNames.Value, value)
           
           TProperty
               (JsonPropertyNames.Links, 
@@ -3620,23 +3629,23 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "")
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2))
+                    TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2 value))
                                   
                                   TProperty
                                       ("ACollectionViewModels", 
                                        
                                        TObjectJson
                                            (makeCollectionMemberType "ACollectionViewModels" oid "A Collection View Models" "" "list" 2 
-                                                (ttc "RestfulObjects.Test.Data.MostSimpleViewModel") "Most Simple View Models"))
+                                                (ttc "RestfulObjects.Test.Data.MostSimpleViewModel") "Most Simple View Models" value))
                                   
                                   TProperty
-                                      ("ADisabledCollection", TObjectJson((makeCollectionMember "ADisabledCollection" oid "A Disabled Collection" "" "list" 2)))
+                                      ("ADisabledCollection", TObjectJson((makeCollectionMember "ADisabledCollection" oid "A Disabled Collection" "" "list" 2 value)))
                                   
                                   TProperty
                                       ("AnEmptyCollection", 
                                        
                                        TObjectJson
-                                           (makeCollectionMember "AnEmptyCollection" oid "An Empty Collection" "an empty collection for testing" "list" 0))
+                                           (makeCollectionMember "AnEmptyCollection" oid "An Empty Collection" "an empty collection for testing" "list" 0 emptyValue))
                                   
                                   TProperty
                                       ("AnEagerCollection", 
@@ -3644,8 +3653,8 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makeCollectionMemberTypeValue "AnEagerCollection" oid "An Eager Collection" "" "list" 2 mst "Most Simples" 
                                                 (TArray([ val1; val2 ])) details))
-                                  TProperty("ASet", TObjectJson(makeCollectionMember "ASet" oid "A Set" "" "set" 2))
-                                  TProperty("AnEmptySet", TObjectJson(makeCollectionMember "AnEmptySet" oid "An Empty Set" "an empty set for testing" "set" 0))
+                                  TProperty("ASet", TObjectJson(makeCollectionMember "ASet" oid "A Set" "" "set" 2 value))
+                                  TProperty("AnEmptySet", TObjectJson(makeCollectionMember "AnEmptySet" oid "An Empty Set" "an empty set for testing" "set" 0 emptyValue))
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))

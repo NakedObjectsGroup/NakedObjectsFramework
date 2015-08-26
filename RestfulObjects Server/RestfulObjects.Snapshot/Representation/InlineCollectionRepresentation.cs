@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -26,19 +25,17 @@ namespace RestfulObjects.Snapshot.Representations {
             Links = strategy.GetLinks(true);
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
+            Value = strategy.GetValue();
         }
 
         [DataMember(Name = JsonPropertyNames.Size)]
         public int Size { get; set; }
 
-        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            if (!propertyContext.Target.IsTransient) {
-                IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
-                IEnumerable<LinkRepresentation> items = collectionItems.Select(i => LinkRepresentation.Create(oidStrategy ,new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i))));
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, items.ToArray()));
-            }
+        [DataMember(Name = JsonPropertyNames.Value)]
+        public LinkRepresentation[] Value { get; set; }
 
-            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy ,req, propertyContext, flags);
+        public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             if (optionals.Count == 0) {
                 return new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
             }

@@ -73,9 +73,6 @@ type Nof4Tests() =
             let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService> |]
             let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
-            
-
-
             ()
         
         [<TestFixtureSetUp>]
