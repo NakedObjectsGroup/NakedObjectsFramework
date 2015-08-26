@@ -1396,18 +1396,24 @@ let makeCollectionMemberNoDetails mName oName fName desc =
 let makeCollectionMemberWithValue mName (oName : string) fName desc rType values size cType cText =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 2
-      //let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+     
+      let presHint = mName = "ACollection"
+
+      let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                      TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                      TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                      TProperty(JsonPropertyNames.PluralName, TObjectVal(cText));
+                      TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                      TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
+
+      let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
+
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
         TProperty(JsonPropertyNames.Value, values);
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                             TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                             TProperty(JsonPropertyNames.PluralName, TObjectVal(cText));
-                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                             TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]));
+        TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]))]
 
 let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cType cText =

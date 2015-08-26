@@ -188,6 +188,7 @@ type Nof4TestsDomainType() =
         member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         // remove these just because the ids get changed. The tests have already been run once if uncomment and run 
@@ -202,6 +203,7 @@ type Nof4TestsDomainType() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
+        [<Ignore>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -376,12 +378,15 @@ type Nof4TestsDomainType() =
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.api
         
         [<Test>]

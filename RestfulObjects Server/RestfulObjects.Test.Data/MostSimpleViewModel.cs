@@ -6,15 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
+    [NotPersisted]
+    [NotMapped]
     public class MostSimpleViewModel : IViewModel {
-        public IDomainObjectContainer Container { set; protected get; }
+        public virtual  IDomainObjectContainer Container { set; protected get; }
 
         [Hidden(WhenTo.Always)]
-        public string AggregateKey {
+        public virtual string AggregateKey {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }
 

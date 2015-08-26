@@ -121,12 +121,28 @@ namespace RestfulObjects.Test.Data {
         private ICollection<MostSimple> anEagerCollection = new List<MostSimple>();
         private ICollection<MostSimple> anEmptyCollection = new List<MostSimple>();
         private ISet<MostSimple> anEmptySet = new HashSet<MostSimple>();
+        private IDomainObjectContainer container;
 
-        public IDomainObjectContainer Container { set; protected get; }
+        public IDomainObjectContainer Container
+            
+            {
+            set {
+                container = value; 
+                // hack for testsing 
+                var vm1 = container.NewViewModel<MostSimpleViewModel>();
+                var vm2 = container.NewViewModel<MostSimpleViewModel>();
+                vm1.Id = 1;
+                vm2.Id = 2;
+
+                aCollectionViewModels.Add(vm1);
+                aCollectionViewModels.Add(vm2);
+
+            }
+            protected get { return container; }
+        }
 
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
-
 
         [PresentationHint("class7 class8")]
         public virtual ICollection<MostSimple> ACollection {

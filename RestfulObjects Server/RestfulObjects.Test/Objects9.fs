@@ -812,7 +812,68 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let roid = sprintf "%s/0" roType
     let argsMembers = TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]))
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
+
+
+    let moid1 = mst + "/" + ktc "1"
+    let moid2 = mst + "/" + ktc "2"
+    let moid3 = mstv + "/" + ktc "1"
+    let moid4 = mstv + "/" + ktc "2"
+    let valueRel = RelValues.Value + makeParm RelParamValues.Collection "ACollection"    
+    let valueRel1 = RelValues.Value + makeParm RelParamValues.Collection "ACollectionViewModels"    
+    let valueRel2 = RelValues.Value + makeParm RelParamValues.Collection "ADisabledCollection"    
+    let valueRel3 = RelValues.Value + makeParm RelParamValues.Collection "ASet"    
+    let valueRel4 = RelValues.Value + makeParm RelParamValues.Collection "AnEagerCollection"    
+
+   
+    let val3 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid1) RepresentationTypes.Object mst)
+    let val4 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid2) RepresentationTypes.Object mst)
+
+    let val5 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel1 (sprintf "objects/%s" moid3) RepresentationTypes.Object mstv)
+    let val6 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel1 (sprintf "objects/%s" moid4) RepresentationTypes.Object mstv)
+
+    let val7 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel2 (sprintf "objects/%s" moid1) RepresentationTypes.Object mst)
+    let val8 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel2 (sprintf "objects/%s" moid2) RepresentationTypes.Object mst)
+
+    let val9 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel3 (sprintf "objects/%s" moid1) RepresentationTypes.Object mst)
+    let val10 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel3 (sprintf "objects/%s" moid2) RepresentationTypes.Object mst)
+
+    let val11 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel4 (sprintf "objects/%s" moid1) RepresentationTypes.Object mst)
+    let val12 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel4 (sprintf "objects/%s" moid2) RepresentationTypes.Object mst)
+
+
     
+    let value = TArray([val3;val4])
+    let valuevm = TArray([val5;val6])
+    let valued = TArray([val7;val8])
+    let valueset = TArray([val9;val10])
+    let valuee = TArray([val11;val12])
+
+
+
+    let emptyValue = TArray([])
+
+
+
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
@@ -823,41 +884,42 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                           (JsonPropertyNames.Members, 
                            TObjectJson([ TProperty
                                              ("ACollection", 
-                                              TObjectJson(makeCollectionMemberNoValue "ACollection" roid "A Collection" "" "list" 2 mst "Most Simples"))
+                                              TObjectJson(makeCollectionMemberWithValue "ACollection" roid "A Collection" "" "list" value 2 mst "Most Simples"))
                                          
                                          TProperty
                                              ("ACollectionViewModels", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberNoValue "ACollectionViewModels" roid "A Collection View Models" "" "list" 2 mstv 
+                                                  (makeCollectionMemberWithValue "ACollectionViewModels" roid "A Collection View Models" "" "list" valuevm 2 mstv 
                                                        "Most Simple View Models"))
                                          
                                          TProperty
                                              ("ADisabledCollection", 
                                               
                                               TObjectJson
-                                                  ((makeCollectionMemberNoValue "ADisabledCollection" roid "A Disabled Collection" "" "list" 2 mst 
+                                                  ((makeCollectionMemberWithValue "ADisabledCollection" roid "A Disabled Collection" "" "list" valued 2 mst 
                                                         "Most Simples")))
                                          
                                          TProperty
                                              ("AnEmptyCollection", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberNoValue "AnEmptyCollection" roid "An Empty Collection" "an empty collection for testing" 
-                                                       "list" 0 mst "Most Simples"))
+                                                  (makeCollectionMemberWithValue "AnEmptyCollection" roid "An Empty Collection" "an empty collection for testing" 
+                                                       "list" emptyValue 0 mst "Most Simples"))
                                          
                                          TProperty
                                              ("AnEagerCollection", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberNoValue "AnEagerCollection" roid "An Eager Collection" "" "list" 2 mst "Most Simples"))
-                                         TProperty("ASet", TObjectJson(makeCollectionMemberNoValue "ASet" roid "A Set" "" "set" 2 mst "Most Simples"))
+                                                  (makeCollectionMemberWithValue "AnEagerCollection" roid "An Eager Collection" "" "list" valuee 2 mst "Most Simples"))
+                                         
+                                         TProperty("ASet", TObjectJson(makeCollectionMemberWithValue "ASet" roid "A Set" "" "set" valueset 2 mst "Most Simples"))
                                          
                                          TProperty
                                              ("AnEmptySet", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberNoValue "AnEmptySet" roid "An Empty Set" "an empty set for testing" "set" 0 mst 
+                                                  (makeCollectionMemberWithValue "AnEmptySet" roid "An Empty Set" "an empty set for testing" "set" emptyValue 0 mst 
                                                        "Most Simples"))
                                          TProperty("Id", TObjectJson(makePropertyMemberFullNoDetails "objects" "Id" roType "Id" "" false (TObjectVal(0)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 
@@ -1249,6 +1311,7 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let ourl = sprintf "objects/%s" oid
     let purl = sprintf "%s/collections/%s" ourl pid
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+   
     let moid1 = roType + "/" + ktc "1"
     let moid2 = roType + "/" + ktc "2"
     let valueRel = RelValues.Value + makeParm RelParamValues.Collection "AnEagerCollection"
