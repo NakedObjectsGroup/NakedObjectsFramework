@@ -117,22 +117,8 @@
       },
       "ACollectionViewModels": {
         "disabledReason": "Field not editable",
-        "size": 4,
+        "size": 2,
         "value": [
-          {
-            "title": "1",
-            "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
-            "method": "GET",
-            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/1"
-          },
-          {
-            "title": "2",
-            "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
-            "method": "GET",
-            "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/2"
-          },
           {
             "title": "1",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
