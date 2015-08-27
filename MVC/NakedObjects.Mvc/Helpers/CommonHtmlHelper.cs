@@ -2493,17 +2493,17 @@ namespace NakedObjects.Web.Mvc.Html {
             string propertyName) {
             IEnumerable<IActionSpec> finderActions = fieldSpec.GetFinderActions();
             var descriptors = new List<ElementDescriptor>();
-            foreach (var finderAction in finderActions) {
-                //TODO: Need to test for visibility to user !
-                //See MenutExtensions#MenuActionAsElementDescriptor for example.
-                INakedObjectAdapter service = html.Framework().ServicesManager.GetService((IServiceSpec) finderAction.OnSpec);
-                ActionContext targetActionContext = new ActionContext(service, finderAction);
-                var ed = html.GetActionElementDescriptor(new ActionContext(service, finderAction), actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
-                var prefix = finderAction.GetFacet<IFinderActionFacet>().Value;
-                if (prefix != null) {
-                    ed.Value = prefix +" "+ ed.Value;
+            foreach (IActionSpec finderAction in finderActions) {
+                INakedObjectAdapter service = html.Framework().ServicesManager.GetService((IServiceSpec)finderAction.OnSpec);
+                var targetActionContext = new ActionContext(service, finderAction);
+                if (targetActionContext.Action.IsVisible(actionContext.Target)) {
+                    var ed = html.GetActionElementDescriptor(targetActionContext, actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
+                    var prefix = finderAction.GetFacet<IFinderActionFacet>().Value;
+                    if (prefix != null) {
+                        ed.Value = prefix + " " + ed.Value;
+                    }
+                    descriptors.Add(ed);
                 }
-                descriptors.Add(ed);
             }
             return descriptors;
         }
