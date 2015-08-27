@@ -2494,6 +2494,8 @@ namespace NakedObjects.Web.Mvc.Html {
             IEnumerable<IActionSpec> finderActions = fieldSpec.GetFinderActions();
             var descriptors = new List<ElementDescriptor>();
             foreach (var finderAction in finderActions) {
+                //TODO: Need to test for visibility to user !
+                //See MenutExtensions#MenuActionAsElementDescriptor for example.
                 INakedObjectAdapter service = html.Framework().ServicesManager.GetService((IServiceSpec) finderAction.OnSpec);
                 ActionContext targetActionContext = new ActionContext(service, finderAction);
                 var ed = html.GetActionElementDescriptor(new ActionContext(service, finderAction), actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
