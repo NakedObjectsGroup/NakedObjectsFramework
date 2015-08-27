@@ -27,6 +27,7 @@
     "ACollection": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "ACollection",
       "links": [

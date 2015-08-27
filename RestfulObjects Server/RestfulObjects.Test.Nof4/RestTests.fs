@@ -73,9 +73,6 @@ type Nof4Tests() =
             let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService> |]
             let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|])
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
-            
-
-
             ()
         
         [<TestFixtureSetUp>]
@@ -182,6 +179,7 @@ type Nof4Tests() =
         member x.GetWithReferenceTransientObject() = Objects9.GetWithReferenceTransientObject x.api
         
         [<Test>]
+        
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
@@ -194,6 +192,7 @@ type Nof4Tests() =
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
+        
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -368,12 +367,15 @@ type Nof4Tests() =
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
         
         [<Test>]
+        
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
         [<Test>]
+        
         member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
         
         [<Test>]
+        
         member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.api
         
         [<Test>]

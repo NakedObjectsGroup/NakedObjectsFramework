@@ -91,8 +91,7 @@ namespace RestfulObjects.Test.Data {
             wc1.ACollection.Add(ms1);
             wc1.ACollection.Add(ms2);
             wc1.ACollection.Add(ms3);
-            wc1.ACollectionViewModels.Add(new MostSimpleViewModel {Id = 1});
-            wc1.ACollectionViewModels.Add(new MostSimpleViewModel {Id = 2});
+       
             wc1.ASet.Add(ms1);
 
             wc1.ASet.Add(ms2);

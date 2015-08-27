@@ -78,11 +78,11 @@ namespace RestfulObjects.Test.Data {
             var ms1 = Container.Instances<MostSimple>().Single(ms => ms.Id == 1);
             var ms2 = Container.Instances<MostSimple>().Single(ms => ms.Id == 2);
 
-            var msvm1 = Container.NewViewModel<MostSimpleViewModel>();
-            var msvm2 = Container.NewViewModel<MostSimpleViewModel>();
+            //var msvm1 = Container.NewViewModel<MostSimpleViewModel>();
+            //var msvm2 = Container.NewViewModel<MostSimpleViewModel>();
 
-            msvm1.Id = 1;
-            msvm2.Id = 2;
+            //msvm1.Id = 1;
+            //msvm2.Id = 2;
 
             twc.ACollection.Add(ms1);
             twc.ACollection.Add(ms2);
@@ -90,8 +90,8 @@ namespace RestfulObjects.Test.Data {
             twc.ASetAsCollection.Add(ms1);
             twc.ASetAsCollection.Add(ms2);
 
-            twc.ACollectionViewModels.Add(msvm1);
-            twc.ACollectionViewModels.Add(msvm2);
+            //twc.ACollectionViewModels.Add(msvm1);
+            //twc.ACollectionViewModels.Add(msvm2);
 
             twc.ADisabledCollection.Add(ms1);
             twc.ADisabledCollection.Add(ms2);
