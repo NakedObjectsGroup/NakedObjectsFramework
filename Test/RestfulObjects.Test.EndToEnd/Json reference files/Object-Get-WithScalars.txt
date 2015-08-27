@@ -467,6 +467,7 @@
     "List": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "List",
       "links": [
@@ -575,6 +576,7 @@
     "Set": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "Set",
       "links": [

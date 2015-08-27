@@ -38,6 +38,7 @@
     "AnEmptyCollection": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "AnEmptyCollection",
       "links": [
@@ -72,6 +73,7 @@
     "AnEmptySet": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "AnEmptySet",
       "links": [
@@ -106,6 +108,22 @@
     "ACollection": {
       "disabledReason": "Field not editable",
       "size": 2,
+      "value": [
+        {
+          "title": "1",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollection\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        },
+        {
+          "title": "3",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollection\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/3"
+        }
+      ],
       "memberType": "collection",
       "id": "ACollection",
       "links": [
@@ -140,6 +158,22 @@
     "ACollectionViewModels": {
       "disabledReason": "Field not editable",
       "size": 2,
+      "value": [
+        {
+          "title": "1",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/1"
+        },
+        {
+          "title": "3",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/3"
+        }
+      ],
       "memberType": "collection",
       "id": "ACollectionViewModels",
       "links": [
@@ -174,6 +208,22 @@
     "ADisabledCollection": {
       "disabledReason": "Field not editable",
       "size": 2,
+      "value": [
+        {
+          "title": "1",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ADisabledCollection\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        },
+        {
+          "title": "2",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ADisabledCollection\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+        }
+      ],
       "memberType": "collection",
       "id": "ADisabledCollection",
       "links": [
@@ -208,6 +258,22 @@
     "ASet": {
       "disabledReason": "Field not editable",
       "size": 2,
+      "value": [
+        {
+          "title": "1",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ASet\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        },
+        {
+          "title": "2",
+          "rel": "urn:org.restfulobjects:rels/value;collection=\"ASet\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+        }
+      ],
       "memberType": "collection",
       "id": "ASet",
       "links": [
@@ -241,6 +307,7 @@
     },
     "AnEagerCollection": {
       "disabledReason": "Field not editable",
+      "size": 2,
       "value": [
         {
           "title": "1",
@@ -257,7 +324,6 @@
           "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
         }
       ],
-      "size": 2,
       "memberType": "collection",
       "id": "AnEagerCollection",
       "links": [

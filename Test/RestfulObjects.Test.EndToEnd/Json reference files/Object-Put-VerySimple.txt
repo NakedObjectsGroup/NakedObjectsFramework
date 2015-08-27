@@ -128,6 +128,7 @@
     "SimpleList": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "SimpleList",
       "links": [
@@ -162,6 +163,7 @@
     "SimpleSet": {
       "disabledReason": "Field not editable",
       "size": 0,
+      "value": [],
       "memberType": "collection",
       "id": "SimpleSet",
       "links": [
