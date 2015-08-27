@@ -1311,10 +1311,17 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let ourl = sprintf "objects/%s" oid
     let purl = sprintf "%s/collections/%s" ourl pid
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-   
+    let roType1 = ttc "RestfulObjects.Test.Data.MostSimpleViewModel"
+
     let moid1 = roType + "/" + ktc "1"
     let moid2 = roType + "/" + ktc "2"
+    let moid3 = roType1 + "/" + ktc "1"
+    let moid4 = roType1 + "/" + ktc "2"
+
     let valueRel = RelValues.Value + makeParm RelParamValues.Collection "AnEagerCollection"
+    let valueRel1 = RelValues.Value + makeParm RelParamValues.Collection "ACollectionViewModels"
+   
+   
     let val3 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid1) RepresentationTypes.Object roType)
@@ -1322,7 +1329,17 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel (sprintf "objects/%s" moid2) RepresentationTypes.Object roType)
     
+    let val5 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp valueRel1 (sprintf "objects/%s" moid3) RepresentationTypes.Object roType1)
+    let val6 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel1 (sprintf "objects/%s" moid4) RepresentationTypes.Object roType1)
+
+
+
     let value = TArray([val3;val4])
+    let valuevm = TArray([val5;val6])
     let emptyValue = TArray([])
 
     let details = 
@@ -1366,8 +1383,8 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                       ("ACollectionViewModels", 
                                        
                                        TObjectJson
-                                           (makeCollectionMemberType "ACollectionViewModels" oid "A Collection View Models" "" ResultTypes.List 0 
-                                                (ttc "RestfulObjects.Test.Data.MostSimpleViewModel") "Most Simple View Models" emptyValue))
+                                           (makeCollectionMemberType "ACollectionViewModels" oid "A Collection View Models" "" ResultTypes.List 2 
+                                                (ttc "RestfulObjects.Test.Data.MostSimpleViewModel") "Most Simple View Models" valuevm))
                                   
                                   TProperty
                                       ("ADisabledCollection", 

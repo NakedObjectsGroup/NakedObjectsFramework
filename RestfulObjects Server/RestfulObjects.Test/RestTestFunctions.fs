@@ -1320,7 +1320,7 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson(detailsLink) ]))]
 
    
-let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size cType cName =
+let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size cType cName value =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 2
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
@@ -1340,12 +1340,13 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
+        TProperty(JsonPropertyNames.Value, value );
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
         TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true) ]))]
 
-let makeCollectionMemberSimple mName (oName : string) fName desc rType size = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples"
+let makeCollectionMemberSimple mName (oName : string) fName desc rType size value = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
 
 let makeCollectionMemberFormalTypeValue mName  (oName : string) size cType cValue (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
@@ -1363,20 +1364,21 @@ let makeCollectionMemberFormalTypeValue mName  (oName : string) size cType cValu
         TProperty(JsonPropertyNames.Extensions, TObjectJson([ ]))]
 
 
-let makeCollectionMemberFormalType mName  (oName : string) size cType =
+let makeCollectionMemberFormalType mName  (oName : string) size cType value =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
       let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
+        TProperty(JsonPropertyNames.Value, value );
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType false);
                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]));
         TProperty(JsonPropertyNames.Extensions, TObjectJson([ ]))]
 
-let makeCollectionMemberFormal mName  (oName : string) size = makeCollectionMemberFormalType mName  oName size (ttc "RestfulObjects.Test.Data.MostSimple") 
+let makeCollectionMemberFormal mName  (oName : string) size value = makeCollectionMemberFormalType mName  oName size (ttc "RestfulObjects.Test.Data.MostSimple") value
 
 let makeCollectionMemberNoDetails mName oName fName desc =
       let order = if desc = "" then 0 else 2
