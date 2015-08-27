@@ -99,7 +99,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     let wat1 = new WithAttachments(Id = 1)
     context.WithAttachments.Add(wat1) |> ignore
     let added = context.SaveChanges()
-    Assert.AreEqual(45, added)
+    Assert.AreEqual(41, added)
     wc1.ACollection.Remove(ms3) |> ignore
     context.SaveChanges() |> ignore
     ()
