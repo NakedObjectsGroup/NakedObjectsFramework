@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using System;
 
 namespace AdventureWorksModel {
     [DisplayName("Employees")]
@@ -18,15 +19,14 @@ namespace AdventureWorksModel {
         public ContactRepository ContactRepository { set; protected get; }
         #endregion
 
-        #region FindEmployeesByAge
-        //This method is for test purposes only, to test that a hidden Finder Action does not
+        #region FindRecentHires
+        //This method exists for test purposes only, to test that a hidden Finder Action does not
         //show up in the Find Menu
         [Hidden(WhenTo.Always)]
         [FinderAction]
         public IQueryable<Employee> FindRecentHires() {
-            return null;
+            throw new NotImplementedException(); //Deliberately not implemented
         }
-
         #endregion
 
         #region FindEmployeeByName
@@ -48,7 +48,6 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindEmployeeByNationalIDNumber
-        [Hidden(WhenTo.Always)]
         [FinderAction]
         [QueryOnly]
         public Employee FindEmployeeByNationalIDNumber(string nationalIDNumber) {
