@@ -787,12 +787,12 @@ namespace NakedObjects.Facade.Impl {
 
         private INakedObjectAdapter GetObjectAsNakedObject(IOidTranslation objectId) {
             object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return framework.NakedObjectManager.CreateAdapter(obj, null, null);
+            return framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
         private INakedObjectAdapter GetServiceAsNakedObject(IOidTranslation serviceName) {
             object obj = oidStrategy.GetServiceByServiceName(serviceName);
-            return framework.NakedObjectManager.CreateAdapter(obj, null, null);
+            return framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
         private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
