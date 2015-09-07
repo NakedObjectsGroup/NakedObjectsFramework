@@ -786,8 +786,8 @@ namespace NakedObjects.Facade.Impl {
         }
 
         private INakedObjectAdapter GetObjectAsNakedObject(IOidTranslation objectId) {
-            object obj = oidStrategy.GetDomainObjectByOid(objectId);
-            return framework.NakedObjectManager.GetAdapterFor(obj);
+            var obj = oidStrategy.GetObjectFacadeByOid(objectId);
+            return obj.WrappedAdapter();
         }
 
         private INakedObjectAdapter GetServiceAsNakedObject(IOidTranslation serviceName) {

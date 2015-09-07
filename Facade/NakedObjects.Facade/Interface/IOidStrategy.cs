@@ -12,6 +12,7 @@ namespace NakedObjects.Facade {
         // todo make public get while refactoring
         IFrameworkFacade FrameworkFacade { get; set; }
         object GetDomainObjectByOid(IOidTranslation objectId);
+        IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);
         ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType);
         string GetLinkDomainTypeBySpecification(ITypeFacade spec);

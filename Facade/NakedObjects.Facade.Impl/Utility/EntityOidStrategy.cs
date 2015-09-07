@@ -32,45 +32,28 @@ namespace NakedObjects.Facade.Impl.Utility {
         public IFrameworkFacade FrameworkFacade { get; set; }
 
         public object GetDomainObjectByOid(IOidTranslation objectId) {
+            var adapter = GetAdapterByOidTranslation(objectId);
+            return adapter == null ? null : GetAdapterByOidTranslation(objectId).GetDomainObject();
+        }
+
+        public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
+            var adapter = GetAdapterByOidTranslation(objectId);
+            return adapter == null ? null : ObjectFacade.Wrap(adapter, FrameworkFacade, framework);
+        }
+
+        private INakedObjectAdapter GetAdapterByOidTranslation(IOidTranslation objectId) {
             if (objectId == null) {
                 return null;
             }
 
             var oid = objectId.GetOid(this);
-            return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
+            return GetAdapterByOid(oid.Value as IOid);
         }
 
         public object GetServiceByServiceName(IOidTranslation serviceName) {
             var oid = serviceName.GetSid(this);
             return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
         }
-
-        //private string GetObjectId(IOid oid) {
-        //    return Encode(((IEncodedToStrings)oid));
-        //}
-
-        //private string GetObjectId(INakedObjectAdapter nakedObject) {
-        //    if (nakedObject.Spec.IsViewModel) {
-        //        // todo this always repopulates oid now - see core - look into optimizing
-        //        framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
-        //    }
-        //    else if (nakedObject.Oid == null) {
-        //        return "";
-        //    }
-
-        //    return GetObjectId(nakedObject.Oid);
-        //}
-
-        //private string GetObjectId(object model) {
-        //    Assert.AssertFalse("Cannot get Adapter for Adapter", model is INakedObjectAdapter);
-        //    INakedObjectAdapter nakedObject = framework.GetValue(model);
-        //    return framework.GetObjectId(nakedObject);
-        //}
-
-        //public string GetObjectId(IObjectFacade nakedobject) {
-        //    var no = ((ObjectFacade)nakedobject).WrappedNakedObject;
-        //    return GetObjectId(no);
-        //}
 
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             Type type = GetType(linkDomainType);
