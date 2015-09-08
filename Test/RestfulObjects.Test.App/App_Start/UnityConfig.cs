@@ -50,18 +50,18 @@ namespace RestfulObjects.Test.App {
 
             StandardUnityConfig.RegisterStandardFacetFactories(container);
             StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-            StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
+            StandardUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
 
             // config 
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
             // facade
-            container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
-            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-            container.RegisterType<IIdHelper, IdHelper>(new PerResolveLifetimeManager());
+            container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new HierarchicalLifetimeManager());
+            container.RegisterType<IOidStrategy, EntityOidStrategy>(new HierarchicalLifetimeManager());
+            container.RegisterType<IIdHelper, IdHelper>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
+            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new HierarchicalLifetimeManager());
 
             //Externals
             container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
