@@ -5,7 +5,6 @@
 		<CorePath>Core</CorePath>
 		
     <BATPath>Batch</BATPath>
-		<SamplesPath>Samples</SamplesPath>
 		<TestPath>Test</TestPath>
 		<FacadePath>Facade</FacadePath>
 		<DemoPath>Demo</DemoPath>
@@ -17,7 +16,7 @@
 		
     <NOBAT>NakedObjects.Batch</NOBAT>
 		<NOX>NakedObjects.Xat</NOX>
-		<NOS>NakedObjects.Sample</NOS>
+		
 		
 		<NOSF>NakedObjects.Facade</NOSF>
 		
@@ -48,16 +47,14 @@
   
 	<Target Name="Clean" DependsOnTargets="Config">
 
-		<RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\lib"/>
-		<RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\src"/>
-    <RemoveDir Directories="$(SamplesPath)\$(NOS).Icons.package\content"/>
+		
 
     <ItemGroup>
-			<OldPackages Include="$(SamplesPath)\$(NOS).Icons.package\*.nupkg"/>
+		
       <OldPackages Include="$(PackageSourcePath)\$(NOS)*.nupkg"/>
       <OldPackages Include="$(BuiltPackagesPath)\$(NOS)*.nupkg"/>
       
-      <OldPackageFiles Include="$(InstalledPackagesPath)\$(NOS).Icons.package\**\*.*"/>
+      
 		</ItemGroup>
 
 		<Delete Files="@(OldPackages)"/>
@@ -75,14 +72,12 @@
 
   
 
-  <Target Name="CreateCodeZip"  DependsOnTargets="SamplesPackage">
+  <Target Name="CreateCodeZip"  DependsOnTargets="Init">
 
     <ItemGroup>
       <Source Include="*$(PMPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(PMPath)\templates*\**\*.*" />
       <Source Include="*$(CorePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
-      <Source Include="*$(SamplesPath)\AdventureworksModel\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
-      <Source Include="*$(SamplesPath)\NakedObjects.Sample.Icons.package\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(TestPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(FacadePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(ROPath)\RestfulObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
