@@ -72,14 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Attributes\ActionOrderAttribute.cs" />
     <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="Attributes\AuthorizePropertyAttribute.cs" />
     <Compile Include="Attributes\ContributedActionAttribute.cs" />
     <Compile Include="Attributes\NakedObjectsIncludeAttribute.cs" />
     <Compile Include="Attributes\FindMenuAttribute.cs" />
     <Compile Include="Attributes\FinderActionAttribute.cs" />
-    <Compile Include="Attributes\FieldOrderAttribute.cs" />
     <Compile Include="Attributes\NakedObjectsTypeAttribute.cs" />
     <Compile Include="Attributes\PresentationHintAttribute.cs" />
     <Compile Include="Enums\Ajax.cs" />
@@ -89,8 +87,6 @@
     <Compile Include="Attributes\PageSizeAttribute.cs" />
     <Compile Include="Attributes\QueryOnlyAttribute.cs" />
     <Compile Include="Attributes\ValidateProgrammaticUpdatesAttribute.cs" />
-    <Compile Include="Attributes\ExcludeFromFindMenuAttribute.cs" />
-    <Compile Include="Attributes\NotContributedActionAttribute.cs" />
     <Compile Include="Attributes\BoundedAttribute.cs" />
     <Compile Include="Attributes\ProgramPersistableOnlyAttribute.cs" />
     <Compile Include="Attributes\IconNameAttribute.cs" />

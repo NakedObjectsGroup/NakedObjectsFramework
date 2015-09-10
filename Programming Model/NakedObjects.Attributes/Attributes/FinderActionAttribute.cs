@@ -14,14 +14,5 @@ namespace NakedObjects {
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class FinderActionAttribute : Attribute {
-
-        [Obsolete]
-        public FinderActionAttribute(string prefix) {
-
-        }
-
-        public FinderActionAttribute() {
-
-        }
     }
 }
