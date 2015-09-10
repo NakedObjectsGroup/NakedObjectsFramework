@@ -59,7 +59,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.core.proj /t:Clean
 	build.facade.proj /t:Clean
 	build.ro.proj /t:Clean
-	build.mvc.proj /t:Clean
 	build.batch.proj /t:Clean
 	
 	build.ide.proj 
@@ -67,7 +66,6 @@ param($rootPath, $toolsPath, $package, $project)
 	build.core.proj 
 	build.facade.proj 
 	build.ro.proj 
-	build.mvc.proj
 	build.batch.proj 
 
 	.EXAMPLE
@@ -86,7 +84,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.core.proj /t:Clean
 		build build.facade.proj /t:Clean
 		build build.ro.proj /t:Clean
-		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
 		
 		build build.ide.proj 
@@ -94,7 +91,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.core.proj 
 		build build.facade.proj 
 		build build.ro.proj 
-		build build.mvc.proj 
 		build build.batch.proj
 	}
 
@@ -139,7 +135,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.core.proj /t:Clean
 		build build.facade.proj /t:Clean
 		build build.ro.proj /t:Clean
-		build build.mvc.proj /t:Clean
 		build build.batch.proj /t:Clean
 		
 
@@ -148,7 +143,6 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.core.proj /t:FrameworkPackageNoTest
 		build build.facade.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
-		build build.mvc.proj /t:MvcPackageNoTest
 		build build.batch.proj
 	}
 
@@ -226,8 +220,6 @@ param($rootPath, $toolsPath, $package, $project)
 	nakedobjects.authorisation.wif
 	nakedobjects.core    
 	nakedobjects.xat         
-	nakedobjects.mvc-assemblies
-	nakedobjects.mvc-filetemplates
 	nakedobjects.ide            
 	nakedobjects.programmingmodel
 	restfulobjects.mvc          
@@ -253,9 +245,7 @@ param($rootPath, $toolsPath, $package, $project)
 		$supportedPackages = "nakedobjects.batch",           
 							 "nakedobjects.authorisation.wif",
 							 "nakedobjects.core",        
-							 "nakedobjects.xat",              
-							 "nakedobjects.mvc-assemblies",   
-							 "nakedobjects.mvc-filetemplates",
+							 "nakedobjects.xat",              							
 							 "nakedobjects.ide",              
 							 "nakedobjects.programmingmodel", 
 							 "restfulobjects.mvc",            
