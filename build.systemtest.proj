@@ -1,4 +1,4 @@
-<Project ToolsVersion="12.0" DefaultTargets="WebTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="EndToEndTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  
   <PropertyGroup>
     <TestPath>Test</TestPath>
@@ -47,9 +47,7 @@
     <Files Include="$(TestPath)\NakedObjects.Helpers.Test\*.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.SystemTest\*.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test\NakedObjects.Mvc.Selenium.Test.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
   </ItemGroup>
   
@@ -61,8 +59,7 @@
       <OldTests Include="$(TestResultsPath)\NakedObjects.Helpers.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.SystemTest.trx"/>
       <OldTests Include="$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
-      <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
+      
       
       <OldDeployment Include="$(IISRestPath)\**\*.*"/>
       <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
@@ -146,22 +143,6 @@
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
   </Target>
 
-  <Target Name="WebTest" DependsOnTargets="EndToEndTest">
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.Test.trx' IgnoreExitCode="True"/>
-
-    <XmlQuery XmlFileName="test-results\NakedObjects.Mvc.Selenium.Test.trx" XPath="//*[@outcome='Failed']/@testName">
-      <Output TaskParameter="Values" ItemName="Tests" />
-    </XmlQuery>
-
-    <PropertyGroup>
-      <FailedTests>@(Tests->'/test:%(FileName)', ' ')</FailedTests>
-      <FailedTestsTrim>$(FailedTests.Replace(" ", ""))</FailedTestsTrim>
-    </PropertyGroup>
-
-    <Message Text="Found: @(Tests->'/test:%(FileName)', ' ')"/>
-
-    <Exec Command='"$(MSTestPath)\MSTest.exe" $(FailedTests)  /testcontainer:"$(TestPath)\NakedObjects.Mvc.Selenium.Test\bin\%(Configuration.Identity)\NakedObjects.Mvc.Selenium.Test.dll" /resultsfile:test-results\NakedObjects.Mvc.Selenium.ReTest.trx' Condition="'$(FailedTestsTrim)'!=''"/>
-
-  </Target>
+ 
 
 </Project>
