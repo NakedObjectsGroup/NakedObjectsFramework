@@ -119,17 +119,6 @@
     <Copy SourceFiles="@(RestApp)" DestinationFolder="$(IISRestPath)\%(RecursiveDir)"/>
     <Copy SourceFiles="@(RestAppLib)" DestinationFolder="$(IISRestPath)\bin" SkipUnchangedFiles="true" />
 
-    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"
-            Targets="_CopyWebApplication"
-            Properties="WebProjectOutputDir=..\..\$(WebProjectAjaxOutputDir)\;OutDir=..\..\$(WebProjectAjaxOutputDir)\;Configuration=%(Configuration.Identity)" />
-
-    <ItemGroup>
-      <MvcAppAjax Include="$(WebProjectAjaxOutputDir)\**\*.*"/>
-      <MvcAppLib Include="$(TestPath)\NakedObjects.Test.App\bin\*.dll"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(MvcAppAjax)" DestinationFolder="$(IISAjaxPath)\%(RecursiveDir)"/>
-    <Copy SourceFiles="@(MvcAppLib)" DestinationFolder="$(IISAjaxPath)\bin" SkipUnchangedFiles="true" />
 
          
   </Target> 
