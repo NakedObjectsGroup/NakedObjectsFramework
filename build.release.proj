@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<PMPath>Programming Model</PMPath>
 		<CorePath>Core</CorePath>
-		<MVCPath>MVC</MVCPath>
+		
     <BATPath>Batch</BATPath>
 		<SamplesPath>Samples</SamplesPath>
 		<TestPath>Test</TestPath>
@@ -14,13 +14,13 @@
 		<NOIDE>NakedObjects.Ide</NOIDE>
 		<NOPM>NakedObjects.ProgrammingModel</NOPM>
 		<NOCore>NakedObjects.Core</NOCore>
-		<NOMVC>NakedObjects.Mvc</NOMVC>
+		
     <NOBAT>NakedObjects.Batch</NOBAT>
 		<NOX>NakedObjects.Xat</NOX>
 		<NOS>NakedObjects.Sample</NOS>
-		<NOSEL>NakedObjects.Mvc.Selenium</NOSEL>
+		
 		<NOSF>NakedObjects.Facade</NOSF>
-		<NOWIF>NakedObjects.Authorisation.Wif</NOWIF>
+		
 		<NOXS>NakedObjects.Snapshot.Xml</NOXS>
     <ROMVC>RestfulObjects.Mvc</ROMVC>
     <ROSVR>RestfulObjects.Server</ROSVR>
@@ -73,19 +73,7 @@
     <PackageCongfigFiles Include="$(PMPath)\**\packages.config" Exclude="$(PMPath)\NakedObjects.Helpers.Test\packages.config"/>
   </ItemGroup>
 
-  <Target Name="SamplesPackage" DependsOnTargets="Init">
-    <ItemGroup>
-      <IconFiles Include="$(MVCPath)\$(NOMVC).App\Images\*.png" />
-    </ItemGroup>
-    
-    <Copy SourceFiles="@(IconFiles)" DestinationFolder="$(SamplesPath)\$(NOS).Icons.package\content\Images" />
-    <Exec WorkingDirectory="$(SamplesPath)\$(NOS).Icons.package" Command="..\$(Nuget) pack $(NOS).Icons.nuspec"/>
-    <ItemGroup>
-      <SamplesPackage Include="$(SamplesPath)\$(NOS).Icons.package\*.nupkg"/>
-    </ItemGroup>
-    <Copy SourceFiles="@(SamplesPackage)" DestinationFolder="$(PackageSourcePath)" />
-    <Copy SourceFiles="@(SamplesPackage)" DestinationFolder="$(BuiltPackagesPath)" />
-  </Target>
+  
 
   <Target Name="CreateCodeZip"  DependsOnTargets="SamplesPackage">
 
@@ -93,7 +81,6 @@
       <Source Include="*$(PMPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(PMPath)\templates*\**\*.*" />
       <Source Include="*$(CorePath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
-      <Source Include="*$(MVCPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(SamplesPath)\AdventureworksModel\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(SamplesPath)\NakedObjects.Sample.Icons.package\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
       <Source Include="*$(TestPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
@@ -102,7 +89,7 @@
       <Source Include="*$(BATPath)\NakedObjects.*\**\*.*" Exclude="**\bin\**\*.*;**\obj\**\*.*;*.dll;*.pdb"/>
 
       <Source Include="*.nuget\**\*.*" />
-      <Source Include="Core.sln;MVC.sln;ProgrammingModel.sln;Facade.sln;ROServer.sln;build.*.proj" />
+      <Source Include="Core.sln;ProgrammingModel.sln;Facade.sln;ROServer.sln;build.*.proj" />
     </ItemGroup>
 
     <Copy SourceFiles="@(Source)" DestinationFolder="$(ReleasePath)\src\%(RecursiveDir)" Condition=" '$(Targets)'!='Clean' "/>
