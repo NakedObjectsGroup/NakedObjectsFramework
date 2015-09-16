@@ -51,6 +51,8 @@
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Batch.Test\NakedObjects.Batch.Test.csproj"/>
+
   </ItemGroup>
   
   <Target Name="Clean" DependsOnTargets="Config">
@@ -63,6 +65,7 @@
       <OldTests Include="$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.Test.trx"/>
       <OldTests Include="$(TestResultsPath)\NakedObjects.Mvc.Selenium.ReTest.trx"/>
+      <OldTests Include="$(TestResultsPath)\NakedObjects.Batch.Test.trx"/>
       
       <OldDeployment Include="$(IISRestPath)\**\*.*"/>
       <OldDeployment Include="$(IISAjaxPath)\**\*.*"/>
@@ -140,6 +143,7 @@
   <Target Name="SystemTest" DependsOnTargets="BuildTests">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Helpers.Test\bin\%(Configuration.Identity)\NakedObjects.Helpers.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Helpers.Test.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
+    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Batch.Test\bin\%(Configuration.Identity)\NakedObjects.Batch.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Batch.Test.trx' />
   </Target>
 
   <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
