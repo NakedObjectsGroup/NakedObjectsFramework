@@ -11,34 +11,32 @@ using System.Threading.Tasks;
 using AdventureWorksModel;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Async;
+using NakedObjects.Core.Util;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Batch {
     public class BatchStartPoint : IBatchStartPoint {
+        private readonly string testMessage = Guid.NewGuid().ToString();
         public IAsyncService AsyncService { private get; set; }
+        public IDomainObjectContainer Container { private get; set; }
 
         #region IBatchStartPoint Members
 
         public void Execute() {
-            Console.WriteLine("Starting");
-            var tasks = new Task[4];
-            tasks[0] = AsyncService.RunAsync((doc) => { DoWork(doc, 63290); });
-            tasks[1] = AsyncService.RunAsync((doc) => { DoWork(doc, 63291); });
-            tasks[2] = AsyncService.RunAsync((doc) => { DoWork(doc, 63292); });
-            tasks[3] = AsyncService.RunAsync((doc) => { DoWork(doc, 63293); });
-            Console.WriteLine("Waiting");
+            var ids = Enumerable.Range(63290, 20).ToArray();
+
+            var tasks = ids.Select(id => AsyncService.RunAsync(doc => DoWork(doc, id))).ToArray();
             Task.WaitAll(tasks);
-            Console.WriteLine("All done");
-            Console.ReadKey();
+
+            var changed = Container.Instances<SalesOrderHeader>().Where(soh => ids.Contains(soh.SalesOrderID)).ToArray();
+            changed.ForEach(soh => Assert.AreEqual(testMessage + soh.SalesOrderID, soh.Comment));
         }
 
         #endregion
 
         private void DoWork(IDomainObjectContainer container, int orderId) {
-            var order = container.Instances<SalesOrderHeader>().FirstOrDefault(soh => soh.SalesOrderID == orderId);
-            if (order != null) {
-                order.AddComment("Adding comment by Async");
-                Console.WriteLine("Added comment to Order " + orderId);
-            }
+            var order = container.Instances<SalesOrderHeader>().Single(soh => soh.SalesOrderID == orderId);
+            order.Comment = testMessage + orderId;
         }
     }
 }
