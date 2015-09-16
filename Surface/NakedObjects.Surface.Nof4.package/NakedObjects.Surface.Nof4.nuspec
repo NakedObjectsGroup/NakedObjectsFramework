@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of Surface facade for current version of the Naked Objects Framework</description>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[7.0.7, 8)" />
+      <dependency id="NakedObjects.Core" version="[7.0.8, 8)" />
       <dependency id="NakedObjects.Surface" version="[7.0.0, 8)" />
     </dependencies>
   </metadata>
