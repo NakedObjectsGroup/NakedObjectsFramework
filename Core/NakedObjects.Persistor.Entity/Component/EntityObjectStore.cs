@@ -50,13 +50,13 @@ namespace NakedObjects.Persistor.Entity.Component {
         #endregion
 
         private static readonly ILog Log = LogManager.GetLogger(typeof (EntityObjectStore));
-        private static CreateAdapterDelegate createAdapter;
-        private static CreateAggregatedAdapterDelegate createAggregatedAdapter;
-        private static RemoveAdapterDelegate removeAdapter;
-        private static ReplacePocoDelegate replacePoco;
-        private static EventHandler savingChangesHandlerDelegate;
-        private static Action<INakedObjectAdapter> handleLoaded;
-        private static Func<Type, ITypeSpec> loadSpecification;
+        private CreateAdapterDelegate createAdapter;
+        private CreateAggregatedAdapterDelegate createAggregatedAdapter;
+        private RemoveAdapterDelegate removeAdapter;
+        private ReplacePocoDelegate replacePoco;
+        private EventHandler savingChangesHandlerDelegate;
+        private Action<INakedObjectAdapter> handleLoaded;
+        private Func<Type, ITypeSpec> loadSpecification;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly EntityOidGenerator oidGenerator;
@@ -157,7 +157,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
             Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObjectAdapter);
             try {
-                ExecuteCommand(new EntityCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
+                ExecuteCommand(new EntityCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
             }
             catch (OptimisticConcurrencyException oce) {
                 throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = nakedObjectAdapter};
@@ -540,14 +540,14 @@ namespace NakedObjects.Persistor.Entity.Component {
             contexts.Values.ForEach(c => c.PreSave());
         }
 
-        private static INakedObjectAdapter GetSourceNakedObject(OptimisticConcurrencyException oce) {
+        private  INakedObjectAdapter GetSourceNakedObject(OptimisticConcurrencyException oce) {
             object trigger = oce.StateEntries.Where(e => !e.IsRelationship).Select(e => e.Entity).SingleOrDefault();
             return createAdapter(null, trigger);
         }
 
         private LocalContext CreateCodeOnlyContext(CodeFirstEntityContextConfiguration codeOnlyConfig) {
             try {
-                return new LocalContext(codeOnlyConfig, session);
+                return new LocalContext(codeOnlyConfig, session, this);
             }
             catch (Exception e) {
                 throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
@@ -807,11 +807,13 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private class EntityCreateObjectCommand : ICreateObjectCommand {
             private readonly LocalContext context;
+            private readonly EntityObjectStore parent;
             private readonly INakedObjectAdapter nakedObjectAdapter;
             private readonly IDictionary<object, object> objectToProxyScratchPad = new Dictionary<object, object>();
 
-            public EntityCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
+            public EntityCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter, LocalContext context, EntityObjectStore parent) {
                 this.context = context;
+                this.parent = parent;
 
                 this.nakedObjectAdapter = nakedObjectAdapter;
             }
@@ -868,7 +870,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return objectToProxyScratchPad[originalObject];
                 }
 
-                INakedObjectAdapter adapterForOriginalObjectAdapter = createAdapter(null, originalObject);
+                INakedObjectAdapter adapterForOriginalObjectAdapter = parent.createAdapter(null, originalObject);
 
                 if (adapterForOriginalObjectAdapter.ResolveState.IsPersistent()) {
                     return originalObject;
@@ -890,7 +892,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
                 // create transient adapter here so that LoadObjectIntoNakedObjectsFramework knows proxy domainObject is transient
                 // if not proxied this should just be the same as adapterForOriginalObjectAdapter
-                INakedObjectAdapter proxyAdapter = createAdapter(null, objectToAdd);
+                INakedObjectAdapter proxyAdapter = parent.createAdapter(null, objectToAdd);
 
                 SetKeyAsNecessary(originalObject, objectToAdd);
                 context.GetObjectSet(originalObject.GetType()).AddObject(objectToAdd);
@@ -900,8 +902,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                     context.PersistedNakedObjects.Add(proxyAdapter);
                     // remove temporary adapter for proxy (tidy and also means we will not get problem 
                     // with already known object in identity map when replacing the poco
-                    removeAdapter(proxyAdapter);
-                    replacePoco(adapterForOriginalObjectAdapter, objectToAdd);
+                    parent.removeAdapter(proxyAdapter);
+                    parent.replacePoco(adapterForOriginalObjectAdapter, objectToAdd);
                 }
                 else {
                     ProxyReferences(originalObject);
@@ -914,11 +916,11 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return objectToAdd;
             }
 
-            private void CallPersistingPersistedForComplexObjects(INakedObjectAdapter parent) {
-                PropertyInfo[] complexMembers = context.GetComplexMembers(parent.Object.GetEntityProxiedType());
+            private void CallPersistingPersistedForComplexObjects(INakedObjectAdapter parentAdapter) {
+                PropertyInfo[] complexMembers = context.GetComplexMembers(parentAdapter.Object.GetEntityProxiedType());
                 foreach (PropertyInfo pi in complexMembers) {
-                    object complexObject = pi.GetValue(parent.Object, null);
-                    INakedObjectAdapter childAdapter = createAggregatedAdapter(nakedObjectAdapter, pi, complexObject);
+                    object complexObject = pi.GetValue(parentAdapter.Object, null);
+                    INakedObjectAdapter childAdapter = parent.createAggregatedAdapter(nakedObjectAdapter, pi, complexObject);
                     childAdapter.Persisting();
                     context.PersistedNakedObjects.Add(childAdapter);
                 }
@@ -1040,19 +1042,21 @@ namespace NakedObjects.Persistor.Entity.Component {
             private readonly ISet<Type> ownedTypes = new HashSet<Type>();
             private readonly ISet<INakedObjectAdapter> persistedNakedObjects = new HashSet<INakedObjectAdapter>();
             private readonly ISession session;
+            private readonly EntityObjectStore parent;
             private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
             private List<INakedObjectAdapter> coUpdating;
             private List<INakedObjectAdapter> updatingNakedObjects;
 
-            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session) {
+            private LocalContext(Type[] preCachedTypes, Type[] notPersistedTypes, ISession session, EntityObjectStore parent) {
                 this.session = session;
+                this.parent = parent;
 
                 preCachedTypes.ForEach(t => ownedTypes.Add(t));
                 notPersistedTypes.ForEach(t => this.notPersistedTypes.Add(t));
             }
 
-            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session)
-                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session) {
+            public LocalContext(CodeFirstEntityContextConfiguration config, ISession session, EntityObjectStore parent)
+                : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
                 Log.DebugFormat("Context {0} Wrapped", Name);
@@ -1152,11 +1156,11 @@ namespace NakedObjects.Persistor.Entity.Component {
             public void PreSave() {
                 WrappedObjectContext.DetectChanges();
                 added.AddRange(WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Where(ose => !ose.IsRelationship).Select(ose => ose.Entity).ToList());
-                updatingNakedObjects = GetChangedObjectsInContext(WrappedObjectContext).Select(obj => createAdapter(null, obj)).ToList();
+                updatingNakedObjects = GetChangedObjectsInContext(WrappedObjectContext).Select(obj => parent.createAdapter(null, obj)).ToList();
                 updatingNakedObjects.ForEach(no => no.Updating());
 
                 // need to do complextype separately as they'll not be updated in the SavingChangeshandler as they're not proxied. 
-                coUpdating = GetChangedComplexObjectsInContext(this).Select(obj => createAdapter(null, obj)).ToList();
+                coUpdating = GetChangedComplexObjectsInContext(this).Select(obj => parent.createAdapter(null, obj)).ToList();
                 coUpdating.ForEach(no => no.Updating());
             }
 
@@ -1182,8 +1186,8 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             public void PostSaveWrapUp(EntityObjectStore store) {
-                added.Select(domainObject => createAdapter(null, domainObject)).ForEach(store.HandleAdded);
-                LoadedNakedObjects.ToList().ForEach(handleLoaded);
+                added.Select(domainObject => parent.createAdapter(null, domainObject)).ForEach(store.HandleAdded);
+                LoadedNakedObjects.ToList().ForEach(parent.handleLoaded);
             }
 
             public void Dispose() {
