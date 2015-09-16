@@ -16,6 +16,8 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Batch {
     public class BatchStartPoint : IBatchStartPoint {
+        private const int StartId = 63290;
+        private const int CountIds = 20;
         private readonly string testMessage = Guid.NewGuid().ToString();
         public IAsyncService AsyncService { private get; set; }
         public IDomainObjectContainer Container { private get; set; }
@@ -23,12 +25,13 @@ namespace NakedObjects.Batch {
         #region IBatchStartPoint Members
 
         public void Execute() {
-            var ids = Enumerable.Range(63290, 20).ToArray();
+            var ids = Enumerable.Range(StartId, CountIds).ToArray();
 
             var tasks = ids.Select(id => AsyncService.RunAsync(doc => DoWork(doc, id))).ToArray();
             Task.WaitAll(tasks);
 
             var changed = Container.Instances<SalesOrderHeader>().Where(soh => ids.Contains(soh.SalesOrderID)).ToArray();
+            Assert.AreEqual(CountIds, changed.Length);
             changed.ForEach(soh => Assert.AreEqual(testMessage + soh.SalesOrderID, soh.Comment));
         }
 
