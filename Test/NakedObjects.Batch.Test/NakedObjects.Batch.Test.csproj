@@ -149,6 +149,10 @@
       <Project>{fddba108-8b58-40c6-a375-ffb92b1933dd}</Project>
       <Name>AdventureWorksModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
+      <Project>{dde874ee-b28b-4577-a28a-6d35690d6310}</Project>
+      <Name>NakedObjects.DatabaseHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
