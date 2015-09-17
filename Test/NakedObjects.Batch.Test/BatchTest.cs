@@ -22,6 +22,8 @@ namespace NakedObjects.Batch {
 
         [ClassInitialize]
         public static void FixtureInitialize(TestContext context) {
+            var type = typeof(System.Data.Entity.SqlServer.SqlProviderServices);
+
             try {
                 DatabaseUtils.RestoreDatabase(Database, Backup, Server);
             }
