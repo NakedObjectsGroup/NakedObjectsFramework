@@ -20,6 +20,8 @@ namespace NakedObjects.Batch {
 
         [ClassInitialize]
         public static void Init(TestContext testContext) {
+            var type = typeof(System.Data.Entity.SqlServer.SqlProviderServices);
+
             try {
                 DatabaseUtils.RestoreDatabase(Database, Backup, Server);
             }
