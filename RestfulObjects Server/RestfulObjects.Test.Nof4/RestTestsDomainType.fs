@@ -170,15 +170,12 @@ type Nof4TestsDomainType() =
         member x.GetMostSimpleTransientObjectFormalOnly() = Objects9.GetMostSimpleTransientObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // temp 
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // temp 
         member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
         [<Test>]
-        [<Ignore>] // temp 
         member x.PersistMostSimpleTransientObjectFormalOnly() = Objects9.PersistMostSimpleTransientObjectFormalOnly x.api
         
         [<Test>]
@@ -203,11 +200,10 @@ type Nof4TestsDomainType() =
         // member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
         
         [<Test>]
-        [<Ignore>] // temp 
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // temp         
+        
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
