@@ -862,7 +862,6 @@ namespace RestfulObjects.Mvc {
             try {
                 FrameworkFacade.Start();
                 ss = f();
-                ss.Populate();
                 success = true;
             }
             catch (HttpResponseException e) {
@@ -881,7 +880,7 @@ namespace RestfulObjects.Mvc {
             }
 
             try {
-                return ConfigureMsg(ss);
+                return ConfigureMsg(ss.Populate());
             }
             catch (HttpResponseException e) {
                 Logger.DebugFormat("HttpResponseException being passed up {0}", e.Message);
