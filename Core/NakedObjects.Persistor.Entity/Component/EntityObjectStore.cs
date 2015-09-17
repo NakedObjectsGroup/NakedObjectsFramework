@@ -1193,6 +1193,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             public void Dispose() {
                 try {
                     WrappedObjectContext.Dispose();
+                    WrappedObjectContext = null;
                     baseTypeMap.Clear();
                 }
                 catch (Exception e) {
@@ -1204,7 +1205,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         #endregion
 
         public void Dispose() {
-           contexts.Values.ForEach(c => c.Dispose());
+            contexts.Values.ForEach(c => c.Dispose());
+            contexts = null;
         }
     }
 }
