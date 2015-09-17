@@ -5,13 +5,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
+using NakedObjects.DatabaseHelpers;
 
 namespace NakedObjects.Batch {
     [TestClass]
     public class BatchTest {
+        protected const string Server = @"Saturn\SqlExpress";
+        protected const string Database = "AdventureWorks";
+        protected const string Backup = "AdventureWorks";
+
+        [ClassInitialize]
+        public static void Init(TestContext testContext) {
+            try {
+                DatabaseUtils.RestoreDatabase(Database, Backup, Server);
+            }
+            catch (Exception e) {
+                // just carry on - tests may fail
+                var m = e.Message;
+                Console.WriteLine(m);
+            }
+        }
 
         [TestInitialize]
         public void Start() {
