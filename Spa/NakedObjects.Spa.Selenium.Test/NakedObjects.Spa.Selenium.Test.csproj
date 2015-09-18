@@ -73,7 +73,7 @@
   <ItemGroup>
     <Content Include="drivers\chromedriver.exe" />
     <Content Include="drivers\IEDriverServer.exe" />
-    <Content Include="tests\Tests_to_be_written.txt" />
+    <Content Include="tests\Tests_still_to_be_written.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

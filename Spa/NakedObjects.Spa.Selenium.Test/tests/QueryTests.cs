@@ -74,9 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var row = wait.Until( dr => dr.FindElement(By.CssSelector("table .reference")));
             Assert.AreEqual("SO51131", row.Text);
             Click(row);
-
-            var title = wait.Until(dr => dr.FindElement(By.CssSelector(".object .header .title")));
-            Assert.AreEqual("SO51131", title.Text);
+            WaitForSingleObject("SO51131");
         }
 
         [TestMethod]

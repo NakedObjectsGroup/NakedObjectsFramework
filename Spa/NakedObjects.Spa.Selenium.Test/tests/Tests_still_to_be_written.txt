@@ -19,11 +19,6 @@ Invoking actions (from main menu or object, should be same):
 	- Validation of individual and multiple fields
 	- Happy case returning object (no need to test all perms of return type).
 
-- Navigation
-	- From query list and query table to individual object
-	- From object reference
-	- From collection list and collection table within object
-
 - Editing
 	- Testing input fields individually
 	- Mandatory fields enforced

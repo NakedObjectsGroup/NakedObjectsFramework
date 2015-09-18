@@ -64,22 +64,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickReferenceProperty() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == StoreProperties);
-            ReadOnlyCollection<IWebElement> references = br.FindElements(By.CssSelector(".property .reference"));
-
-            Click(references[0]);
+            var reference = FindElementByCss(".property .reference", 0);
+            Click(reference);
             WaitForSingleObject("Lynn Tsoflias");
         }
 
         [TestMethod]
-        public virtual void ClickCollectionProperty() {
+        public virtual void OpenCollectionAsList() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == StoreCollections);
-            ReadOnlyCollection<IWebElement> iconLists = br.FindElements(By.CssSelector(".icon-list"));
+            var iconList = FindElementByCss(".icon-list", 0);
 
-            Click(iconLists[0]);
+            Click(iconList);
 
             wait.Until(d => d.FindElement(By.TagName("table")));
 
@@ -87,6 +84,29 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-summary")));
 
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
+        }
+
+        [TestMethod]
+        public virtual void ClickOnLineItemWithCollectionAsList()
+        {
+            var testUrl = Url + "#/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=List";
+            br.Navigate().GoToUrl(testUrl);
+            var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
+            var title = row.Text;
+            Click(row);
+            WaitForSingleObject(title);
+        }
+
+        [TestMethod]
+        public virtual void ClickOnLineItemWithCollectionAsTable()
+        {
+            var testUrl = Url + "#/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=Table";
+            br.Navigate().GoToUrl(testUrl);
+            var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+            var type = row.FindElements(By.CssSelector(".cell"))[0].Text;
+            var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
+            Click(row);
+            WaitForSingleObject(type+": "+addr);
         }
 
         [TestMethod]
