@@ -21,7 +21,7 @@ describe("handlers Service", () => {
     var $scope;
 
     beforeEach(() => {
-        module("app");        
+        angular.mock.module("app");        
     });
     
     describe("handleError", () => {

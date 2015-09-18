@@ -20,7 +20,7 @@
 
 describe("urlManager Service", () => {
 
-    beforeEach(module("app"));
+    beforeEach(angular.mock.module("app"));
 
     describe("setError", () => {
 

@@ -20,7 +20,7 @@
 
 describe("viewModelFactory Service", () => {
 
-    beforeEach(module("app"));
+    beforeEach(angular.mock.module("app"));
 
     describe("create errorViewModel", () => {
 

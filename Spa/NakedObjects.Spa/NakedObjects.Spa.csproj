@@ -41,6 +41,12 @@
     <Content Include="Content\partials\singleObjectPage.html" />
     <Content Include="Content\partials\collections.html" />
     <Content Include="Content\gemini.css" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Content\partials\home.html" />
@@ -86,7 +92,6 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
-    <Content Include="Scripts\angular-mocks.js" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.loaderwithtransform.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.ts" />
@@ -108,13 +113,11 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.shims.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular-touch.js" />
-    <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\jasmine-html.js" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
