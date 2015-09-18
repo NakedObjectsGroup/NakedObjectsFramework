@@ -40,6 +40,15 @@ module NakedObjects.Angular.Gemini {
     app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
+        const menu = "menu";
+        const dialog = "dialog";
+        const object = "object";
+        const collection = "collection";
+        const edit = "edit";
+        const action = "action";
+        const parm = "parm";
+
+
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
             const search = clearOthers ? {} : $location.search();
             search[parmId] = parmValue;
@@ -92,6 +101,7 @@ module NakedObjects.Angular.Gemini {
             const oid = `${results[2]}-${results[3]}`;
             $location.search({ object1: oid });
         };
+
         helper.setItem = (link: Link) => {
             var href = link.href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
@@ -100,6 +110,7 @@ module NakedObjects.Angular.Gemini {
             const oid = `${results[2]}-${results[3]}`;
             $location.path("/object").search({ object1: oid });
         };
+
         helper.toggleObjectMenu = () => {
             var search = $location.search();
             var menu = search.menu1;
@@ -129,26 +140,33 @@ module NakedObjects.Angular.Gemini {
             $location.path("/error").search({});
         };
 
-        helper.getRouteData = () => {
-            const routeData = new RouteData();
+        function setPaneRouteData(paneRouteData : PaneRouteData, index : number) {
+            paneRouteData.menuId = $routeParams[menu + index];
+            paneRouteData.dialogId = $routeParams[dialog + index];
+            paneRouteData.objectId = $routeParams[object + index];
 
-            routeData.pane1.menuId = $routeParams.menu1;
-            routeData.pane1.dialogId = $routeParams.dialog1;
-            routeData.pane1.objectId = $routeParams.object1;
-
-            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf("collection1") === 0);
+            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + index) === 0);
             //missing from lodash types :-( 
-            const keysMapped : _.Dictionary<string>  = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
-            routeData.pane1.collections = _.mapValues(keysMapped, (v) => CollectionViewState[v] );
+            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + index));
+            paneRouteData.collections = _.mapValues(keysMapped, (v) => CollectionViewState[v]);
 
-            routeData.pane1.edit = $routeParams.edit1 === "true";
+            paneRouteData.edit = $routeParams[edit + index] === "true";
 
-            routeData.pane1.actionId = $routeParams.action1;
-            routeData.pane1.state = $routeParams.collection1 ? CollectionViewState[$routeParams.collection1] : CollectionViewState.List;
+            paneRouteData.actionId = $routeParams[action + index];
+            paneRouteData.state = $routeParams[collection + index] ? CollectionViewState[collection + index] : CollectionViewState.List;
 
             // todo make parm ids dictionary same as collections ids ? 
-            var parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf("parm1") === 0);
-            routeData.pane1.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
+            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + index) === 0);
+            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + index), val: v } });
+
+        }
+
+
+        helper.getRouteData = () => {
+            const routeData = new RouteData();
+            
+            setPaneRouteData(routeData.pane1, 1);
+            setPaneRouteData(routeData.pane2, 2);
 
             return routeData;
         };
