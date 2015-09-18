@@ -28,7 +28,7 @@
 describe("Controllers", () => {
 	var $scope, ctrl;
 
-	beforeEach(module("app"));
+    beforeEach(angular.mock.module("app"));
     
     describe("Pane1HomeController", () => {
         let handleHome: jasmine.Spy;

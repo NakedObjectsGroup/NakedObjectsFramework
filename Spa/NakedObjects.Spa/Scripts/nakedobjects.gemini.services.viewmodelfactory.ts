@@ -74,7 +74,7 @@ module NakedObjects.Angular.Gemini{
             // make sure current value is cached so can be recovered ! 
 
             const { returnType: key, reference : subKey } = valueViewModel;
-            const dict = cache.get(key) || {};
+            const dict = <any> cache.get(key) || {}; // todo fix type !
             dict[subKey] = { value: currentValue, name : currentValue.toString() };
             cache.put(key, dict);
 

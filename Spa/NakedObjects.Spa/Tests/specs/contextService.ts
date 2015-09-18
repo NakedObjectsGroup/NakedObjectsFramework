@@ -19,7 +19,7 @@
 
 describe("context Service", () => {
 
-    beforeEach(module("app"));
+    beforeEach(angular.mock.module("app"));
 
     describe("getHome", () => {
         const testHome = new NakedObjects.HomePageRepresentation();
