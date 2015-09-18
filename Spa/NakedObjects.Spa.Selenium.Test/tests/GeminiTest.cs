@@ -299,6 +299,20 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Work Orders", menus[9].Text);
             AssertFooterExists();
         }
+
+        protected void WaitForSplit(PaneType pane1Type, PaneType pane2Type,string title1 = null, string title2=null )
+        {
+            var pane1 = wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 ."+ pane1Type.ToString().ToLower())));
+            if (title1 != null)
+            {
+                Assert.AreEqual(title1, pane1.FindElement(By.CssSelector(".title")).Text);
+            }
+            var pane2 =wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 ." + pane2Type.ToString().ToLower())));
+            if (title2 != null)
+            {
+                Assert.AreEqual(title2, pane2.FindElement(By.CssSelector(".title")).Text);
+            }
+        }
         #endregion
         protected void AssertClassExists(string className)
         {
@@ -414,5 +428,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #endregion
+    }
+
+    public enum PaneType
+    {
+        Home = 1,
+        Object = 2,
+        Query = 3,
+        Recent = 4
     }
 }

@@ -131,40 +131,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitHomeHome()
         {
             br.Navigate().GoToUrl(Url + "#/home/home");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".home")));
-            var panes = br.FindElements(By.CssSelector(".split"));
-            Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.CssSelector(".home"));
-            Assert.AreEqual("Home", left.FindElement(By.CssSelector(".title")).Text);
-            var right = panes[1].FindElement(By.CssSelector(".home"));
-            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+            WaitForSplit(PaneType.Home, PaneType.Home, "Home", "Home");
         }
 
         [TestMethod]
         public virtual void SplitObjectHome()
         {
             br.Navigate().GoToUrl(Url + "#/object/home?object1=AdventureWorksModel.Store-555");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
-            var panes = br.FindElements(By.CssSelector(".split"));
-            Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.CssSelector(".object"));
-            Assert.IsTrue(left.GetAttribute("class").Contains("object view"));
-            Assert.AreEqual("Twin Cycles, AW00000555", panes[0].FindElement(By.CssSelector(".title")).Text);;
-            var right = panes[1].FindElement(By.CssSelector(".home"));
-            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+            WaitForSplit(PaneType.Object, PaneType.Home, "Twin Cycles, AW00000555", "Home");
         }
 
         [TestMethod]
         public virtual void SplitQueryHome()
         {
             br.Navigate().GoToUrl(Url + "#/query/home?menu1=OrderRepository&action1=HighestValueOrders");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".query .title")));
-            var panes = br.FindElements(By.CssSelector(".split"));
-            Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.CssSelector(".query"));
-            Assert.AreEqual("Highest Value Orders", left.FindElement(By.CssSelector(".title")).Text);
-            var right = panes[1].FindElement(By.CssSelector(".home"));
-            Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
+            WaitForSplit(PaneType.Query, PaneType.Home, "Highest Value Orders", "Home");
         }
         #endregion
 
