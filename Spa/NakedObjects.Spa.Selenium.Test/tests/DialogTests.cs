@@ -216,6 +216,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void AutoCompleteParmGo()
         {
             br.Navigate().GoToUrl(SalesServiceUrl);
+            WaitForSingleHome();
             OpenActionDialog("List Accounts For Sales Person");
 
             FindElementByCss(".value input[type='text']").SendKeys("Valdez");
@@ -243,6 +244,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void AutoCompleteParmDefault()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
+            WaitForSingleHome();
             OpenActionDialog("Find Product");
 
             Assert.AreEqual("Adjustable Race", FindElementByCss(".value input[type='text']").GetAttribute("value"));

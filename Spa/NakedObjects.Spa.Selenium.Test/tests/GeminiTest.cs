@@ -70,6 +70,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected const string CustomersMenuUrl = Url + "#/home?menu1=CustomerRepository";
         protected const string OrdersMenuUrl = Url + "#/home?menu1=OrderRepository";
+        protected const string SpecialOffersMenuUrl = Url + "#/home?menu1=SpecialOfferRepository";
         protected const string ProductServiceUrl = Url + "#/home?menu1=ProductRepository";
         protected const string SalesServiceUrl = Url + "#/home?menu1=SalesRepository";
 
@@ -176,10 +177,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             element.Click();
         }
 
-        protected virtual IWebElement WaitForClass(string className)
+        protected virtual IWebElement WaitForCss(string cssSelector)
         {
-            wait.Until(d => d.FindElement(By.ClassName(className)));
-            return br.FindElement(By.ClassName(className));
+            wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
+            return br.FindElement(By.CssSelector(cssSelector));
         }
 
         protected virtual IWebElement FindElementByCss(string cssSelector)
@@ -314,14 +315,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             }
         }
         #endregion
-        protected void AssertClassExists(string className)
+        protected void AssertElementExists(string cssSelector)
         {
-            Assert.IsTrue(br.FindElements(By.ClassName(className)).Count >= 1);
+            wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
         }
 
-        protected void AssertClassDoesNotExist(string className)
+        protected void AssertElementDoesNotExist(string cssSelector)
         {
-            Assert.IsTrue(br.FindElements(By.ClassName(className)).Count == 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == 0);
+        }
+
+        protected void AssertElementCountIs(string cssSelector, int count)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
         }
 
         #region Editing & Saving

@@ -141,6 +141,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForSplit(PaneType.Home, PaneType.Object, "Home", "Twin Cycles, AW00000555");
         }
 
+        [TestMethod, Ignore] //Stef -  not implemented yet
+        public virtual void SplitHomeQuery()
+        {
+            br.Navigate().GoToUrl(Url + "#/home/query?object1=AdventureWorksModel.Store-555&menu1=OrderRepository&action1=HighestValueOrders");
+            WaitForSplit(PaneType.Home, PaneType.Query, "Home", "Highest Value Orders");
+        }
+
         [TestMethod]
         public virtual void SplitObjectHome()
         {
@@ -155,6 +162,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForSplit(PaneType.Object, PaneType.Object, "Twin Cycles, AW00000555", "Mechanical Sports Center, AW00000359");
         }
 
+        [TestMethod, Ignore] //Stef -  not implemented yet
+        public virtual void SplitObjectQuery()
+        {
+            br.Navigate().GoToUrl(Url + "#/object/query?object1=AdventureWorksModel.Store-555&menu1=OrderRepository&action1=HighestValueOrders");
+            WaitForSplit(PaneType.Object, PaneType.Query, "Twin Cycles, AW00000555", "Highest Value Orders");
+        }
+
         [TestMethod]
         public virtual void SplitQueryHome()
         {
@@ -162,11 +176,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForSplit(PaneType.Query, PaneType.Home, "Highest Value Orders", "Home");
         }
 
-        [TestMethod, Ignore] //Not implemented yet
+        [TestMethod, Ignore] //Stef -  not implemented yet
         public virtual void SplitQueryObject()
         {
             br.Navigate().GoToUrl(Url + "#/query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-359");
             WaitForSplit(PaneType.Query, PaneType.Object, "Highest Value Orders", "Mechanical Sports Center, AW00000359");
+        }
+
+        [TestMethod, Ignore] //Stef -  not implemented yet
+        public virtual void SplitQueryQuery()
+        {
+            br.Navigate().GoToUrl(Url + "#/query/query?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
+            WaitForSplit(PaneType.Query, PaneType.Query, "Highest Value Orders", "Current Special Offers");
         }
         #endregion
 
