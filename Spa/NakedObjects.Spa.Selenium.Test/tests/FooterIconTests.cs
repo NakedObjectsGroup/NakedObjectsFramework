@@ -14,23 +14,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Home() {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
-
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            Click(br.FindElement(By.ClassName("icon-home")));
-            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            br.Navigate().GoToUrl(Product968Url);
+            WaitForSingleObject();
+            Click(br.FindElement(By.CssSelector(".icon-home")));
+            WaitForSingleHome();
         }
 
         [TestMethod]
         public virtual void BackAndForward() {
             br.Navigate().GoToUrl(Url);
-            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
+            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
             GoToMenuFromHomePage("Customers");
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
-            Click(br.FindElement(By.ClassName("icon-back")));
-            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
-            Click(br.FindElement(By.ClassName("icon-forward")));
-            wait.Until(d => d.FindElements(By.ClassName("action")).Count == CustomerServiceActions);
+            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
+            Click(br.FindElement(By.CssSelector(".icon-forward")));
+            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
         }
     }
 

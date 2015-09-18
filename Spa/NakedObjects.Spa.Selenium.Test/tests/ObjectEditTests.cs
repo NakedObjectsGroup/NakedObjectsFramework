@@ -25,7 +25,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
             SaveObject();
 
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("List Price:\r\n4100", properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
@@ -48,7 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
             SaveObject();
 
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Sell Start Date:\r\n" + dateStr, properties[18].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("div#daystomanufacture input")).SendKeys(Keys.Backspace + "1");
             SaveObject();
 
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
         }
@@ -95,7 +95,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             SaveObject();
 
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nCaps", properties[7].Text);
@@ -122,7 +122,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             SaveObject();
 
-            properties = br.FindElements(By.ClassName("property"));
+            properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Product Category:\r\nBikes", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
@@ -138,7 +138,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.FindElement(By.CssSelector("#productsubcategory  select")).SendKeys("Bottles and Cages" + Keys.Tab);
             SaveObject();
 
-            properties = br.FindElements(By.ClassName("property"));
+            properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);

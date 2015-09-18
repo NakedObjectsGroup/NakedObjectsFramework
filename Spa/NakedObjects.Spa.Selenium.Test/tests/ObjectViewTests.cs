@@ -18,17 +18,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void FooterIcons() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            wait.Until(d => d.FindElement(By.ClassName("object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
 
-            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
+            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
             WaitForSingleObject();
         }
 
         [TestMethod]
         public virtual void Actions() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
             var actions = GetObjectActions();
 
             Assert.AreEqual("Create New Address", actions[0].Text);
@@ -44,9 +44,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void PropertiesAndCollections() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-            Assert.IsTrue(br.FindElement(By.ClassName("view")).Displayed);
-            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.ClassName("property"));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000 AnnualRevenue: 80000 BankName: International Security BusinessType: BM YearOpened: 1988 Specialty: Touring SquareFeet: 21000 Brands: AW Internet: T1 NumberEmployees: 11", properties[1].Text);
@@ -55,7 +55,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Account Number:\r\nAW00000555", properties[4].Text);
             Assert.AreEqual("Sales Territory:\r\nAustralia", properties[5].Text);
 
-            ReadOnlyCollection<IWebElement> collections = br.FindElements(By.ClassName("collection"));
+            ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
 
             Assert.AreEqual("Addresses:\r\n1-Customer Addresses", collections[0].Text);
             Assert.AreEqual("Contacts:\r\n1-Store Contacts", collections[1].Text);
@@ -65,8 +65,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ClickReferenceProperty() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == StoreProperties);
-            ReadOnlyCollection<IWebElement> references = br.FindElements(By.CssSelector("div.property .reference"));
+            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == StoreProperties);
+            ReadOnlyCollection<IWebElement> references = br.FindElements(By.CssSelector(".property .reference"));
 
             Click(references[0]);
             WaitForSingleObject("Lynn Tsoflias");
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ClickCollectionProperty() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
 
-            wait.Until(d => d.FindElements(By.ClassName("collection")).Count == StoreCollections);
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == StoreCollections);
             ReadOnlyCollection<IWebElement> iconLists = br.FindElements(By.CssSelector(".icon-list"));
 
             Click(iconLists[0]);
@@ -86,15 +86,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // cancel table view 
             Click(br.FindElement(By.CssSelector(".icon-summary")));
 
-            WaitUntilGone(d => d.FindElement(By.ClassName("table")));
+            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
 
         [TestMethod]
         public virtual void AttachmentProperty() {
             br.Navigate().GoToUrl(Product968Url);
-            wait.Until(d => d.FindElements(By.ClassName("property")).Count == ProductProperties);
-            wait.Until(d => d.FindElements(By.CssSelector("div.property  a > img")).Count == 1);
-            Assert.IsTrue(br.FindElement(By.CssSelector("div.property  a > img")).GetAttribute("src").Length > 0); 
+            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == ProductProperties);
+            wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
+            Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0); 
         }
 
         [TestMethod]
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             Click(GetObjectAction("Last Order"));
-            wait.Until(d => d.FindElement(By.ClassName("object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
 
         [TestMethod]

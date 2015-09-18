@@ -182,16 +182,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.FindElement(By.ClassName(className));
         }
 
-        protected virtual IWebElement GetByCss(string cssSelector)
+        protected virtual IWebElement FindElementByCss(string cssSelector)
         {
             wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
             return br.FindElement(By.CssSelector(cssSelector));
         }
 
+        protected virtual IWebElement FindElementByCss(string cssSelector, int number)
+        {
+            wait.Until(d => d.FindElements(By.CssSelector(cssSelector)).Count >= number+1);
+            return br.FindElements(By.CssSelector(cssSelector))[number];
+        }
+
         protected virtual void GoToMenuFromHomePage(string menuName) {
-            wait.Until(d => d.FindElements(By.ClassName("menu")).Count == MainMenusCount);
-            ReadOnlyCollection<IWebElement> services = br.FindElements(By.CssSelector("div.menu"));
-            IWebElement menu = services.FirstOrDefault(s => s.Text == menuName);
+            WaitForSingleHome();
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
+            IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
                 Click(menu);
                 wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
@@ -242,7 +248,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 Assert.AreEqual(title, titleEl.Text);
             }
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .object .properties")));
-            Assert.AreEqual("Actions", GetByCss(".single .object .header .menu").Text);
+            Assert.AreEqual("Actions", FindElementByCss(".single .object .header .menu").Text);
             AssertFooterExists();
         }
 
@@ -262,13 +268,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 Assert.AreEqual(title, titleEl.Text);
             }
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .query .collection")));
-            Assert.AreEqual("Actions", GetByCss(".single .query .header .menu").Text);
+            Assert.AreEqual("Actions", FindElementByCss(".single .query .header .menu").Text);
             AssertFooterExists();
         }
 
         protected void AssertTopItemInListIs(string title)
         {
-            string topItem = GetByCss(".collection tr td.reference").Text;
+            string topItem = FindElementByCss(".collection tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
         }
@@ -276,10 +282,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected void WaitForSingleHome()
         {
             var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .home .header .title")));
+            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
             Assert.AreEqual("Home", titleEl.Text);
             Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
 
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.ClassName("menu"));
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             Assert.AreEqual("Customers", menus[0].Text);
             Assert.AreEqual("Orders", menus[1].Text);
             Assert.AreEqual("Products", menus[2].Text);
@@ -377,7 +384,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             string title = br.FindElement(By.CssSelector(".dialog > .title")).Text;
             Assert.AreEqual(actionName, title);
             //Check it has OK & cancel buttons
-            wait.Until(d => br.FindElement(By.ClassName("ok")));
+            wait.Until(d => br.FindElement(By.CssSelector(".ok")));
             wait.Until(d => br.FindElement(By.ClassName("cancel")));
             return dialog;
         }

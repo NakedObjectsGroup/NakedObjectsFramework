@@ -21,29 +21,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
     /// </summary>
     public abstract class DialogTests : GeminiTest
     {
-        private const int CustomersFindCustomerByAccountNumber = 0;
-
-        private const int OrdersOrdersByValue = 3;
-
-        private const int StoresSearchForOrders = 4;
-
-        private const int SalesListAccountsForSalesPerson = 2;
-
-        private const int ProductsFindProductByName = 0;
-        private const int ProductsFindProductByNumber = 1;
-        private const int ProductsListProductsBySubcategory = 2;
-        private const int ProductsListProductsBySubcategories = 3;
-        private const int ProductsFindByProductLineAndClass = 4;
-        private const int ProductsFindByProductLinesAndClasses = 5;
-        private const int ProductsFindProduct = 6;
-        private const int ProductsFindProductsByCategory = 7;
-
         [TestMethod]
         public virtual void ChoicesParm()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
-            br.FindElement(By.CssSelector(".value  select")).SendKeys("Ascending");
+            FindElementByCss(".value  select").SendKeys("Ascending");
             ClickOK();
             WaitForSingleQuery();
             AssertTopItemInListIs("SO51782");
@@ -64,7 +47,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GetObjectActions(OrderServiceActions);
             OpenActionDialog("Orders By Value");
 
-            GetByCss(".value  select").SendKeys("Ascending");
+            FindElementByCss(".value  select").SendKeys("Ascending");
             ClickOK();
             WaitForSingleQuery();
             AssertTopItemInListIs("SO51782");
@@ -76,7 +59,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             br.Navigate().GoToUrl(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            GetByCss(".value input").SendKeys("00000042");
+            FindElementByCss(".value input").SendKeys("00000042");
             ClickOK();
             WaitForSingleObject();
         }
@@ -86,8 +69,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             OpenActionDialog("Search For Orders");
-            br.FindElements(By.CssSelector(".value input"))[0].SendKeys("1 Jan 2003");
-            br.FindElements(By.CssSelector(".value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
+            FindElementByCss(".value input",0).SendKeys("1 Jan 2003");
+            FindElementByCss(".value input",1).SendKeys("1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             ClickOK();
@@ -98,10 +81,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void RefChoicesParmKeepsValue()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
-OpenActionDialog("List Products By Sub Category");
-
-            br.FindElement(By.CssSelector(".value  select")).SendKeys("Forks");
-
+            OpenActionDialog("List Products By Sub Category");
+            FindElementByCss(".value  select").SendKeys("Forks");
             ClickOK();
             WaitForSingleQuery();
             AssertTopItemInListIs("HL Fork");
@@ -113,7 +94,7 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            var selected = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+            var selected = new SelectElement(FindElementByCss("div#subcategories select"));
 
             Assert.AreEqual(2, selected.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
@@ -130,7 +111,7 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            br.FindElement(By.CssSelector(".value  select")).SendKeys("Handlebars");
+            FindElementByCss(".value  select").SendKeys("Handlebars");
             IKeyboard kb = ((IHasInputDevices)br).Keyboard;
 
             kb.PressKey(Keys.Control);
@@ -148,8 +129,8 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            var slctPl = new SelectElement(br.FindElement(By.CssSelector("div#productline select")));
-            var slctPc = new SelectElement(br.FindElement(By.CssSelector("div#productclass select")));
+            var slctPl = new SelectElement(FindElementByCss("div#productline select"));
+            var slctPc = new SelectElement(FindElementByCss("div#productclass select"));
 
             Assert.AreEqual("M", slctPl.SelectedOption.Text);
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
@@ -165,8 +146,8 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            br.FindElement(By.CssSelector("div#productline .value  select")).SendKeys("R");
-            br.FindElement(By.CssSelector("div#productclass .value  select")).SendKeys("L");
+            FindElementByCss("div#productline .value  select").SendKeys("R");
+            FindElementByCss("div#productclass .value  select").SendKeys("L");
 
             ClickOK();
             WaitForSingleQuery();
@@ -178,11 +159,11 @@ OpenActionDialog("List Products By Sub Category");
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
-            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+            var slctCs = new SelectElement(FindElementByCss("div#categories select"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+            var slct = new SelectElement(FindElementByCss("div#subcategories select"));
 
             Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -200,11 +181,11 @@ OpenActionDialog("List Products By Sub Category");
 
             OpenActionDialog("Find Products By Category");
 
-            var slctCs = new SelectElement(br.FindElement(By.CssSelector("div#categories select")));
+            var slctCs = new SelectElement(FindElementByCss("div#categories select"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            var slct = new SelectElement(br.FindElement(By.CssSelector("div#subcategories select")));
+            var slct = new SelectElement(FindElementByCss("div#subcategories select"));
 
             Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -223,9 +204,9 @@ OpenActionDialog("List Products By Sub Category");
 
             br.FindElement(By.CssSelector(".value input[type='text']")).SendKeys("Valdez");
 
-            wait.Until(d => d.FindElement(By.ClassName("ui-menu-item")));
+            wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
 
-            Click(br.FindElement(By.CssSelector(".ui-menu-item")));
+            Click(FindElementByCss(".ui-menu-item"));
 
             ClickOK();
             WaitForSingleQuery();
@@ -237,18 +218,18 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(SalesServiceUrl);
             OpenActionDialog("List Accounts For Sales Person");
 
-            br.FindElement(By.CssSelector(".value input[type='text']")).SendKeys("Valdez");
+            FindElementByCss(".value input[type='text']").SendKeys("Valdez");
 
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
-            Click(br.FindElement(By.CssSelector(".ui-menu-item")));
+            Click(FindElementByCss(".ui-menu-item"));
 
             ClickOK();
             WaitForSingleQuery();
 
             try
             {
-                br.FindElement(By.CssSelector(".value input[type='text']"));
+                FindElementByCss(".value input[type='text']");
                 // found so it fails
                 Assert.Fail();
             }
@@ -264,7 +245,7 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find Product");
 
-            Assert.AreEqual("Adjustable Race", br.FindElement(By.CssSelector(".value input[type='text']")).GetAttribute("value"));
+            Assert.AreEqual("Adjustable Race", FindElementByCss(".value input[type='text']").GetAttribute("value"));
 
             ClickOK();
             WaitForSingleObject("Adjustable Race");
@@ -276,14 +257,16 @@ OpenActionDialog("List Products By Sub Category");
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find Product");
 
-            var acElem = br.FindElement(By.CssSelector(".value input[type='text']"));
+            var acElem = FindElementByCss(".value input[type='text']");
 
             for (int i = 0; i < 15; i++)
             {
                 acElem.SendKeys(Keys.Backspace);
             }
             acElem.SendKeys("BB");
-            Click(GetByCss(".ui-menu-item"));
+            var item = wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")));
+            Assert.AreEqual("BB Ball Bearing", item.Text);
+            Click(item);
             ClickOK();
             WaitForSingleObject("BB Ball Bearing");
         }

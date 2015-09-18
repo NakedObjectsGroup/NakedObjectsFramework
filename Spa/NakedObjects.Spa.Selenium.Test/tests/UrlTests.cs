@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/unrecognised");
             WaitForSingleHome();
-            Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
+            Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
 
         #region Single pane Urls
@@ -30,7 +30,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/home");
             WaitForSingleHome();
-            Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
+            Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
 
         [TestMethod]
@@ -38,8 +38,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=CustomerRepository");
             WaitForSingleHome();
-            wait.Until(d => d.FindElement(By.ClassName("actions")));
-            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.ClassName("action"));
+            wait.Until(d => d.FindElement(By.CssSelector(".actions")));
+            ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".action"));
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
             Assert.AreEqual("Find Store By Name", actions[1].Text);
@@ -56,29 +56,29 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void Object()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555");
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-            wait.Until(d => d.FindElement(By.ClassName("view")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".view")));
             AssertObjectElementsPresent();
         }
 
         private void AssertObjectElementsPresent()
         {
-            Assert.IsTrue(br.FindElements(By.ClassName("error")).Count == 0);
-            Assert.IsNotNull(br.FindElement(By.ClassName("single")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("object")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("view")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("header")));
-            var menu = br.FindElement(By.ClassName("menu"));
+            Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".single")));
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".object")));
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".view")));
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".header")));
+            var menu = br.FindElement(By.CssSelector(".menu"));
             Assert.AreEqual("Actions", menu.Text);
-            Assert.IsNotNull(br.FindElement(By.ClassName("main-column")));
-            Assert.IsNotNull(br.FindElement(By.ClassName("collections")));
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".collections")));
         }
 
         [TestMethod]
         public virtual void ObjectWithNoSuchObject()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Foo-555");
-            wait.Until(d => d.FindElement(By.ClassName("error")));
+            wait.Until(d => d.FindElement(By.CssSelector(".error")));
         }
 
         [TestMethod]
@@ -94,22 +94,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectWithCollections()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=List&collection1_Contacts=Table");
-            wait.Until(d => d.FindElement(By.ClassName("collections")));
+            wait.Until(d => d.FindElement(By.CssSelector(".collections")));
             AssertObjectElementsPresent();
-            wait.Until(d => d.FindElements(By.ClassName("collection")).Count == 2);
-            var collections = br.FindElements(By.ClassName("collection"));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
+            var collections = br.FindElements(By.CssSelector(".collection"));
             Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
-            Assert.IsNotNull(collections[0].FindElement(By.ClassName("icon-table")));
-            Assert.IsNotNull(collections[0].FindElement(By.ClassName("icon-summary")));
-            Assert.IsTrue(collections[0].FindElements(By.ClassName("icon-list")).Count == 0);
+            Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-table")));
+            Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-summary")));
+            Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon-list")).Count == 0);
         }
 
         [TestMethod]
         public virtual void ObjectInEditMode()
         {
             br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&edit1=true");
-            wait.Until(d => d.FindElement(By.ClassName("object")));
-            wait.Until(d => d.FindElement(By.ClassName("edit")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".edit")));
             GetSaveButton();
             GetCancelEditButton();
            // AssertObjectElementsPresent();
@@ -120,7 +120,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             WaitForSingleHome();
             br.Navigate().GoToUrl(Url + "#/query?action1=HighestValueOrders");
-            wait.Until(d => d.FindElement(By.ClassName("query")));
+            wait.Until(d => d.FindElement(By.CssSelector(".query")));
             WaitForSingleQuery();
         }
         #endregion
@@ -134,9 +134,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".home")));
             var panes = br.FindElements(By.CssSelector(".split"));
             Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.ClassName("home"));
+            var left = panes[0].FindElement(By.CssSelector(".home"));
             Assert.AreEqual("Home", left.FindElement(By.CssSelector(".title")).Text);
-            var right = panes[1].FindElement(By.ClassName("home"));
+            var right = panes[1].FindElement(By.CssSelector(".home"));
             Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
         }
 
@@ -147,10 +147,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
             var panes = br.FindElements(By.CssSelector(".split"));
             Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.ClassName("object"));
+            var left = panes[0].FindElement(By.CssSelector(".object"));
             Assert.IsTrue(left.GetAttribute("class").Contains("object view"));
             Assert.AreEqual("Twin Cycles, AW00000555", panes[0].FindElement(By.CssSelector(".title")).Text);;
-            var right = panes[1].FindElement(By.ClassName("home"));
+            var right = panes[1].FindElement(By.CssSelector(".home"));
             Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
         }
 
@@ -161,9 +161,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".query .title")));
             var panes = br.FindElements(By.CssSelector(".split"));
             Assert.AreEqual(2, panes.Count);
-            var left = panes[0].FindElement(By.ClassName("query"));
+            var left = panes[0].FindElement(By.CssSelector(".query"));
             Assert.AreEqual("Highest Value Orders", left.FindElement(By.CssSelector(".title")).Text);
-            var right = panes[1].FindElement(By.ClassName("home"));
+            var right = panes[1].FindElement(By.CssSelector(".home"));
             Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
         }
         #endregion
