@@ -115,11 +115,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
            // AssertObjectElementsPresent();
         }
 
-        [TestMethod, Ignore] //Stef  -  query via url not yet working in test mode?
+        [TestMethod]
         public virtual void QueryZeroParameterAction()
         {
             WaitForSingleHome();
-            br.Navigate().GoToUrl(Url + "#/query?action1=HighestValueOrders");
+            br.Navigate().GoToUrl(Url + "#/query?menu1=OrderRepository&action1=HighestValueOrders");
             wait.Until(d => d.FindElement(By.CssSelector(".query")));
             WaitForSingleQuery();
         }
@@ -154,10 +154,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Home", right.FindElement(By.CssSelector(".title")).Text);
         }
 
-        [TestMethod, Ignore]//Stef  -  query via url not yet working in test mode?
+        [TestMethod]
         public virtual void SplitQueryHome()
         {
-            br.Navigate().GoToUrl(Url + "#/query/home?action1=HighestValueOrders");
+            br.Navigate().GoToUrl(Url + "#/query/home?menu1=OrderRepository&action1=HighestValueOrders");
             wait.Until(dr => dr.FindElement(By.CssSelector(".query .title")));
             var panes = br.FindElements(By.CssSelector(".split"));
             Assert.AreEqual(2, panes.Count);
