@@ -33,8 +33,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(br.FindElements(By.ClassName("actions")).Count == 0);
         }
 
-
-
         [TestMethod]
         public virtual void HomeWithMenu()
         {
@@ -105,7 +103,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNotNull(collections[0].FindElement(By.ClassName("icon-summary")));
             Assert.IsTrue(collections[0].FindElements(By.ClassName("icon-list")).Count == 0);
         }
-
 
         [TestMethod]
         public virtual void ObjectInEditMode()
@@ -238,5 +235,46 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
+    #endregion
+
+    #region Running all tests in one go
+    //[TestClass]
+    public class MegaUrlTestFirefox : UrlTests
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            GeminiTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            br.Navigate().GoToUrl(Url);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+
+        [TestMethod]
+        public virtual void MegaTest()
+        {
+            Home();
+            UnrecognisedUrlGoesToHome();
+            Object();
+            ObjectInEditMode();
+            ObjectWithActions();
+            ObjectWithCollections();
+            ObjectWithNoSuchObject();
+            //QueryZeroParameterAction();
+            SplitHomeHome();
+            SplitObjectHome();
+            //SplitQueryHome();
+        }
+    }
     #endregion
 }
