@@ -7,7 +7,8 @@ Core Tests Status [![Build status](https://ci.appveyor.com/api/projects/status/k
 
 RestfulObjects Test Status [![Build status](https://ci.appveyor.com/api/projects/status/jkhue6jrxwx523p1)](https://ci.appveyor.com/project/scascarini/nakedobjectsframework-716)
 
-MVC Tests Status [![Build status](https://ci.appveyor.com/api/projects/status/152gjq86x3pbli8y)](https://ci.appveyor.com/project/scascarini/nakedobjectsframework-958)
+Spa Status [![Build status](https://ci.appveyor.com/api/projects/status/3lpqlxucl44kbkc8?svg=true)](https://ci.appveyor.com/project/scascarini/nakedobjectsframework-ksvxd)
+
 
 Getting Started
 ===============
