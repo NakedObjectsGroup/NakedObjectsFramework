@@ -26,7 +26,7 @@ module NakedObjects.Angular.Gemini {
         closeDialog();
         setObject(resultObject: DomainObjectRepresentation, transient?: boolean);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
-        setProperty(propertyMember: PropertyMember);
+        setProperty(propertyMember: PropertyMember, pane : number);
         setItem(link: Link): void;
 
         toggleObjectMenu(): void;
@@ -93,13 +93,31 @@ module NakedObjects.Angular.Gemini {
             $location.path("/query").search(search);
         };
 
-        helper.setProperty = (propertyMember: PropertyMember) => {
-            var href = propertyMember.value().link().href();
+        helper.setProperty = (propertyMember: PropertyMember, pane : number) => {
+            const href = propertyMember.value().link().href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
-
             const oid = `${results[2]}-${results[3]}`;
-            $location.search({ object1: oid });
+
+            // if pane 2 need to ensure go to split pane url; 
+            // todo genericize this 
+            if (pane === 2) {
+                const path = $location.path();
+                const segments = path.split("/");
+                let newPath: string;
+
+                if (segments.length >= 2) {
+                    newPath = `/${segments[1]}/object`;
+                    $location.path(newPath);
+                }
+            }
+
+            const search = $location.search();
+            search[object + pane] = oid;
+            // ES6 todo 
+            //const search = { [object]: oid };
+
+            $location.search(search);
         };
 
         helper.setItem = (link: Link) => {
@@ -160,7 +178,6 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + index), val: v } });
 
         }
-
 
         helper.getRouteData = () => {
             const routeData = new RouteData();

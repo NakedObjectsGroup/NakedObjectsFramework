@@ -210,7 +210,7 @@ module NakedObjects.Angular.Gemini {
         isEditable: boolean;    
         attachment: AttachmentViewModel;
 
-        doClick() : void { }
+        doClick(right? : boolean) : void { }
     } 
 
     export class CollectionViewModel {
