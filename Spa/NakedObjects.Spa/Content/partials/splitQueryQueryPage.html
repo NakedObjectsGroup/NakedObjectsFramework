@@ -1,0 +1,5 @@
+﻿<div class="background" ng-class="backgroundColor" ng-swipe-right="$broadcast('back')" ng-swipe-left="$broadcast('forward')">
+    <div id="pane1" class="split" ng-controller="Pane1QueryController" ng-include="queryTemplate"></div>
+    <div id="pane2" class="split" ng-controller="Pane2QueryController" ng-include="queryTemplate"></div>
+    <div class="footer" ng-controller="AppBarController" ng-include="appBar.footerTemplate"></div>
+</div>

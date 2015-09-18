@@ -1,0 +1,479 @@
+﻿/*Global*/
+
+    .gemini, table, a { /*Need to override browser defaults*/
+        font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+        color: white;
+        font-size: 11pt; /*Default*/
+        font-weight: 100;
+        text-decoration: none; /*Override default underlining of links*/
+    }
+
+    .gemini * {
+        /*Specifies that padding & border are added INSIDE the specified width*/
+        box-sizing: border-box;
+    }
+
+    html, #main, body, .background, .single, .split {
+        margin: 0px;
+        height: 100%; /*fill the vertical space*/
+    }
+
+    .background {
+        overflow-y: auto;
+        background-color: black;
+    }
+
+    .single, .split {
+        padding-bottom: 60px; /*So bottom content doesn't get cut off by footer*/
+    }
+
+    .single {
+        width: 100%;
+    }
+
+    .split {
+        width: 50%;
+        overflow-x: auto;
+        float: left;
+    }
+/*Three main roots*/
+.home, .object, .query, .error {
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/*Sub-panes - layout */
+    .actions, .main-column, .collections {
+        float: left;
+        margin-bottom: 20px;
+    }
+
+    .properties, .dialog {
+        width: 390px;
+        padding: 5px;
+        margin-bottom: 20px;
+    }
+
+    .action, .main-column, .collections { 
+        margin-right: 20px;
+    }
+
+/*Header*/
+    .header {
+        margin-bottom: 20px;
+        overflow: hidden; /*Expands the div to size of all contents*/
+    }
+
+    .header .title, .header .type {
+        position: relative;
+        font-weight: 200;
+        font-size: 32pt;
+        line-height: 38pt;
+    }
+
+    .header .type {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .type {
+        display: none; /*Change this to display type (e.g. for accessibility)*/
+    }
+
+/*Menus & actions*/
+    .menu, .header .action {
+        float: left;
+        padding: 5px;
+        margin-top: 20px;
+        margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
+        margin-right: 10px;
+        margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
+        font-size: 14pt;
+    }
+
+    .object .header .menu, .object .header .action {
+        background-color: white;
+        color: black;
+    }
+
+    .menu:hover, .menu.selected,  .action:hover, .action.selected {
+        outline: solid;
+        outline-width: 1px;
+        outline-color: white;
+    }
+
+    .object .menu:hover, .object .menu.selected, .object .action:hover, .object .action.selected {
+        outline-color: black;
+    }
+
+/*Fix to make menus/actions/reference properties clickable*/
+    .clickable-area
+    {
+        cursor: pointer;
+    }
+
+/*Actions*/
+    .actions .action {
+        width: 150px;
+        padding: 2px 5px;
+        margin-bottom: 5px;
+        background-color: white;
+        color: black;
+        font-weight: bolder; /*Because black on white light looks too faint*/
+    }
+
+    .submenu .name {
+        float: none;
+        margin-bottom: 5px;
+        font-size: 12pt;
+    }
+
+/*Dialog*/
+    .dialog {
+        overflow: hidden; /*Needed to force the floated divs inside this to expand the containing div in height*/
+        background-color: white;
+        color: black;
+        font-weight: bolder;
+    }
+
+    .dialog .title {
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
+
+    .dialog .icon-cancel {
+        color: black;
+        float: right;
+    }
+
+    .parameter .name {
+        width: 145px; /*To align input box with reference fields*/
+    }
+
+/*Properties*/
+
+    .property {
+        overflow: hidden;
+    }
+
+        .property:not(:last-child), .list .reference:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+    .name {
+        width: 150px;
+        padding-right: 5px;
+    }
+
+    .reference, .value, .details {
+        width: 230px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .input-control input {
+        width: 230px;
+        padding-left: 5px;
+        margin-bottom: 5px;
+    }
+
+    .name, .value, .property .reference {
+        float: left;
+    }
+
+/*TODO:  Review for consistent use of black & white */
+/*Hovering & active behaviour*/
+.reference:hover, .clickable-row:hover, input:hover {
+    outline: auto;
+    outline-width: 1px;
+    outline-color: black;
+}
+
+.reference:active, .clickable-row:active, .menu:active {
+    outline: auto;
+    outline-width: 1px;
+    outline-color: white;
+}
+
+/*Collections */
+    .collection:not(:last-child){
+        margin-bottom: 20px;
+    }
+    .collection .summary {
+        font-size: 12pt;
+        margin-bottom: 10px;
+    }
+    /*Collections within object*/
+    .object .collection .name, .object .collection .details {
+        padding-left: 0px; /*Because it is a heading, so outdented*/
+        float: left;
+    }
+    /*Collections within query*/
+    .query .collection .details {
+        padding-left: 40px; /*To align with first column text, allowing for checkbox*/
+        width: 350px;
+        float: left;
+    }
+
+/*List*/
+.list .reference {
+    width: 390px;
+}
+
+td.reference {
+    width: 415px;
+}
+
+td.checkbox {
+        background-color:black; /*Because check-box only ever displayed on default background*/
+}
+
+/*Tables*/
+th, td {
+    font-weight: normal; /*Override browser default*/
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: top;
+}
+
+/*Error*/
+.error {
+    font-size: 16pt;
+    color: red;
+}
+
+.error .stacktrace {
+    font-size: 12pt;
+    color: white;
+}
+
+/*footer*/
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+}
+
+    .footer a {
+        color: white;
+        font-size: 36pt;
+        padding: 5px;
+        margin-left: 10px;
+    }
+
+        .footer a.disabled {
+            display: none;
+        }
+
+        .footer a:hover {
+            outline-style: solid;
+            outline-width: 1px;
+            outline-color: white;
+        }
+
+        .footer a:active {
+            outline-style: solid;
+            outline-width: 2px;
+            outline-color: white;
+        }
+
+    .footer .icons, .footer .messages {
+        float: left;
+    }
+
+.messages {
+    font-size: 12pt;
+    color: red;
+}
+
+/* Colours */
+.bg-color-blue {
+    background-color: #2d89ef;
+}
+
+.bg-color-blueLight {
+    background-color: #66ccff;
+}
+
+.bg-color-blueDark {
+    background-color: #2b5797;
+}
+
+.bg-color-darkBlue { /*Temporary fix*/
+    background-color: #1d1d1d;
+}
+
+.fg-color-darkBlue { /*Temporary fix*/
+    color: #1d1d1d;
+}
+
+.bg-color-green {
+    background-color: #00a300;
+}
+
+.bg-color-greenLight {
+    background-color: #99b433;
+}
+
+.bg-color-greenDark {
+    background-color: #1e7145;
+}
+
+.bg-color-red {
+    background-color: #b91d47;
+}
+
+.bg-color-yellow {
+    background-color: #ffc40d;
+}
+
+.bg-color-orange {
+    background-color: #e3a21a;
+}
+
+.bg-color-orangeDark {
+    background-color: #da532c;
+}
+
+.bg-color-pink {
+    background-color: #9f00a7;
+}
+
+.bg-color-pinkDark {
+    background-color: #7e3878;
+}
+
+.bg-color-purple {
+    background-color: #603cba;
+}
+
+.bg-color-darken {
+    background-color: #1d1d1d;
+}
+
+.bg-color-lighten {
+    background-color: #d5e7ec;
+}
+
+.bg-color-white {
+    background-color: #ffffff;
+}
+
+.bg-color-grayDark {
+    background-color: #525252;
+}
+
+.bg-color-magenta {
+    background-color: #ff0097;
+}
+
+.bg-color-teal {
+    background-color: #00aba9;
+}
+
+.bg-color-redLight {
+    background-color: #ee1111;
+}
+
+/*Icons - general*/
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: "iconFont";
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+    margin-top: 0;
+    position: relative;
+}
+
+@font-face {
+    font-family: "iconFont";
+    src: url('../fonts/iconFont.eot');
+    src: url('../fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('../fonts/iconFont.svg#iconFont') format('svg'), url('../fonts/iconFont.woff') format('woff'), url('../fonts/iconFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*Icons -specific*/
+.icon-home:before {
+    content: "\e000";
+}
+
+.icon-arrow-left-3:before {
+    content: "\e09f";
+}
+
+.icon-arrow-right-3:before {
+    content: "\e09d";
+}
+
+.icon-loop:before {
+    content: "\e08f";
+}
+
+.icon-edit:before {
+    content: "\e002";
+}
+
+.icon-help:before {
+    content: "\e085";
+}
+
+.icon-cancel:before {
+    content: "\e088";
+}
+
+.icon-enter:before {
+    content: "\e08d";
+}
+
+.icon-plus:before {
+    content: "\e083";
+}
+
+.icon-minus:before {
+    content: "\e084";
+}
+
+.icon-summary:before {
+    content: "\e088";
+}
+
+.icon-list:before {
+    content: "\e084";
+}
+
+.icon-table:before {
+    content: "\e083";
+}
+
+/*Buttons*/
+input[type=button],
+input[type=reset],
+input[type=submit] {
+    margin-left:5px;
+    margin-top: 10px;
+    display: inline-block;
+    padding: 4px 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px transparent solid;
+    cursor: pointer;
+    width: auto;
+    *zoom: 1;
+    color: white;
+    background-color: black;
+}

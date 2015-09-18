@@ -1,0 +1,60 @@
+﻿<!--Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
+Licensed under the Apache License, Version 2.0(the
+"License"); you may not use this file except in compliance
+with the License.You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.See the License for the
+specific language governing permissions and limitations
+under the License.-->
+
+<div class="query">
+    <div class="header">
+        <div class="title">
+            {{title}}
+        </div>
+        <div class="menu clickable-area" ng-click="object.toggleActionMenu()">
+            Actions
+        </div>
+        <div class="messages"></div>
+    </div>
+    <div class="collection">
+        <div class="summary">
+            <div class="details">{{collection.size}}-{{collection.pluralName}}</div>
+            <div class="icon-list clickable-area" ng-click="collection.doList()" ></div>
+        </div>      
+        <table >
+            <thead>
+                <tr>
+                    <th ng-repeat="heading in collection.header">
+                        {{heading}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()">
+                    <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+                        <div ng-switch-when="ref" class="clickable-area">
+                            {{property.value}}
+                        </div>
+                        <div ng-switch-when="scalar" ng-switch="property.returnType">
+                            <div ng-switch-when="string" ng-switch="property.format">
+                                <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
+                                <div ng-switch-default class="clickable-area">{{property.value}}</div>
+                            </div>
+                            <div ng-switch-when="boolean" class="clickable-area">
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                            </div>
+                            <div ng-switch-default class="clickable-area">
+                                {{property.value}}
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
