@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// Tests applied from a Query view.
     /// </summary>
     public abstract class QueryTests : GeminiTest {
-        [TestMethod, Ignore] //Failing on response time?
+        [TestMethod]
         public virtual void QueryActionReturnsListView()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
@@ -32,7 +32,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         }
 
-        [TestMethod, Ignore] //Failing on response time?
+        [TestMethod]
         public virtual void SwitchToTableViewAndBackToList()
         {
             br.Navigate().GoToUrl(SpecialOffersMenuUrl);
@@ -71,7 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForSingleObject("SO51131");
         }
 
-        [TestMethod, Ignore] //Failing on response time?
+        [TestMethod]
         public virtual void NavigateToItemFromTableView()
         {
             br.Navigate().GoToUrl(SpecialOffersMenuUrl);
