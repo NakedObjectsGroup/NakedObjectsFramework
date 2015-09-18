@@ -135,6 +135,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
+        public virtual void SplitHomeObject()
+        {
+            br.Navigate().GoToUrl(Url + "#/home/object?object2=AdventureWorksModel.Store-555");
+            WaitForSplit(PaneType.Home, PaneType.Object, "Home", "Twin Cycles, AW00000555");
+        }
+
+        [TestMethod]
         public virtual void SplitObjectHome()
         {
             br.Navigate().GoToUrl(Url + "#/object/home?object1=AdventureWorksModel.Store-555");
@@ -142,10 +149,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
+        public virtual void SplitObjectObject()
+        {
+            br.Navigate().GoToUrl(Url + "#/object/object?object1=AdventureWorksModel.Store-555&object2=AdventureWorksModel.Store-359");
+            WaitForSplit(PaneType.Object, PaneType.Object, "Twin Cycles, AW00000555", "Mechanical Sports Center, AW00000359");
+        }
+
+        [TestMethod]
         public virtual void SplitQueryHome()
         {
             br.Navigate().GoToUrl(Url + "#/query/home?menu1=OrderRepository&action1=HighestValueOrders");
             WaitForSplit(PaneType.Query, PaneType.Home, "Highest Value Orders", "Home");
+        }
+
+        [TestMethod, Ignore] //Not implemented yet
+        public virtual void SplitQueryObject()
+        {
+            br.Navigate().GoToUrl(Url + "#/query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-359");
+            WaitForSplit(PaneType.Query, PaneType.Object, "Highest Value Orders", "Mechanical Sports Center, AW00000359");
         }
         #endregion
 
