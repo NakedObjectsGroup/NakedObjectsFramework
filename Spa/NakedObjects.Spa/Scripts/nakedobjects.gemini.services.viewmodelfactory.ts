@@ -269,10 +269,9 @@ module NakedObjects.Angular.Gemini{
             //propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
 
-            propertyViewModel.doClick = () => {
-                urlManager.setProperty(propertyRep);
+            propertyViewModel.doClick = (right? : boolean) => {
+                urlManager.setProperty(propertyRep, right ? 2 : 1);
             }
-
 
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),

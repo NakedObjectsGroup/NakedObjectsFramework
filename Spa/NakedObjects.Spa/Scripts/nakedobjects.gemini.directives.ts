@@ -288,6 +288,17 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
+    app.directive('nogRightclick', function ($parse) {
+        return function (scope, element, attrs) {
+            var fn = $parse(attrs.nogRightclick);
+            element.bind('contextmenu', function (event) {
+                scope.$apply(function () {
+                    event.preventDefault();
+                    fn(scope, { $event: event });
+                });
+            });
+        };
+    });
 
     app.directive('nogAttachment', function ($window : ng.IWindowService): ng.IDirective {
         return {
