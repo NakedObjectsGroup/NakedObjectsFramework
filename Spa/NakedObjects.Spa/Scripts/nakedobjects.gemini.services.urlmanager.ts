@@ -93,30 +93,30 @@ module NakedObjects.Angular.Gemini {
             $location.path("/query").search(search);
         };
 
+        function setSplitPaneIfNecessary(pane : number) {
+            // if pane 2 need to ensure go to split pane url; 
+            // todo genericize this 
+            if (pane === 2) {
+                const path = $location.path();
+                const segments = path.split("/");
+                if (segments.length >= 2) {
+                    const newPath = `/${segments[1]}/${object}`;
+                    $location.path(newPath);
+                }
+            }
+        }
+
         helper.setProperty = (propertyMember: PropertyMember, pane : number) => {
             const href = propertyMember.value().link().href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
             const oid = `${results[2]}-${results[3]}`;
 
-            // if pane 2 need to ensure go to split pane url; 
-            // todo genericize this 
-            if (pane === 2) {
-                const path = $location.path();
-                const segments = path.split("/");
-                let newPath: string;
-
-                if (segments.length >= 2) {
-                    newPath = `/${segments[1]}/object`;
-                    $location.path(newPath);
-                }
-            }
-
+            setSplitPaneIfNecessary(pane);
+            
             const search = $location.search();
             search[object + pane] = oid;
-            // ES6 todo 
-            //const search = { [object]: oid };
-
+ 
             $location.search(search);
         };
 
