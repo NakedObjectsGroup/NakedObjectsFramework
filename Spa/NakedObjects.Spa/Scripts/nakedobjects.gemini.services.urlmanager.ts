@@ -35,11 +35,13 @@ module NakedObjects.Angular.Gemini {
         setCollectionState(paneId: number, collection: ListRepresentation, state: CollectionViewState) : void;
 
         setObjectEdit(edit: boolean, paneId : number);
+        setHome(paneId: number);
     }
 
     app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
+        const home = "home";
         const menu = "menu";
         const object = "object";
         const collection = "collection";
@@ -75,6 +77,18 @@ module NakedObjects.Angular.Gemini {
 
         function singlePane() {
             return $location.path().split("/").length <= 2;
+        }
+
+        function clearPane(paneId: number) {
+            let search = $location.search();
+
+            const toClearRaw = [menu, object, collection, edit, action, parm, actions];
+            const toClearIds = _.map(toClearRaw, s => s + paneId);
+            const toClear  = _.filter(_.keys(search),  (k) =>  _.any(toClearIds, id => k.indexOf(id) === 0 ));
+
+            search = _.omit(search, toClear);
+
+            $location.search(search);
         }
 
         function setupPaneNumberAndTypes(pane: number, newPaneType : string) {
@@ -183,6 +197,12 @@ module NakedObjects.Angular.Gemini {
         helper.setError = () => {
             $location.path("/error").search({});
         };
+
+        helper.setHome = (paneId : number) => {
+            setupPaneNumberAndTypes(paneId, home);
+            // clear search on this pane 
+            clearPane(paneId);
+        }
 
         function setPaneRouteData(paneRouteData : PaneRouteData, paneId : number) {
             paneRouteData.menuId = $routeParams[menu + paneId];

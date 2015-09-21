@@ -18,6 +18,8 @@
 module NakedObjects.Angular.Gemini{
 
     export interface IViewModelFactory {
+        toolBarViewModel($scope) : ToolBarViewModel;
+
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link): ItemViewModel;     
@@ -500,6 +502,45 @@ module NakedObjects.Angular.Gemini{
 
             return objectViewModel;
         };
+
+        viewModelFactory.toolBarViewModel = ($scope) => {
+            var tvm = new ToolBarViewModel();
+
+            $scope.$on("ajax-change", (event, count) => {
+                if (count > 0) {
+                    tvm.loading = "Loading...";
+                } else {
+                    tvm.loading = "";
+                }
+            });
+
+            $scope.$on("back", () => {
+                navigation.back();
+            });
+
+            $scope.$on("forward", () => {
+                navigation.forward();
+            });
+
+            tvm.template = appBarTemplate;
+
+            tvm.footerTemplate = footerTemplate;
+
+            tvm.goHome = (right? : boolean) => {
+                urlManager.setHome(pane(right));
+            }
+
+            tvm.goBack = () => {
+                navigation.back();
+            };
+
+            tvm.goForward = () => {
+                navigation.forward();
+            };
+
+            return tvm;
+        }
+
     });
 
 }

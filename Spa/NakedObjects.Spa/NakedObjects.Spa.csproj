@@ -30,7 +30,7 @@
     <Content Include="Content\partials\queryTable.html" />
     <Content Include="Content\partials\queryList.html" />
     <Content Include="Content\partials\singleQueryPage.html" />
-    <Content Include="Content\partials\splitHomeQuerytPage.html" />
+    <Content Include="Content\partials\splitHomeQueryPage.html" />
     <Content Include="Content\partials\splitObjectQueryPage.html" />
     <Content Include="Content\partials\splitQueryHomePage.html" />
     <Content Include="Content\partials\splitQueryObject.html" />

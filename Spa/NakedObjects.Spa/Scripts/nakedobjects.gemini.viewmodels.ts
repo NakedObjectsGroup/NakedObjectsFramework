@@ -274,14 +274,12 @@ module NakedObjects.Angular.Gemini {
         }
     }
 
-    export class AppBarViewModel {
+    export class ToolBarViewModel {
         loading: string;
         template: string;
         footerTemplate: string;
-        goHome: string;
+        goHome: (right? : boolean) => void;
         goBack: () => void;
         goForward: () => void;
-        hideEdit: () => boolean;
-        doEdit: () => void;
     }
 }

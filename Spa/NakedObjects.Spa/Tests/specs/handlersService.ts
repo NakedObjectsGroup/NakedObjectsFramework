@@ -120,7 +120,7 @@ describe("handlers Service", () => {
             beforeEach(inject(($rootScope, handlers: NakedObjects.Angular.Gemini.IHandlers) => {
                 $scope = $rootScope.$new();
 
-                handlers.handleAppBar($scope);
+                handlers.handleToolBar($scope);
             }));
 
             it("should set appBar data", () => {
@@ -154,7 +154,7 @@ describe("handlers Service", () => {
                 spyOn($location, "path").and.returnValue("aPath");
                 
 
-                handlers.handleAppBar($scope);
+                handlers.handleToolBar($scope);
             }));
 
             it("should set appBar data", () => {
@@ -185,7 +185,7 @@ describe("handlers Service", () => {
 
                 spyOn($location, "path").and.returnValue("aPath");
 
-                handlers.handleAppBar($scope);
+                handlers.handleToolBar($scope);
             }));
 
             it("should set appBar data", () => {

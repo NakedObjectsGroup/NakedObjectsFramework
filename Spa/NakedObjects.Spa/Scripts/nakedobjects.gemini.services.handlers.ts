@@ -22,7 +22,7 @@ module NakedObjects.Angular.Gemini {
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
         handleError($scope: INakedObjectsScope): void;
-        handleAppBar($scope: INakedObjectsScope): void;
+        handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHome($scope: INakedObjectsScope, routeData : PaneRouteData): void;
         handleQuery($scope: INakedObjectsScope, routeData: PaneRouteData): void;
@@ -142,55 +142,9 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        handlers.handleAppBar = ($scope: INakedObjectsScope) => {
+        handlers.handleToolBar = ($scope: INakedObjectsScope) => {
 
-            var avm = new AppBarViewModel();
-
-            $scope.$on("ajax-change", (event, count) => {
-                if (count > 0) {
-                    avm.loading = "Loading...";
-                } else {
-                    avm.loading = "";
-                }
-            });
-
-            $scope.$on("back", () => {
-                navigation.back();
-            });
-
-            $scope.$on("forward", () => {
-                navigation.forward();
-            });
-
-            avm.template = appBarTemplate;
-
-            avm.footerTemplate = footerTemplate;
-
-            avm.goHome = "#/";
-
-            avm.goBack = () => {
-                navigation.back();
-            };
-
-            avm.goForward = () => {
-                navigation.forward();
-            };
-
-            avm.hideEdit = () => true;
-
-            $scope.$parent.$watch("object", () => {
-                // look for object on root
-                const parentAsAny = <any>$scope.$parent;
-                if (parentAsAny.object) {
-                    var ovm = parentAsAny.object;
-                    if (ovm instanceof DomainObjectViewModel) {
-                        avm.hideEdit = () => !ovm.showEdit() || ($routeParams.edit1 === "true");
-                        avm.doEdit = () => ovm.doEdit();
-                    }
-                }
-            });
-
-            $scope.appBar = avm; 
+           $scope.toolBar = viewModelFactory.toolBarViewModel($scope); 
         };
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {

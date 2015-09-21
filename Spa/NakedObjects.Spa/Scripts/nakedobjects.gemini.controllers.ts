@@ -54,7 +54,7 @@ module NakedObjects.Angular.Gemini {
         handlers.handleError($scope);
     });
 
-    app.controller("AppBarController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
-        handlers.handleAppBar($scope);
+    app.controller("ToolBarController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
+        handlers.handleToolBar($scope);
     });
 }

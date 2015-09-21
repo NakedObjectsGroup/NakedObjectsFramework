@@ -10,10 +10,10 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-<a class="icon-home" title="Home" href="{{appBar.goHome}}" />
-<a class="icon-back icon-arrow-left-3" title="Back"  ng-click="appBar.goBack()"   />
-<a class="icon-forward icon-arrow-right-3" title="Forward"  ng-click="appBar.goForward()" />
-<a class="icon-refresh disabled" title="Refresh" />
-<a class="icon-help disabled" title="Help" />
-<span>{{appBar.loading}}</span>
-<a style="display: none" /> 
+<a class="icon-home" title="Home" ng-click="toolBar.goHome()" nog-rightclick="toolBar.goHome(true)"></a>
+<a class="icon-back icon-arrow-left-3" title="Back" ng-click="toolBar.goBack()"></a>
+<a class="icon-forward icon-arrow-right-3" title="Forward" ng-click="toolBar.goForward()"></a>
+<a class="icon-refresh disabled" title="Refresh"></a>
+<a class="icon-help disabled" title="Help"></a>
+<span>{{toolBar.loading}}</span>
+<a style="display: none"></a> 

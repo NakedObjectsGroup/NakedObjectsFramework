@@ -131,14 +131,14 @@ describe("Controllers", () => {
 
     });
 
-	describe("AppBarController", () => {
+	describe("ToolBarController", () => {
 
 		var handleAppBar;
 
 		beforeEach(inject(($rootScope, $controller, handlers) => {
 			$scope = $rootScope.$new();
-			handleAppBar = spyOn(handlers, "handleAppBar");
-			ctrl = $controller("AppBarController", { $scope: $scope, handlers: handlers });
+			handleAppBar = spyOn(handlers, "handleToolBar");
+			ctrl = $controller("ToolBarController", { $scope: $scope, handlers: handlers });
 		}));
 
 		it("should call the handler", () => {

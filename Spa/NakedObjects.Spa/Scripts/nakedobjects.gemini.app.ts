@@ -14,7 +14,7 @@
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 
 module NakedObjects.Angular {
-    import AppBarViewModel = NakedObjects.Angular.Gemini.AppBarViewModel; /* Declare app level module */
+    import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
    
     export var app = angular.module("app", ["ngRoute", "ngTouch"]);
 
@@ -41,7 +41,7 @@ module NakedObjects.Angular {
         queryTemplate: string;
         collection: Angular.Gemini.CollectionViewModel;
         title: string;
-        appBar: AppBarViewModel;
+        toolBar: ToolBarViewModel;
         objectTemplate: string;
         collectionsTemplate: string;
     }
