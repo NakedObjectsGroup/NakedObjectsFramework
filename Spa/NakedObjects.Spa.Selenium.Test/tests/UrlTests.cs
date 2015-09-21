@@ -84,11 +84,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectWithActions()
         {
-            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&menu1=Actions");
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&actions=open");
             GetObjectActions(StoreActions);
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
         }
+
+//TODO:  Need to add tests for object & home (later, query) with action (dialog) open
 
         [TestMethod]
         public virtual void ObjectWithCollections()
