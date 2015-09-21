@@ -21,7 +21,7 @@ module NakedObjects.Angular.Gemini {
         getRouteData(): RouteData;
 
         setError();
-        setMenu(menuId: string);
+        setMenu(menuId: string, paneId : number);
         setDialog(actionId: string);
         closeDialog();
         setObject(resultObject: DomainObjectRepresentation, paneId : number);
@@ -61,9 +61,8 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-
-        helper.setMenu = (menuId: string) => {
-            setSearch("menu1", menuId, true);
+        helper.setMenu = (menuId: string, paneId : number) => {
+            setSearch( `${menu}${paneId}` , menuId, false);
         };
 
         helper.setDialog = (actionId: string) => {
@@ -194,7 +193,6 @@ module NakedObjects.Angular.Gemini {
 
             const rawCollectionState: string = $routeParams[collection + paneId];
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
-
 
             const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
             //missing from lodash types :-( 

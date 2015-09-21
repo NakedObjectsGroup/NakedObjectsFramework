@@ -70,7 +70,7 @@ describe("viewModelFactory Service", () => {
             let setMenu: jasmine.Spy;
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                resultVm = viewModelFactory.linkViewModel(new NakedObjects.Link(rawLink));
+                resultVm = viewModelFactory.linkViewModel(new NakedObjects.Link(rawLink), 1);
                 setMenu = spyOn(urlManager, "setMenu");
             }));
 

@@ -39,7 +39,7 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
       
-        invokeAction(action: ActionMember, dvm?: DialogViewModel);
+        invokeAction(action: ActionMember, paneId : number, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
@@ -384,7 +384,7 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        context.invokeAction = (action: ActionMember, dvm?: DialogViewModel) => {
+        context.invokeAction = (action: ActionMember, paneId : number,  dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];
 
@@ -397,7 +397,7 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
-                    context.setResult(action, result, 1, dvm);
+                    context.setResult(action, result, paneId, dvm);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, parameters, dvm);

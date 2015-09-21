@@ -183,7 +183,7 @@ module NakedObjects.Angular.Gemini {
     export class ActionViewModel {
         menuPath : string;
         title: string;
-        doInvoke : () => void;
+        doInvoke: (right?: boolean) => void;
     } 
 
     export class DialogViewModel extends MessageViewModel {
@@ -195,7 +195,7 @@ module NakedObjects.Angular.Gemini {
         parameters: ParameterViewModel[];
 
         doClose: () => void;
-        doInvoke: () => void;
+        doInvoke: (right?: boolean) => void;
 
         clearMessages() {
             this.message = "";
