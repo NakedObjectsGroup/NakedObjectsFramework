@@ -93,7 +93,7 @@ module NakedObjects.Angular.Gemini {
 
             context.getMenus().
                 then((menus: MenusRepresentation) => {
-                    $scope.menus = viewModelFactory.menusViewModel(menus);
+                    $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
                     $scope.homeTemplate = homeTemplate;
                 }).catch(error => {
                     setError(error);

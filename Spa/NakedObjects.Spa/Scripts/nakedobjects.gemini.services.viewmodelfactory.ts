@@ -19,7 +19,7 @@ module NakedObjects.Angular.Gemini{
 
     export interface IViewModelFactory {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link): LinkViewModel;
+        linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link): ItemViewModel;     
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
@@ -31,7 +31,7 @@ module NakedObjects.Angular.Gemini{
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
-        menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
+        menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
     }
@@ -40,6 +40,8 @@ module NakedObjects.Angular.Gemini{
 
         var viewModelFactory = <IViewModelFactory>this;
 
+        function pane (right?: boolean) { return  right ? 2 : 1;}
+        
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -48,11 +50,11 @@ module NakedObjects.Angular.Gemini{
             return errorViewModel;
         };
 
-        viewModelFactory.linkViewModel = (linkRep: Link) => {
+        viewModelFactory.linkViewModel = (linkRep: Link, paneId : number) => {
             const linkViewModel = new LinkViewModel();
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());      
-            linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value);
+            linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
             return linkViewModel;
         };
    
@@ -239,7 +241,7 @@ module NakedObjects.Angular.Gemini{
             
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? () => urlManager.setDialog(actionRep.actionId()) : () => context.invokeAction(actionRep);
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId()) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
 
             return actionViewModel;
         };
@@ -253,7 +255,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
             dialogViewModel.doClose = () => urlManager.closeDialog();
-            dialogViewModel.doInvoke = () => context.invokeAction(actionMember, dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, pane(right), dialogViewModel);
 
             return dialogViewModel;
         };
@@ -270,7 +272,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
 
             propertyViewModel.doClick = (right? : boolean) => {
-                urlManager.setProperty(propertyRep, right ? 2 : 1);
+                urlManager.setProperty(propertyRep, pane(right));
             }
 
             if (propertyRep.attachmentLink() != null) {
@@ -436,16 +438,16 @@ module NakedObjects.Angular.Gemini{
             
             servicesViewModel.title = "Services";
             servicesViewModel.color = "bg-color-darkBlue";
-            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link));
+            servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, 1));
             return servicesViewModel;
         };
 
-        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation) => {
+        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation, paneId : number) => {
             var menusViewModel = new MenusViewModel();
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link));
+            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link, paneId));
             return menusViewModel;
         };
 
