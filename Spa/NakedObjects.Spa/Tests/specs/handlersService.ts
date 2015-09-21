@@ -103,19 +103,19 @@ describe("handlers Service", () => {
         });
     });
 
-    describe("handleAppBar", () => {
+    describe("handleToolBar", () => {
 
 
-        function expectAppBarData() {
-            expect($scope.appBar).toBeDefined();
-            expect($scope.appBar.goHome).toEqual("#/");
-            expect($scope.appBar.template).toEqual("Content/partials/appbar.html");
-            expect($scope.appBar.footerTemplate).toEqual("Content/partials/footer.html");
-            expect($scope.appBar.goBack).toBeDefined();
-            expect($scope.appBar.goForward).toBeDefined();
+        function expectToolBarData() {
+            expect($scope.toolBar).toBeDefined();
+            expect($scope.toolBar.goHome).toBeDefined();
+            expect($scope.toolBar.template).toEqual("Content/partials/appbar.html");
+            expect($scope.toolBar.footerTemplate).toEqual("Content/partials/footer.html");
+            expect($scope.toolBar.goBack).toBeDefined();
+            expect($scope.toolBar.goForward).toBeDefined();
         }
 
-        describe("handleAppBar when not viewing an  object", () => {
+        describe("handleToolBar when not viewing an  object", () => {
 
             beforeEach(inject(($rootScope, handlers: NakedObjects.Angular.Gemini.IHandlers) => {
                 $scope = $rootScope.$new();
@@ -123,17 +123,13 @@ describe("handlers Service", () => {
                 handlers.handleToolBar($scope);
             }));
 
-            it("should set appBar data", () => {
-                expectAppBarData();
-            });
-
-            it("should disable edit button", () => {
-                expect($scope.appBar.hideEdit()).toEqual(true);
+            it("should set toolBar data", () => {
+                expectToolBarData();
             });
 
         });
 
-        describe("handleAppBar when viewing an editable object", () => {
+        describe("handleToolBar when viewing an editable object", () => {
 
             const testObject = new NakedObjects.DomainObjectRepresentation();
             const testMember = new NakedObjects.PropertyMember({}, testObject, "");
@@ -157,17 +153,14 @@ describe("handlers Service", () => {
                 handlers.handleToolBar($scope);
             }));
 
-            it("should set appBar data", () => {
-                expectAppBarData();
+            it("should set toolBar data", () => {
+                expectToolBarData();
             });
 
-            //it('should enable edit button', () => {
-            //    expect($scope.appBar.hideEdit()).toBe(false);
-            //});
 
         });
 
-        describe("handleAppBar when viewing a non editable object", () => {
+        describe("handleToolBar when viewing a non editable object", () => {
 
             const testObject = new NakedObjects.DomainObjectRepresentation();
             const testMember = new NakedObjects.PropertyMember({}, testObject, "");
@@ -188,13 +181,10 @@ describe("handlers Service", () => {
                 handlers.handleToolBar($scope);
             }));
 
-            it("should set appBar data", () => {
-                expectAppBarData();
+            it("should set toolBar data", () => {
+                expectToolBarData();
             });
 
-            it("should disable edit button", () => {
-                expect($scope.appBar.hideEdit()).toBe(true);
-            });
 
         });
 
