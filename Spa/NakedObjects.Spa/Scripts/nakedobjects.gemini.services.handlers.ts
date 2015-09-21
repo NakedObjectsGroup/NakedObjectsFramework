@@ -211,7 +211,7 @@ module NakedObjects.Angular.Gemini {
                         $scope.actionsTemplate = nullTemplate;
                     } else {
                         $scope.objectTemplate = objectViewTemplate;
-                        $scope.actionsTemplate = routeData.menuId ? actionsTemplate : nullTemplate;
+                        $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                     }
 
                     $scope.collectionsTemplate = collectionsTemplate;

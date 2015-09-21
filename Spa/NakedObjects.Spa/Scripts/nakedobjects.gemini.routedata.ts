@@ -39,6 +39,7 @@ module NakedObjects.Angular.Gemini {
         menuId : string;
         collections: _.Dictionary<CollectionViewState>;
         edit: boolean;
+        actionsOpen : string;
         actionId: string;
         state: CollectionViewState;
         // todo make parm ids dictionary same as collections ids ? 

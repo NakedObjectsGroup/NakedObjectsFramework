@@ -46,6 +46,7 @@ module NakedObjects.Angular.Gemini {
         const edit = "edit";
         const action = "action";
         const parm = "parm";
+        const actions = "actions";
 
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -155,13 +156,13 @@ module NakedObjects.Angular.Gemini {
 
         helper.toggleObjectMenu = (paneId : number) => {
             let search = $location.search();
-            const paneMenuId = menu + paneId;
-            const menuId = search[paneMenuId];
+            const paneActionsId = actions + paneId;
+            const actionsId = search[paneActionsId];
 
-            if (menuId) {
-                search = _.omit(search, paneMenuId);
+            if (actionsId) {
+                search = _.omit(search, paneActionsId);
             } else {
-                search[paneMenuId] = "actions";
+                search[paneActionsId] = "open";
             }
 
             $location.search(search);
@@ -187,21 +188,21 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.menuId = $routeParams[menu + index];
             paneRouteData.actionId = $routeParams[action + index];
             paneRouteData.objectId = $routeParams[object + index];
+            paneRouteData.actionsOpen = $routeParams[actions + index];
+            paneRouteData.edit = $routeParams[edit + index] === "true";
+
+            const rawCollectionState: string = $routeParams[collection + index];
+            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
+
 
             const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + index) === 0);
             //missing from lodash types :-( 
             const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + index));
-            paneRouteData.collections = _.mapValues(keysMapped, (v) => CollectionViewState[v]);
-
-            paneRouteData.edit = $routeParams[edit + index] === "true";
-
-            const rawCollectionState : string = $routeParams[collection + index];
-            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
-
+            paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
+  
             // todo make parm ids dictionary same as collections ids ? 
             const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + index) === 0);
             paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + index), val: v } });
-
         }
 
         helper.getRouteData = () => {
