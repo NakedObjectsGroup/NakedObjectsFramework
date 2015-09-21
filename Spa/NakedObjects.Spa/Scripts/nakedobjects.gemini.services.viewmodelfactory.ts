@@ -24,8 +24,8 @@ module NakedObjects.Angular.Gemini{
         actionViewModel(actionRep: ActionMember): ActionViewModel;
         dialogViewModel(actionRep: ActionMember): DialogViewModel;
 
-        collectionViewModel(collection: CollectionMember, state: CollectionViewState): CollectionViewModel;
-        collectionViewModel(collection: ListRepresentation, state: CollectionViewState): CollectionViewModel;
+        collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
+        collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
         parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
@@ -402,7 +402,7 @@ module NakedObjects.Angular.Gemini{
         }
 
       
-        viewModelFactory.collectionViewModel = (collection: any, state: CollectionViewState) => {
+        viewModelFactory.collectionViewModel = (collection: any, state: CollectionViewState, paneId : number) => {
             let collectionVm: CollectionViewModel = null;
 
             if (collection instanceof CollectionMember) {
@@ -414,9 +414,11 @@ module NakedObjects.Angular.Gemini{
             }
 
             if (collectionVm) {
-                collectionVm.doSummary = () => urlManager.setCollectionState(collection, CollectionViewState.Summary);
-                collectionVm.doList = () => urlManager.setCollectionState(collection, CollectionViewState.List);
-                collectionVm.doTable = () => urlManager.setCollectionState(collection, CollectionViewState.Table);            
+                const setState  =  <(state : CollectionViewState) => void> _.partial(urlManager.setCollectionState, paneId, collection);
+
+                collectionVm.doSummary = () => setState(CollectionViewState.Summary);
+                collectionVm.doList = () => setState(CollectionViewState.List);
+                collectionVm.doTable = () => setState(CollectionViewState.Table);            
             }
 
             return collectionVm;
@@ -486,9 +488,9 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.message = "";
 
-            objectViewModel.properties = _.map(properties, (property, id?) => { return viewModelFactory.propertyViewModel(property, id); });
-            objectViewModel.collections = _.map(collections, (collection) => { return viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()] ); });
-            objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action); });
+            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()], paneId ));
+            objectViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action));
 
             objectViewModel.toggleActionMenu = () => {
                 urlManager.toggleObjectMenu(paneId);

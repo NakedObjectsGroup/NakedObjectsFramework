@@ -126,7 +126,7 @@ module NakedObjects.Angular.Gemini {
             promise.
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = routeData.state === CollectionViewState.List ? queryListTemplate : queryTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state);
+                    $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state, 1);
                     $scope.title = context.getLastActionFriendlyName();
                 }).catch( error => {
                     setError(error);

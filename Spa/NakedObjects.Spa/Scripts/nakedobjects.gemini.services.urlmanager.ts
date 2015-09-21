@@ -31,8 +31,8 @@ module NakedObjects.Angular.Gemini {
 
         toggleObjectMenu(paneId : number): void;
 
-        setCollectionState(collection: CollectionMember, state: CollectionViewState);
-        setCollectionState(collection: ListRepresentation, state: CollectionViewState);
+        setCollectionState(paneId: number, collection: CollectionMember, state: CollectionViewState) : void;
+        setCollectionState(paneId: number, collection: ListRepresentation, state: CollectionViewState) : void;
 
         setObjectEdit(edit: boolean, paneId : number);
     }
@@ -168,11 +168,12 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setCollectionState = (collection: any, state: CollectionViewState) => {
-            if (collection instanceof CollectionMember) {
-                setSearch(`collection1_${collection.collectionId() }`, CollectionViewState[state], false);
+        helper.setCollectionState = (paneId : number, collectionObject: any, state: CollectionViewState) => {
+            const collectionPrefix = `${collection}${paneId}`;
+            if (collectionObject instanceof CollectionMember) {
+                setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
             } else {
-                setSearch("collection1", CollectionViewState[state], false);
+                setSearch(collectionPrefix, CollectionViewState[state], false);
             }
         };
       
@@ -184,25 +185,25 @@ module NakedObjects.Angular.Gemini {
             $location.path("/error").search({});
         };
 
-        function setPaneRouteData(paneRouteData : PaneRouteData, index : number) {
-            paneRouteData.menuId = $routeParams[menu + index];
-            paneRouteData.actionId = $routeParams[action + index];
-            paneRouteData.objectId = $routeParams[object + index];
-            paneRouteData.actionsOpen = $routeParams[actions + index];
-            paneRouteData.edit = $routeParams[edit + index] === "true";
+        function setPaneRouteData(paneRouteData : PaneRouteData, paneId : number) {
+            paneRouteData.menuId = $routeParams[menu + paneId];
+            paneRouteData.actionId = $routeParams[action + paneId];
+            paneRouteData.objectId = $routeParams[object + paneId];
+            paneRouteData.actionsOpen = $routeParams[actions + paneId];
+            paneRouteData.edit = $routeParams[edit + paneId] === "true";
 
-            const rawCollectionState: string = $routeParams[collection + index];
+            const rawCollectionState: string = $routeParams[collection + paneId];
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
 
-            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + index) === 0);
+            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
             //missing from lodash types :-( 
-            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + index));
+            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
             paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
   
             // todo make parm ids dictionary same as collections ids ? 
-            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + index) === 0);
-            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + index), val: v } });
+            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
+            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + paneId), val: v } });
         }
 
         helper.getRouteData = () => {

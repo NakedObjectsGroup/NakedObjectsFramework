@@ -307,14 +307,14 @@ describe("viewModelFactory Service", () => {
             }));
 
             it("creates a dialog view model with items", () => {  
-                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.List);                    
+                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);                    
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
-                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate.calls.count()).toBe(2);
@@ -365,14 +365,14 @@ describe("viewModelFactory Service", () => {
             }));
 
             it("creates a dialog view model with items", () => {
-                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
-                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate.calls.count()).toBe(2);
