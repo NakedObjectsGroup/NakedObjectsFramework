@@ -37,7 +37,6 @@ module NakedObjects.Angular.Gemini {
 
         objectId : string;
         menuId : string;
-        dialogId: string;
         collections: _.Dictionary<CollectionViewState>;
         edit: boolean;
         actionId: string;

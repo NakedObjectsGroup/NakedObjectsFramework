@@ -22,7 +22,7 @@ module NakedObjects.Angular.Gemini {
 
         setError();
         setMenu(menuId: string);
-        setDialog(id: string);
+        setDialog(actionId: string);
         closeDialog();
         setObject(resultObject: DomainObjectRepresentation, paneId : number);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
@@ -41,7 +41,6 @@ module NakedObjects.Angular.Gemini {
         const helper = <IUrlManager>this;
 
         const menu = "menu";
-        const dialog = "dialog";
         const object = "object";
         const collection = "collection";
         const edit = "edit";
@@ -66,12 +65,12 @@ module NakedObjects.Angular.Gemini {
             setSearch("menu1", menuId, true);
         };
 
-        helper.setDialog = (dialogId: string) => {
-            setSearch("dialog1", dialogId, false);
+        helper.setDialog = (actionId: string) => {
+            setSearch("action1", actionId, false);
         };
 
         helper.closeDialog = () => {
-            clearSearch("dialog1");
+            clearSearch("action1");
         };
 
         function singlePane() {
@@ -186,7 +185,7 @@ module NakedObjects.Angular.Gemini {
 
         function setPaneRouteData(paneRouteData : PaneRouteData, index : number) {
             paneRouteData.menuId = $routeParams[menu + index];
-            paneRouteData.dialogId = $routeParams[dialog + index];
+            paneRouteData.actionId = $routeParams[action + index];
             paneRouteData.objectId = $routeParams[object + index];
 
             const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + index) === 0);
@@ -196,8 +195,8 @@ module NakedObjects.Angular.Gemini {
 
             paneRouteData.edit = $routeParams[edit + index] === "true";
 
-            paneRouteData.actionId = $routeParams[action + index];
-            paneRouteData.state = $routeParams[collection + index] ? CollectionViewState[collection + index] : CollectionViewState.List;
+            const rawCollectionState : string = $routeParams[collection + index];
+            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
             // todo make parm ids dictionary same as collections ids ? 
             const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + index) === 0);
