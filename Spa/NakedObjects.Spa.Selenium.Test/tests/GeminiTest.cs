@@ -100,7 +100,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
 
-        protected const int TimeOut = 20;
+        protected static int timeOut = 0;
+
+        protected static int TimeOut {
+            get {
+                if (timeOut != 0) { return timeOut; }
+                timeOut = 20;
+                return 40;
+            }
+        }
 
         [ClassInitialize]
         public static void InitialiseClass(TestContext context) {
@@ -123,13 +131,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void InitFirefoxDriver() {
             br = new FirefoxDriver();
-            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
+            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(timeOut));
             br.Manage().Window.Maximize();
         }
 
         protected void InitIeDriver() {
             br = new InternetExplorerDriver();
-            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
+            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(timeOut));
             br.Manage().Window.Maximize();
         }
 
@@ -139,7 +147,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var crOptions = new ChromeOptions();
             crOptions.AddArgument(@"--user-data-dir=" + cacheDir);
             br = new ChromeDriver(crOptions);
-            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
+            wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(timeOut));
             br.Manage().Window.Maximize();
 
             // test workaround for chromedriver problem https://groups.google.com/forum/#!topic/selenium-users/nJ0NF1UJ3WU
