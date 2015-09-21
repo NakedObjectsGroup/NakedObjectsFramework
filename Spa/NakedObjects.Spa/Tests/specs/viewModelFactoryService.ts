@@ -516,7 +516,7 @@ describe("viewModelFactory Service", () => {
         describe("from populated rep", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                resultVm = viewModelFactory.domainObjectViewModel(new NakedObjects.DomainObjectRepresentation(rawObject), {});
+                resultVm = viewModelFactory.domainObjectViewModel(new NakedObjects.DomainObjectRepresentation(rawObject), {}, 1);
             }));
 
             it("creates a object view model", () => {
@@ -538,7 +538,7 @@ describe("viewModelFactory Service", () => {
                 const doRep = new NakedObjects.DomainObjectRepresentation(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
 
-                resultVm = viewModelFactory.domainObjectViewModel(doRep, {});
+                resultVm = viewModelFactory.domainObjectViewModel(doRep, {}, 1);
             }));
 
             it("creates a object view model", () => {

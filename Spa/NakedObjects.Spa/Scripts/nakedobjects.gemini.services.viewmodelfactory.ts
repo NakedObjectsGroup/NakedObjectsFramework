@@ -33,7 +33,7 @@ module NakedObjects.Angular.Gemini{
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
-        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, save?: (ovm: DomainObjectViewModel) => void, previousUrl? : string): DomainObjectViewModel;
+        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
@@ -352,7 +352,7 @@ module NakedObjects.Angular.Gemini{
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
-                            ivm.target = viewModelFactory.domainObjectViewModel(obj, {});
+                            ivm.target = viewModelFactory.domainObjectViewModel(obj, {}, 1);
 
                             if (!cvm.header) {
                                 cvm.header = _.map(ivm.target.properties, property => property.title);
@@ -460,20 +460,22 @@ module NakedObjects.Angular.Gemini{
 
             return serviceViewModel;
         };
+  
+        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel => {
+            const objectViewModel = new DomainObjectViewModel();
 
-    
-        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, save?: (ovm: DomainObjectViewModel) => void, previousUrl?: string): DomainObjectViewModel => {
-            var objectViewModel = new DomainObjectViewModel();
+            objectViewModel.onPaneId = paneId;
+
             objectViewModel.isTransient = !!objectRep.persistLink();
-
-            //objectViewModel.href = urlHelper.toNewAppUrl(objectRep.getUrl());
 
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
 
-            objectViewModel.doSave = save ? () => save(objectViewModel) : () => { };
+            const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
+       
+            objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
 
-            objectViewModel.doEdit = () => urlManager.setObjectEdit(true);
-            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => {navigation.back()} : () => urlManager.setObjectEdit(false);
+            objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
+            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => {navigation.back()} : () => urlManager.setObjectEdit(false, paneId);
 
             var properties = objectRep.propertyMembers();
             var collections = objectRep.collectionMembers();
@@ -489,7 +491,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.actions = _.map(actions, (action, id) => { return viewModelFactory.actionViewModel(action); });
 
             objectViewModel.toggleActionMenu = () => {
-                urlManager.toggleObjectMenu();
+                urlManager.toggleObjectMenu(paneId);
             }
 
             return objectViewModel;

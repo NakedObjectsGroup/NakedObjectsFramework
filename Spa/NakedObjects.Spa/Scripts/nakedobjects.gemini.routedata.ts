@@ -24,8 +24,8 @@ module NakedObjects.Angular.Gemini {
 
     export class RouteData {
         constructor() {
-            this.pane1 = new PaneRouteData();
-            this.pane2 = new PaneRouteData();
+            this.pane1 = new PaneRouteData(1);
+            this.pane2 = new PaneRouteData(2);
         }
 
         pane1: PaneRouteData;
@@ -33,6 +33,8 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class PaneRouteData {
+        constructor(public paneId : number) {}
+
         objectId : string;
         menuId : string;
         dialogId: string;

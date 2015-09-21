@@ -24,17 +24,17 @@ module NakedObjects.Angular.Gemini {
         setMenu(menuId: string);
         setDialog(id: string);
         closeDialog();
-        setObject(resultObject: DomainObjectRepresentation, transient?: boolean);
+        setObject(resultObject: DomainObjectRepresentation, paneId : number);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
-        setProperty(propertyMember: PropertyMember, pane : number);
+        setProperty(propertyMember: PropertyMember, paneId : number);
         setItem(link: Link): void;
 
-        toggleObjectMenu(): void;
+        toggleObjectMenu(paneId : number): void;
 
         setCollectionState(collection: CollectionMember, state: CollectionViewState);
         setCollectionState(collection: ListRepresentation, state: CollectionViewState);
 
-        setObjectEdit(edit: boolean);
+        setObjectEdit(edit: boolean, paneId : number);
     }
 
     app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -73,11 +73,47 @@ module NakedObjects.Angular.Gemini {
         helper.closeDialog = () => {
             clearSearch("dialog1");
         };
-        helper.setObject = (resultObject: DomainObjectRepresentation, transient?: boolean) => {
-            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
-            const search = { object1: oid };
 
-            $location.path("/object").search(search);
+        function singlePane() {
+            return $location.path().split("/").length <= 2;
+        }
+
+        function setupPaneNumberAndTypes(pane: number, newPaneType : string) {
+        
+       
+            const path = $location.path();
+            const segments = path.split("/");
+
+            // changing item on pane 1
+            // make sure pane is of correct type
+            if (pane === 1 && segments[1] !== newPaneType) {
+                const newPath = `/${newPaneType}${singlePane() ? "" : `/${segments[2]}`  }`;
+                $location.path(newPath);
+            }
+
+            // changing item on pane 2
+            // either single pane so need to add new pane of appropriate type
+            // or double pane with second pane of wrong type. 
+            if (pane === 2 && (singlePane() || segments[2] !== newPaneType)) {
+                const newPath = `/${segments[1]}/${newPaneType}`;
+                $location.path(newPath);
+            }
+       
+        }
+
+        helper.setObject = (resultObject: DomainObjectRepresentation, paneId : number) => {
+
+            setupPaneNumberAndTypes(paneId, object);
+
+            const oidParm = object + paneId;
+            const editParm = edit + paneId;
+            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
+            let search = $location.search();
+            search[oidParm] = oid;
+            // clear edit 
+            search = _.omit(search, editParm);
+
+            $location.search(search);
         };
 
         helper.setQuery = (action: ActionMember, dvm?: DialogViewModel) => {
@@ -93,29 +129,16 @@ module NakedObjects.Angular.Gemini {
             $location.path("/query").search(search);
         };
 
-        function setSplitPaneIfNecessary(pane : number) {
-            // if pane 2 need to ensure go to split pane url; 
-            // todo genericize this 
-            if (pane === 2) {
-                const path = $location.path();
-                const segments = path.split("/");
-                if (segments.length >= 2) {
-                    const newPath = `/${segments[1]}/${object}`;
-                    $location.path(newPath);
-                }
-            }
-        }
-
-        helper.setProperty = (propertyMember: PropertyMember, pane : number) => {
+        helper.setProperty = (propertyMember: PropertyMember, paneId : number) => {
             const href = propertyMember.value().link().href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
             const oid = `${results[2]}-${results[3]}`;
 
-            setSplitPaneIfNecessary(pane);
+            setupPaneNumberAndTypes(paneId, object);
             
             const search = $location.search();
-            search[object + pane] = oid;
+            search[object + paneId] = oid;
  
             $location.search(search);
         };
@@ -129,14 +152,17 @@ module NakedObjects.Angular.Gemini {
             $location.path("/object").search({ object1: oid });
         };
 
-        helper.toggleObjectMenu = () => {
-            var search = $location.search();
-            var menu = search.menu1;
+       
 
-            if (menu) {
-                search = _.omit(search, "menu1");
+        helper.toggleObjectMenu = (paneId : number) => {
+            let search = $location.search();
+            const paneMenuId = menu + paneId;
+            const menuId = search[paneMenuId];
+
+            if (menuId) {
+                search = _.omit(search, paneMenuId);
             } else {
-                search.menu1 = "actions";
+                search[paneMenuId] = "actions";
             }
 
             $location.search(search);
@@ -150,8 +176,8 @@ module NakedObjects.Angular.Gemini {
             }
         };
       
-        helper.setObjectEdit = (edit: boolean) => {
-            setSearch("edit1", edit.toString(), false);
+        helper.setObjectEdit = (editFlag: boolean, paneId : number) => {
+            setSearch(edit + paneId, editFlag.toString(), false);
         };
 
         helper.setError = () => {

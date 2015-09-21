@@ -199,17 +199,14 @@ module NakedObjects.Angular.Gemini {
 
             context.getObject(dt, id).
                 then((object: DomainObjectRepresentation) => {
-                    const isTransient = !!object.persistLink();
-
-                    const handler = isTransient ? context.saveObject : context.updateObject;
-                    const saveHandler = <(ovm: DomainObjectViewModel) => void> _.partial(handler, $scope, object);
-                    const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, saveHandler);
+                             
+                    const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, routeData.paneId);
 
                     $scope.object = ovm;
                     // also put on root so appbar can see
                     (<any>$scope.$parent).object = ovm;
 
-                    if (routeData.edit || isTransient) {
+                    if (routeData.edit || ovm.isTransient) {
                         $scope.objectTemplate = objectEditTemplate;
                         $scope.actionsTemplate = nullTemplate;
                     } else {

@@ -263,7 +263,8 @@ module NakedObjects.Angular.Gemini {
         color: string; 
         doSave(): void { }
         toggleActionMenu(): void { }
-        isTransient : boolean;
+        isTransient: boolean;
+        onPaneId : number;
 
         doEdit(): void { }
         doEditCancel(): void { }

@@ -40,8 +40,8 @@ module NakedObjects.Angular.Gemini {
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
       
         invokeAction(action: ActionMember, dvm?: DialogViewModel);
-        updateObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
-        saveObject($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+        updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+        saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
         setError: (object: ErrorRepresentation) => void;
         clearSelectedChoice: (parm: string) => void;
@@ -57,12 +57,12 @@ module NakedObjects.Angular.Gemini {
            
         setLastActionFriendlyName: (fn : string) => void;
         setQuery(listRepresentation: ListRepresentation);
-        setResult(action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
     }
 
-    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader, urlManager, $cacheFactory: ng.ICacheFactoryService) {
+    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader, urlManager : IUrlManager, $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
 
         // cached values
@@ -261,8 +261,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.setObject = co => currentObject = co;
-
-    
+          
         var currentError: ErrorRepresentation = null;
 
         context.getError = () => currentError;
@@ -322,7 +321,7 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate(promptRep, true).then(createcvm);
         };
 
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, dvm?: DialogViewModel) => {
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel) => {
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
                     dvm.message = "no result found";
@@ -339,7 +338,7 @@ module NakedObjects.Angular.Gemini {
                 resultObject.hateoasUrl = `/${domainType}/0`;
 
                 context.setObject(resultObject);
-                urlManager.setObject(resultObject);
+                urlManager.setObject(resultObject, paneId);
             }
 
             // persistent object
@@ -349,7 +348,7 @@ module NakedObjects.Angular.Gemini {
                 // so we don't hit the server again. 
 
                 context.setObject(resultObject);
-                urlManager.setObject(resultObject, true);
+                urlManager.setObject(resultObject, paneId);
             }
 
             if (result.resultType() === "list") {
@@ -398,14 +397,14 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
-                    context.setResult(action, result, dvm);
+                    context.setResult(action, result, 1, dvm);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, parameters, dvm);
                 });
         };
 
-        context.updateObject = ($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
+        context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
             const update = object.getUpdateMap();
 
             const properties = _.filter(ovm.properties, property => property.isEditable);
@@ -422,14 +421,14 @@ module NakedObjects.Angular.Gemini {
                     $cacheFactory.get("$http").remove(updatedObject.url());
 
                     context.setObject(updatedObject);
-                    urlManager.setObject(updatedObject);
+                    urlManager.setObject(updatedObject, ovm.onPaneId);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
                 });
         };
 
-        context.saveObject = ($scope, object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
+        context.saveObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
             const persist = object.getPersistMap();
 
             const properties = _.filter(ovm.properties, property => property.isEditable);
