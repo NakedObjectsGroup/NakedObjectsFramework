@@ -18,7 +18,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void QueryActionReturnsListView()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
-            WaitForSingleObject();
+            //WaitForSingleObject();
             ClickAction("Highest Value Orders");
             WaitForSingleQuery();
             //Test content of collection
@@ -60,7 +60,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void NavigateToItemFromListView()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
-            WaitForSingleObject();
+            //WaitForSingleObject();
             ClickAction("Highest Value Orders");
             WaitForSingleQuery();
 

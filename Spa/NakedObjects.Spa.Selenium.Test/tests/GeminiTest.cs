@@ -81,7 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
 
-        protected const string Store555UrlWithActionsMenuOpen = Url + "#/object?object1=AdventureWorksModel.Store-555&actions=open";
+        protected const string Store555UrlWithActionsMenuOpen = Url + "#/object?object1=AdventureWorksModel.Store-555&actions1=open";
         protected const string Product968Url = Url + "#/object?object1=AdventureWorksModel.Product-968";
         protected const string Product469Url = Url + "#/object?object1=AdventureWorksModel.Product-469";
         protected const string Product870Url = Url + "#/object?object1=AdventureWorksModel.Product-870";
