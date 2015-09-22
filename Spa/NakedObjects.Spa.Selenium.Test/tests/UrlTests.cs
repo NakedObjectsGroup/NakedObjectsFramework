@@ -84,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectWithActions()
         {
-            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&actions=open");
+            br.Navigate().GoToUrl(Url + "#/object?object1=AdventureWorksModel.Store-555&actions1=open");
             GetObjectActions(StoreActions);
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
