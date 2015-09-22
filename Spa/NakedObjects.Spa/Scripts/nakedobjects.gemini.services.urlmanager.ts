@@ -25,7 +25,7 @@ module NakedObjects.Angular.Gemini {
         setDialog(dialogId: string);
         closeDialog();
         setObject(resultObject: DomainObjectRepresentation, paneId : number);
-        setQuery(action: ActionMember, dvm?: DialogViewModel);
+        setQuery(action: ActionMember, paneId : number, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember, paneId : number);
         setItem(link: Link): void;
 
@@ -46,11 +46,11 @@ module NakedObjects.Angular.Gemini {
         const object = "object";
         const collection = "collection";
         const edit = "edit";
+        const query = "query";
         const action = "action";
         const dialog = "dialog";
         const parm = "parm";
         const actions = "actions";
-
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
             const search = clearOthers ? {} : $location.search();
@@ -133,17 +133,19 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setQuery = (action: ActionMember, dvm?: DialogViewModel) => {
-            const aid = action.actionId();
+        helper.setQuery = (actionMember: ActionMember, paneId : number, dvm?: DialogViewModel) => {
+            const aid = actionMember.actionId();
             const search = $location.search();
 
-            search.action1 = aid;
+            setupPaneNumberAndTypes(paneId, query);
+
+            search[action + paneId] = aid;
 
             if (dvm) {
-                _.each(dvm.parameters, (p) => search[`parm1_${p.id}`] = p.getValue());
+                _.each(dvm.parameters, (p) => search[`parm${paneId}_${p.id}`] = p.getValue());
             }
 
-            $location.path("/query").search(search);
+            $location.search(search);
         };
 
         helper.setProperty = (propertyMember: PropertyMember, paneId : number) => {

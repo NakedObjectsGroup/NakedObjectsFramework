@@ -355,7 +355,7 @@ module NakedObjects.Angular.Gemini {
                 const resultList = result.result().list();
                 context.setQuery(resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName);
-                urlManager.setQuery(action, dvm);
+                urlManager.setQuery(action, paneId,  dvm);
             }
         };
 
