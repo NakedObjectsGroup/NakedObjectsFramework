@@ -22,7 +22,7 @@ module NakedObjects.Angular.Gemini {
 
         setError();
         setMenu(menuId: string, paneId : number);
-        setDialog(actionId: string);
+        setDialog(dialogId: string);
         closeDialog();
         setObject(resultObject: DomainObjectRepresentation, paneId : number);
         setQuery(action: ActionMember, dvm?: DialogViewModel);
@@ -47,6 +47,7 @@ module NakedObjects.Angular.Gemini {
         const collection = "collection";
         const edit = "edit";
         const action = "action";
+        const dialog = "dialog";
         const parm = "parm";
         const actions = "actions";
 
@@ -67,12 +68,12 @@ module NakedObjects.Angular.Gemini {
             setSearch( `${menu}${paneId}` , menuId, false);
         };
 
-        helper.setDialog = (actionId: string) => {
-            setSearch("action1", actionId, false);
+        helper.setDialog = (dialogId: string) => {
+            setSearch("dialog1", dialogId, false);
         };
 
         helper.closeDialog = () => {
-            clearSearch("action1");
+            clearSearch("dialog1");
         };
 
         function singlePane() {
@@ -120,11 +121,14 @@ module NakedObjects.Angular.Gemini {
 
             const oidParm = object + paneId;
             const editParm = edit + paneId;
+            const dialogParm = dialog + paneId;
+
             const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
             let search = $location.search();
             search[oidParm] = oid;
-            // clear edit 
+            // clear edit and any dialogs
             search = _.omit(search, editParm);
+            search = _.omit(search, dialogParm);
 
             $location.search(search);
         };
@@ -207,6 +211,8 @@ module NakedObjects.Angular.Gemini {
         function setPaneRouteData(paneRouteData : PaneRouteData, paneId : number) {
             paneRouteData.menuId = $routeParams[menu + paneId];
             paneRouteData.actionId = $routeParams[action + paneId];
+            paneRouteData.dialogId = $routeParams[dialog + paneId];
+
             paneRouteData.objectId = $routeParams[object + paneId];
             paneRouteData.actionsOpen = $routeParams[actions + paneId];
             paneRouteData.edit = $routeParams[edit + paneId] === "true";

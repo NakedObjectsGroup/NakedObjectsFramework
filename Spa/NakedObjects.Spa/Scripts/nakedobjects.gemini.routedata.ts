@@ -44,5 +44,6 @@ module NakedObjects.Angular.Gemini {
         state: CollectionViewState;
         // todo make parm ids dictionary same as collections ids ? 
         parms: { id: string; val: string }[];
+        dialogId : string;
     }
 }

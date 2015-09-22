@@ -106,9 +106,9 @@ module NakedObjects.Angular.Gemini {
                         const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am)) };
                         $scope.object = actions;
 
-                        if (routeData.actionId) {
+                        if (routeData.dialogId) {
                             $scope.dialogTemplate = dialogTemplate;
-                            const action = menu.actionMember(routeData.actionId);
+                            const action = menu.actionMember(routeData.dialogId);
                             $scope.dialog = viewModelFactory.dialogViewModel(action);
                         }
                     }).catch(error => {
@@ -173,9 +173,9 @@ module NakedObjects.Angular.Gemini {
                     // cache
                     cacheRecentlyViewed(object);
 
-                    if (routeData.actionId) {
+                    if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
-                        const action = object.actionMember(routeData.actionId);
+                        const action = object.actionMember(routeData.dialogId);
                         $scope.dialog = viewModelFactory.dialogViewModel(action);
                     }
 
