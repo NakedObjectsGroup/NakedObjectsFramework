@@ -33,7 +33,7 @@
     <Content Include="Content\partials\splitHomeQueryPage.html" />
     <Content Include="Content\partials\splitObjectQueryPage.html" />
     <Content Include="Content\partials\splitQueryHomePage.html" />
-    <Content Include="Content\partials\splitQueryObject.html" />
+    <Content Include="Content\partials\splitQueryObjectPage.html" />
     <Content Include="Content\partials\splitQueryQueryPage.html" />
     <Content Include="Content\partials\splitObjectHomePage.html" />
     <Content Include="Content\partials\splitHomeObjectPage.html" />
