@@ -59,7 +59,7 @@ module NakedObjects.Angular.Gemini {
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
             const cache = $cacheFactory.get("recentlyViewed");
 
-            if (cache && object) {
+            if (cache && object && !object.persistLink()) {
                 const key = object.domainType();
                 const subKey = object.selfLink().href();
                 const dict = cache.get(key) || {};
