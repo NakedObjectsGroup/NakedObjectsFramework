@@ -83,8 +83,11 @@ module NakedObjects.Angular.Gemini {
         }
 
         function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
-            const sid = object.serviceId();
-            return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
+            if (object) {
+                const sid = object.serviceId();
+                return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
+            }
+            return false;
         }
 
         // exposed for test mocking
