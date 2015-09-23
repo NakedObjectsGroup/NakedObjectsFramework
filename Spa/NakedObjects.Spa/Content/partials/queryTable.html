@@ -34,7 +34,7 @@ under the License.-->
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()">
+                <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" ng-click="item.doClick()" nog-rightclick="item.doClick(true)">
                     <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
                         <div ng-switch-when="ref" class="clickable-area">
                             {{property.value}}

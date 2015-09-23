@@ -80,16 +80,13 @@ module NakedObjects.Angular.Gemini {
             return $location.path().split("/").length <= 2;
         }
 
-        function clearPane(paneId: number) {
-            let search = $location.search();
+        function clearPane(search : any, paneId: number) {
 
-            const toClearRaw = [menu, object, collection, edit, action, parm, actions];
+            const toClearRaw = [menu, dialog, object, collection, edit, action, parm, actions];
             const toClearIds = _.map(toClearRaw, s => s + paneId);
             const toClear  = _.filter(_.keys(search),  (k) =>  _.any(toClearIds, id => k.indexOf(id) === 0 ));
 
-            search = _.omit(search, toClear);
-
-            $location.search(search);
+            return _.omit(search, toClear);
         }
 
         function setupPaneNumberAndTypes(pane: number, newPaneType : string) {
@@ -124,18 +121,15 @@ module NakedObjects.Angular.Gemini {
             const dialogParm = dialog + paneId;
 
             const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
-            let search = $location.search();
+            const search = clearPane($location.search(), paneId);
             search[oidParm] = oid;
-            // clear edit and any dialogs
-            search = _.omit(search, editParm);
-            search = _.omit(search, dialogParm);
-
+         
             $location.search(search);
         };
 
         helper.setQuery = (actionMember: ActionMember, paneId : number, dvm?: DialogViewModel) => {
             const aid = actionMember.actionId();
-            let search = $location.search();
+            const search = clearPane($location.search(), paneId);
 
             setupPaneNumberAndTypes(paneId, query);
 
@@ -159,8 +153,6 @@ module NakedObjects.Angular.Gemini {
                 _.each(dvm.parameters, (p) => search[`parm${paneId}_${p.id}`] = p.getValue());
             }
 
-            // clear any dialogs 
-            search = _.omit(search, dialog + paneId);
 
             $location.search(search);
         };
@@ -173,7 +165,7 @@ module NakedObjects.Angular.Gemini {
 
             setupPaneNumberAndTypes(paneId, object);
             
-            const search = $location.search();
+            const search =  clearPane($location.search(), paneId);
             search[object + paneId] = oid;
  
             $location.search(search);
@@ -187,7 +179,7 @@ module NakedObjects.Angular.Gemini {
 
             setupPaneNumberAndTypes(paneId, object);
 
-            const search = $location.search();
+            const search =  clearPane($location.search(), paneId);
 
             search[object + paneId] = oid;
 
@@ -230,7 +222,7 @@ module NakedObjects.Angular.Gemini {
         helper.setHome = (paneId : number) => {
             setupPaneNumberAndTypes(paneId, home);
             // clear search on this pane 
-            clearPane(paneId);
+            $location.search( clearPane($location.search(), paneId));
         }
 
         function setPaneRouteData(paneRouteData : PaneRouteData, paneId : number) {
