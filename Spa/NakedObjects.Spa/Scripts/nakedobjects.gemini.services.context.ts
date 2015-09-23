@@ -449,6 +449,7 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
+                    urlManager.saveTransientEdit(ovm.onPaneId);
                     context.setObject(ovm.onPaneId, updatedObject);                
                 }).
                 catch((error: any) => {

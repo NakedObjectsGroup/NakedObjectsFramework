@@ -481,11 +481,11 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
 
             objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
-            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => {navigation.back()} : () => urlManager.setObjectEdit(false, paneId);
+            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.cancelTransientEdit(paneId) : () => urlManager.setObjectEdit(false, paneId);
 
-            var properties = objectRep.propertyMembers();
-            var collections = objectRep.collectionMembers();
-            var actions = objectRep.actionMembers();
+            const properties = objectRep.propertyMembers();
+            const collections = objectRep.collectionMembers();
+            const actions = objectRep.actionMembers();
 
             objectViewModel.domainType = objectRep.domainType();
             objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();

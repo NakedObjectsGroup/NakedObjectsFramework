@@ -36,6 +36,10 @@ module NakedObjects.Angular.Gemini {
 
         setObjectEdit(edit: boolean, paneId : number);
         setHome(paneId: number);
+
+        startTransientEdit(paneId: number) : void;
+        cancelTransientEdit(paneId: number) : void;
+        saveTransientEdit(onPaneId: number) : void;
     }
 
     app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -64,15 +68,15 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-        helper.setMenu = (menuId: string, paneId : number) => {
-            setSearch( `${menu}${paneId}` , menuId, false);
+        helper.setMenu = (menuId: string, paneId: number) => {
+            setSearch(`${menu}${paneId}`, menuId, false);
         };
 
-        helper.setDialog = (dialogId: string, paneId : number) => {
+        helper.setDialog = (dialogId: string, paneId: number) => {
             setSearch(dialog + paneId, dialogId, false);
         };
 
-        helper.closeDialog = (paneId : number) => {
+        helper.closeDialog = (paneId: number) => {
             clearSearch(dialog + paneId);
         };
 
@@ -80,25 +84,27 @@ module NakedObjects.Angular.Gemini {
             return $location.path().split("/").length <= 2;
         }
 
-        function clearPane(search : any, paneId: number) {
+        function searchKeysForPane(search: any, paneId: number) {
+            const raw = [menu, dialog, object, collection, edit, action, parm, actions];
+            const ids = _.map(raw, s => s + paneId);
+            return _.filter(_.keys(search), (k) => _.any(ids, id => k.indexOf(id) === 0));
+        }
 
-            const toClearRaw = [menu, dialog, object, collection, edit, action, parm, actions];
-            const toClearIds = _.map(toClearRaw, s => s + paneId);
-            const toClear  = _.filter(_.keys(search),  (k) =>  _.any(toClearIds, id => k.indexOf(id) === 0 ));
-
+        function clearPane(search: any, paneId: number) {    
+            const toClear = searchKeysForPane(search, paneId);
             return _.omit(search, toClear);
         }
 
-        function setupPaneNumberAndTypes(pane: number, newPaneType : string) {
-        
-       
+        function setupPaneNumberAndTypes(pane: number, newPaneType: string) {
+
+
             const path = $location.path();
             const segments = path.split("/");
 
             // changing item on pane 1
             // make sure pane is of correct type
             if (pane === 1 && segments[1] !== newPaneType) {
-                const newPath = `/${newPaneType}${singlePane() ? "" : `/${segments[2]}`  }`;
+                const newPath = `/${newPaneType}${singlePane() ? "" : `/${segments[2]}`}`;
                 $location.path(newPath);
             }
 
@@ -109,10 +115,10 @@ module NakedObjects.Angular.Gemini {
                 const newPath = `/${segments[1]}/${newPaneType}`;
                 $location.path(newPath);
             }
-       
+
         }
 
-        helper.setObject = (resultObject: DomainObjectRepresentation, paneId : number) => {
+        helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
 
             setupPaneNumberAndTypes(paneId, object);
 
@@ -120,14 +126,14 @@ module NakedObjects.Angular.Gemini {
             const editParm = edit + paneId;
             const dialogParm = dialog + paneId;
 
-            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
+            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
             const search = clearPane($location.search(), paneId);
             search[oidParm] = oid;
-         
+
             $location.search(search);
         };
 
-        helper.setQuery = (actionMember: ActionMember, paneId : number, dvm?: DialogViewModel) => {
+        helper.setQuery = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
             const aid = actionMember.actionId();
             const search = clearPane($location.search(), paneId);
 
@@ -136,8 +142,8 @@ module NakedObjects.Angular.Gemini {
             const parent = actionMember.parent;
 
             if (parent instanceof DomainObjectRepresentation) {
-                const oidParm = object + paneId;            
-                const oid = `${parent.domainType() }-${parent.instanceId() }`;
+                const oidParm = object + paneId;
+                const oid = `${parent.domainType()}-${parent.instanceId()}`;
                 search[oidParm] = oid;
             }
 
@@ -157,21 +163,21 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setProperty = (propertyMember: PropertyMember, paneId : number) => {
+        helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
             const href = propertyMember.value().link().href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
             const oid = `${results[2]}-${results[3]}`;
 
             setupPaneNumberAndTypes(paneId, object);
-            
-            const search =  clearPane($location.search(), paneId);
+
+            const search = clearPane($location.search(), paneId);
             search[object + paneId] = oid;
- 
+
             $location.search(search);
         };
 
-        helper.setItem = (link: Link, paneId : number) => {
+        helper.setItem = (link: Link, paneId: number) => {
             var href = link.href();
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
@@ -179,16 +185,15 @@ module NakedObjects.Angular.Gemini {
 
             setupPaneNumberAndTypes(paneId, object);
 
-            const search =  clearPane($location.search(), paneId);
+            const search = clearPane($location.search(), paneId);
 
             search[object + paneId] = oid;
 
             $location.search(search);
         };
 
-       
 
-        helper.toggleObjectMenu = (paneId : number) => {
+        helper.toggleObjectMenu = (paneId: number) => {
             let search = $location.search();
             const paneActionsId = actions + paneId;
             const actionsId = search[paneActionsId];
@@ -202,16 +207,16 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setCollectionState = (paneId : number, collectionObject: any, state: CollectionViewState) => {
+        helper.setCollectionState = (paneId: number, collectionObject: any, state: CollectionViewState) => {
             const collectionPrefix = `${collection}${paneId}`;
             if (collectionObject instanceof CollectionMember) {
-                setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
+                setSearch(`${collectionPrefix}_${collectionObject.collectionId()}`, CollectionViewState[state], false);
             } else {
                 setSearch(collectionPrefix, CollectionViewState[state], false);
             }
         };
-      
-        helper.setObjectEdit = (editFlag: boolean, paneId : number) => {
+
+        helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
             setSearch(edit + paneId, editFlag.toString(), false);
         };
 
@@ -219,13 +224,13 @@ module NakedObjects.Angular.Gemini {
             $location.path("/error").search({});
         };
 
-        helper.setHome = (paneId : number) => {
+        helper.setHome = (paneId: number) => {
             setupPaneNumberAndTypes(paneId, home);
             // clear search on this pane 
-            $location.search( clearPane($location.search(), paneId));
+            $location.search(clearPane($location.search(), paneId));
         }
 
-        function setPaneRouteData(paneRouteData : PaneRouteData, paneId : number) {
+        function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
             paneRouteData.menuId = $routeParams[menu + paneId];
             paneRouteData.actionId = $routeParams[action + paneId];
             paneRouteData.dialogId = $routeParams[dialog + paneId];
@@ -241,7 +246,7 @@ module NakedObjects.Angular.Gemini {
             //missing from lodash types :-( 
             const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
             paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
-  
+
             // todo make parm ids dictionary same as collections ids ? 
             const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
             paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + paneId), val: v } });
@@ -249,12 +254,40 @@ module NakedObjects.Angular.Gemini {
 
         helper.getRouteData = () => {
             const routeData = new RouteData();
-            
+
             setPaneRouteData(routeData.pane1, 1);
             setPaneRouteData(routeData.pane2, 2);
 
             return routeData;
         };
+
+        const capturedPanes = [];
+
+        function capturePane(paneId: number) {
+            const search = $location.search();
+            const toCapture = searchKeysForPane(search, paneId);
+
+            return _.pick(search, toCapture);
+        }
+
+        helper.startTransientEdit = (paneId: number) => {
+            capturedPanes[paneId] = capturePane(paneId);
+        }
+
+        helper.cancelTransientEdit = (paneId : number) =>
+        {
+            const capturedPane = capturedPanes[paneId];
+
+            if (capturedPane) {
+                capturedPanes[paneId] = null;
+                let search = clearPane($location.search(), paneId);
+                search = _.merge(search, capturedPane);
+                $location.search(search);
+            }
+        }
+        helper.saveTransientEdit = (paneId: number) => {       
+            capturedPanes[paneId] = null;              
+        }
     });
 
 }

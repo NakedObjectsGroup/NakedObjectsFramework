@@ -157,12 +157,13 @@ module NakedObjects.Angular.Gemini {
                     const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, routeData.paneId);
 
                     $scope.object = ovm;
-                    // also put on root so appbar can see
-                    (<any>$scope.$parent).object = ovm;
-
+                  
                     if (routeData.edit || ovm.isTransient) {
                         $scope.objectTemplate = objectEditTemplate;
                         $scope.actionsTemplate = nullTemplate;
+                        if (ovm.isTransient) {
+                            urlManager.startTransientEdit(routeData.paneId);
+                        }
                     } else {
                         $scope.objectTemplate = objectViewTemplate;
                         $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
