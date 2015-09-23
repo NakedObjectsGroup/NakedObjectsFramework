@@ -139,6 +139,20 @@ module NakedObjects.Angular.Gemini {
 
             setupPaneNumberAndTypes(paneId, query);
 
+            const parent = actionMember.parent;
+
+            if (parent instanceof DomainObjectRepresentation) {
+                const oidParm = object + paneId;            
+                const oid = `${parent.domainType() }-${parent.instanceId() }`;
+                search[oidParm] = oid;
+            }
+
+            if (parent instanceof MenuRepresentation) {
+                const menuParm = menu + paneId;
+                const menuId = parent.menuId();
+                search[menuParm] = menuId;
+            }
+
             search[action + paneId] = aid;
 
             if (dvm) {

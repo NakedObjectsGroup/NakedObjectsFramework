@@ -898,7 +898,7 @@ module NakedObjects {
 
     // base class for 14.4.1/2/3
     export class Member extends NestedRepresentation {
-        constructor(wrapped, public parent: DomainObjectRepresentation) {
+        constructor(wrapped, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
         }
 
@@ -1282,6 +1282,9 @@ module NakedObjects {
             return this.get("title");
         }
 
+        menuId(): string {
+            return this.get("menuId");
+        }
        
         links(): Links {
             return Links.wrapLinks(this.get("links"));
