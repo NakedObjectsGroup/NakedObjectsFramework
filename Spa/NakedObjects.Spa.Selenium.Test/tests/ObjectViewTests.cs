@@ -103,6 +103,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var testUrl = Url + "#/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=Table";
             br.Navigate().GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+            wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
+
             var type = row.FindElements(By.CssSelector(".cell"))[0].Text;
             var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
             Click(row);
