@@ -135,7 +135,7 @@ module NakedObjects.Angular.Gemini {
 
         helper.setQuery = (actionMember: ActionMember, paneId : number, dvm?: DialogViewModel) => {
             const aid = actionMember.actionId();
-            const search = $location.search();
+            let search = $location.search();
 
             setupPaneNumberAndTypes(paneId, query);
 
@@ -158,6 +158,9 @@ module NakedObjects.Angular.Gemini {
             if (dvm) {
                 _.each(dvm.parameters, (p) => search[`parm${paneId}_${p.id}`] = p.getValue());
             }
+
+            // clear any dialogs 
+            search = _.omit(search, dialog + paneId);
 
             $location.search(search);
         };
