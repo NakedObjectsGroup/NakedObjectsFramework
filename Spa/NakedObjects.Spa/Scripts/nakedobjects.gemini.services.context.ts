@@ -22,8 +22,8 @@ module NakedObjects.Angular.Gemini {
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
 
-        getObject: (type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
-        getObjectByOid: (objectId : string) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
+        getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;
         
         getError: () => ErrorRepresentation;
       
@@ -31,8 +31,8 @@ module NakedObjects.Angular.Gemini {
         
         getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
        
-        getQuery: (menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
-        getQueryFromObject: (objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
+        getQuery: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
+        getQueryFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : () => string;
       
 
@@ -49,14 +49,14 @@ module NakedObjects.Angular.Gemini {
     }
 
     interface IContextInternal extends IContext {
-        getDomainObject: (type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId : number, type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
-        getService: (type: string) => ng.IPromise<DomainObjectRepresentation>;
+        getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
 
-        setObject: (object: DomainObjectRepresentation) => void;
+        setObject: (paneId : number, object: DomainObjectRepresentation) => void;
            
         setLastActionFriendlyName: (fn : string) => void;
-        setQuery(listRepresentation: ListRepresentation);
+        setQuery(paneId : number, listRepresentation: ListRepresentation);
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
@@ -67,12 +67,12 @@ module NakedObjects.Angular.Gemini {
 
         // cached values
         let currentHome: HomePageRepresentation = null;
-        let currentObject: DomainObjectRepresentation = null;
-        let currentMenu: MenuRepresentation = null;
+        const currentObjects: DomainObjectRepresentation[] = []; // per pane 
+        const currentMenuList: { [index: string]: MenuRepresentation } = {};
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
-        let currentCollection : ListRepresentation = null;
+        const currentCollections:  ListRepresentation[] = []; // per pane 
         let lastActionFriendlyName: string = "";
 
         function getAppPath() {
@@ -88,26 +88,26 @@ module NakedObjects.Angular.Gemini {
         }
 
         // exposed for test mocking
-        context.getDomainObject = (type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
+        context.getDomainObject = (paneId : number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
 
-            if (currentObject && isSameObject(currentObject, type, id)) {
-                return $q.when(currentObject);
+            if (isSameObject(currentObjects[paneId], type, id)) {
+                return $q.when(currentObjects[paneId]);
             }
 
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
             return repLoader.populate<DomainObjectRepresentation>(object).
-                then((service: DomainObjectRepresentation) => {
-                    currentObject = service;
-                    return $q.when(service);
+                then((obj: DomainObjectRepresentation) => {
+                    currentObjects[paneId] = obj;
+                    return $q.when(obj);
                 });
         };
 
-        context.getService = (serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
+        context.getService = (paneId : number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
-            if (currentObject && isSameObject(currentObject, serviceType)) {
-                return $q.when(currentObject);
+            if (isSameObject(currentObjects[paneId], serviceType)) {
+                return $q.when(currentObjects[paneId]);
             }
 
             return context.getServices().
@@ -116,17 +116,16 @@ module NakedObjects.Angular.Gemini {
                     return repLoader.populate(service);
                 }).
                 then((service: DomainObjectRepresentation) => {
-                    currentObject = service;
+                    currentObjects[paneId] = service;
                     return $q.when(service);
                 });
         };
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
 
-            // todo fix menu id
-            //if (currentMenu && currentMenu.menuId == menuId) {
-            //    return $q.when(currentMenu);
-            //}
+            if (currentMenuList[menuId]) {
+                return $q.when(currentMenuList[menuId]);
+            }
 
             return context.getMenus().
                 then((menus: MenusRepresentation) => {
@@ -134,7 +133,7 @@ module NakedObjects.Angular.Gemini {
                     return repLoader.populate(menu);
                 }).
                 then((menu: MenuRepresentation) => {
-                    currentMenu = menu;
+                    currentMenuList[menuId] = menu;
                     return $q.when(menu);
                 });
         };
@@ -204,34 +203,38 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        context.getObject = (type: string, id?: string[]) => {
+        context.getObject = (paneId: number, type: string, id?: string[]) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
-            return oid ? context.getDomainObject(type, oid) : context.getService(type);
+            return oid ? context.getDomainObject(paneId, type, oid) : context.getService(paneId, type);
         };
 
-        context.getObjectByOid = (objectId: string) => {
+        context.getObjectByOid = (paneId : number, objectId: string) => {
             const [dt, ...id] = objectId.split("-");
-            return context.getObject(dt, id);
+            return context.getObject(paneId, dt, id);
         };
 
-        const handleResult = (result: ActionResultRepresentation) => {
+        const handleResult = (paneId : number, result: ActionResultRepresentation) => {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setQuery(resultList);
-                return $q.when(currentCollection);
+                context.setQuery(paneId, resultList);
+                return $q.when(resultList);
             } else {
                 return $q.reject("expect list");
             }
         }
 
-        context.setQuery = (query: ListRepresentation) => {
-            currentCollection = query;
+        context.setQuery = (paneId : number, query: ListRepresentation) => {
+            currentCollections[paneId] = query;
         }
 
-        context.getQuery = (menuId: string, actionId: string, parms : {id: string; val: string }[]) => {
+        context.getQuery = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: string }[]) => {
+            const currentCollection = currentCollections[paneId];
 
-            if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+            if (currentCollection) {
+                // use once 
+                currentCollections[paneId] = null;
+
                 return $q.when (currentCollection);
             }
 
@@ -241,26 +244,33 @@ module NakedObjects.Angular.Gemini {
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
                     lastActionFriendlyName = action.extensions().friendlyName;
                     return repLoader.invoke(action, valueParms);
-                }).then(handleResult);
+                }).
+                then((result : ActionResultRepresentation) => handleResult(paneId, result) );
         };
 
-        context.getQueryFromObject = (objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
+        context.getQueryFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
 
-            if (currentCollection /*todo && isSameObject(currentObject, type, id)*/) {
+            const currentCollection = currentCollections[paneId];
+
+            if (currentCollection) {
+                // use once 
+                currentCollections[paneId] = null;
                 return $q.when(currentCollection);
             }
-            return context.getObjectByOid(objectId).
+
+            return context.getObjectByOid(paneId, objectId).
                 then((object: DomainObjectRepresentation) => {
                     const action = object.actionMember(actionId);
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
                     lastActionFriendlyName = action.extensions().friendlyName;
 
                     return repLoader.invoke(action, valueParms);
-                }).then(handleResult);
+                }).
+                then((result: ActionResultRepresentation) => handleResult(paneId, result));
             
         };
 
-        context.setObject = co => currentObject = co;
+        context.setObject = (paneId : number, co) => currentObjects[paneId] = co;
           
         var currentError: ErrorRepresentation = null;
 
@@ -337,7 +347,7 @@ module NakedObjects.Angular.Gemini {
                 resultObject.set("instanceId", "0");
                 resultObject.hateoasUrl = `/${domainType}/0`;
 
-                context.setObject(resultObject);
+                context.setObject(paneId, resultObject);
                 urlManager.setObject(resultObject, paneId);
             }
 
@@ -347,13 +357,13 @@ module NakedObjects.Angular.Gemini {
                 // set the object here and then update the url. That should reload the page but pick up this object 
                 // so we don't hit the server again. 
 
-                context.setObject(resultObject);
+                context.setObject(paneId, resultObject);
                 urlManager.setObject(resultObject, paneId);
             }
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setQuery(resultList);
+                context.setQuery(paneId, resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName);
                 urlManager.setQuery(action, paneId,  dvm);
             }
@@ -420,7 +430,7 @@ module NakedObjects.Angular.Gemini {
                     // remove pre-changed object from cache
                     $cacheFactory.get("$http").remove(updatedObject.url());
 
-                    context.setObject(updatedObject);
+                    context.setObject(ovm.onPaneId, updatedObject);
                     urlManager.setObject(updatedObject, ovm.onPaneId);
                 }).
                 catch((error: any) => {
@@ -436,7 +446,7 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(updatedObject);                
+                    context.setObject(ovm.onPaneId, updatedObject);                
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);

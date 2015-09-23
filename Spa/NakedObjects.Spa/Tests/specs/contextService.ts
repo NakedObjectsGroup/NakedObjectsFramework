@@ -204,7 +204,7 @@ describe("context Service", () => {
 
                 beforeEach(inject(() => {
                     (<any> localContext).setObject(testObject);
-                    result = localContext.getObject("test", ["1"]);
+                    result = localContext.getObject(1, "test", ["1"]);
                     timeout.flush();
                 }));
 
@@ -223,7 +223,7 @@ describe("context Service", () => {
                 beforeEach(inject(() => {
 
                     (<any> localContext).setObject(testObject);
-                    result = localContext.getObject("test2", ["2"]);
+                    result = localContext.getObject(1, "test2", ["2"]);
                     timeout.flush();
                 }));
 
@@ -242,7 +242,7 @@ describe("context Service", () => {
 
                 beforeEach(inject(() => {
 
-                    result = localContext.getObject("test", ["1"]);
+                    result = localContext.getObject(1, "test", ["1"]);
                     timeout.flush();
                 }));
 
@@ -291,7 +291,7 @@ describe("context Service", () => {
 
                 beforeEach(inject(() => {
                     (<any> localContext).setObject(testObject);
-                    result = localContext.getObject("test");
+                    result = localContext.getObject(1, "test");
                     timeout.flush();
                 }));
 
@@ -310,7 +310,7 @@ describe("context Service", () => {
                 beforeEach(inject(() => {
 
                     (<any> localContext).setObject(testObject);
-                    result = localContext.getObject("test2");
+                    result = localContext.getObject(1, "test2");
                     timeout.flush();
                 }));
 
@@ -329,7 +329,7 @@ describe("context Service", () => {
 
                 beforeEach(inject(() => {
 
-                    result = localContext.getObject("test");
+                    result = localContext.getObject(1, "test");
                     timeout.flush();
                 }));
 

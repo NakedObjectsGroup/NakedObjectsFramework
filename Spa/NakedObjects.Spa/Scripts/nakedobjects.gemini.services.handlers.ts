@@ -120,13 +120,13 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleQuery = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            var promise = routeData.objectId ? context.getQueryFromObject(routeData.objectId, routeData.actionId, routeData.parms) :
-                context.getQuery(routeData.menuId, routeData.actionId, routeData.parms);
+            var promise = routeData.objectId ? context.getQueryFromObject(routeData.paneId,  routeData.objectId, routeData.actionId, routeData.parms) :
+                context.getQuery(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms);
 
             promise.
                 then((list: ListRepresentation) => {
                     $scope.queryTemplate = routeData.state === CollectionViewState.List ? queryListTemplate : queryTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state, 1);
+                    $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state, routeData.paneId);
                     $scope.title = context.getLastActionFriendlyName();
                 }).catch( error => {
                     setError(error);
@@ -151,7 +151,7 @@ module NakedObjects.Angular.Gemini {
 
             var [dt, ...id] = routeData.objectId.split("-");
 
-            context.getObject(dt, id).
+            context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
                              
                     const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, routeData.paneId);
