@@ -24,7 +24,7 @@ module NakedObjects.Angular.Gemini{
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link): ItemViewModel;     
         actionViewModel(actionRep: ActionMember): ActionViewModel;
-        dialogViewModel(actionRep: ActionMember): DialogViewModel;
+        dialogViewModel(actionRep: ActionMember, paneId : number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
@@ -64,7 +64,7 @@ module NakedObjects.Angular.Gemini{
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = () => urlManager.setItem(linkRep);        
+            itemViewModel.doClick = (right? : boolean) => urlManager.setItem(linkRep, pane(right));        
             return itemViewModel;
         };
        
@@ -243,12 +243,12 @@ module NakedObjects.Angular.Gemini{
             
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId()) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), pane(right)) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
 
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = (actionMember: ActionMember) => {
+        viewModelFactory.dialogViewModel = (actionMember: ActionMember, paneId : number) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
@@ -256,7 +256,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
-            dialogViewModel.doClose = () => urlManager.closeDialog();
+            dialogViewModel.doClose = () => urlManager.closeDialog(paneId);
             dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, pane(right), dialogViewModel);
 
             return dialogViewModel;

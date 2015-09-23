@@ -72,7 +72,7 @@ module NakedObjects.Angular.Gemini {
     export class LinkViewModel {
         title: string;
         color: string;
-        doClick : () => void;
+        doClick : (right? : boolean) => void;
     }
 
     export class ItemViewModel extends LinkViewModel{

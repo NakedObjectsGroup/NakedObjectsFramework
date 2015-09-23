@@ -6,7 +6,7 @@
 </div>
     <table >
         <tbody>
-            <tr ng-repeat="item in collection.items" ng-class="item.color" ng-click="item.doClick()">
+            <tr ng-repeat="item in collection.items" ng-class="item.color" ng-click="item.doClick()"  nog-rightclick="item.doClick(true)" >
                 <td class="reference clickable-area" >
                     {{item.title}}
                 </td>
