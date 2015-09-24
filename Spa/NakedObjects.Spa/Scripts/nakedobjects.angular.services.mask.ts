@@ -33,9 +33,8 @@ module NakedObjects.Angular {
     }
 
     app.service('mask', function () {
-
-        var mask = <IMask>this;
-        var maskMap: IMaskMap = {};
+        const mask = <IMask>this;
+        let maskMap: IMaskMap = {};
 
         mask.toLocalFilter = (remoteMask: string) => {
             return maskMap ? maskMap[remoteMask] : null;

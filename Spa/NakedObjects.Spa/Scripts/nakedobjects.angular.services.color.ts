@@ -28,17 +28,16 @@ module NakedObjects.Angular {
     }
 
     app.service('color', function () {
-
-        var color = <IColor>this;
-        var colorMap: IColorMap = {};
+        const color = <IColor>this;
+        let colorMap: IColorMap = {};
 
         // array of colors for allocated colors by default
-        var defaultColorArray : string[] = [];
+        let defaultColorArray : string[] = [];
 
-        var defaultColor: string = "darkBlue";
+        let defaultColor: string = "darkBlue";
 
         function hashCode(toHash) {
-            var hash = 0, i, chr;
+            let hash = 0, i, chr;
             if (toHash.length === 0) return hash;
             for (i = 0; i < toHash.length; i++) {
                 chr = toHash.charCodeAt(i);
@@ -49,10 +48,10 @@ module NakedObjects.Angular {
         };
 
         function getColorMapValues(dt: string) {
-            var clr = dt ? colorMap[dt] : defaultColor;
+            let clr = dt ? colorMap[dt] : defaultColor;
             if (!clr) {
-                var hash = Math.abs(hashCode(dt));
-                var index = hash % 18;
+                const hash = Math.abs(hashCode(dt));
+                const index = hash % 18;
                 clr = defaultColorArray[index];
                 colorMap[dt] = clr;
             }
@@ -60,8 +59,8 @@ module NakedObjects.Angular {
         }
 
         function typeFromUrl(url: string): string {
-            var typeRegex = /(objects|services)\/([\w|\.]+)/;
-            var results = (typeRegex).exec(url);
+            const typeRegex = /(objects|services)\/([\w|\.]+)/;
+            const results = (typeRegex).exec(url);
             return (results && results.length > 2) ? results[2] : "";
         }
 
@@ -79,10 +78,10 @@ module NakedObjects.Angular {
 
         // tested
         color.toColorFromHref = (href: string): string => {
-            var type = typeFromUrl(href);
-            return "bg-color-" + getColorMapValues(type);
+            const type = typeFromUrl(href);
+            return `bg-color-${getColorMapValues(type)}`;
         }
     
-        color.toColorFromType = (type: string): string => "bg-color-" + getColorMapValues(type);
+        color.toColorFromType = (type: string): string => `bg-color-${getColorMapValues(type)}`;
     });
 }
