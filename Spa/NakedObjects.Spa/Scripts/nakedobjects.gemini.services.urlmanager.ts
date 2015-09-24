@@ -271,7 +271,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.startTransientEdit = (paneId: number) => {
-            capturedPanes[paneId] = capturePane(paneId);
+            const paneType = "";
+            const paneSearch = capturePane(paneId);
+
+            capturedPanes[paneId] = { paneType: paneType, search: paneSearch };
         }
 
         helper.cancelTransientEdit = (paneId : number) =>
@@ -281,7 +284,8 @@ module NakedObjects.Angular.Gemini {
             if (capturedPane) {
                 capturedPanes[paneId] = null;
                 let search = clearPane($location.search(), paneId);
-                search = _.merge(search, capturedPane);
+                search = _.merge(search, capturedPane.search);
+                setupPaneNumberAndTypes(paneId, capturedPane.paneType);
                 $location.search(search);
             }
         }
