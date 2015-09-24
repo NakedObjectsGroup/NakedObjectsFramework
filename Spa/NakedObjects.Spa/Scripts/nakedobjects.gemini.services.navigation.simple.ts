@@ -22,16 +22,16 @@ module NakedObjects.Angular.Gemini {
         push();
     }
 
-    app.service('navigation', function ($location: ng.ILocationService) {
+    app.service("navigation", function ($location: ng.ILocationService) {
         const nav = <INavigation>this;
-        var history = [];
-        var index = -1; 
-        var navigating = false; 
+        const history = [];
+        let index = -1;
+        let navigating = false;
 
         nav.back = () => {
             if ((index - 1) >= 0) {
                 index--;
-                navigating = true; 
+                navigating = true;
                 $location.url(history[index]);
             }
 
@@ -51,7 +51,7 @@ module NakedObjects.Angular.Gemini {
                 if (!isActionUrl && newUrl !== curUrl) {
                     history.push($location.url());
                 }
-                      
+
                 index = history.length - 1;
             }
             navigating = false;

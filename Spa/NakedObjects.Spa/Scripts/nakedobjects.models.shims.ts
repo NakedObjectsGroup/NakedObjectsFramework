@@ -17,8 +17,6 @@
 
 module NakedObjects {
 
-    "use strict";
-
     export class ModelShim {
         attributes: any;
 

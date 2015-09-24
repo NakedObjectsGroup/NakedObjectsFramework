@@ -19,8 +19,6 @@
 
 module NakedObjects {
 
-    "use strict";
-
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
     }
@@ -1121,7 +1119,6 @@ module NakedObjects {
     export interface IActionMemberMap {
         [index: string]: ActionMember;
     }
-
 
     export class DomainObjectRepresentation extends ResourceRepresentation {
 

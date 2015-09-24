@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini{
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link): ItemViewModel;     
-        actionViewModel(actionRep: ActionMember): ActionViewModel;
+        actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, paneId : number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
@@ -34,7 +34,7 @@ module NakedObjects.Angular.Gemini{
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
-        serviceViewModel(serviceRep: DomainObjectRepresentation): ServiceViewModel;
+        serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
     }
 
@@ -238,12 +238,14 @@ module NakedObjects.Angular.Gemini{
         };
 
         // tested
-        viewModelFactory.actionViewModel = (actionRep: ActionMember) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId : number) => {
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), pane(right)) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
+
+            // open dialog on current pane always - invoke action goes to pane indicated by click
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
 
             return actionViewModel;
         };
@@ -456,12 +458,12 @@ module NakedObjects.Angular.Gemini{
 
 
        
-        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation) => {
+        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, paneId : number) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action));
+            serviceViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action, paneId));
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());          
 
             return serviceViewModel;
@@ -492,9 +494,9 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.message = "";
 
+            objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
             objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()], paneId ));
-            objectViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action));
 
             objectViewModel.toggleActionMenu = () => {
                 urlManager.toggleObjectMenu(paneId);

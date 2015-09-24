@@ -13,7 +13,6 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-
 module NakedObjects.Angular.Gemini {
 
     export interface INavigation {
@@ -22,21 +21,10 @@ module NakedObjects.Angular.Gemini {
         push();
     }
 
-    app.service('navigation', function($location: ng.ILocationService, $routeParams: INakedObjectsRouteParams) {
+    app.service("navigation", function () {
         const nav = <INavigation>this;
-        nav.back = () => {
-           
-                parent.history.back(1);
-            
-        };
-
-        nav.forward = () => {
-            parent.history.forward(1);
-        };
-
-        nav.push = () => {
-
-        };
-
+        nav.back = () => parent.history.back(1);
+        nav.forward = () => parent.history.forward(1);
+        nav.push = () => { };
     });
 }

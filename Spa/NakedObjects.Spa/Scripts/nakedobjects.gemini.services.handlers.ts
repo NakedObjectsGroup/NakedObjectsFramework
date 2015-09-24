@@ -103,7 +103,7 @@ module NakedObjects.Angular.Gemini {
                 context.getMenu(routeData.menuId).
                     then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
-                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am)) };
+                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, routeData.paneId)) };
                         $scope.object = actions;
 
                         if (routeData.dialogId) {

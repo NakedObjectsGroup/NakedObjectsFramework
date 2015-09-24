@@ -128,7 +128,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             const am = new NakedObjects.ActionMember(rawAction, {}, "anid");
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, context) => {
-                resultVm = viewModelFactory.actionViewModel(am);
+                resultVm = viewModelFactory.actionViewModel(am, 1);
                 invokeAction = spyOn(context, "invokeAction");
             }));
 
@@ -145,7 +145,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let setDialog: jasmine.Spy;
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                resultVm = viewModelFactory.actionViewModel(new NakedObjects.ActionMember(rawActionParms, {}, "anid"));
+                resultVm = viewModelFactory.actionViewModel(new NakedObjects.ActionMember(rawActionParms, {}, "anid"), 1);
                 setDialog = spyOn(urlManager, "setDialog");
             }));
 
