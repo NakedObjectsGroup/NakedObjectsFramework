@@ -26,12 +26,12 @@ namespace AdventureWorksModel {
         #endregion
 
         #region FindRecentHires
-        //This method exists for test purposes only, to test that a hidden Finder Action does not
-        //show up in the Find Menu
-        [Hidden(WhenTo.Always)]
+        //This method exists for test purposes only, to test that visibility of Finder Actions
+        //honours authorization. 
         [FinderAction]
         public IQueryable<Employee> FindRecentHires() {
-            throw new NotImplementedException(); //Deliberately not implemented
+            Container.WarnUser("Find Recent Hires is not implemented; it is for test purposes only");
+            return null;
         }
         #endregion
 

@@ -343,9 +343,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public void DoActionFindOnActionDialog() {
             Login();
 
-
             var findEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindEmployeeByName");
-            //Test that a hidden action does not show up on FindMenu
+            //Test that an unauthorized action does not show up on FindMenu
             br.AssertElementDoesNotExist(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindRecentHires"));
 
             var lastName = wait.ClickAndWait(findEmployee, "#EmployeeRepository-FindEmployeeByName-LastName-Input");

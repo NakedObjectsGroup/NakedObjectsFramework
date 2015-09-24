@@ -24,8 +24,8 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Test.App {
     public class NakedObjectsRunSettings {
-        
-		private static Type[] Types {
+
+        private static Type[] Types {
             get {
                 return new Type[] {
                     typeof (EnumerableQuery<object>),
@@ -97,9 +97,6 @@ namespace NakedObjects.Test.App {
         }
 
         public class DefaultAuthorizer : ITypeAuthorizer<object> {
-            public void Init() {}
-
-            public void Shutdown() {}
 
             public bool IsEditable(IPrincipal principal, object target, string memberName) {
                 return true;
@@ -110,12 +107,25 @@ namespace NakedObjects.Test.App {
             }
         }
 
+        //Used to test that a specific Finder Action can be hidden by authorization.
+        public class EmployeeRepositoryAuthorizer : ITypeAuthorizer<EmployeeRepository> {
+            public bool IsEditable(IPrincipal principal, EmployeeRepository target, string memberName) {
+                return true;
+            }
+            public bool IsVisible(IPrincipal principal, EmployeeRepository target, string memberName) {
+                if (memberName == "FindRecentHires") return false;
+                return true;
+            }
+        }
+
         public static IAuditConfiguration AuditConfig() {
             return new AuditConfiguration<DefaultAuditor>();
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-            return new AuthorizationConfiguration<DefaultAuthorizer>();
+            var config = new AuthorizationConfiguration<DefaultAuthorizer>();
+            config.AddTypeAuthorizer<EmployeeRepository, EmployeeRepositoryAuthorizer>();
+            return config;
         }
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
