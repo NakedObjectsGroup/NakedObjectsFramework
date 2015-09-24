@@ -72,6 +72,7 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyHook.cs" />
+    <Compile Include="Authorization.cs" />
     <Compile Include="AWDomainObject.cs">
       <SubType>Code</SubType>
     </Compile>
