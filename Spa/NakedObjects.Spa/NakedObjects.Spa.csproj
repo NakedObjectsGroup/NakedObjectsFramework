@@ -133,7 +133,6 @@
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.controllers.test.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.handlers.test.ts" />
-    <TypeScriptCompile Include="Tests\specs\helpers.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.urlmanager.test.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.viewmodelfactory.test.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.context.test.ts" />

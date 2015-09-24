@@ -16,7 +16,6 @@
 /// <reference path="../../Scripts/nakedobjects.models.ts" />
 /// <reference path="../../Scripts/nakedobjects.angular.services.color.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
-/// <reference path="helpers.ts" />
 
 describe("nakedobjects.gemini.services.urlmanager", () => {
 

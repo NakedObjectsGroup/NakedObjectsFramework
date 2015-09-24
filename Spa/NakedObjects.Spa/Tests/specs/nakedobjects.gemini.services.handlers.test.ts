@@ -14,7 +14,6 @@
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
-/// <reference path="helpers.ts" />
 
 describe("nakedobjects.gemini.services.handlers", () => {
 
@@ -60,11 +59,12 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
         describe("if validation ok", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
+            beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
                 testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "selectable" } };
-                spyOnPromise(context, "getVersion", testVersion);
+                spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
+                $timeout.flush();
             }));
 
             it("should set scope variables", () => {
@@ -76,11 +76,12 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
         describe("if validation fails version", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
+            beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
                 testVersion.attributes = { specVersion: "1.0", optionalCapabilities: { domainModel: "selectable" } };
-                spyOnPromise(context, "getVersion", testVersion);
+                spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
+                $timeout.flush();
             }));
 
             it("sets error", () => {
@@ -90,11 +91,12 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
         describe("if validation fails domain model", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
+            beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
                 testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "formal" } };
-                spyOnPromise(context, "getVersion", testVersion);
+                spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
+                $timeout.flush();
             }));
 
             it("sets error", () => {
@@ -135,7 +137,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
             const testMember = new NakedObjects.PropertyMember({}, testObject, "");
             const testVm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
 
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
+            beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
                 $scope = $rootScope.$new();
                 spyOn(testVm, "showEdit").and.returnValue(true);
 
@@ -144,13 +146,13 @@ describe("nakedobjects.gemini.services.handlers", () => {
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
 
-                spyOnPromise(context, "getObject", testObject);
+                spyOn(context, "getObject").and.returnValue($q.when(testObject));
                 spyOn(testObject, "propertyMembers").and.returnValue([testMember]);
 
                 spyOn($location, "path").and.returnValue("aPath");
                 
-
                 handlers.handleToolBar($scope);
+                $timeout.flush();
             }));
 
             it("should set toolBar data", () => {
@@ -165,29 +167,26 @@ describe("nakedobjects.gemini.services.handlers", () => {
             const testObject = new NakedObjects.DomainObjectRepresentation();
             const testMember = new NakedObjects.PropertyMember({}, testObject, "");
 
-
-            beforeEach(inject(($rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
+            beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
                 $scope = $rootScope.$new();
 
                 $routeParams.dt = "test";
                 $routeParams.id = "1";
 
-                spyOnPromise(context, "getObject", testObject);
+                spyOn(context, "getObject").and.returnValue($q.when(testObject));
                 spyOn(testObject, "propertyMembers").and.returnValue([testMember]);
                 spyOn(testMember, "disabledReason").and.returnValue("disabled");
 
                 spyOn($location, "path").and.returnValue("aPath");
 
                 handlers.handleToolBar($scope);
+                $timeout.flush();
             }));
 
             it("should set toolBar data", () => {
                 expectToolBarData();
             });
-
-
         });
-
     });
 
 });

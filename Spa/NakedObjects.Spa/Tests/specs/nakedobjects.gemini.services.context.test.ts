@@ -15,7 +15,6 @@
 /// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
-/// <reference path="helpers.ts" />
 
 describe("nakedObjects.gemini.services.context ", () => {
 
