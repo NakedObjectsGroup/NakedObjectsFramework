@@ -25,11 +25,11 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 
 describe("nakedobjects.gemini.controllers", () => {
-	var $scope, ctrl;
+	let $scope, ctrl;
 
     beforeEach(angular.mock.module("app"));
     
-    describe("Pane1HomeController", () => {
+    describe("HomeController", () => {
         let handleHome: jasmine.Spy;
         let getRouteData: jasmine.Spy;
         let testRouteData: NakedObjects.Angular.Gemini.RouteData;
@@ -40,19 +40,40 @@ describe("nakedobjects.gemini.controllers", () => {
             testRouteData = new NakedObjects.Angular.Gemini.RouteData();
             getRouteData = spyOn(urlManager, "getRouteData");
             getRouteData.and.returnValue(testRouteData);
-            ctrl = $controller("Pane1HomeController", { $scope: $scope, handlers: handlers, urlManager : urlManager });
         }));
 
-        it("should call getRouteData", () => {
-            expect(getRouteData).toHaveBeenCalled();
+        describe("on Pane 1", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane1HomeController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleHome).toHaveBeenCalledWith($scope, testRouteData.pane1);
+            });
         });
 
-        it("should call the handler", () => {
-            expect(handleHome).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        describe("on Pane 2", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane2HomeController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleHome).toHaveBeenCalledWith($scope, testRouteData.pane2);
+            });
         });
     });
 
-    describe("Pane1ObjectController", () => {
+    describe("ObjectController", () => {
         let handleObject: jasmine.Spy;
         let getRouteData: jasmine.Spy;
         let testRouteData: NakedObjects.Angular.Gemini.RouteData;
@@ -63,15 +84,36 @@ describe("nakedobjects.gemini.controllers", () => {
             testRouteData = new NakedObjects.Angular.Gemini.RouteData();
             getRouteData = spyOn(urlManager, "getRouteData");
             getRouteData.and.returnValue(testRouteData);
-            ctrl = $controller("Pane1ObjectController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
         }));
 
-        it("should call getRouteData", () => {
-            expect(getRouteData).toHaveBeenCalled();
+        describe("on Pane 1", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane1ObjectController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleObject).toHaveBeenCalledWith($scope, testRouteData.pane1);
+            });
         });
 
-        it("should call the handler", () => {
-            expect(handleObject).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        describe("on Pane 2", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane2ObjectController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleObject).toHaveBeenCalledWith($scope, testRouteData.pane2);
+            });
         });
     });
 
@@ -86,15 +128,36 @@ describe("nakedobjects.gemini.controllers", () => {
             testRouteData = new NakedObjects.Angular.Gemini.RouteData();
             getRouteData = spyOn(urlManager, "getRouteData");
             getRouteData.and.returnValue(testRouteData);
-            ctrl = $controller("Pane1QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
         }));
 
-        it("should call getRouteData", () => {
-            expect(getRouteData).toHaveBeenCalled();
+        describe("on Pane 1", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane1QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane1);
+            });
         });
 
-        it("should call the handler", () => {
-            expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane1);
+        describe("on Pane 2", () => {
+
+            beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
+                ctrl = $controller("Pane2QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+            }));
+
+            it("should call getRouteData", () => {
+                expect(getRouteData).toHaveBeenCalled();
+            });
+
+            it("should call the handler for the correct pane", () => {
+                expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane2);
+            });
         });
     });
 
