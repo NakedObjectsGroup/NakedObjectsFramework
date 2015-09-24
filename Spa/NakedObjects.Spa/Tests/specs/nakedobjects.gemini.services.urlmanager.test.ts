@@ -25,7 +25,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         let location: ng.ILocationService;
 
-        beforeEach(inject((urlManager, $location) => {
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
             location.path("/apath");
@@ -44,19 +44,19 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         let location: ng.ILocationService;
         const search = { search: true };
-        const menuId = "amenu";  
+        const menuId = "amenu";
 
-        beforeEach(inject((urlManager, $location) => {
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
             location.path("/apath");
-            location.search(search);                  
+            location.search(search);
         }));
 
         describe("on pane 1", () => {
 
-            beforeEach(inject((urlManager, $location) => {
-                search[`menu${1}`] = menuId;    
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                search[`menu${1}`] = menuId;
                 urlManager.setMenu(menuId, 1);
             }));
 
@@ -69,7 +69,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 2", () => {
 
-            beforeEach(inject((urlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 search[`menu${2}`] = menuId;
                 urlManager.setMenu(menuId, 2);
             }));
@@ -89,7 +89,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         const search = { search: true };
         const dialogId = "adialog";
 
-        beforeEach(inject((urlManager, $location) => {
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
             location.path("/apath");
@@ -98,13 +98,13 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 1", () => {
 
-            beforeEach(inject((urlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 search[`dialog${1}`] = dialogId;
                 urlManager.setDialog(dialogId, 1);
             }));
 
 
-            it("sets the menu id in the search", () => {
+            it("sets the dialog id in the search", () => {
                 expect(location.path()).toBe("/apath");
                 expect(location.search()).toEqual(search);
             });
@@ -112,13 +112,57 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 2", () => {
 
-            beforeEach(inject((urlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 search[`dialog${2}`] = dialogId;
                 urlManager.setDialog(dialogId, 2);
             }));
 
 
-            it("sets the menu id in the search", () => {
+            it("sets the dialog id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+    });
+
+    describe("closeDialog", () => {
+
+        let location: ng.ILocationService;
+        let search: any = { menu1: "menu1", menu2: "menu2", dialog1: "adialog1", dialog2: "dialog2" };
+
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            location = $location;
+
+            location.path("/apath");
+            location.search(search);
+
+            urlManager.closeDialog(1);
+        }));
+
+        describe("on pane 1", () => {
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                search = _.omit(search, "dialog1");
+                urlManager.closeDialog(1);
+            }));
+
+
+            it("clears the dialog id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2", () => {
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                search = _.omit(search, "dialog2");
+                urlManager.closeDialog(2);
+            }));
+
+
+            it("clears the dialog id in the search", () => {
                 expect(location.path()).toBe("/apath");
                 expect(location.search()).toEqual(search);
             });

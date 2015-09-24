@@ -21,28 +21,28 @@ module NakedObjects.Angular.Gemini {
         getRouteData(): RouteData;
 
         setError();
-        setMenu(menuId: string, paneId : number);
-        setDialog(dialogId: string, paneId : number);
-        closeDialog(paneId : number);
-        setObject(resultObject: DomainObjectRepresentation, paneId : number);
-        setQuery(action: ActionMember, paneId : number, dvm?: DialogViewModel);
-        setProperty(propertyMember: PropertyMember, paneId : number);
-        setItem(link: Link, paneId : number): void;
+        setMenu(menuId: string, paneId: number);
+        setDialog(dialogId: string, paneId: number);
+        closeDialog(paneId: number);
+        setObject(resultObject: DomainObjectRepresentation, paneId: number);
+        setQuery(action: ActionMember, paneId: number, dvm?: DialogViewModel);
+        setProperty(propertyMember: PropertyMember, paneId: number);
+        setItem(link: Link, paneId: number): void;
 
-        toggleObjectMenu(paneId : number): void;
+        toggleObjectMenu(paneId: number): void;
 
-        setCollectionState(paneId: number, collection: CollectionMember, state: CollectionViewState) : void;
-        setCollectionState(paneId: number, collection: ListRepresentation, state: CollectionViewState) : void;
+        setCollectionState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
+        setCollectionState(paneId: number, collection: ListRepresentation, state: CollectionViewState): void;
 
-        setObjectEdit(edit: boolean, paneId : number);
+        setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number);
 
-        pushUrlState(paneId: number) : void;
-        clearUrlState(paneId: number) : void;
-        popUrlState(onPaneId: number) : void;
+        pushUrlState(paneId: number): void;
+        clearUrlState(paneId: number): void;
+        popUrlState(onPaneId: number): void;
     }
 
-    app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
+    app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
         const home = "home";
@@ -56,6 +56,30 @@ module NakedObjects.Angular.Gemini {
         const parm = "parm";
         const actions = "actions";
 
+        const capturedPanes = [];
+
+        function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
+            paneRouteData.menuId = $routeParams[menu + paneId];
+            paneRouteData.actionId = $routeParams[action + paneId];
+            paneRouteData.dialogId = $routeParams[dialog + paneId];
+
+            paneRouteData.objectId = $routeParams[object + paneId];
+            paneRouteData.actionsOpen = $routeParams[actions + paneId];
+            paneRouteData.edit = $routeParams[edit + paneId] === "true";
+
+            const rawCollectionState: string = $routeParams[collection + paneId];
+            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
+
+            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
+            //missing from lodash types :-( 
+            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
+
+            // todo make parm ids dictionary same as collections ids ? 
+            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
+            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + paneId), val: v } });
+        }
+
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
             const search = clearOthers ? {} : $location.search();
             search[parmId] = parmValue;
@@ -68,18 +92,6 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-        helper.setMenu = (menuId: string, paneId: number) => {
-            setSearch(`${menu}${paneId}`, menuId, false);
-        };
-
-        helper.setDialog = (dialogId: string, paneId: number) => {
-            setSearch(`${dialog}${paneId}`, dialogId, false);
-        };
-
-        helper.closeDialog = (paneId: number) => {
-            clearSearch(dialog + paneId);
-        };
-
         function singlePane() {
             return $location.path().split("/").length <= 2;
         }
@@ -90,7 +102,7 @@ module NakedObjects.Angular.Gemini {
             return _.filter(_.keys(search), (k) => _.any(ids, id => k.indexOf(id) === 0));
         }
 
-        function clearPane(search: any, paneId: number) {    
+        function clearPane(search: any, paneId: number) {
             const toClear = searchKeysForPane(search, paneId);
             return _.omit(search, toClear);
         }
@@ -118,13 +130,32 @@ module NakedObjects.Angular.Gemini {
 
         }
 
+        function capturePane(paneId: number) {
+            const search = $location.search();
+            const toCapture = searchKeysForPane(search, paneId);
+
+            return _.pick(search, toCapture);
+        }
+
+        helper.setMenu = (menuId: string, paneId: number) => {
+            setSearch(`${menu}${paneId}`, menuId, false);
+        };
+
+        helper.setDialog = (dialogId: string, paneId: number) => {
+            setSearch(`${dialog}${paneId}`, dialogId, false);
+        };
+
+        helper.closeDialog = (paneId: number) => {
+            clearSearch(`${dialog}${paneId}`);
+        };
+
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
 
             setupPaneNumberAndTypes(paneId, object);
 
             const oidParm = object + paneId;
-         
-            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
+
+            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
             const search = clearPane($location.search(), paneId);
             search[oidParm] = oid;
 
@@ -141,7 +172,7 @@ module NakedObjects.Angular.Gemini {
 
             if (parent instanceof DomainObjectRepresentation) {
                 const oidParm = object + paneId;
-                const oid = `${parent.domainType()}-${parent.instanceId()}`;
+                const oid = `${parent.domainType() }-${parent.instanceId() }`;
                 search[oidParm] = oid;
             }
 
@@ -190,7 +221,6 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-
         helper.toggleObjectMenu = (paneId: number) => {
             let search = $location.search();
             const paneActionsId = actions + paneId;
@@ -208,7 +238,7 @@ module NakedObjects.Angular.Gemini {
         helper.setCollectionState = (paneId: number, collectionObject: any, state: CollectionViewState) => {
             const collectionPrefix = `${collection}${paneId}`;
             if (collectionObject instanceof CollectionMember) {
-                setSearch(`${collectionPrefix}_${collectionObject.collectionId()}`, CollectionViewState[state], false);
+                setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
             } else {
                 setSearch(collectionPrefix, CollectionViewState[state], false);
             }
@@ -228,28 +258,6 @@ module NakedObjects.Angular.Gemini {
             $location.search(clearPane($location.search(), paneId));
         }
 
-        function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
-            paneRouteData.menuId = $routeParams[menu + paneId];
-            paneRouteData.actionId = $routeParams[action + paneId];
-            paneRouteData.dialogId = $routeParams[dialog + paneId];
-
-            paneRouteData.objectId = $routeParams[object + paneId];
-            paneRouteData.actionsOpen = $routeParams[actions + paneId];
-            paneRouteData.edit = $routeParams[edit + paneId] === "true";
-
-            const rawCollectionState: string = $routeParams[collection + paneId];
-            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
-
-            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
-            //missing from lodash types :-( 
-            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
-            paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
-
-            // todo make parm ids dictionary same as collections ids ? 
-            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
-            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + paneId), val: v } });
-        }
-
         helper.getRouteData = () => {
             const routeData = new RouteData();
 
@@ -258,15 +266,6 @@ module NakedObjects.Angular.Gemini {
 
             return routeData;
         };
-
-        const capturedPanes = [];
-
-        function capturePane(paneId: number) {
-            const search = $location.search();
-            const toCapture = searchKeysForPane(search, paneId);
-
-            return _.pick(search, toCapture);
-        }
 
         helper.pushUrlState = (paneId: number) => {
             const path = $location.path();
@@ -278,8 +277,7 @@ module NakedObjects.Angular.Gemini {
             capturedPanes[paneId] = { paneType: paneType, search: paneSearch };
         }
 
-        helper.popUrlState = (paneId : number) =>
-        {
+        helper.popUrlState = (paneId: number) => {
             const capturedPane = capturedPanes[paneId];
 
             if (capturedPane) {
@@ -291,8 +289,8 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        helper.clearUrlState = (paneId: number) => {       
-            capturedPanes[paneId] = null;              
+        helper.clearUrlState = (paneId: number) => {
+            capturedPanes[paneId] = null;
         }
     });
 
