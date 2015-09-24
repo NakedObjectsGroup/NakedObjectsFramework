@@ -33,7 +33,6 @@ module.exports = function(config) {
       'Scripts/nakedobjects.angular.services.representationloader.js',
       'Scripts/nakedobjects.gemini.controllers.js',
       'Scripts/nakedobjects.gemini.directives.js',
-      'Scripts/nakedobjects.gemini.services.representationhandlers.js',
       'Scripts/nakedobjects.gemini.services.viewmodelfactory.js',
       'Scripts/nakedobjects.gemini.services.context.js',
       'Scripts/nakedobjects.gemini.services.handlers.js',

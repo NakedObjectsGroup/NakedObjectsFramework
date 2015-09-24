@@ -16,7 +16,6 @@
 
 module NakedObjects.Angular.Gemini {
 
-    // todo make state enum ?
     // todo improve error handling
 
     export interface IHandlers {
@@ -28,7 +27,7 @@ module NakedObjects.Angular.Gemini {
         handleQuery($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, repHandlers: IRepHandlers, navigation: INavigation, urlManager : IUrlManager) {
+    app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager : IUrlManager) {
         const handlers = <IHandlers>this;
 
         function setVersionError(error) {

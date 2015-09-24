@@ -38,7 +38,7 @@ module NakedObjects.Angular.Gemini{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, repLoader: IRepLoader, color: IColor, context: IContext, repHandlers: IRepHandlers, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
+    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, repLoader: IRepLoader, color: IColor, context: IContext, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
 
         var viewModelFactory = <IViewModelFactory>this;
 

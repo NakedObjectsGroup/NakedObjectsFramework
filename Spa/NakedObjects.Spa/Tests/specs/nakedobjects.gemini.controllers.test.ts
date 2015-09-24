@@ -21,7 +21,6 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.browser.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.simple.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.representationhandlers.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 
