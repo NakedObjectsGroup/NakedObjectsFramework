@@ -131,12 +131,12 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\karma-jasmine\karma-jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
-    <TypeScriptCompile Include="Tests\specs\controllers.ts" />
-    <TypeScriptCompile Include="Tests\specs\handlersService.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.controllers.test.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.handlers.test.ts" />
     <TypeScriptCompile Include="Tests\specs\helpers.ts" />
-    <TypeScriptCompile Include="Tests\specs\urlManagerService.ts" />
-    <TypeScriptCompile Include="Tests\specs\viewModelFactoryService.ts" />
-    <TypeScriptCompile Include="Tests\specs\contextService.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.urlmanager.test.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.viewmodelfactory.test.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.context.test.ts" />
     <Content Include="Scripts\nakedobjects.angular.services.color.js" />
     <Content Include="Scripts\nakedobjects.angular.services.loaderwithtransform.js" />
     <Content Include="Scripts\nakedobjects.angular.services.mask.js" />

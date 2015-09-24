@@ -18,7 +18,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
-describe("urlManager Service", () => {
+describe("nakedobjects.gemini.services.urlmanager", () => {
 
     beforeEach(angular.mock.module("app"));
 

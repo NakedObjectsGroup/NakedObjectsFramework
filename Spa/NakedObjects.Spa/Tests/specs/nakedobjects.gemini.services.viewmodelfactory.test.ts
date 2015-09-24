@@ -18,7 +18,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
-describe("viewModelFactory Service", () => {
+describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
     beforeEach(angular.mock.module("app"));
 

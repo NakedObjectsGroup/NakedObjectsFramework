@@ -40,11 +40,11 @@ module.exports = function(config) {
       'Scripts/nakedobjects.gemini.services.urlmanager.js',
       'Scripts/nakedobjects.gemini.services.navigation.browser.js',
       'Tests/specs/helpers.js',
-      'Tests/specs/controllers.js',
-      'Tests/specs/contextService.js',
-      'Tests/specs/handlersService.js',
-      'Tests/specs/urlManagerService.js',
-      'Tests/specs/viewModelFactoryService.js'
+      'Tests/specs/nakedobjects.gemini.controllers.test.js',
+      'Tests/specs/nakedobjects.gemini.services.context.test.js',
+      'Tests/specs/nakedobjects.gemini.services.handlers.test.js',
+      'Tests/specs/nakedobjects.gemini.services.urlmanager.test.js',
+      'Tests/specs/nakedobjects.gemini.services.viewmodelfactory.test.js'
     ],
 
 

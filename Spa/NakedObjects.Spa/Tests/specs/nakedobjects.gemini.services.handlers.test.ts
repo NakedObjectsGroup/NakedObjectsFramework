@@ -16,7 +16,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
 /// <reference path="helpers.ts" />
 
-describe("handlers Service", () => {
+describe("nakedobjects.gemini.services.handlers", () => {
 
     var $scope;
 

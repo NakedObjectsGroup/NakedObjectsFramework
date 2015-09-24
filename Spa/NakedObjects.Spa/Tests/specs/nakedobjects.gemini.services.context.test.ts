@@ -17,7 +17,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
 /// <reference path="helpers.ts" />
 
-describe("context Service", () => {
+describe("nakedObjects.gemini.services.context ", () => {
 
     beforeEach(angular.mock.module("app"));
 

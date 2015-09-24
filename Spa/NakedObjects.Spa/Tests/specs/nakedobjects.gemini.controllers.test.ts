@@ -25,7 +25,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 
-describe("Controllers", () => {
+describe("nakedobjects.gemini.controllers", () => {
 	var $scope, ctrl;
 
     beforeEach(angular.mock.module("app"));
