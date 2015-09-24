@@ -39,4 +39,92 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             expect(location.search()).toEqual({});
         });
     });
+
+    describe("setMenu", () => {
+
+        let location: ng.ILocationService;
+        const search = { search: true };
+        const menuId = "amenu";  
+
+        beforeEach(inject((urlManager, $location) => {
+            location = $location;
+
+            location.path("/apath");
+            location.search(search);                  
+        }));
+
+        describe("on pane 1", () => {
+
+            beforeEach(inject((urlManager, $location) => {
+                search[`menu${1}`] = menuId;    
+                urlManager.setMenu(menuId, 1);
+            }));
+
+
+            it("sets the menu id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2", () => {
+
+            beforeEach(inject((urlManager, $location) => {
+                search[`menu${2}`] = menuId;
+                urlManager.setMenu(menuId, 2);
+            }));
+
+
+            it("sets the menu id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+    });
+
+    describe("setDialog", () => {
+
+        let location: ng.ILocationService;
+        const search = { search: true };
+        const dialogId = "adialog";
+
+        beforeEach(inject((urlManager, $location) => {
+            location = $location;
+
+            location.path("/apath");
+            location.search(search);
+        }));
+
+        describe("on pane 1", () => {
+
+            beforeEach(inject((urlManager, $location) => {
+                search[`dialog${1}`] = dialogId;
+                urlManager.setDialog(dialogId, 1);
+            }));
+
+
+            it("sets the menu id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2", () => {
+
+            beforeEach(inject((urlManager, $location) => {
+                search[`dialog${2}`] = dialogId;
+                urlManager.setDialog(dialogId, 2);
+            }));
+
+
+            it("sets the menu id in the search", () => {
+                expect(location.path()).toBe("/apath");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+    });
+
+
 })

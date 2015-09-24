@@ -73,7 +73,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setDialog = (dialogId: string, paneId: number) => {
-            setSearch(dialog + paneId, dialogId, false);
+            setSearch(`${dialog}${paneId}`, dialogId, false);
         };
 
         helper.closeDialog = (paneId: number) => {
