@@ -101,7 +101,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.color).toBe("bg-color-orangeDark");
                 resultVm.doClick();
-                expect(setItem).toHaveBeenCalledWith(link);
+                expect(setItem).toHaveBeenCalledWith(link, 1);
                 expect(resultVm.target).toBeUndefined();
             });
         });
@@ -154,7 +154,7 @@ describe("viewModelFactory Service", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.menuPath).toBe("a path");
                 resultVm.doInvoke();
-                expect(setDialog).toHaveBeenCalledWith("anid");
+                expect(setDialog).toHaveBeenCalledWith("anid", 1);
             });
         });
     });

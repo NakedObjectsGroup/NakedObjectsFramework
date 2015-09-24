@@ -210,7 +210,7 @@ describe("context Service", () => {
 
 
                 it("returns object representation", () => {
-                    expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                    expect(getDomainObject).toHaveBeenCalledWith(1, "test", "1");
                     expect(getService).not.toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
@@ -230,7 +230,7 @@ describe("context Service", () => {
 
                 it("returns object representation", () => {
                     expect(populate).toHaveBeenCalled();
-                    expect(getDomainObject).toHaveBeenCalledWith("test2", "2");
+                    expect(getDomainObject).toHaveBeenCalledWith(1, "test2", "2");
                     expect(getService).not.toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
@@ -249,7 +249,7 @@ describe("context Service", () => {
 
                 it("returns object representation", () => {
                     expect(populate).toHaveBeenCalled();
-                    expect(getDomainObject).toHaveBeenCalledWith("test", "1");
+                    expect(getDomainObject).toHaveBeenCalledWith(1, "test", "1");
                     expect(getService).not.toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
@@ -298,7 +298,7 @@ describe("context Service", () => {
 
                 it("returns service representation", () => {
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith("test");
+                    expect(getService).toHaveBeenCalledWith(1, "test");
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
@@ -318,7 +318,7 @@ describe("context Service", () => {
                 it("returns service representation", () => {
                     expect(populate).toHaveBeenCalled();
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith("test2");
+                    expect(getService).toHaveBeenCalledWith(1, "test2");
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
@@ -337,7 +337,7 @@ describe("context Service", () => {
                 it("returns service representation", () => {
                     expect(populate).toHaveBeenCalled();
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith("test");
+                    expect(getService).toHaveBeenCalledWith(1, "test");
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
