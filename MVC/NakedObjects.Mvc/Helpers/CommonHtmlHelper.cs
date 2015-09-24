@@ -2496,7 +2496,7 @@ namespace NakedObjects.Web.Mvc.Html {
             foreach (IActionSpec finderAction in finderActions) {
                 INakedObjectAdapter service = html.Framework().ServicesManager.GetService((IServiceSpec)finderAction.OnSpec);
                 var targetActionContext = new ActionContext(service, finderAction);
-                if (targetActionContext.Action.IsVisible(actionContext.Target)) {
+                if (targetActionContext.Action.IsVisible(targetActionContext.Target)) {
                     var ed = html.GetActionElementDescriptor(targetActionContext, actionContext, fieldSpec, propertyName, html.IsDuplicate(finderActions, finderAction));
                     var prefix = finderAction.GetFacet<IFinderActionFacet>().Value;
                     if (prefix != null) {
