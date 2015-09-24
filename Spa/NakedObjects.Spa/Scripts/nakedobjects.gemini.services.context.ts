@@ -342,8 +342,9 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
 
-            const resultObject = result.result().object(); // transient object
+            const resultObject = result.result().object(); 
 
+            // transient object
             if (result.resultType() === "object" && resultObject.persistLink()) {
                 const domainType = resultObject.extensions().domainType;
                 resultObject.set("domainType", domainType);
@@ -351,6 +352,7 @@ module NakedObjects.Angular.Gemini {
                 resultObject.hateoasUrl = `/${domainType}/0`;
 
                 context.setObject(paneId, resultObject);
+                urlManager.pushUrlState(paneId);
                 urlManager.setObject(resultObject, paneId);
             }
 
@@ -449,7 +451,7 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    urlManager.saveTransientEdit(ovm.onPaneId);
+                    urlManager.popUrlState(ovm.onPaneId);
                     context.setObject(ovm.onPaneId, updatedObject);                
                 }).
                 catch((error: any) => {

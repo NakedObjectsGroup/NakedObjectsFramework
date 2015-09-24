@@ -37,9 +37,9 @@ module NakedObjects.Angular.Gemini {
         setObjectEdit(edit: boolean, paneId : number);
         setHome(paneId: number);
 
-        startTransientEdit(paneId: number) : void;
-        cancelTransientEdit(paneId: number) : void;
-        saveTransientEdit(onPaneId: number) : void;
+        pushUrlState(paneId: number) : void;
+        clearUrlState(paneId: number) : void;
+        popUrlState(onPaneId: number) : void;
     }
 
     app.service("urlManager", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -123,9 +123,7 @@ module NakedObjects.Angular.Gemini {
             setupPaneNumberAndTypes(paneId, object);
 
             const oidParm = object + paneId;
-            const editParm = edit + paneId;
-            const dialogParm = dialog + paneId;
-
+         
             const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
             const search = clearPane($location.search(), paneId);
             search[oidParm] = oid;
@@ -270,14 +268,17 @@ module NakedObjects.Angular.Gemini {
             return _.pick(search, toCapture);
         }
 
-        helper.startTransientEdit = (paneId: number) => {
-            const paneType = "";
+        helper.pushUrlState = (paneId: number) => {
+            const path = $location.path();
+            const segments = path.split("/");
+
+            const paneType = segments[paneId] || home;
             const paneSearch = capturePane(paneId);
 
             capturedPanes[paneId] = { paneType: paneType, search: paneSearch };
         }
 
-        helper.cancelTransientEdit = (paneId : number) =>
+        helper.popUrlState = (paneId : number) =>
         {
             const capturedPane = capturedPanes[paneId];
 
@@ -289,7 +290,8 @@ module NakedObjects.Angular.Gemini {
                 $location.search(search);
             }
         }
-        helper.saveTransientEdit = (paneId: number) => {       
+
+        helper.clearUrlState = (paneId: number) => {       
             capturedPanes[paneId] = null;              
         }
     });

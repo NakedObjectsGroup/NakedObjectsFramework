@@ -481,7 +481,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
 
             objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
-            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.cancelTransientEdit(paneId) : () => urlManager.setObjectEdit(false, paneId);
+            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
 
             const properties = objectRep.propertyMembers();
             const collections = objectRep.collectionMembers();

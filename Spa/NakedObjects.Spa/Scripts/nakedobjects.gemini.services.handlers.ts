@@ -160,10 +160,7 @@ module NakedObjects.Angular.Gemini {
                   
                     if (routeData.edit || ovm.isTransient) {
                         $scope.objectTemplate = objectEditTemplate;
-                        $scope.actionsTemplate = nullTemplate;
-                        if (ovm.isTransient) {
-                            urlManager.startTransientEdit(routeData.paneId);
-                        }
+                        $scope.actionsTemplate = nullTemplate;                      
                     } else {
                         $scope.objectTemplate = objectViewTemplate;
                         $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
