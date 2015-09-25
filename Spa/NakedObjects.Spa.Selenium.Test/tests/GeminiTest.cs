@@ -234,24 +234,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Query
         }
 
-        protected virtual void WaitFor(Pane pane, PaneType type, string title)
+        protected string CssSelectorFor(Pane pane)
         {
-            string selector = "";
             switch (pane)
             {
                 case Pane.Single:
-                    selector = ".single";
-                    break;
+                    return ".single ";
                 case Pane.Left:
-                    selector = "#pane1";
-                    break;
+                    return "#pane1 ";
                 case Pane.Right:
-                    selector = "#pane2";
-                    break;
+                    return "#pane2 ";
                 default:
-                    break;
+                    throw new NotImplementedException();
             }
-            selector += " ." + type.ToString().ToLower() + " .header .title";
+        }
+
+        protected virtual void WaitFor(Pane pane, PaneType type, string title)
+        {
+            var selector =  CssSelectorFor(pane)+" ." + type.ToString().ToLower() + " .header .title";
             wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
             if (pane == Pane.Single)
             {
@@ -337,33 +337,35 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Object Actions
-        protected ReadOnlyCollection<IWebElement> GetObjectActions(int? totalNumber = null)
+        protected ReadOnlyCollection<IWebElement> GetObjectActions(int? totalNumber = null, Pane pane = Pane.Single)
         {
+            var selector = CssSelectorFor(pane)+ ".actions .action";
             if (totalNumber == null)
             {
-                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count > 0);
+                wait.Until(d => d.FindElements(By.CssSelector(selector)).Count > 0);
             }
             else
             {
-                wait.Until(d => d.FindElements(By.CssSelector(".actions .action")).Count == totalNumber.Value);
+                wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber.Value);
             }
-            return br.FindElements(By.CssSelector(".actions .action"));
+            return br.FindElements(By.CssSelector(selector));
         }
 
-        protected IWebElement GetObjectAction(string actionName)
+        protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single)
         {
-            return GetObjectActions().Where(a => a.Text == actionName).Single();
+            return GetObjectActions(null, pane).Where(a => a.Text == actionName).Single();
         }
 
-        protected IWebElement OpenActionDialog(string actionName)
+        protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single)
         {
-            Click(GetObjectAction(actionName));
-            var dialog = wait.Until(d => d.FindElement(By.CssSelector(".dialog")));
-            string title = br.FindElement(By.CssSelector(".dialog > .title")).Text;
-            Assert.AreEqual(actionName, title);
+            Click(GetObjectAction(actionName, pane));
+            var selector = CssSelectorFor(pane)+" .dialog ";
+            var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+
+            Assert.AreEqual(actionName, FindElementByCss(selector + "> .title").Text);
             //Check it has OK & cancel buttons
-            wait.Until(d => br.FindElement(By.CssSelector(".ok")));
-            wait.Until(d => br.FindElement(By.ClassName("cancel")));
+            wait.Until(d => br.FindElement(By.CssSelector(selector +".ok")));
+            wait.Until(d => br.FindElement(By.CssSelector(".cancel")));
             return dialog;
         }
 
@@ -372,14 +374,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
         }
 
-        protected void CancelDialog()
+        protected void CancelDialog(Pane pane = Pane.Single)
         {
-             Click(br.FindElement(By.CssSelector(".dialog  .cancel")));
+           var selector = CssSelectorFor(pane)+".dialog ";
+             Click(FindElementByCss(selector + ".cancel"));
 
-                wait.Until(d => {
+                wait.Until(dr => {
                     try
                     {
-                        br.FindElement(By.ClassName("dialog"));
+                        dr.FindElement(By.CssSelector(selector));
                         return false;
                     }
                     catch (NoSuchElementException)
@@ -387,9 +390,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                         return true;
                     }
                 });
-
+            
         }
-
+        
         #endregion
 
         #region ToolBar icons

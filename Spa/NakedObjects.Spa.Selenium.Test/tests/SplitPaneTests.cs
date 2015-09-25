@@ -87,7 +87,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = Url + "#/object/object?object1=AdventureWorksModel.Store-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926";
+        private const string twoObjects = Url + "#/object/object?object1=AdventureWorksModel.Store-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
 
         [TestMethod]
         public virtual void RightClickReferenceInLeftPaneObject()
@@ -167,6 +167,29 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
+        [TestMethod]
+        public virtual void ActionDialogOpensInCorrectPane()
+        {
+            br.Navigate().GoToUrl(twoObjects);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+
+            OpenActionDialog("Search For Orders", Pane.Left);
+            CancelDialog(Pane.Left);
+            OpenActionDialog("Add New Sales Reasons", Pane.Right);
+            CancelDialog(Pane.Right);
+        }
+
+        [TestMethod]
+        public virtual void RightClickIsSameAsLeftClickForDialogActions() {
+            br.Navigate().GoToUrl(twoObjects);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+
+            RightClick(GetObjectAction("Search For Orders", Pane.Left));
+            var selector = CssSelectorFor(Pane.Left) + " .dialog ";
+            var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        }
         #endregion
 
     }
