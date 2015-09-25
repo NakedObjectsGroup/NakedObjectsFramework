@@ -173,7 +173,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         let location: ng.ILocationService;
         const obj1 = new NakedObjects.DomainObjectRepresentation({});
         const obj2 = new NakedObjects.DomainObjectRepresentation({});
-
+        const preSearch: any = { menu1: "menu1", menu2: "menu2" };
 
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             spyOn(obj1, "domainType").and.returnValue("dt1");
@@ -185,16 +185,14 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         }));
 
         describe("on pane 1 with single pane", () => {
-            let search: any = { menu1: "menu1", menu2: "menu2" };
-
+            let search: any;
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
 
-                search = _.omit(search, "menu1");
+                search = _.omit(preSearch, "menu1");
                 search.object1 = "dt1-id1";
                 location.path("/home");
-                location.search(search);
-
+                location.search(preSearch);
 
                 urlManager.setObject(obj1, 1);
             }));
@@ -207,13 +205,13 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         });
 
         describe("on pane 1 with split pane", () => {
-            let search: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
-                search = _.omit(search, "menu1");
+                search = _.omit(preSearch, "menu1");
                 search.object1 = "dt1-id1";
                 location.path("/home/home");
-                location.search(search);
+                location.search(preSearch);
 
                 urlManager.setObject(obj1, 1);
             }));
@@ -226,14 +224,14 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         });
 
         describe("on pane 2 with single pane", () => {
-            let search: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
 
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
-                search = _.omit(search, "menu2");
+                search = _.omit(preSearch, "menu2");
                 search.object2 = "dt2-id2";
                 location.path("/home");
-                location.search(search);
+                location.search(preSearch);
 
                 urlManager.setObject(obj2, 2);
             }));
@@ -246,14 +244,14 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         });
 
         describe("on pane 2 with split pane", () => {
-            let search: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
 
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
-                search = _.omit(search, "menu2");
+                search = _.omit(preSearch, "menu2");
                 search.object2 = "dt2-id2";
                 location.path("/home/home");
-                location.search(search);
+                location.search(preSearch);
 
                 urlManager.setObject(obj2, 2);
             }));
@@ -264,5 +262,279 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 expect(location.search()).toEqual(search);
             });
         });
+    });
+
+    describe("setQuery", () => {
+
+        let location: ng.ILocationService;
+        const obj = new NakedObjects.DomainObjectRepresentation();
+        const menu = new NakedObjects.MenuRepresentation();
+
+        const action11 = new NakedObjects.ActionMember({}, obj, "11");
+        const action12 = new NakedObjects.ActionMember({}, menu, "12");
+        const action21 = new NakedObjects.ActionMember({}, obj, "21");
+        const action22 = new NakedObjects.ActionMember({}, menu, "22");
+
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            spyOn(obj, "domainType").and.returnValue("dt");
+            spyOn(obj, "instanceId").and.returnValue("id");
+            spyOn(menu, "menuId").and.returnValue("mid");
+          
+            location = $location;
+        }));
+
+        describe("on pane 1 with single pane parent object", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.object1 = "dt-id";
+                search.action1 = "11";
+                location.path("/home");
+                location.search(preSearch);
+            
+                urlManager.setQuery(action11, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 1 with single pane parent menu", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.menu1 = "mid";
+                search.action1 = "12";
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action12, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 1 with split pane parent object", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.object1 = "dt-id";
+                search.action1 = "11";
+                location.path("/home/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action11, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query/home");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 1 with split pane parent menu", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.menu1 = "mid";
+                search.action1 = "12";
+                location.path("/home/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action12, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query/home");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 1 with single pane parent object and dvm", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const dvm = new NakedObjects.Angular.Gemini.DialogViewModel(); 
+            let search: any;
+
+            const p1 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const p2 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            p1.id = "pid1";
+            p1.value = "val1";
+            p1.type = "scalar";
+            p2.id = "pid2";
+            p2.value = "val2";
+            p2.type = "scalar";
+
+            dvm.parameters = [p1, p2];
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.object1 = "dt-id";
+                search.action1 = "11";
+                search.parm1_pid1 = "val1";
+                search.parm1_pid2 = "val2";
+
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action11, 1, dvm);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+
+
+        describe("on pane 2 with single pane parent object", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.object2 = "dt-id";
+                search.action2 = "21";
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action21, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with single pane parent menu", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.menu2 = "mid";
+                search.action2 = "22";
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action22, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with split pane parent object", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.object2 = "dt-id";
+                search.action2 = "21";
+                location.path("/home/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action21, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with split pane parent menu", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            let search: any;
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.menu2 = "mid";
+                search.action2 = "22";
+                location.path("/home/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action22, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with single pane parent object and dvm", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const dvm = new NakedObjects.Angular.Gemini.DialogViewModel();
+            let search: any;
+
+            const p1 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const p2 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            p1.id = "pid1";
+            p1.value = "val1";
+            p1.type = "scalar";
+            p2.id = "pid2";
+            p2.value = "val2";
+            p2.type = "scalar";
+
+            dvm.parameters = [p1, p2];
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.object2 = "dt-id";
+                search.action2 = "21";
+                search.parm2_pid1 = "val1";
+                search.parm2_pid2 = "val2";
+
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action21, 2, dvm);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+      
     });
 })
