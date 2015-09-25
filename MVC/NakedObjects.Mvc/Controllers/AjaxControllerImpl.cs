@@ -89,6 +89,16 @@ namespace NakedObjects.Web.Mvc.Controllers {
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
             INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
             IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+
+            if (action == null && nakedObject.Spec.IsCollection) {
+                var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
+                var elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+                if (elementSpecImmut != null) {
+                    var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut);
+                    action = elementSpec.GetCollectionContributedActions().SingleOrDefault(a => a.Id == actionName);
+                }
+            }
+
             bool isValid = false;
             string parmId = "";
 
@@ -114,7 +124,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
                 return Jsonp(true);
             }
 
-            ModelError error = ModelState[parmId].Errors.FirstOrDefault();
+            ModelError error = !string.IsNullOrWhiteSpace(parmId) ?  ModelState[parmId].Errors.FirstOrDefault() : null;
             return Jsonp(error == null ? "" : error.ErrorMessage);
         }
 
