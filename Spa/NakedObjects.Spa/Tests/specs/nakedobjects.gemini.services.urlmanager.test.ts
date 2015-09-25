@@ -115,7 +115,6 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 urlManager.setDialog(dialogId, 2);
             }));
 
-
             it("sets the dialog id in the search", () => {
                 expect(location.path()).toBe("/apath");
                 expect(location.search()).toEqual(search);
@@ -535,6 +534,230 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             });
         });
 
+        describe("setProperty", () => {
+
+            let location: ng.ILocationService;
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const property = new NakedObjects.PropertyMember({}, {}, "1");
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;
+
+                spyOn(property, "value").and.returnValue({ link : () => { return { href: () => "objects/dt/id" } } });
+
+                location.path("/home");
+                location.search(preSearch);
+            }));
+
+            describe("on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                    search = _.omit(preSearch, "menu1");
+                    search.object1 = "dt-id";
+
+                    urlManager.setProperty(property, 1);
+                }));
+
+                it("sets the property id in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                    search = _.omit(preSearch, "menu2");
+                    search.object2 = "dt-id";
+                    urlManager.setProperty(property, 2);
+                }));
+
+                it("sets the property id in the search", () => {
+                    expect(location.path()).toBe("/home/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+        });
+
+        describe("setItem", () => {
+                  
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const link = new NakedObjects.Link({});
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;
+
+                spyOn(link, "href").and.returnValue( "objects/dt/id" );
+
+                location.path("/home");
+                location.search(preSearch);
+            }));
+
+            describe("on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                    search = _.omit(preSearch, "menu1");
+                    search.object1 = "dt-id";
+
+                    urlManager.setItem(link, 1);
+                }));
+
+                it("sets the property id in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                    search = _.omit(preSearch, "menu2");
+                    search.object2 = "dt-id";
+                    urlManager.setItem(link, 2);
+                }));
+
+                it("sets the property id in the search", () => {
+                    expect(location.path()).toBe("/home/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+        });
+
+        describe("toggleObjectMenu", () => {
+
+            let location: ng.ILocationService;
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
       
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;
+
+                location.path("/home");
+                location.search(preSearch);
+            }));
+
+            describe("on pane 1 toggle on", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+                    search.actions1 = "open";
+
+                    urlManager.toggleObjectMenu(1);
+                }));
+
+                it("sets the menu id in the search", () => {
+                    expect(location.path()).toBe("/home");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("on pane 1 toggle off", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    preSearch.actions1 = "open";
+                    location.search(preSearch);
+
+                    urlManager.toggleObjectMenu(1);
+                }));
+
+                it("sets the menu id in the search", () => {
+                    expect(location.path()).toBe("/home");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("on pane 2 toggle on", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+                    search.actions2 = "open";
+
+                    urlManager.toggleObjectMenu(2);
+                }));
+
+                it("sets the menu id in the search", () => {
+                    expect(location.path()).toBe("/home");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("on pane 2 toggle off", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    preSearch.actions2 = "open";
+                    location.search(preSearch);
+
+                    urlManager.toggleObjectMenu(2);
+                }));
+
+                it("sets the menu id in the search", () => {
+                    expect(location.path()).toBe("/home");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+        });
+
+        describe("setCollectionState", () => {
+
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const link = new NakedObjects.Link({});
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;
+
+                spyOn(link, "href").and.returnValue("objects/dt/id");
+
+                location.path("/home");
+                location.search(preSearch);
+            }));
+
+            describe("on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                    search = _.omit(preSearch, "menu1");
+                    search.object1 = "dt-id";
+
+                    urlManager.setCollectionState(link, 1);
+                }));
+
+                it("sets the property id in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+
+        });
+
+
+
     });
 })

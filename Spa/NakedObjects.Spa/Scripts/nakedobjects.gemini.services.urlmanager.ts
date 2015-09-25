@@ -138,6 +138,25 @@ module NakedObjects.Angular.Gemini {
             return _.pick(search, toCapture);
         }
 
+        function toOid(dt: string, id: string) {
+            // todo does this formatting belong here ?
+            return `${dt}-${id}`;
+        }
+
+        function getOidFromHref(href: string) {
+            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            const results = (urlRegex).exec(href);
+            return toOid(results[2],results[3]);
+        }
+
+        function setObjectSearch(paneId: number, oid: string) {
+            setupPaneNumberAndTypes(paneId, object);
+
+            const search = clearPane($location.search(), paneId);
+            search[object + paneId] = oid;
+            $location.search(search);
+        }
+
         helper.setMenu = (menuId: string, paneId: number) => {
             setSearch(`${menu}${paneId}`, menuId, false);
         };
@@ -151,17 +170,8 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
-
-            setupPaneNumberAndTypes(paneId, object);
-
-            const oidParm = object + paneId;
-            // todo does this formatting belong here ?
-            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
-            const search = clearPane($location.search(), paneId);
-
-            search[oidParm] = oid;
-
-            $location.search(search);
+            const oid = toOid(resultObject.domainType(), resultObject.instanceId());
+            setObjectSearch(paneId, oid);  
         };
 
         helper.setQuery = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
@@ -174,7 +184,7 @@ module NakedObjects.Angular.Gemini {
 
             if (parent instanceof DomainObjectRepresentation) {
                 const oidParm = object + paneId;
-                const oid = `${parent.domainType() }-${parent.instanceId() }`;
+                const oid = toOid(parent.domainType(), parent.instanceId());
                 search[oidParm] = oid;
             }
 
@@ -195,31 +205,14 @@ module NakedObjects.Angular.Gemini {
 
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
             const href = propertyMember.value().link().href();
-            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
-            const results = (urlRegex).exec(href);
-            const oid = `${results[2]}-${results[3]}`;
-
-            setupPaneNumberAndTypes(paneId, object);
-
-            const search = clearPane($location.search(), paneId);
-            search[object + paneId] = oid;
-
-            $location.search(search);
+            const oid = getOidFromHref(href);
+            setObjectSearch(paneId, oid);
         };
 
         helper.setItem = (link: Link, paneId: number) => {
-            var href = link.href();
-            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
-            const results = (urlRegex).exec(href);
-            const oid = `${results[2]}-${results[3]}`;
-
-            setupPaneNumberAndTypes(paneId, object);
-
-            const search = clearPane($location.search(), paneId);
-
-            search[object + paneId] = oid;
-
-            $location.search(search);
+            const href = link.href();
+            const oid = getOidFromHref(href);
+            setObjectSearch(paneId, oid);
         };
 
         helper.toggleObjectMenu = (paneId: number) => {
