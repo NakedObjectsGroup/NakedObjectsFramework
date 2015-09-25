@@ -24,6 +24,7 @@ module NakedObjects.Angular.Gemini {
         setMenu(menuId: string, paneId: number);
         setDialog(dialogId: string, paneId: number);
         closeDialog(paneId: number);
+
         setObject(resultObject: DomainObjectRepresentation, paneId: number);
         setQuery(action: ActionMember, paneId: number, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember, paneId: number);
@@ -154,9 +155,10 @@ module NakedObjects.Angular.Gemini {
             setupPaneNumberAndTypes(paneId, object);
 
             const oidParm = object + paneId;
-
-            const oid = `${resultObject.domainType() }-${resultObject.instanceId() }`;
+            // todo does this formatting belong here ?
+            const oid = `${resultObject.domainType()}-${resultObject.instanceId()}`;
             const search = clearPane($location.search(), paneId);
+
             search[oidParm] = oid;
 
             $location.search(search);

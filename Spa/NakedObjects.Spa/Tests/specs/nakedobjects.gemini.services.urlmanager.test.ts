@@ -55,7 +55,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 1", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search[`menu${1}`] = menuId;
                 urlManager.setMenu(menuId, 1);
             }));
@@ -69,7 +69,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 2", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search[`menu${2}`] = menuId;
                 urlManager.setMenu(menuId, 2);
             }));
@@ -98,7 +98,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 1", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search[`dialog${1}`] = dialogId;
                 urlManager.setDialog(dialogId, 1);
             }));
@@ -112,7 +112,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 2", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search[`dialog${2}`] = dialogId;
                 urlManager.setDialog(dialogId, 2);
             }));
@@ -142,7 +142,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 1", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(search, "dialog1");
                 urlManager.closeDialog(1);
             }));
@@ -156,7 +156,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         describe("on pane 2", () => {
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(search, "dialog2");
                 urlManager.closeDialog(2);
             }));
@@ -167,6 +167,111 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 expect(location.search()).toEqual(search);
             });
         });
+
+    });
+
+    describe("setObject", () => {
+
+        let location: ng.ILocationService;
+        const obj1 = new NakedObjects.DomainObjectRepresentation({});
+        const obj2 = new NakedObjects.DomainObjectRepresentation({});
+
+
+        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+            spyOn(obj1, "domainType").and.returnValue("dt1");
+            spyOn(obj1, "instanceId").and.returnValue("id1");
+            spyOn(obj2, "domainType").and.returnValue("dt2");
+            spyOn(obj2, "instanceId").and.returnValue("id2");
+
+            location = $location;
+        }));
+
+        describe("on pane 1 with single pane", () => {
+            let search: any = { menu1: "menu1", menu2: "menu2" };
+
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(search, "menu1");
+                search.object1 = "dt1-id1";
+                location.path("/home");
+                location.search(search);
+
+
+                urlManager.setObject(obj1, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object in the search", () => {
+                expect(location.path()).toBe("/object");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 1 with split pane", () => {
+            let search: any = { menu1: "menu1", menu2: "menu2" };
+
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                search = _.omit(search, "menu1");
+                search.object1 = "dt1-id1";
+                location.path("/home/home");
+                location.search(search);
+
+
+                urlManager.setObject(obj1, 1);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object in the search", () => {
+                expect(location.path()).toBe("/object/home");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with single pane", () => {
+            let search: any = { menu1: "menu1", menu2: "menu2" };
+
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                search = _.omit(search, "menu2");
+                search.object2 = "dt2-id2";
+                location.path("/home");
+                location.search(search);
+
+
+                urlManager.setObject(obj2, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object in the search", () => {
+                expect(location.path()).toBe("/home/object");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+        describe("on pane 2 with split pane", () => {
+            let search: any = { menu1: "menu1", menu2: "menu2" };
+
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+                search = _.omit(search, "menu2");
+                search.object2 = "dt2-id2";
+                location.path("/home/home");
+                location.search(search);
+
+
+                urlManager.setObject(obj2, 2);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object in the search", () => {
+                expect(location.path()).toBe("/home/object");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+     
 
     });
 
