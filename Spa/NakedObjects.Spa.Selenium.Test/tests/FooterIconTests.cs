@@ -15,9 +15,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Home() {
             br.Navigate().GoToUrl(Product968Url);
-            WaitForSingleObject();
+            WaitFor(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
         }
 
         [TestMethod]

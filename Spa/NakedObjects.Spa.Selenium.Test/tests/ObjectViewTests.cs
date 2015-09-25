@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
 
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
-            WaitForSingleObject();
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             var reference = FindElementByCss(".property .reference", 0);
             Click(reference);
-            WaitForSingleObject("Lynn Tsoflias");
+            WaitFor(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
             var title = row.Text;
             Click(row);
-            WaitForSingleObject(title);
+            WaitFor(Pane.Single, PaneType.Object, title);
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var type = row.FindElements(By.CssSelector(".cell"))[0].Text;
             var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
             Click(row);
-            WaitForSingleObject(type+": "+addr);
+            WaitFor(Pane.Single, PaneType.Object, type+": "+addr);
         }
 
         [TestMethod]
@@ -135,8 +135,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Search For Orders");
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void CollectionAction() {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             Click(GetObjectAction("Recent Orders"));
-            WaitForSingleQuery("Recent Orders");
+            WaitFor(Pane.Single, PaneType.Query, "Recent Orders");
         }
     }
 

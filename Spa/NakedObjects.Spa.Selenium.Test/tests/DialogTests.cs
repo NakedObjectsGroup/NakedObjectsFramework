@@ -27,8 +27,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             br.Navigate().GoToUrl(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             FindElementByCss(".value  select").SendKeys("Ascending");
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
@@ -48,8 +48,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Orders By Value");
 
             FindElementByCss(".value  select").SendKeys("Ascending");
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
@@ -60,8 +60,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             FindElementByCss(".value input").SendKeys("00000042");
-            ClickOK();
-            WaitForSingleObject();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
         }
 
         [TestMethod]
@@ -73,8 +73,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             FindElementByCss(".value input",1).SendKeys("1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Search For Orders");
         }
 
         [TestMethod]
@@ -83,8 +83,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             br.Navigate().GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
             FindElementByCss(".value  select").SendKeys("Forks");
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
         }
 
@@ -100,8 +100,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
             Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.Last().Text);
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -118,8 +118,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             br.FindElement(By.CssSelector(".value  select option[label='Brakes']")).Click();
             kb.ReleaseKey(Keys.Control);
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Categories");
             AssertTopItemInListIs("Front Brakes");
         }
 
@@ -135,8 +135,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("M", slctPl.SelectedOption.Text);
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Find By Product Line And Class");
             AssertTopItemInListIs("Mountain-300 Black, 38");
         }
 
@@ -149,8 +149,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             FindElementByCss("div#productline .value  select").SendKeys("R");
             FindElementByCss("div#productclass .value  select").SendKeys("L");
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
 
@@ -169,8 +169,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -191,8 +191,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -208,15 +208,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Click(FindElementByCss(".ui-menu-item"));
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
         }
 
         [TestMethod]
         public virtual void AutoCompleteParmGo()
         {
             br.Navigate().GoToUrl(SalesServiceUrl);
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("List Accounts For Sales Person");
 
             FindElementByCss(".value input[type='text']").SendKeys("Valdez");
@@ -225,8 +225,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Click(FindElementByCss(".ui-menu-item"));
 
-            ClickOK();
-            WaitForSingleQuery();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
 
             try
             {
@@ -244,13 +244,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void AutoCompleteParmDefault()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("Find Product");
 
             Assert.AreEqual("Adjustable Race", FindElementByCss(".value input[type='text']").GetAttribute("value"));
 
-            ClickOK();
-            WaitForSingleObject("Adjustable Race");
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "Adjustable Race");
         }
 
         [TestMethod]
@@ -269,8 +269,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var item = wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")));
             Assert.AreEqual("BB Ball Bearing", item.Text);
             Click(item);
-            ClickOK();
-            WaitForSingleObject("BB Ball Bearing");
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
     }
 

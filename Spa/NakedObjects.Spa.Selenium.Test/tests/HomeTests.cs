@@ -15,6 +15,28 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// </summary>
     public abstract class HomeTests : GeminiTest {
 
+        [TestMethod]
+        public void WaitForSingleHome()
+        {
+            WaitFor(Pane.Single, PaneType.Home, "Home");
+            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
+
+            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
+
+            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
+            Assert.AreEqual("Customers", menus[0].Text);
+            Assert.AreEqual("Orders", menus[1].Text);
+            Assert.AreEqual("Products", menus[2].Text);
+            Assert.AreEqual("Employees", menus[3].Text);
+            Assert.AreEqual("Sales", menus[4].Text);
+            Assert.AreEqual("Special Offers", menus[5].Text);
+            Assert.AreEqual("Contacts", menus[6].Text);
+            Assert.AreEqual("Vendors", menus[7].Text);
+            Assert.AreEqual("Purchase Orders", menus[8].Text);
+            Assert.AreEqual("Work Orders", menus[9].Text);
+            AssertFooterExists();
+        }
+
         #region Clicking on menus and opening/closing dialogs
         [TestMethod]
         public virtual void ClickOnVariousMenus() {
@@ -64,8 +86,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ZeroParamReturnsObject()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
-            ClickAction("Random Store");
-            WaitForSingleObject();
+            Click(GetObjectAction("Random Store"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
         }
 
         [TestMethod]
@@ -73,8 +95,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
-            ClickAction("Highest Value Orders");
-            WaitForSingleQuery();
+            Click(GetObjectAction("Highest Value Orders"));
+            WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
             wait.Until(d => d.FindElements(By.CssSelector(".reference")).Count == 20);
         }
 
@@ -83,7 +105,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
-            ClickAction("Throw Domain Exception");
+            Click(GetObjectAction("Throw Domain Exception"));
             var msg = wait.Until(d => d.FindElement(By.CssSelector(".error .message")));
             Assert.AreEqual("Foo", msg.Text);
         }
@@ -93,8 +115,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
-            ClickAction("Orders In Process");
-            WaitForSingleQuery();
+            Click(GetObjectAction("Orders In Process"));
+            WaitFor(Pane.Single, PaneType.Query, "Orders In Process");
             var rows = br.FindElements(By.CssSelector("td"));
             Assert.AreEqual(0, rows.Count);
         }
@@ -106,8 +128,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             FindElementByCss(".value  input").SendKeys("00022262");
-            ClickOK();
-            WaitForSingleObject();
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
         #endregion
     }

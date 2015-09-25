@@ -18,9 +18,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void QueryActionReturnsListView()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
-            //WaitForSingleObject();
-            ClickAction("Highest Value Orders");
-            WaitForSingleQuery();
+            Click(GetObjectAction("Highest Value Orders"));
+            WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
             //Test content of collection
             Assert.AreEqual("20-Objects", br.FindElement(By.CssSelector(".collection .summary .details")).Text);
             WaitForCss(".icon-table");
@@ -36,8 +35,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SwitchToTableViewAndBackToList()
         {
             br.Navigate().GoToUrl(SpecialOffersMenuUrl);
-            ClickAction("Current Special Offers");
-            WaitForSingleQuery();
+            Click(GetObjectAction("Current Special Offers"));
+            WaitFor(Pane.Single, PaneType.Query, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count == 7);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
@@ -61,22 +60,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
             //WaitForSingleObject();
-            ClickAction("Highest Value Orders");
-            WaitForSingleQuery();
+            Click(GetObjectAction("Highest Value Orders"));
+            WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
 
             // select item
             var row = wait.Until( dr => dr.FindElement(By.CssSelector("table .reference")));
             Assert.AreEqual("SO51131", row.Text);
             Click(row);
-            WaitForSingleObject("SO51131");
+            WaitFor(Pane.Single, PaneType.Object, "SO51131");
         }
 
         [TestMethod]
         public virtual void NavigateToItemFromTableView()
         {
             br.Navigate().GoToUrl(SpecialOffersMenuUrl);
-            ClickAction("Current Special Offers");
-            WaitForSingleQuery("Current Special Offers");
+            Click(GetObjectAction("Current Special Offers"));
+            WaitFor(Pane.Single, PaneType.Query, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count == 7);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
@@ -85,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr")).Count > 1);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             Click(row);
-            WaitForSingleObject("No Discount");
+            WaitFor(Pane.Single, PaneType.Object, "No Discount");
         }
         
         //TODO: Collection contributed Actions

@@ -20,7 +20,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void UnrecognisedUrlGoesToHome()
         {
             br.Navigate().GoToUrl(Url + "#/unrecognised");
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
 
@@ -29,7 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void Home()
         {
             br.Navigate().GoToUrl(Url + "#/home");
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void HomeWithMenu()
         {
             br.Navigate().GoToUrl(Url + "#/home?menu1=CustomerRepository");
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElement(By.CssSelector(".actions")));
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".action"));
 
@@ -120,10 +120,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void QueryZeroParameterAction()
         {
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             br.Navigate().GoToUrl(Url + "#/query?menu1=OrderRepository&action1=HighestValueOrders");
             wait.Until(d => d.FindElement(By.CssSelector(".query")));
-            WaitForSingleQuery();
+            WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
         }
         #endregion
 
@@ -133,63 +133,73 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitHomeHome()
         {
             br.Navigate().GoToUrl(Url + "#/home/home");
-            WaitForSplit(PaneType.Home, PaneType.Home, "Home", "Home");
+            WaitFor(Pane.Left, PaneType.Home, "Home");
+            WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
         [TestMethod]
         public virtual void SplitHomeObject()
         {
             br.Navigate().GoToUrl(Url + "#/home/object?object2=AdventureWorksModel.Store-555");
-            WaitForSplit(PaneType.Home, PaneType.Object, "Home", "Twin Cycles, AW00000555");
+            WaitFor(Pane.Left, PaneType.Home, "Home");
+            WaitFor(Pane.Right, PaneType.Object,  "Twin Cycles, AW00000555");
         }
 
-        [TestMethod, Ignore] //Stef -  not implemented yet
+        [TestMethod]
         public virtual void SplitHomeQuery()
         {
-            br.Navigate().GoToUrl(Url + "#/home/query?object1=AdventureWorksModel.Store-555&menu1=OrderRepository&action1=HighestValueOrders");
-            WaitForSplit(PaneType.Home, PaneType.Query, "Home", "Highest Value Orders");
+            br.Navigate().GoToUrl(Url + "#/home/query?&menu2=OrderRepository&action2=HighestValueOrders");
+            WaitFor(Pane.Left, PaneType.Home, "Home");
+            WaitFor(Pane.Right, PaneType.Query, "Highest Value Orders");
         }
 
         [TestMethod]
         public virtual void SplitObjectHome()
         {
             br.Navigate().GoToUrl(Url + "#/object/home?object1=AdventureWorksModel.Store-555");
-            WaitForSplit(PaneType.Object, PaneType.Home, "Twin Cycles, AW00000555", "Home");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
         [TestMethod]
         public virtual void SplitObjectObject()
         {
             br.Navigate().GoToUrl(Url + "#/object/object?object1=AdventureWorksModel.Store-555&object2=AdventureWorksModel.Store-359");
-            WaitForSplit(PaneType.Object, PaneType.Object, "Twin Cycles, AW00000555", "Mechanical Sports Center, AW00000359");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
         }
 
-        [TestMethod, Ignore] //Stef -  not implemented yet
+        [TestMethod]
         public virtual void SplitObjectQuery()
         {
-            br.Navigate().GoToUrl(Url + "#/object/query?object1=AdventureWorksModel.Store-555&menu1=OrderRepository&action1=HighestValueOrders");
-            WaitForSplit(PaneType.Object, PaneType.Query, "Twin Cycles, AW00000555", "Highest Value Orders");
+            br.Navigate().GoToUrl(Url + "#/object/query?object1=AdventureWorksModel.Store-555&menu2=OrderRepository&action2=HighestValueOrders");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Query,  "Highest Value Orders");
         }
 
         [TestMethod]
         public virtual void SplitQueryHome()
         {
             br.Navigate().GoToUrl(Url + "#/query/home?menu1=OrderRepository&action1=HighestValueOrders");
-            WaitForSplit(PaneType.Query, PaneType.Home, "Highest Value Orders", "Home");
+            WaitFor(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
-        [TestMethod, Ignore] //Stef -  not implemented yet
+        [TestMethod] 
         public virtual void SplitQueryObject()
         {
             br.Navigate().GoToUrl(Url + "#/query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-359");
-            WaitForSplit(PaneType.Query, PaneType.Object, "Highest Value Orders", "Mechanical Sports Center, AW00000359");
+            WaitFor(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitFor(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
         }
 
-        [TestMethod, Ignore] //Stef -  not implemented yet
+        [TestMethod]
         public virtual void SplitQueryQuery()
         {
             br.Navigate().GoToUrl(Url + "#/query/query?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
-            WaitForSplit(PaneType.Query, PaneType.Query, "Highest Value Orders", "Current Special Offers");
+
+            WaitFor(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitFor(Pane.Right, PaneType.Query, "Current Special Offers");
         }
         #endregion
 

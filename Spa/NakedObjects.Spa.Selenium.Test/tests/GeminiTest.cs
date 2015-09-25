@@ -19,45 +19,6 @@ using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    public class SafeWebDriverWait : IWait<IWebDriver> {
-        private readonly WebDriverWait wait;
-
-        public SafeWebDriverWait(IWebDriver driver, TimeSpan timeout) {
-            wait = new WebDriverWait(driver, timeout);
-        }
-
-        public void IgnoreExceptionTypes(params Type[] exceptionTypes) {
-            wait.IgnoreExceptionTypes(exceptionTypes);
-        }
-
-        public TResult Until<TResult>(Func<IWebDriver, TResult> condition) {
-            return wait.Until(d => {
-                try {
-                    return condition(d);
-                }
-                catch (NoSuchElementException) {}
-                return default(TResult);
-            });
-        }
-
-        public TimeSpan Timeout
-        {
-            get { return wait.Timeout; }
-            set { wait.Timeout = value; }
-        }
-
-        public TimeSpan PollingInterval
-        {
-            get { return wait.PollingInterval; }
-            set { wait.PollingInterval = value; }
-        }
-
-        public string Message
-        {
-            get { return wait.Message; }
-            set { wait.Message = value; }
-        }
-    }
 
     public abstract class GeminiTest {
         #region overhead
@@ -187,12 +148,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected virtual void RightClick(IWebElement element)
         {
-            throw new NotImplementedException();
-            //var webDriver = wait.Driver;
-            //ScrollTo(element);
-            //var loc = (ILocatable)element;
-            //var mouse = ((IHasInputDevices)webDriver).Mouse;
-            //mouse.ContextClick(loc.Coordinates);
+            
+            var webDriver = wait.Driver;
+            ScrollTo(element);
+            var loc = (ILocatable)element;
+            var mouse = ((IHasInputDevices)webDriver).Mouse;
+            mouse.ContextClick(loc.Coordinates);
         }
 
         protected virtual IWebElement WaitForCss(string cssSelector)
@@ -214,7 +175,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
-            WaitForSingleHome();
+            WaitFor(Pane.Single, PaneType.Home, "Home");
             ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
@@ -259,15 +220,46 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Resulting page view
-        protected virtual void WaitForSingleObject(string title = null)
+        protected enum Pane
         {
-            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .object .header .title")));
-            if (title != null)
+            Single,
+            Left,
+            Right
+        }
+
+        protected enum PaneType
+        {
+            Home,
+            Object,
+            Query
+        }
+
+        protected virtual void WaitFor(Pane pane, PaneType type, string title)
+        {
+            string selector = "";
+            switch (pane)
             {
-                Assert.AreEqual(title, titleEl.Text);
+                case Pane.Single:
+                    selector = ".single";
+                    break;
+                case Pane.Left:
+                    selector = "#pane1";
+                    break;
+                case Pane.Right:
+                    selector = "#pane2";
+                    break;
+                default:
+                    break;
             }
-            wait.Until(dr => dr.FindElement(By.CssSelector(".single .object .properties")));
-            Assert.AreEqual("Actions", FindElementByCss(".single .object .header .menu").Text);
+            selector += " ." + type.ToString().ToLower() + " .header .title";
+            wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
+            if (pane == Pane.Single)
+            {
+                AssertElementDoesNotExist(".split");
+            } else
+            {
+                AssertElementDoesNotExist(".single");
+            }
             AssertFooterExists();
         }
 
@@ -279,58 +271,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-forward")).Displayed);
         }
 
-        protected void WaitForSingleQuery(string title = null)
-        {
-            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .query .header .title")));
-            if (title != null)
-            {
-                Assert.AreEqual(title, titleEl.Text);
-            }
-            wait.Until(dr => dr.FindElement(By.CssSelector(".single .query .collection")));
-            Assert.AreEqual("Actions", FindElementByCss(".single .query .header .menu").Text);
-            AssertFooterExists();
-        }
-
         protected void AssertTopItemInListIs(string title)
         {
             string topItem = FindElementByCss(".collection tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
-        }
-
-        protected void WaitForSingleHome()
-        {
-            var titleEl = wait.Until(dr => dr.FindElement(By.CssSelector(".single .home .header .title")));
-            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
-            Assert.AreEqual("Home", titleEl.Text);
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
-
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
-            Assert.AreEqual("Customers", menus[0].Text);
-            Assert.AreEqual("Orders", menus[1].Text);
-            Assert.AreEqual("Products", menus[2].Text);
-            Assert.AreEqual("Employees", menus[3].Text);
-            Assert.AreEqual("Sales", menus[4].Text);
-            Assert.AreEqual("Special Offers", menus[5].Text);
-            Assert.AreEqual("Contacts", menus[6].Text);
-            Assert.AreEqual("Vendors", menus[7].Text);
-            Assert.AreEqual("Purchase Orders", menus[8].Text);
-            Assert.AreEqual("Work Orders", menus[9].Text);
-            AssertFooterExists();
-        }
-
-        protected void WaitForSplit(PaneType pane1Type, PaneType pane2Type,string title1 = null, string title2=null )
-        {
-            var pane1 = wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 ."+ pane1Type.ToString().ToLower())));
-            if (title1 != null)
-            {
-                Assert.AreEqual(title1, pane1.FindElement(By.CssSelector(".title")).Text);
-            }
-            var pane2 =wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 ." + pane2Type.ToString().ToLower())));
-            if (title2 != null)
-            {
-                Assert.AreEqual(title2, pane2.FindElement(By.CssSelector(".title")).Text);
-            }
         }
         #endregion
         protected void AssertElementExists(string cssSelector)
@@ -410,11 +355,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return GetObjectActions().Where(a => a.Text == actionName).Single();
         }
 
-        protected virtual void ClickAction(string name)
-        {
-            Click(GetObjectAction(name));
-        }
-
         protected IWebElement OpenActionDialog(string actionName)
         {
             Click(GetObjectAction(actionName));
@@ -427,10 +367,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return dialog;
         }
 
-        protected void ClickOK()
+        protected IWebElement OKButton()
         {
-            wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
-            Click(br.FindElement(By.CssSelector(".ok")));
+            return wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
         }
 
         protected void CancelDialog()
@@ -452,13 +391,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #endregion
-    }
 
-    public enum PaneType
-    {
-        Home = 1,
-        Object = 2,
-        Query = 3,
-        Recent = 4
+        #region ToolBar icons
+        protected IWebElement HomeIcon()
+        {
+            return FindElementByCss(".footer .icon-home");
+        }
+        #endregion
     }
 }
