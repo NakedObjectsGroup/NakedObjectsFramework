@@ -25,6 +25,8 @@ namespace NakedObjects.Web.Mvc.Controllers {
     public class AjaxControllerImpl : NakedObjectsController {
         public AjaxControllerImpl(INakedObjectsFramework nakedObjectsContext) : base(nakedObjectsContext) {}
 
+
+
         protected internal JsonpResult Jsonp(object data) {
             return Jsonp(data, null /* contentType */);
         }
@@ -88,16 +90,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual JsonResult ValidateParameter(string id, string value, string actionName, string parameterName) {
             INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
-
-            if (action == null && nakedObject.Spec.IsCollection) {
-                var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
-                var elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                if (elementSpecImmut != null) {
-                    var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut);
-                    action = elementSpec.GetCollectionContributedActions().SingleOrDefault(a => a.Id == actionName);
-                }
-            }
+            var action = GetActionSpec(actionName, nakedObject);
 
             bool isValid = false;
             string parmId = "";
@@ -126,6 +119,20 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
             ModelError error = !string.IsNullOrWhiteSpace(parmId) ?  ModelState[parmId].Errors.FirstOrDefault() : null;
             return Jsonp(error == null ? "" : error.ErrorMessage);
+        }
+
+        private IActionSpec GetActionSpec(string actionName, INakedObjectAdapter nakedObject) {
+            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+
+            if (action == null && nakedObject.Spec.IsCollection) {
+                var metamodel = NakedObjectsContext.MetamodelManager.Metamodel;
+                var elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+                if (elementSpecImmut != null) {
+                    var elementSpec = NakedObjectsContext.MetamodelManager.GetSpecification(elementSpecImmut);
+                    action = elementSpec.GetCollectionContributedActions().SingleOrDefault(a => a.Id == actionName);
+                }
+            }
+            return action;
         }
 
         private INakedObjectAdapter GetValue(string[] values, ISpecification featureSpec, ITypeSpec spec) {
@@ -188,7 +195,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual JsonResult GetActionChoices(string id, string actionName) {
             INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            IActionSpec action = GetActionSpec(actionName, nakedObject);
             IDictionary<string, string[][]> choices = new Dictionary<string, string[][]>();
             IDictionary<string, INakedObjectAdapter> otherValues = GetOtherValues(action);
 
@@ -254,7 +261,7 @@ namespace NakedObjects.Web.Mvc.Controllers {
 
         public virtual JsonResult GetActionCompletions(string id, string actionName, int parameterIndex, string autoCompleteParm) {
             INakedObjectAdapter nakedObject = NakedObjectsContext.GetNakedObjectFromId(id);
-            IActionSpec action = NakedObjectsContext.GetActions(nakedObject).SingleOrDefault(a => a.Id == actionName);
+            IActionSpec action = GetActionSpec(actionName, nakedObject);
             IList<object> completions = new List<object>();
 
             IActionParameterSpec p = action.Parameters[parameterIndex];
