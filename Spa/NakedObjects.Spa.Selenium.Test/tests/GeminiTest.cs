@@ -185,6 +185,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             element.Click();
         }
 
+        protected virtual void RightClick(IWebElement element)
+        {
+            throw new NotImplementedException();
+            //var webDriver = wait.Driver;
+            //ScrollTo(element);
+            //var loc = (ILocatable)element;
+            //var mouse = ((IHasInputDevices)webDriver).Mouse;
+            //mouse.ContextClick(loc.Coordinates);
+        }
+
         protected virtual IWebElement WaitForCss(string cssSelector)
         {
             wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
