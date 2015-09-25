@@ -60,7 +60,6 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 urlManager.setMenu(menuId, 1);
             }));
 
-
             it("sets the menu id in the search", () => {
                 expect(location.path()).toBe("/apath");
                 expect(location.search()).toEqual(search);
@@ -73,7 +72,6 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search[`menu${2}`] = menuId;
                 urlManager.setMenu(menuId, 2);
             }));
-
 
             it("sets the menu id in the search", () => {
                 expect(location.path()).toBe("/apath");
@@ -211,13 +209,11 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         describe("on pane 1 with split pane", () => {
             let search: any = { menu1: "menu1", menu2: "menu2" };
 
-
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(search, "menu1");
                 search.object1 = "dt1-id1";
                 location.path("/home/home");
                 location.search(search);
-
 
                 urlManager.setObject(obj1, 1);
             }));
@@ -239,7 +235,6 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/home");
                 location.search(search);
 
-
                 urlManager.setObject(obj2, 2);
             }));
 
@@ -260,7 +255,6 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/home/home");
                 location.search(search);
 
-
                 urlManager.setObject(obj2, 2);
             }));
 
@@ -270,10 +264,5 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 expect(location.search()).toEqual(search);
             });
         });
-
-     
-
     });
-
-
 })
