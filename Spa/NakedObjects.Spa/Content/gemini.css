@@ -460,6 +460,18 @@ th, td {
     content: "\e083";
 }
 
+.icon-swap:before {
+    content: "\e0a4";
+}
+
+.icon-full:before {
+    content: "\e011";
+}
+
+.icon-speech:before {
+    content: "\e036";
+}
+
 /*Buttons*/
 input[type=button],
 input[type=reset],
