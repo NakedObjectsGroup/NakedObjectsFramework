@@ -270,12 +270,10 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         const obj = new NakedObjects.DomainObjectRepresentation();
         const menu = new NakedObjects.MenuRepresentation();
 
-
         const action11 = new NakedObjects.ActionMember({}, obj, "11");
         const action12 = new NakedObjects.ActionMember({}, menu, "12");
         const action21 = new NakedObjects.ActionMember({}, obj, "21");
         const action22 = new NakedObjects.ActionMember({}, menu, "22");
-
 
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             spyOn(obj, "domainType").and.returnValue("dt");
@@ -373,6 +371,45 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             });
         });
 
+        describe("on pane 1 with single pane parent object and dvm", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const dvm = new NakedObjects.Angular.Gemini.DialogViewModel(); 
+            let search: any;
+
+            const p1 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const p2 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            p1.id = "pid1";
+            p1.value = "val1";
+            p1.type = "scalar";
+            p2.id = "pid2";
+            p2.value = "val2";
+            p2.type = "scalar";
+
+            dvm.parameters = [p1, p2];
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu1");
+                search.object1 = "dt-id";
+                search.action1 = "11";
+                search.parm1_pid1 = "val1";
+                search.parm1_pid2 = "val2";
+
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action11, 1, dvm);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
+
+
+
         describe("on pane 2 with single pane parent object", () => {
             const preSearch: any = { menu1: "menu1", menu2: "menu2" };
             let search: any;
@@ -461,6 +498,42 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             });
         });
 
+        describe("on pane 2 with single pane parent object and dvm", () => {
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const dvm = new NakedObjects.Angular.Gemini.DialogViewModel();
+            let search: any;
+
+            const p1 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const p2 = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            p1.id = "pid1";
+            p1.value = "val1";
+            p1.type = "scalar";
+            p2.id = "pid2";
+            p2.value = "val2";
+            p2.type = "scalar";
+
+            dvm.parameters = [p1, p2];
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                search = _.omit(preSearch, "menu2");
+                search.object2 = "dt-id";
+                search.action2 = "21";
+                search.parm2_pid1 = "val1";
+                search.parm2_pid2 = "val2";
+
+                location.path("/home");
+                location.search(preSearch);
+
+                urlManager.setQuery(action21, 2, dvm);
+            }));
+
+
+            it("sets the path, clears other pane settings and sets the object and action in the search", () => {
+                expect(location.path()).toBe("/home/query");
+                expect(location.search()).toEqual(search);
+            });
+        });
 
       
     });
