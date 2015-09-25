@@ -154,7 +154,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
 
-        [TestMethod, Ignore] //Passing locally; failing on server
+        [TestMethod]
         public virtual void ConditionalChoicesDefaults()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
@@ -174,7 +174,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
-        [TestMethod, Ignore] //Passing locally; failing on server
+        [TestMethod]
         public virtual void ConditionalChoicesChangeDefaults()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
