@@ -33,7 +33,7 @@ module NakedObjects.Angular.Gemini {
        
         getQuery: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
         getQueryFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
-        getLastActionFriendlyName : () => string;
+        getLastActionFriendlyName : (paneId : number) => string;
       
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
@@ -55,7 +55,7 @@ module NakedObjects.Angular.Gemini {
 
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;
            
-        setLastActionFriendlyName: (fn : string) => void;
+        setLastActionFriendlyName: (fn : string, paneId : number) => void;
         setQuery(paneId : number, listRepresentation: ListRepresentation);
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
@@ -73,7 +73,7 @@ module NakedObjects.Angular.Gemini {
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
         const currentCollections:  ListRepresentation[] = []; // per pane 
-        let lastActionFriendlyName: string = "";
+        let lastActionFriendlyName: string[] = [];
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
@@ -245,7 +245,7 @@ module NakedObjects.Angular.Gemini {
                 then((menu: MenuRepresentation) => {
                     const action = menu.actionMember(actionId);               
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
-                    lastActionFriendlyName = action.extensions().friendlyName;
+                    lastActionFriendlyName[paneId] = action.extensions().friendlyName;
                     return repLoader.invoke(action, valueParms);
                 }).
                 then((result : ActionResultRepresentation) => handleResult(paneId, result) );
@@ -265,7 +265,7 @@ module NakedObjects.Angular.Gemini {
                 then((object: DomainObjectRepresentation) => {
                     const action = object.actionMember(actionId);
                     const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
-                    lastActionFriendlyName = action.extensions().friendlyName;
+                    lastActionFriendlyName[paneId] = action.extensions().friendlyName;
 
                     return repLoader.invoke(action, valueParms);
                 }).
@@ -300,11 +300,12 @@ module NakedObjects.Angular.Gemini {
 
         context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
 
-        context.getLastActionFriendlyName = () => {
-            return lastActionFriendlyName;
+        context.getLastActionFriendlyName = (paneId : number) => {
+            return lastActionFriendlyName[paneId] || "";
         };
-        context.setLastActionFriendlyName = (fn : string) => {
-            lastActionFriendlyName = fn;
+
+        context.setLastActionFriendlyName = (fn : string, paneId : number) => {
+            lastActionFriendlyName[paneId] = fn;
         };
 
         // from rh
@@ -369,7 +370,7 @@ module NakedObjects.Angular.Gemini {
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
                 context.setQuery(paneId, resultList);
-                context.setLastActionFriendlyName(action.extensions().friendlyName);
+                context.setLastActionFriendlyName(action.extensions().friendlyName, paneId);
                 urlManager.setQuery(action, paneId,  dvm);
             }
         };
