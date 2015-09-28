@@ -723,39 +723,39 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         });
 
-        describe("setCollectionState", () => {
+        //describe("setQueryState", () => {
 
-            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
-            const link = new NakedObjects.Link({});
+        //    const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+        //    const link = new NakedObjects.Link({});
 
-            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
-                location = $location;
+        //    beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+        //        location = $location;
 
-                spyOn(link, "href").and.returnValue("objects/dt/id");
+        //        spyOn(link, "href").and.returnValue("objects/dt/id");
 
-                location.path("/home");
-                location.search(preSearch);
-            }));
+        //        location.path("/home");
+        //        location.search(preSearch);
+        //    }));
 
-            describe("on pane 1", () => {
+        //    describe("on pane 1", () => {
 
-                let search: any;
+        //        let search: any;
 
-                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
-                    search = _.omit(preSearch, "menu1");
-                    search.object1 = "dt-id";
+        //        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+        //            search = _.omit(preSearch, "menu1");
+        //            search.object1 = "dt-id";
 
-                    urlManager.setCollectionState(link, 1);
-                }));
+        //            urlManager.setQueryState(link, 1);
+        //        }));
 
-                it("sets the property id in the search", () => {
-                    expect(location.path()).toBe("/object");
-                    expect(location.search()).toEqual(search);
-                });
-            });
+        //        it("sets the property id in the search", () => {
+        //            expect(location.path()).toBe("/object");
+        //            expect(location.search()).toEqual(search);
+        //        });
+        //    });
 
 
-        });
+        //});
 
 
 

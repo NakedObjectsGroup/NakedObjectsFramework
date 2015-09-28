@@ -32,8 +32,8 @@ module NakedObjects.Angular.Gemini {
 
         toggleObjectMenu(paneId: number): void;
 
-        setCollectionState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
-        setCollectionState(paneId: number, collection: ListRepresentation, state: CollectionViewState): void;
+        setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
+        setQueryState(paneId: number, state: CollectionViewState): void;
 
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number);
@@ -229,14 +229,16 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setCollectionState = (paneId: number, collectionObject: any, state: CollectionViewState) => {
+        helper.setCollectionMemberState = (paneId: number, collectionObject: CollectionMember, state: CollectionViewState) => {
             const collectionPrefix = `${collection}${paneId}`;
-            if (collectionObject instanceof CollectionMember) {
-                setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
-            } else {
-                setSearch(collectionPrefix, CollectionViewState[state], false);
-            }
+            setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
         };
+
+        helper.setQueryState = (paneId: number, state: CollectionViewState) => {
+            const collectionPrefix = `${collection}${paneId}`;
+            setSearch(collectionPrefix, CollectionViewState[state], false);
+        };
+
 
         helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
             setSearch(edit + paneId, editFlag.toString(), false);

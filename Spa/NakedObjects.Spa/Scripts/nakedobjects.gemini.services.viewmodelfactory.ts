@@ -410,18 +410,19 @@ module NakedObjects.Angular.Gemini{
       
         viewModelFactory.collectionViewModel = (collection: any, state: CollectionViewState, paneId : number) => {
             let collectionVm: CollectionViewModel = null;
+            let setState: (state: CollectionViewState) => void;
 
             if (collection instanceof CollectionMember) {
                 collectionVm = create(collection, state);
+                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setCollectionMemberState, paneId, collection);
             }
 
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList(collection, state);
+                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setQueryState, paneId);
             }
 
             if (collectionVm) {
-                const setState  =  <(state : CollectionViewState) => void> _.partial(urlManager.setCollectionState, paneId, collection);
-
                 collectionVm.doSummary = () => setState(CollectionViewState.Summary);
                 collectionVm.doList = () => setState(CollectionViewState.List);
                 collectionVm.doTable = () => setState(CollectionViewState.Table);            
