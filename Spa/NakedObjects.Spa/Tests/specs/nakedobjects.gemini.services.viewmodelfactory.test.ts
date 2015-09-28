@@ -92,7 +92,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         describe("from populated rep", () => {
             const link = new NakedObjects.Link(rawLink);
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                resultVm = viewModelFactory.itemViewModel(link);
+                resultVm = viewModelFactory.itemViewModel(link, 1);
                 setItem = spyOn(urlManager, "setItem");
             }));
 
