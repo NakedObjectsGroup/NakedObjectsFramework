@@ -72,7 +72,7 @@
     </Reference>
     <Reference Include="NakedObjects.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.8.0.0-alpha\lib\net40\NakedObjects.Attributes.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.2.0\lib\net40\NakedObjects.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,7 +84,7 @@
     </Reference>
     <Reference Include="NakedObjects.Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.8.0.0-alpha\lib\net40\NakedObjects.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.2.0\lib\net40\NakedObjects.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Metamodel">
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-alpha\lib\net451\NakedObjects.Metamodel.dll</HintPath>
@@ -95,7 +95,7 @@
     </Reference>
     <Reference Include="NakedObjects.PMResources, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.8.0.0-alpha\lib\net40\NakedObjects.PMResources.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.2.0\lib\net40\NakedObjects.PMResources.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Reflector">
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-alpha\lib\net451\NakedObjects.Reflector.dll</HintPath>
@@ -106,7 +106,7 @@
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.8.0.0-alpha\lib\net40\NakedObjects.Types.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.ProgrammingModel.7.2.0\lib\net40\NakedObjects.Types.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Unity">
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-alpha\lib\net451\NakedObjects.Unity.dll</HintPath>
