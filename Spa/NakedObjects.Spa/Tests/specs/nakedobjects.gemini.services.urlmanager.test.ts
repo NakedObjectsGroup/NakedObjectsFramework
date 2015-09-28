@@ -723,41 +723,259 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         });
 
-        //describe("setQueryState", () => {
+        describe("setQueryState", () => {
 
-        //    const preSearch: any = { menu1: "menu1", menu2: "menu2" };
-        //    const link = new NakedObjects.Link({});
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+          
 
-        //    beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
-        //        location = $location;
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;   
 
-        //        spyOn(link, "href").and.returnValue("objects/dt/id");
+                location.path("/object");
+                location.search(preSearch);
+            }));
 
-        //        location.path("/home");
-        //        location.search(preSearch);
-        //    }));
+            describe("summary on pane 1", () => {
 
-        //    describe("on pane 1", () => {
+                let search: any;
 
-        //        let search: any;
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
 
-        //        beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
-        //            search = _.omit(preSearch, "menu1");
-        //            search.object1 = "dt-id";
+                    search = _.clone(preSearch);
 
-        //            urlManager.setQueryState(link, 1);
-        //        }));
+                    search.collection1 = "Summary";
 
-        //        it("sets the property id in the search", () => {
-        //            expect(location.path()).toBe("/object");
-        //            expect(location.search()).toEqual(search);
-        //        });
-        //    });
+                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                }));
 
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
 
-        //});
+            describe("list on pane 1", () => {
 
+                let search: any;
 
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
 
+                    search = _.clone(preSearch);
+
+                    search.collection1 = "List";
+
+                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("table on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection1 = "Table";
+
+                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("summary on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2 = "Summary";
+
+                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("list on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2 = "List";
+
+                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("table on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2 = "Table";
+
+                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+        });
+
+        describe("setCollectionMemberState", () => {
+
+            const preSearch: any = { menu1: "menu1", menu2: "menu2" };
+            const collectionMember = new NakedObjects.CollectionMember({}, {}, "aName");
+
+            beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
+                location = $location;
+
+                location.path("/object");
+                location.search(preSearch);
+            }));
+
+            describe("summary on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection1_aName = "Summary";
+
+                    urlManager.setCollectionMemberState(1, collectionMember,  NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("list on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection1_aName = "List";
+
+                    urlManager.setCollectionMemberState(1, collectionMember, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("table on pane 1", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection1_aName = "Table";
+
+                    urlManager.setCollectionMemberState(1, collectionMember, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("summary on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2_aName = "Summary";
+
+                    urlManager.setCollectionMemberState(2, collectionMember, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("list on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2_aName = "List";
+
+                    urlManager.setCollectionMemberState(2, collectionMember, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+            describe("table on pane 2", () => {
+
+                let search: any;
+
+                beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
+
+                    search = _.clone(preSearch);
+
+                    search.collection2_aName = "Table";
+
+                    urlManager.setCollectionMemberState(2, collectionMember, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                }));
+
+                it("sets the collection state in the search", () => {
+                    expect(location.path()).toBe("/object");
+                    expect(location.search()).toEqual(search);
+                });
+            });
+
+        });
     });
 })
