@@ -22,7 +22,7 @@ module NakedObjects.Angular.Gemini{
 
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
-        itemViewModel(linkRep: Link): ItemViewModel;     
+        itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
         dialogViewModel(actionRep: ActionMember, paneId : number): DialogViewModel;
 
@@ -30,7 +30,7 @@ module NakedObjects.Angular.Gemini{
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
         parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string): PropertyViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, paneId): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
@@ -38,11 +38,19 @@ module NakedObjects.Angular.Gemini{
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
     }
 
-    app.service('viewModelFactory', function ($q: ng.IQService, $location: ng.ILocationService, $filter: ng.IFilterService, repLoader: IRepLoader, color: IColor, context: IContext, mask: IMask, $cacheFactory: ng.ICacheFactoryService, urlManager: IUrlManager, navigation: INavigation ) {
+    app.service('viewModelFactory', function ($q: ng.IQService,
+        $location: ng.ILocationService,
+        $filter: ng.IFilterService,
+        $cacheFactory: ng.ICacheFactoryService,
+        repLoader: IRepLoader,
+        color: IColor,
+        context: IContext,
+        mask: IMask,    
+        urlManager: IUrlManager,
+        navigation: INavigation,
+        clickHandler : IClickHandler) {
 
         var viewModelFactory = <IViewModelFactory>this;
-
-        function pane (right?: boolean) { return  right ? 2 : 1;}
         
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
@@ -60,11 +68,11 @@ module NakedObjects.Angular.Gemini{
             return linkViewModel;
         };
    
-        viewModelFactory.itemViewModel = (linkRep: Link) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, paneId : number) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.title = linkRep.title();
             itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = (right? : boolean) => urlManager.setItem(linkRep, pane(right));        
+            itemViewModel.doClick = (right? : boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));        
             return itemViewModel;
         };
        
@@ -245,7 +253,7 @@ module NakedObjects.Angular.Gemini{
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) : (right?: boolean) => context.invokeAction(actionRep, pane(right));
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) : (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
 
             return actionViewModel;
         };
@@ -259,12 +267,12 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
             dialogViewModel.doClose = () => urlManager.closeDialog(paneId);
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, pane(right), dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
 
             return dialogViewModel;
         };
 
-        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string) => {
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, paneId : number) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
@@ -276,7 +284,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
 
             propertyViewModel.doClick = (right? : boolean) => {
-                urlManager.setProperty(propertyRep, pane(right));
+                urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
             }
 
             if (propertyRep.attachmentLink() != null) {
@@ -354,7 +362,7 @@ module NakedObjects.Angular.Gemini{
 
             if (populateItems) {
                 return _.map(links, link => {
-                    const ivm = viewModelFactory.itemViewModel(link);
+                    const ivm = viewModelFactory.itemViewModel(link, cvm.onPaneId);
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
@@ -367,13 +375,15 @@ module NakedObjects.Angular.Gemini{
                     return ivm;
                 });
             } else {
-                return _.map(links, link => viewModelFactory.itemViewModel(link));
+                return _.map(links, link => viewModelFactory.itemViewModel(link, cvm.onPaneId));
             }
         }
 
-        function create(collectionRep: CollectionMember, state: CollectionViewState) {
+        function create(collectionRep: CollectionMember, state: CollectionViewState, paneId : number) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
+
+            collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.title = collectionRep.extensions().friendlyName;
             collectionViewModel.size = links.length;
@@ -396,9 +406,11 @@ module NakedObjects.Angular.Gemini{
             return collectionViewModel;
         }
        
-        function createFromList(listRep: ListRepresentation, state: CollectionViewState) {
+        function createFromList(listRep: ListRepresentation, state: CollectionViewState, paneId : number) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
+
+            collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
@@ -413,16 +425,18 @@ module NakedObjects.Angular.Gemini{
             let setState: (state: CollectionViewState) => void;
 
             if (collection instanceof CollectionMember) {
-                collectionVm = create(collection, state);
+                collectionVm = create(collection, state, paneId);
                 setState = <(state: CollectionViewState) => void> _.partial(urlManager.setCollectionMemberState, paneId, collection);
             }
 
             if (collection instanceof ListRepresentation) {
-                collectionVm = createFromList(collection, state);
+                collectionVm = createFromList(collection, state, paneId);
                 setState = <(state: CollectionViewState) => void> _.partial(urlManager.setQueryState, paneId);
             }
 
             if (collectionVm) {
+                
+
                 collectionVm.doSummary = () => setState(CollectionViewState.Summary);
                 collectionVm.doList = () => setState(CollectionViewState.List);
                 collectionVm.doTable = () => setState(CollectionViewState.Table);            
@@ -496,7 +510,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.message = "";
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
-            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id));
+            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()], paneId ));
 
             objectViewModel.toggleActionMenu = () => {
@@ -530,7 +544,7 @@ module NakedObjects.Angular.Gemini{
             tvm.footerTemplate = footerTemplate;
 
             tvm.goHome = (right? : boolean) => {
-                urlManager.setHome(pane(right));
+                urlManager.setHome(clickHandler.pane(1, right));
             }
 
             tvm.goBack = () => {

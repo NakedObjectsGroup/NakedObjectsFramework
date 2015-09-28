@@ -104,6 +104,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.routedata.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.context.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.handlers.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.clickhandler.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.navigation.browser.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.urlmanager.ts" />
@@ -145,6 +146,7 @@
     <Content Include="Scripts\nakedobjects.gemini.controllers.js" />
     <Content Include="Scripts\nakedobjects.gemini.directives.js" />
     <Content Include="Scripts\nakedobjects.gemini.routedata.js" />
+    <Content Include="Scripts\nakedobjects.gemini.services.clickhandler.js" />
     <Content Include="Scripts\nakedobjects.gemini.services.context.js" />
     <Content Include="Scripts\nakedobjects.gemini.services.handlers.js" />
     <Content Include="Scripts\nakedobjects.gemini.services.navigation.browser.js" />

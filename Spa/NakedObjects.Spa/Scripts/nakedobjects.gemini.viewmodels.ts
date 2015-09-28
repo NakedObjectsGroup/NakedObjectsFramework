@@ -220,6 +220,7 @@ module NakedObjects.Angular.Gemini {
         color: string; 
         items: ItemViewModel[];
         header: string[];
+        onPaneId: number;
 
         doSummary(): void { }
         doTable(): void { }
