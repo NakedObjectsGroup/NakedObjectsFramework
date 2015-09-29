@@ -28,6 +28,7 @@ using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
+
     public class CustomMenuItem : IMenuItemImmutable {
         public string Controller { get; set; }
         public string Name { get; set; }
@@ -63,6 +64,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 IdHelper.GetFieldContainerId(nakedObject));
         }
 
+        [Obsolete()]
         internal static MvcHtmlString Service(this HtmlHelper html, object service) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return BuildMenuContainer(html.ObjectActions(nakedObject, false),
@@ -296,7 +298,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectAdapter collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
+            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnQueryable(collectionNakedObject.Object).ToString() : "";
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
@@ -705,15 +707,16 @@ namespace NakedObjects.Web.Mvc.Html {
             return new Tuple<bool, string>(allActions.Count(a => a.Name == action.Name) > 1, MvcUi.DuplicateAction);
         }
 
+        [Obsolete]
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObjectAdapter nakedObject, bool isEdit) {
             IEnumerable<IActionSpec> allActions = html.Framework().GetTopLevelActions(nakedObject).ToList();
-
-            return allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
-                new {id = html.Framework().GetObjectId(nakedObject)},
-                isEdit,
-                html.IsDuplicate(allActions, action))).ToList();
+           return allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
+                 new { id = html.Framework().GetObjectId(nakedObject) },
+                 isEdit,
+                 html.IsDuplicate(allActions, action))).ToList();
         }
 
+        [Obsolete]
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObjectAdapter nakedObject, bool isEdit, params CustomMenuItem[] menuItems) {
             List<ElementDescriptor> actions = html.ObjectActions(nakedObject, isEdit).ToList();
 
@@ -730,7 +733,8 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return actions;
         }
-
+        
+        [Obsolete]
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, bool isEdit, params CustomMenuItem[] menuItems) {
             return menuItems.OrderBy(x => x.MemberOrder).Select(item => html.ObjectActionAsElementDescriptor(item, false)).ToList();
         }

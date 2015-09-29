@@ -79,7 +79,7 @@ namespace NakedObjects.Web.Mvc.Html {
             IActionSpec targetAction,
             string propertyName,
             IEnumerable collection) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) {Filter = x => x.Id == propertyName};
+            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(contextObject), contextAction) { Filter = x => x.Id == propertyName };
 
             return ParameterList(contextAction, targetObject, targetAction, propertyName, collection, html, actionContext);
         }
@@ -105,7 +105,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static MvcHtmlString ParameterListWith(this HtmlHelper html, object context, IActionSpec action, string parameterName) {
-            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) {Filter = x => x.Id == parameterName};
+            var actionContext = new ActionContext(false, html.Framework().GetNakedObject(context), action) { Filter = x => x.Id == parameterName };
             return html.ParameterList(actionContext);
         }
 
@@ -175,66 +175,36 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #endregion
 
-        #region menu
+        #region menu -  ALL OBSOLETE
 
-        /// <summary>
-        ///     Create menu from actions of domainObject. (Just delegates to MenuExtenions#ObjectMenu)
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject) {
-            return MenuExtensions.ObjectMenu(html, domainObject);
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     Create menu from menuItems parameter
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString Menu(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(false, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.MakeId(name, IdHelper.ActionContainerName),
-                name + " " + MvcUi.Actions);
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     Create menu from actions of domainObject
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        ///     Create menu from menuItems parameter
-        /// </summary>
+        [Obsolete("Use methods defined on MenuExtensions")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(true, menuItems),
-                IdHelper.MenuContainerName,
-                IdHelper.MakeId(name, IdHelper.ActionContainerName),
-                name + " " + MvcUi.Actions);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -513,7 +483,7 @@ namespace NakedObjects.Web.Mvc.Html {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(model);
             IActionSpec action = html.GetObjectAndContributedActions(nakedObject).SingleOrDefault(a => a.Id == id);
             ValidateParamValues(action, paramValues);
-            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(nakedObject, action) {ParameterValues = new RouteValueDictionary(paramValues)});
+            return action == null ? MvcHtmlString.Create("") : html.ObjectAction(new ActionContext(nakedObject, action) { ParameterValues = new RouteValueDictionary(paramValues) });
         }
 
         private static void ValidateParamValues(IActionSpec action, object paramValues) {
