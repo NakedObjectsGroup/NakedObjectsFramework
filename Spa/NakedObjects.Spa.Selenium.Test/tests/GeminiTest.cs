@@ -321,10 +321,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected IWebElement GetSaveButton()
         {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
-            var save = br.FindElements(By.CssSelector(".header .action"))[0];
-            Assert.AreEqual("Save", save.Text);
-            return save;
+            wait.Until(d => br.FindElements(By.CssSelector(".header .action")).First().Text == "Save");
+            return br.FindElements(By.CssSelector(".header .action")).First();
         }
 
         protected IWebElement GetCancelEditButton()
