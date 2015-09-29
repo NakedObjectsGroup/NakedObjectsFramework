@@ -311,18 +311,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsFalse(title.StartsWith("Editing"));
         }
 
-        protected IWebElement GetEditButton()
-        {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 1);
-            var edit = br.FindElement(By.CssSelector(".header .action"));
-            Assert.AreEqual("Edit", edit.Text);
-            return edit;
+        protected IWebElement GetButton(string text) {
+            wait.Until(d => br.FindElements(By.CssSelector(".header .action")).Any(e => e.Text == text));
+            return br.FindElements(By.CssSelector(".header .action")).Single(e => e.Text == text);
         }
 
-        protected IWebElement GetSaveButton()
-        {
-            wait.Until(d => br.FindElements(By.CssSelector(".header .action")).First().Text == "Save");
-            return br.FindElements(By.CssSelector(".header .action")).First();
+        protected IWebElement GetEditButton() {
+            return GetButton("Edit");
+        }
+
+        protected IWebElement GetSaveButton() {
+            return GetButton("Save");
         }
 
         protected IWebElement GetCancelEditButton()
