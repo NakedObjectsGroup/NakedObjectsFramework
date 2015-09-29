@@ -31,7 +31,7 @@ module NakedObjects.Angular.Gemini {
             return right ? otherPane : currentPane;
         }
 
-        clickHandler.pane = leftRightClickHandler;
+        clickHandler.pane = sameOtherClickHandler;
 
     });
 }

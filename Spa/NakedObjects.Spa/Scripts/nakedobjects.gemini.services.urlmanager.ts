@@ -41,6 +41,9 @@ module NakedObjects.Angular.Gemini {
         pushUrlState(paneId: number): void;
         clearUrlState(paneId: number): void;
         popUrlState(onPaneId: number): void;
+
+        swapPanes(): void;
+        singlePane(paneId : number) : void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -288,6 +291,53 @@ module NakedObjects.Angular.Gemini {
         helper.clearUrlState = (paneId: number) => {
             capturedPanes[paneId] = null;
         }
+
+
+        function swapSearchIds(search: any) {
+            return (<any>_).mapKeys(search,
+                (v, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
+        }
+
+
+        helper.swapPanes = () => {
+            const path = $location.path();
+            const segments = path.split("/");
+            const oldPane1 = segments[1];
+            const oldPane2 = segments[2] || home;
+            const newPath = `/${oldPane2}/${oldPane1}`;
+            const search = swapSearchIds($location.search());
+
+            $location.path(newPath).search(search);
+        } 
+
+        helper.singlePane = (paneId: number) => {
+
+            if (!singlePane()) {
+           
+                const paneToKeepId = paneId;
+                const paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
+
+                const path = $location.path();
+                const segments = path.split("/");
+                const paneToKeep = segments[paneToKeepId];            
+                const newPath = `/${paneToKeep}`;
+
+                let search = $location.search();
+
+                if (paneToKeepId === 1) {
+                    // just remove second pane
+                    search = clearPane(search, paneToRemoveId);
+                }
+
+                if (paneToKeepId === 2) {
+                    // swap pane 2 to pane 1 then remove 2
+                    search = swapSearchIds(search);
+                    search = clearPane(search, 2);
+                }
+
+                $location.path(newPath).search(search);
+            }
+        } 
     });
 
 }

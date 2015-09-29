@@ -282,5 +282,7 @@ module NakedObjects.Angular.Gemini {
         goHome: (right? : boolean) => void;
         goBack: () => void;
         goForward: () => void;
+        swapPanes: () => void;
+        singlePane: (right?: boolean) => void;
     }
 }

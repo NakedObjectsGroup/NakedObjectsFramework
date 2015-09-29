@@ -555,6 +555,14 @@ module NakedObjects.Angular.Gemini{
                 navigation.forward();
             };
 
+            tvm.swapPanes = () => {
+                urlManager.swapPanes();
+            };
+
+            tvm.singlePane = (right?: boolean) => {
+                urlManager.singlePane(clickHandler.pane(1, right));
+            };
+
             return tvm;
         }
 
