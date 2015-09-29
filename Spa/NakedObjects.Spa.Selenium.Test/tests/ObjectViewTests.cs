@@ -46,6 +46,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
+
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 6);
+
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
