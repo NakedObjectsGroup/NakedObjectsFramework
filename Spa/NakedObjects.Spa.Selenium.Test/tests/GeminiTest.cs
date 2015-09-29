@@ -296,6 +296,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region Editing & Saving
         protected void EditObject()
         {
+            // wait unitil object is actually displayed 
+            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count > 0);
+
             Click(GetEditButton());
             GetSaveButton();
             GetCancelEditButton();
