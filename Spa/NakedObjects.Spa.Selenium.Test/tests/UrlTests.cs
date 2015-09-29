@@ -63,15 +63,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         private void AssertObjectElementsPresent()
         {
+            wait.Until(d => d.FindElement(By.CssSelector(".single")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".view")));
+            wait.Until(d => d.FindElement(By.CssSelector(".header")));
+            wait.Until(d => d.FindElement(By.CssSelector(".menu")).Text == "Actions");
+            wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
+            wait.Until(d => d.FindElement(By.CssSelector(".collections")));
+
             Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".single")));
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".object")));
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".view")));
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".header")));
-            var menu = br.FindElement(By.CssSelector(".menu"));
-            Assert.AreEqual("Actions", menu.Text);
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".collections")));
+
         }
 
         [TestMethod]
