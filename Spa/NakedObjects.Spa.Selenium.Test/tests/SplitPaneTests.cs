@@ -130,8 +130,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Sandra Altamirano, Owner", reference.Text);
             Click(reference);
 
-            WaitFor(Pane.Left, PaneType.Object, "Sandra Altamirano, Owner");
-            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            WaitFor(Pane.Right, PaneType.Object, "Sandra Altamirano, Owner");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         }
 
         [TestMethod]
@@ -145,8 +145,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Sandra Altamirano, Owner", reference.Text);
             RightClick(reference);
 
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
-            WaitFor(Pane.Right, PaneType.Object, "Sandra Altamirano, Owner");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            WaitFor(Pane.Left, PaneType.Object, "Sandra Altamirano, Owner");
         }
 
         [TestMethod]
