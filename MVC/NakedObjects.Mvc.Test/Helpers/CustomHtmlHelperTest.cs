@@ -985,40 +985,40 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestIntView");
         }
 
-        //[Test]
-        //public void MenuWithCustomItems() {
-        //    CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu(TestClass,
-        //        new CustomMenuItem {
-        //            Controller = "ControllerName",
-        //            Action = "ActionName",
-        //            Name = "Action Label",
-        //            RouteValues = new {id = "anId"}
-        //        },
-        //        new CustomMenuItem {
-        //            Controller = "ControllerName",
-        //            Action = "ActionName1",
-        //            MemberOrder = 5,
-        //        }
-        //        ).ToString(),
-        //        "MenuWithCustomItems");
-        //}
+        [Test]
+        public void MenuWithCustomItems() {
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu(TestClass,
+                new CustomMenuItem {
+                    Controller = "ControllerName",
+                    Action = "ActionName",
+                    Name = "Action Label",
+                    RouteValues = new {id = "anId"}
+                },
+                new CustomMenuItem {
+                    Controller = "ControllerName",
+                    Action = "ActionName1",
+                    MemberOrder = 5,
+                }
+                ).ToString(),
+                "MenuWithCustomItems");
+        }
 
-        //[Test]
-        //public void MenuWithOnlyCustomItems() {
-        //    CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu("Test Menu", new CustomMenuItem {
-        //        Controller = "ControllerName",
-        //        Action = "ActionName",
-        //        Name = "Action Label",
-        //        RouteValues = new {id = "anId"}
-        //    },
-        //        new CustomMenuItem {
-        //            Controller = "ControllerName",
-        //            Action = "ActionName1",
-        //            MemberOrder = 5,
-        //        }
-        //        ).ToString(),
-        //        "MenuWithOnlyCustomItems");
-        //}
+        [Test]
+        public void MenuWithOnlyCustomItems() {
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Menu("Test Menu", new CustomMenuItem {
+                Controller = "ControllerName",
+                Action = "ActionName",
+                Name = "Action Label",
+                RouteValues = new {id = "anId"}
+            },
+                new CustomMenuItem {
+                    Controller = "ControllerName",
+                    Action = "ActionName1",
+                    MemberOrder = 5,
+                }
+                ).ToString(),
+                "MenuWithOnlyCustomItems");
+        }
 
         [Test]
         public void NameFourParm() {
@@ -1912,24 +1912,24 @@ namespace MvcTestApp.Tests.Helpers {
                 "TestRefView");
         }
 
-        [Test, Ignore] //TODO: When transition to Menus complete, replace with test of adding CustomMenuItems to a menu
+        [Test] //TODO: When transition to Menus complete, replace with test of adding CustomMenuItems to a menu
         public void ServiceWithCustomItems() {
-            //object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
+            object ts = GetTestService("Custom Helper Test Classes").NakedObject.Object;
 
-            //CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Service(ts,
-            //    new CustomMenuItem {
-            //        Controller = "ControllerName",
-            //        Action = "ActionName",
-            //        Name = "Action Label",
-            //        RouteValues = new {id = "anId"}
-            //    },
-            //    new CustomMenuItem {
-            //        Controller = "ControllerName",
-            //        Action = "ActionName1",
-            //        MemberOrder = 5,
-            //    }
-            //    ).ToString(),
-            //    "ServiceWithCustomItems");
+            CustomHelperTest(x => x.GetHtmlHelper<CustomHelperTestClass>().Service(ts,
+                new CustomMenuItem {
+                    Controller = "ControllerName",
+                    Action = "ActionName",
+                    Name = "Action Label",
+                    RouteValues = new {id = "anId"}
+                },
+                new CustomMenuItem {
+                    Controller = "ControllerName",
+                    Action = "ActionName1",
+                    MemberOrder = 5,
+                }
+                ).ToString(),
+                "ServiceWithCustomItems");
         }
 
         [Test]

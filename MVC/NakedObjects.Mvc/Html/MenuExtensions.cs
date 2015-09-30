@@ -43,24 +43,6 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         /// <summary>
-        ///  Menu (of collection-contributed actions) on a queryably is constructed differently than for an object because there is
-        ///  not an explicit Spec (with a menu) for each Queryable(of DomainType).
-        /// </summary>
-        internal static MvcHtmlString MenuOnQueryable(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            IEnumerable<IActionSpec> allActions = html.Framework().GetTopLevelActions(nakedObject).Where(a => a.IsVisible(nakedObject)).ToList();
-            var renderedActions = allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
-               new { id = html.Framework().GetObjectId(nakedObject) },
-               true,
-               html.IsDuplicate(allActions, action))).ToList();
-            return CommonHtmlHelper.BuildMenuContainer(
-                renderedActions,
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
-        }
-
-        /// <summary>
         /// Create main menus for all menus in ViewData
         /// </summary>
         /// <param name="html"></param>
@@ -177,7 +159,7 @@ namespace NakedObjects.Web.Mvc.Html {
             }
             else if (item is IMenu) {
                 descriptor = SubMenuAsElementDescriptor(html, item as IMenuImmutable, nakedObject, isEdit);
-            } 
+            }
             else if (item is CustomMenuItem) {
                 descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
             }

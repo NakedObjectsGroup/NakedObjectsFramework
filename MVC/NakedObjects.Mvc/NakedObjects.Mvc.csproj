@@ -209,6 +209,7 @@
     <Compile Include="Html\MenuExtensions.cs" />
     <Compile Include="Html\ObjectExtensions.cs" />
     <Compile Include="Html\PropertyExtensions.cs" />
+    <Compile Include="Html\ServiceExtensions.cs" />
     <Compile Include="Models\ActionResultModel.cs" />
     <Compile Include="Models\PropertyViewModel.cs" />
     <Compile Include="Models\FindViewModel.cs" />
