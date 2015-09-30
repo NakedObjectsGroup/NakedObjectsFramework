@@ -296,7 +296,7 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectAdapter collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnTransient(collectionNakedObject.Object).ToString() : "";
+            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnQueryable(collectionNakedObject.Object).ToString() : "";
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
@@ -710,6 +710,15 @@ namespace NakedObjects.Web.Mvc.Html {
 
             return allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
                 new {id = html.Framework().GetObjectId(nakedObject)},
+                isEdit,
+                html.IsDuplicate(allActions, action))).ToList();
+        }
+
+        internal static IList<ElementDescriptor> CollectionContributedActions(this HtmlHelper html, INakedObjectAdapter nakedObject, bool isEdit) {
+            IEnumerable<IActionSpec> allActions = html.Framework().GetCollectionContributedActions(nakedObject).ToList();
+
+            return allActions.Select(action => html.ObjectActionAsElementDescriptor(new ActionContext(false, nakedObject, action),
+                new { id = html.Framework().GetObjectId(nakedObject) },
                 isEdit,
                 html.IsDuplicate(allActions, action))).ToList();
         }

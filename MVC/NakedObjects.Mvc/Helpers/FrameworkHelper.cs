@@ -28,14 +28,15 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActions(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
-            if (nakedObject.Spec.IsQueryable) {
-                var metamodel = framework.MetamodelManager.Metamodel;
-                IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
-                var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
-                Trace.Assert(elementSpec != null);
-                return elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(nakedObject));
-            }
             return nakedObject.Spec.GetActions().Where(a => a.IsVisible(nakedObject));
+        }
+
+        internal static IEnumerable<IActionSpec> GetCollectionContributedActions(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
+            var metamodel = framework.MetamodelManager.Metamodel;
+            IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
+            var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
+            Trace.Assert(elementSpec != null);
+            return elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(nakedObject));
         }
 
         public static IEnumerable<IActionSpec> GetTopLevelActionsByReturnType(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject, IObjectSpec spec) {
@@ -67,8 +68,7 @@ namespace NakedObjects.Web.Mvc.Html {
         public static string GetObjectId(this INakedObjectsFramework framework, INakedObjectAdapter nakedObject) {
             if (nakedObject.Spec.IsViewModel) {
                 framework.LifecycleManager.PopulateViewModelKeys(nakedObject);
-            }
-            else if (nakedObject.Oid == null) {
+            } else if (nakedObject.Oid == null) {
                 return "";
             }
 
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static string GetObjectId(IOid oid) {
-            return ((IEncodedToStrings) oid).Encode();
+            return ((IEncodedToStrings)oid).Encode();
         }
 
         public static string GetObjectId(this INakedObjectsFramework framework, object model) {
@@ -212,12 +212,12 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         public static bool IsImage(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
+            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
+            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
@@ -257,12 +257,11 @@ namespace NakedObjects.Web.Mvc.Html {
             object[] objCollection;
 
             Type instanceType = TypeUtils.GetType(collectionitemSpec.FullName);
-            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager).Object).ToArray();
-            }
-            else {
+            } else {
                 // need to check if collection is actually a collection memento 
                 if (rawCollection.Count() == 1) {
                     INakedObjectAdapter firstObj = framework.GetNakedObjectFromId(rawCollection.First());

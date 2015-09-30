@@ -217,6 +217,20 @@ namespace NakedObjects.Web.Mvc.Html {
         }
 
         /// <summary>
+        ///     Create menu of collection-contributed actions
+        /// </summary>
+        internal static MvcHtmlString MenuOnQueryable(this HtmlHelper html, object domainObject) {
+            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
+            if (!nakedObject.Spec.IsQueryable) {
+                throw new ArgumentException(String.Format("{0} is not a Queryable", nakedObject.Spec));
+            }
+            return CommonHtmlHelper.BuildMenuContainer(html.CollectionContributedActions(nakedObject, true),
+                IdHelper.MenuContainerName,
+                IdHelper.GetActionContainerId(nakedObject),
+                IdHelper.GetActionLabel(nakedObject));
+        }
+
+        /// <summary>
         ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter
         /// </summary>
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
