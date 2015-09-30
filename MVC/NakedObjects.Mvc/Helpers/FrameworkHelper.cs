@@ -33,7 +33,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 IObjectSpecImmutable elementSpecImmut = nakedObject.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(nakedObject, metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(elementSpecImmut) as IObjectSpec;
                 Trace.Assert(elementSpec != null);
-                return elementSpec.GetCollectionContributedActions();
+                return elementSpec.GetCollectionContributedActions().Where(a => a.IsVisible(nakedObject));
             }
             return nakedObject.Spec.GetActions().Where(a => a.IsVisible(nakedObject));
         }
