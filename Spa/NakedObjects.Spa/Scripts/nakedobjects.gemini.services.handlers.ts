@@ -151,7 +151,7 @@ module NakedObjects.Angular.Gemini {
             var [dt, ...id] = routeData.objectId.split("-");
 
             // to ease transition 
-            $scope.objectTemplate = objectViewTemplate;
+            $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
             $scope.object =  <any>{ color :  color.toColorFromType(dt)}
 

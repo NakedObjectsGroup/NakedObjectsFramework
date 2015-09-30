@@ -82,6 +82,7 @@ module NakedObjects.Angular {
     const splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitQueryObjectPage.html";
     const splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitQueryQueryPage.html";
 
+    export const blankTemplate = getSvrPath() + "Content/partials/blank.html";
     export const homeTemplate = getSvrPath() + "Content/partials/home.html";
     export const objectTemplate = getSvrPath() + "Content/partials/object.html";
     export const objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
