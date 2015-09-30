@@ -338,14 +338,22 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual("Eric Gubbels", br.FindElement(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee")).FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
         }
 
+        public abstract void FindMenuActionsHonourAuthorization();
+
+        public void DoFindMenuActionsHonourAuthorization() {
+            Login();
+
+            var findEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindEmployeeByName");
+            //Test that an unauthorized action does not show up on FindMenu
+            br.AssertElementDoesNotExist(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindRecentHires"));
+        }
+
         public abstract void ActionFindOnActionDialog();
 
         public void DoActionFindOnActionDialog() {
             Login();
 
             var findEmployee = wait.ClickAndWait("#SalesRepository-CreateNewSalesPerson button", "#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindEmployeeByName");
-            //Test that an unauthorized action does not show up on FindMenu
-            br.AssertElementDoesNotExist(By.CssSelector("#SalesRepository-CreateNewSalesPerson-Employee-EmployeeRepository-FindRecentHires"));
 
             var lastName = wait.ClickAndWait(findEmployee, "#EmployeeRepository-FindEmployeeByName-LastName-Input");
 

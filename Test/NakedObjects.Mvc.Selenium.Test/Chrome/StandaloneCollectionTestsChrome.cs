@@ -55,6 +55,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Chrome {
         }
 
         [TestMethod]
+        public override void CollectionContributedActionsHonourAuthorization() {
+            DoCollectionContributedActionsHonourAuthorization();
+        }
+
+        [TestMethod]
         public override void InvokeContributedActionNoParmsNoReturn() {
             DoInvokeContributedActionNoParmsNoReturn();
         }

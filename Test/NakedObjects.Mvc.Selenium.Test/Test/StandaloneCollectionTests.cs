@@ -105,6 +105,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
             Assert.AreEqual(2, CountCheckedBoxes(coll));
         }
 
+        public abstract void CollectionContributedActionsHonourAuthorization();
+
+        public void DoCollectionContributedActionsHonourAuthorization() {
+            Assert.Fail("Test to be written");
+        }
+
         public abstract void InvokeContributedActionNoParmsNoReturn();
 
         public void DoInvokeContributedActionNoParmsNoReturn() {

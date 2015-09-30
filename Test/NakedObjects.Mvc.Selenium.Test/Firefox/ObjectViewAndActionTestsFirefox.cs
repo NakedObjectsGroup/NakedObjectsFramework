@@ -125,6 +125,11 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         }
 
         [TestMethod]
+        public override void FindMenuActionsHonourAuthorization() {
+            DoFindMenuActionsHonourAuthorization();
+        }
+
+        [TestMethod]
         public override void ActionFindOnActionDialog() {
             DoActionFindOnActionDialog();
         }
