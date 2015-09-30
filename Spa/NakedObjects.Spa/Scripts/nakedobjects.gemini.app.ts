@@ -15,9 +15,9 @@
 
 module NakedObjects.Angular {
     import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
-   
+  
     export const app = angular.module("app", ["ngRoute", "ngTouch"]);
-
+ 
     export interface INakedObjectsRouteParams extends ng.route.IRouteParamsService {
         menu1: string;
         dialog1: string;

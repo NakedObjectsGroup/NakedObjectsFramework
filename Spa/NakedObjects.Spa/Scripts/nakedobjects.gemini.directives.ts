@@ -300,6 +300,35 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
+    app.directive("nogDrag", $parse => (scope, element, attrs) => {
+
+        element.draggable({helper : "clone", zIndex : 9999});
+
+        element.on("dragstart", function (event, ui) {
+            const sc = scope;
+            const sourceVm = sc.property;
+
+            ui.helper.vm = sourceVm;
+        });
+
+    });
+
+    app.directive("nogDrop", $parse => (scope, element, attrs) => {
+
+       
+        element.droppable({
+            tolerance: "touch"
+        });
+
+        element.on("drop", (event, ui) => {
+            const sc = scope;
+            const p = sc.$parent.$parent.$parent.$parent.property;
+            const vm = <PropertyViewModel>  ui.helper.vm;
+
+            element[0].value = vm.value;
+        });
+    });
+
     app.directive('nogAttachment', function ($window : ng.IWindowService): ng.IDirective {
         return {
             // Enforce the angularJS default of restricting the directive to

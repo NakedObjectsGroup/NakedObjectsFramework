@@ -1,6 +1,7 @@
 bin
 obj
 *.suo
+bower_components
 Scripts/typings
 Scripts/*.js.map
 Scripts/*.js
