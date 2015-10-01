@@ -270,7 +270,7 @@ module NakedObjects.Angular.Gemini {
     });
 
     app.directive("geminiRightclick", $parse => (scope, element, attrs) => {
-        const fn = $parse(attrs.nogRightclick);
+        const fn = $parse(attrs.geminiRightclick);
         element.bind("contextmenu", event => {
             scope.$apply(() => {
                 event.preventDefault();

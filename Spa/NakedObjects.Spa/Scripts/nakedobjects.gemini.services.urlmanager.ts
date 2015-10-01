@@ -97,13 +97,13 @@ module NakedObjects.Angular.Gemini {
         }
 
         function singlePane() {
-            return $location.path().split("/").length <= 2;
+            return $location.path().split("/").length <= 3;
         }
 
         function searchKeysForPane(search: any, paneId: number) {
             const raw = [menu, dialog, object, collection, edit, action, parm, actions];
             const ids = _.map(raw, s => s + paneId);
-            return _.filter(_.keys(search), (k) => _.any(ids, id => k.indexOf(id) === 0));
+            return _.filter(_.keys(search), k => _.any(ids, id => k.indexOf(id) === 0));
         }
 
         function clearPane(search: any, paneId: number) {
@@ -113,22 +113,22 @@ module NakedObjects.Angular.Gemini {
 
         function setupPaneNumberAndTypes(pane: number, newPaneType: string) {
 
-
             const path = $location.path();
             const segments = path.split("/");
-
+            const [, , pane1Type, pane2Type] = segments; 
+            
             // changing item on pane 1
             // make sure pane is of correct type
-            if (pane === 1 && segments[1] !== newPaneType) {
-                const newPath = `/${newPaneType}${singlePane() ? "" : `/${segments[2]}`}`;
+            if (pane === 1 && pane1Type !== newPaneType) {
+                const newPath = `/gemini/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;
                 $location.path(newPath);
             }
 
             // changing item on pane 2
             // either single pane so need to add new pane of appropriate type
             // or double pane with second pane of wrong type. 
-            if (pane === 2 && (singlePane() || segments[2] !== newPaneType)) {
-                const newPath = `/${segments[1]}/${newPaneType}`;
+            if (pane === 2 && (singlePane() || pane2Type !== newPaneType)) {
+                const newPath = `/gemini/${pane1Type}/${newPaneType}`;
                 $location.path(newPath);
             }
 
@@ -248,7 +248,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setError = () => {
-            $location.path("/error").search({});
+            $location.path("/gemini/error").search({});
         };
 
         helper.setHome = (paneId: number) => {
@@ -270,7 +270,7 @@ module NakedObjects.Angular.Gemini {
             const path = $location.path();
             const segments = path.split("/");
 
-            const paneType = segments[paneId] || home;
+            const paneType = segments[paneId + 1] || home;
             const paneSearch = capturePane(paneId);
 
             capturedPanes[paneId] = { paneType: paneType, search: paneSearch };
@@ -302,9 +302,9 @@ module NakedObjects.Angular.Gemini {
         helper.swapPanes = () => {
             const path = $location.path();
             const segments = path.split("/");
-            const oldPane1 = segments[1];
-            const oldPane2 = segments[2] || home;
-            const newPath = `/${oldPane2}/${oldPane1}`;
+            const oldPane1 = segments[2];
+            const oldPane2 = segments[3] || home;
+            const newPath = `/gemini/${oldPane2}/${oldPane1}`;
             const search = swapSearchIds($location.search());
 
             $location.path(newPath).search(search);
@@ -319,8 +319,8 @@ module NakedObjects.Angular.Gemini {
 
                 const path = $location.path();
                 const segments = path.split("/");
-                const paneToKeep = segments[paneToKeepId];            
-                const newPath = `/${paneToKeep}`;
+                const paneToKeep = segments[paneToKeepId + 1];            
+                const newPath = `/gemini/${paneToKeep}`;
 
                 let search = $location.search();
 

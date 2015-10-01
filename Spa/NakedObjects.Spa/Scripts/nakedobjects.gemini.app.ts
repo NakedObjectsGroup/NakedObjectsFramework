@@ -19,8 +19,6 @@ module NakedObjects.Angular {
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
-
-
     export interface INakedObjectsRouteParams extends ng.route.IRouteParamsService {
         menu1: string;
         dialog1: string;
@@ -108,60 +106,60 @@ module NakedObjects.Angular {
         $routeProvider.
             
             //Gemini2 Urls below:
-            when("/home", {
+            when("/gemini/home", {
                 templateUrl: singleHomePageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/object", {
+            when("/gemini/object", {
                 templateUrl: singleObjectPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/query", {
+            when("/gemini/query", {
                 templateUrl: singleQueryPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/home/home", {
+            when("/gemini/home/home", {
                 templateUrl: splitHomeHomePageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/home/object", {
+            when("/gemini/home/object", {
                 templateUrl: splitHomeObjectPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/home/query", {
+            when("/gemini/home/query", {
                 templateUrl: splitHomeQueryPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/object/home", {
+            when("/gemini/object/home", {
                 templateUrl: splitObjectHomePageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/object/object", {
+            when("/gemini/object/object", {
                 templateUrl: splitObjectObjectPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/object/query", {
+            when("/gemini/object/query", {
                 templateUrl: splitObjectQueryPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/query/home", {
+            when("/gemini/query/home", {
                 templateUrl: splitQueryHomePageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/query/object", {
+            when("/gemini/query/object", {
                 templateUrl: splitQueryObjectPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/query/query", {
+            when("/gemini/query/query", {
                 templateUrl: splitQueryQueryPageTemplate,
                 controller: "BackgroundController"
             }).
-            when("/error", {
+            when("/gemini/error", {
                 templateUrl: singleErrorPageTemplate,
                 controller: "ErrorController"
             }).
             otherwise({
-                redirectTo: "/home"
+            redirectTo: "/gemini/home"
             });
        
     });
