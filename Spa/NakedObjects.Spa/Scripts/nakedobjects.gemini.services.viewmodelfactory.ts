@@ -279,9 +279,10 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
-            //propertyViewModel.href = propertyRep.isScalar() || propertyRep.value().isNull() || propertyRep.detailsLink() == null ? "" : urlHelper.toNewAppUrl2(propertyRep.value().link().href());
-            //propertyViewModel.target = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : urlHelper.toAppUrl(propertyRep.value().link().href());
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
+
+            // todo populate this with list of compatible types - either from domain type call or custom extensions 
+            propertyViewModel.possibleDropTypes = [propertyRep.extensions().returnType];
 
             propertyViewModel.doClick = (right? : boolean) => {
                 urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));

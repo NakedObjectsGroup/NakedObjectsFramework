@@ -436,6 +436,25 @@ module NakedObjects {
         }
     }
 
+    //export class DomainTypeActionMap extends ArgumentMap implements IHateoasModel {
+    //    constructor(private actionInvoke: DomainTypeActionInvokeRepresentation, id: string, map: Object) {
+    //        super(map, actionInvoke, id);
+
+    //        //actionInvoke.modifyLink().copyToHateoasModel(this);
+
+    //        //this.setValue(propertyResource.value());
+    //        actionInvoke.selfLink().copyToHateoasModel(this);
+    //    }
+
+    //    onError(map: Object, statusCode: string, warnings: string) {
+    //        return new ErrorMap(map, statusCode, warnings);
+    //    }
+
+    //    setValue(value: Value) {
+    //        value.set(this.attributes);
+    //    }
+    //}
+
 
     export class ClearMap extends ArgumentMap implements IHateoasModel {
         constructor(propertyResource: PropertyRepresentation) {
@@ -1539,6 +1558,26 @@ module NakedObjects {
         }
         roles(): string[] {
             return this.get("roles");
+        }
+    }
+
+    export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation {
+
+        selfLink(): Link {
+            return this.links().linkByRel("self");
+        }
+
+        // linked representations 
+        getSelf(): DomainTypeActionInvokeRepresentation {
+            return <DomainTypeActionInvokeRepresentation> this.selfLink().getTarget();
+        }
+
+        id(): string {
+            return this.get("id");
+        }
+
+        value(): boolean {
+            return this.get("value");
         }
     }
 

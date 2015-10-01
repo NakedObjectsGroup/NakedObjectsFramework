@@ -46,6 +46,10 @@ module NakedObjects.Angular.Gemini {
         setError: (object: ErrorRepresentation) => void;
         clearSelectedChoice: (parm: string) => void;
         setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
+
+        isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
+        isSuperTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
+
     }
 
     interface IContextInternal extends IContext {
@@ -459,6 +463,33 @@ module NakedObjects.Angular.Gemini {
                     context.setInvokeUpdateError(error, properties, ovm);
                 });
         };
+
+        context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
+
+            const isSubTypeOf = new DomainTypeActionInvokeRepresentation();
+
+            isSubTypeOf.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke?supertype=${toCheckType}`;
+
+            return repLoader.populate(isSubTypeOf, true).
+                then((updatedObject: DomainTypeActionInvokeRepresentation) => {
+                    return updatedObject.value();
+                }).
+                catch((error: any) => {
+                    return false;
+                });            
+        }
+
+        context.isSuperTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
+            const isSuperTypeOf = new DomainTypeActionInvokeRepresentation();
+
+            return repLoader.populate(isSuperTypeOf, true).
+                then((updatedObject: DomainTypeActionInvokeRepresentation) => {
+                    return updatedObject.value();
+                }).
+                catch((error: any) => {
+                    return false;
+                });
+        }
 
     });
 

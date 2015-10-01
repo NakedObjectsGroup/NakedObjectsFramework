@@ -288,44 +288,52 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
-    app.directive('nogRightclick', function ($parse) {
-        return function (scope, element, attrs) {
-            var fn = $parse(attrs.nogRightclick);
-            element.bind('contextmenu', function (event) {
-                scope.$apply(function () {
-                    event.preventDefault();
-                    fn(scope, { $event: event });
-                });
+    app.directive("nogRightclick", $parse => (scope, element, attrs) => {
+        const fn = $parse(attrs.nogRightclick);
+        element.bind("contextmenu", event => {
+            scope.$apply(() => {
+                event.preventDefault();
+                fn(scope, { $event: event });
             });
-        };
+        });
     });
 
-    app.directive("nogDrag", $parse => (scope, element, attrs) => {
+    const draggableVmKey = "dvmk";
 
-        element.draggable({helper : "clone", zIndex : 9999});
+    app.directive("geminiDrag", () => (scope, element) => {
+
+        element.draggable({ helper: "clone", zIndex: 9999 });
 
         element.on("dragstart", (event, ui) => {
-            const sc = scope;
-            const sourceVm = sc.property;
-            ui.helper.vm = sourceVm;
-        });
+            const draggableVm = scope.property;
 
+            // add vm to helper and original elements as accept and drop use different ones 
+            ui.helper.data(draggableVmKey, draggableVm);
+            element.data(draggableVmKey, draggableVm);
+        });
     });
 
-    app.directive("nogDrop", $parse => (scope, element, attrs) => {
-   
+    app.directive("geminiDrop", () => (scope, element) => {
+
+        const accept = (draggable) => {
+            const droppableVm: PropertyViewModel = scope.$parent.$parent.$parent.$parent.property;
+            const draggableVm: PropertyViewModel = draggable.data(draggableVmKey);
+            return draggableVm.canDropOn(droppableVm.returnType);
+        }
+
         element.droppable({
-            tolerance: "touch"
+            tolerance: "touch",
+            activeClass: "candrop",
+            hoverClass: "dropping",
+            accept: accept
         });
 
         element.on("drop", (event, ui) => {
-            const sc = scope;
-            const targetScope = sc.$parent.$parent.$parent.$parent;
-            const vm = <PropertyViewModel>  ui.helper.vm;
-         
-            targetScope.$apply(() => {
-                targetScope.property = vm;
-            });
+            const droppableScope = scope.$parent.$parent.$parent.$parent;
+            const droppableVm: PropertyViewModel = droppableScope.property;
+            const draggableVm = <PropertyViewModel>  ui.draggable.data(draggableVmKey);
+
+            droppableScope.$apply(() => droppableVm.drop(draggableVm));
         });
     });
 

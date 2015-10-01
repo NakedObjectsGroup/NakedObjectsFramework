@@ -26,7 +26,7 @@
 
                         <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
 
-                            <input ng-switch-when="false" type='text' ng-model="$parent.property.choice" select="property.prompt(request)" nog-autocomplete nog-drop/>
+                            <input ng-switch-when="false" type='text' ng-model="$parent.property.choice" select="property.prompt(request)" nog-autocomplete gemini-drop/>
 
                             <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices />
 

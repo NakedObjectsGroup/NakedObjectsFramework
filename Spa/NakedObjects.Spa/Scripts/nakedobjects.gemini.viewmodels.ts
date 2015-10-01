@@ -107,7 +107,9 @@ module NakedObjects.Angular.Gemini {
         mask: string;
         isMultipleChoices: boolean; 
         minLength: number;
-        hasAutoAutoComplete : boolean;
+        hasAutoAutoComplete: boolean;
+
+        possibleDropTypes : string[];
 
         setSelectedChoice() {}
 
@@ -142,9 +144,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         drop(newValue: ValueViewModel) {
-            this.value = newValue
+            this.value = newValue.value;
+            this.reference = newValue.reference;
+            this.choice = newValue.choice;
         }
 
+        canDropOn = (targetType: string) => _.any(this.possibleDropTypes, t => t === targetType);
 
         getValue(): Value {
            
