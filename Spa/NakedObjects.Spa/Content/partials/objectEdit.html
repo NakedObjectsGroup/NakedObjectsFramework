@@ -21,12 +21,12 @@
                         {{property.value}}
                     </div>
 
-                    <div ng-switch-when="true" class='value input-control text' ng-switch="property.hasChoices">
+                    <div ng-switch-when="true" class='value input-control text' ng-switch="property.hasChoices" >
                         <input type='hidden' value='{{property.reference}}' ng-model="property.reference" />
 
                         <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
 
-                            <input ng-switch-when="false" type='text' ng-model="$parent.property.choice" select="property.prompt(request)" nog-autocomplete />
+                            <input ng-switch-when="false" type='text' ng-model="$parent.property.choice" select="property.prompt(request)" nog-autocomplete nog-drop/>
 
                             <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices />
 

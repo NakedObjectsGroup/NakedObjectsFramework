@@ -304,28 +304,28 @@ module NakedObjects.Angular.Gemini {
 
         element.draggable({helper : "clone", zIndex : 9999});
 
-        element.on("dragstart", function (event, ui) {
+        element.on("dragstart", (event, ui) => {
             const sc = scope;
             const sourceVm = sc.property;
-
             ui.helper.vm = sourceVm;
         });
 
     });
 
     app.directive("nogDrop", $parse => (scope, element, attrs) => {
-
-       
+   
         element.droppable({
             tolerance: "touch"
         });
 
         element.on("drop", (event, ui) => {
             const sc = scope;
-            const p = sc.$parent.$parent.$parent.$parent.property;
+            const targetScope = sc.$parent.$parent.$parent.$parent;
             const vm = <PropertyViewModel>  ui.helper.vm;
-
-            element[0].value = vm.value;
+         
+            targetScope.$apply(() => {
+                targetScope.property = vm;
+            });
         });
     });
 

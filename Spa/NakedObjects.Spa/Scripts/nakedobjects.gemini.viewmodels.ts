@@ -141,6 +141,11 @@ module NakedObjects.Angular.Gemini {
             return this.getValue().toString();
         }
 
+        drop(newValue: ValueViewModel) {
+            this.value = newValue
+        }
+
+
         getValue(): Value {
            
             if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete) {
