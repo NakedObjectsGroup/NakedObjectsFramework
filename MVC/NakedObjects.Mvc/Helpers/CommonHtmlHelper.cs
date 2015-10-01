@@ -28,6 +28,8 @@ using NakedObjects.Resources;
 using NakedObjects.Web.Mvc.Models;
 
 namespace NakedObjects.Web.Mvc.Html {
+
+    [Obsolete("CustomMenuItems no longer supported")]
     public class CustomMenuItem : IMenuItemImmutable {
         public string Controller { get; set; }
         public string Name { get; set; }
@@ -550,7 +552,8 @@ namespace NakedObjects.Web.Mvc.Html {
                 Value = innerHtml.WrapInDivTag()
             };
         }
-
+        
+        [Obsolete]
         internal static ElementDescriptor ObjectActionAsElementDescriptor(this HtmlHelper html,
             CustomMenuItem menuItem,
             bool isEdit) {
@@ -723,6 +726,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 html.IsDuplicate(allActions, action))).ToList();
         }
 
+        [Obsolete]
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, INakedObjectAdapter nakedObject, bool isEdit, params CustomMenuItem[] menuItems) {
             List<ElementDescriptor> actions = html.ObjectActions(nakedObject, isEdit).ToList();
 
@@ -740,6 +744,7 @@ namespace NakedObjects.Web.Mvc.Html {
             return actions;
         }
 
+        [Obsolete]
         internal static IList<ElementDescriptor> ObjectActions(this HtmlHelper html, bool isEdit, params CustomMenuItem[] menuItems) {
             return menuItems.OrderBy(x => x.MemberOrder).Select(item => html.ObjectActionAsElementDescriptor(item, false)).ToList();
         }

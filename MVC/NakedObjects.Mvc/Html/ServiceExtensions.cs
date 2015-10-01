@@ -13,13 +13,12 @@ namespace NakedObjects.Web.Mvc.Html {
     public static class ServiceExtensions {
         #region ServiceMenus
 
-        [Obsolete("Use MenuExtensions#MainMenus")]
+        [Obsolete("Use MainMenus (defined on MenuExtensions)")]
         public static MvcHtmlString Services(this HtmlHelper html) {
             return MenuExtensions.MainMenus(html);
         }
 
-        //TODO: Mark obsolete when Menus refactoring complete
-        //[Obsolete("Add CustomMenuItems into an IMenu directly when constructing menus")]
+        [Obsolete("CustomMenuItems no longer supported")]
         public static MvcHtmlString Service(this HtmlHelper html, object service, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(service);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
@@ -28,7 +27,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 nakedObject.TitleString());
         }
 
-        [Obsolete("Use MenuExtensions#MainMenu")]
+         [Obsolete("Use MainMenus (defined on MenuExtensions)")]
         public static MvcHtmlString ServiceMenu(this HtmlHelper html, object service) {
             return html.Service(service);
         }

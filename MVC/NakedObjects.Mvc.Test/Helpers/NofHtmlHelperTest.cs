@@ -776,7 +776,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void DisplayName() {
             mocks.ViewDataContainer.Object.ViewData.Model = DescribedTestClass;
-            string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().Menu(DescribedTestClass).ToString();
+            string s = mocks.GetHtmlHelper<DescribedCustomHelperTestClass>().ObjectMenu(DescribedTestClass).ToString();
 
             CheckResults("DisplayName", s);
         }
@@ -785,7 +785,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void DuplicateAction() {
             var testBool = (BoolTestClass) GetBoundedInstance<BoolTestClass>("BoolClass").GetDomainObject();
             mocks.ViewDataContainer.Object.ViewData.Model = testBool;
-            string s = mocks.GetHtmlHelper<BoolTestClass>().Menu(testBool).ToString();
+            string s = mocks.GetHtmlHelper<BoolTestClass>().ObjectMenu(testBool).ToString();
             CheckResults("DuplicateAction", s);
         }
 
@@ -1064,7 +1064,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void NotPersistedMenu() {
             INakedObjectAdapter adapter = NakedObjectsFramework.GetNakedObject(NotPersistedTestClass);
             mocks.ViewDataContainer.Object.ViewData.Model = adapter.Object;
-            string s = mocks.GetHtmlHelper<NotPersistedTestClass>().MenuOnTransient(adapter.Object).ToString();
+            string s = mocks.GetHtmlHelper<NotPersistedTestClass>().ObjectMenuOnTransient(adapter.Object).ToString();
 
             CheckResults("NotPersistedMenu", s);
         }
@@ -1109,7 +1109,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectActions() {
             Claim claim = NakedObjectsFramework.Persistor.Instances<Claim>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = claim;
-            string s = mocks.HtmlHelper.Menu(claim).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(claim).ToString();
 
             CheckResults("ObjectActions", s);
         }
@@ -1118,7 +1118,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectWithNoActions() {
             ExpenseType exp = NakedObjectsFramework.Persistor.Instances<ExpenseType>().First();
             mocks.ViewDataContainer.Object.ViewData.Model = exp;
-            string s = mocks.HtmlHelper.Menu(exp).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(exp).ToString();
 
             CheckResults("ObjectWithNoActions", s);
         }
@@ -1126,7 +1126,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ObjectActionsTestNotContributed1() {
             var nc1 = (NotContributedTestClass1) GetBoundedInstance<NotContributedTestClass1>("NC1Class").GetDomainObject();
-            string s = mocks.HtmlHelper.Menu(nc1).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(nc1).ToString();
 
             CheckResults("ObjectActionsTestNotContributed1", s);
         }
@@ -1134,7 +1134,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ObjectActionsTestNotContributed2() {
             var nc2 = (NotContributedTestClass2) GetBoundedInstance<NotContributedTestClass2>("NC2Class").GetDomainObject();
-            string s = mocks.HtmlHelper.Menu(nc2).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(nc2).ToString();
 
             CheckResults("ObjectActionsTestNotContributed2", s);
         }
@@ -1142,7 +1142,7 @@ namespace MvcTestApp.Tests.Helpers {
         [Test]
         public void ObjectActionsWithConcurrency() {
             RecordedAction recordedAction = NakedObjectsFramework.Persistor.Instances<RecordedAction>().First();
-            string s = mocks.HtmlHelper.Menu(recordedAction).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(recordedAction).ToString();
 
             CheckResults("ObjectActionsWithConcurrency", s);
         }
@@ -1151,7 +1151,7 @@ namespace MvcTestApp.Tests.Helpers {
         public void ObjectActionsWithHints() {
             var hint = (HintTestClass) GetBoundedInstance<HintTestClass>("HintTestClass").GetDomainObject();
 
-            string s = mocks.HtmlHelper.Menu(hint).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(hint).ToString();
 
             CheckResults("ObjectActionsWithHints", s);
         }
@@ -1960,7 +1960,7 @@ namespace MvcTestApp.Tests.Helpers {
             Employee employee = NakedObjectsFramework.Persistor.Instances<Employee>().First();
 
             var no = NakedObjectsFramework.GetNakedObjectFromId("MvcTestApp.Tests.Helpers.ViewModelTestClass;1;" + employee.Name);
-            string s = mocks.HtmlHelper.Menu(no.Object).ToString();
+            string s = mocks.HtmlHelper.ObjectMenu(no.Object).ToString();
 
             CheckResults("ViewModelActions", s);
         }

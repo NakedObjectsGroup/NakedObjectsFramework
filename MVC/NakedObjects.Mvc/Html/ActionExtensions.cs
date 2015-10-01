@@ -177,16 +177,13 @@ namespace NakedObjects.Web.Mvc.Html {
 
         #region menu
 
-        /// <summary>
-        ///     Create menu from actions of domainObject. (Just delegates to MenuExtenions#ObjectMenu)
-        /// </summary>
+        //TODO: This should be obsoleted in next release
+         //[Obsolete("Use ObjectMenu (defined on MenuExtensions)")]
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject) {
             return MenuExtensions.ObjectMenu(html, domainObject);
         }
 
-        /// <summary>
-        ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter
-        /// </summary>
+        [Obsolete("CustomMenuItems no longer supported")]
         public static MvcHtmlString Menu(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, false, menuItems),
@@ -195,9 +192,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 IdHelper.GetActionLabel(nakedObject));
         }
 
-        /// <summary>
-        ///     Create menu from menuItems parameter
-        /// </summary>
+          [Obsolete("CustomMenuItems no longer supported")]
         public static MvcHtmlString Menu(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(false, menuItems),
                 IdHelper.MenuContainerName,
@@ -205,34 +200,13 @@ namespace NakedObjects.Web.Mvc.Html {
                 name + " " + MvcUi.Actions);
         }
 
-        /// <summary>
-        ///     Create menu from actions of domainObject
-        /// </summary>
+          //TODO: This should be obsoleted in next release
+        //    [Obsolete("Use ObjectMenuOnTransient (defined on MenuExtensions)")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
+            return html.ObjectMenuOnTransient(domainObject);
         }
 
-        /// <summary>
-        ///     Create menu of collection-contributed actions
-        /// </summary>
-        internal static MvcHtmlString MenuOnQueryable(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            if (!nakedObject.Spec.IsQueryable) {
-                throw new ArgumentException(String.Format("{0} is not a Queryable", nakedObject.Spec));
-            }
-            return CommonHtmlHelper.BuildMenuContainer(html.CollectionContributedActions(nakedObject, true),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
-        }
-
-        /// <summary>
-        ///     Create menu from actions of domainObject - inserting additional items from menuItems parameter
-        /// </summary>
+          [Obsolete("CustomMenuItems no longer supported")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, object domainObject, params CustomMenuItem[] menuItems) {
             INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(nakedObject, true, menuItems),
@@ -241,9 +215,7 @@ namespace NakedObjects.Web.Mvc.Html {
                 IdHelper.GetActionLabel(nakedObject));
         }
 
-        /// <summary>
-        ///     Create menu from menuItems parameter
-        /// </summary>
+        [Obsolete("CustomMenuItems no longer supported")]
         public static MvcHtmlString MenuOnTransient(this HtmlHelper html, string name, params CustomMenuItem[] menuItems) {
             return CommonHtmlHelper.BuildMenuContainer(html.ObjectActions(true, menuItems),
                 IdHelper.MenuContainerName,
