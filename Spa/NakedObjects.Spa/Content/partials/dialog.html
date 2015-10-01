@@ -26,7 +26,7 @@ under the License.-->
 
                     <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
 
-                        <input ng-switch-when="false" type='text' ng-model="$parent.parameter.choice" select="parameter.prompt(request)" nog-autocomplete/>
+                        <input ng-switch-when="false" type='text' ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete/>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
                             <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" nog-conditionalchoices/>
@@ -51,7 +51,7 @@ under the License.-->
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input type='text' ng-model="$parent.parameter.value" nog-datepicker/>
+                                    <input type='text' ng-model="$parent.parameter.value" gemini-datepicker/>
                                 </div>
                                 <input ng-switch-default type='text' placeholder='{{parameter.dflt}}' ng-model="parameter.value"/>
                             </div>

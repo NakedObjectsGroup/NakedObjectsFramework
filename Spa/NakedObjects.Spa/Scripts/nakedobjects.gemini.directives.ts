@@ -22,76 +22,80 @@ module NakedObjects.Angular.Gemini {
     }
 
     // based on code in AngularJs, Green and Seshadri, O'Reilly
-    app.directive('nogDatepicker', function ($filter : ng.IFilterService) : ng.IDirective {
-            return {
-                // Enforce the angularJS default of restricting the directive to
-                // attributes only
-                restrict: 'A',
-                // Always use along with an ng-model
-                require: '?ngModel',
-                // This method needs to be defined and passed in from the
-                // passed in to the directive from the view controller
-                scope: {
-                    select: '&'        // Bind the select function we refer to the right scope
-                },
-                link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
-                    if (!ngModel) return;
-                    const optionsObj: { dateFormat?: string; onSelect?: Function } = {};
-                    optionsObj.dateFormat = 'd M yy'; // datepicker format
-                    var updateModel = function (dateTxt) {
-                        scope.$apply(function () {
-                            // Call the internal AngularJS helper to
-                            // update the two way binding
-
-                            ngModel.$parsers.push((val) => { return new Date(val).toISOString(); });
-                            ngModel.$setViewValue(dateTxt);
-                        });
-                    };
-
-                    optionsObj.onSelect = function (dateTxt, picker) {
-                        updateModel(dateTxt);
-                        if (scope.select) {
-                            scope.$apply(function () {
-                                scope.select({ date: dateTxt });
-                            });
-                        }
-                    };
-
-
-                    ngModel.$render = function () {
-                        const formattedDate = $filter('date')(ngModel.$viewValue, 'd MMM yyyy'); // angularjs format
-
-                        // Use the AngularJS internal 'binding-specific' variable
-                        element.datepicker('setDate', formattedDate);
-                    };
-                    element.datepicker(optionsObj);
-                }
-            };
-        });
-
-    app.directive('nogAutocomplete', function ($filter: ng.IFilterService, $parse, context: IContext): ng.IDirective {
+    app.directive("geminiDatepicker", ($filter : ng.IFilterService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
-            restrict: 'A',
+            restrict: "A",
             // Always use along with an ng-model
-            require: '?ngModel',
+            require: "?ngModel",
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
-                select: '&'        // Bind the select function we refer to the right scope
+                select: "&"        // Bind the select function we refer to the right scope
             },
-            link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
+            link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
                 if (!ngModel) return;
+
+                const updateModel = dateTxt => {
+                    scope.$apply(() => {
+                        // Call the internal AngularJS helper to
+                        // update the two way binding
+
+                        ngModel.$parsers.push(val=> new Date(val).toISOString());
+                        ngModel.$setViewValue(dateTxt);
+                    });
+                };
+
+                const onSelect = dateTxt => {
+                    updateModel(dateTxt);
+                    if (scope.select) {
+                        scope.$apply(() => scope.select({ date: dateTxt }));
+                    }
+                };
+
+                const optionsObj = {
+                    dateFormat: "d M yy", // datepicker format
+                    onSelect: onSelect
+                }; 
+
+                ngModel.$render = () => {
+                    const formattedDate = $filter("date")(ngModel.$viewValue, "d MMM yyyy"); // angularjs format
+
+                    // Use the AngularJS internal 'binding-specific' variable
+                    element.datepicker("setDate", formattedDate);
+                };
+
+                element.datepicker(optionsObj);
+            }
+        };
+    });
+
+    app.directive("geminiAutocomplete", (): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            // This method needs to be defined and passed in from the
+            // passed in to the directive from the view controller
+            scope: {
+                select: "&"        // Bind the select function we refer to the right scope
+            },
+
+            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
+                if (!ngModel) return;
+
                 const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
                 const parent = <any>scope.$parent;
                 const viewModel = <ValueViewModel> (parent.parameter || parent.property);
 
-                function render ( initialChoice? :ChoiceViewModel) {
-                    var cvm = ngModel.$modelValue || initialChoice;
+                function render(initialChoice?: ChoiceViewModel) {
+                    const cvm = ngModel.$modelValue || initialChoice;
 
                     if (cvm) {
-                        ngModel.$parsers.push((val) => { return cvm; });
+                        ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);
                     }
@@ -99,31 +103,22 @@ module NakedObjects.Angular.Gemini {
 
                 ngModel.$render = render;
              
-                var updateModel = function (cvm: ChoiceViewModel) {
+                const updateModel = (cvm: ChoiceViewModel) => {
 
                     //context.setSelectedChoice(cvm.id, cvm.search, cvm);
 
-                    scope.$apply(function () {
-
-                        ngModel.$parsers.push((val) => { return cvm; });
+                    scope.$apply(() => {
+                        ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);
                     });
                 };
 
                 optionsObj.source = (request, response) => {
-
-                    var prompts = scope.select({ request: request.term });
-
-                    scope.$apply(function () {
-                        prompts.then(function (cvms: ChoiceViewModel[]) {
-                            response(_.map(cvms, (cvm) => {
-                                return { "label": cvm.name, "value": cvm };
-                            }));
-                        }, function () {
-                            response([]);
-                        });
-                    });
+                    scope.$apply(() =>
+                        scope.select({ request: request.term }).
+                        then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => { return { "label": cvm.name, "value": cvm }; }))).
+                        catch(() => response([])));
                 };
 
                 optionsObj.select = (event, ui) => {
@@ -131,18 +126,17 @@ module NakedObjects.Angular.Gemini {
                     return false; 
                 };
 
-                optionsObj.focus = (event, ui) => {
-                    return false;
-                };
-
+                optionsObj.focus = () => false;
                 optionsObj.autoFocus = true;
                 optionsObj.minLength = viewModel.minLength;
+
                 const clearHandler = function () {
                     const value = $(this).val();
                     if (value.length === 0) {
                         updateModel(ChoiceViewModel.create(new Value(""), ""));
                     }
                 };
+
                 element.keyup(clearHandler); 
                 element.autocomplete(optionsObj);
                 render(viewModel.choice);
