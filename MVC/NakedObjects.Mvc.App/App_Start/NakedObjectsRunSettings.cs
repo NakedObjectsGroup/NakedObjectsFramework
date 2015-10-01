@@ -97,7 +97,7 @@ namespace NakedObjects.Mvc.App {
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-            return null;
+            return new AuthorizationConfiguration<DemoAuthorizer>();
         }
 
         public static IProfileConfiguration ProfileConfig() {

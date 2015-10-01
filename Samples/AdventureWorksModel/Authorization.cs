@@ -7,24 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventureWorksModel {
-    public class DefaultAuthorizer : ITypeAuthorizer<object> {
+    /// <summary>
+    /// The purpose of this auhtorizer is merely to demonstrate how
+    /// authorization works, and for test purposes.  It just hides a few members
+    /// that are not ever intended to be used.
+    /// </summary>
+    public class DemoAuthorizer : ITypeAuthorizer<object> {
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
         }
 
         public bool IsVisible(IPrincipal principal, object target, string memberName) {
-            return true;
-        }
-    }
-
-    //Used to test that a specific Finder Action can be hidden by authorization.
-    public class EmployeeRepositoryAuthorizer : ITypeAuthorizer<EmployeeRepository> {
-        public bool IsEditable(IPrincipal principal, EmployeeRepository target, string memberName) {
-            return true;
-        }
-        public bool IsVisible(IPrincipal principal, EmployeeRepository target, string memberName) {
-            if (memberName == "FindRecentHires") return false;
+            if (target.GetType() == typeof(EmployeeRepository) && memberName == "FindRecentHires") return false;
+            if (target.GetType() == typeof(OrderContributedActions) && memberName == "CommentAsUsersMiserable") return false;
             return true;
         }
     }

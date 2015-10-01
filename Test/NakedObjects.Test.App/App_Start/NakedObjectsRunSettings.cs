@@ -101,9 +101,7 @@ namespace NakedObjects.Test.App {
         }
 
         public static IAuthorizationConfiguration AuthorizationConfig() {
-            var config = new AuthorizationConfiguration<DefaultAuthorizer>();
-            config.AddTypeAuthorizer<EmployeeRepository, EmployeeRepositoryAuthorizer>();
-            return config;
+            return new AuthorizationConfiguration<DemoAuthorizer>();
         }
 
         //Any other simple configuration options (e.g. bool or string) on the old Run classes should be

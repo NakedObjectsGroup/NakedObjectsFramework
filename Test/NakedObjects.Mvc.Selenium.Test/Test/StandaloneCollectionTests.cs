@@ -108,7 +108,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
         public abstract void CollectionContributedActionsHonourAuthorization();
 
         public void DoCollectionContributedActionsHonourAuthorization() {
-            Assert.Fail("Test to be written");
+            Login();
+
+            var table = wait.ClickAndWait("#OrderRepository-HighestValueOrders button", "button[title=Table]");
+
+            wait.Until(dr => dr.FindElement(By.CssSelector("#ObjectQuery-SalesOrderHeader-CommentAsUsersUnhappy")));
+
+            br.AssertElementDoesNotExist(By.CssSelector("#ObjectQuery-SalesOrderHeader-CommentAsUsersMiserable"));
         }
 
         public abstract void InvokeContributedActionNoParmsNoReturn();

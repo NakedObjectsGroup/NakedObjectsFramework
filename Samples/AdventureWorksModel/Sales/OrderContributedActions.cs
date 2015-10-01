@@ -110,6 +110,14 @@ namespace AdventureWorksModel {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
+        /// <summary>
+        /// This action exists solely to test that collection-contributed actions can be
+        /// hidden by authorization.  Do not remove it.
+        /// </summary>
+        public void CommentAsUsersMiserable([ContributedAction(subMenu)] IQueryable<SalesOrderHeader> toOrders) {
+            throw new NotImplementedException("Deliberately not implemented");
+        }
+
         public void CommentAsUserUnhappy([ContributedAction(subMenu)] SalesOrderHeader order) {
             AppendComment("User unhappy", order);
         }
