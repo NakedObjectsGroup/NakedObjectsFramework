@@ -29,8 +29,8 @@ under the License.-->
                         <input ng-switch-when="false" type='text' ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete/>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" nog-conditionalchoices/>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" nog-conditionalchoices/>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
                         </div>
 
                     </div>
@@ -67,8 +67,8 @@ under the License.-->
                         </div>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" nog-conditionalchoices/>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" nog-conditionalchoices/>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
                         </div>
 
                     </div>
@@ -87,5 +87,5 @@ under the License.-->
         {{dialog.message}}
     </div>
         
-    <input class='ok' type='submit' value='OK' style='float: right' ng-click="dialog.doInvoke()" nog-rightclick="dialog.doInvoke(true)" />   
+    <input class='ok' type='submit' value='OK' style='float: right' ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
 </form>

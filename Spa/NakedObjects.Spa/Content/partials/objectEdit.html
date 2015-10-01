@@ -28,7 +28,7 @@
 
                             <input ng-switch-when="false" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
 
-                            <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices></select>
+                            <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices></select>
 
                         </div>
 
@@ -80,7 +80,7 @@
 
                             </div>
 
-                            <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" nog-conditionalchoices></select>
+                            <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices></select>
 
                         </div>
                         <select ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"></select>

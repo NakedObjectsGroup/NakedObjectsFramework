@@ -144,49 +144,45 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
-    app.directive('nogConditionalchoices', function ($filter: ng.IFilterService, $parse, context: IContext): ng.IDirective {
+    app.directive("geminiConditionalchoices", (): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
-            restrict: 'A',
+            restrict: "A",
             // Always use along with an ng-model
-            require: '?ngModel',
+            require: "?ngModel",
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
-                select: '&'        // Bind the select function we refer to the right scope
+                select: "&"        // Bind the select function we refer to the right scope
             },
-            link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
+            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
-                var parent = <any>scope.$parent;
-                var viewModel = <ValueViewModel> (parent.parameter || parent.property);
-                var pArgs = viewModel.arguments;
-                var currentOptions: ChoiceViewModel[] = [];
+                const parent = <any>scope.$parent;
+                const viewModel = <ValueViewModel> (parent.parameter || parent.property);
+                const pArgs = viewModel.arguments;
+                let currentOptions: ChoiceViewModel[] = [];
 
                 function populateArguments() {
-                    var nArgs = <IValueMap>{};
+                    const nArgs = <IValueMap>{};
 
-                    var dialog = <DialogViewModel> parent.dialog;
-                    var object = <DomainObjectViewModel> parent.object;
+                    const dialog = <DialogViewModel> parent.dialog;
+                    const object = <DomainObjectViewModel> parent.object;
 
                     if (dialog) {
-                        _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
-
-                            var parm = _.find(dialog.parameters, (p: ParameterViewModel) => p.id === n);
-
-                            var newValue = parm.getValue();
+                        _.forEach(pArgs, (v, n) => {
+                            const parm = _.find(dialog.parameters, p => p.id === n);
+                            const newValue = parm.getValue();
                             nArgs[n] = newValue;
                         });
                     }
 
                     // todo had to add object.properties check to get this working again - find out why
                     if (object && object.properties) {
-                        _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
-
-                            var property = _.find(object.properties, (p: PropertyViewModel) => p.argId === n);
-
-                            var newValue = property.getValue();
+                        _.forEach(pArgs, (v, n) => {
+                            const property = _.find(object.properties, p => p.argId === n);
+                            const newValue = property.getValue();
                             nArgs[n] = newValue;
                         });
                     }
@@ -197,19 +193,19 @@ module NakedObjects.Angular.Gemini {
                 function populateDropdown() {
                     const nArgs = populateArguments();
                     const prompts = scope.select({ args: nArgs });
-                    prompts.then(function (cvms: ChoiceViewModel[]) {
+                    prompts.then((cvms: ChoiceViewModel[]) => {
                         // if unchanged return 
-                        if (cvms.length === currentOptions.length && _.all(cvms, (c : ChoiceViewModel, i) => { return c.equals(currentOptions[i]); })) {
+                        if (cvms.length === currentOptions.length && _.all(cvms, (c, i) =>  c.equals(currentOptions[i]))) {
                             return;
                         }
 
                         element.find("option").remove();
-                            const emptyOpt = "<option></option>";
-                            element.append(emptyOpt);
+                        const emptyOpt = "<option></option>";
+                        element.append(emptyOpt);
 
-                        _.forEach(cvms, (cvm) => {
+                        _.forEach(cvms, cvm => {
                            
-                            var opt = $("<option></option>");
+                            const opt = $("<option></option>");
                             opt.val(cvm.value);
                             opt.text(cvm.name);
 
@@ -219,19 +215,16 @@ module NakedObjects.Angular.Gemini {
                         currentOptions = cvms;
 
                         if (viewModel.isMultipleChoices && viewModel.multiChoices) {
-                            const vals = _.map(viewModel.multiChoices, (c: ChoiceViewModel) => {
-                                return c.value;
-                            });
+                            const vals = _.map(viewModel.multiChoices, c => c.value);
                             $(element).val(vals);
                         } else if (viewModel.choice) {
                             $(element).val(viewModel.choice.value);
                         } 
-                    },
-                    function () {
-                          // error clear everything 
-                          element.find("option").remove();
-                          viewModel.choice = null;
-                          currentOptions = []; 
+                    }).catch(() => {
+                        // error clear everything 
+                        element.find("option").remove();
+                        viewModel.choice = null;
+                        currentOptions = []; 
                     });
                 }
 
@@ -239,22 +232,20 @@ module NakedObjects.Angular.Gemini {
 
                     if (viewModel.isMultipleChoices) {
                         const options = $(element).find("option:selected");
-                        var kvps = [];
+                        const kvps = [];
 
-                        options.each((n, e) => {
-                            kvps.push({ key: $(e).text(), value: $(e).val() });
-                        });
-                        const cvms = _.map(kvps, (o) =>  ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
+                        options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
+                        const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
                         viewModel.multiChoices = cvms;
 
                     } else {
                         const option = $(element).find("option:selected");
                         const val = option.val();
                         const key = option.text();
-                        var cvm = ChoiceViewModel.create(new Value(val), viewModel.id, key);
+                        const cvm = ChoiceViewModel.create(new Value(val), viewModel.id, key);
                         viewModel.choice = cvm;
-                        scope.$apply(function() {
-                            ngModel.$parsers.push((val) => { return cvm; });
+                        scope.$apply(() => {
+                            ngModel.$parsers.push(() => cvm);
                             ngModel.$setViewValue(cvm.name);
                         });
                     }
@@ -262,13 +253,11 @@ module NakedObjects.Angular.Gemini {
 
 
                 function setListeners() {
-                    _.forEach(<_.Dictionary<Value>>pArgs, (v, n) => {
-                        $("#" + n + " :input").on("change", (e: JQueryEventObject) => populateDropdown() );
-                    });
-                    $(element).on("change", optionChanged); 
+                    _.forEach(pArgs, (v, n) => $(`#${n} :input`).on("change", () => populateDropdown()));
+                    $(element).on("change", optionChanged);
                 }
 
-                ngModel.$render = function () {
+                ngModel.$render = () => {
                     // initial populate
                     //populateDropdown();
                 }; // do on the next event loop,
@@ -282,7 +271,7 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
-    app.directive("nogRightclick", $parse => (scope, element, attrs) => {
+    app.directive("geminiRightclick", $parse => (scope, element, attrs) => {
         const fn = $parse(attrs.nogRightclick);
         element.bind("contextmenu", event => {
             scope.$apply(() => {
