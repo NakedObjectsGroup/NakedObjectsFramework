@@ -97,7 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = Url + "#/object/object?object1=AdventureWorksModel.Store-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
 
         [TestMethod]
         public virtual void RightClickReferenceInLeftPaneObject()

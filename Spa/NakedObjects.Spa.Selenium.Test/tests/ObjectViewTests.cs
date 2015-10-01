@@ -92,7 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
-            var testUrl = Url + "#/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=List";
+            var testUrl = Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=List";
             br.Navigate().GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
             var title = row.Text;
@@ -103,7 +103,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
-            var testUrl = Url + "#/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=Table";
+            var testUrl = Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=Table";
             br.Navigate().GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);

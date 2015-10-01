@@ -29,11 +29,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
 
-        protected const string CustomersMenuUrl = Url + "#/home?menu1=CustomerRepository";
-        protected const string OrdersMenuUrl = Url + "#/home?menu1=OrderRepository";
-        protected const string SpecialOffersMenuUrl = Url + "#/home?menu1=SpecialOfferRepository";
-        protected const string ProductServiceUrl = Url + "#/home?menu1=ProductRepository";
-        protected const string SalesServiceUrl = Url + "#/home?menu1=SalesRepository";
+        protected const string CustomersMenuUrl = Url + "#/gemini/home?menu1=CustomerRepository";
+        protected const string OrdersMenuUrl = Url + "#/gemini/home?menu1=OrderRepository";
+        protected const string SpecialOffersMenuUrl = Url + "#/gemini/home?menu1=SpecialOfferRepository";
+        protected const string ProductServiceUrl = Url + "#/gemini/home?menu1=ProductRepository";
+        protected const string SalesServiceUrl = Url + "#/gemini/home?menu1=SalesRepository";
 
         protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
 
@@ -42,10 +42,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
 
-        protected const string Store555UrlWithActionsMenuOpen = Url + "#/object?object1=AdventureWorksModel.Store-555&actions1=open";
-        protected const string Product968Url = Url + "#/object?object1=AdventureWorksModel.Product-968";
-        protected const string Product469Url = Url + "#/object?object1=AdventureWorksModel.Product-469";
-        protected const string Product870Url = Url + "#/object?object1=AdventureWorksModel.Product-870";
+        protected const string Store555UrlWithActionsMenuOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&actions1=open";
+        protected const string Product968Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-968";
+        protected const string Product469Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-469";
+        protected const string Product870Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-870";
 
         protected const int StoreActions = 8;
         protected const int StoreProperties = 6;
