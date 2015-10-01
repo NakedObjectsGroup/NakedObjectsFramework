@@ -28,14 +28,14 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
-            location.path("/apath");
+            location.path("/gemini/apath");
             location.search({ search: true });
 
             urlManager.setError();
         }));
 
         it("sets an error path and clears search", () => {
-            expect(location.path()).toBe("/error");
+            expect(location.path()).toBe("/gemini/error");
             expect(location.search()).toEqual({});
         });
     });
@@ -49,7 +49,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
-            location.path("/apath");
+            location.path("/gemini/apath");
             location.search(search);
         }));
 
@@ -61,7 +61,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             }));
 
             it("sets the menu id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -74,7 +74,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             }));
 
             it("sets the menu id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -90,7 +90,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
-            location.path("/apath");
+            location.path("/gemini/apath");
             location.search(search);
         }));
 
@@ -103,7 +103,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the dialog id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -116,7 +116,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             }));
 
             it("sets the dialog id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -131,7 +131,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             location = $location;
 
-            location.path("/apath");
+            location.path("/gemini/apath");
             location.search(search);
 
             urlManager.closeDialog(1);
@@ -146,7 +146,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("clears the dialog id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -160,7 +160,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("clears the dialog id in the search", () => {
-                expect(location.path()).toBe("/apath");
+                expect(location.path()).toBe("/gemini/apath");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -190,7 +190,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt1-id1";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setObject(obj1, 1);
@@ -198,7 +198,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object in the search", () => {
-                expect(location.path()).toBe("/object");
+                expect(location.path()).toBe("/gemini/object");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -209,7 +209,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt1-id1";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setObject(obj1, 1);
@@ -217,7 +217,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object in the search", () => {
-                expect(location.path()).toBe("/object/home");
+                expect(location.path()).toBe("/gemini/object/home");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -229,7 +229,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt2-id2";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setObject(obj2, 2);
@@ -237,7 +237,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object in the search", () => {
-                expect(location.path()).toBe("/home/object");
+                expect(location.path()).toBe("/gemini/home/object");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -249,7 +249,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager) => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt2-id2";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setObject(obj2, 2);
@@ -257,7 +257,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object in the search", () => {
-                expect(location.path()).toBe("/home/object");
+                expect(location.path()).toBe("/gemini/home/object");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -291,7 +291,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
             
                 urlManager.setQuery(action11, 1);
@@ -299,7 +299,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/query");
+                expect(location.path()).toBe("/gemini/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -313,7 +313,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.menu1 = "mid";
                 search.action1 = "12";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action12, 1);
@@ -321,7 +321,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/query");
+                expect(location.path()).toBe("/gemini/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -335,7 +335,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action11, 1);
@@ -343,7 +343,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/query/home");
+                expect(location.path()).toBe("/gemini/query/home");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -357,7 +357,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.menu1 = "mid";
                 search.action1 = "12";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action12, 1);
@@ -365,7 +365,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/query/home");
+                expect(location.path()).toBe("/gemini/query/home");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -394,7 +394,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search.parm1_pid1 = "val1";
                 search.parm1_pid2 = "val2";
 
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action11, 1, dvm);
@@ -402,7 +402,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/query");
+                expect(location.path()).toBe("/gemini/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -418,7 +418,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action21, 2);
@@ -426,7 +426,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/home/query");
+                expect(location.path()).toBe("/gemini/home/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -440,7 +440,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.menu2 = "mid";
                 search.action2 = "22";
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action22, 2);
@@ -448,7 +448,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/home/query");
+                expect(location.path()).toBe("/gemini/home/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -462,7 +462,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action21, 2);
@@ -470,7 +470,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/home/query");
+                expect(location.path()).toBe("/gemini/home/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -484,7 +484,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.menu2 = "mid";
                 search.action2 = "22";
-                location.path("/home/home");
+                location.path("/gemini/home/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action22, 2);
@@ -492,7 +492,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/home/query");
+                expect(location.path()).toBe("/gemini/home/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -521,7 +521,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search.parm2_pid1 = "val1";
                 search.parm2_pid2 = "val2";
 
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
 
                 urlManager.setQuery(action21, 2, dvm);
@@ -529,7 +529,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/home/query");
+                expect(location.path()).toBe("/gemini/home/query");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -545,7 +545,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                 spyOn(property, "value").and.returnValue({ link : () => { return { href: () => "objects/dt/id" } } });
 
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
             }));
 
@@ -561,7 +561,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the property id in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -577,7 +577,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the property id in the search", () => {
-                    expect(location.path()).toBe("/home/object");
+                    expect(location.path()).toBe("/gemini/home/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -594,7 +594,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                 spyOn(link, "href").and.returnValue( "objects/dt/id" );
 
-                location.path("/home");
+                location.path("/gemini/home");
                 location.search(preSearch);
             }));
 
@@ -610,7 +610,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the property id in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -626,7 +626,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the property id in the search", () => {
-                    expect(location.path()).toBe("/home/object");
+                    expect(location.path()).toBe("/gemini/home/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -731,7 +731,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 location = $location;   
 
-                location.path("/object");
+                location.path("/gemini/object");
                 location.search(preSearch);
             }));
 
@@ -749,7 +749,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -768,7 +768,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -787,7 +787,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -806,7 +806,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -825,7 +825,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -844,7 +844,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -858,7 +858,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 location = $location;
 
-                location.path("/object");
+                location.path("/gemini/object");
                 location.search(preSearch);
             }));
 
@@ -876,7 +876,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -895,7 +895,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -914,7 +914,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -933,7 +933,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -952,7 +952,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
@@ -971,7 +971,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 }));
 
                 it("sets the collection state in the search", () => {
-                    expect(location.path()).toBe("/object");
+                    expect(location.path()).toBe("/gemini/object");
                     expect(location.search()).toEqual(search);
                 });
             });
