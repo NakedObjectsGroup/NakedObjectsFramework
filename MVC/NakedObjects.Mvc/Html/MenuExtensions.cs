@@ -160,11 +160,9 @@ namespace NakedObjects.Web.Mvc.Html {
             else if (item is IMenu) {
                 descriptor = SubMenuAsElementDescriptor(html, item as IMenuImmutable, nakedObject, isEdit);
             }
-            #pragma warning disable 612,618
-             else if (item is CustomMenuItem) {
-                            descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
-                        }
-            #pragma warning restore 612,618
+            else if (item is CustomMenuItem) {
+                descriptor = CustomMenuItemAsDescriptor(html, item as CustomMenuItem);
+            }
             return descriptor;
         }
 
@@ -229,20 +227,8 @@ namespace NakedObjects.Web.Mvc.Html {
             }
         }
 
-        [Obsolete]
         private static ElementDescriptor CustomMenuItemAsDescriptor(HtmlHelper html, CustomMenuItem customItem) {
             return html.ObjectActionAsElementDescriptor(customItem, false);
-        }
-
-        internal static MvcHtmlString MenuOnQueryable(this HtmlHelper html, object domainObject) {
-            INakedObjectAdapter nakedObject = html.Framework().GetNakedObject(domainObject);
-            if (!nakedObject.Spec.IsQueryable) {
-                throw new ArgumentException(String.Format("{0} is not a Queryable", nakedObject.Spec));
-            }
-            return CommonHtmlHelper.BuildMenuContainer(html.CollectionContributedActions(nakedObject, true),
-                IdHelper.MenuContainerName,
-                IdHelper.GetActionContainerId(nakedObject),
-                IdHelper.GetActionLabel(nakedObject));
         }
     }
 }
