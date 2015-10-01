@@ -43,7 +43,7 @@
 
                         <div ng-switch-when="string" ng-switch="property.format">
                             <div ng-switch-when="date-time" class='value'>{{property.value }}</div>
-                            <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
+                            <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
                             <div ng-switch-default class='value'>{{property.value}}</div>
                         </div>
 
@@ -66,7 +66,7 @@
                                     <div ng-switch-when="date-time">
                                         <input type='text' ng-model="$parent.property.value" gemini-datepicker />
                                     </div>
-                                    <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" nog-attachment></div>
+                                    <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
                                     <input ng-switch-default type='text' placeholder='{{property.value}}' ng-model="property.value" />
                                 </div>
 

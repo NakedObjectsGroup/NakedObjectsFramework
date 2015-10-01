@@ -13,8 +13,6 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-
-// tested 
 module NakedObjects.Angular.Gemini {
 
     interface ISelectScope extends ng.IScope {
@@ -320,24 +318,24 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
-    app.directive('nogAttachment', function ($window : ng.IWindowService): ng.IDirective {
+    app.directive("geminiAttachment", ($window : ng.IWindowService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
-            restrict: 'A',
+            restrict: "A",
             // Always use along with an ng-model
-            require: '?ngModel',
-            link: function (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
+            require: "?ngModel",
+            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
                 if (!ngModel) {
                     return;
                 }
 
                 function downloadFile(url : string, mt : string, success : (resp : Blob) => void ) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', url, true);
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", url, true);
                     xhr.responseType = "blob";
                     xhr.setRequestHeader("Accept", mt); 
-                    xhr.onreadystatechange = function () {
+                    xhr.onreadystatechange = () => {
                         if (xhr.readyState === 4) {
                             success(<Blob>xhr.response);
                         }
@@ -346,42 +344,36 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 function displayInline(mt: string) {
-
-                    if (mt === "image/jpeg" ||
-                        mt === "image/gif" ||
-                        mt === "application/octet-stream") {
-                        return true;
-                    }
-
-                    return false;
+                    return mt === "image/jpeg" ||
+                        mt === "image/gif"  ||
+                        mt === "application/octet-stream";
                 }
 
-                var clickHandler = function () {
+                const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
                     const url = attachment.href;
                     const mt = attachment.mimeType;
-                    downloadFile(url, mt, (resp : Blob) => {
-                        var burl = URL.createObjectURL(resp); 
+                    downloadFile(url, mt, resp => {
+                        const burl = URL.createObjectURL(resp); 
                         $window.location.href = burl;                    
                     });
                     return false; 
                 };
-                ngModel.$render = function () {
+
+                ngModel.$render = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
                     const url = attachment.href;
                     const mt = attachment.mimeType;
-                    var title = attachment.title;
-                    const link = "<a href='" + url + "'><span></span></a>";
+                    const title = attachment.title;
+                    const link = `<a href='${url}'><span></span></a>`;
                     element.append(link);
 
-                    var anchor = element.find("a");
+                    const anchor = element.find("a");
                     if (displayInline(mt)) {
 
-                        downloadFile(url, mt, (resp: Blob) => {
-                            var reader = new FileReader();
-                            reader.onloadend = function () {
-                                anchor.html("<img src='" + reader.result + "' alt='" + title + "' />");
-                            };
+                        downloadFile(url, mt, resp => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
                             reader.readAsDataURL(resp);
                         });
                     }
@@ -389,7 +381,7 @@ module NakedObjects.Angular.Gemini {
                         anchor.html(title); 
                     }
                   
-                    anchor.on('click', clickHandler);                 
+                    anchor.on("click", clickHandler);                 
                 };
             }
         };
