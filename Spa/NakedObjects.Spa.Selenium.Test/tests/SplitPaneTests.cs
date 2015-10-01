@@ -84,6 +84,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Home, "Home");
         }
+
+        [TestMethod]
+        public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
+        {
+            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            Click(SwapIcon());
+            WaitFor(Pane.Left, PaneType.Home, "Home");
+            WaitFor(Pane.Right, PaneType.Object, "Twin Cycles, AW00000555");
+        }
         #endregion
 
         #region Actions within split panes
@@ -190,6 +200,39 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var selector = CssSelectorFor(Pane.Left) + " .dialog ";
             var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
+
+        [TestMethod]
+        public virtual void SwapPanes()
+        {
+            br.Navigate().GoToUrl(twoObjects);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            Click(SwapIcon());
+            WaitFor(Pane.Left, PaneType.Object, "SO71926");
+            WaitFor(Pane.Right, PaneType.Object, "Twin Cycles, AW00000555");
+        }
+
+        [TestMethod]
+        public virtual void FullPaneFromLeft()
+        {
+            br.Navigate().GoToUrl(twoObjects);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            Click(FullIcon());
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+        }
+
+        [TestMethod]
+        public virtual void FullPaneFromRight()
+        {
+            br.Navigate().GoToUrl(twoObjects);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            RightClick(FullIcon());
+            WaitFor(Pane.Single, PaneType.Object, "SO71926");
+        }
+
+
         #endregion
 
     }

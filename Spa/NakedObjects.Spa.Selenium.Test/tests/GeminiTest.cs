@@ -397,6 +397,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             return FindElementByCss(".footer .icon-home");
         }
+
+        protected IWebElement SwapIcon()
+        {
+            return FindElementByCss(".footer .icon-swap");
+        }
+
+        protected IWebElement FullIcon()
+        {
+            return FindElementByCss(".footer .icon-full");
+        }
         #endregion
     }
 }
