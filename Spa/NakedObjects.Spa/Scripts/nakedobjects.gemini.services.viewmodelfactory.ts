@@ -523,13 +523,16 @@ module NakedObjects.Angular.Gemini{
             // for dropping 
 
             const link = objectRep.selfLink();
-            link.set("title", objectViewModel.title);
+            if (link) {
+                // not transient - can't drag transients so no need to set up IDraggable members
+                link.set("title", objectViewModel.title);
 
-            const value = new Value(link);
+                const value = new Value(link);
 
-            objectViewModel.value = value.toString();
-            objectViewModel.reference = value.toValueString();
-            objectViewModel.choice = ChoiceViewModel.create(value, "");
+                objectViewModel.value = value.toString();
+                objectViewModel.reference = value.toValueString();
+                objectViewModel.choice = ChoiceViewModel.create(value, "");
+            }
 
             return objectViewModel;
         };
