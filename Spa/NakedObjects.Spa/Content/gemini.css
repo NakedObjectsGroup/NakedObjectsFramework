@@ -187,8 +187,16 @@
     .value.droppable {
         border: solid;
         border-width: 1px;
-        border-color: white;
         width: 225px;
+    }
+
+    .property .value.droppable {
+        border-color: white;
+    }
+
+   .parameter .value.droppable {
+        border-color: black;
+        height: 20px;
     }
 
     .value.droppable.candrop {
