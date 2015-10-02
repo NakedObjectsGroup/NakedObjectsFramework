@@ -7,7 +7,7 @@
     <table >
         <tbody>
             <tr ng-repeat="item in collection.items" ng-class="item.color" ng-click="item.doClick()"  gemini-rightclick="item.doClick(true)" >
-                <td class="reference clickable-area" >
+                <td class="reference clickable-area" gemini-drag>
                     {{item.title}}
                 </td>
             </tr>

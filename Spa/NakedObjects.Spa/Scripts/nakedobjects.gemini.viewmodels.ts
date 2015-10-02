@@ -21,6 +21,7 @@ module NakedObjects.Angular.Gemini {
         value : Object;
         reference: string;
         choice: ChoiceViewModel;
+        color: string;
     }
 
     export class AttachmentViewModel {
@@ -154,6 +155,7 @@ module NakedObjects.Angular.Gemini {
             this.value = newValue.value;
             this.reference = newValue.reference;
             this.choice = newValue.choice;
+            this.color = newValue.color;
         }
 
         canDropOn = (targetType: string) => _.any(this.possibleDropTypes, t => t === targetType);
