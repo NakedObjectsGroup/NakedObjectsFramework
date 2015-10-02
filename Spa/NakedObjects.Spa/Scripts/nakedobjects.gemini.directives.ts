@@ -292,15 +292,15 @@ module NakedObjects.Angular.Gemini {
             return cloned;
         }
 
-
         element.draggable({
             helper: cloneDraggable,
             zIndex: 9999
         });
 
         element.on("dragstart", (event, ui) => {
-            const draggableVm = scope.property || scope.$parent.object;
+            const draggableVm = scope.property || scope.item || scope.$parent.object;
 
+            // make sure dragged element is correct color (object will not be set yet)
             ui.helper.addClass(draggableVm.color);
 
             // add vm to helper and original elements as accept and drop use different ones 
