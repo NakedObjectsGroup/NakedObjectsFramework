@@ -37,11 +37,11 @@
         float: left;
     }
 /*Three main roots*/
-.home, .object, .query, .error {
-    padding-left: 20px;
-    height: 100%;
-    overflow-y: auto;
-}
+    .home, .object, .query, .error {
+        padding-left: 20px;
+        height: 100%;
+        overflow-y: auto;
+    }
 
 /*Sub-panes - layout */
     .actions, .main-column, .collections {
@@ -180,6 +180,23 @@
 
     .name, .value, .property .reference {
         float: left;
+    }
+
+    
+/* Drag and drop*/
+    .value.droppable {
+        border: solid;
+        border-width: 1px;
+        border-color: white;
+        width: 225px;
+    }
+
+    .value.droppable.candrop {
+        border-color: lawngreen;
+    }
+
+    .value.droppable.dropping {
+        background-color: white;
     }
 
 /*TODO:  Review for consistent use of black & white */
