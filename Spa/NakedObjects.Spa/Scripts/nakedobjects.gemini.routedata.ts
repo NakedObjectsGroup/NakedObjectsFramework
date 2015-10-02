@@ -22,6 +22,11 @@ module NakedObjects.Angular.Gemini {
         Table
     }
 
+    export enum ApplicationMode {
+        Gemini,
+        Cicero
+    }
+
     export class RouteData {
         constructor() {
             this.pane1 = new PaneRouteData(1);

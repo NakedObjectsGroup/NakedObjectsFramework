@@ -25,7 +25,7 @@ module NakedObjects.Angular.Gemini {
         setDialog(dialogId: string, paneId: number);
         closeDialog(paneId: number);
 
-        setObject(resultObject: DomainObjectRepresentation, paneId: number);
+        setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
         setQuery(action: ActionMember, paneId: number, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember, paneId: number);
         setItem(link: Link, paneId: number): void;
@@ -36,7 +36,7 @@ module NakedObjects.Angular.Gemini {
         setQueryState(paneId: number, state: CollectionViewState): void;
 
         setObjectEdit(edit: boolean, paneId: number);
-        setHome(paneId: number);
+        setHome(paneId: number, mode? : ApplicationMode);
 
         pushUrlState(paneId: number): void;
         clearUrlState(paneId: number): void;
@@ -59,6 +59,9 @@ module NakedObjects.Angular.Gemini {
         const dialog = "dialog";
         const parm = "parm";
         const actions = "actions";
+
+        const gemini = "gemini";
+        const cicero = "cicero";
 
         const capturedPanes = [];
 
@@ -111,16 +114,24 @@ module NakedObjects.Angular.Gemini {
             return _.omit(search, toClear);
         }
 
-        function setupPaneNumberAndTypes(pane: number, newPaneType: string) {
+        function setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode ?: ApplicationMode) {
 
             const path = $location.path();
             const segments = path.split("/");
-            const [, , pane1Type, pane2Type] = segments; 
-            
+            let [, mode, pane1Type, pane2Type] = segments;
+            let changeMode = false;
+
+            if (newMode) {
+                const newModeString = newMode.toString().toLowerCase();
+                changeMode = mode !== newModeString;
+                mode = newModeString;
+            }
+
             // changing item on pane 1
             // make sure pane is of correct type
             if (pane === 1 && pane1Type !== newPaneType) {
-                const newPath = `/gemini/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;
+                const newPath = `/${mode}/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;              
+                changeMode = false;
                 $location.path(newPath);
             }
 
@@ -128,10 +139,15 @@ module NakedObjects.Angular.Gemini {
             // either single pane so need to add new pane of appropriate type
             // or double pane with second pane of wrong type. 
             if (pane === 2 && (singlePane() || pane2Type !== newPaneType)) {
-                const newPath = `/gemini/${pane1Type}/${newPaneType}`;
+                const newPath = `/${mode}/${pane1Type}/${newPaneType}`;            
+                changeMode = false;
                 $location.path(newPath);
             }
 
+            if (changeMode) {
+                const newPath = `/${mode}/${pane1Type}/${pane2Type}`;
+                $location.path(newPath);
+            }
         }
 
         function capturePane(paneId: number) {
@@ -152,8 +168,8 @@ module NakedObjects.Angular.Gemini {
             return toOid(results[2],results[3]);
         }
 
-        function setObjectSearch(paneId: number, oid: string) {
-            setupPaneNumberAndTypes(paneId, object);
+        function setObjectSearch(paneId: number, oid: string, mode?: ApplicationMode) {
+            setupPaneNumberAndTypes(paneId, object, mode);
 
             const search = clearPane($location.search(), paneId);
             search[object + paneId] = oid;
@@ -251,7 +267,7 @@ module NakedObjects.Angular.Gemini {
             $location.path("/gemini/error").search({});
         };
 
-        helper.setHome = (paneId: number) => {
+        helper.setHome = (paneId: number, mode ? : ApplicationMode) => {
             setupPaneNumberAndTypes(paneId, home);
             // clear search on this pane 
             $location.search(clearPane($location.search(), paneId));
@@ -302,9 +318,8 @@ module NakedObjects.Angular.Gemini {
         helper.swapPanes = () => {
             const path = $location.path();
             const segments = path.split("/");
-            const oldPane1 = segments[2];
-            const oldPane2 = segments[3] || home;
-            const newPath = `/gemini/${oldPane2}/${oldPane1}`;
+            const [, mode, oldPane1, oldPane2 = home] = segments;
+            const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
             const search = swapSearchIds($location.search());
 
             $location.path(newPath).search(search);
@@ -319,8 +334,9 @@ module NakedObjects.Angular.Gemini {
 
                 const path = $location.path();
                 const segments = path.split("/");
+                const mode = segments[1];
                 const paneToKeep = segments[paneToKeepId + 1];            
-                const newPath = `/gemini/${paneToKeep}`;
+                const newPath = `/${mode}/${paneToKeep}`;
 
                 let search = $location.search();
 
