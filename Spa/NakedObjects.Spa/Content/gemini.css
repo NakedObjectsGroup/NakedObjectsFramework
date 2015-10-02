@@ -68,7 +68,7 @@
     .header .title, .header .type {
         position: relative;
         font-weight: 200;
-        font-size: 32pt;
+        font-size: 24pt;
         line-height: 38pt;
     }
 
@@ -174,20 +174,32 @@
 
     .input-control input {
         width: 230px;
-        padding-left: 5px;
-        margin-bottom: 5px;
     }
 
     .name, .value, .property .reference {
         float: left;
     }
 
+/*Validation messages*/
+
+    .validation {
+        padding-left: 10px;
+        font-size: 16pt;
+    }
+    .property .validation {
+        color: white;
+    }
+
+    .parameter .validation {
+        color: red;
+    }
     
 /* Drag and drop*/
     .value.droppable {
         border: solid;
         border-width: 1px;
         width: 225px;
+        height: 20px;
     }
 
     .property .value.droppable {
@@ -196,7 +208,6 @@
 
    .parameter .value.droppable {
         border-color: black;
-        height: 20px;
     }
 
     .value.droppable.candrop {

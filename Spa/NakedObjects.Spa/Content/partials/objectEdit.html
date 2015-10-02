@@ -37,8 +37,6 @@
                         </div>
 
                         <select ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"></select>
-
-                        <div class='error'>{{property.message}}</div>
                     </div>
                 </div>
                 <div ng-switch-when="scalar" ng-switch="property.isEditable">
@@ -88,10 +86,9 @@
 
                         </div>
                         <select ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"></select>
-
-                        <div class='error'>{{property.message}}</div>
                     </div>
                 </div>
+                <div class="validation">{{property.message}}</div>
             </div>
         </div>
     </div>
