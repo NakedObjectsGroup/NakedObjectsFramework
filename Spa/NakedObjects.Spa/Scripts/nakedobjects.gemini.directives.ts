@@ -284,9 +284,16 @@ module NakedObjects.Angular.Gemini {
     app.directive("geminiDrag", () => (scope, element) => {
 
         const cloneDraggable = () => {
-            const cloned = $(element).clone();
+            let cloned;
 
-            // make the dragged element look like a reference 
+             // make the dragged element look like a reference 
+            if ($(element)[0].nodeName.toLowerCase() === "tr") {
+                const title = $(element).find("td:first").text();
+                cloned = $(`<div>${title}</div>`);
+            } else {
+                cloned = $(element).clone();
+            }
+   
             cloned.removeClass();
             cloned.addClass("reference");
             return cloned;
@@ -309,20 +316,14 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
-    app.directive('geminiEnter', function () {
-        return function (scope, element, attrs) {
-            element.bind("keydown keypress", function (event) {
-                if (event.which === 13) {
-                    scope.$apply(function () {
-                        scope.$eval(attrs.geminiEnter);
-                    });
-
-                    event.preventDefault();
-                }
-            });
-        };
+    app.directive("geminiEnter", () => (scope, element, attrs) => {
+        element.bind("keydown keypress", event => {
+            if (event.which === 13) {
+                scope.$apply(() => scope.$eval(attrs.geminiEnter));
+                event.preventDefault();
+            }
+        });
     });
-
 
     app.directive("geminiDrop", () => (scope, element) => {
 
