@@ -283,10 +283,25 @@ module NakedObjects.Angular.Gemini {
 
     app.directive("geminiDrag", () => (scope, element) => {
 
-        element.draggable({ helper: "clone", zIndex: 9999 });
+        const cloneDraggable = () => {
+            const cloned = $(element).clone();
+
+            // make the dragged element look like a reference 
+            cloned.removeClass();
+            cloned.addClass("reference");
+            return cloned;
+        }
+
+
+        element.draggable({
+            helper: cloneDraggable,
+            zIndex: 9999
+        });
 
         element.on("dragstart", (event, ui) => {
-            const draggableVm = scope.property || scope.$parent.object; 
+            const draggableVm = scope.property || scope.$parent.object;
+
+            ui.helper.addClass(draggableVm.color);
 
             // add vm to helper and original elements as accept and drop use different ones 
             ui.helper.data(draggableVmKey, draggableVm);
