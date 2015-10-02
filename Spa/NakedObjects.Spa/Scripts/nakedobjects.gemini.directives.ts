@@ -286,7 +286,7 @@ module NakedObjects.Angular.Gemini {
         element.draggable({ helper: "clone", zIndex: 9999 });
 
         element.on("dragstart", (event, ui) => {
-            const draggableVm = scope.property;
+            const draggableVm = scope.property || scope.$parent.object; 
 
             // add vm to helper and original elements as accept and drop use different ones 
             ui.helper.data(draggableVmKey, draggableVm);
@@ -301,7 +301,7 @@ module NakedObjects.Angular.Gemini {
 
         const accept = (draggable) => {
             const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
-            const draggableVm: ValueViewModel = draggable.data(draggableVmKey);
+            const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
             return draggableVm.canDropOn(droppableVm.returnType);
         }
 
@@ -316,7 +316,7 @@ module NakedObjects.Angular.Gemini {
 
             const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
             const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
-            const draggableVm = <ValueViewModel>  ui.draggable.data(draggableVmKey);
+            const draggableVm = <IDraggableViewModel>  ui.draggable.data(draggableVmKey);
 
             droppableScope.$apply(() => droppableVm.drop(draggableVm));
         });

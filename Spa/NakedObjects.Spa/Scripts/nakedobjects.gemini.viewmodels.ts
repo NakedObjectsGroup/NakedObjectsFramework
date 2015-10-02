@@ -16,6 +16,12 @@
 
 module NakedObjects.Angular.Gemini {
 
+    export interface IDraggableViewModel {
+        canDropOn(returnType: string);
+        value : Object;
+        reference: string;
+        choice: ChoiceViewModel;
+    }
 
     export class AttachmentViewModel {
         href: string;
@@ -144,7 +150,7 @@ module NakedObjects.Angular.Gemini {
             return this.getValue().toString();
         }
 
-        drop(newValue: ValueViewModel) {
+        drop(newValue: IDraggableViewModel) {
             this.value = newValue.value;
             this.reference = newValue.reference;
             this.choice = newValue.choice;
@@ -214,7 +220,7 @@ module NakedObjects.Angular.Gemini {
         }
     } 
     
-    export class PropertyViewModel extends ValueViewModel {
+    export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
 
         target: string;       
         isEditable: boolean;    
@@ -265,7 +271,7 @@ module NakedObjects.Angular.Gemini {
     } 
 
 
-    export class DomainObjectViewModel extends MessageViewModel{
+    export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel{
         title: string;
         domainType: string; 
         properties: PropertyViewModel[];
@@ -283,6 +289,12 @@ module NakedObjects.Angular.Gemini {
         showEdit(): boolean {
             return  !this.isTransient &&  _.any(this.properties, (p) => p.isEditable);
         }
+
+        canDropOn = (targetType: string) => _.any([this.domainType], t => t === targetType);
+
+        value: Object;
+        reference: string;
+        choice : ChoiceViewModel;
     }
 
     export class ToolBarViewModel {

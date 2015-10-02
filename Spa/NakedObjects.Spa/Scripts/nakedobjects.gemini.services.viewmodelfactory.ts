@@ -519,6 +519,17 @@ module NakedObjects.Angular.Gemini{
                 urlManager.toggleObjectMenu(paneId);
             }
 
+            // for dropping 
+
+            const link = objectRep.selfLink();
+            link.set("title", objectViewModel.title);
+
+            const value = new Value(link);
+
+            objectViewModel.value = value.toString();
+            objectViewModel.reference = value.toValueString();
+            objectViewModel.choice = ChoiceViewModel.create(value, "");
+
             return objectViewModel;
         };
 
