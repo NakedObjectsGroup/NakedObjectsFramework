@@ -36,6 +36,7 @@ module NakedObjects.Angular.Gemini{
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
         domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
+        ciceroViewModel(wrapped: any): CiceroViewModel;
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
@@ -579,6 +580,17 @@ module NakedObjects.Angular.Gemini{
             return tvm;
         }
 
+        //Cicero
+        viewModelFactory.ciceroViewModel = (wrapped: any) => {
+            const vm = new CiceroViewModel();
+            vm.wrapped = wrapped;
+            vm.processCommand = (input: string) => {            
+                if (input == "home") {
+                    $location.path("/cicero/home").search({});
+                }
+            }
+            return vm;
+        }
     });
 
 }

@@ -294,6 +294,21 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
+    app.directive('geminiEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.geminiEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+
+
     app.directive("geminiDrop", () => (scope, element) => {
 
         const propertyScope = () => scope.$parent.$parent.$parent.$parent;

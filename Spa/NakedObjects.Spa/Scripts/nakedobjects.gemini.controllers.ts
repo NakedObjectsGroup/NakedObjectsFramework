@@ -57,4 +57,31 @@ module NakedObjects.Angular.Gemini {
     app.controller("ToolBarController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
         handlers.handleToolBar($scope);
     });
+
+    //Cicero
+    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory) => {
+        const routeData = urlManager.getRouteData();        
+        const pane = routeData.pane1;
+
+        if (pane.objectId) {
+            var [dt, ...id] = pane.objectId.split("-");
+
+            context.getObject(pane.paneId, dt, id).
+                then((object: DomainObjectRepresentation) => {
+
+                    const ovm = viewModelFactory.domainObjectViewModel(object, pane.collections, pane.paneId);
+                    const cvm = viewModelFactory.ciceroViewModel(ovm);
+                    $scope.cicero = cvm;
+
+                    // cache
+                    //cacheRecentlyViewed(object);
+
+                }).catch(error => {
+                    //setError(error);
+                });
+        } else { //home
+            const cvm = viewModelFactory.ciceroViewModel(null);
+            $scope.cicero = cvm;
+        }
+    });
 }

@@ -23,6 +23,7 @@
     <Content Include="Content\partials\collectionList.html" />
     <Content Include="Content\partials\collectionTable.html" />
     <Content Include="Content\partials\collectionSummary.html" />
+    <Content Include="Content\partials\cicero.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
     <Content Include="Content\partials\objectEdit.html" />

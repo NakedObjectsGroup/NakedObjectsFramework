@@ -307,4 +307,20 @@ module NakedObjects.Angular.Gemini {
         swapPanes: () => void;
         singlePane: (right?: boolean) => void;
     }
+
+    //Cicero
+    export class CiceroViewModel {
+        wrapped: any;
+        announcement() {
+            const vm = this.wrapped;
+            if (vm instanceof DomainObjectViewModel) {
+                return vm.domainType + vm.title;
+            }
+            if (this.wrapped == null) {
+                return "Home";
+            }
+        }
+        command: string;
+        processCommand: (input: string) => void;
+    }
 }

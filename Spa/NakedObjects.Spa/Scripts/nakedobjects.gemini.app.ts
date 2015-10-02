@@ -45,6 +45,7 @@ module NakedObjects.Angular {
         toolBar: ToolBarViewModel;
         objectTemplate: string;
         collectionsTemplate: string;
+        cicero: Angular.Gemini.CiceroViewModel;
     }
 
 
@@ -101,6 +102,8 @@ module NakedObjects.Angular {
     export const collectionListTemplate = getSvrPath() + "Content/partials/collectionList.html";
     export const collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
 
+    //Cicero
+    export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
 
     Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.
@@ -157,6 +160,19 @@ module NakedObjects.Angular {
             when("/gemini/error", {
                 templateUrl: singleErrorPageTemplate,
                 controller: "ErrorController"
+            }).
+            //Cicero
+            when("/cicero/home", {
+                templateUrl: ciceroTemplate,
+                controller: "CiceroController"
+            }).
+            when("/cicero/object", {
+                templateUrl: ciceroTemplate,
+                controller: "CiceroController"
+            }).
+            when("/cicero/query", {
+                templateUrl: ciceroTemplate,
+                controller: "CiceroController"
             }).
             otherwise({
             redirectTo: "/gemini/home"
