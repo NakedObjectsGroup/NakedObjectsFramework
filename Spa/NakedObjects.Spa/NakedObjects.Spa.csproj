@@ -99,6 +99,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.representationloader.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.transformstrategy.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.app.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.controllers.ts" />
@@ -139,27 +140,6 @@
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.urlmanager.test.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.viewmodelfactory.test.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.context.test.ts" />
-    <Content Include="Scripts\nakedobjects.angular.services.color.js" />
-    <Content Include="Scripts\nakedobjects.angular.services.loaderwithtransform.js" />
-    <Content Include="Scripts\nakedobjects.angular.services.mask.js" />
-    <Content Include="Scripts\nakedobjects.angular.services.representationloader.js" />
-    <Content Include="Scripts\nakedobjects.angular.services.transformstrategy.js" />
-    <Content Include="Scripts\nakedobjects.config.js" />
-    <Content Include="Scripts\nakedobjects.gemini.app.js" />
-    <Content Include="Scripts\nakedobjects.gemini.controllers.js" />
-    <Content Include="Scripts\nakedobjects.gemini.directives.js" />
-    <Content Include="Scripts\nakedobjects.gemini.routedata.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.clickhandler.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.context.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.handlers.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.navigation.browser.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.navigation.simple.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.urlmanager.js" />
-    <Content Include="Scripts\nakedobjects.gemini.services.viewmodelfactory.js" />
-    <Content Include="Scripts\nakedobjects.gemini.viewmodels.js" />
-    <Content Include="Scripts\nakedobjects.models.helpers.js" />
-    <Content Include="Scripts\nakedobjects.models.js" />
-    <Content Include="Scripts\nakedobjects.models.shims.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>

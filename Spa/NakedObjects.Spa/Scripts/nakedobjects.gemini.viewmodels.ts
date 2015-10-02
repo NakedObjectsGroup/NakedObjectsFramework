@@ -313,10 +313,14 @@ module NakedObjects.Angular.Gemini {
     //Cicero
     export class CiceroViewModel {
         wrapped: any;
-        announcement() {
+        message: string;
+        output() {
+
             const vm = this.wrapped;
             if (vm instanceof DomainObjectViewModel) {
-                return vm.domainType + vm.title;
+                const fullName = (<DomainObjectViewModel> vm).domainType;
+                const shortName = fullName.substr(fullName.lastIndexOf(".")+1);
+                return shortName +": "+ vm.title;
             }
             if (this.wrapped == null) {
                 return "Home";

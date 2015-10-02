@@ -584,10 +584,25 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.ciceroViewModel = (wrapped: any) => {
             const vm = new CiceroViewModel();
             vm.wrapped = wrapped;
-            vm.processCommand = (input: string) => {            
-                if (input == "home") {
-                    $location.path("/cicero/home").search({});
+            vm.processCommand = (input: string) => { 
+                let command: NakedObjects.Cicero.Command;
+                const abbr = input.toLowerCase().substr(0, 2);
+                switch (abbr) {
+                    case "ho":
+                        command = new NakedObjects.Cicero.Home(input);
+                        break;
+                    case "ge":
+                        command = new NakedObjects.Cicero.Gemini(input);
+                        break;
+                    default:
+                        command = new NakedObjects.Cicero.Unrecognised(input) ;
                 }
+                //Standard processing for all commands
+                const newPath = command.newPath();
+                if (newPath) {
+                    $location.path(newPath).search({});
+                }
+               //TODO: get direct output and put it in the announcement
             }
             return vm;
         }
