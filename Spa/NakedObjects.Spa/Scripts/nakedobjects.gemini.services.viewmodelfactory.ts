@@ -241,6 +241,7 @@ module NakedObjects.Angular.Gemini{
                 addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
             } 
 
+            parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
 
             return parmViewModel;
         };

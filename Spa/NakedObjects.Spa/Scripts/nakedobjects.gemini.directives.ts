@@ -296,9 +296,12 @@ module NakedObjects.Angular.Gemini {
 
     app.directive("geminiDrop", () => (scope, element) => {
 
+        const propertyScope = () => scope.$parent.$parent.$parent.$parent;
+        const parameterScope = () => scope.$parent.$parent.$parent;
+
         const accept = (draggable) => {
-            const droppableVm: PropertyViewModel = scope.$parent.$parent.$parent.$parent.property;
-            const draggableVm: PropertyViewModel = draggable.data(draggableVmKey);
+            const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
+            const draggableVm: ValueViewModel = draggable.data(draggableVmKey);
             return draggableVm.canDropOn(droppableVm.returnType);
         }
 
@@ -310,9 +313,10 @@ module NakedObjects.Angular.Gemini {
         });
 
         element.on("drop", (event, ui) => {
-            const droppableScope = scope.$parent.$parent.$parent.$parent;
-            const droppableVm: PropertyViewModel = droppableScope.property;
-            const draggableVm = <PropertyViewModel>  ui.draggable.data(draggableVmKey);
+
+            const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
+            const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+            const draggableVm = <ValueViewModel>  ui.draggable.data(draggableVmKey);
 
             droppableScope.$apply(() => droppableVm.drop(draggableVm));
         });

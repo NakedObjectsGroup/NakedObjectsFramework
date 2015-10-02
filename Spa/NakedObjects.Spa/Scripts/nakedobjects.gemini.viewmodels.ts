@@ -108,6 +108,7 @@ module NakedObjects.Angular.Gemini {
         isMultipleChoices: boolean; 
         minLength: number;
         hasAutoAutoComplete: boolean;
+        color: string;
 
         possibleDropTypes : string[];
 
@@ -215,8 +216,7 @@ module NakedObjects.Angular.Gemini {
     
     export class PropertyViewModel extends ValueViewModel {
 
-        target: string;
-        color: string;       
+        target: string;       
         isEditable: boolean;    
         attachment: AttachmentViewModel;
 

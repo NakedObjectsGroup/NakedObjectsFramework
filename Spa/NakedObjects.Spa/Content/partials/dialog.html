@@ -10,40 +10,45 @@ KIND, either express or implied.See the License for the
 specific language governing permissions and limitations
 under the License.-->
 
-<div class='title'>
+<div class="title">
     {{dialog.title}}
     <div class="cancel icon-cancel clickable-area" ng-click="dialog.doClose()" ></div>
 </div>
 <form>
-    <div class='parameters'>
-        <div class='parameter' id="{{parameter.argId}}" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
-            <div class='name'>{{parameter.title}}</div>
+    <div class="parameters">
+        <div class="parameter" id="{{parameter.argId}}" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
+            <div class="name">{{parameter.title}}</div>
 
             <div ng-switch-when="ref">
-                <div class='value input-control text' ng-switch="parameter.hasChoices">
+                <div class="value input-control text" ng-switch="parameter.hasChoices">
 
-                    <input type='hidden' value='{{parameter.reference}}' ng-model="parameter.reference"/>
+                    <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference"/>
 
                     <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
 
-                        <input ng-switch-when="false" type='text' ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete/>
+                        <!--<input ng-switch-when="false" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete/>-->
+
+                        <div ng-switch-when="false" class="value" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
+                            {{parameter.value}}
+                        </div>
+
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
                         </div>
 
                     </div>
 
                     <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"/>
-                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"/>
+                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"></select>
+                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"></select>
                     </div>
                 </div>
             </div>
 
             <div ng-switch-when="scalar">
-                <div class='value input-control text' ng-switch="parameter.hasChoices">
+                <div class="value input-control text" ng-switch="parameter.hasChoices">
 
                     <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
 
@@ -51,9 +56,9 @@ under the License.-->
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input type='text' ng-model="$parent.parameter.value" gemini-datepicker/>
+                                    <input type="text" ng-model="$parent.parameter.value" gemini-datepicker/>
                                 </div>
-                                <input ng-switch-default type='text' placeholder='{{parameter.dflt}}' ng-model="parameter.value"/>
+                                <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value"/>
                             </div>
 
                             <div ng-switch-when="boolean">
@@ -61,14 +66,14 @@ under the License.-->
                             </div>
 
                             <div ng-switch-default>
-                                <input type='text' placeholder='{{parameter.dflt}}' ng-model="parameter.value"/>
+                                <input type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value"/>
                             </div>
 
                         </div>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices/>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
                         </div>
 
                     </div>
@@ -80,12 +85,11 @@ under the License.-->
                 </div>
             </div>
 
-            <div class='error'>{{parameter.message}}</div>
-
+            <div class="error">{{parameter.message}}</div>
 
         </div>
         {{dialog.message}}
     </div>
         
-    <input class='ok' type='submit' value='OK' style='float: right' ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="ok" type="submit" value="OK" style="float: right" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
 </form>
