@@ -26,7 +26,11 @@
 
                         <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
 
-                            <input ng-switch-when="false" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
+                            <!--<input ng-switch-when="false" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>-->
+
+                            <div ng-switch-when="false" class="value" ng-model="$parent.property.choice" ng-class="property.color" gemini-drop>
+                                {{property.value}}
+                            </div>
 
                             <select ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices></select>
 
