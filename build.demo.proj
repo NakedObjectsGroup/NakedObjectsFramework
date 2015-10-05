@@ -7,7 +7,7 @@
     <WorkingDir>build\working</WorkingDir>
 		<Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
-    <IISRestPath>\Mercury\RestDemo</IISRestPath>
+    <IISRestPath>\\Mercury\RestDemo</IISRestPath>
     <IISDemoPath>\\Mercury\MvcDemo</IISDemoPath>
 	</PropertyGroup>
 
