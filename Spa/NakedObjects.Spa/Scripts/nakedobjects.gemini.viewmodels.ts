@@ -76,10 +76,17 @@ module NakedObjects.Angular.Gemini {
         stackTrace: string[];   
     } 
 
-    export class LinkViewModel {
+    export class LinkViewModel implements IDraggableViewModel{
         title: string;
         color: string;
-        doClick : (right? : boolean) => void;
+        doClick: (right?: boolean) => void;
+
+        canDropOn = (targetType: string) => _.any([""], t => t === targetType);
+
+        value: Object;
+        reference: string;
+        choice: ChoiceViewModel;
+        domainType: string;
     }
 
     export class ItemViewModel extends LinkViewModel{

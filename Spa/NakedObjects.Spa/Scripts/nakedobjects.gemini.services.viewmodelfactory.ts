@@ -61,19 +61,33 @@ module NakedObjects.Angular.Gemini{
             return errorViewModel;
         };
 
+        function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
+            linkViewModel.title = linkRep.title();
+            linkViewModel.color = color.toColorFromHref(linkRep.href());
+
+            linkViewModel.domainType = linkRep.type().domainType;
+
+            // for dropping 
+            const value = new Value(linkRep);
+
+            linkViewModel.value = value.toString();
+            linkViewModel.reference = value.toValueString();
+            linkViewModel.choice = ChoiceViewModel.create(value, "");
+        }
+
+
         viewModelFactory.linkViewModel = (linkRep: Link, paneId : number) => {
             const linkViewModel = new LinkViewModel();
-            linkViewModel.title = linkRep.title();
-            linkViewModel.color = color.toColorFromHref(linkRep.href());      
             linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
+            initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
         };
    
         viewModelFactory.itemViewModel = (linkRep: Link, paneId : number) => {
             const itemViewModel = new ItemViewModel();
-            itemViewModel.title = linkRep.title();
-            itemViewModel.color = color.toColorFromHref(linkRep.href());     
-            itemViewModel.doClick = (right? : boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));        
+            itemViewModel.doClick = (right?: boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));  
+            initLinkViewModel(itemViewModel, linkRep);
+            
             return itemViewModel;
         };
        
