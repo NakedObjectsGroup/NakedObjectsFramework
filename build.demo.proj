@@ -7,8 +7,8 @@
     <WorkingDir>build\working</WorkingDir>
 		<Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
-    <IISRestPath>\\Saturn\RestDemo</IISRestPath>
-    <IISDemoPath>\\Saturn\MvcDemo</IISDemoPath>
+    <IISRestPath>\Mercury\RestDemo</IISRestPath>
+    <IISDemoPath>\\Mercury\MvcDemo</IISDemoPath>
 	</PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
