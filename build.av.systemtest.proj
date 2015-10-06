@@ -2,14 +2,14 @@
  
   <PropertyGroup>
     <TestPath>Test</TestPath>
+    <DemoPath>Demo</DemoPath>
+
     <NOPM>NakedObjects.ProgrammingModel</NOPM>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
    
     <WorkingDir>build\working</WorkingDir>
-    <IISRestPath>\\Saturn\UnitTestRest</IISRestPath>
-    <IISAjaxPath>\\Saturn\UnitTestAjax</IISAjaxPath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
   </PropertyGroup>
@@ -49,11 +49,14 @@
     <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
     <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
     <Files Include="$(TestPath)\NakedObjects.Batch.Test\*.csproj"/>
+    <Files Include="$(DemoPath)\AdventureWorksModel\*.csproj"/>
+
   </ItemGroup>
 
-  <ItemGroup>
-    
+  <ItemGroup>   
     <Apps Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
+    <Apps Include="$(DemoPath)\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj"/>
+
   </ItemGroup>
    
 
@@ -84,9 +87,11 @@
     <MSBuild Projects="@(Files)"  Properties="Configuration=%(Configuration.Identity)"/>
 
     <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=RestfulObjects.Test.App.zip" Targets="Package"/>
-  
+    <MSBuild Projects="$(DemoPath)\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Rest.App.Demo.zip" Targets="Package"/>
+
     <Exec Command='appveyor PushArtifact "Test/RestfulObjects.Test.App/RestfulObjects.Test.App.zip"'/>
-    
+    <Exec Command='appveyor PushArtifact "Demo/NakedObjects.Rest.App.Demo/NakedObjects.Rest.App.Demo.zip"'/>
+
   </Target>
 
   <!--<Target Name="Deploy" DependsOnTargets="BuildTests">
