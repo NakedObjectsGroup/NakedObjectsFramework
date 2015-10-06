@@ -65,7 +65,8 @@ module NakedObjects.Angular.Gemini{
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());
 
-            linkViewModel.domainType = linkRep.type().domainType;
+            //temp comment out
+            // linkViewModel.domainType = linkRep.type().domainType;
 
             // for dropping 
             const value = new Value(linkRep);
