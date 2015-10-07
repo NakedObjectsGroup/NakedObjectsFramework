@@ -15,7 +15,7 @@ public class CorsConfig {
 
         // from the http://foo.com origin.
 
-        corsConfig.ForResources("RestfulObjects").ForOrigins("http://localhost:49998", "http://localhost:8080").AllowAll().AllowResponseHeaders("Warning");
-      
+        corsConfig.ForResources("RestfulObjects").ForOrigins("http://localhost:49998", "http://localhost:8080", "http://nakedobjectstest.azurewebsites.net").AllowAll().AllowResponseHeaders("Warning");
+
     }
 }
