@@ -90,8 +90,7 @@ namespace $rootnamespace$ {
 
 		/// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
-        /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the Services.
+        /// specify the Main Menus for the application.
         /// </summary>
 		public static IMenu[] MainMenus(IMenuFactory factory) {
             return new IMenu[] {};
