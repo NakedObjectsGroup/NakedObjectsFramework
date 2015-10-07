@@ -140,6 +140,14 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestfulObjects.Mvc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestfulObjects.Mvc.8.0.0-alpha\lib\net452\RestfulObjects.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestfulObjects.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestfulObjects.Mvc.8.0.0-alpha\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.0.34.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
@@ -224,14 +232,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RestfulObjects Server\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
-      <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
-      <Name>RestfulObjects.Mvc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RestfulObjects Server\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj">
-      <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
-      <Name>RestfulObjects.Snapshot</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj">
       <Project>{FDDBA108-8B58-40C6-A375-FFB92B1933DD}</Project>
       <Name>AdventureWorksModel</Name>
