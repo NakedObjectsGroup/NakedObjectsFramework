@@ -32,6 +32,6 @@ namespace AdventureWorksModel
 
         public virtual BusinessEntity BusinessEntity { get; set; }
         public virtual ContactType ContactType { get; set; }
-        public virtual Person Person { get; set; }
+        public virtual Contact Person { get; set; }
     }
 }

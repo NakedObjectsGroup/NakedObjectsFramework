@@ -11,11 +11,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects;
+using System.Collections.Generic;
 
 namespace AdventureWorksModel {
 
+    //Corresponds to the Person.Person table
     [IconName("cellphone.png")]
-    public class Person {
+    public class Contact : BusinessEntity {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
@@ -30,13 +32,6 @@ namespace AdventureWorksModel {
         public virtual void Updating() {
             ModifiedDate = DateTime.Now;
         }
-        #endregion
-
-        #region ID
-
-        [NakedObjectsIgnore]
-        public virtual int BusinessEntityID { get; set; }
-
         #endregion
 
         #region AdditionalContactInfo
@@ -179,20 +174,9 @@ namespace AdventureWorksModel {
 
         #region Password
 
-        #region PasswordHash
-
         [NakedObjectsIgnore]
-        public virtual string PasswordHash { get; set; }
-
-        #endregion
-
-        #region PasswordSalt
-
-        [NakedObjectsIgnore]
-        public virtual string PasswordSalt { get; set; }
-
-        #endregion
-
+        public virtual Password Password { get; set; }
+      
         #region ChangePassword (Action)
 
         [Hidden(WhenTo.UntilPersisted)]
@@ -202,13 +186,13 @@ namespace AdventureWorksModel {
         }
 
         internal void CreateSaltAndHash(string newPassword) {
-            PasswordSalt = CreateRandomSalt();
-            PasswordHash = Hashed(newPassword, PasswordSalt);
+            Password.PasswordSalt = CreateRandomSalt();
+            Password.PasswordHash = Hashed(newPassword, Password.PasswordSalt);
         }
 
         public virtual string ValidateChangePassword(string oldPassword, string newPassword, string confirm) {
             var rb = new ReasonBuilder();
-            if (Hashed(oldPassword, PasswordSalt) != PasswordHash) {
+            if (Hashed(oldPassword, Password.PasswordSalt) != Password.PasswordHash) {
                 rb.Append("Old Password is incorrect");
             }
             if (newPassword != confirm) {
@@ -279,6 +263,41 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #endregion
+
+        public override bool HideBusinessEntityContacts() {
+            return true;
+        }
+
+        #region EmailAddresses (collection)
+        private ICollection<EmailAddress> _EmailAddresses = new List<EmailAddress>();
+
+
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(false, "EmailAddress")] 
+        public virtual ICollection<EmailAddress> EmailAddresses {
+            get {
+                return _EmailAddresses;
+            }
+            set {
+                _EmailAddresses = value;
+            }
+        }
+        #endregion
+
+        #region PhoneNumbers (collection)
+        private ICollection<PersonPhone> _PhoneNumbers = new List<PersonPhone>();
+
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(false, "PhoneNumberType", "PhoneNumber")] 
+        public virtual ICollection<PersonPhone> PhoneNumbers {
+            get {
+                return _PhoneNumbers;
+            }
+            set {
+                _PhoneNumbers = value;
+            }
+        }
         #endregion
     }
 }

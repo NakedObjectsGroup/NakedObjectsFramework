@@ -2,9 +2,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
 {
-    public class PersonMap : EntityTypeConfiguration<Person>
+    public class ContactMap : EntityTypeConfiguration<Contact>
     {
-        public PersonMap()
+        public ContactMap()
         {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
@@ -16,8 +16,7 @@ namespace AdventureWorksModel
             //TODO: Temp ignored
             Ignore(t => t.EmailAddress);
             Ignore(t => t.Phone);
-            Ignore(t => t.PasswordHash);
-            Ignore(t => t.PasswordSalt);
+            Ignore(t => t.Password);
 
             // Properties
             Property(t => t.Title)

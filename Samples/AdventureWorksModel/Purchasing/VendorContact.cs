@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
         public virtual int ContactID { get; set; }
 
         [Disabled]
-        public virtual Person Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
         [NakedObjectsIgnore]
         public virtual Vendor Vendor { get; set; }

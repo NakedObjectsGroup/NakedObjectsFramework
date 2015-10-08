@@ -32,7 +32,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(20)]
         [DisplayName("Name & Contact Details")]
-        public virtual Person Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
         #endregion
 

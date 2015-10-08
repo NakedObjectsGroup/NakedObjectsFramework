@@ -29,7 +29,7 @@ namespace AdventureWorksModel {
         #region Contact
 
         [Disabled, MemberOrder(2)]
-        public virtual Person Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
         #endregion
 

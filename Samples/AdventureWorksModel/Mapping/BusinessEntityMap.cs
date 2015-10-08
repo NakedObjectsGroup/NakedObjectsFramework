@@ -13,6 +13,8 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("BusinessEntity", "Person");
+            Property(t => t.BusinessEntityRowguid).HasColumnName("rowguid");
+            Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

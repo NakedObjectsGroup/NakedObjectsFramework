@@ -155,11 +155,11 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 
-        private Person _contact;
+        private Contact _contact;
         [NakedObjectsIgnore]
-        public virtual Person Contact { get { return _contact; } set { _contact = value; } }
+        public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
           
-        internal void SetUpContact(Person value) {
+        internal void SetUpContact(Contact value) {
             Contact = value;
             storeContact = FindStoreContactForContact();
         }

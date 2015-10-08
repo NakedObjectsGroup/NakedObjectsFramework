@@ -25,9 +25,13 @@ namespace AdventureWorksModel
         public DbSet<BusinessEntity> BusinessEntities { get; set; }
         public DbSet<BusinessEntityAddress> BusinessEntityAddresses { get; set; }
         public DbSet<BusinessEntityContact> BusinessEntityContacts { get; set; }
-        public DbSet<Person> Contacts { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<CountryRegion> CountryRegions { get; set; }
+        public DbSet<PersonPhone> PersonPhones { get; set; }
+        public DbSet<PhoneNumberType> PhoneNumberTypes { get; set; }
+        public DbSet<EmailAddress> EmailAddresses { get; set; }
+        public DbSet<Password> Passwords { get; set; }
         public DbSet<StateProvince> StateProvinces { get; set; }
         public DbSet<BillOfMaterial> BillOfMaterials { get; set; }
         public DbSet<Culture> Cultures { get; set; }
@@ -97,9 +101,14 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new BusinessEntityMap());
             modelBuilder.Configurations.Add(new BusinessEntityAddressMap());
             modelBuilder.Configurations.Add(new BusinessEntityContactMap());
-            modelBuilder.Configurations.Add(new PersonMap());
+            modelBuilder.Configurations.Add(new ContactMap());
             modelBuilder.Configurations.Add(new ContactTypeMap());
             modelBuilder.Configurations.Add(new CountryRegionMap());
+            modelBuilder.Configurations.Add(new EmailAddressMap());
+            modelBuilder.Configurations.Add(new PasswordMap());
+            modelBuilder.Configurations.Add(new PersonPhoneMap());
+            modelBuilder.Configurations.Add(new PhoneNumberTypeMap());
+
             modelBuilder.Configurations.Add(new StateProvinceMap());
             modelBuilder.Configurations.Add(new BillOfMaterialMap());
             modelBuilder.Configurations.Add(new CultureMap());

@@ -34,7 +34,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [TableView(true, "Current", "Title", "Manager")]
         public IQueryable<Employee> FindEmployeeByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 
             IQueryable<Employee> query = from emp in Instances<Employee>()
                 from contact in matchingContacts
@@ -60,15 +60,15 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Person contactDetails) {
+        public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Contact contactDetails) {
             var _Employee = Container.NewTransientInstance<Employee>();
             _Employee.ContactDetails = contactDetails;
             return _Employee;
         }
 
         [PageSize(20)]
-        public IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact([MinLength(2)] string name) {
-            return Container.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+        public IQueryable<Contact> AutoComplete0CreateNewEmployeeFromContact([MinLength(2)] string name) {
+            return Container.Instances<Contact>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [FinderAction]

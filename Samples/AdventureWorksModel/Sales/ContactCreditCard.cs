@@ -28,7 +28,7 @@ namespace AdventureWorksModel {
         public virtual int CreditCardID { get; set; }
 
         [Title]
-        public virtual Person Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
 

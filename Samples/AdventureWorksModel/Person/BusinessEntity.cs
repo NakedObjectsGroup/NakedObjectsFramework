@@ -4,6 +4,7 @@ namespace AdventureWorksModel
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     
     public class BusinessEntity
     {   
@@ -15,15 +16,14 @@ namespace AdventureWorksModel
         #region rowguid
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid BusinessEntityRowguid { get; set; }
 
         #endregion
 
         #region ModifiedDate
 
-        [MemberOrder(99)]
-        [Disabled]
-        public virtual DateTime ModifiedDate { get; set; }
+        [NakedObjectsIgnore]
+        public virtual DateTime BusinessEntityModifiedDate { get; set; }
 
         #endregion
 
@@ -31,6 +31,9 @@ namespace AdventureWorksModel
 
         private ICollection<BusinessEntityAddress> _addresses = new List<BusinessEntityAddress>();
 
+        [DisplayName("Addresses")]
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(false, "AddressType", "Address")] 
         public virtual ICollection<BusinessEntityAddress> BusinessEntityAddresses
         {
             get { return _addresses; }
@@ -39,9 +42,16 @@ namespace AdventureWorksModel
 
         private ICollection<BusinessEntityContact> _contacts = new List<BusinessEntityContact>();
 
+        [DisplayName("Contacts")]
         public virtual ICollection<BusinessEntityContact> BusinessEntityContacts {
             get { return _contacts; }
             set { _contacts = value; }
         }
+
+        public virtual bool HideBusinessEntityContacts() {
+            return false;
+        }
+
+
     }
 }

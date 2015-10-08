@@ -42,8 +42,8 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public Person CreateNewContact() {
-            var _Contact = Container.NewTransientInstance<Person>();
+        public Contact CreateNewContact() {
+            var _Contact = Container.NewTransientInstance<Contact>();
 
             _Contact.Contactee = this;
 

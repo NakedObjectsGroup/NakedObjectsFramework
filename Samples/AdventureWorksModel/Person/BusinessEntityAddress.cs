@@ -1,10 +1,21 @@
 using NakedObjects;
 using System;
+using System.ComponentModel;
 
 namespace AdventureWorksModel
 {
-    public  class BusinessEntityAddress
-    {
+    [DisplayName("Address")]
+    public  class BusinessEntityAddress {
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(AddressType).Append(":", Address);
+            return t.ToString();
+        }
+
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
 
@@ -32,9 +43,13 @@ namespace AdventureWorksModel
 
         #endregion
 
-    
-        public virtual Address Address { get; set; }
+        [MemberOrder(1)]
         public virtual AddressType AddressType { get; set; }
+
+        [MemberOrder(2)]
+        public virtual Address Address { get; set; }
+
+        [NakedObjectsIgnore]
         public virtual BusinessEntity BusinessEntity { get; set; }
     }
 }

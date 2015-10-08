@@ -65,7 +65,7 @@ namespace AdventureWorksModel {
         }
 
         private Customer GetCustomerForUser() {
-            Person c = GetContactFromUserNameAsEmail();
+            Contact c = GetContactFromUserNameAsEmail();
             if (c == null) return null;
 
             var individuals = Instances<Individual>();
@@ -89,10 +89,10 @@ namespace AdventureWorksModel {
             return null;
         }
 
-        private Person GetContactFromUserNameAsEmail() {
+        private Contact GetContactFromUserNameAsEmail() {
             string username = UserName();
 
-            var q = from c in Container.Instances<Person>()
+            var q = from c in Container.Instances<Contact>()
                 where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
                 select c;
 
