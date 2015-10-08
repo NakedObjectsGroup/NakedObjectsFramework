@@ -26,12 +26,12 @@ namespace RestfulObjects.Test.Data {
         public DbSet<WithScalars> WithScalarses { get; set; }
         public DbSet<WithValue> WithValues { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new CodeFirstInitializer());
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+        //    Database.SetInitializer(new CodeFirstInitializer());
+        //}
     }
 
-    public class CodeFirstInitializer : DropCreateDatabaseAlways<CodeFirstContext> {
+    public class CodeFirstInitializer  {
         private static void SeedCodeFirstDatabase(CodeFirstContext context) {
             var ms1 = new MostSimple {Id = 1};
             var ms2 = new MostSimple {Id = 2};
@@ -147,9 +147,11 @@ namespace RestfulObjects.Test.Data {
             context.SaveChanges();
         }
 
-        protected override void Seed(CodeFirstContext context) {
-            base.Seed(context);
-            SeedCodeFirstDatabase(context);
+        public static void Seed() {
+
+            using (var context = new CodeFirstContext("RestTest")) {
+                SeedCodeFirstDatabase(context);
+            }
         }
     }
 }

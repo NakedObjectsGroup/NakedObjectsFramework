@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
@@ -52,6 +53,15 @@ namespace MvcTestApp {
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
+                // not running on azure - it's just test code 
+                Database.Delete("RestTest");
+                (new CodeFirstContext("RestTest")).Database.Create();
+            }
+
+            CodeFirstInitializer.Seed();
+
             var config = new EntityObjectStoreConfiguration();
             config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
             return config;
