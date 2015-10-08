@@ -18,8 +18,8 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [TableView(true, "Phone", "EmailAddress", "AdditionalContactInfo")]
-        public IQueryable<Contact> FindContactByName([Optionally] string firstName, string lastName) {
-            IQueryable<Contact> query = from obj in Instances<Contact>()
+        public IQueryable<Person> FindContactByName([Optionally] string firstName, string lastName) {
+            IQueryable<Person> query = from obj in Instances<Person>()
                 where (firstName == null || obj.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
                       obj.LastName.ToUpper().StartsWith(lastName.ToUpper())
                 orderby obj.LastName, obj.FirstName
@@ -32,15 +32,15 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [QueryOnly]
-        public Contact RandomContact() {
-            return Random<Contact>();
+        public Person RandomContact() {
+            return Random<Person>();
         }
 
         [FinderAction]
         [TableView(true, "Phone", "EmailAddress", "AdditionalContactInfo")]
-        public IQueryable<Contact> RandomContacts() {
-            Contact contact1 = RandomContact();
-            Contact contact2 = contact1;
+        public IQueryable<Person> RandomContacts() {
+            Person contact1 = RandomContact();
+            Person contact2 = contact1;
 
             while (contact1 == contact2) {
                 contact2 = RandomContact();
@@ -73,5 +73,22 @@ namespace AdventureWorksModel {
         // object.  Use the 'injs' shortcut to add a new service.
 
         #endregion
+
+        
+        //public IQueryable<BusinessEntity> AllBusinessEntities() {
+        //    return Container.Instances<BusinessEntity>();
+        //}
+
+        public BusinessEntity RandomBusinessEntity() {
+            return Random<BusinessEntity>();
+        }
+
+        public BusinessEntityAddress RandomBusinessEntityAddress() {
+            return Random<BusinessEntityAddress>();
+        }
+
+        public BusinessEntityContact RandomBusinessEntityContacts() {
+            return Random<BusinessEntityContact>();
+        }
     }
 }

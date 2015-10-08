@@ -65,12 +65,12 @@ namespace AdventureWorksModel {
         }
 
         private Customer GetCustomerForUser() {
-            Contact c = GetContactFromUserNameAsEmail();
+            Person c = GetContactFromUserNameAsEmail();
             if (c == null) return null;
 
             var individuals = Instances<Individual>();
             var qi = from i in individuals
-                where i.Contact.ContactID == c.ContactID
+                where i.Contact.BusinessEntityID == c.BusinessEntityID
                 select i;
             if (qi.Count() == 1) {
                 return qi.First();
@@ -80,7 +80,7 @@ namespace AdventureWorksModel {
             var storeContacts = Instances<StoreContact>();
 
             var qs = from s in storeContacts
-                where s.Contact.ContactID == c.ContactID
+                     where s.Contact.BusinessEntityID == c.BusinessEntityID
                 select s;
             if (qs.Count() == 1) {
                 return qs.First().Store;
@@ -89,10 +89,10 @@ namespace AdventureWorksModel {
             return null;
         }
 
-        private Contact GetContactFromUserNameAsEmail() {
+        private Person GetContactFromUserNameAsEmail() {
             string username = UserName();
 
-            var q = from c in Container.Instances<Contact>()
+            var q = from c in Container.Instances<Person>()
                 where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
                 select c;
 

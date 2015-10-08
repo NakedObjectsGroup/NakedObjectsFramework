@@ -155,11 +155,11 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int ContactID { get; set; }
 
-        private Contact _contact;
+        private Person _contact;
         [NakedObjectsIgnore]
-        public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
+        public virtual Person Contact { get { return _contact; } set { _contact = value; } }
           
-        internal void SetUpContact(Contact value) {
+        internal void SetUpContact(Person value) {
             Contact = value;
             storeContact = FindStoreContactForContact();
         }
@@ -181,7 +181,7 @@ namespace AdventureWorksModel {
 
         private StoreContact FindStoreContactForContact() {
             IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
-                where obj.Contact.ContactID == Contact.ContactID && obj.Store.CustomerId == Customer.CustomerId
+                where obj.Contact.BusinessEntityID == Contact.BusinessEntityID && obj.Store.CustomerId == Customer.CustomerId
                 select obj;
 
             return query.FirstOrDefault();

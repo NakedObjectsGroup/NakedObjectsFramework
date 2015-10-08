@@ -29,11 +29,11 @@ namespace AdventureWorksModel {
         [FinderAction]
         [TableView(true, "SalesTerritory")]
         public IQueryable<SalesPerson> FindSalesPersonByName([Optionally] string firstName, string lastName) {
-            IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 
             return from sp in Instances<SalesPerson>()
                 from contact in matchingContacts
-                where sp.Employee.ContactDetails.ContactID == contact.ContactID
+                where sp.Employee.ContactDetails.BusinessEntityID == contact.BusinessEntityID
                 orderby sp.Employee.ContactDetails.LastName, sp.Employee.ContactDetails.FirstName
                 select sp;
         }

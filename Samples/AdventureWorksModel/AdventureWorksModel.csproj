@@ -90,9 +90,12 @@
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="Mapping\AddressTypeMap.cs" />
     <Compile Include="Mapping\BillOfMaterialMap.cs" />
+    <Compile Include="Mapping\BusinessEntityMap.cs" />
     <Compile Include="Mapping\ContactCreditCardMap.cs" />
-    <Compile Include="Mapping\ContactMap.cs" />
+    <Compile Include="Mapping\PersonMap.cs" />
     <Compile Include="Mapping\ContactTypeMap.cs" />
+    <Compile Include="Mapping\BusinessEntityContactMap.cs" />
+    <Compile Include="Mapping\BusinessEntityAddressMap.cs" />
     <Compile Include="Mapping\CountryRegionCurrencyMap.cs" />
     <Compile Include="Mapping\CountryRegionMap.cs" />
     <Compile Include="Mapping\CreditCardMap.cs" />
@@ -155,7 +158,10 @@
     <Compile Include="Mapping\WorkOrderRoutingMap.cs" />
     <Compile Include="Person\Address.cs" />
     <Compile Include="Person\AddressType.cs" />
-    <Compile Include="Person\Contact.cs" />
+    <Compile Include="Person\BusinessEntity.cs" />
+    <Compile Include="Person\BusinessEntityAddress.cs" />
+    <Compile Include="Person\BusinessEntityContact.cs" />
+    <Compile Include="Person\Person.cs" />
     <Compile Include="Person\ContactRepository.cs" />
     <Compile Include="Person\ContactType.cs" />
     <Compile Include="Person\CountryRegion.cs" />
@@ -288,10 +294,6 @@
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="Model.edmx">
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

@@ -50,7 +50,7 @@ namespace AdventureWorksModel {
         public virtual int ContactDetailsID { get; set; }
 
         [MemberOrder(1)]
-        public virtual Contact ContactDetails { get; set; }
+        public virtual Person ContactDetails { get; set; }
         #endregion
 
         [MemberOrder(10)]

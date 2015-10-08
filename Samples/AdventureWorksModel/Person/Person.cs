@@ -13,8 +13,9 @@ using System.Text;
 using NakedObjects;
 
 namespace AdventureWorksModel {
+
     [IconName("cellphone.png")]
-    public class Contact {
+    public class Person {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
@@ -34,7 +35,7 @@ namespace AdventureWorksModel {
         #region ID
 
         [NakedObjectsIgnore]
-        public virtual int ContactID { get; set; }
+        public virtual int BusinessEntityID { get; set; }
 
         #endregion
 

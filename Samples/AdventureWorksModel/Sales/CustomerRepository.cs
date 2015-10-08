@@ -106,11 +106,11 @@ namespace AdventureWorksModel {
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public IQueryable<Individual> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
-            IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 
             return from indv in Instances<Individual>()
                 from contact in matchingContacts
-                where indv.Contact.ContactID == contact.ContactID
+                where indv.Contact.BusinessEntityID == contact.BusinessEntityID
                 orderby indv.Contact.LastName, indv.Contact.LastName
                 select indv;
         }
@@ -120,7 +120,7 @@ namespace AdventureWorksModel {
         public Individual CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
             var indv = NewTransientInstance<Individual>();
             indv.CustomerType = "I";
-            var contact = NewTransientInstance<Contact>();
+            var contact = NewTransientInstance<Person>();
             contact.FirstName = firstName;
             contact.LastName = lastName;
             contact.EmailPromotion = 0;

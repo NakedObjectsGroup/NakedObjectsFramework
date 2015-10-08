@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AdventureWorksModel.Person;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -23,7 +22,7 @@ namespace AdventureWorksModel {
         public virtual int ContactID { get; set; }
 
         [Disabled]
-        public virtual Contact Contact { get; set; }
+        public virtual Person Contact { get; set; }
 
         [NakedObjectsIgnore]
         public virtual Vendor Vendor { get; set; }

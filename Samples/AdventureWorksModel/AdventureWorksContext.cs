@@ -22,7 +22,10 @@ namespace AdventureWorksModel
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AddressType> AddressTypes { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<BusinessEntity> BusinessEntities { get; set; }
+        public DbSet<BusinessEntityAddress> BusinessEntityAddresses { get; set; }
+        public DbSet<BusinessEntityContact> BusinessEntityContacts { get; set; }
+        public DbSet<Person> Contacts { get; set; }
         public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<CountryRegion> CountryRegions { get; set; }
         public DbSet<StateProvince> StateProvinces { get; set; }
@@ -91,7 +94,10 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new ShiftMap());
             modelBuilder.Configurations.Add(new AddressMap());
             modelBuilder.Configurations.Add(new AddressTypeMap());
-            modelBuilder.Configurations.Add(new ContactMap());
+            modelBuilder.Configurations.Add(new BusinessEntityMap());
+            modelBuilder.Configurations.Add(new BusinessEntityAddressMap());
+            modelBuilder.Configurations.Add(new BusinessEntityContactMap());
+            modelBuilder.Configurations.Add(new PersonMap());
             modelBuilder.Configurations.Add(new ContactTypeMap());
             modelBuilder.Configurations.Add(new CountryRegionMap());
             modelBuilder.Configurations.Add(new StateProvinceMap());

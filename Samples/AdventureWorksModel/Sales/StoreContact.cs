@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using AdventureWorksModel.Person;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -30,7 +29,7 @@ namespace AdventureWorksModel {
         #region Contact
 
         [Disabled, MemberOrder(2)]
-        public virtual Contact Contact { get; set; }
+        public virtual Person Contact { get; set; }
 
         #endregion
 
