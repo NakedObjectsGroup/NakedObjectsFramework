@@ -6,7 +6,7 @@
         "rel": "describedby",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection"
       },
       {
         "arguments": {
@@ -19,7 +19,7 @@
         "rel": "urn:org.restfulobjects:rels/persist",
         "method": "POST",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithCollection"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/objects/WithCollection"
       }
     ],
     "extensions": {
@@ -41,7 +41,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEmptyCollection"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/AnEmptyCollection"
           }
         ],
         "extensions": {
@@ -64,7 +64,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEmptySet"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/AnEmptySet"
           }
         ],
         "extensions": {
@@ -85,14 +85,14 @@
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
           },
           {
             "title": "2",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/2"
           }
         ],
         "memberType": "collection",
@@ -102,7 +102,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ACollection"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/ACollection"
           }
         ],
         "extensions": {
@@ -124,14 +124,14 @@
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimpleViewModel/1"
           },
           {
             "title": "2",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ACollectionViewModels\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimpleViewModel\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimpleViewModel/2"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimpleViewModel/2"
           }
         ],
         "memberType": "collection",
@@ -141,7 +141,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ACollectionViewModels"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/ACollectionViewModels"
           }
         ],
         "extensions": {
@@ -162,14 +162,14 @@
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ADisabledCollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
           },
           {
             "title": "2",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ADisabledCollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/2"
           }
         ],
         "memberType": "collection",
@@ -179,7 +179,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ADisabledCollection"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/ADisabledCollection"
           }
         ],
         "extensions": {
@@ -200,14 +200,14 @@
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ASet\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
           },
           {
             "title": "2",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"ASet\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/2"
           }
         ],
         "memberType": "collection",
@@ -217,7 +217,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/ASet"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/ASet"
           }
         ],
         "extensions": {
@@ -238,14 +238,14 @@
             "rel": "urn:org.restfulobjects:rels/value;collection=\"AnEagerCollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
           },
           {
             "title": "2",
             "rel": "urn:org.restfulobjects:rels/value;collection=\"AnEagerCollection\"",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/2"
           }
         ],
         "memberType": "collection",
@@ -255,7 +255,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEagerCollection"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/collections/AnEagerCollection"
           }
         ],
         "extensions": {
@@ -277,7 +277,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/properties/Id"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection/properties/Id"
           }
         ],
         "extensions": {

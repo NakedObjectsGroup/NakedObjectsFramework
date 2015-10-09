@@ -7,7 +7,7 @@
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
         }
       ],
       "extensions": {
@@ -33,13 +33,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/WithActionObject/1/actions/AnActionWithDateTimeParm"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionObject\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/WithActionObject/1"
     },
     {
       "arguments": {
@@ -50,20 +50,20 @@
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionWithDateTimeParm\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionWithDateTimeParm/invoke"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/WithActionObject/1/actions/AnActionWithDateTimeParm/invoke"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject/actions/AnActionWithDateTimeParm"
     },
     {
       "id": "parm",
       "rel": "urn:org.restfulobjects:rels/action-param",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject/actions/AnActionWithDateTimeParm/params/parm"
     }
   ]
 }

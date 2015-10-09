@@ -14,32 +14,32 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsScalar"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService/actions/AnActionReturnsScalar"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsScalar\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsScalar/invoke"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService/actions/AnActionReturnsScalar/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/integer"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/integer"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsScalar"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsScalar"
     }
   ]
 }

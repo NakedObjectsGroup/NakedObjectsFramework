@@ -7,7 +7,7 @@
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm1"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm1"
         }
       ],
       "extensions": {
@@ -24,7 +24,7 @@
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm2"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm2"
         }
       ],
       "extensions": {
@@ -49,13 +49,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsQueryableWithParameters"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService/actions/AnActionReturnsQueryableWithParameters"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService"
     },
     {
       "arguments": {
@@ -69,39 +69,39 @@
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsQueryableWithParameters\"",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsQueryableWithParameters/invoke"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/services/WithActionService/actions/AnActionReturnsQueryableWithParameters/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/list"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/list"
     },
     {
       "rel": "urn:org.restfulobjects:rels/element-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters"
     },
     {
       "id": "parm1",
       "rel": "urn:org.restfulobjects:rels/action-param",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm1"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm1"
     },
     {
       "id": "parm2",
       "rel": "urn:org.restfulobjects:rels/action-param",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm2"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService/actions/AnActionReturnsQueryableWithParameters/params/parm2"
     }
   ]
 }

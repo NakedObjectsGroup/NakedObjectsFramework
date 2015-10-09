@@ -5,7 +5,7 @@
         "rel": "urn:org.restfulobjects:rels/element-type",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
       }
     ],
     "extensions": {},
@@ -15,14 +15,14 @@
         "rel": "urn:org.restfulobjects:rels/element",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
       },
       {
         "title": "2",
         "rel": "urn:org.restfulobjects:rels/element",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/2"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/2"
       }
     ]
   },
@@ -34,14 +34,14 @@
         },
         "parm2": {
           "value": {
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple/1"
+            "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/1"
           }
         }
       },
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithParameters/invoke"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/WithActionObject/1/actions/AnActionReturnsQueryableWithParameters/invoke"
     }
   ],
   "extensions": {},

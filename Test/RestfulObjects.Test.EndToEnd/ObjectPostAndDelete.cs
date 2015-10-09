@@ -9,7 +9,7 @@ namespace RestfulObjects.Test.EndToEnd {
     public class ObjectPostAndDelete {
         #region Helpers
 
-        private const string objectsUrl = @"http://mvc.nakedobjects.net:1081/UnitTestRest/objects/";
+        private const string objectsUrl = @"http://nakedobjectsrotest.azurewebsites.net/objects/";
 
         #endregion
 

@@ -7,13 +7,13 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"Immutable\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/Immutable"
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable"
     }
   ],
   "extensions": {
@@ -35,19 +35,19 @@
           "rel": "urn:org.restfulobjects:rels/collection-value;collection=\"ACollection\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-value\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1/collections/ACollection/value"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1/collections/ACollection/value"
         },
         {
           "rel": "urn:org.restfulobjects:rels/details;collection=\"ACollection\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1/collections/ACollection"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1/collections/ACollection"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/Immutable/collections/ACollection"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable/collections/ACollection"
         }
       ],
       "extensions": {
@@ -70,13 +70,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AReference\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1/properties/AReference"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1/properties/AReference"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/Immutable/properties/AReference"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable/properties/AReference"
         }
       ],
       "extensions": {
@@ -98,13 +98,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"AValue\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1/properties/AValue"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1/properties/AValue"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/Immutable/properties/AValue"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable/properties/AValue"
         }
       ],
       "extensions": {
@@ -127,13 +127,13 @@
           "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/Immutable/1/properties/Id"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/Immutable/1/properties/Id"
         },
         {
           "rel": "describedby",
           "method": "GET",
           "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-          "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/Immutable/properties/Id"
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable/properties/Id"
         }
       ],
       "extensions": {

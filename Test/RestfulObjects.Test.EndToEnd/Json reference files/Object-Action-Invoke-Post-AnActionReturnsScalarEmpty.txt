@@ -6,7 +6,7 @@
         "rel": "urn:org.restfulobjects:rels/return-type",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/string"
+        "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/string"
       }
     ],
     "extensions": {}
