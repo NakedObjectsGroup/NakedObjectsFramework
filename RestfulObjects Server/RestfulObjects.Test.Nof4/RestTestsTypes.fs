@@ -39,7 +39,7 @@ type Nof4TestsTypes() =
         override x.RegisterTypes(container) = 
             base.RegisterTypes(container)
             let config = new EntityObjectStoreConfiguration()
-            let f = (fun () -> new CodeFirstContext("RestTest") :> Data.Entity.DbContext)
+            let f = (fun () -> new CodeFirstContextLocal("RestTest") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
             container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
             container.RegisterType(typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore

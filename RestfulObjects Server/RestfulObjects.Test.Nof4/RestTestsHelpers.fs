@@ -10,7 +10,7 @@ open NUnit.Framework
 open RestfulObjects.Test.Data
 open System
 
-let seedCodeFirstDatabase (context : CodeFirstContext) = 
+let seedCodeFirstDatabase (context : CodeFirstContextLocal) = 
     let ms1 = new MostSimple(Id = 1)
     let ms2 = new MostSimple(Id = 2)
     let ms3 = new MostSimple(Id = 4)
@@ -105,8 +105,8 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     ()
 
 type CodeFirstInitializer() = 
-    inherit System.Data.Entity.DropCreateDatabaseAlways<CodeFirstContext>()
-    override x.Seed(context : CodeFirstContext) = seedCodeFirstDatabase context
+    inherit System.Data.Entity.DropCreateDatabaseAlways<CodeFirstContextLocal>()
+    override x.Seed(context : CodeFirstContextLocal) = seedCodeFirstDatabase context
 
 let CodeFirstSetup() = 
     System.Data.Entity.Database.SetInitializer(new CodeFirstInitializer())

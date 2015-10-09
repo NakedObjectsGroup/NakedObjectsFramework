@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeFirstContext.cs" />
+    <Compile Include="CodeFirstContextLocal.cs" />
     <Compile Include="ContributerService.cs" />
     <Compile Include="WithAttachments.cs" />
     <Compile Include="RedirectedObject.cs" />
