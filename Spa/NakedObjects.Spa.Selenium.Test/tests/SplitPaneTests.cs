@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    [TestClass]
+    //[TestClass]
     public abstract class SplitPaneTests : GeminiTest {
 
         #region Actions that go from single to split panes
@@ -260,7 +260,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class SplitPaneTestsFirefox : SplitPaneTests
     {
         [ClassInitialize]

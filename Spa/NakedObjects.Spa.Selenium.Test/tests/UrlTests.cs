@@ -227,7 +227,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class UrlTestsFirefox : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

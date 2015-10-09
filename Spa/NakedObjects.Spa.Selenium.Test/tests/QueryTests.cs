@@ -112,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class QueryTestsFirefox : QueryTests
     {
         [ClassInitialize]
