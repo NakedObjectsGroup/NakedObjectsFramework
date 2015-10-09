@@ -201,21 +201,23 @@ namespace AdventureWorksModel {
             if (Customer == null) {
                 return null;
             }
-            IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.CustomerID == Customer.CustomerID &&
-                      obj.AddressType.Name == "Billing"
-                select obj.Address;
+            throw new NotImplementedException();
+            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
+            //    where obj.Customer.CustomerID == Customer.CustomerID &&
+            //          obj.AddressType.Name == "Billing"
+            //    select obj.Address;
 
-            return query.FirstOrDefault();
+            //return query.FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
-            IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.CustomerID == Customer.CustomerID
-                select obj.Address;
+            throw new NotImplementedException();
+            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
+            //    where obj.Customer.CustomerID == Customer.CustomerID
+            //    select obj.Address;
 
-            return query.ToList();
+            //return query.ToList();
         }
 
         #endregion
@@ -239,12 +241,13 @@ namespace AdventureWorksModel {
             if (Customer == null) {
                 return null;
             }
-            IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.CustomerID == Customer.CustomerID &&
-                      obj.AddressType.Name == "Shipping"
-                select obj.Address;
+            throw new NotImplementedException();
+            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
+            //    where obj.Customer.CustomerID == Customer.CustomerID &&
+            //          obj.AddressType.Name == "Shipping"
+            //    select obj.Address;
 
-            return query.FirstOrDefault();
+            //return query.FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]

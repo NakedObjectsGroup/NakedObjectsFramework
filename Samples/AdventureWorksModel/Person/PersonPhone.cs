@@ -15,7 +15,7 @@ namespace AdventureWorksModel
         public virtual DateTime ModifiedDate { get; set; }
     
         [NakedObjectsIgnore]
-        public virtual Contact Person { get; set; }
+        public virtual Person Person { get; set; }
         public virtual PhoneNumberType PhoneNumberType { get; set; }
     }
 }

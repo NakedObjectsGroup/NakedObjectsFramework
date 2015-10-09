@@ -13,7 +13,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("default.png")]
-    public abstract class Customer  {
+    public class Customer  {
         #region Injected Services
         public ContactRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
@@ -30,43 +30,70 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+        
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            if (IsStore()) {
+                t.Append(Store);
+            } else {
+                t.Append(Person);
+            }
+            t.Append(",", AccountNumber);
+            return t.ToString();
+        }
+      
+
         [NakedObjectsIgnore]
         public virtual int CustomerID { get; set; }
 
-        [Disabled, Description("xxx")]
+        [Disabled, Description("xxx"), MemberOrder(10)]
         public virtual string AccountNumber { get; set; }
 
-        [Hidden(WhenTo.Always)]
-        public virtual string CustomerType { get; set; }
-
+        #region Sales Territory
         [NakedObjectsIgnore]
         public virtual int? SalesTerritoryID { get; set; }
 
-        [Optionally]
+        [Disabled, MemberOrder(20)]
         public virtual SalesTerritory SalesTerritory { get; set; }
-
-        #region Store & Personal customers
-        
-        public virtual Store Store { get; set; }
-
-        
-        public virtual Contact Person { get; set; }
-      
         #endregion
 
+        #region Store & Personal customers
         [NakedObjectsIgnore]
-        public virtual string Type() {
-            return IsIndividual() ? "Individual" : "Store";
+        public virtual int? StoreID { get; set; }
+
+        [DisplayName("Details"), Disabled, MemberOrder(20)]
+        public virtual Store Store { get; set; }
+
+        public bool HideStore() {
+            return !IsStore();
+        }
+
+        [NakedObjectsIgnore]
+        public virtual int? PersonID { get; set; }
+
+        [DisplayName("Details"), Disabled, MemberOrder(20)]
+        public virtual Person Person { get; set; }
+
+        public bool HidePerson() {
+            return !IsIndividual();
+        }
+        #endregion
+
+        [MemberOrder(15)]
+        public virtual string CustomerType {
+            get {
+                return IsIndividual() ? "Individual" : "Store";
+            }
         }
 
         [NakedObjectsIgnore]
         public virtual bool IsIndividual() {
-            return CustomerType == "I";
+            return !IsStore();
         }
 
         [NakedObjectsIgnore]
         public virtual bool IsStore() {
-            return CustomerType == "S";
+            return Store != null;
         }
 
         #region ModifiedDate and rowguid
@@ -83,29 +110,6 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         public virtual Guid CustomerRowguid { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Addresses
-        private ICollection<CustomerAddress> _CustomerAddress = new List<CustomerAddress>();
-
-        [Disabled, Description("Use Actions")]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true)] // Table view == List View
-        public virtual ICollection<CustomerAddress> Addresses {
-            get { return _CustomerAddress; }
-            set { _CustomerAddress = value; }
-        }
-
-        #region Creating Addresses
-
-        public Address CreateNewAddress() {
-            var _Address = Container.NewTransientInstance<Address>();
-            _Address.ForCustomer = this;
-            return _Address;
-        }
 
         #endregion
 

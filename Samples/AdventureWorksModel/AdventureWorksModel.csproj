@@ -105,7 +105,6 @@
     <Compile Include="Mapping\CultureMap.cs" />
     <Compile Include="Mapping\CurrencyMap.cs" />
     <Compile Include="Mapping\CurrencyRateMap.cs" />
-    <Compile Include="Mapping\CustomerAddressMap.cs" />
     <Compile Include="Mapping\CustomerMap.cs" />
     <Compile Include="Mapping\DepartmentMap.cs" />
     <Compile Include="Mapping\DocumentMap.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Mapping\EmployeeMap.cs" />
     <Compile Include="Mapping\EmployeePayHistoryMap.cs" />
     <Compile Include="Mapping\IllustrationMap.cs" />
-    <Compile Include="Mapping\IndividualMap.cs" />
     <Compile Include="Mapping\JobCandidateMap.cs" />
     <Compile Include="Mapping\LocationMap.cs" />
     <Compile Include="Mapping\PasswordMap.cs" />
@@ -220,9 +218,7 @@
     <Compile Include="Sales\Currency.cs" />
     <Compile Include="Sales\CurrencyRate.cs" />
     <Compile Include="Sales\Customer.cs" />
-    <Compile Include="Sales\CustomerAddress.cs" />
     <Compile Include="Sales\ICreditCardCreator.cs" />
-    <Compile Include="Sales\Individual.cs" />
     <Compile Include="Sales\SalesOrderDetail.cs" />
     <Compile Include="Sales\SalesOrderHeader.cs" />
     <Compile Include="Sales\SalesOrderHeaderSalesReason.cs" />

@@ -25,7 +25,7 @@ namespace AdventureWorksModel
         public DbSet<BusinessEntity> BusinessEntities { get; set; }
         public DbSet<BusinessEntityAddress> BusinessEntityAddresses { get; set; }
         public DbSet<BusinessEntityContact> BusinessEntityContacts { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Person> Contacts { get; set; }
         public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<CountryRegion> CountryRegions { get; set; }
         public DbSet<PersonPhone> PersonPhones { get; set; }
@@ -68,8 +68,6 @@ namespace AdventureWorksModel
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<CurrencyRate> CurrencyRates { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerAddress> CustomerAddresses { get; set; }
-        public DbSet<Individual> Individuals { get; set; }
         public DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
         public DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
         public DbSet<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; }
@@ -142,8 +140,6 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new CurrencyMap());
             modelBuilder.Configurations.Add(new CurrencyRateMap());
             modelBuilder.Configurations.Add(new CustomerMap());
-            modelBuilder.Configurations.Add(new CustomerAddressMap());
-            modelBuilder.Configurations.Add(new IndividualMap());
             modelBuilder.Configurations.Add(new SalesOrderDetailMap());
             modelBuilder.Configurations.Add(new SalesOrderHeaderMap());
             modelBuilder.Configurations.Add(new SalesOrderHeaderSalesReasonMap());

@@ -36,21 +36,11 @@ namespace AdventureWorksModel {
 
         public override string ToString() {
             var t = Container.NewTitleBuilder();
-            t.Append(Name).Append(",", "ACCOUNT NUMBER");
+            t.Append(Name);
             return t.ToString();
         }
 
         #endregion
-
-
-
-        public Contact CreateNewContact() {
-            var _Contact = Container.NewTransientInstance<Contact>();
-
-            _Contact.Contactee = this;
-
-            return _Contact;
-        }
 
         #region Properties
 
@@ -85,20 +75,6 @@ namespace AdventureWorksModel {
         public IQueryable<SalesPerson> AutoCompleteSalesPerson([MinLength(2)] string name) {
             return SalesRepository.FindSalesPersonByName(null, name);
         }
-
-        #endregion
-
-        #region Contacts
-
-        //private ICollection<StoreContact> _contact = new List<StoreContact>();
-
-        //[Disabled]
-        //[Eagerly(EagerlyAttribute.Do.Rendering)]
-        //[TableView(true)] //i.e. no colums shown, because all relevant info is in the title
-        //public virtual ICollection<StoreContact> Contacts {
-        //    get { return _contact; }
-        //    set { _contact = value; }
-        //}
 
         #endregion
 

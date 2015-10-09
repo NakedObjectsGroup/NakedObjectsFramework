@@ -75,13 +75,13 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         [NotPersisted]
-        public virtual Customer ForCustomer { get; set; }
+        public virtual IBusinessEntity ForBusinessEntity { get; set; }
 
         public void Persisted() {
-            var ca = Container.NewTransientInstance<CustomerAddress>();
+            var ca = Container.NewTransientInstance<BusinessEntityAddress>();
             ca.Address = this;
             ca.AddressType = AddressType;
-            ca.Customer = ForCustomer;
+            ca.BusinessEntityID = ForBusinessEntity.BusinessEntityID;
             Container.Persist(ref ca);
         }
 

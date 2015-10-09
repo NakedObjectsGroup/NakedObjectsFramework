@@ -51,10 +51,10 @@ namespace AdventureWorksModel {
         //public virtual int ContactDetailsID { get; set; }
 
         [MemberOrder(1)]
-        public virtual Contact ContactDetails {
+        public virtual Person ContactDetails {
             get {
                 int id = this.BusinessEntityID;
-                return Container.Instances<Contact>().Single(c => c.BusinessEntityID == id); 
+                return Container.Instances<Person>().Single(c => c.BusinessEntityID == id); 
             }
         }
         #endregion

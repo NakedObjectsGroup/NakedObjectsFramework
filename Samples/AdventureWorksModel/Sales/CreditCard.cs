@@ -140,7 +140,7 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         [NotPersisted]
-        public Contact ForContact { get; set; }
+        public Person ForContact { get; set; }
 
         #endregion
     }

@@ -15,9 +15,8 @@ using System.Collections.Generic;
 
 namespace AdventureWorksModel {
 
-    //Corresponds to the Person.Person table
     [IconName("cellphone.png")]
-    public class Contact : BusinessEntity {
+    public class Person : BusinessEntity {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
         #endregion

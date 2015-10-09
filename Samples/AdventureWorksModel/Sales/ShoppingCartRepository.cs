@@ -90,10 +90,10 @@ namespace AdventureWorksModel {
             //return null;
         }
 
-        private Contact GetContactFromUserNameAsEmail() {
+        private Person GetContactFromUserNameAsEmail() {
             string username = UserName();
 
-            var q = from c in Container.Instances<Contact>()
+            var q = from c in Container.Instances<Person>()
                 where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
                 select c;
 

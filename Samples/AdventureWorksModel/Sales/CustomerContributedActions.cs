@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using System;
 
 namespace AdventureWorksModel {
     public class CustomerCollectionViewModel : IViewModel {
@@ -38,10 +39,11 @@ namespace AdventureWorksModel {
     public class CustomerContributedActions : AbstractFactoryAndRepository {
         [QueryOnly]
         public CustomerCollectionViewModel ShowCustomersWithAddressInRegion(CountryRegion region, [ContributedAction] IQueryable<Customer> customers) {
-            List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
-            var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();
-            ccvm.Customers = cc.ToList();
-            return ccvm;
+            throw new NotImplementedException();
+            //List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
+            //var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();
+            //ccvm.Customers = cc.ToList();
+            //return ccvm;
         }
     }
 }

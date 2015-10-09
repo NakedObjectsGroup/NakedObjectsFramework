@@ -38,6 +38,7 @@ namespace AdventureWorksModel {
                 .AddAction("RandomIndividual");
             menu.AddAction("CustomerDashboard");
             menu.AddAction("ThrowDomainException");
+            menu.AddRemainingNativeActions();
         }
 
         public void ThrowDomainException() {
@@ -107,38 +108,47 @@ namespace AdventureWorksModel {
         [FinderAction]
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
-        public IQueryable<Individual> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
-            IQueryable<Contact> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
-
-            return from indv in Instances<Individual>()
-                from contact in matchingContacts
-                where indv.Contact.BusinessEntityID == contact.BusinessEntityID
-                orderby indv.Contact.LastName, indv.Contact.LastName
-                select indv;
+        public IQueryable<Customer> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
+            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            throw new NotImplementedException();
+            //return from indv in Instances<Individual>()
+            //    from contact in matchingContacts
+            //    where indv.Contact.BusinessEntityID == contact.BusinessEntityID
+            //    orderby indv.Contact.LastName, indv.Contact.LastName
+            //    select indv;
         }
 
         [FinderAction]
         [MemberOrder(50)]
-        public Individual CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
-            var indv = NewTransientInstance<Individual>();
-            indv.CustomerType = "I";
-            var contact = NewTransientInstance<Contact>();
-            contact.FirstName = firstName;
-            contact.LastName = lastName;
-            contact.EmailPromotion = 0;
-            contact.NameStyle = false;
-            contact.ChangePassword(null, initialPassword, null);
-            indv.Contact = contact;
-            Persist(ref indv);
-            return indv;
+        public Customer CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
+            throw new NotImplementedException();
+            //var indv = NewTransientInstance<Individual>();
+            //indv.CustomerType = "I";
+            //var contact = NewTransientInstance<Contact>();
+            //contact.FirstName = firstName;
+            //contact.LastName = lastName;
+            //contact.EmailPromotion = 0;
+            //contact.NameStyle = false;
+            //contact.ChangePassword(null, initialPassword, null);
+            //indv.Contact = contact;
+            //Persist(ref indv);
+            //return indv;
         }
 
         [FinderAction]
         [MemberOrder(70), QueryOnly]
-        public Individual RandomIndividual() {
-            return Random<Individual>();
+        public Customer RandomIndividual() {
+            var allIndividuals = Instances<Customer>().Where(t => t.StoreID == null);
+            int random = new Random().Next(allIndividuals.Count());
+            //The OrderBy(...) doesn't do anything, but is a necessary precursor to using .Skip
+            //which in turn is needed because LINQ to Entities doesn't support .ElementAt(x)
+            return allIndividuals.OrderBy(n => "").Skip(random).FirstOrDefault();
         }
 
         #endregion
+
+        public Customer RandomCustomer() {
+            return Random<Customer>();
+        }
     }
 }

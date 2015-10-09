@@ -2,7 +2,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
 {
-    public class ContactMap : EntityTypeConfiguration<Contact>
+    public class ContactMap : EntityTypeConfiguration<Person>
     {
         public ContactMap()
         {
