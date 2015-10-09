@@ -14,20 +14,20 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
-    public class Store : Customer {
+    public class Store :  IBusinessEntity {
         #region Injected Servives
+        public IDomainObjectContainer Container { set; protected get; }
+
         public SalesRepository SalesRepository { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
-        public override void Persisting() {
-            base.Persisting();
+        public  void Persisting() {
             rowguid = Guid.NewGuid();
             ModifiedDate = DateTime.Now;
         }
 
-        public override void Updating() {
-            base.Updating();
+        public  void Updating() {
             ModifiedDate = DateTime.Now;
         }
         #endregion
@@ -36,11 +36,13 @@ namespace AdventureWorksModel {
 
         public override string ToString() {
             var t = Container.NewTitleBuilder();
-            t.Append(Name).Append(",", AccountNumber);
+            t.Append(Name).Append(",", "ACCOUNT NUMBER");
             return t.ToString();
         }
 
         #endregion
+
+
 
         public Contact CreateNewContact() {
             var _Contact = Container.NewTransientInstance<Contact>();
@@ -51,6 +53,10 @@ namespace AdventureWorksModel {
         }
 
         #region Properties
+
+        [NakedObjectsIgnore]
+        public virtual int BusinessEntityID { get; set; }
+      
 
         [DisplayName("Store Name"), MemberOrder(20)]
         public virtual string Name { get; set; }
@@ -84,15 +90,15 @@ namespace AdventureWorksModel {
 
         #region Contacts
 
-        private ICollection<StoreContact> _contact = new List<StoreContact>();
+        //private ICollection<StoreContact> _contact = new List<StoreContact>();
 
-        [Disabled]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(true)] //i.e. no colums shown, because all relevant info is in the title
-        public virtual ICollection<StoreContact> Contacts {
-            get { return _contact; }
-            set { _contact = value; }
-        }
+        //[Disabled]
+        //[Eagerly(EagerlyAttribute.Do.Rendering)]
+        //[TableView(true)] //i.e. no colums shown, because all relevant info is in the title
+        //public virtual ICollection<StoreContact> Contacts {
+        //    get { return _contact; }
+        //    set { _contact = value; }
+        //}
 
         #endregion
 

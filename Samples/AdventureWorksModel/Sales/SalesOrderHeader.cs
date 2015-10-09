@@ -48,18 +48,7 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
 
-        public void Loaded() {
-            UpdateStoreContact();
-        }
-
-        private void UpdateStoreContact() {
-            if (Customer.IsStore() && StoreContact == null && Contact != null && Customer != null) {
-                StoreContact = FindStoreContactForContact();
-            }
-        }
-
         public void Persisted() {
-            UpdateStoreContact();
             if (AddItemsFromCart) {
                 ShoppingCartRepository.AddAllItemsInCartToOrder(this);
                 AddItemsFromCart = false;
@@ -67,9 +56,6 @@ namespace AdventureWorksModel {
         }
 
         public void Persisting() {
-            if (Customer.IsStore()) {
-                _contact = StoreContact.Contact;
-            }
             rowguid = Guid.NewGuid();
             ModifiedDate = DateTime.Now;
         }
@@ -152,54 +138,54 @@ namespace AdventureWorksModel {
 
         #region Contact
 
-        [NakedObjectsIgnore]
-        public virtual int ContactID { get; set; }
+        //[NakedObjectsIgnore]
+        //public virtual int ContactID { get; set; }
 
-        private Contact _contact;
-        [NakedObjectsIgnore]
-        public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
+        //private Contact _contact;
+        //[NakedObjectsIgnore]
+        //public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
           
-        internal void SetUpContact(Contact value) {
-            Contact = value;
-            storeContact = FindStoreContactForContact();
-        }
+        //internal void SetUpContact(Contact value) {
+        //    Contact = value;
+        //    storeContact = FindStoreContactForContact();
+        //}
 
-        #region StoreContact Property
+        //#region StoreContact Property
 
-        private StoreContact storeContact;
+        //private StoreContact storeContact;
 
-        [MemberOrder(3)]
-        public virtual StoreContact StoreContact {
-            get { return storeContact; }
-            set {
-                if (value != null) {
-                    storeContact = value;
-                    Contact = value.Contact;
-                }
-            }
-        }
+        //[MemberOrder(3)]
+        //public virtual StoreContact StoreContact {
+        //    get { return storeContact; }
+        //    set {
+        //        if (value != null) {
+        //            storeContact = value;
+        //            Contact = value.Contact;
+        //        }
+        //    }
+        //}
 
-        private StoreContact FindStoreContactForContact() {
-            IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
-                where obj.Contact.BusinessEntityID == Contact.BusinessEntityID && obj.Store.BusinessEntityID == Customer.BusinessEntityID
-                select obj;
+        //private StoreContact FindStoreContactForContact() {
+        //    IQueryable<StoreContact> query = from obj in Container.Instances<StoreContact>()
+        //        where obj.Contact.BusinessEntityID == Contact.BusinessEntityID && obj.Store.BusinessEntityID == Customer.Store.BusinessEntityID
+        //        select obj;
 
-            return query.FirstOrDefault();
-        }
+        //    return query.FirstOrDefault();
+        //}
 
-        public virtual bool HideStoreContact() {
-            return Customer != null && Customer.IsIndividual();
-        }
+        //public virtual bool HideStoreContact() {
+        //    return Customer != null && Customer.IsIndividual();
+        //}
 
-        [Executed(Where.Remotely)]
-        public List<StoreContact> ChoicesStoreContact() {
-            if (Customer != null && Customer.IsStore()) {
-                return new List<StoreContact>(((Store) Customer).Contacts);
-            }
-            return new List<StoreContact>();
-        }
-
-        #endregion
+        //[Executed(Where.Remotely)]
+        //public List<StoreContact> ChoicesStoreContact() {
+        //    throw new NotImplementedException();
+        //    //if (Customer != null && Customer.IsStore()) {
+        //    //    return new List<StoreContact>(((Store) Customer).Contacts);
+        //    //}
+        //    //return new List<StoreContact>();
+        //}
+        //#endregion
 
         #endregion
 
@@ -216,7 +202,7 @@ namespace AdventureWorksModel {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.BusinessEntityID == Customer.BusinessEntityID &&
+                where obj.Customer.CustomerID == Customer.CustomerID &&
                       obj.AddressType.Name == "Billing"
                 select obj.Address;
 
@@ -226,7 +212,7 @@ namespace AdventureWorksModel {
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.BusinessEntityID == Customer.BusinessEntityID
+                where obj.Customer.CustomerID == Customer.CustomerID
                 select obj.Address;
 
             return query.ToList();
@@ -254,7 +240,7 @@ namespace AdventureWorksModel {
                 return null;
             }
             IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-                where obj.Customer.BusinessEntityID == Customer.BusinessEntityID &&
+                where obj.Customer.CustomerID == Customer.CustomerID &&
                       obj.AddressType.Name == "Shipping"
                 select obj.Address;
 
@@ -634,9 +620,10 @@ namespace AdventureWorksModel {
 
         public CreditCard CreateNewCreditCard() {
             var newCard = Container.NewTransientInstance<CreditCard>();
-            newCard.ForContact = Contact;
-            newCard.Creator = this;
-            return newCard;
+            throw new NotImplementedException();
+            //newCard.ForContact = Contact;
+            //newCard.Creator = this;
+            //return newCard;
         }
 
         #endregion

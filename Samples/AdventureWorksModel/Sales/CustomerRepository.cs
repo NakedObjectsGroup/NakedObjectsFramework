@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Menu;
 using NakedObjects.Services;
+using System;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]
@@ -87,9 +88,10 @@ namespace AdventureWorksModel {
         [FinderAction]
         [MemberOrder(40)]
         public Store CreateNewStoreCustomer() {
-            var store = NewTransientInstance<Store>();
-            store.CustomerType = "S";
-            return store;
+            throw new NotImplementedException();
+            //var store = NewTransientInstance<Store>();
+            //store.CustomerType = "S";
+            //return store;
         }
 
         [FinderAction]

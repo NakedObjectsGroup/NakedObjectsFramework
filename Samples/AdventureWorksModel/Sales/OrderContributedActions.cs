@@ -23,7 +23,7 @@ namespace AdventureWorksModel {
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public IQueryable<SalesOrderHeader> RecentOrders([ContributedAction(subMenu)] Customer customer) {
             return from obj in Instances<SalesOrderHeader>()
-                where obj.Customer.BusinessEntityID == customer.BusinessEntityID
+                where obj.Customer.CustomerID == customer.CustomerID
                 orderby obj.SalesOrderNumber descending
                 select obj;
         }
@@ -35,7 +35,7 @@ namespace AdventureWorksModel {
         [MemberOrder(20), QueryOnly]
         public SalesOrderHeader LastOrder([ContributedAction(subMenu)] Customer customer) {
             var query = from obj in Container.Instances<SalesOrderHeader>()
-                where obj.Customer.BusinessEntityID == customer.BusinessEntityID
+                where obj.Customer.CustomerID == customer.CustomerID
                 orderby obj.SalesOrderNumber descending
                 select obj;
 
@@ -50,7 +50,7 @@ namespace AdventureWorksModel {
         [TableView(true, "OrderDate", "TotalDue")]
         public IQueryable<SalesOrderHeader> OpenOrders([ContributedAction(subMenu)] Customer customer) {
             return from obj in Container.Instances<SalesOrderHeader>()
-                where obj.Customer.BusinessEntityID == customer.BusinessEntityID &&
+                where obj.Customer.CustomerID == customer.CustomerID &&
                       obj.Status <= 3
                 orderby obj.SalesOrderNumber descending
                 select obj;
@@ -138,7 +138,7 @@ namespace AdventureWorksModel {
 
             if (customer != null) {
                 query = from obj in query
-                    where obj.Customer.BusinessEntityID == customer.BusinessEntityID
+                    where obj.Customer.CustomerID == customer.CustomerID
                     select obj;
             }
 
@@ -173,7 +173,6 @@ namespace AdventureWorksModel {
                 if (last != null) {
                     newOrder.BillingAddress = last.BillingAddress;
                     newOrder.ShippingAddress = last.ShippingAddress;
-                    newOrder.SetUpContact(last.Contact);
                     newOrder.CreditCard = last.CreditCard;
                     newOrder.ShipMethod = last.ShipMethod;
                     newOrder.AccountNumber = last.AccountNumber;

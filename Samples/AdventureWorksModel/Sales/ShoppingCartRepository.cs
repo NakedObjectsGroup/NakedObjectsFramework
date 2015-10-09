@@ -37,7 +37,7 @@ namespace AdventureWorksModel {
         }
 
         private string GetShoppingCartIDForUser() {
-            return GetCustomerForUser().BusinessEntityID.ToString();
+            return GetCustomerForUser().CustomerID.ToString();
         }
 
         [NakedObjectsIgnore]
@@ -65,28 +65,29 @@ namespace AdventureWorksModel {
         }
 
         private Customer GetCustomerForUser() {
-            Contact c = GetContactFromUserNameAsEmail();
-            if (c == null) return null;
+            throw new NotImplementedException();
+            //Contact c = GetContactFromUserNameAsEmail();
+            //if (c == null) return null;
 
-            var individuals = Instances<Individual>();
-            var qi = from i in individuals
-                where i.Contact.BusinessEntityID == c.BusinessEntityID
-                select i;
-            if (qi.Count() == 1) {
-                return qi.First();
-            }
+            //var individuals = Instances<Individual>();
+            //var qi = from i in individuals
+            //    where i.Contact.BusinessEntityID == c.BusinessEntityID
+            //    select i;
+            //if (qi.Count() == 1) {
+            //    return qi.First();
+            //}
 
-            var stores = Instances<Store>();
-            var storeContacts = Instances<StoreContact>();
+            //var stores = Instances<Store>();
+            //var storeContacts = Instances<StoreContact>();
 
-            var qs = from s in storeContacts
-                     where s.Contact.BusinessEntityID == c.BusinessEntityID
-                select s;
-            if (qs.Count() == 1) {
-                return qs.First().Store;
-            }
-            WarnUser("No Customer found with a Contact email address of: " + UserName());
-            return null;
+            //var qs = from s in storeContacts
+            //         where s.Contact.BusinessEntityID == c.BusinessEntityID
+            //    select s;
+            //if (qs.Count() == 1) {
+            //    return qs.First().Store;
+            //}
+            //WarnUser("No Customer found with a Contact email address of: " + UserName());
+            //return null;
         }
 
         private Contact GetContactFromUserNameAsEmail() {

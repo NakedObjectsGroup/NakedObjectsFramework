@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
       
 
         public string Name {
-            get { return Root.IsIndividual() ? ((Individual) Root).Contact.ToString() : ((Store) Root).Name; }
+            get { return Root.IsIndividual() ? Root.Person.ToString() : Root.Store.Name; }
         }
 
         [TableView(true, "OrderDate", "TotalDue", "Status")]
@@ -35,8 +35,8 @@ namespace AdventureWorksModel {
 
         public decimal TotalOrderValue {
             get {
-                int id = Root.BusinessEntityID;
-                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.BusinessEntityID == id).Sum(x => x.TotalDue);
+                int id = Root.CustomerID;
+                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
             }
         }
 
@@ -53,12 +53,12 @@ namespace AdventureWorksModel {
         }
 
         public string[] DeriveKeys() {
-            return new[] {Root.BusinessEntityID.ToString() };
+            return new[] {Root.CustomerID.ToString() };
         }
 
         public void PopulateUsingKeys(string[] keys) {
             int customerId = int.Parse(keys[0]);
-            Root = Container.Instances<Customer>().Single(c => c.BusinessEntityID == customerId);
+            Root = Container.Instances<Customer>().Single(c => c.CustomerID == customerId);
         }
     }
 }

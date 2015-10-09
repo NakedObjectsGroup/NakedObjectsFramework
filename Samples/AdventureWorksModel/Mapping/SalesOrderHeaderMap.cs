@@ -42,7 +42,6 @@ namespace AdventureWorksModel
             Property(t => t.PurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");
             Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             Property(t => t.CustomerID).HasColumnName("CustomerID");
-            Property(t => t.ContactID).HasColumnName("ContactID");
             Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
             Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             Property(t => t.BillingAddressID).HasColumnName("BillToAddressID");
@@ -62,17 +61,12 @@ namespace AdventureWorksModel
             // Relationships
             HasRequired(t => t.BillingAddress).WithMany().HasForeignKey(t => t.BillingAddressID);
             HasRequired(t => t.ShippingAddress).WithMany().HasForeignKey(t => t.ShippingAddressID);
-            HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID);
             HasRequired(t => t.ShipMethod).WithMany().HasForeignKey(t => t.ShipMethodID);
             HasOptional(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
             HasOptional(t => t.CurrencyRate).WithMany().HasForeignKey(t => t.CurrencyRateID);
             HasRequired(t => t.Customer).WithMany().HasForeignKey(t => t.CustomerID);
             HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);
             HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
-
-
-            // not mapped 
-            Ignore(t => t.StoreContact);
         }
     }
 }

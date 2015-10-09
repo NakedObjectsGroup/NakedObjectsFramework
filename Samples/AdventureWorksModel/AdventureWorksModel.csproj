@@ -151,7 +151,6 @@
     <Compile Include="Mapping\SpecialOfferMap.cs" />
     <Compile Include="Mapping\SpecialOfferProductMap.cs" />
     <Compile Include="Mapping\StateProvinceMap.cs" />
-    <Compile Include="Mapping\StoreContactMap.cs" />
     <Compile Include="Mapping\StoreMap.cs" />
     <Compile Include="Mapping\TransactionHistoryMap.cs" />
     <Compile Include="Mapping\UnitMeasureMap.cs" />
@@ -240,7 +239,6 @@
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOfferRepository.cs" />
     <Compile Include="Sales\Store.cs" />
-    <Compile Include="Sales\StoreContact.cs" />
     <Compile Include="Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
