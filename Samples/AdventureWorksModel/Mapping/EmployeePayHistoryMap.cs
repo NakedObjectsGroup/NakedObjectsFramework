@@ -16,7 +16,7 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("EmployeePayHistory", "HumanResources");
-            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.RateChangeDate).HasColumnName("RateChangeDate");
             Property(t => t.Rate).HasColumnName("Rate");
             Property(t => t.PayFrequency).HasColumnName("PayFrequency");

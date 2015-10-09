@@ -19,15 +19,15 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("EmployeeAddress", "HumanResources");
-            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.AddressID).HasColumnName("AddressID");
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            HasRequired(t => t.Employee)
-                .WithMany(t => t.Addresses)
-                .HasForeignKey(d => d.EmployeeID);
+            HasRequired(t => t.Employee);
+                //.WithMany(t => t.Addresses)
+                //.HasForeignKey(d => d.EmployeeID);
             HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);
 
         }

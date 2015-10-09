@@ -13,7 +13,7 @@ namespace AdventureWorksModel
             // Table & Column Mappings
             ToTable("JobCandidate", "HumanResources");
             Property(t => t.JobCandidateID).HasColumnName("JobCandidateID");
-            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.Resume).HasColumnName("Resume");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 

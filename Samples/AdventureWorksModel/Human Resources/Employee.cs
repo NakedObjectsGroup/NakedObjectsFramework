@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
+using System.ComponentModel;
 
 namespace AdventureWorksModel {
     [IconName("person.png")]
@@ -43,14 +44,19 @@ namespace AdventureWorksModel {
         #region Properties
 
         [NakedObjectsIgnore]
-        public virtual int EmployeeID { get; set; }
+        public virtual int BusinessEntityID { get; set; }
 
         #region Contact
-        [NakedObjectsIgnore]
-        public virtual int ContactDetailsID { get; set; }
+        //[NakedObjectsIgnore]
+        //public virtual int ContactDetailsID { get; set; }
 
         [MemberOrder(1)]
-        public virtual Contact ContactDetails { get; set; }
+        public virtual Contact ContactDetails {
+            get {
+                int id = this.BusinessEntityID;
+                return Container.Instances<Contact>().Single(c => c.BusinessEntityID == id); 
+            }
+        }
         #endregion
 
         [MemberOrder(10)]
@@ -139,21 +145,21 @@ namespace AdventureWorksModel {
         #endregion
 
         #region collections
-        private ICollection<Employee> _directReports = new List<Employee>();
+        //private ICollection<Employee> _directReports = new List<Employee>();
 
-        public virtual ICollection<Employee> DirectReports {
-            get { return _directReports; }
-            set { _directReports = value; }
-        }
+        //public virtual ICollection<Employee> DirectReports {
+        //    get { return _directReports; }
+        //    set { _directReports = value; }
+        //}
 
-        private ICollection<EmployeeAddress> _addresses = new List<EmployeeAddress>();
+        //private ICollection<EmployeeAddress> _addresses = new List<EmployeeAddress>();
 
-        [Disabled]
-        [TableView(true)]
-        public virtual ICollection<EmployeeAddress> Addresses {
-            get { return _addresses; }
-            set { _addresses = value; }
-        }
+        //[Disabled]
+        //[TableView(true)]
+        //public virtual ICollection<EmployeeAddress> Addresses {
+        //    get { return _addresses; }
+        //    set { _addresses = value; }
+        //}
 
         private ICollection<EmployeeDepartmentHistory> _departmentHistory = new List<EmployeeDepartmentHistory>();
 
@@ -188,8 +194,8 @@ namespace AdventureWorksModel {
 
         private EmployeePayHistory CurrentEmployeePayHistory() {
             var query = from obj in PayHistory
-                orderby obj.RateChangeDate descending
-                select obj;
+                        orderby obj.RateChangeDate descending
+                        select obj;
             return query.FirstOrDefault();
         }
 
@@ -208,7 +214,7 @@ namespace AdventureWorksModel {
             newAssignment.Employee = this;
             newAssignment.StartDate = DateTime.Now;
             Container.Persist(ref newAssignment);
-            DepartmentHistory.Add(newAssignment);
+           // DepartmentHistory.Add(newAssignment);
         }
 
         public Department Default0ChangeDepartmentOrShift() {
@@ -217,8 +223,9 @@ namespace AdventureWorksModel {
         }
 
         private EmployeeDepartmentHistory CurrentAssignment() {
-            EmployeeDepartmentHistory current = DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-            return current;
+            //EmployeeDepartmentHistory current = DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
+            //return current;
+            throw new NotImplementedException();
         }
 
         #endregion

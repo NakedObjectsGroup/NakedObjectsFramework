@@ -62,7 +62,7 @@ namespace AdventureWorksModel {
 
         public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Contact contactDetails) {
             var _Employee = Container.NewTransientInstance<Employee>();
-            _Employee.ContactDetails = contactDetails;
+            _Employee.BusinessEntityID = contactDetails.BusinessEntityID;
             return _Employee;
         }
 

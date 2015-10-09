@@ -19,7 +19,7 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("EmployeeDepartmentHistory", "HumanResources");
-            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.EmployeeID).HasColumnName("BusinessEntityID");
             Property(t => t.DepartmentID).HasColumnName("DepartmentID");
             Property(t => t.ShiftID).HasColumnName("ShiftID");
             Property(t => t.StartDate).HasColumnName("StartDate");

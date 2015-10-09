@@ -7,7 +7,7 @@ namespace AdventureWorksModel
         public EmployeeMap()
         {
             // Primary Key
-            HasKey(t => t.EmployeeID);
+            HasKey(t => t.BusinessEntityID);
 
             // Properties
             Property(t => t.NationalIDNumber)
@@ -34,12 +34,11 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("Employee", "HumanResources");
-            Property(t => t.EmployeeID).HasColumnName("EmployeeID");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.NationalIDNumber).HasColumnName("NationalIDNumber");
-            Property(t => t.ContactDetailsID).HasColumnName("ContactID");
             Property(t => t.LoginID).HasColumnName("LoginID");
-            Property(t => t.ManagerID).HasColumnName("ManagerID");
-            Property(t => t.Title).HasColumnName("Title");
+            Ignore(t => t.ManagerID);//.HasColumnName("ManagerID");
+            Property(t => t.Title).HasColumnName("JobTitle");
             Property(t => t.DateOfBirth).HasColumnName("BirthDate");
             Property(t => t.MaritalStatus).HasColumnName("MaritalStatus");
             Property(t => t.Gender).HasColumnName("Gender");
@@ -52,10 +51,9 @@ namespace AdventureWorksModel
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            HasRequired(t => t.ContactDetails).WithMany().HasForeignKey(t => t.ContactDetailsID);
-            HasOptional(t => t.Manager)
-                .WithMany(t => t.DirectReports)
-                .HasForeignKey(d => d.ManagerID);
+            Ignore(t => t.Manager);
+                //.WithMany(t => t.DirectReports)
+                //.HasForeignKey(d => d.ManagerID);
             HasOptional(t => t.SalesPerson).WithRequired(t => t.Employee);
 
         }
