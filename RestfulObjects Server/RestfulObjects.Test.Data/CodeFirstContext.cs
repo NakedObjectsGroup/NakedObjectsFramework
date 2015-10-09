@@ -154,7 +154,7 @@ namespace RestfulObjects.Test.Data {
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
                 // not running on azure - it's just test code 
                 Database.Delete(name);
-                (new CodeFirstContext("name")).Database.Create();
+                (new CodeFirstContext(name)).Database.Create();
             }
 
             CodeFirstInitializer.Seed();
