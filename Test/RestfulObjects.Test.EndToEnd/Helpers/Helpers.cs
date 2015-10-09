@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Web;
+using System.Web.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -159,6 +160,10 @@ namespace RestfulObjects.Test.EndToEnd {
             if (fileVersion.Contains("<nextId>")) {
                 fileVersion = fileVersion.Replace("<nextId>", JsonRep.CurrentId.ToString(CultureInfo.InvariantCulture));
             }
+
+            // remove line endings so  it works on AV 
+            fileVersion = fileVersion.Replace("\r", "").Replace("\n", "");
+            result = result.Replace("\r", "").Replace("\n", "");
 
             if (fileVersion != result) {
                 if (WriteFileIfResponseDiffersFromExisting) {
