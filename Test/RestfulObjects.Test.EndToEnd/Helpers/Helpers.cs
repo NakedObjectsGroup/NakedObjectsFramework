@@ -222,8 +222,8 @@ namespace RestfulObjects.Test.EndToEnd {
                 return @"C:\Users\Stefano\Documents\GitHub\NakedObjectsFramework\" + suffix;
             }
      
-            // Jupiter
-            return @"C:\Program Files (x86)\Jenkins\jobs\Master\workspace\" + suffix;
+            // Azure
+            return @"C:\projects\nakedobjectsframework-2dqwa\" + suffix;
         }
     }
 }
