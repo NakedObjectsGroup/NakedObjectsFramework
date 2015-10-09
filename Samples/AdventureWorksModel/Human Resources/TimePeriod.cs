@@ -20,11 +20,11 @@ namespace AdventureWorksModel {
 
         public override string ToString() {
             var t = Container.NewTitleBuilder();
-            t.Append(StartTime.ToString("hh:mm")).Append(" ~ ").Append(EndTime.ToString("hh:mm"));
+            t.Append(StartTime.ToString().Substring(0,5)).Append(" ~ ").Append(EndTime.ToString().Substring(0,5));
             return t.ToString();
         }
-      
-        public virtual DateTime StartTime { get; set; }
-        public virtual DateTime EndTime { get; set; }
+
+        public virtual TimeSpan StartTime { get; set; }
+        public virtual TimeSpan EndTime { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
         [TableView(true)] //TableView == ListView
         public IQueryable<Store> ListAccountsForSalesPerson([ContributedAction("Sales")] SalesPerson sp) {
             return from obj in Instances<Store>()
-                where obj.SalesPerson.SalesPersonID == sp.SalesPersonID
+                where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
                 select obj;
         }
 

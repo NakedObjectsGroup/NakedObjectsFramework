@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
         #endregion
 
         [NakedObjectsIgnore]
-        public virtual int SalesPersonID { get; set; }
+        public virtual int BusinessEntityID { get; set; }
 
         [MemberOrder(1)]
         [Mask("d")]

@@ -36,7 +36,7 @@ namespace AdventureWorksModel {
         public void RecalulateSalesYTD() {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             IQueryable<SalesOrderHeader> query = from obj in Container.Instances<SalesOrderHeader>()
-                where obj.SalesPerson.SalesPersonID == SalesPersonID &&
+                where obj.SalesPerson.BusinessEntityID == BusinessEntityID &&
                       obj.Status == 5 &&
                       obj.OrderDate >= startOfYear
                 select obj;
@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
         #region ID
 
         [NakedObjectsIgnore]
-        public virtual int SalesPersonID { get; set; }
+        public virtual int BusinessEntityID { get; set; }
 
         #endregion
 

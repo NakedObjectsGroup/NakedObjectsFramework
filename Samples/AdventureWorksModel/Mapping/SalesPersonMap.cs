@@ -8,15 +8,15 @@ namespace AdventureWorksModel
         public SalesPersonMap()
         {
             // Primary Key
-            HasKey(t => t.SalesPersonID);
+            HasKey(t => t.BusinessEntityID);
 
             // Properties
-            Property(t => t.SalesPersonID)
+            Property(t => t.BusinessEntityID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
             ToTable("SalesPerson", "Sales");
-            Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             Property(t => t.SalesQuota).HasColumnName("SalesQuota");
             Property(t => t.Bonus).HasColumnName("Bonus");

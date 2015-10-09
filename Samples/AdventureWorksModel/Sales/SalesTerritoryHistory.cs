@@ -47,7 +47,7 @@ namespace AdventureWorksModel {
 
         #region SalesPerson
         [NakedObjectsIgnore]
-        public virtual int SalesPersonID { get; set; }
+        public virtual int BusinessEntityID { get; set; }
 
         [MemberOrder(3)]
         public virtual SalesPerson SalesPerson { get; set; }

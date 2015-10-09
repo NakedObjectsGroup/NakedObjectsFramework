@@ -8,10 +8,10 @@ namespace AdventureWorksModel
         public SalesTerritoryHistoryMap()
         {
             // Primary Key
-            HasKey(t => new { t.SalesPersonID, t.SalesTerritoryID, t.StartDate });
+            HasKey(t => new { t.BusinessEntityID, t.SalesTerritoryID, t.StartDate });
 
             // Properties
-            Property(t => t.SalesPersonID)
+            Property(t => t.BusinessEntityID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             Property(t => t.SalesTerritoryID)
@@ -19,7 +19,7 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("SalesTerritoryHistory", "Sales");
-            Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.SalesTerritoryID).HasColumnName("TerritoryID");
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
@@ -29,7 +29,7 @@ namespace AdventureWorksModel
             // Relationships
             HasRequired(t => t.SalesPerson)
                 .WithMany(t => t.TerritoryHistory)
-                .HasForeignKey(d => d.SalesPersonID);
+                .HasForeignKey(d => d.BusinessEntityID);
             HasRequired(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }
