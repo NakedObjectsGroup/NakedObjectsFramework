@@ -1,4 +1,4 @@
-<Project ToolsVersion="4.0" DefaultTargets="EndToEndTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="SystemTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  
   <PropertyGroup>
     <TestPath>Test</TestPath>
@@ -42,23 +42,12 @@
   </Target>
 
   <ItemGroup>
-    <Files Include="$(TestPath)\NakedObjects.DatabaseHelpers\*.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Helpers.Test\*.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.SystemTest\*.csproj"/>
-    <Files Include="$(TestPath)\RestfulObjects.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Mvc.Selenium.Test.Helpers\NakedObjects.Mvc.Selenium.Test.Helpers.csproj"/>
-    <Files Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
-    <Files Include="$(TestPath)\NakedObjects.Batch.Test\*.csproj"/>
     <Files Include="$(DemoPath)\AdventureWorksModel\*.csproj"/>
-
+    <Files Include="$(TestPath)\NakedObjects.SystemTest\*.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.databaseHelpers\*.csproj"/>
+    <Files Include="$(TestPath)\NakedObjects.Batch.Test\*.csproj"/>   
   </ItemGroup>
 
-  <ItemGroup>   
-    <Apps Include="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"/>
-    <Apps Include="$(DemoPath)\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj"/>
-
-  </ItemGroup>
-   
 
   <Target Name="Init" DependsOnTargets="Config">
     <MakeDir Directories="$(TestResultsPath)"/>
@@ -85,59 +74,14 @@
 
   <Target Name="BuildTests" DependsOnTargets="RestoreSolutionPackages;RestorePackage">
     <MSBuild Projects="@(Files)"  Properties="Configuration=%(Configuration.Identity)"/>
-
-    <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj" Properties="PackageAsSingleFile=True;PackageLocation=RestfulObjects.Test.App.zip" Targets="Package"/>
-    <MSBuild Projects="$(DemoPath)\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj" Properties="PackageAsSingleFile=True;PackageLocation=NakedObjects.Rest.App.Demo.zip" Targets="Package"/>
-
-    <Exec Command='appveyor PushArtifact "Test/RestfulObjects.Test.App/RestfulObjects.Test.App.zip"'/>
-    <Exec Command='appveyor PushArtifact "Demo/NakedObjects.Rest.App.Demo/NakedObjects.Rest.App.Demo.zip"'/>
-
   </Target>
 
-  <!--<Target Name="Deploy" DependsOnTargets="BuildTests">
-    <PropertyGroup>
-     
-      <RestOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTest</RestOutputDir>
-      <WebProjectAjaxOutputDir>$(WorkingDir)\bin\%(Configuration.Identity)\UnitTestAjax</WebProjectAjaxOutputDir>
-    
-    </PropertyGroup>
-    
-
-    <MSBuild Projects="$(TestPath)\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj"
-           Targets="_CopyWebApplication"
-           Properties="WebProjectOutputDir=..\..\$(RestOutputDir)\;OutDir=..\..\$(RestOutputDir)\;Configuration=%(Configuration.Identity)" />
-    
-    <ItemGroup>
-      <RestApp Include="$(RestOutputDir)\**\*.*"/>
-      <RestAppLib Include="$(TestPath)\RestfulObjects.Test.App\bin\*.dll"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(RestApp)" DestinationFolder="$(IISRestPath)\%(RecursiveDir)"/>
-    <Copy SourceFiles="@(RestAppLib)" DestinationFolder="$(IISRestPath)\bin" SkipUnchangedFiles="true" />
-
-    <MSBuild Projects="$(TestPath)\NakedObjects.Test.App\NakedObjects.Test.App.csproj"
-            Targets="_CopyWebApplication"
-            Properties="WebProjectOutputDir=..\..\$(WebProjectAjaxOutputDir)\;OutDir=..\..\$(WebProjectAjaxOutputDir)\;Configuration=%(Configuration.Identity)" />
-
-    <ItemGroup>
-      <MvcAppAjax Include="$(WebProjectAjaxOutputDir)\**\*.*"/>
-      <MvcAppLib Include="$(TestPath)\NakedObjects.Test.App\bin\*.dll"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(MvcAppAjax)" DestinationFolder="$(IISAjaxPath)\%(RecursiveDir)"/>
-    <Copy SourceFiles="@(MvcAppLib)" DestinationFolder="$(IISAjaxPath)\bin" SkipUnchangedFiles="true" />
-
-         
-  </Target>--> 
   
-  <!--<Target Name="SystemTest" DependsOnTargets="BuildTests">
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Helpers.Test\bin\%(Configuration.Identity)\NakedObjects.Helpers.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Helpers.Test.trx' />
+  <Target Name="SystemTest" DependsOnTargets="BuildTests">
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.SystemTest\bin\%(Configuration.Identity)\NakedObjects.SystemTest.dll" /resultsfile:$(TestResultsPath)\NakedObjects.SystemTest.trx' />
     <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\NakedObjects.Batch.Test\bin\%(Configuration.Identity)\NakedObjects.Batch.Test.dll" /resultsfile:$(TestResultsPath)\NakedObjects.Batch.Test.trx' />
 </Target>
 
-  <Target Name="EndToEndTest" DependsOnTargets="SystemTest;Deploy">
-    <Exec Command='"$(MSTestPath)\MSTest.exe" /testcontainer:"$(TestPath)\RestfulObjects.Test.EndToEnd\bin\%(Configuration.Identity)\RestfulObjects.Test.EndToEnd.dll" /resultsfile:$(TestResultsPath)\RestfulObjects.Test.EndToEnd.trx' />
-  </Target>-->
+  
 
 </Project>

@@ -135,7 +135,29 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterfaceAssociation\AbstractHelperTest.cs" />
+    <Compile Include="InterfaceAssociation\ClassesForPolymorphicAssocTests.cs" />
+    <Compile Include="InterfaceAssociation\ClassesUsedByObjectFinderWithCompoundKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAbstract.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithCompoundKeysAndTypeCodeMapper.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithGuids.cs" />
+    <Compile Include="InterfaceAssociation\TestObjectFinderWithSingleKeys.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigator.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorAbstract.cs" />
+    <Compile Include="InterfaceAssociation\TestPolymorphicNavigatorWithTypeCodeMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\DateTimeExtensionsTest.cs" />
+    <Compile Include="util\GetTypeFromLoadedAssembliesInternalTest.cs" />
+    <Compile Include="util\GetTypeFromLoadedAssembliesTestAbstract.cs" />
+    <Compile Include="util\ReasonBuilderTest.cs" />
+    <Compile Include="util\TitleBuilderWithInitialContentTest.cs" />
+    <Compile Include="util\TitleBuilderWithNoInitialContentTest.cs" />
+    <Compile Include="util\TitleBuilderWithStartingContentTest.cs" />
+    <Compile Include="util\TypeUtilsTest.cs" />
+    <Compile Include="value\FileAttachmentTest.cs" />
+    <Compile Include="value\ImageTest.cs" />
+    <Compile Include="ViewModel\TestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -143,9 +165,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="util\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

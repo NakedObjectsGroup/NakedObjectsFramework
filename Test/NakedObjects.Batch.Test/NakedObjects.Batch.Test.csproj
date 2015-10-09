@@ -150,7 +150,7 @@
       <Name>AdventureWorksModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj">
-      <Project>{dde874ee-b28b-4577-a28a-6d35690d6310}</Project>
+      <Project>{DDE874EE-B28B-4577-A28A-6D35690D6310}</Project>
       <Name>NakedObjects.DatabaseHelpers</Name>
     </ProjectReference>
   </ItemGroup>
