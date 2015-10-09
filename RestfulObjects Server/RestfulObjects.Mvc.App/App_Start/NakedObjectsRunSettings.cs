@@ -39,7 +39,31 @@ namespace MvcTestApp {
 
         private static Type[] Types {
             get {
-                return new[] { typeof(WithAction), typeof(WithAttachments) };
+                return new[] { typeof(Immutable),
+                   typeof(WithActionViewModel),
+                   typeof(WithCollectionViewModel),
+                   typeof(WithValueViewModel),
+                   typeof(WithNestedViewModel),
+                   typeof(RedirectedObject),
+                   typeof(WithScalars),
+                   typeof(VerySimple),
+                   typeof(VerySimpleEager),
+                   typeof(WithAction),
+                   typeof(WithActionObject),
+                   typeof(WithAttachments),
+                   typeof(WithCollection),
+                   typeof(WithDateTimeKey),
+                   typeof(WithError),
+                   typeof(WithGetError),
+                   typeof(WithNestedViewModel),
+                   typeof(WithReference),
+                   typeof(WithReferenceViewModel),
+                   typeof(MostSimple),
+                   typeof(MostSimpleViewModel),
+                   typeof(WithValue),
+                   typeof(TestEnum),
+                   typeof(MostSimple[]),
+                   typeof(SetWrapper<MostSimple>) };
             }
         }
 
