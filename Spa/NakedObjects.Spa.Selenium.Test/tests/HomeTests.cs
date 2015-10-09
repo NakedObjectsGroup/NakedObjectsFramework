@@ -82,7 +82,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Invoking main menu actions
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ZeroParamReturnsObject()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
@@ -90,7 +90,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ZeroParamReturnsCollection()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
@@ -100,7 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector(".reference")).Count == 20);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ZeroParamThrowsError()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
@@ -110,7 +110,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Foo", msg.Text);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ZeroParamReturnsEmptyCollection()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(0, rows.Count);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void DialogActionOK()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
