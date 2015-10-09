@@ -50,7 +50,7 @@ namespace AdventureWorksModel {
         [TableView(true, "OrderDate", "TotalDue")]
         public IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor([ContributedAction("Purchase Orders")] Vendor vendor) {
             return from obj in Instances<PurchaseOrderHeader>()
-                where obj.Vendor.VendorID == vendor.VendorID && obj.Status <= 2
+                where obj.Vendor.BusinessEntityID == vendor.BusinessEntityID && obj.Status <= 2
                 select obj;
         }
 
@@ -66,7 +66,7 @@ namespace AdventureWorksModel {
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public IQueryable<PurchaseOrderHeader> ListPurchaseOrders([ContributedAction("Purchase Orders")] Vendor vendor, DateTime? fromDate, DateTime? toDate) {
             IQueryable<PurchaseOrderHeader> query = from obj in Instances<PurchaseOrderHeader>()
-                where obj.Vendor.VendorID == vendor.VendorID &&
+                where obj.Vendor.BusinessEntityID == vendor.BusinessEntityID &&
                       (fromDate == null || obj.OrderDate >= fromDate) &&
                       (toDate == null || obj.OrderDate <= toDate)
                 orderby obj.OrderDate
@@ -103,7 +103,7 @@ namespace AdventureWorksModel {
             return from obj in Instances<PurchaseOrderDetail>()
                    where obj.Product.ProductID == product.ProductID &&
                          obj.PurchaseOrderHeader.Status <= 2 && 
-                         obj.PurchaseOrderHeader.Vendor.VendorID == vendor.VendorID
+                         obj.PurchaseOrderHeader.Vendor.BusinessEntityID == vendor.BusinessEntityID
                    select obj.PurchaseOrderHeader;
         }
 

@@ -15,7 +15,7 @@ namespace AdventureWorksModel
             Property(t => t.PurchaseOrderID).HasColumnName("PurchaseOrderID");
             Property(t => t.RevisionNumber).HasColumnName("RevisionNumber");
             Property(t => t.Status).HasColumnName("Status");
-            Property(t => t.OrderPlacedByID).HasColumnName("BusinessEntityID");
+            Property(t => t.OrderPlacedByID).HasColumnName("EmployeeID");
             Property(t => t.VendorID).HasColumnName("VendorID");
             Property(t => t.ShipMethodID).HasColumnName("ShipMethodID");
             Property(t => t.OrderDate).HasColumnName("OrderDate");

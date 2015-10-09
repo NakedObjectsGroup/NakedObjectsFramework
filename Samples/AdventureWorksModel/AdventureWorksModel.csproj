@@ -155,8 +155,6 @@
     <Compile Include="Mapping\StoreMap.cs" />
     <Compile Include="Mapping\TransactionHistoryMap.cs" />
     <Compile Include="Mapping\UnitMeasureMap.cs" />
-    <Compile Include="Mapping\VendorAddressMap.cs" />
-    <Compile Include="Mapping\VendorContactMap.cs" />
     <Compile Include="Mapping\VendorMap.cs" />
     <Compile Include="Mapping\WorkOrderMap.cs" />
     <Compile Include="Mapping\WorkOrderRoutingMap.cs" />
@@ -171,6 +169,7 @@
     <Compile Include="Person\CountryRegion.cs" />
     <Compile Include="Person\EmailAddress.cs" />
     <Compile Include="Person\IAddressRole.cs" />
+    <Compile Include="Person\IBusinessEntity.cs" />
     <Compile Include="Person\IContactRole.cs" />
     <Compile Include="Person\Password.cs" />
     <Compile Include="Person\PersonPhone.cs" />
@@ -208,8 +207,6 @@
     <Compile Include="Purchasing\PurchaseOrderRepository.cs" />
     <Compile Include="Purchasing\ShipMethod.cs" />
     <Compile Include="Purchasing\Vendor.cs" />
-    <Compile Include="Purchasing\VendorAddress.cs" />
-    <Compile Include="Purchasing\VendorContact.cs" />
     <Compile Include="Purchasing\VendorRepository.cs" />
     <Compile Include="Sales\ContactCreditCard.cs" />
     <Compile Include="Sales\CustomerContributedActions.cs" />

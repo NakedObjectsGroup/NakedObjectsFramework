@@ -35,8 +35,8 @@ namespace AdventureWorksModel {
 
         public decimal TotalOrderValue {
             get {
-                int id = Root.CustomerId;
-                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerId == id).Sum(x => x.TotalDue);
+                int id = Root.BusinessEntityID;
+                return Container.Instances<SalesOrderHeader>().Where(x => x.Customer.BusinessEntityID == id).Sum(x => x.TotalDue);
             }
         }
 
@@ -53,12 +53,12 @@ namespace AdventureWorksModel {
         }
 
         public string[] DeriveKeys() {
-            return new[] {Root.CustomerId.ToString() };
+            return new[] {Root.BusinessEntityID.ToString() };
         }
 
         public void PopulateUsingKeys(string[] keys) {
             int customerId = int.Parse(keys[0]);
-            Root = Container.Instances<Customer>().Single(c => c.CustomerId == customerId);
+            Root = Container.Instances<Customer>().Single(c => c.BusinessEntityID == customerId);
         }
     }
 }

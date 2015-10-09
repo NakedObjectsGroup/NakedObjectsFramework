@@ -37,7 +37,7 @@ namespace AdventureWorksModel {
         }
 
         private string GetShoppingCartIDForUser() {
-            return GetCustomerForUser().CustomerId.ToString();
+            return GetCustomerForUser().BusinessEntityID.ToString();
         }
 
         [NakedObjectsIgnore]

@@ -6,7 +6,7 @@ namespace AdventureWorksModel
     using System.Collections.Generic;
     using System.ComponentModel;
     
-    public class BusinessEntity
+    public class BusinessEntity : IBusinessEntity
     {   
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }

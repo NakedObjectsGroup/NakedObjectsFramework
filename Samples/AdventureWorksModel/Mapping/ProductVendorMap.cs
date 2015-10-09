@@ -25,7 +25,7 @@ namespace AdventureWorksModel
             // Table & Column Mappings
             ToTable("ProductVendor", "Purchasing");
             Property(t => t.ProductID).HasColumnName("ProductID");
-            Property(t => t.VendorID).HasColumnName("VendorID");
+            Property(t => t.VendorID).HasColumnName("BusinessEntityID");
             Property(t => t.AverageLeadTime).HasColumnName("AverageLeadTime");
             Property(t => t.StandardPrice).HasColumnName("StandardPrice");
             Property(t => t.LastReceiptCost).HasColumnName("LastReceiptCost");

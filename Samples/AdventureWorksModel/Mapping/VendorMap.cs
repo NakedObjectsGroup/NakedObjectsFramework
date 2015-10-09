@@ -7,7 +7,7 @@ namespace AdventureWorksModel
         public VendorMap()
         {
             // Primary Key
-            HasKey(t => t.VendorID);
+            HasKey(t => t.BusinessEntityID);
 
             // Properties
             Property(t => t.AccountNumber)
@@ -23,7 +23,7 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("Vendor", "Purchasing");
-            Property(t => t.VendorID).HasColumnName("VendorID");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.AccountNumber).HasColumnName("AccountNumber");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.CreditRating).HasColumnName("CreditRating");

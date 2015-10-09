@@ -13,7 +13,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("dog.png")]
-    public class SalesPerson {
+    public class SalesPerson : IBusinessEntity {
 
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

@@ -62,8 +62,6 @@ namespace AdventureWorksModel
         public DbSet<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; }
         public DbSet<ShipMethod> ShipMethods { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
-        public DbSet<VendorAddress> VendorAddresses { get; set; }
-        public DbSet<VendorContact> VendorContacts { get; set; }
         public DbSet<ContactCreditCard> ContactCreditCards { get; set; }
         public DbSet<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
@@ -139,8 +137,6 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new PurchaseOrderHeaderMap());
             modelBuilder.Configurations.Add(new ShipMethodMap());
             modelBuilder.Configurations.Add(new VendorMap());
-            modelBuilder.Configurations.Add(new VendorAddressMap());
-            modelBuilder.Configurations.Add(new VendorContactMap());
             modelBuilder.Configurations.Add(new ContactCreditCardMap());
             modelBuilder.Configurations.Add(new CountryRegionCurrencyMap());
             modelBuilder.Configurations.Add(new CreditCardMap());

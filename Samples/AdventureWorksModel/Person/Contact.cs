@@ -59,29 +59,18 @@ namespace AdventureWorksModel {
 
         [NotPersisted]
         [NakedObjectsIgnore]
-        public object Contactee { get; set; }
+        public IBusinessEntity Contactee { get; set; }
 
         [MemberOrder(2)]
         [NotPersisted]
         public ContactType ContactType { get; set; }
 
         public void Persisted() {
-            if (Contactee is Store) {
-                var contactRole = Container.NewTransientInstance<StoreContact>();
-                contactRole.Store = (Store) Contactee;
-                contactRole.Contact = this;
-                contactRole.ContactType = ContactType;
-
-                Container.Persist(ref contactRole);
-            }
-            else if (Contactee is Vendor) {
-                var vendorContact = Container.NewTransientInstance<VendorContact>();
-                vendorContact.Vendor = (Vendor) Contactee;
-                vendorContact.Contact = this;
-                vendorContact.ContactType = ContactType;
-
-                Container.Persist(ref vendorContact);
-            }
+                var relationship = Container.NewTransientInstance<BusinessEntityContact>();
+                relationship.BusinessEntityID =  Contactee.BusinessEntityID;
+                relationship.Person = this;
+                relationship.ContactType = ContactType;
+                Container.Persist(ref relationship);
         }
 
         public virtual bool HideContactType() {

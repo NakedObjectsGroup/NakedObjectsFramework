@@ -14,7 +14,7 @@ using System.ComponentModel;
 
 namespace AdventureWorksModel {
     [IconName("person.png")]
-    public class Employee  {
+    public class Employee : IBusinessEntity {
         #region Injected Services
         public EmployeeRepository EmployeeRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }

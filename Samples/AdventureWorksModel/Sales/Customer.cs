@@ -13,7 +13,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("default.png")]
-    public abstract class Customer {
+    public abstract class Customer : IBusinessEntity {
         #region Injected Services
         public ContactRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
@@ -42,16 +42,9 @@ namespace AdventureWorksModel {
         [Optionally]
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        #region IHasIntegerId Members
-
-        #region ID
-
         [NakedObjectsIgnore]
-        public virtual int CustomerId { get; set; }
-        #endregion
-
-        #endregion
-
+        public virtual int BusinessEntityID { get; set; }
+ 
         [NakedObjectsIgnore]
         public virtual string Type() {
             return IsIndividual() ? "Individual" : "Store";
