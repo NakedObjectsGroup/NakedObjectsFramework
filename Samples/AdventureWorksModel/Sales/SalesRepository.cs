@@ -15,13 +15,7 @@ namespace AdventureWorksModel {
     [DisplayName("Sales")]
     public class SalesRepository : AbstractFactoryAndRepository {
         #region Injected Services
-
-        #region Injected: ContactRepository
-
         public ContactRepository ContactRepository { set; protected get; }
-
-        #endregion
-
         #endregion
 
         #region FindSalesPersonByName

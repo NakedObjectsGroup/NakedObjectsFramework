@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
             menu.AddAction("FindCustomerByAccountNumber");
             menu.CreateSubMenu("Stores")
                 .AddAction("FindStoreByName")
-                .AddAction("CreateNewStoreCustomer")
+                //.AddAction("CreateNewStoreCustomer")  //Todo - to be written
                 .AddAction("RandomStore");
             menu.CreateSubMenu("Individuals")
                 .AddAction("FindIndividualCustomerByName")
@@ -80,25 +80,29 @@ namespace AdventureWorksModel {
         [MemberOrder(20)]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
-        public IQueryable<Store> FindStoreByName(string name) {
-            return from obj in Instances<Store>()
-                where obj.Name.ToUpper().Contains(name.ToUpper())
-                select obj;
-        }
-
-        [FinderAction]
-        [MemberOrder(40)]
-        public Store CreateNewStoreCustomer() {
-            throw new NotImplementedException();
-            //var store = NewTransientInstance<Store>();
-            //store.CustomerType = "S";
-            //return store;
+            public IQueryable<Customer> FindStoreByName(string name) {
+                var customers = Instances<Customer>();
+                var stores = Instances<Store>();
+                return from c in customers
+                       from s in stores
+                where s.Name.ToUpper().Contains(name.ToUpper()) &&
+                        c.StoreID == s.BusinessEntityID
+                select c;
         }
 
         [FinderAction]
         [MemberOrder(60), QueryOnly]
-        public Store RandomStore() {
-            return Random<Store>();
+        public Customer RandomStore() {
+            var stores = StoreCustomers();
+            int random = new Random().Next(stores.Count());
+            //The OrderBy(...) doesn't do anything, but is a necessary precursor to using .Skip
+            //which in turn is needed because LINQ to Entities doesn't support .ElementAt(x)
+            return stores.OrderBy(n => "").Skip(random).FirstOrDefault();
+        }
+
+        private IQueryable<Customer> StoreCustomers() {
+            var stores = Instances<Customer>().Where(t => t.StoreID != null);
+            return stores;
         }
 
         #endregion
@@ -109,40 +113,41 @@ namespace AdventureWorksModel {
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public IQueryable<Customer> FindIndividualCustomerByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
-            throw new NotImplementedException();
-            //return from indv in Instances<Individual>()
-            //    from contact in matchingContacts
-            //    where indv.Contact.BusinessEntityID == contact.BusinessEntityID
-            //    orderby indv.Contact.LastName, indv.Contact.LastName
-            //    select indv;
+            IQueryable<Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
+            return from c in Instances<Customer>()
+                   from p in matchingPersons
+                   where c.PersonID == p.BusinessEntityID
+                   select c;
         }
 
         [FinderAction]
         [MemberOrder(50)]
         public Customer CreateNewIndividualCustomer(string firstName, string lastName, [DataType(DataType.Password)] string initialPassword) {
-            throw new NotImplementedException();
-            //var indv = NewTransientInstance<Individual>();
-            //indv.CustomerType = "I";
-            //var contact = NewTransientInstance<Contact>();
-            //contact.FirstName = firstName;
-            //contact.LastName = lastName;
-            //contact.EmailPromotion = 0;
-            //contact.NameStyle = false;
-            //contact.ChangePassword(null, initialPassword, null);
-            //indv.Contact = contact;
-            //Persist(ref indv);
-            //return indv;
+            var indv = NewTransientInstance<Customer>();
+            var person = NewTransientInstance<Person>();
+            person.FirstName = firstName;
+            person.LastName = lastName;
+            person.EmailPromotion = 0;
+            person.NameStyle = false;
+            person.ChangePassword(null, initialPassword, null);
+            indv.Person = person;
+            Persist(ref indv);
+            return indv;
         }
 
         [FinderAction]
         [MemberOrder(70), QueryOnly]
         public Customer RandomIndividual() {
-            var allIndividuals = Instances<Customer>().Where(t => t.StoreID == null);
+            var allIndividuals = IndividualCustomers();
             int random = new Random().Next(allIndividuals.Count());
             //The OrderBy(...) doesn't do anything, but is a necessary precursor to using .Skip
             //which in turn is needed because LINQ to Entities doesn't support .ElementAt(x)
             return allIndividuals.OrderBy(n => "").Skip(random).FirstOrDefault();
+        }
+
+        private IQueryable<Customer> IndividualCustomers() {
+            var allIndividuals = Instances<Customer>().Where(t => t.StoreID == null);
+            return allIndividuals;
         }
 
         #endregion
@@ -150,5 +155,11 @@ namespace AdventureWorksModel {
         public Customer RandomCustomer() {
             return Random<Customer>();
         }
+
+        
+        public IQueryable<Store> AllStores() {
+            return Container.Instances<Store>();
+        }
+      
     }
 }

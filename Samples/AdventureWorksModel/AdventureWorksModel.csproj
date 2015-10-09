@@ -160,7 +160,7 @@
     <Compile Include="Person\BusinessEntity.cs" />
     <Compile Include="Person\BusinessEntityAddress.cs" />
     <Compile Include="Person\BusinessEntityContact.cs" />
-    <Compile Include="Person\Contact.cs" />
+    <Compile Include="Person\Person.cs" />
     <Compile Include="Person\ContactRepository.cs" />
     <Compile Include="Person\ContactType.cs" />
     <Compile Include="Person\CountryRegion.cs" />
