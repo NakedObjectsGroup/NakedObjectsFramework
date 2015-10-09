@@ -23,14 +23,31 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
+        public virtual void Updating() {
+            ModifiedDate = DateTime.Now;
+        }
+
+        [Hidden(WhenTo.OncePersisted)]
+        [NotPersisted]
+        [MemberOrder(10)]
+        public virtual AddressType AddressType { get; set; }
+
+        [NotPersisted][Optionally]
+        public virtual IBusinessEntity AddressFor { get; set; }
+
+        public void Persisting() {
             rowguid = Guid.NewGuid();
             ModifiedDate = DateTime.Now;
         }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
+       public void Persisted() {
+            var ca = Container.NewTransientInstance<BusinessEntityAddress>();
+            ca.AddressID = this.AddressID;
+            ca.AddressTypeID = this.AddressType.AddressTypeID;
+            ca.BusinessEntityID = AddressFor.BusinessEntityID;
+            Container.Persist(ref ca);
         }
+
         #endregion
 
         #region Title
@@ -65,27 +82,6 @@ namespace AdventureWorksModel {
 
             return "Invalid region";
         }
-
-        #region Life Cycle Methods
-
-        [Hidden(WhenTo.OncePersisted)]
-        [NotPersisted]
-        [MemberOrder(10)]
-        public virtual AddressType AddressType { get; set; }
-
-        [NakedObjectsIgnore]
-        [NotPersisted]
-        public virtual IBusinessEntity ForBusinessEntity { get; set; }
-
-        public void Persisted() {
-            var ca = Container.NewTransientInstance<BusinessEntityAddress>();
-            ca.Address = this;
-            ca.AddressType = AddressType;
-            ca.BusinessEntityID = ForBusinessEntity.BusinessEntityID;
-            Container.Persist(ref ca);
-        }
-
-        #endregion
 
         #region Properties
 

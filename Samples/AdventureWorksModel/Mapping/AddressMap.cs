@@ -11,7 +11,7 @@ namespace AdventureWorksModel
 
             //Ignores
             Ignore(t => t.AddressType);
-            Ignore(t => t.ForBusinessEntity);
+            Ignore(t => t.AddressFor);
             Ignore(t => t.CountryRegion);
 
             // Properties

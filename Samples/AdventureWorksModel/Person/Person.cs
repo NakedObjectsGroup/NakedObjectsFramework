@@ -58,22 +58,18 @@ namespace AdventureWorksModel {
 
         [NotPersisted]
         [NakedObjectsIgnore]
-        public IBusinessEntity Contactee { get; set; }
+        public IBusinessEntity ForEntity { get; set; }
 
         [MemberOrder(2)]
-        [NotPersisted]
+        [NotPersisted][Hidden(WhenTo.OncePersisted)]
         public ContactType ContactType { get; set; }
 
         public void Persisted() {
                 var relationship = Container.NewTransientInstance<BusinessEntityContact>();
-                relationship.BusinessEntityID =  Contactee.BusinessEntityID;
-                relationship.Person = this;
-                relationship.ContactType = ContactType;
+                relationship.BusinessEntityID =  ForEntity.BusinessEntityID;
+                relationship.PersonID = this.BusinessEntityID;
+                relationship.ContactTypeID = ContactType.ContactTypeID;
                 Container.Persist(ref relationship);
-        }
-
-        public virtual bool HideContactType() {
-            return Container.IsPersistent(this);
         }
 
         #region Name fields

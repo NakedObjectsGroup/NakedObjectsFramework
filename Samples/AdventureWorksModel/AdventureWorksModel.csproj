@@ -160,6 +160,8 @@
     <Compile Include="Person\BusinessEntity.cs" />
     <Compile Include="Person\BusinessEntityAddress.cs" />
     <Compile Include="Person\BusinessEntityContact.cs" />
+    <Compile Include="Person\BusinessEntityContributedActions.cs" />
+    <Compile Include="Person\IBusinessEntityWithContacts.cs" />
     <Compile Include="Person\Person.cs" />
     <Compile Include="Person\ContactRepository.cs" />
     <Compile Include="Person\ContactType.cs" />

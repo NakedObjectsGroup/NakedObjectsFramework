@@ -13,6 +13,14 @@ namespace AdventureWorksModel
 
             // Table & Column Mappings
             ToTable("BusinessEntityAddress", "Person");
+            Property(t => t.AddressID).HasColumnName("AddressID");
+            Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+
+            //Relationships
+            //HasRequired(t => t.Address).WithMany();
+            //HasRequired(t => t.AddressType).WithMany();
+            //HasRequired(t => t.BusinessEntity).WithMany();
         }
     }
 }

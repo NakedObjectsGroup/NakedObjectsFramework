@@ -12,7 +12,7 @@ namespace AdventureWorksModel
             //Ignores
             Ignore(t => t.InitialPassword);
             Ignore(t => t.ContactType);
-            Ignore(t => t.Contactee);
+            Ignore(t => t.ForEntity);
             //TODO: Temp ignored
             Ignore(t => t.EmailAddress);
             Ignore(t => t.Phone);

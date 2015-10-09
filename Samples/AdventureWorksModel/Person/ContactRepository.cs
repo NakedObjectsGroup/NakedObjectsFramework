@@ -74,24 +74,10 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        
-        //public IQueryable<BusinessEntity> AllBusinessEntities() {
-        //    return Container.Instances<BusinessEntity>();
-        //}
 
-     
-        public IQueryable<EmailAddress> AllEmailAddresses() {
-            return Container.Instances<EmailAddress>();
+        public BusinessEntityAddress ManuallyCreateBusinessEntityAddress() {
+            return Container.NewTransientInstance<BusinessEntityAddress>();
         }
-
-        public EmailAddress RandomEmail() {
-            return Random<EmailAddress>();
-        }
-
-        public IQueryable<PersonPhone> AllPhoneNumbers() {
-            return Container.Instances<PersonPhone>();
-        }
-      
 
     }
 }
