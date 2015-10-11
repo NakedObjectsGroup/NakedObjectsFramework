@@ -172,7 +172,7 @@
         padding-right: 5px;
     }
 
-    .input-control input {
+    .input-control input, select {
         width: 230px;
     }
 
