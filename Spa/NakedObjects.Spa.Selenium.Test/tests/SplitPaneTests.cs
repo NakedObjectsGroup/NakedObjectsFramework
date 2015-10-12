@@ -56,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickReferencePropertyFromObjectSingle()
         {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             var reference = FindElementByCss(".property .reference", 0);
             Assert.AreEqual("Lynn Tsoflias", reference.Text);
@@ -68,7 +68,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickActionFromObjectSingle()
         {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             RightClick(GetObjectAction("Last Order"));
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
@@ -78,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickHomeIconFromObjectSingle()
         {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             RightClick(HomeIcon());
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
@@ -88,7 +88,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
         {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             Click(SwapIcon());
             WaitFor(Pane.Left, PaneType.Home, "Home");

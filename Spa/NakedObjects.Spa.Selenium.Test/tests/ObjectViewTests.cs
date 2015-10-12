@@ -13,11 +13,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    //[TestClass]
+
     public abstract class ObjectViewTests : GeminiTest {
         [TestMethod]
         public virtual void FooterIcons() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
 
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
@@ -26,24 +26,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Actions() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
             var actions = GetObjectActions();
 
-            Assert.AreEqual("Create New Address", actions[0].Text);
-            Assert.AreEqual("Create New Contact", actions[1].Text);
-            Assert.AreEqual("Create New Order", actions[2].Text);
-            Assert.AreEqual("Quick Order", actions[3].Text);
-            Assert.AreEqual("Search For Orders", actions[4].Text);
-            Assert.AreEqual("Last Order", actions[5].Text);
-            Assert.AreEqual("Open Orders", actions[6].Text);
-            Assert.AreEqual("Recent Orders", actions[7].Text);
+            //Assert.AreEqual("Create New Address", actions[0].Text);
+           // Assert.AreEqual("Create New Contact", actions[1].Text);
+            Assert.AreEqual("Create New Order", actions[0].Text);
+            Assert.AreEqual("Quick Order", actions[1].Text);
+            Assert.AreEqual("Search For Orders", actions[2].Text);
+            Assert.AreEqual("Last Order", actions[3].Text);
+            Assert.AreEqual("Open Orders", actions[4].Text);
+            Assert.AreEqual("Recent Orders", actions[5].Text);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void PropertiesAndCollections() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
 
@@ -66,15 +66,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ClickReferenceProperty() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             var reference = FindElementByCss(".property .reference", 0);
             Click(reference);
             WaitFor(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void OpenCollectionAsList() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
 
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == StoreCollections);
             var iconList = FindElementByCss(".icon-list", 0);
@@ -89,10 +89,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
-            var testUrl = Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=List";
+            var testUrl = StoreDetailsTwinCyclesActionsOpen +"&collection1_Addresses=List";
             br.Navigate().GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
             var title = row.Text;
@@ -100,10 +100,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Single, PaneType.Object, title);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
-            var testUrl = Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&collection1_Addresses=Table";
+            var testUrl = StoreDetailsTwinCyclesActionsOpen + "&collection1_Addresses=Table";
             br.Navigate().GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
@@ -124,13 +124,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void DialogAction() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             OpenActionDialog("Search For Orders");
         }
 
         [TestMethod]
         public virtual void DialogActionOk() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
 
             var dialog = OpenActionDialog("Search For Orders");
 
@@ -144,14 +144,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectAction() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
 
         [TestMethod]
         public virtual void CollectionAction() {
-            br.Navigate().GoToUrl(Store555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             Click(GetObjectAction("Recent Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Recent Orders");
         }
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

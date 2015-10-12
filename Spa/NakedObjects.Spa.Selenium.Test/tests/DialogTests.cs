@@ -67,7 +67,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void DateTimeParmKeepsValue()
         {
-            br.Navigate().GoToUrl(Customer555UrlWithActionsMenuOpen);
+            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
             OpenActionDialog("Search For Orders");
             FindElementByCss(".value input",0).SendKeys("1 Jan 2003");
             FindElementByCss(".value input",1).SendKeys("1 Dec 2003" + Keys.Escape);
