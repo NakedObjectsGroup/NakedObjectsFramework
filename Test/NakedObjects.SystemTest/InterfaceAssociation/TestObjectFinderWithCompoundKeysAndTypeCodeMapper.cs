@@ -14,10 +14,10 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestClass]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
-
         protected override string[] Namespaces {
-            get { return new[] { typeof(Payment).Namespace }; }
+            get { return new[] {typeof (Payment).Namespace}; }
         }
+
         protected override object[] MenuServices {
             get {
                 return (new object[] {
@@ -34,13 +34,11 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             }
         }
 
-
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeysAndTypeCodeMapper());
             Database.Delete(PaymentContext.DatabaseName);
         }
-
 
         [TestMethod]
         public void SetAssociatedObject() {
@@ -122,7 +120,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             }
         }
 
-
         [TestMethod]
         public void FailsIfTooManyKeysSupplied() {
             key1.SetValue("CU2|1|1001|2001");
@@ -135,7 +132,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             }
         }
 
-
         [TestMethod]
         public void ChangeAssociatedObjectType() {
             payee1.SetObject(customer2a);
@@ -146,14 +142,12 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             key1.AssertValueIsEqual("SUP|1|2001");
         }
 
-
         [TestMethod]
         public void ClearAssociatedObject() {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
         }
-
 
         [TestMethod]
         public void GetAssociatedObject() {
@@ -180,18 +174,18 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         #region ITypeCodeMapper Members
 
         public Type TypeFromCode(string code) {
-            if (code == "CU1") return typeof (CustomerOne);
-            if (code == "CU2") return typeof (CustomerTwo);
-            if (code == "CU3") return typeof (CustomerThree);
-            if (code == "SUP") return typeof (Supplier);
+            if (code == "CU1") { return typeof (CustomerOne); }
+            if (code == "CU2") { return typeof (CustomerTwo); }
+            if (code == "CU3") { return typeof (CustomerThree); }
+            if (code == "SUP") { return typeof (Supplier); }
             throw new DomainException("Code not recognised: " + code);
         }
 
         public string CodeFromType(Type type) {
-            if (type == typeof (CustomerOne)) return "CU1";
-            if (type == typeof (CustomerTwo)) return "CU2";
-            if (type == typeof (CustomerThree)) return "CU3";
-            if (type == typeof (Supplier)) return "SUP";
+            if (type == typeof (CustomerOne)) { return "CU1"; }
+            if (type == typeof (CustomerTwo)) { return "CU2"; }
+            if (type == typeof (CustomerThree)) { return "CU3"; }
+            if (type == typeof (Supplier)) { return "SUP"; }
             throw new DomainException("Type not recognised: " + type);
         }
 

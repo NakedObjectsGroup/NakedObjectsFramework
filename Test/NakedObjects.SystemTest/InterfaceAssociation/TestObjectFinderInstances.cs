@@ -6,20 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.Xat;
-using System.Collections.Generic;
 using NakedObjects.Util;
-using System.Linq;
+using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestClass]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
-
         protected override string[] Namespaces {
-            get { return new[] { typeof(Customer).Namespace }; }
+            get { return new[] {typeof (Customer).Namespace}; }
         }
 
         protected override object[] MenuServices {
@@ -31,6 +30,36 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
                     new MyService()
                 };
             }
+        }
+
+        [TestCleanup]
+        public void CleanUp() {}
+
+        [TestMethod]
+        public void FindInstances() {
+            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            ITestAction payees = GetTestService("My Service").GetAction("Payees");
+            var results = payees.InvokeReturnCollection(namesp + "Customer");
+            results.AssertCountIs(2);
+            results.ElementAt(0).AssertIsType(typeof (Customer));
+
+            results = payees.InvokeReturnCollection(namesp + "Supplier");
+            results.AssertCountIs(3);
+            results.ElementAt(0).AssertIsType(typeof (Supplier));
+        }
+
+        //This tests that the results are coming back as a Queryable<T>
+        [TestMethod]
+        public void FindInstancesFilteredByInterfaceProperty() {
+            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            ITestAction find = GetTestService("My Service").GetAction("Find Payee");
+            var result = find.InvokeReturnObject(namesp + "Customer", 2);
+            result.AssertIsType(typeof (Customer));
+            result.GetPropertyByName("Id").AssertValueIsEqual("2");
+
+            result = find.InvokeReturnObject(namesp + "Supplier", 3);
+            result.AssertIsType(typeof (Supplier));
+            result.GetPropertyByName("Id").AssertValueIsEqual("3");
         }
 
         #region Setup/Teardown
@@ -45,38 +74,8 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
             InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
+
         #endregion
-
-        [TestCleanup]
-        public void CleanUp() {
-        }
-
-        [TestMethod]
-        public void FindInstances() {
-            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
-            ITestAction payees = GetTestService("My Service").GetAction("Payees");
-            var results = payees.InvokeReturnCollection(namesp + "Customer");
-            results.AssertCountIs(2);
-            results.ElementAt(0).AssertIsType(typeof(Customer));
-
-            results = payees.InvokeReturnCollection(namesp + "Supplier");
-            results.AssertCountIs(3);
-            results.ElementAt(0).AssertIsType(typeof(Supplier));
-        }
-
-        //This tests that the results are coming back as a Queryable<T>
-        [TestMethod]
-        public void FindInstancesFilteredByInterfaceProperty() {
-            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
-            ITestAction find = GetTestService("My Service").GetAction("Find Payee");
-            var result = find.InvokeReturnObject(namesp + "Customer", 2);
-            result.AssertIsType(typeof(Customer));
-            result.GetPropertyByName("Id").AssertValueIsEqual("2");
-
-            result = find.InvokeReturnObject(namesp + "Supplier", 3);
-            result.AssertIsType(typeof(Supplier));
-            result.GetPropertyByName("Id").AssertValueIsEqual("3");
-        }
     }
 
     #region Classes used by test
@@ -84,7 +83,7 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
     public class PaymentContext : DbContext {
         public const string DatabaseName = "ObjectFinderInstances";
 
-        public PaymentContext() : base(DatabaseName) { }
+        public PaymentContext() : base(DatabaseName) {}
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
@@ -110,17 +109,24 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
     }
 
     public class Customer : IPayee {
+        #region IPayee Members
+
         [Disabled]
         public virtual int Id { get; set; }
+
+        #endregion
     }
 
     public class Supplier : IPayee {
+        #region IPayee Members
+
         [Disabled]
         public virtual int Id { get; set; }
+
+        #endregion
     }
 
     public class MyService {
-
         public IObjectFinder ObjectFinder { set; protected get; }
 
         public IList<IPayee> Payees(string ofType) {
@@ -133,5 +139,6 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
             return ObjectFinder.Instances<IPayee>(type).SingleOrDefault(p => p.Id == Id);
         }
     }
+
     #endregion
 }

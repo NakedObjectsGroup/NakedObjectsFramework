@@ -11,7 +11,6 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Attributes;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
@@ -26,7 +25,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         private ITestObject supplier1;
 
         protected override string[] Namespaces {
-            get { return new[] { typeof(Payment).Namespace }; }
+            get { return new[] {typeof (Payment).Namespace}; }
         }
 
         protected override object[] MenuServices {
@@ -40,8 +39,53 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
             }
         }
 
-        #region Setup/Teardown
+        [TestMethod]
+        public void SetAssociatedObject() {
+            payee1.SetObject(customer1);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
 
+            payee1.SetObject(customer2);
+            Assert.AreEqual(payee1.ContentAsObject, customer2);
+
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
+        }
+
+        [TestMethod]
+        public void ChangeAssociatedObjectType() {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            payee1.SetObject(supplier1);
+            Assert.AreEqual(payee1.ContentAsObject, supplier1);
+
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Supplier|89bc90ec-7017-11e0-a08c-57564824019b");
+        }
+
+        [TestMethod]
+        public void ClearAssociatedObject() {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            key1.AssertIsEmpty();
+        }
+
+        [TestMethod]
+        public void GetAssociatedObject() {
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("0c1ced04-7016-11e0-9c44-78544824019b");
+
+            payee1.ClearObject();
+
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("3d9d6ca0-7016-11e0-b12a-9e544824019b");
+        }
+
+        [TestMethod]
+        public void NoAssociatedObject() {
+            key1.AssertIsEmpty();
+        }
+
+        #region Setup/Teardown
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext tc) {
@@ -74,54 +118,6 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         }
 
         #endregion
-        [TestMethod]
-        public void SetAssociatedObject() {
-            payee1.SetObject(customer1);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
-
-            payee1.SetObject(customer2);
-            Assert.AreEqual(payee1.ContentAsObject, customer2);
-
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
-        }
-
-
-        [TestMethod]
-        public void ChangeAssociatedObjectType() {
-            payee1.SetObject(customer1);
-            payee1.ClearObject();
-            payee1.SetObject(supplier1);
-            Assert.AreEqual(payee1.ContentAsObject, supplier1);
-
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Supplier|89bc90ec-7017-11e0-a08c-57564824019b");
-        }
-
-
-        [TestMethod]
-        public void ClearAssociatedObject() {
-            payee1.SetObject(customer1);
-            payee1.ClearObject();
-            key1.AssertIsEmpty();
-        }
-
-
-        [TestMethod]
-        public void GetAssociatedObject() {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
-            payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("0c1ced04-7016-11e0-9c44-78544824019b");
-
-            payee1.ClearObject();
-
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
-            payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("3d9d6ca0-7016-11e0-b12a-9e544824019b");
-        }
-
-        [TestMethod]
-        public void NoAssociatedObject() {
-            key1.AssertIsEmpty();
-        }
     }
 
     #region Classes used by test
@@ -134,13 +130,13 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        //}
+        //    Database.SetInitializer(new DatabaseInitializer());
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-        //    Database.SetInitializer(new DatabaseInitializer());
-        //}
     }
 
-    public class DatabaseInitializer  {
+    public class DatabaseInitializer {
         public static void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.Customers.Add(new Customer() {Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b")});
@@ -192,7 +188,6 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
     public interface IPayee : IHasGuid {}
 
-
     public class Customer : IPayee {
         #region IPayee Members
 
@@ -201,7 +196,6 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         #endregion
     }
-
 
     public class Supplier : IPayee {
         #region IPayee Members

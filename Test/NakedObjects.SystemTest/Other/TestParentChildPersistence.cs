@@ -14,32 +14,8 @@ namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
         [TestClass]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
-            #region Setup/Teardown
-
-           
-
-
-            [ClassInitialize]
-            public static void ClassInitialize(TestContext tc) {
-                InitializeNakedObjectsFramework(new TestParentChildPersistence());
-            }
-
-            [ClassCleanup]
-            public static void ClassCleanup() {
-                CleanupNakedObjectsFramework(new TestParentChildPersistence());
-                Database.Delete(ParentChildDbContext.DatabaseName);
-            }
-
-            [TestInitialize()]
-            public void TestInitialize() {
-                InitializeNakedObjectsFrameworkOnce();
-                StartTest();
-            }
-
-            #endregion
-
             protected override string[] Namespaces {
-                get { return new[] { typeof(Parent).Namespace }; }
+                get { return new[] {typeof (Parent).Namespace}; }
             }
 
             protected override object[] MenuServices {
@@ -72,6 +48,27 @@ namespace NakedObjects.SystemTest.ParentChild {
                 parent.AssertCanBeSaved();
                 parent.Save();
             }
+
+            #region Setup/Teardown
+
+            [ClassInitialize]
+            public static void ClassInitialize(TestContext tc) {
+                InitializeNakedObjectsFramework(new TestParentChildPersistence());
+            }
+
+            [ClassCleanup]
+            public static void ClassCleanup() {
+                CleanupNakedObjectsFramework(new TestParentChildPersistence());
+                Database.Delete(ParentChildDbContext.DatabaseName);
+            }
+
+            [TestInitialize()]
+            public void TestInitialize() {
+                InitializeNakedObjectsFrameworkOnce();
+                StartTest();
+            }
+
+            #endregion
         }
 
         #region Classes used in tests
@@ -86,12 +83,7 @@ namespace NakedObjects.SystemTest.ParentChild {
         }
 
         public class Parent {
-
             public IDomainObjectContainer Container { set; protected get; }
-
-            public void Created() {
-                Child = Container.NewTransientInstance<Child>();
-            }
 
             [NakedObjectsIgnore]
             public virtual int Id { get; set; }
@@ -99,6 +91,10 @@ namespace NakedObjects.SystemTest.ParentChild {
             public virtual string Prop0 { get; set; }
 
             public virtual Child Child { get; set; }
+
+            public void Created() {
+                Child = Container.NewTransientInstance<Child>();
+            }
         }
 
         public class Parent2 {

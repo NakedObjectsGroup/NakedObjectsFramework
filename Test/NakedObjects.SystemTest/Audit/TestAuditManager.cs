@@ -18,7 +18,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Attributes;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -31,8 +30,8 @@ namespace NakedObjects.SystemTest.Audit {
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new AuditConfiguration<MyDefaultAuditor>();
-            config.AddNamespaceAuditor<FooAuditor>(typeof(Foo).FullName);
-            config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
+            config.AddNamespaceAuditor<FooAuditor>(typeof (Foo).FullName);
+            config.AddNamespaceAuditor<QuxAuditor>(typeof (Qux).FullName);
             container.RegisterInstance<IAuditConfiguration>(config, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IFacetDecorator, AuditManager>("AuditManager", new ContainerControlledLifetimeManager());
 
@@ -48,46 +47,10 @@ namespace NakedObjects.SystemTest.Audit {
                     typeof (SimpleRepository<Qux>), typeof (FooService),
                     typeof (BarService), typeof (QuxService)
                 },
-                new string[]{ typeof(Foo).Namespace });
-
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            Database.Delete(AuditDbContext.DatabaseName);
-            var context = Activator.CreateInstance<AuditDbContext>();
-
-            context.Database.Create();
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestAuditManager());
-        }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-            SetUser("sven");
-        }
-
-        [TestCleanup()]
-        public void TestCleanup() {}
-
-        #endregion
-
-        #region "Services & Fixtures"
-
-        private static readonly FooAuditor fooAuditor = new FooAuditor();
-        protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
-        protected static QuxAuditor quxAuditor = new QuxAuditor();
 
         #endregion
 
@@ -109,7 +72,6 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorAction() {
-
             MyDefaultAuditor.SetActionCallbacksExpected();
 
             ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
@@ -124,7 +86,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -145,7 +107,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnAction", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -168,7 +130,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -191,7 +153,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -201,7 +163,6 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorQueryOnlyServiceAction() {
-
             MyDefaultAuditor.SetActionCallbacksExpected();
             ITestService foo = GetTestService("Foo Service");
 
@@ -214,14 +175,13 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AQueryOnlyAction", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
             foo.GetAction("A Query Only Action").InvokeReturnObject();
             Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
         }
-
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorActionWithParm() {
@@ -237,7 +197,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(1, pp.Count());
+                Assert.AreEqual(1, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 fooCalledCount++;
             };
@@ -258,7 +218,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnActionWithParm", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(1, pp.Count());
+                Assert.AreEqual(1, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 fooCalledCount++;
             };
@@ -266,7 +226,6 @@ namespace NakedObjects.SystemTest.Audit {
             foo.GetAction("An Action With Parm").InvokeReturnObject(1);
             Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
         }
-
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorActionWithParms() {
@@ -282,7 +241,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(2, pp.Count());
+                Assert.AreEqual(2, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 Assert.AreSame(foo.NakedObject.Object, pp[1]);
                 fooCalledCount++;
@@ -306,7 +265,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnActionWithParms", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(2, pp.Count());
+                Assert.AreEqual(2, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 Assert.AreSame(fooObj.NakedObject.Object, pp[1]);
                 fooCalledCount++;
@@ -315,7 +274,6 @@ namespace NakedObjects.SystemTest.Audit {
             foo.GetAction("An Action With Parms").InvokeReturnObject(1, fooObj);
             Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
         }
-
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorUpdate() {
@@ -327,8 +285,6 @@ namespace NakedObjects.SystemTest.Audit {
             int fooPersistedCount = 0;
 
             string newValue = Guid.NewGuid().ToString();
-
-         
 
             FooAuditor.Auditor.objectPersistedCallback = (p, o) => {
                 Assert.AreEqual("sven", p.Identity.Name);
@@ -372,7 +328,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 quxCalledCound++;
             };
 
@@ -392,14 +348,13 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnAction", a);
                 Assert.AreEqual("Qux Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 quxCalledCound++;
             };
 
             qux.GetAction("An Action").InvokeReturnObject();
             Assert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
         }
-
 
         [TestMethod]
         public void AuditUsingSpecificTypeAuditorUpdateQux() {
@@ -442,7 +397,7 @@ namespace NakedObjects.SystemTest.Audit {
         [TestMethod]
         public void DefaultAuditorCalledForNonSpecificTypeAction() {
             MyDefaultAuditor.SetActionCallbacksExpected();
-            ITestObject bar = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject bar = GetTestService(typeof (SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
             MyDefaultAuditor.SetActionCallbacksUnexpected();
 
             int defaultCalledCount = 0;
@@ -453,7 +408,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 defaultCalledCount++;
             };
 
@@ -463,7 +418,7 @@ namespace NakedObjects.SystemTest.Audit {
 
         [TestMethod]
         public void DefaultAuditorCalledForNonSpecificTypeServiceAction() {
-            ITestService bar = GetTestService(typeof(SimpleRepository<Bar>));
+            ITestService bar = GetTestService(typeof (SimpleRepository<Bar>));
             MyDefaultAuditor.SetActionCallbacksUnexpected();
 
             int defaultCalledCount = 0;
@@ -473,14 +428,13 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("NewInstance", a);
                 Assert.AreEqual("Bars", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 defaultCalledCount++;
             };
 
             bar.GetAction("New Instance").InvokeReturnObject();
             Assert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
         }
-
 
         [TestMethod]
         public void DefaultAuditorCalledForNonSpecificTypeUpdate() {
@@ -490,7 +444,6 @@ namespace NakedObjects.SystemTest.Audit {
 
             int defaultUpdatedCount = 0;
             int defaultPersistedCount = 0;
-
 
             string newValue = Guid.NewGuid().ToString();
 
@@ -517,6 +470,41 @@ namespace NakedObjects.SystemTest.Audit {
             Assert.AreEqual(1, defaultUpdatedCount, "expect default auditor to be called for updates");
             Assert.AreEqual(1, defaultPersistedCount, "expect default auditor to be called for persists");
         }
+
+        #region Setup/Teardown
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(AuditDbContext.DatabaseName);
+            var context = Activator.CreateInstance<AuditDbContext>();
+
+            context.Database.Create();
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new TestAuditManager());
+        }
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+            SetUser("sven");
+        }
+
+        [TestCleanup()]
+        public void TestCleanup() {}
+
+        #endregion
+
+        #region "Services & Fixtures"
+
+        private static readonly FooAuditor fooAuditor = new FooAuditor();
+        protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
+        protected static QuxAuditor quxAuditor = new QuxAuditor();
+
+        #endregion
     }
 
     #region Classes used by tests
@@ -552,6 +540,8 @@ namespace NakedObjects.SystemTest.Audit {
             //Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => { };
         }
 
+        public string NamespaceToAudit { get; private set; }
+
         #region IAuditor Members
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
@@ -581,8 +571,6 @@ namespace NakedObjects.SystemTest.Audit {
             Auditor.actionInvokedCallback = TestAuditManager.UnexpectedActionCallback("default");
             Auditor.serviceActionInvokedCallback = TestAuditManager.UnexpectedServiceActionCallback("default");
         }
-
-        public string NamespaceToAudit { get; private set; }
     }
 
     public class FooAuditor : IAuditor {
@@ -592,10 +580,9 @@ namespace NakedObjects.SystemTest.Audit {
             NamespaceToAudit = typeof (Foo).FullName;
         }
 
-        #region INamespaceAuditor Members
-
         public string NamespaceToAudit { get; private set; }
 
+        #region IAuditor Members
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
             Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
@@ -623,10 +610,9 @@ namespace NakedObjects.SystemTest.Audit {
             NamespaceToAudit = typeof (Qux).FullName;
         }
 
-        #region INamespaceAuditor Members
-
         public string NamespaceToAudit { get; private set; }
 
+        #region IAuditor Members
 
         public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
             Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);

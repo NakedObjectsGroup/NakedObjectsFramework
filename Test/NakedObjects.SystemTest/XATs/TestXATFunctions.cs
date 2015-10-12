@@ -10,46 +10,16 @@ using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Menu;
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using NakedObjects.Menu;
 
 namespace NakedObjects.SystemTest.XATs {
-
-
     /// <summary>
     ///     Tests various functions of the XATs themselves
     /// </summary>
     [TestClass]
     public class TestXATFunctions : AbstractSystemTest<XatDbContext> {
-        #region Setup/Teardown
-
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            Database.Delete(XatDbContext.DatabaseName);
-            var context = Activator.CreateInstance<XatDbContext>();
-
-            context.Database.Create();
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestXATFunctions());
-            Database.Delete(XatDbContext.DatabaseName);
-        }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-        }
-
-        [TestCleanup()]
-        public void TestCleanup() { }
-
-        #endregion
-
         #region TestEnum enum
 
         public enum TestEnum {
@@ -60,11 +30,11 @@ namespace NakedObjects.SystemTest.XATs {
         #endregion
 
         protected override string[] Namespaces {
-            get { return new[] { typeof(Object1).Namespace }; }
+            get { return new[] {typeof (Object1).Namespace}; }
         }
 
         protected override object[] MenuServices {
-            get { return (new object[] { new SimpleRepository<Object1>(), new MyService1(), new MyService2() }); }
+            get { return (new object[] {new SimpleRepository<Object1>(), new MyService1(), new MyService2()}); }
         }
 
         protected override object[] Fixtures {
@@ -79,28 +49,31 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 GetTestService("My Service3");
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.Fail failed. No such service: My Service3", e.Message);
             }
             //Get service by real name that has been overriden
             try {
                 GetTestService("MyService2");
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.Fail failed. No such service: MyService2", e.Message);
             }
 
-            GetTestService(typeof(MyService1));
+            GetTestService(typeof (MyService1));
             GetTestService<MyService2>();
 
             //Get non existant service
             try {
                 GetTestService<MyService3>();
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.Fail failed. No service of type NakedObjects.SystemTest.XATs.TestXATFunctions+MyService3", e.Message);
             }
         }
@@ -111,12 +84,12 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 obj1.GetAction("Do Something").InvokeReturnObject(1, 2);
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.Fail failed. Invalid Argument(s)", e.Message);
             }
         }
-
 
         [TestMethod]
         public virtual void IncorrectTitle() {
@@ -125,8 +98,9 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 obj1.AssertTitleEquals("Yoda");
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.IsTrue failed. Expected title 'Yoda' but got 'FooBar'", e.Message);
             }
         }
@@ -137,8 +111,9 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 ITestProperty foo = obj1.GetPropertyByName("Foo");
                 Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(AssertFailedException));
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof (AssertFailedException));
                 Assert.AreEqual("Assert.Fail failed. More than one Property named 'Foo'", e.Message);
             }
         }
@@ -181,7 +156,8 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 ITestObject res = a1.InvokeReturnObject();
                 Assert.Fail("expect exception");
-            } catch (Exception expected) {
+            }
+            catch (Exception expected) {
                 Assert.AreEqual("Assert.IsTrue failed. Action 'Do Something' is unusable: wrong number of parameters, got 0, expect 2", expected.Message);
             }
         }
@@ -199,18 +175,19 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 obj.GetPropertyById("Bar");
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Property with Id 'Bar'", e.Message);
             }
 
             try {
                 obj.GetPropertyByName("Prop4");
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Property named 'Prop4'", e.Message);
             }
         }
-
 
         [TestMethod]
         public virtual void TestPropertyValue() {
@@ -219,8 +196,6 @@ namespace NakedObjects.SystemTest.XATs {
             obj.GetPropertyById("Prop3").SetValue("16/08/2013");
 
             ITestProperty p1 = obj.GetPropertyById("Prop3");
-
-
 
             p1.AssertValueIsEqual("16/08/2013 00:00:00");
             p1.AssertTitleIsEqual("16/08/2013");
@@ -236,38 +211,42 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 a1 = obj.GetAction("ActionNumber1");
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'ActionNumber1'", e.Message);
             }
 
             //Now with params
-            var a3 = obj.GetAction("Action Number3", typeof(string), typeof(int));
+            var a3 = obj.GetAction("Action Number3", typeof (string), typeof (int));
             a3 = obj.GetAction("Action Number3"); //Params not necessary
             //And with wrong param types
             try {
-                a3 = obj.GetAction("Action Number3", typeof(int), typeof(string)); //wrong way round!
+                a3 = obj.GetAction("Action Number3", typeof (int), typeof (string)); //wrong way round!
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Action Number3' (with specified parameters)", e.Message);
             }
 
             //Now from sub-menu, with & without params
             obj.GetAction("Action Number4", "Sub1");
-            obj.GetAction("Action Number4", "Sub1", typeof(string), typeof(int));
+            obj.GetAction("Action Number4", "Sub1", typeof (string), typeof (int));
             obj.GetAction("Action Number4"); //works without specifying sub-menu
-            obj.GetAction("Action Number4", typeof(string), typeof(int));
+            obj.GetAction("Action Number4", typeof (string), typeof (int));
             //With wrong sub-menu
             try {
-                obj.GetAction("Action Number4", "Sub2", typeof(string), typeof(int));
+                obj.GetAction("Action Number4", "Sub2", typeof (string), typeof (int));
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.IsNotNull failed. No menu item with name: Sub2", e.Message);
             }
             //With right sub-menu & wrong params
             try {
-                obj.GetAction("Action Number4", "Sub1", typeof(int), typeof(string));
+                obj.GetAction("Action Number4", "Sub1", typeof (int), typeof (string));
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.IsTrue failed. Parameter Types do not match for action: Action Number4", e.Message);
             }
         }
@@ -281,39 +260,43 @@ namespace NakedObjects.SystemTest.XATs {
             try {
                 a1 = obj.GetActionById("Action Number1");
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'Action Number1' (as method name)", e.Message);
             }
 
             //Now with params
-            var a3 = obj.GetActionById("ActionNumber3", typeof(string), typeof(int));
+            var a3 = obj.GetActionById("ActionNumber3", typeof (string), typeof (int));
             a3 = obj.GetActionById("ActionNumber3"); //Params not necessary
 
             //And with wrong param types
             try {
-                a3 = obj.GetActionById("ActionNumber3", typeof(int), typeof(string)); //wrong way round!
+                a3 = obj.GetActionById("ActionNumber3", typeof (int), typeof (string)); //wrong way round!
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.Fail failed. No Action named 'ActionNumber3' (as method name & with specified parameters)", e.Message);
             }
 
             //Now from sub-menu, with & without params
             obj.GetActionById("ActionNumber4", "Sub1");
-            obj.GetActionById("ActionNumber4", "Sub1", typeof(string), typeof(int));
+            obj.GetActionById("ActionNumber4", "Sub1", typeof (string), typeof (int));
             obj.GetActionById("ActionNumber4"); //works without specifying sub-menu
-            obj.GetActionById("ActionNumber4", typeof(string), typeof(int));
+            obj.GetActionById("ActionNumber4", typeof (string), typeof (int));
             //With wrong sub-menu
             try {
-                obj.GetActionById("ActionNumber4", "Sub2", typeof(string), typeof(int));
+                obj.GetActionById("ActionNumber4", "Sub2", typeof (string), typeof (int));
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.IsNotNull failed. No menu item with name: Sub2", e.Message);
             }
             //With right sub-menu & wrong params
             try {
-                obj.GetActionById("ActionNumber4", "Sub1", typeof(int), typeof(string));
+                obj.GetActionById("ActionNumber4", "Sub1", typeof (int), typeof (string));
                 Assert.Fail("Shouldn't get to here!");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assert.AreEqual("Assert.IsTrue failed. Parameter Types do not match for action with method name: ActionNumber4", e.Message);
             }
         }
@@ -325,29 +308,37 @@ namespace NakedObjects.SystemTest.XATs {
             obj.GetActionById("ActionNumber2").AssertHasFriendlyName("Action Two");
         }
 
+        #region Nested type: MyService1
+
+        public class MyService1 {}
+
+        #endregion
+
+        #region Nested type: MyService2
+
+        [DisplayName("Service Two")]
+        public class MyService2 {}
+
+        #endregion
+
+        #region Nested type: MyService3
+
+        //Not registered as a service
+        public class MyService3 {}
+
+        #endregion
+
         #region Nested type: Object1
 
         public class Object1 {
-
-            public static void Menu(IMenu menu) {
-                menu.CreateSubMenu("Sub1").AddAction("ActionNumber4");
-            }
-
-            private DateTime prop3 = new DateTime(2013, 8, 16);
-
-
             [DefaultValue(8)]
             public int Prop1 { get; set; }
 
             [DisplayName("Foo")]
             public string Prop2 { get; set; }
 
-
             [Mask("d")]
-            public DateTime Prop3 {
-                get { return prop3; }
-                set { prop3 = value; }
-            }
+            public DateTime Prop3 { get; set; } = new DateTime(2013, 8, 16);
 
             [DisplayName("Bar")]
             public string Prop4 { get; set; }
@@ -357,12 +348,15 @@ namespace NakedObjects.SystemTest.XATs {
 
             public IDomainObjectContainer Container { set; protected get; }
 
+            public static void Menu(IMenu menu) {
+                menu.CreateSubMenu("Sub1").AddAction("ActionNumber4");
+            }
+
             public string Title() {
                 var t = Container.NewTitleBuilder();
                 t.Append("FooBar");
                 return t.ToString();
             }
-
 
             public Object1 DoSomething([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) {
                 return null;
@@ -376,34 +370,51 @@ namespace NakedObjects.SystemTest.XATs {
                 return "a string";
             }
 
-            public void ActionNumber1() { }
+            public void ActionNumber1() {}
 
             [DisplayName("Action Two")]
-            public void ActionNumber2() { }
+            public void ActionNumber2() {}
 
-            public void ActionNumber3(string p1, int p2) { }
+            public void ActionNumber3(string p1, int p2) {}
 
-            public void ActionNumber4(string p1, int p2) { }
+            public void ActionNumber4(string p1, int p2) {}
         }
 
         #endregion
 
-        public class MyService1 { }
+        #region Setup/Teardown
 
-        [DisplayName("Service Two")]
-        public class MyService2 { }
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(XatDbContext.DatabaseName);
+            var context = Activator.CreateInstance<XatDbContext>();
 
-        //Not registered as a service
-        public class MyService3 { }
+            context.Database.Create();
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new TestXATFunctions());
+            Database.Delete(XatDbContext.DatabaseName);
+        }
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+        }
+
+        [TestCleanup()]
+        public void TestCleanup() {}
+
+        #endregion
     }
 
     #region Classes used by tests
 
     public class XatDbContext : DbContext {
         public const string DatabaseName = "TestXats";
-        public XatDbContext() : base(DatabaseName) { }
-
-
+        public XatDbContext() : base(DatabaseName) {}
     }
 
     #endregion

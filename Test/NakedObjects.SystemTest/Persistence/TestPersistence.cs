@@ -14,71 +14,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Attributes;
-using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Persistence {
     [TestClass]
-    public class TestPersistence :    AbstractSystemTest<PersistenceDbContext> {
-
-     
+    public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
+        private static bool triggerFail = false;
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
-        
 
             var reflectorConfig = new ReflectorConfiguration(new[] {
                 typeof (ObjectQuery<Qux1>),
-                typeof(Foo1)
+                typeof (Foo1)
             },
                 new[] {
                     typeof (SimpleRepository<Foo1>),
                     typeof (SimpleRepository<Bar1>),
                     typeof (SimpleRepository<Qux1>)
                 },
-                new string[] { typeof(Foo1).Namespace });
-
+                new[] {typeof (Foo1).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
 
-
-
-        #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            Database.Delete(PersistenceDbContext.DatabaseName);
-            var context = Activator.CreateInstance<PersistenceDbContext>();
-
-            context.Database.Create();
-            MyDbInitialiser.Seed(context);
-        }
-
-
-        [ClassCleanup]
-        public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new TestPersistence());
-        }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-        
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-        }
-
-
-        #endregion
-
-     
-
-        private static bool triggerFail = false;
-
         [TestMethod]
         public virtual void IdIsSetByTheTimePersistedIsCalled() {
-            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
             foo.AssertIsTransient();
             ITestProperty id = foo.GetPropertyByName("Id").AssertValueIsEqual("0");
             ITestProperty idPersisting = foo.GetPropertyByName("Id On Persisting").AssertValueIsEqual("0");
@@ -108,7 +70,7 @@ namespace NakedObjects.SystemTest.Persistence {
 
         [TestMethod]
         public virtual void ExceptionInUpdatedCausesWholeTransactionToFail() {
-            ITestAction qs = GetTestService(typeof(SimpleRepository<Qux1>)).GetAction("All Instances");
+            ITestAction qs = GetTestService(typeof (SimpleRepository<Qux1>)).GetAction("All Instances");
             ITestObject q = qs.InvokeReturnCollection().AssertCountIs(1).ElementAt(0);
             ITestProperty name = q.GetPropertyByName("Name");
             name.AssertValueIsEqual("Qux 1");
@@ -124,6 +86,30 @@ namespace NakedObjects.SystemTest.Persistence {
                 name.AssertValueIsEqual("Qux 1");
             }
         }
+
+        #region Setup/Teardown
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(PersistenceDbContext.DatabaseName);
+            var context = Activator.CreateInstance<PersistenceDbContext>();
+
+            context.Database.Create();
+            MyDbInitialiser.Seed(context);
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new TestPersistence());
+        }
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+        }
+
+        #endregion
     }
 
     #region Classes used by tests
@@ -135,13 +121,13 @@ namespace NakedObjects.SystemTest.Persistence {
         public DbSet<Foo1> Foos { get; set; }
         public DbSet<Bar1> Bars { get; set; }
         public DbSet<Qux1> Quxes { get; set; }
+        //}
+        //    Database.SetInitializer(new MyDbInitialiser());
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-        //    Database.SetInitializer(new MyDbInitialiser());
-        //}
     }
 
-    public class MyDbInitialiser  {
+    public class MyDbInitialiser {
         public static void Seed(PersistenceDbContext context) {
             Qux1 q1 = NewQux("Qux 1", context);
             context.SaveChanges();

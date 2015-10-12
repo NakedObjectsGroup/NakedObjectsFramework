@@ -19,13 +19,26 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Authorization.Installer;
 using NotMyApp.MyCluster2;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestClass]
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
+        #region Services & Fixtures
+
+        protected override object[] MenuServices {
+            get {
+                return new object[] {
+                    new SimpleRepository<Foo1>(),
+                    new SimpleRepository<Bar1>(),
+                    new SimpleRepository<Foo2>(),
+                    new SimpleRepository<Bar2>()
+                };
+            }
+        }
+
+        #endregion
+
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);
             var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
@@ -49,8 +62,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                     typeof (SimpleRepository<Foo1>),
                     typeof (SimpleRepository<Foo2>),
                 },
-                new string[] { typeof(Bar1).Namespace, typeof(Bar2).Namespace, typeof(Foo2).Namespace });
-
+                new[] {typeof (Bar1).Namespace, typeof (Bar2).Namespace, typeof (Foo2).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
@@ -58,7 +70,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         [TestMethod]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
             //Bar1
-            var bar1 = GetTestService(typeof(SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
+            var bar1 = GetTestService(typeof (SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 bar1.GetPropertyByName("Prop1").AssertIsVisible();
                 Assert.Fail("Should not get to here");
@@ -68,7 +80,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             }
 
             //Foo1
-            var foo1 = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
+            var foo1 = GetTestService(typeof (SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 foo1.GetPropertyByName("Prop1").AssertIsVisible();
                 Assert.Fail("Should not get to here");
@@ -78,7 +90,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             }
 
             //Foo2
-            var foo2 = GetTestService(typeof(SimpleRepository<Foo2>)).GetAction("New Instance").InvokeReturnObject();
+            var foo2 = GetTestService(typeof (SimpleRepository<Foo2>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 foo2.GetPropertyByName("Prop1").AssertIsVisible();
                 Assert.Fail("Should not get to here");
@@ -88,7 +100,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             }
 
             //Bar2
-            var bar2 = GetTestService(typeof(SimpleRepository<Bar2>)).GetAction("New Instance").InvokeReturnObject();
+            var bar2 = GetTestService(typeof (SimpleRepository<Bar2>)).GetAction("New Instance").InvokeReturnObject();
             bar2.GetPropertyByName("Prop1").AssertIsVisible();
         }
 
@@ -102,7 +114,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             context.Database.Create();
         }
 
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestNamespaceAuthorization());
@@ -110,28 +121,13 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         [TestInitialize()]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();            
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("sven");
         }
 
         [TestCleanup()]
         public void TestCleanup() {}
-
-        #endregion
-
-        #region Services & Fixtures
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Foo1>(),
-                    new SimpleRepository<Bar1>(),
-                    new SimpleRepository<Foo2>(),
-                    new SimpleRepository<Bar2>()
-                };
-            }
-        }
 
         #endregion
     }
@@ -149,9 +145,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
-        //bool initialized = false;
-
-        #region ITypeAuthorizer Members
+        #region ITypeAuthorizer<object> Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
@@ -160,6 +154,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public bool IsVisible(IPrincipal principal, object target, string memberName) {
             return true;
         }
+
         #endregion
 
         public void Init() {
@@ -170,10 +165,12 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public void Shutdown() {
             throw new NotImplementedException();
         }
+
+        //bool initialized = false;
     }
 
     public class MyAppAuthorizer : INamespaceAuthorizer {
-        #region ITypeAuthorizer Members
+        #region INamespaceAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             throw new Exception(String.Format("MyAppAuthorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target.ToString(), memberName));
@@ -193,11 +190,11 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     }
 
     public class MyCluster1Authorizer : INamespaceAuthorizer {
-        #region ITypeAuthorizer Members
-
         public string NamespaceToAuthorize {
             get { return "MyApp.MyCluster1"; }
         }
+
+        #region INamespaceAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             throw new Exception(String.Format("MyCluster1Authorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target.ToString(), memberName));
@@ -219,11 +216,11 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     }
 
     public class MyBar1Authorizer : INamespaceAuthorizer {
-        #region ITypeAuthorizer Members
-
         public string NamespaceToAuthorize {
             get { return "MyApp.MyCluster1.Bar1"; }
         }
+
+        #region INamespaceAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             throw new Exception(String.Format("MyBar1Authorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target.ToString(), memberName));

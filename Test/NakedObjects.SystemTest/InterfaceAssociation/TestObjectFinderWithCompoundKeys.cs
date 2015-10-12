@@ -9,15 +9,14 @@ using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Attributes;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestClass]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
-
         protected override string[] Namespaces {
-            get { return new[] { typeof(Payment).Namespace }; }
+            get { return new[] {typeof (Payment).Namespace}; }
         }
+
         protected override object[] MenuServices {
             get {
                 return (new object[] {
@@ -33,7 +32,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             }
         }
 
-
         [ClassInitialize]
         public static void ClassInitialize(TestContext tc) {
             Database.Delete(PaymentContext.DatabaseName);
@@ -47,7 +45,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
         }
-
 
         [TestMethod]
         public virtual void SetAssociatedObject() {
@@ -118,7 +115,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             }
         }
 
-
         [TestMethod]
         public virtual void FailsIfTooFewKeysSupplied() {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
@@ -130,7 +126,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
                 Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
             }
         }
-
 
         [TestMethod]
         public virtual void FailsIfTooManyKeysSupplied() {
@@ -144,7 +139,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             }
         }
 
-
         [TestMethod]
         public virtual void ChangeAssociatedObjectType() {
             payee1.SetObject(customer2a);
@@ -155,14 +149,12 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.Supplier|1|2001");
         }
 
-
         [TestMethod]
         public virtual void ClearAssociatedObject() {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
         }
-
 
         [TestMethod]
         public virtual void GetAssociatedObject() {

@@ -13,14 +13,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
-using NakedObjects.SystemTest.Authorization.NamespaceAuthorization;
-using NakedObjects.Xat;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     [TestClass]
@@ -40,11 +36,44 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
                     typeof (SimpleRepository<Foo>),
                     typeof (FooService),
                 },
-                new string[] { typeof(Foo).Namespace });
-
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
+
+        #region Tests
+
+        [TestMethod] //Pending #9227
+        public void SetUserOnTestIsPassedThroughToAuthorizer() {
+            SetUser("svenFoo", "Bar");
+            try {
+                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.Message);
+            }
+
+            SetUser("svenBar", "Bar");
+            try {
+                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.Message);
+            }
+
+            SetUser("svenFoo");
+            try {
+                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.Message);
+            }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -57,8 +86,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         }
 
         [ClassCleanup]
-        public static void ClassCleanup() {
-        }
+        public static void ClassCleanup() {}
 
         [TestInitialize()]
         public void TestInitialize() {
@@ -68,52 +96,21 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         }
 
         [TestCleanup()]
-        public void TestCleanup() { }
+        public void TestCleanup() {}
 
         #endregion
 
         #region "Services & Fixtures"
 
         protected override object[] Fixtures {
-            get { return (new object[] { }); }
+            get { return (new object[] {}); }
         }
 
         protected override object[] MenuServices {
             get {
                 return (new object[] {
-                new SimpleRepository<Foo>()
-            });
-            }
-        }
-
-        #endregion
-
-        #region Tests
-
-        [TestMethod]//Pending #9227
-        public void SetUserOnTestIsPassedThroughToAuthorizer() {
-            SetUser("svenFoo", "Bar");
-            try {
-                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.Message);
-            }
-
-            SetUser("svenBar", "Bar");
-            try {
-                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.Message);
-            }
-
-            SetUser("svenFoo");
-            try {
-                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-                Assert.Fail("Should not get to here");
-            } catch (Exception e) {
-                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.Message);
+                    new SimpleRepository<Foo>()
+                });
             }
         }
 
@@ -124,7 +121,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
 
     public class CustomAuthorizationManagerDbContext : DbContext {
         public const string DatabaseName = "TestCustomAuthorizationManager";
-        public CustomAuthorizationManagerDbContext() : base(DatabaseName) { }
+        public CustomAuthorizationManagerDbContext() : base(DatabaseName) {}
 
         public DbSet<Foo> Foos { get; set; }
     }
@@ -143,6 +140,8 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
         }
 
+        #endregion
+
         public void Init() {
             throw new NotImplementedException();
         }
@@ -150,10 +149,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         public void Shutdown() {
             //Does nothing
         }
-
-        #endregion
     }
-
 
     public class Foo {
         public virtual int Id { get; set; }
@@ -165,5 +161,6 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             return "foo1";
         }
     }
+
     #endregion
 }

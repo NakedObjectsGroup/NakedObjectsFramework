@@ -9,12 +9,35 @@ using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.XATs;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Repositories {
     [TestClass]
     public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
+        protected override object[] MenuServices {
+            get {
+                return (new object[] {
+                    new SimpleRepository<Customer>()
+                });
+            }
+        }
+
+        [TestMethod]
+        public void FindByKey() {
+            var find = GetTestService("Customers").GetAction("Find By Key");
+            var result = find.InvokeReturnObject(1);
+            result.GetPropertyByName("Id").AssertValueIsEqual("1");
+            result = find.InvokeReturnObject(2);
+            result.GetPropertyByName("Id").AssertValueIsEqual("2");
+        }
+
+        [TestMethod]
+        public void KeyValueDoesNotExist() {
+            var find = GetTestService("Customers").GetAction("Find By Key");
+            var result = find.InvokeReturnObject(1000);
+            Assert.IsNull(result);
+        }
+
         #region Setup/Teardown
 
         private Customer cust1;
@@ -50,37 +73,13 @@ namespace NakedObjects.SystemTest.Repositories {
         }
 
         protected override string[] Namespaces {
-            get { return new[] { typeof(Customer).Namespace }; }
+            get { return new[] {typeof (Customer).Namespace}; }
         }
 
         [TestCleanup()]
         public void TestCleanup() {}
 
         #endregion
-
-        protected override object[] MenuServices {
-            get {
-                return (new object[] {
-                    new SimpleRepository<Customer>()
-                });
-            }
-        }
-
-        [TestMethod]
-        public void FindByKey() {
-            var find = GetTestService("Customers").GetAction("Find By Key");
-            var result = find.InvokeReturnObject(1);
-            result.GetPropertyByName("Id").AssertValueIsEqual("1");
-            result = find.InvokeReturnObject(2);
-            result.GetPropertyByName("Id").AssertValueIsEqual("2");
-        }
-
-        [TestMethod]
-        public void KeyValueDoesNotExist() {
-            var find = GetTestService("Customers").GetAction("Find By Key");
-            var result = find.InvokeReturnObject(1000);
-            Assert.IsNull(result);
-        }
     }
 
     #region Classes used in tests

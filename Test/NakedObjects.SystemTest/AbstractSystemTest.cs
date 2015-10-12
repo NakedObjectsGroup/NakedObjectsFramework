@@ -6,35 +6,36 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.SystemTest.Reflect;
 using NakedObjects.Util;
 using NakedObjects.Xat;
-using NakedObjects.Persistor.Entity.Configuration;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Data.Entity.Core.Objects;
 
 namespace NakedObjects.SystemTest {
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
+        private bool initialized;
 
         protected override Type[] Types {
             get {
-                return new Type[] {
-                    typeof(List<object>),
-                    typeof(EntityCollection<object>),
-                    typeof(ObjectQuery<object>)
+                return new[] {
+                    typeof (List<object>),
+                    typeof (EntityCollection<object>),
+                    typeof (ObjectQuery<object>)
                 };
             }
         }
 
         protected override EntityObjectStoreConfiguration Persistor {
             get {
-                var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
+                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
                 config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
                 return config;
             }
@@ -43,16 +44,12 @@ namespace NakedObjects.SystemTest {
         #region Run Configuration
 
         protected override void RegisterTypes(IUnityContainer container) {
-            
-
             base.RegisterTypes(container);
             container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 
         #endregion
-
-        private bool initialized;
 
         protected void InitializeNakedObjectsFrameworkOnce() {
             if (!initialized) {

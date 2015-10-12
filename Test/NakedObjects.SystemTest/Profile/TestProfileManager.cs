@@ -19,57 +19,12 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Repositories;
 using NakedObjects.Xat;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.SystemTest.Profile {
     [TestClass]
     public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
-        #region Run Configuration
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            Database.Delete(ProfileDbContext.DatabaseName);
-            var context = Activator.CreateInstance<ProfileDbContext>();
-
-            context.Database.Create();
-        }
-
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new ProfileConfiguration<MyProfiler> {
-                EventsToProfile = new HashSet<ProfileEvent> {
-                    ProfileEvent.ActionInvocation,
-                    ProfileEvent.PropertySet,
-                    ProfileEvent.Created,
-                    ProfileEvent.Deleted,
-                    ProfileEvent.Deleting,
-                    ProfileEvent.Loaded,
-                    ProfileEvent.Loading,
-                    ProfileEvent.Persisted,
-                    ProfileEvent.Persisting,
-                    ProfileEvent.Updated,
-                    ProfileEvent.Updating
-                }
-            };
-
-            container.RegisterInstance<IProfileConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IFacetDecorator, ProfileManager>("ProfileManager", new ContainerControlledLifetimeManager());
-
-            var reflectorConfig = new ReflectorConfiguration(new[] {
-                typeof (Foo),
-                typeof (QueryableList<Foo>)
-            },
-                new[] {typeof (SimpleRepository<Foo>)},
-                new[] {typeof (Foo).Namespace});
-
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
-        }
-
-        #endregion
-
         [TestMethod]
         public void TestActionInvocation() {
             ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
@@ -345,6 +300,49 @@ namespace NakedObjects.SystemTest.Profile {
             public ProfileEvent ProfileEvent { get; private set; }
             public Type Type { get; private set; }
             public string Member { get; private set; }
+        }
+
+        #endregion
+
+        #region Run Configuration
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(ProfileDbContext.DatabaseName);
+            var context = Activator.CreateInstance<ProfileDbContext>();
+
+            context.Database.Create();
+        }
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new ProfileConfiguration<MyProfiler> {
+                EventsToProfile = new HashSet<ProfileEvent> {
+                    ProfileEvent.ActionInvocation,
+                    ProfileEvent.PropertySet,
+                    ProfileEvent.Created,
+                    ProfileEvent.Deleted,
+                    ProfileEvent.Deleting,
+                    ProfileEvent.Loaded,
+                    ProfileEvent.Loading,
+                    ProfileEvent.Persisted,
+                    ProfileEvent.Persisting,
+                    ProfileEvent.Updated,
+                    ProfileEvent.Updating
+                }
+            };
+
+            container.RegisterInstance<IProfileConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IFacetDecorator, ProfileManager>("ProfileManager", new ContainerControlledLifetimeManager());
+
+            var reflectorConfig = new ReflectorConfiguration(new[] {
+                typeof (Foo),
+                typeof (QueryableList<Foo>)
+            },
+                new[] {typeof (SimpleRepository<Foo>)},
+                new[] {typeof (Foo).Namespace});
+
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
 
         #endregion

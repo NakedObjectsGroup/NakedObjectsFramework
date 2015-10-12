@@ -17,7 +17,6 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Authorization.CustomAuthorizer;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer : AbstractSystemTest<CustomAuthorizerInstallerDbContext> {
@@ -26,8 +25,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         protected void RegisterAuthorizerTypes<TDefault>(IUnityContainer container)
-                where TDefault : ITypeAuthorizer<object>
-        {
+            where TDefault : ITypeAuthorizer<object> {
             base.RegisterTypes(container);
             var config = new AuthorizationConfiguration<TDefault>();
 
@@ -35,9 +33,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
 
             var reflectorConfig = new ReflectorConfiguration(
-                new Type[] {typeof(TDefault)},
-                new Type[] {typeof (SimpleRepository<Foo>)},
-                new string[]{typeof(Foo).Namespace});
+                new[] {typeof (TDefault)},
+                new[] {typeof (SimpleRepository<Foo>)},
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
@@ -69,7 +67,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
             context.Database.Create();
         }
-
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -163,7 +160,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             context.Database.Create();
         }
 
-
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestCustomAuthoriser4());
@@ -171,7 +167,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TestInitialize]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();            
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Fred");
         }
@@ -201,7 +197,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TestInitialize]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();           
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon");
         }
@@ -231,7 +227,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TestInitialize]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();            
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon", "sysAdmin");
         }
@@ -261,7 +257,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TestInitialize]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();            
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("Anon", "service", "sysAdmin");
         }
@@ -281,10 +277,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class DefaultAuthorizer1 : ITypeAuthorizer<object> {
         #region ITypeAuthorizer<object> Members
 
-        public void Init() {
-            //Does nothing
-        }
-
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
         }
@@ -293,11 +285,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             return true;
         }
 
-        public void Shutdown() {
+        #endregion
+
+        public void Init() {
             //Does nothing
         }
 
-        #endregion
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
@@ -311,6 +307,8 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             return true;
         }
 
+        #endregion
+
         public void Init() {
             throw new NotImplementedException();
         }
@@ -318,16 +316,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public void Shutdown() {
             //Does nothing
         }
-
-        #endregion
     }
 
     public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
         #region ITypeAuthorizer<object> Members
-
-        public void Init() {
-            //Does nothing
-        }
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
             return true;
@@ -337,19 +329,19 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             return principal.Identity.Name == "Fred" || principal.IsInRole("sysAdmin");
         }
 
-        public void Shutdown() {
-            //Does nothing
-        }
-
         #endregion
-    }
-
-    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
-        #region ITypeAuthorizer<BarAbstract> Members
 
         public void Init() {
             //Does nothing
         }
+
+        public void Shutdown() {
+            //Does nothing
+        }
+    }
+
+    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
+        #region ITypeAuthorizer<BarAbstract> Members
 
         public bool IsEditable(IPrincipal principal, BarAbstract target, string memberName) {
             throw new NotImplementedException();
@@ -359,11 +351,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
             throw new NotImplementedException();
         }
 
-        public void Shutdown() {
+        #endregion
+
+        public void Init() {
             //Does nothing
         }
 
-        #endregion
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public abstract class BarAbstract {

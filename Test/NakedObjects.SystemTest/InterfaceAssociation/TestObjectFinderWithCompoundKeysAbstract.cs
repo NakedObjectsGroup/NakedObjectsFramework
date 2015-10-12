@@ -24,23 +24,22 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         protected ITestObject payment1;
         protected ITestObject supplier1;
 
-
         [TestInitialize]
         public void Initialize() {
             InitializeNakedObjectsFrameworkOnce();
             StartTest();
-            payment1 = GetAllInstances(typeof(SimpleRepository<Payment>), 0);
+            payment1 = GetAllInstances(typeof (SimpleRepository<Payment>), 0);
             payee1 = payment1.GetPropertyByName("Payee");
             key1 = payment1.GetPropertyByName("Payee Compound Key");
 
-            customer1 = GetAllInstances(typeof(SimpleRepository<CustomerOne>), 0);
-            customer2a = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 0);
-            customer2b = GetAllInstances(typeof(SimpleRepository<CustomerTwo>), 1);
-            customer3 = GetAllInstances(typeof(SimpleRepository<CustomerThree>), 0);
-            customer4 = GetAllInstances(typeof(SimpleRepository<CustomerFour>), 0);
-            customer4a = GetAllInstances(typeof(SimpleRepository<CustomerFour>), 1);
-            supplier1 = GetAllInstances(typeof(SimpleRepository<Supplier>), 0);
-            emp1 = GetAllInstances(typeof(SimpleRepository<Employee>), 0);
+            customer1 = GetAllInstances(typeof (SimpleRepository<CustomerOne>), 0);
+            customer2a = GetAllInstances(typeof (SimpleRepository<CustomerTwo>), 0);
+            customer2b = GetAllInstances(typeof (SimpleRepository<CustomerTwo>), 1);
+            customer3 = GetAllInstances(typeof (SimpleRepository<CustomerThree>), 0);
+            customer4 = GetAllInstances(typeof (SimpleRepository<CustomerFour>), 0);
+            customer4a = GetAllInstances(typeof (SimpleRepository<CustomerFour>), 1);
+            supplier1 = GetAllInstances(typeof (SimpleRepository<Supplier>), 0);
+            emp1 = GetAllInstances(typeof (SimpleRepository<Employee>), 0);
         }
 
         [TestCleanup]

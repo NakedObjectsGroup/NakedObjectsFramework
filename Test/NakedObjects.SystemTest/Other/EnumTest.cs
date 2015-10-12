@@ -11,41 +11,13 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Container;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Enum {
     [TestClass]
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
-        #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext tc) {
-            Database.Delete(EnumDbContext.DatabaseName);
-            var context = Activator.CreateInstance<EnumDbContext>();
-
-            context.Database.Create();
-        }
-
-
-        [ClassCleanup]
-        public static void ClassCleanup() {
-            CleanupNakedObjectsFramework(new EnumTest());
-        }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-        }
-
-        [TestCleanup()]
-        public void TestCleanup() {}
-
-        #endregion
-
         protected override Type[] Types {
-            get { return new Type[] {typeof(Foo), typeof(Sexes), typeof(HairColours)}; }
+            get { return new[] {typeof (Foo), typeof (Sexes), typeof (HairColours)}; }
         }
 
         #region Run configuration
@@ -149,6 +121,32 @@ namespace NakedObjects.SystemTest.Enum {
             ITestAction act2 = foo.GetAction("Action2");
             Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
         }
+
+        #region Setup/Teardown
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(EnumDbContext.DatabaseName);
+            var context = Activator.CreateInstance<EnumDbContext>();
+
+            context.Database.Create();
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup() {
+            CleanupNakedObjectsFramework(new EnumTest());
+        }
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+        }
+
+        [TestCleanup()]
+        public void TestCleanup() {}
+
+        #endregion
     }
 
     #region Classes used in tests
@@ -169,6 +167,25 @@ namespace NakedObjects.SystemTest.Enum {
 
         #endregion
 
+        #region Sex5
+
+        [EnumDataType(typeof (Sexes))]
+        public virtual int Sex5 { get; set; }
+
+        #endregion
+
+        #region HairColour1
+
+        public virtual HairColours HairColour1 { get; set; }
+
+        #endregion
+
+        #region Action1
+
+        public void Action1(Sexes sex) {}
+
+        #endregion
+
         #region Sex2
 
         public virtual Sexes Sex2 { get; set; }
@@ -182,7 +199,6 @@ namespace NakedObjects.SystemTest.Enum {
         #region Sex3
 
         public virtual Sexes Sex3 { get; set; }
-
 
         public Sexes[] ChoicesSex3() {
             return new[] {Sexes.Male, Sexes.Female};
@@ -201,25 +217,6 @@ namespace NakedObjects.SystemTest.Enum {
         public Sexes DefaultSex4() {
             return Sexes.Male;
         }
-
-        #endregion
-
-        #region Sex5
-
-        [EnumDataType(typeof (Sexes))]
-        public virtual int Sex5 { get; set; }
-
-        #endregion
-
-        #region HairColour1
-
-        public virtual HairColours HairColour1 { get; set; }
-
-        #endregion
-
-        #region Action1
-
-        public void Action1(Sexes sex) {}
 
         #endregion
 

@@ -7,61 +7,21 @@
 
 using System;
 using System.Data.Entity;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
-using Microsoft.Practices.Unity;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.SystemTest.Reflect;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
-        #region
-
-        private const string databaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
-
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
-        }
-
-        [ClassCleanup]
-        public static void DeleteDatabase() {
-            Database.Delete(databaseName);
-        }
-
-        private static bool fixturesRun;
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            if (!fixturesRun) {
-                RunFixtures();
-                fixturesRun = true;
-            }
-            StartTest();
-        }
-
-        protected override object[] Fixtures {
-            get {
-                return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeCode() };
-            }
-        }
-
-        protected override object[] SystemServices {
-            get { return new object[] { new Services.PolymorphicNavigator(), new SimpleTypeCodeMapper() }; }
-        }
-
-#endregion
-
         protected override string[] Namespaces {
-            get { return new[] { typeof(PolymorphicPayment).Namespace }; }
+            get { return new[] {typeof (PolymorphicPayment).Namespace}; }
         }
+
         [TestMethod]
         public void SetPolymorphicPropertyOnTransientObject() {
             base.SetPolymorphicPropertyOnTransientObject("CUS");
@@ -97,7 +57,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
         }
 
-
         [TestMethod]
         public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
@@ -108,35 +67,72 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.RemoveItem();
         }
 
-
         [TestMethod]
         public override void AttemptToRemoveNonExistentItem() {
             base.AttemptToRemoveNonExistentItem();
         }
 
-
         [TestMethod]
         public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }
+
+        #region
+
+        private const string databaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
+        }
+
+        [ClassCleanup]
+        public static void DeleteDatabase() {
+            Database.Delete(databaseName);
+        }
+
+        private static bool fixturesRun;
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            if (!fixturesRun) {
+                RunFixtures();
+                fixturesRun = true;
+            }
+            StartTest();
+        }
+
+        protected override object[] Fixtures {
+            get { return new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()}; }
+        }
+
+        protected override object[] SystemServices {
+            get { return new object[] {new Services.PolymorphicNavigator(), new SimpleTypeCodeMapper()}; }
+        }
+
+        #endregion
     }
 
     public class SimpleTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
         public Type TypeFromCode(string code) {
-            if (code == "CUS") return typeof (CustomerAsPayee);
-            if (code == "SUP") return typeof (SupplierAsPayee);
-            if (code == "INV") return typeof (InvoiceAsPayableItem);
-            if (code == "EXP") return typeof (ExpenseClaimAsPayableItem);
+            if (code == "CUS") { return typeof (CustomerAsPayee); }
+            if (code == "SUP") { return typeof (SupplierAsPayee); }
+            if (code == "INV") { return typeof (InvoiceAsPayableItem); }
+            if (code == "EXP") { return typeof (ExpenseClaimAsPayableItem); }
             throw new DomainException("Code not recognised: " + code);
         }
 
         public string CodeFromType(Type type) {
-            if (type == typeof (CustomerAsPayee)) return "CUS";
-            if (type == typeof (SupplierAsPayee)) return "SUP";
-            if (type == typeof (InvoiceAsPayableItem)) return "INV";
-            if (type == typeof (ExpenseClaimAsPayableItem)) return "EXP";
+            if (type == typeof (CustomerAsPayee)) { return "CUS"; }
+            if (type == typeof (SupplierAsPayee)) { return "SUP"; }
+            if (type == typeof (InvoiceAsPayableItem)) { return "INV"; }
+            if (type == typeof (ExpenseClaimAsPayableItem)) { return "EXP"; }
             throw new DomainException("Type not recognised: " + type);
         }
 

@@ -27,7 +27,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         protected override Type[] Services {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (SimpleRepository<Default1>),
                     typeof (SimpleRepository<Describedas1>),
                     typeof (SimpleRepository<Describedas2>),

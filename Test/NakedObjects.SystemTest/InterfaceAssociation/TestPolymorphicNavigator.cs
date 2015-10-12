@@ -6,52 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Data.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.SystemTest.PolymorphicAssociations;
 using Microsoft.Practices.Unity;
-using NakedObjects.Persistor.Entity.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.SystemTest.Reflect;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
-
         private const string databaseName = "TestPolymorphicNavigator";
-
-        #region SetUp
-        protected override void RegisterTypes(IUnityContainer container) {
-            base.RegisterTypes(container);
-            var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
-            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
-        }
-
-
-        [ClassCleanup]
-        public static void DeleteDatabase() {
-            Database.Delete(databaseName);
-        }
-
-        private static bool fixturesRun;
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            if (!fixturesRun) {
-                RunFixtures();
-                fixturesRun = true;
-            }
-            StartTest();
-        }
-
-        protected override object[] Fixtures {
-            get {
-                return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeName() };
-            }
-        }
-        #endregion
 
         protected override string[] Namespaces {
             get { return new[] {typeof (PolymorphicPayment).Namespace}; }
@@ -92,7 +57,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
         }
 
-
         [TestMethod]
         public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
@@ -103,16 +67,47 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             base.RemoveItem();
         }
 
-
         [TestMethod]
         public override void AttemptToRemoveNonExistentItem() {
             base.AttemptToRemoveNonExistentItem();
         }
 
-
         [TestMethod]
         public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }
+
+        #region SetUp
+
+        protected override void RegisterTypes(IUnityContainer container) {
+            base.RegisterTypes(container);
+            var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+            config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(config, (new ContainerControlledLifetimeManager()));
+            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
+        }
+
+        [ClassCleanup]
+        public static void DeleteDatabase() {
+            Database.Delete(databaseName);
+        }
+
+        private static bool fixturesRun;
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            if (!fixturesRun) {
+                RunFixtures();
+                fixturesRun = true;
+            }
+            StartTest();
+        }
+
+        protected override object[] Fixtures {
+            get { return new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()}; }
+        }
+
+        #endregion
     }
 }

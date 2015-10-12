@@ -22,6 +22,33 @@ namespace NakedObjects.SystemTest.Util {
         #region Nested type: TestContainer
 
         public class TestContainer : IDomainObjectContainer, IInternalAccess {
+            #region IDomainObjectContainer Members
+
+            public IQueryable<T> Instances<T>() where T : class {
+                if (typeof (T) == typeof (TestKey)) {
+                    return new[] {new TestKey {AName = 1}}.Cast<T>().AsQueryable();
+                }
+                if (typeof (T) == typeof (TestStringKey)) {
+                    return new[] {new TestStringKey {AName = "aName"}}.Cast<T>().AsQueryable();
+                }
+
+                return null;
+            }
+
+            #endregion
+
+            #region IInternalAccess Members
+
+            public PropertyInfo[] GetKeys(Type type) {
+                return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
+            }
+
+            public object FindByKeys(Type type, object[] keys) {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+
             #region not impl
 
             public T GetService<T>() {
@@ -88,7 +115,6 @@ namespace NakedObjects.SystemTest.Util {
                 throw new NotImplementedException();
             }
 
-
             public IQueryable Instances(Type type) {
                 throw new NotImplementedException();
             }
@@ -117,7 +143,6 @@ namespace NakedObjects.SystemTest.Util {
                 throw new NotImplementedException();
             }
 
-
             public ITitleBuilder NewTitleBuilder(string text) {
                 throw new NotImplementedException();
             }
@@ -127,33 +152,6 @@ namespace NakedObjects.SystemTest.Util {
             }
 
             public string TitleOf(object obj, string format = null) {
-                throw new NotImplementedException();
-            }
-
-            #endregion
-
-            #region IDomainObjectContainer Members
-
-            public IQueryable<T> Instances<T>() where T : class {
-                if (typeof (T) == typeof (TestKey)) {
-                    return new[] {new TestKey {AName = 1}}.Cast<T>().AsQueryable();
-                }
-                if (typeof (T) == typeof (TestStringKey)) {
-                    return new[] {new TestStringKey {AName = "aName"}}.Cast<T>().AsQueryable();
-                }
-
-                return null;
-            }
-
-            #endregion
-
-            #region IInternalAccess Members
-
-            public PropertyInfo[] GetKeys(Type type) {
-                return type.GetProperties().Where(p => p.GetCustomAttribute<KeyAttribute>() != null).ToArray();
-            }
-
-            public object FindByKeys(Type type, object[] keys) {
                 throw new NotImplementedException();
             }
 

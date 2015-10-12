@@ -76,77 +76,6 @@ namespace NakedObjects.SystemTest.Util {
                 Select(x => DateTime.Now.AddDays(x)).ToList().
                 ForEach(x => Assert.IsFalse(x.IsAfterToday()));
         }
-#pragma warning disable 618
-        [TestMethod]
-        public void TestIsAtLeastADayAfter() {
-            var wellKnownDay = new DateTime(2002, 4, 4);
-
-            Enumerable.Range(1, 9).
-                Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
-
-
-            Enumerable.Range(-10, 9).
-                Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
-
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
-        }
-
-        [TestMethod]
-        public void TestIsAtLeastADayBefore() {
-            var wellKnownDay = new DateTime(2002, 4, 4);
-
-            Enumerable.Range(-10, 9).
-                Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
-
-            Enumerable.Range(1, 9).
-                Select(x => wellKnownDay.AddDays(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
-
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
-        }
-
-        [TestMethod]
-        public void TestIsAtLeastANullableDayAfter() {
-            DateTime? wellKnownDay = new DateTime(2002, 4, 4);
-
-            Enumerable.Range(1, 9).
-                Select(x => wellKnownDay.Value.AddDays(x)).
-                Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
-
-            Enumerable.Range(-10, 9).
-                Select(x => wellKnownDay.Value.AddDays(x)).
-                Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
-
-
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
-        }
-
-        [TestMethod]
-        public void TestIsAtLeastANullableDayBefore() {
-            DateTime? wellKnownDay = new DateTime(2002, 4, 4);
-
-            Enumerable.Range(-10, 9).
-                Select(x => wellKnownDay.Value.AddDays(x)).
-                Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
-
-            Enumerable.Range(1, 9).
-                Select(x => wellKnownDay.Value.AddDays(x)).
-                Select(x => new DateTime?(x)).ToList().
-                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
-
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
-            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
-            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
-        }
-#pragma warning restore 618
 
         [TestMethod]
         public void TestIsBeforeNullableToday() {
@@ -340,5 +269,74 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear2));
             Assert.IsFalse(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear1));
         }
+#pragma warning disable 618
+        [TestMethod]
+        public void TestIsAtLeastADayAfter() {
+            var wellKnownDay = new DateTime(2002, 4, 4);
+
+            Enumerable.Range(1, 9).
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+
+            Enumerable.Range(-10, 9).
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+
+            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+        }
+
+        [TestMethod]
+        public void TestIsAtLeastADayBefore() {
+            var wellKnownDay = new DateTime(2002, 4, 4);
+
+            Enumerable.Range(-10, 9).
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+
+            Enumerable.Range(1, 9).
+                Select(x => wellKnownDay.AddDays(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+
+            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+        }
+
+        [TestMethod]
+        public void TestIsAtLeastANullableDayAfter() {
+            DateTime? wellKnownDay = new DateTime(2002, 4, 4);
+
+            Enumerable.Range(1, 9).
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
+
+            Enumerable.Range(-10, 9).
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
+
+            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
+        }
+
+        [TestMethod]
+        public void TestIsAtLeastANullableDayBefore() {
+            DateTime? wellKnownDay = new DateTime(2002, 4, 4);
+
+            Enumerable.Range(-10, 9).
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
+
+            Enumerable.Range(1, 9).
+                Select(x => wellKnownDay.Value.AddDays(x)).
+                Select(x => new DateTime?(x)).ToList().
+                ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
+
+            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
+            Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
+            Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
+        }
+#pragma warning restore 618
     }
 }

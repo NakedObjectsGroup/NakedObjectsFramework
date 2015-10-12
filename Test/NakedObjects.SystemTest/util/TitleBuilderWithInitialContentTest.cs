@@ -29,7 +29,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Text");
         }
 
-
         [TestMethod]
         public void TestConcatAddsText() {
             builder.Concat("added");
@@ -72,7 +71,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Text- from ToString");
         }
 
-
         [TestMethod]
         public void TestAppendAddsTitleMethod() {
             builder.Append(new ObjectWithTitleMethod());
@@ -85,7 +83,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Text from property");
         }
 
-
         [TestMethod]
         public void TestAppendAddsNullTitleAttribute() {
             builder.Append(new ObjectWithNullTitleAttribute());
@@ -97,7 +94,6 @@ namespace NakedObjects.SystemTest.Util {
             builder.Append(new ObjectWithTitleAttributeThatIsAReference());
             AssertTitleIs("Text from Title method");
         }
-
 
         [TestMethod]
         public void TestConcatNoJoiner() {
