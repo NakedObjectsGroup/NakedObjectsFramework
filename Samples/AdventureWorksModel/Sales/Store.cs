@@ -14,7 +14,7 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
-    public class Store :  IBusinessEntityWithContacts {
+    public class Store : BusinessEntity, IBusinessEntityWithContacts {
         #region Injected Servives
         public IDomainObjectContainer Container { set; protected get; }
 
@@ -22,12 +22,14 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Life Cycle Methods
-        public  void Persisting() {
+        public override void Persisting() {
+            base.Persisting();
             rowguid = Guid.NewGuid();
             ModifiedDate = DateTime.Now;
         }
 
-        public  void Updating() {
+        public override void Updating() {
+            base.Updating();
             ModifiedDate = DateTime.Now;
         }
         #endregion
@@ -43,10 +45,6 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Properties
-
-        [NakedObjectsIgnore]
-        public virtual int BusinessEntityID { get; set; }
-      
 
         [DisplayName("Store Name"), MemberOrder(20)]
         public virtual string Name { get; set; }

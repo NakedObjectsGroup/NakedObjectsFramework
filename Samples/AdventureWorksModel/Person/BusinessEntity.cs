@@ -11,6 +11,17 @@ namespace AdventureWorksModel
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
 
+        #region Life Cycle Methods
+        public virtual void Persisting() {
+            BusinessEntityRowguid = Guid.NewGuid();
+            BusinessEntityModifiedDate = DateTime.Now;
+        }
+
+        public virtual void Updating() {
+            BusinessEntityModifiedDate = DateTime.Now;
+        }
+        #endregion
+
         #region Row Guid and Modified Date
 
         #region rowguid
