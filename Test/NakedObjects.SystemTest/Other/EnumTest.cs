@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Container;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Enum {
@@ -18,10 +19,18 @@ namespace NakedObjects.SystemTest.Enum {
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(EnumDbContext.DatabaseName);
+            var context = Activator.CreateInstance<EnumDbContext>();
+
+            context.Database.Create();
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new EnumTest());
-            Database.Delete(EnumDbContext.DatabaseName);
         }
 
         [TestInitialize()]

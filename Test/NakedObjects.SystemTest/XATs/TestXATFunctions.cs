@@ -25,6 +25,14 @@ namespace NakedObjects.SystemTest.XATs {
         #region Setup/Teardown
 
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(XatDbContext.DatabaseName);
+            var context = Activator.CreateInstance<XatDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestXATFunctions());

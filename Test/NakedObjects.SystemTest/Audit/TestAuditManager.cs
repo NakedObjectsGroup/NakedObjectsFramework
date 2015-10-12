@@ -18,6 +18,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Attributes;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -57,10 +58,17 @@ namespace NakedObjects.SystemTest.Audit {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(AuditDbContext.DatabaseName);
+            var context = Activator.CreateInstance<AuditDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAuditManager());
-            Database.Delete(AuditDbContext.DatabaseName);
         }
 
         [TestInitialize()]

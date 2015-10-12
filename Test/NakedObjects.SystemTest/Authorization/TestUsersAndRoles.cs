@@ -18,6 +18,7 @@ using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
+using NakedObjects.SystemTest.Authorization.NamespaceAuthorization;
 using NakedObjects.Xat;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -47,9 +48,16 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
+            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
-            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
         }
 
         [TestInitialize()]

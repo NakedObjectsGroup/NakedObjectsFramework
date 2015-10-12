@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Attributes;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestClass]
@@ -32,10 +33,19 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             }
         }
 
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(PaymentContext.DatabaseName);
+            var context = Activator.CreateInstance<PaymentContext>();
+
+            context.Database.Create();
+            DatabaseInitializer.Seed(context);
+        }
+
         [ClassCleanup]
         public static void TearDownTest() {
             CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
-            Database.Delete(PaymentContext.DatabaseName);
         }
 
 

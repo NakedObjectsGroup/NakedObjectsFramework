@@ -27,13 +27,13 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+        //    Database.SetInitializer(new DatabaseInitializer());
+        //}
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
-        protected override void Seed(PaymentContext context) {
+    public class DatabaseInitializer  {
+        public static void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.CustomerOnes.Add(new CustomerOne() {Id = 1});
             context.CustomerTwos.Add(new CustomerTwo() {Id = 1, Id2 = "1001"});

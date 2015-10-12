@@ -19,6 +19,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Authorization.Installer;
 using NotMyApp.MyCluster2;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -93,10 +94,18 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(NamespaceAuthorizationDbContext.DatabaseName);
+            var context = Activator.CreateInstance<NamespaceAuthorizationDbContext>();
+
+            context.Database.Create();
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestNamespaceAuthorization());
-            Database.Delete(NamespaceAuthorizationDbContext.DatabaseName);
         }
 
         [TestInitialize()]

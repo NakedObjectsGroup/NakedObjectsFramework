@@ -14,6 +14,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Attributes;
+using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Persistence {
@@ -45,15 +47,24 @@ namespace NakedObjects.SystemTest.Persistence {
 
         #region Setup/Teardown
 
-   
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(PersistenceDbContext.DatabaseName);
+            var context = Activator.CreateInstance<PersistenceDbContext>();
+
+            context.Database.Create();
+            MyDbInitialiser.Seed(context);
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestPersistence());
-            Database.Delete(PersistenceDbContext.DatabaseName);
         }
 
         [TestInitialize()]
         public void TestInitialize() {
+        
             InitializeNakedObjectsFrameworkOnce();
             StartTest();
         }
@@ -125,17 +136,18 @@ namespace NakedObjects.SystemTest.Persistence {
         public DbSet<Bar1> Bars { get; set; }
         public DbSet<Qux1> Quxes { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new MyDbInitialiser());
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+        //    Database.SetInitializer(new MyDbInitialiser());
+        //}
     }
 
-    public class MyDbInitialiser : DropCreateDatabaseAlways<PersistenceDbContext> {
-        protected override void Seed(PersistenceDbContext context) {
+    public class MyDbInitialiser  {
+        public static void Seed(PersistenceDbContext context) {
             Qux1 q1 = NewQux("Qux 1", context);
+            context.SaveChanges();
         }
 
-        private Qux1 NewQux(string name, PersistenceDbContext context) {
+        private static Qux1 NewQux(string name, PersistenceDbContext context) {
             var q = new Qux1 {Name = name};
             context.Quxes.Add(q);
             return q;

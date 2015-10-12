@@ -14,21 +14,105 @@ using System.Linq;
 using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Attributes {
     [TestClass]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
+        protected override string[] Namespaces {
+            get { return new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"}; }
+        }
+
+        protected override Type[] Services {
+            get {
+                return new Type[] {
+                    typeof (SimpleRepository<Default1>),
+                    typeof (SimpleRepository<Describedas1>),
+                    typeof (SimpleRepository<Describedas2>),
+                    typeof (SimpleRepository<Description1>),
+                    typeof (SimpleRepository<Description2>),
+                    typeof (SimpleRepository<Disabled1>),
+                    typeof (SimpleRepository<Displayname1>),
+                    typeof (SimpleRepository<Hidden1>),
+                    typeof (SimpleRepository<Iconname1>),
+                    typeof (SimpleRepository<Iconname2>),
+                    typeof (SimpleRepository<Iconname3>),
+                    typeof (SimpleRepository<Iconname4>),
+                    typeof (SimpleRepository<Immutable1>),
+                    typeof (SimpleRepository<Immutable2>),
+                    typeof (SimpleRepository<Immutable3>),
+                    typeof (SimpleRepository<Mask1>),
+                    typeof (SimpleRepository<Mask2>),
+                    typeof (SimpleRepository<Maxlength1>),
+                    typeof (SimpleRepository<Maxlength2>),
+                    typeof (SimpleRepository<NakedObjectsIgnore1>),
+                    typeof (SimpleRepository<NakedObjectsIgnore2>), //But this one won't be visible
+                    typeof (SimpleRepository<NakedObjectsIgnore3>),
+                    typeof (SimpleRepository<NakedObjectsIgnore4>),
+                    typeof (SimpleRepository<NakedObjectsIgnore5>),
+                    typeof (SimpleRepository<NakedObjectsIgnore6>),
+                    typeof (SimpleRepository<NakedObjectsIgnore7>),
+                    typeof (SimpleRepository<Named1>),
+                    typeof (SimpleRepository<Range1>),
+                    typeof (SimpleRepository<Regex1>),
+                    typeof (SimpleRepository<Regex2>),
+                    typeof (SimpleRepository<Memberorder1>),
+                    typeof (SimpleRepository<Memberorder2>),
+                    typeof (SimpleRepository<Stringlength1>),
+                    typeof (SimpleRepository<Title1>),
+                    typeof (SimpleRepository<Title2>),
+                    typeof (SimpleRepository<Title3>),
+                    typeof (SimpleRepository<Title4>),
+                    typeof (SimpleRepository<Title5>),
+                    typeof (SimpleRepository<Title6>),
+                    typeof (SimpleRepository<Title7>),
+                    typeof (SimpleRepository<Title8>),
+                    typeof (SimpleRepository<Title9>),
+                    typeof (SimpleRepository<Validateprogrammaticupdates1>),
+                    typeof (SimpleRepository<Validateprogrammaticupdates2>),
+                    typeof (TestServiceValidateProgrammaticUpdates),
+                    typeof (SimpleRepository<Contributee>),
+                    typeof (SimpleRepository<Contributee2>),
+                    typeof (SimpleRepository<Contributee3>),
+                    typeof (TestServiceContributedAction),
+                    typeof (SimpleRepository<FinderAction1>),
+                    typeof (TestServiceFinderAction)
+                };
+            }
+        }
+
+        #region FinderAction
+
+        [TestMethod]
+        public virtual void ActionsIncludedInFinderMenu() {
+            var service = (TestServiceFinderAction) GetTestService(typeof (TestServiceFinderAction)).NakedObject.Object;
+            FinderAction1 obj = service.NewObject1();
+            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
+            var finderActions = ((IObjectSpec) adapter.Spec).GetFinderActions();
+
+            Assert.AreEqual(3, finderActions.Count());
+            Assert.AreEqual("Finder Action1", finderActions[0].Name);
+            Assert.AreEqual("Finder Action2", finderActions[1].Name);
+            Assert.AreEqual("Finder Action3", finderActions[2].Name);
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAttributes());
+        }
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
             Database.Delete(AttributesDbContext.DatabaseName);
+            var context = Activator.CreateInstance<AttributesDbContext>();
+
+            context.Database.Create();
         }
 
         [TestInitialize()]
@@ -38,71 +122,9 @@ namespace NakedObjects.SystemTest.Attributes {
         }
 
         [TestCleanup()]
-        public void TestCleanup() { }
+        public void TestCleanup() {}
 
         #endregion
-
-        protected override string[] Namespaces {
-            get { return new[] { "NakedObjects.SystemTest.Attributes", "SystemTest.Attributes" }; }
-        }
-
-        protected override Type[] Services {
-            get {
-                return new Type[] {
-                    typeof(SimpleRepository<Default1>),
-                    typeof(SimpleRepository<Describedas1>),
-                    typeof(SimpleRepository<Describedas2>),
-                    typeof(SimpleRepository<Description1>),
-                    typeof(SimpleRepository<Description2>),
-                    typeof(SimpleRepository<Disabled1>),
-                    typeof(SimpleRepository<Displayname1>),
-                    typeof(SimpleRepository<Hidden1>),
-                    typeof(SimpleRepository<Iconname1>),
-                    typeof(SimpleRepository<Iconname2>),
-                    typeof(SimpleRepository<Iconname3>),
-                    typeof(SimpleRepository<Iconname4>),
-                    typeof(SimpleRepository<Immutable1>),
-                    typeof(SimpleRepository<Immutable2>),
-                    typeof(SimpleRepository<Immutable3>),
-                    typeof(SimpleRepository<Mask1>),
-                    typeof(SimpleRepository<Mask2>),
-                    typeof(SimpleRepository<Maxlength1>),
-                    typeof(SimpleRepository<Maxlength2>),
-                    typeof(SimpleRepository<NakedObjectsIgnore1>),
-                    typeof(SimpleRepository<NakedObjectsIgnore2>), //But this one won't be visible
-                    typeof(SimpleRepository<NakedObjectsIgnore3>),
-                    typeof(SimpleRepository<NakedObjectsIgnore4>),
-                    typeof(SimpleRepository<NakedObjectsIgnore5>),
-                    typeof(SimpleRepository<NakedObjectsIgnore6>),
-                    typeof(SimpleRepository<NakedObjectsIgnore7>),
-                    typeof(SimpleRepository<Named1>),
-                    typeof(SimpleRepository<Range1>),
-                    typeof(SimpleRepository<Regex1>),
-                    typeof(SimpleRepository<Regex2>),
-                    typeof(SimpleRepository<Memberorder1>),
-                    typeof(SimpleRepository<Memberorder2>),
-                    typeof(SimpleRepository<Stringlength1>),
-                    typeof(SimpleRepository<Title1>),
-                    typeof(SimpleRepository<Title2>),
-                    typeof(SimpleRepository<Title3>),
-                    typeof(SimpleRepository<Title4>),
-                    typeof(SimpleRepository<Title5>),
-                    typeof(SimpleRepository<Title6>),
-                    typeof(SimpleRepository<Title7>),
-                    typeof(SimpleRepository<Title8>),
-                    typeof(SimpleRepository<Title9>),
-                    typeof(SimpleRepository<Validateprogrammaticupdates1>),
-                    typeof(SimpleRepository<Validateprogrammaticupdates2>),
-                    typeof(TestServiceValidateProgrammaticUpdates),
-                    typeof(SimpleRepository<Contributee>),
-                    typeof(SimpleRepository<Contributee2>),
-                    typeof(SimpleRepository<Contributee3>),
-                    typeof(TestServiceContributedAction),
-                    typeof(SimpleRepository<FinderAction1>),
-                    typeof(TestServiceFinderAction)
-                };
-            }
-        }
 
         #region ContributedAction
 
@@ -120,7 +142,6 @@ namespace NakedObjects.SystemTest.Attributes {
             var testActions = NewTestObject<Contributee>().Actions;
             Assert.AreEqual(1, testActions.Count());
             Assert.AreEqual("Contributed Action", testActions[0].Name);
-
         }
 
         [TestMethod]
@@ -136,7 +157,6 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
             Assert.AreEqual("Collection Contributed Action2", actions[2].Name);
-
         }
 
         [TestMethod]
@@ -393,24 +413,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
         #endregion
 
-        #region FinderAction
-
-        [TestMethod]
-        public virtual void ActionsIncludedInFinderMenu() {
-
-            var service = (TestServiceFinderAction)GetTestService(typeof(TestServiceFinderAction)).NakedObject.Object;
-            FinderAction1 obj = service.NewObject1();
-            var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var finderActions = ((IObjectSpec)adapter.Spec).GetFinderActions();
-
-            Assert.AreEqual(3, finderActions.Count());
-            Assert.AreEqual("Finder Action1", finderActions[0].Name);
-            Assert.AreEqual("Finder Action2", finderActions[1].Name);
-            Assert.AreEqual("Finder Action3", finderActions[2].Name);
-        }
-
-        #endregion
-
         #region Hidden
 
         [TestMethod]
@@ -528,7 +530,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var mask1 = NewTestObject<Mask2>();
             var prop1 = mask1.GetPropertyByName("Prop1");
             prop1.SetValue("32.70");
-            var dom = (Mask2)mask1.GetDomainObject();
+            var dom = (Mask2) mask1.GetDomainObject();
             Equals("32.7", dom.Prop1.ToString());
             Equals("32.70", prop1.Content.Title);
             Equals("£32.70", prop1.Title);
@@ -543,7 +545,7 @@ namespace NakedObjects.SystemTest.Attributes {
             prop1.SetValue("23/09/2009 11:34:50");
             var prop2 = mask1.GetPropertyByName("Prop2");
             prop2.SetValue("23/09/2009 11:34:50");
-            var dom = (Mask1)mask1.GetDomainObject();
+            var dom = (Mask1) mask1.GetDomainObject();
             Equals("23/09/2009 11:34:50", dom.Prop1.ToString());
             Equals("23/09/2009 11:34:50", prop1.Content.Title);
             Equals("23/09/2009 11:34:50", dom.Prop2.ToString());
@@ -599,6 +601,7 @@ namespace NakedObjects.SystemTest.Attributes {
         #endregion
 
         #region Scope of reflection (NakedObjectsType, NakedObjectsIgnore, NakedObjectsInclude
+
         [TestMethod]
         public virtual void NakedObjectsIgnore_OnIndividualMembers() {
             var obj = NewTestObject<NakedObjectsIgnore1>();
@@ -641,6 +644,7 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(2, obj.Actions.Count());
             Assert.AreEqual(3, obj.Properties.Count());
         }
+
         #endregion
 
         #region Named
@@ -686,7 +690,6 @@ namespace NakedObjects.SystemTest.Attributes {
         private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
         private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
 
-
         [TestMethod]
         public virtual void RangeOnNumericProperties() {
             NumericPropertyRangeTest("Prop3");
@@ -718,7 +721,8 @@ namespace NakedObjects.SystemTest.Attributes {
                 prop.AssertFieldEntryInvalid("-2");
                 prop.AssertFieldEntryInvalid("11");
                 prop.SetValue("1");
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + name);
                 throw;
             }
@@ -734,11 +738,11 @@ namespace NakedObjects.SystemTest.Attributes {
                 prop.AssertFieldEntryIsValid(today);
                 prop.AssertFieldEntryInvalid(todayPlus1);
                 prop.SetValue(todayMinus1);
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + "Prop25");
                 throw;
             }
-
 
             prop = obj.GetPropertyById("Prop26");
             try {
@@ -747,7 +751,8 @@ namespace NakedObjects.SystemTest.Attributes {
                 prop.AssertFieldEntryIsValid(todayPlus30);
                 prop.AssertFieldEntryInvalid(todayPlus31);
                 prop.SetValue(todayPlus1);
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + "Prop25");
                 throw;
             }
@@ -763,7 +768,8 @@ namespace NakedObjects.SystemTest.Attributes {
                 act.AssertIsValidWithParms(today);
                 act.AssertIsInvalidWithParms(todayPlus1);
                 act.InvokeReturnObject(todayMinus1);
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + "Action24");
                 throw;
             }
@@ -775,7 +781,8 @@ namespace NakedObjects.SystemTest.Attributes {
                 act.AssertIsValidWithParms(todayPlus30);
                 act.AssertIsInvalidWithParms(todayPlus31);
                 act.InvokeReturnObject(todayPlus1);
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + "Action25");
                 throw;
             }
@@ -790,7 +797,8 @@ namespace NakedObjects.SystemTest.Attributes {
                 act.AssertIsValidWithParms(5);
                 act.AssertIsValidWithParms(6);
                 act.AssertIsInvalidWithParms(7);
-            } catch {
+            }
+            catch {
                 Console.WriteLine("Failed " + name);
                 throw;
             }
@@ -915,6 +923,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
             obj3.AssertActionOrderIs("Action2, Action4, Action1, Action3");
         }
+
         #endregion
 
         #region StringLength
@@ -985,7 +994,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual void TitleAttributeOnReferencePropertyThatHasAToString() {
             var obj2 = NewTestObject<Title2>();
             obj2.GetPropertyByName("Prop1").SetValue("Foo");
-            var dom2 = (Title2)obj2.GetDomainObject();
+            var dom2 = (Title2) obj2.GetDomainObject();
             Equals("Foo", dom2.ToString());
             obj2.AssertTitleEquals("Foo");
             obj2.Save();
@@ -1000,7 +1009,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [TestMethod]
         public virtual void TitleAttributeTakesPrecedenceOverTitleMethod() {
             var obj = NewTestObject<Title6>();
-            var dom = (Title6)obj.GetDomainObject();
+            var dom = (Title6) obj.GetDomainObject();
             Equals("Bar", dom.ToString());
             Equals("Hex", dom.Title());
             obj.AssertTitleEquals("Untitled Title6");
@@ -1029,7 +1038,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TestMethod]
         public virtual void ValidateObjectSave() {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
 
             try {
@@ -1037,23 +1046,25 @@ namespace NakedObjects.SystemTest.Attributes {
 
                 service.GetAction("Save Object1").InvokeReturnObject(vpu1);
                 Assert.Fail();
-            } catch (Exception /*expected*/) { }
+            }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
         public virtual void ValidateObjectCrossValidationSave() {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
             try {
                 (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
                 service.GetAction("Save Object2").InvokeReturnObject(vpu2);
                 Assert.Fail();
-            } catch (Exception /*expected*/) { }
+            }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
         public virtual void ValidateObjectChange() {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
 
             service.GetAction("Save Object1").InvokeReturnObject(vpu1);
@@ -1061,12 +1072,13 @@ namespace NakedObjects.SystemTest.Attributes {
             try {
                 (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
                 Assert.Fail();
-            } catch (Exception /*expected*/) { }
+            }
+            catch (Exception /*expected*/) {}
         }
 
         [TestMethod]
         public virtual void ValidateObjectCrossValidationChange() {
-            ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
+            ITestService service = GetTestService(typeof (TestServiceValidateProgrammaticUpdates));
             var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
 
             service.GetAction("Save Object2").InvokeReturnObject(vpu2);
@@ -1074,7 +1086,8 @@ namespace NakedObjects.SystemTest.Attributes {
             try {
                 (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
                 Assert.Fail();
-            } catch (Exception /*expected*/) { }
+            }
+            catch (Exception /*expected*/) {}
         }
 
         #endregion
@@ -1084,7 +1097,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
     public class AttributesDbContext : DbContext {
         public const string DatabaseName = "TestAttributes";
-        public AttributesDbContext() : base(DatabaseName) { }
+        public AttributesDbContext() : base(DatabaseName) {}
 
         public DbSet<Default1> Default1s { get; set; }
         public DbSet<Describedas1> DescribedAs1s { get; set; }
@@ -1133,8 +1146,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #region ContributedAction
 
-
-
     #endregion
 
     #region Default
@@ -1148,9 +1159,8 @@ namespace NakedObjects.SystemTest.Attributes {
         [DefaultValue("Foo")]
         public virtual string Prop2 { get; set; }
 
-
         public virtual void DoSomething([DefaultValue(8)] int param0,
-                                        [DefaultValue("Foo")] string param1) { }
+                                        [DefaultValue("Foo")] string param1) {}
     }
 
     #endregion
@@ -1165,14 +1175,14 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
 
         [DescribedAs("Hex")]
-        public void DoSomething([DescribedAs("Yop")] string param1) { }
+        public void DoSomething([DescribedAs("Yop")] string param1) {}
     }
 
     public class Describedas2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
-        public void DoSomething(string param1) { }
+        public void DoSomething(string param1) {}
     }
 
     #endregion
@@ -1187,14 +1197,14 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
 
         [System.ComponentModel.Description("Hex")]
-        public void DoSomething([System.ComponentModel.Description("Yop")] string param1) { }
+        public void DoSomething([System.ComponentModel.Description("Yop")] string param1) {}
     }
 
     public class Description2 {
         public virtual int Id { get; set; }
 
         public virtual string Prop1 { get; set; }
-        public void DoSomething(string param1) { }
+        public void DoSomething(string param1) {}
     }
 
     #endregion
@@ -1247,7 +1257,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
 
         [DisplayName("Hex")]
-        public virtual void DoSomething(string param1) { }
+        public virtual void DoSomething(string param1) {}
     }
 
     #endregion
@@ -1261,7 +1271,6 @@ namespace NakedObjects.SystemTest.Attributes {
         }
 
         public virtual int Id { get; set; }
-
 
         public virtual string Prop0 { get; set; }
 
@@ -1366,7 +1375,7 @@ namespace NakedObjects.SystemTest.Attributes {
     }
 
     [Immutable(WhenTo.OncePersisted)]
-    public class Immutable3 : Immutable1 { }
+    public class Immutable3 : Immutable1 {}
 
     #endregion
 
@@ -1380,7 +1389,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [Mask("d")]
         public virtual DateTime Prop2 { get; set; }
 
-        public void DoSomething([Mask("d")] DateTime d1) { }
+        public void DoSomething([Mask("d")] DateTime d1) {}
     }
 
     public class Mask2 {
@@ -1402,7 +1411,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [MaxLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([MaxLength(8)] string parm) { }
+        public void Action([MaxLength(8)] string parm) {}
     }
 
     public class Maxlength2 {
@@ -1413,7 +1422,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [MaxLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([MaxLength(8)] string parm) { }
+        public void Action([MaxLength(8)] string parm) {}
     }
 
     #endregion
@@ -1428,14 +1437,14 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
 
         [Named("Hex")]
-        public void DoSomething([Named("Yop")] string param1) { }
+        public void DoSomething([Named("Yop")] string param1) {}
     }
 
     #endregion
 
     #region NakedObjectsIgnore
-    public class NakedObjectsIgnore1 {
 
+    public class NakedObjectsIgnore1 {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -1445,7 +1454,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [NakedObjectsIgnore]
         public virtual NakedObjectsIgnore1 RefPropIgnored { get; set; }
-        
+
         public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
 
         public ICollection<NakedObjectsIgnore1> Coll { get; set; }
@@ -1455,14 +1464,16 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
-        public void Action() { }
+        public void Action() {}
 
         [NakedObjectsIgnore]
-        public void ActionIgnored() { }
+        public void ActionIgnored() {}
 
-        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() {
+            return null;
+        }
 
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
     [NakedObjectsType(ReflectOver.None)]
@@ -1473,7 +1484,7 @@ namespace NakedObjects.SystemTest.Attributes {
     }
 
     [NakedObjectsType(ReflectOver.All)]
-    public class NakedObjectsIgnore3  {
+    public class NakedObjectsIgnore3 {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -1493,14 +1504,16 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
-        public void Action() { }
+        public void Action() {}
 
         [NakedObjectsIgnore]
-        public void ActionIgnored() { }
+        public void ActionIgnored() {}
 
-        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() {
+            return null;
+        }
 
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
     [NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
@@ -1524,19 +1537,20 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
-        public void Action() { }
+        public void Action() {}
 
         [NakedObjectsIgnore]
-        public void ActionIgnored() { }
+        public void ActionIgnored() {}
 
-        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() {
+            return null;
+        }
 
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
-        [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
+    [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
     public class NakedObjectsIgnore5 {
-      
         public virtual int Id { get; set; }
 
         public virtual NakedObjectsIgnore1 RefProp { get; set; }
@@ -1554,39 +1568,38 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
-        [NakedObjectsInclude] 
-        public void Action() { }
+        [NakedObjectsInclude]
+        public void Action() {}
 
-        public void Action2() { }
+        public void Action2() {}
 
         [NakedObjectsInclude] //Should still be ignored, because return type is ignored
-        public NakedObjectsIgnore2 ActionReturningIgnoredType() { return null; }
+        public NakedObjectsIgnore2 ActionReturningIgnoredType() {
+            return null;
+        }
 
-        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) { }
+        public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
+    public class NakedObjectsIgnore6 : NakedObjectsIgnore4 {
+        public virtual string Prop3 { get; set; }
 
-        public class NakedObjectsIgnore6 : NakedObjectsIgnore4{
-  
-            public virtual string Prop3 { get; set; }
+        public void Action2() {}
 
-            public void Action2() { }
+        public void Action3() {}
+    }
 
-            public void Action3() { }
-        }
+    public class NakedObjectsIgnore7 : NakedObjectsIgnore5 {
+        public virtual string Prop3 { get; set; }
 
-        public class NakedObjectsIgnore7 : NakedObjectsIgnore5 {
+        [NakedObjectsInclude]
+        public virtual string Prop4 { get; set; }
 
-            public virtual string Prop3 { get; set; }
+        [NakedObjectsInclude]
+        public void Action3() {}
 
-            [NakedObjectsInclude]
-            public virtual string Prop4 { get; set; }
-
-            [NakedObjectsInclude]
-            public void Action3() { }
-
-            public void Action4() { }
-        }
+        public void Action4() {}
+    }
 
     #endregion
 
@@ -1627,7 +1640,6 @@ namespace NakedObjects.SystemTest.Attributes {
         [Range(-1, 10)]
         public virtual decimal Prop12 { get; set; }
 
-
         [Range(-1d, 10d)]
         public virtual short Prop14 { get; set; }
 
@@ -1658,7 +1670,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [Range(-1.9d, 10.9d)]
         public virtual decimal Prop23 { get; set; }
 
-        [Range(typeof(string), "1", "10")]
+        [Range(typeof (string), "1", "10")]
         public virtual int Prop24 { get; set; }
 
         [Range(-30, 0)]
@@ -1667,32 +1679,32 @@ namespace NakedObjects.SystemTest.Attributes {
         [Range(1, 30)]
         public virtual DateTime Prop26 { get; set; }
 
-        public void Action1([Range(5, 6)] sbyte parm) { }
-        public void Action2([Range(5, 6)] short parm) { }
-        public void Action3([Range(5, 6)] int parm) { }
-        public void Action4([Range(5, 6)] long parm) { }
-        public void Action5([Range(5, 6)] byte parm) { }
-        public void Action6([Range(5, 6)] ushort parm) { }
-        public void Action7([Range(5, 6)] uint parm) { }
-        public void Action8([Range(5, 6)] ulong parm) { }
-        public void Action9([Range(5, 6)] float parm) { }
-        public void Action10([Range(5, 6)] double parm) { }
-        public void Action11([Range(5, 6)] decimal parm) { }
-        public void Action12([Range(5d, 6d)] sbyte parm) { }
-        public void Action13([Range(5d, 6d)] short parm) { }
-        public void Action14([Range(5d, 6d)] int parm) { }
-        public void Action15([Range(5d, 6d)] long parm) { }
-        public void Action16([Range(5d, 6d)] byte parm) { }
-        public void Action17([Range(5d, 6d)] ushort parm) { }
-        public void Action18([Range(5d, 6d)] uint parm) { }
-        public void Action19([Range(5d, 6d)] ulong parm) { }
-        public void Action20([Range(5d, 6d)] float parm) { }
-        public void Action21([Range(5d, 6d)] double parm) { }
-        public void Action22([Range(5d, 6d)] decimal parm) { }
-        public void Action23([Range(typeof(string), "5", "6")] int parm) { }
+        public void Action1([Range(5, 6)] sbyte parm) {}
+        public void Action2([Range(5, 6)] short parm) {}
+        public void Action3([Range(5, 6)] int parm) {}
+        public void Action4([Range(5, 6)] long parm) {}
+        public void Action5([Range(5, 6)] byte parm) {}
+        public void Action6([Range(5, 6)] ushort parm) {}
+        public void Action7([Range(5, 6)] uint parm) {}
+        public void Action8([Range(5, 6)] ulong parm) {}
+        public void Action9([Range(5, 6)] float parm) {}
+        public void Action10([Range(5, 6)] double parm) {}
+        public void Action11([Range(5, 6)] decimal parm) {}
+        public void Action12([Range(5d, 6d)] sbyte parm) {}
+        public void Action13([Range(5d, 6d)] short parm) {}
+        public void Action14([Range(5d, 6d)] int parm) {}
+        public void Action15([Range(5d, 6d)] long parm) {}
+        public void Action16([Range(5d, 6d)] byte parm) {}
+        public void Action17([Range(5d, 6d)] ushort parm) {}
+        public void Action18([Range(5d, 6d)] uint parm) {}
+        public void Action19([Range(5d, 6d)] ulong parm) {}
+        public void Action20([Range(5d, 6d)] float parm) {}
+        public void Action21([Range(5d, 6d)] double parm) {}
+        public void Action22([Range(5d, 6d)] decimal parm) {}
+        public void Action23([Range(typeof (string), "5", "6")] int parm) {}
 
-        public void Action24([Range(-30, 0)] DateTime parm) { }
-        public void Action25([Range(1, 30)] DateTime parm) { }
+        public void Action24([Range(-30, 0)] DateTime parm) {}
+        public void Action25([Range(1, 30)] DateTime parm) {}
     }
 
     #endregion
@@ -1728,10 +1740,10 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop2 { get; set; }
 
         [MemberOrder(3)]
-        public virtual void Action1() { }
+        public virtual void Action1() {}
 
         [MemberOrder(1)]
-        public virtual void Action2() { }
+        public virtual void Action2() {}
     }
 
     public class Memberorder2 : Memberorder1 {
@@ -1742,10 +1754,10 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop4 { get; set; }
 
         [MemberOrder(4)]
-        public void Action3() { }
+        public void Action3() {}
 
         [MemberOrder(2)]
-        public void Action4() { }
+        public void Action4() {}
     }
 
     #endregion
@@ -1760,7 +1772,7 @@ namespace NakedObjects.SystemTest.Attributes {
         [StringLength(7)]
         public virtual string Prop2 { get; set; }
 
-        public void Action([StringLength(8)] string parm) { }
+        public void Action([StringLength(8)] string parm) {}
     }
 
     #endregion
@@ -1906,38 +1918,40 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #region FinderAction
 
-
-
     #endregion
 
     #endregion
 }
 
 // Change the namespace of these test classes as if they start wuith 'NakedObjects' we will not introspect them
+
 namespace SystemTest.Attributes {
     public class TestServiceContributedAction {
         public IDomainObjectContainer Container { set; protected get; }
 
-        public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) { }
+        public void ContributedAction([ContributedAction("Test Service Contributed Action")] Contributee obj) {}
 
-        public void NotContributedAction(Contributee obj) { }
+        public void NotContributedAction(Contributee obj) {}
 
         public IQueryable<Contributee2> AllContributee2() {
             return Container.Instances<Contributee2>();
         }
 
-        public void CollectionContributedAction([ContributedAction] IQueryable<Contributee2> targets) { }
+        public void CollectionContributedAction([ContributedAction] IQueryable<Contributee2> targets) {}
 
-        public void CollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets, string parm2) { }
+        public void CollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets, string parm2) {}
 
-        public void CollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets, Contributee cont) { }
+        public void CollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets, Contributee cont) {}
 
-        public IQueryable<Contributee2> NotCollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
+        public IQueryable<Contributee2> NotCollectionContributedAction1([ContributedAction] IQueryable<Contributee2> targets) {
+            throw new NotImplementedException();
+        }
 
-        public ICollection<Contributee2> NotCollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets) { throw new NotImplementedException(); }
+        public ICollection<Contributee2> NotCollectionContributedAction2([ContributedAction] IQueryable<Contributee2> targets) {
+            throw new NotImplementedException();
+        }
 
-        public void NotCollectionContributedAction3([ContributedAction] IEnumerable<Contributee2> targets) { }
-
+        public void NotCollectionContributedAction3([ContributedAction] IEnumerable<Contributee2> targets) {}
     }
 
     public class Contributee {
@@ -1947,16 +1961,14 @@ namespace SystemTest.Attributes {
     public class Contributee2 {
         public virtual int Id { get; set; }
 
-        public void NativeAction() { }
+        public void NativeAction() {}
     }
 
     public class Contributee3 : Contributee2 {
-
-        public void NativeAction3() { }
+        public void NativeAction3() {}
     }
 
     public class TestServiceFinderAction {
-
         [FinderAction()]
         public FinderAction1 FinderAction1() {
             return null;
@@ -1973,9 +1985,8 @@ namespace SystemTest.Attributes {
         }
 
         public IList<FinderAction1> Choices1FinderAction3() {
-            return new List<FinderAction1> { };
+            return new List<FinderAction1> {};
         }
-
 
         //No annotation
         public FinderAction1 NotFinderAction1() {

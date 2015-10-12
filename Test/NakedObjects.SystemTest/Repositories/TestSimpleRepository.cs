@@ -5,9 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.XATs;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest.Repositories {
@@ -17,6 +19,14 @@ namespace NakedObjects.SystemTest.Repositories {
 
         private Customer cust1;
         private Customer cust2;
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(SimpleRepositoryDbContext.DatabaseName);
+            var context = Activator.CreateInstance<SimpleRepositoryDbContext>();
+
+            context.Database.Create();
+        }
 
         [ClassCleanup]
         public static void ClassCleanup() {

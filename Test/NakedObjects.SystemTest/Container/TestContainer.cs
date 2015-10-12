@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Authorization.UsersAndRoles;
 
 namespace NakedObjects.SystemTest.Container {
     [TestClass]
@@ -67,10 +68,18 @@ namespace NakedObjects.SystemTest.Container {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(ContainerDbContext.DatabaseName);
+            var context = Activator.CreateInstance<ContainerDbContext>();
+
+            context.Database.Create();
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestContainer());
-            Database.Delete(ContainerDbContext.DatabaseName);
         }
 
         [TestInitialize()]

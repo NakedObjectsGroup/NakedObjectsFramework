@@ -19,6 +19,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Repositories;
 using NakedObjects.Xat;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -26,6 +27,15 @@ namespace NakedObjects.SystemTest.Profile {
     [TestClass]
     public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
         #region Run Configuration
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(ProfileDbContext.DatabaseName);
+            var context = Activator.CreateInstance<ProfileDbContext>();
+
+            context.Database.Create();
+        }
+
 
         protected override void RegisterTypes(IUnityContainer container) {
             base.RegisterTypes(container);

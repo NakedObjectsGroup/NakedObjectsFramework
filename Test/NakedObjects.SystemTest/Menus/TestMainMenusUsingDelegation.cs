@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using NakedObjects.SystemTest.Injection;
 using TestObjectMenu;
 
 namespace NakedObjects.SystemTest.Menus.Service {
@@ -18,10 +19,17 @@ namespace NakedObjects.SystemTest.Menus.Service {
     public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(MenusDbContext.DatabaseName);
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestMainMenusUsingDelegation());
-            Database.Delete(MenusDbContext.DatabaseName);
         }
 
         [TestInitialize()]

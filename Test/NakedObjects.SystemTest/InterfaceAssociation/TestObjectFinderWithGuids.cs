@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Attributes;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 
@@ -41,9 +42,14 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         #region Setup/Teardown
 
+
         [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(ObjectFinderCompoundKeys.PaymentContext.DatabaseName);
+            var context = Activator.CreateInstance<PaymentContext>();
+
+            context.Database.Create();
+            DatabaseInitializer.Seed(context);
         }
 
         [ClassCleanup]
@@ -129,13 +135,13 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+        //    Database.SetInitializer(new DatabaseInitializer());
+        //}
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
-        protected override void Seed(PaymentContext context) {
+    public class DatabaseInitializer  {
+        public static void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.Customers.Add(new Customer() {Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b")});
             context.Customers.Add(new Customer() {Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b")});

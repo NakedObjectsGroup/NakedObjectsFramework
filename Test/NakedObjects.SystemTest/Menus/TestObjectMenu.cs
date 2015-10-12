@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Menu;
@@ -15,10 +16,18 @@ namespace NakedObjects.SystemTest.Menus {
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
         #region Setup/Teardown
 
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(MenusDbContext.DatabaseName);
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestObjectMenu());
-            Database.Delete(MenusDbContext.DatabaseName);
         }
 
         [TestInitialize()]

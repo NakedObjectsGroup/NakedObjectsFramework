@@ -16,6 +16,9 @@ namespace NakedObjects.SystemTest.ParentChild {
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
             #region Setup/Teardown
 
+           
+
+
             [ClassInitialize]
             public static void ClassInitialize(TestContext tc) {
                 InitializeNakedObjectsFramework(new TestParentChildPersistence());

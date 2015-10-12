@@ -11,12 +11,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Core.Container;
 using NakedObjects.Services;
 using System.Linq;
+using NakedObjects.SystemTest.Enum;
 
 namespace NakedObjects.SystemTest.Injection {
     [TestClass]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
         #region Setup/Teardown
 
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(InjectionDbContext.DatabaseName);
+            var context = Activator.CreateInstance<InjectionDbContext>();
+
+            context.Database.Create();
+        }
 
 
         [ClassCleanup]

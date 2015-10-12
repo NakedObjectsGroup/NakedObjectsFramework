@@ -17,6 +17,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.Authorization.CustomAuthorizer;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer : AbstractSystemTest<CustomAuthorizerInstallerDbContext> {
@@ -61,10 +62,18 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestCustomAuthorizer1());
-            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
         #endregion
@@ -146,10 +155,18 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
+        }
+
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestCustomAuthoriser4());
-            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
         }
 
         [TestInitialize]

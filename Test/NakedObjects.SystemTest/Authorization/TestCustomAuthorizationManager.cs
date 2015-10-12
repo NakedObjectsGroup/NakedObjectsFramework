@@ -55,10 +55,17 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
+            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestCustomAuthorizationManager());
-            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
         }
 
         [TestInitialize()]

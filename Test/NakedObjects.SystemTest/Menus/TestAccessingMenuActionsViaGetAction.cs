@@ -14,10 +14,17 @@ namespace NakedObjects.SystemTest.Menus {
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
         #region Setup/Teardown 
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(CADbContext.DatabaseName);
+            var context = Activator.CreateInstance<CADbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestAccessingMenuActionsViaGetAction());
-            Database.Delete(CADbContext.DatabaseName);
         }
 
         [TestInitialize()]

@@ -43,6 +43,8 @@ namespace NakedObjects.SystemTest {
         #region Run Configuration
 
         protected override void RegisterTypes(IUnityContainer container) {
+            
+
             base.RegisterTypes(container);
             container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
             container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();

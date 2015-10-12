@@ -28,6 +28,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
         }
 
+
         [ClassCleanup]
         public static void DeleteDatabase() {
             Database.Delete(databaseName);

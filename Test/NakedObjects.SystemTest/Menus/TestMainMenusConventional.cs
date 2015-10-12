@@ -17,10 +17,17 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
     public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(MenusDbContext.DatabaseName);
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestMainMenusConventional());
-            Database.Delete(MenusDbContext.DatabaseName);
         }
 
         [TestInitialize()]

@@ -19,10 +19,17 @@ namespace NakedObjects.SystemTest.Method {
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
         #region Setup/Teardown
 
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext tc) {
+            Database.Delete(MethodsDbContext.DatabaseName);
+            var context = Activator.CreateInstance<MethodsDbContext>();
+
+            context.Database.Create();
+        }
+
         [ClassCleanup]
         public static void ClassCleanup() {
             CleanupNakedObjectsFramework(new TestRecognisedMethods());
-            Database.Delete(MethodsDbContext.DatabaseName);
         }
 
         [TestInitialize()]
