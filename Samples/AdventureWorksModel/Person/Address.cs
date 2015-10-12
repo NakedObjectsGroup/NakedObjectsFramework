@@ -18,7 +18,7 @@ namespace AdventureWorksModel {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }
 
-        public ContactRepository ContactRepository { set; protected get; }
+        public PersonRepository ContactRepository { set; protected get; }
 
         #endregion
 

@@ -13,7 +13,11 @@ using NakedObjects.Services;
 
 namespace AdventureWorksModel {
     [DisplayName("Contacts")]
-    public class ContactRepository : AbstractFactoryAndRepository {
+    public class PersonRepository : AbstractFactoryAndRepository {
+
+        #region Injected Services
+        #endregion
+
         #region FindContactByName
 
         [FinderAction]
@@ -67,17 +71,13 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region Injected Services
-
-        // This region should contain properties to hold references to any services required by the
-        // object.  Use the 'injs' shortcut to add a new service.
-
-        #endregion
-
-
-        public BusinessEntityAddress ManuallyCreateBusinessEntityAddress() {
-            return Container.NewTransientInstance<BusinessEntityAddress>();
+        internal IQueryable<Address> AddressesFor(IBusinessEntity entity, string ofType = null) {
+            int id = entity.BusinessEntityID;
+            var baes = Container.Instances<BusinessEntityAddress>().Where(bae => bae.BusinessEntityID == id);
+            if (ofType != null) {
+                baes = baes.Where(bae => bae.AddressType.Name == ofType);
+            }
+            return baes.Select(bae => bae.Address);
         }
-
     }
 }

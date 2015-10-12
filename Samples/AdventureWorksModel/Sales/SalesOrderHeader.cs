@@ -18,7 +18,6 @@ namespace AdventureWorksModel {
     public class SalesOrderHeader : ICreditCardCreator {
 
         #region Injected Servives
-
         public IDomainObjectContainer Container { set; protected get; }
 
         public ShoppingCartRepository ShoppingCartRepository { set; protected get; }
@@ -27,10 +26,10 @@ namespace AdventureWorksModel {
 
         public SalesRepository SalesRepository { set; protected get; }
 
+        public PersonRepository PersonRepository { set; protected get; }
         #endregion
 
         #region Life Cycle Methods
-
         public void Created() {
             OrderDate = DateTime.Now.Date;
             DueDate = DateTime.Now.Date.AddDays(7);
@@ -198,28 +197,13 @@ namespace AdventureWorksModel {
         public virtual Address BillingAddress { get; set; }
 
         public Address DefaultBillingAddress() {
-            return null;
-            //TODO:
-            //if (Customer == null) {
-            //    return null;
-            //}
-            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-            //    where obj.Customer.CustomerID == Customer.CustomerID &&
-            //          obj.AddressType.Name == "Billing"
-            //    select obj.Address;
+            return PersonRepository.AddressesFor(Customer.BusinessEntity(), "Billing").FirstOrDefault();
 
-            //return query.FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
-            return new List<Address>();
-            //TODO:
-            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-            //    where obj.Customer.CustomerID == Customer.CustomerID
-            //    select obj.Address;
-
-            //return query.ToList();
+            return  PersonRepository.AddressesFor(Customer.BusinessEntity()).ToList();
         }
 
         #endregion
@@ -240,24 +224,13 @@ namespace AdventureWorksModel {
         public virtual Address ShippingAddress { get; set; }
 
         public Address DefaultShippingAddress() {
-            return null;
-            //TODO:
-            //if (Customer == null) {
-            //    return null;
-            //}
-            //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
-            //    where obj.Customer.CustomerID == Customer.CustomerID &&
-            //          obj.AddressType.Name == "Shipping"
-            //    select obj.Address;
-
-            //return query.FirstOrDefault();
+            return PersonRepository.AddressesFor(Customer.BusinessEntity(), "Shipping").FirstOrDefault();
         }
 
         [Executed(Where.Remotely)]
         public List<Address> ChoicesShippingAddress() {
             return ChoicesBillingAddress();
         }
-
         #endregion
 
         #region ShipMethod

@@ -20,7 +20,7 @@ namespace AdventureWorksModel {
 
         #region Injected: ContactRepository
 
-        public ContactRepository ContactRepository { set; protected get; }
+        public PersonRepository ContactRepository { set; protected get; }
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
             menu.AddAction("FindCustomerByAccountNumber");
             menu.CreateSubMenu("Stores")
                 .AddAction("FindStoreByName")
-                .AddAction("CreateNewStoreCustomer") 
+                .AddAction("CreateNewStoreCustomer")
                 .AddAction("RandomStore");
             menu.CreateSubMenu("Individuals")
                 .AddAction("FindIndividualCustomerByName")
@@ -90,8 +90,14 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        public Store CreateNewStoreCustomer() {
-            throw new NotImplementedException();
+        public Customer CreateNewStoreCustomer(string name) {
+            var store = NewTransientInstance<Store>();
+            store.Name = name;
+            Persist(ref store);
+            var cust = NewTransientInstance<Customer>();
+            cust.Store = store;
+            Persist(ref cust);
+            return cust;
         }
 
         [FinderAction, QueryOnly]

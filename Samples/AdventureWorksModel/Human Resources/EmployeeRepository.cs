@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
     [DisplayName("Employees")]
     public class EmployeeRepository : AbstractFactoryAndRepository {
         #region Injected Services
-        public ContactRepository ContactRepository { set; protected get; }
+        public PersonRepository ContactRepository { set; protected get; }
         #endregion
 
         #region FindRecentHires

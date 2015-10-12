@@ -14,8 +14,6 @@ namespace AdventureWorksModel
             Ignore(t => t.ContactType);
             Ignore(t => t.ForEntity);
             //TODO: Temp ignored
-            Ignore(t => t.EmailAddress);
-            Ignore(t => t.Phone);
             Ignore(t => t.Password);
 
             // Properties

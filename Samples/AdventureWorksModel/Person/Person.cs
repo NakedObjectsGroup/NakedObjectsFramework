@@ -130,29 +130,11 @@ namespace AdventureWorksModel {
 
         #region Communication
 
-        #region EmailAddress
-
-        [Optionally]
-        [StringLength(50)]
-        [MemberOrder(20)]
-        [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$")]
-        public virtual string EmailAddress { get; set; }
-
-        #endregion
 
         #region EmailPromotion
 
         [MemberOrder(21), DefaultValue(1)]
         public virtual int EmailPromotion { get; set; }
-
-        #endregion
-
-        #region Phone
-
-        [Optionally]
-        [StringLength(25)]
-        [MemberOrder(25)]
-        public virtual string Phone { get; set; }
 
         #endregion
 

@@ -163,7 +163,7 @@
     <Compile Include="Person\BusinessEntityContributedActions.cs" />
     <Compile Include="Person\IBusinessEntityWithContacts.cs" />
     <Compile Include="Person\Person.cs" />
-    <Compile Include="Person\ContactRepository.cs" />
+    <Compile Include="Person\PersonRepository.cs" />
     <Compile Include="Person\ContactType.cs" />
     <Compile Include="Person\CountryRegion.cs" />
     <Compile Include="Person\EmailAddress.cs" />

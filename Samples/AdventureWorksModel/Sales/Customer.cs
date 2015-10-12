@@ -15,7 +15,7 @@ namespace AdventureWorksModel {
     [IconName("default.png")]
     public class Customer  {
         #region Injected Services
-        public ContactRepository ContactRepository { set; protected get; }
+        public PersonRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
 
@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        
+        #region Title
         public override string ToString() {
             var t = Container.NewTitleBuilder();
             if (IsStore()) {
@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
             t.Append(",", AccountNumber);
             return t.ToString();
         }
-      
+        #endregion
 
         [NakedObjectsIgnore]
         public virtual int CustomerID { get; set; }
@@ -58,6 +58,13 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Store & Personal customers
+
+        internal BusinessEntity BusinessEntity() {
+            if (IsStore()) return Store;
+            if (IsIndividual()) return Person;
+            throw new DomainException("Customer is neithe Store nor Person!");
+        }
+
         [NakedObjectsIgnore]
         public virtual int? StoreID { get; set; }
 
