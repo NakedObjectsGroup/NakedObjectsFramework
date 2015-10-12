@@ -55,7 +55,7 @@
     <MakeDir Directories="$(WorkingDir)" />
 
     <ItemGroup>
-      <CFGFiles Include="$(TestPath)\NakedObjects.SystemTest.Test\App.config"/>
+      <CFGFiles Include="$(TestPath)\NakedObjects.SystemTest\App.config"/>
 	    <CFGFiles Include="$(TestPath)\NakedObjects.Batch.Test\App.config"/>
     </ItemGroup>
 
