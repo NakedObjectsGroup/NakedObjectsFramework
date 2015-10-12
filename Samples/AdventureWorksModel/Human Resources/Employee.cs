@@ -214,7 +214,7 @@ namespace AdventureWorksModel {
             newAssignment.Employee = this;
             newAssignment.StartDate = DateTime.Now;
             Container.Persist(ref newAssignment);
-           // DepartmentHistory.Add(newAssignment);
+            DepartmentHistory.Add(newAssignment);
         }
 
         public Department Default0ChangeDepartmentOrShift() {
@@ -223,9 +223,7 @@ namespace AdventureWorksModel {
         }
 
         private EmployeeDepartmentHistory CurrentAssignment() {
-            //EmployeeDepartmentHistory current = DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-            //return current;
-            throw new NotImplementedException();
+            return DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
         }
 
         #endregion

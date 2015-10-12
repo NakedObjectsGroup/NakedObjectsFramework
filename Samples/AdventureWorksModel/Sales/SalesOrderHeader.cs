@@ -198,10 +198,11 @@ namespace AdventureWorksModel {
         public virtual Address BillingAddress { get; set; }
 
         public Address DefaultBillingAddress() {
-            if (Customer == null) {
-                return null;
-            }
-            throw new NotImplementedException();
+            return null;
+            //TODO:
+            //if (Customer == null) {
+            //    return null;
+            //}
             //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
             //    where obj.Customer.CustomerID == Customer.CustomerID &&
             //          obj.AddressType.Name == "Billing"
@@ -212,7 +213,8 @@ namespace AdventureWorksModel {
 
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
-            throw new NotImplementedException();
+            return new List<Address>();
+            //TODO:
             //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
             //    where obj.Customer.CustomerID == Customer.CustomerID
             //    select obj.Address;
@@ -238,10 +240,11 @@ namespace AdventureWorksModel {
         public virtual Address ShippingAddress { get; set; }
 
         public Address DefaultShippingAddress() {
-            if (Customer == null) {
-                return null;
-            }
-            throw new NotImplementedException();
+            return null;
+            //TODO:
+            //if (Customer == null) {
+            //    return null;
+            //}
             //IQueryable<Address> query = from obj in Container.Instances<CustomerAddress>()
             //    where obj.Customer.CustomerID == Customer.CustomerID &&
             //          obj.AddressType.Name == "Shipping"

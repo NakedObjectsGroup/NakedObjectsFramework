@@ -55,7 +55,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
        [TestMethod]
         public virtual void Object()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-555");
+            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-350");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             AssertObjectElementsPresent();
@@ -85,7 +85,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectWithActions()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&actions1=open");
+            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-350&actions1=open");
             GetObjectActions(StoreActions);
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
@@ -96,7 +96,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectWithCollections()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&&collection1_Addresses=List&collection1_Contacts=Table");
+            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-350&&collection1_Addresses=List&collection1_Contacts=Table");
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
             AssertObjectElementsPresent();
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
@@ -110,7 +110,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectInEditMode()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-555&edit1=true");
+            br.Navigate().GoToUrl(Url + "#/gemini/object?object1=AdventureWorksModel.Store-350&edit1=true");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".edit")));
             GetSaveButton();
@@ -141,7 +141,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SplitHomeObject()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/home/object?object2=AdventureWorksModel.Store-555");
+            br.Navigate().GoToUrl(Url + "#/gemini/home/object?object2=AdventureWorksModel.Store-350");
             WaitFor(Pane.Left, PaneType.Home, "Home");
             WaitFor(Pane.Right, PaneType.Object,  "Twin Cycles, AW00000555");
         }
@@ -157,7 +157,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SplitObjectHome()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object/home?object1=AdventureWorksModel.Store-555");
+            br.Navigate().GoToUrl(Url + "#/gemini/object/home?object1=AdventureWorksModel.Store-350");
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Home, "Home");
         }
@@ -165,7 +165,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SplitObjectObject()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-555&object2=AdventureWorksModel.Store-359");
+            br.Navigate().GoToUrl(Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&object2=AdventureWorksModel.Store-359");
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
         }
@@ -173,7 +173,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SplitObjectQuery()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/object/query?object1=AdventureWorksModel.Store-555&menu2=OrderRepository&action2=HighestValueOrders");
+            br.Navigate().GoToUrl(Url + "#/gemini/object/query?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Query,  "Highest Value Orders");
         }
@@ -189,7 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod] 
         public virtual void SplitQueryObject()
         {
-            br.Navigate().GoToUrl(Url + "#/gemini/query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-359");
+            br.Navigate().GoToUrl(Url + "#/gemini/query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
             WaitFor(Pane.Left, PaneType.Query, "Highest Value Orders");
             WaitFor(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
         }

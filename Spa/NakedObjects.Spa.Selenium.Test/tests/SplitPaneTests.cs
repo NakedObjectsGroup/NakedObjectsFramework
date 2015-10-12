@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-    //[TestClass]
+
     public abstract class SplitPaneTests : GeminiTest {
 
         #region Actions that go from single to split panes
@@ -97,7 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
 
         [TestMethod]
         public virtual void RightClickReferenceInLeftPaneObject()
@@ -260,7 +260,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class SplitPaneTestsFirefox : SplitPaneTests
     {
         [ClassInitialize]
