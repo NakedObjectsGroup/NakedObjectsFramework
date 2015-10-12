@@ -16,6 +16,7 @@
 
   <Import Project="$(CommunityTargets)"/>
   <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
+  <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
   
   <Choose>
     <When Condition="Exists('C:\Program Files (x86)')">
