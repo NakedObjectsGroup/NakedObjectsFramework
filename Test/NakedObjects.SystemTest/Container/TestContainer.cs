@@ -15,7 +15,7 @@ namespace NakedObjects.SystemTest.Container {
     [TestClass]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
         protected override Type[] Types {
-            get { return new Type[] {typeof (Object1), typeof (Object2), typeof (ViewModel2)}; }
+            get { return new[] {typeof (Object1), typeof (Object2), typeof (ViewModel2)}; }
         }
 
         protected override object[] MenuServices {

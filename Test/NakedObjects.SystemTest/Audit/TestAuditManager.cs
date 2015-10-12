@@ -47,7 +47,7 @@ namespace NakedObjects.SystemTest.Audit {
                     typeof (SimpleRepository<Qux>), typeof (FooService),
                     typeof (BarService), typeof (QuxService)
                 },
-                new string[] {typeof (Foo).Namespace});
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
@@ -86,7 +86,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -107,7 +107,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnAction", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -130,7 +130,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -153,7 +153,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -175,7 +175,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AQueryOnlyAction", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsTrue(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 fooCalledCount++;
             };
 
@@ -197,7 +197,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(1, pp.Count());
+                Assert.AreEqual(1, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 fooCalledCount++;
             };
@@ -218,7 +218,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnActionWithParm", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(1, pp.Count());
+                Assert.AreEqual(1, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 fooCalledCount++;
             };
@@ -241,7 +241,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(2, pp.Count());
+                Assert.AreEqual(2, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 Assert.AreSame(foo.NakedObject.Object, pp[1]);
                 fooCalledCount++;
@@ -265,7 +265,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnActionWithParms", a);
                 Assert.AreEqual("Foo Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(2, pp.Count());
+                Assert.AreEqual(2, pp.Length);
                 Assert.AreEqual(1, pp[0]);
                 Assert.AreSame(fooObj.NakedObject.Object, pp[1]);
                 fooCalledCount++;
@@ -328,7 +328,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 quxCalledCound++;
             };
 
@@ -348,7 +348,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("AnAction", a);
                 Assert.AreEqual("Qux Service", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 quxCalledCound++;
             };
 
@@ -408,7 +408,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 defaultCalledCount++;
             };
 
@@ -428,7 +428,7 @@ namespace NakedObjects.SystemTest.Audit {
                 Assert.AreEqual("NewInstance", a);
                 Assert.AreEqual("Bars", s);
                 Assert.IsFalse(b);
-                Assert.AreEqual(0, pp.Count());
+                Assert.AreEqual(0, pp.Length);
                 defaultCalledCount++;
             };
 

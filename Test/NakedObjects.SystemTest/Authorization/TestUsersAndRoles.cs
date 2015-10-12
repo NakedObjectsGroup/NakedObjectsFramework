@@ -36,7 +36,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
                     typeof (SimpleRepository<Foo>),
                     typeof (FooService),
                 },
-                new string[] {typeof (Foo).Namespace});
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }

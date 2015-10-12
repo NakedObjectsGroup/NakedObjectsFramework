@@ -139,7 +139,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
 
     public class PolymorphicNavigationContext : DbContext {
         public PolymorphicNavigationContext(string name) : base(name) {}
-        public PolymorphicNavigationContext() : base() {}
+        public PolymorphicNavigationContext() {}
         public DbSet<PolymorphicPayment> Payments { get; set; }
         public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
         public DbSet<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; }

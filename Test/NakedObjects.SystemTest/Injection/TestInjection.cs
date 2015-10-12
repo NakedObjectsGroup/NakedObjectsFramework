@@ -15,7 +15,7 @@ namespace NakedObjects.SystemTest.Injection {
     [TestClass]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
         protected override Type[] Types {
-            get { return new Type[] {typeof (Object1), typeof (Object2), typeof (Object3), typeof (Object4), typeof (Object5), typeof (Service1), typeof (IService2), typeof (IService3)}; }
+            get { return new[] {typeof (Object1), typeof (Object2), typeof (Object3), typeof (Object4), typeof (Object5), typeof (Service1), typeof (IService2), typeof (IService3)}; }
         }
 
         protected override object[] MenuServices {

@@ -47,7 +47,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                     typeof (BarService),
                     typeof (QuxService)
                 },
-                new string[] {typeof (Foo).Namespace});
+                new[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }

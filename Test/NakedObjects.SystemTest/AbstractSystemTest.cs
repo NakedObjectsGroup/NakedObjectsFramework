@@ -25,7 +25,7 @@ namespace NakedObjects.SystemTest {
 
         protected override Type[] Types {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (List<object>),
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>)

@@ -78,7 +78,7 @@ namespace NakedObjects.SystemTest.Menus {
 
         protected override Type[] Services {
             get {
-                return new Type[] {
+                return new[] {
                     typeof (SimpleRepository<Foo>),
                     typeof (SimpleRepository<Foo2>),
                     typeof (SimpleRepository<Bar>),

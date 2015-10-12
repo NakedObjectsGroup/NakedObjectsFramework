@@ -17,7 +17,7 @@ namespace NakedObjects.SystemTest.Enum {
     [TestClass]
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
         protected override Type[] Types {
-            get { return new Type[] {typeof (Foo), typeof (Sexes), typeof (HairColours)}; }
+            get { return new[] {typeof (Foo), typeof (Sexes), typeof (HairColours)}; }
         }
 
         #region Run configuration

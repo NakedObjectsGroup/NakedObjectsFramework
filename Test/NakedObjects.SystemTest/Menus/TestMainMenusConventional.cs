@@ -218,7 +218,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
             var empty2 = factory.NewMenu<object>(false, "Empty2");
             empty2.CreateSubMenu("Sub");
 
-            return new IMenu[] {foos, bars, q, subs, hyb, empty, empty2};
+            return new[] {foos, bars, q, subs, hyb, empty, empty2};
         }
     }
 

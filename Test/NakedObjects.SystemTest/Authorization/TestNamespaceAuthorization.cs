@@ -62,7 +62,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
                     typeof (SimpleRepository<Foo1>),
                     typeof (SimpleRepository<Foo2>),
                 },
-                new string[] {typeof (Bar1).Namespace, typeof (Bar2).Namespace, typeof (Foo2).Namespace});
+                new[] {typeof (Bar1).Namespace, typeof (Bar2).Namespace, typeof (Foo2).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
