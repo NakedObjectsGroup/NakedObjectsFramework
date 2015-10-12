@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GoToMenuFromHomePage("Customers");
 
             wait.Until(d => d.FindElement(By.CssSelector(".actions")));
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == 9);
+            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             var actions = br.FindElements(By.CssSelector(".action"));
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
@@ -82,7 +82,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Invoking main menu actions
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ZeroParamReturnsObject()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
@@ -90,7 +90,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ZeroParamReturnsCollection()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
@@ -100,7 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(d => d.FindElements(By.CssSelector(".reference")).Count == 20);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ZeroParamThrowsError()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);
@@ -110,7 +110,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Foo", msg.Text);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ZeroParamReturnsEmptyCollection()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(0, rows.Count);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void DialogActionOK()
         {
             br.Navigate().GoToUrl(CustomersMenuUrl);

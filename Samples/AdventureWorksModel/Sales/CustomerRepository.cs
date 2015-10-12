@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
             menu.AddAction("FindCustomerByAccountNumber");
             menu.CreateSubMenu("Stores")
                 .AddAction("FindStoreByName")
-                //.AddAction("CreateNewStoreCustomer")  //Todo - to be written
+                .AddAction("CreateNewStoreCustomer") 
                 .AddAction("RandomStore");
             menu.CreateSubMenu("Individuals")
                 .AddAction("FindIndividualCustomerByName")
@@ -77,7 +77,6 @@ namespace AdventureWorksModel {
         #region Stores Menu
 
         [FinderAction]
-        [MemberOrder(20)]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
             public IQueryable<Customer> FindStoreByName(string name) {
@@ -91,7 +90,11 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        [MemberOrder(60), QueryOnly]
+        public Store CreateNewStoreCustomer() {
+            throw new NotImplementedException();
+        }
+
+        [FinderAction, QueryOnly]
         public Customer RandomStore() {
             var stores = StoreCustomers();
             int random = new Random().Next(stores.Count());
@@ -151,15 +154,5 @@ namespace AdventureWorksModel {
         }
 
         #endregion
-
-        public Customer RandomCustomer() {
-            return Random<Customer>();
-        }
-
-        
-        public IQueryable<Store> AllStores() {
-            return Container.Instances<Store>();
-        }
-      
     }
 }
