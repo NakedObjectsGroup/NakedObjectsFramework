@@ -13,7 +13,6 @@ namespace NakedObjects.SystemTest.Util {
     public class NewTitleBuilderWithInitialContentTest {
         private NewTitleBuilder builder;
 
-
         [TestInitialize]
         public void NewBuilder() {
             builder = new NewTitleBuilder("Text");
@@ -27,6 +26,27 @@ namespace NakedObjects.SystemTest.Util {
         public void ContainsConstructorString() {
             AssertTitleIs("Text", builder);
         }
+
+        #region Default
+
+        [TestMethod]
+        public void DefaultIgnoredWhenNotNull() {
+            builder.Default("zero");
+            AssertTitleIs("Text", builder);
+        }
+
+        #endregion
+
+        #region Joiner
+
+        [TestMethod]
+        public void JoinerUsedWhenTextExists() {
+            builder.Separator(",");
+            builder.Append("test");
+            AssertTitleIs("Text, test", builder);
+        }
+
+        #endregion
 
         #region Concat
 
@@ -94,27 +114,6 @@ namespace NakedObjects.SystemTest.Util {
 
         #endregion
 
-        #region Default
-
-        [TestMethod]
-        public void DefaultIgnoredWhenNotNull() {
-            builder.Default("zero");
-            AssertTitleIs("Text", builder);
-        }
-
-        #endregion
-
-        #region Joiner
-
-        [TestMethod]
-        public void JoinerUsedWhenTextExists() {
-            builder.Separator(",");
-            builder.Append("test");
-            AssertTitleIs("Text, test", builder);
-        }
-
-        #endregion
-
         #region Truncate
 
         [TestMethod]
@@ -122,7 +121,6 @@ namespace NakedObjects.SystemTest.Util {
             builder.Truncate(13, false, "...");
             AssertTitleIs("Text", builder);
         }
-
 
         [TestMethod]
         public void TestTruncateOnlyTruncatesLatestEntry() {

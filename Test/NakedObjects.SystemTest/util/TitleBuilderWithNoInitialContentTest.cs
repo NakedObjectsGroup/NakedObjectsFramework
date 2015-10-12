@@ -28,7 +28,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("");
         }
 
-
         [TestMethod]
         public void TestConcatAddsText() {
             builder.Concat("added");
@@ -79,7 +78,6 @@ namespace NakedObjects.SystemTest.Util {
             builder.Append(new DateTime(2007, 4, 2), "d", null);
             AssertTitleIs("02/04/2007");
         }
-
 
         [TestMethod]
         public void TestAppendWithJoiner() {

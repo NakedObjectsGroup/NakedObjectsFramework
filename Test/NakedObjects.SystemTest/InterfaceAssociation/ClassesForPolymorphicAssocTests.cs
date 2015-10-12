@@ -55,13 +55,8 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
         //TODO:  Create a type 'PolymorphicPaymentPayableItemLink', which can either inherit from PolymorphicLink<IPayableItem, PolymorphicPayment>
         //or otherwise implement IPolymorphicLink<IPayableItem, PolymorphicPayment>.
 
-        private ICollection<PolymorphicPaymentPayableItemLink> _PayableItem = new List<PolymorphicPaymentPayableItemLink>();
-
         [Hidden(WhenTo.Always)]
-        public virtual ICollection<PolymorphicPaymentPayableItemLink> PayableItemLinks {
-            get { return _PayableItem; }
-            set { _PayableItem = value; }
-        }
+        public virtual ICollection<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; } = new List<PolymorphicPaymentPayableItemLink>();
 
         /// <summary>
         ///     This is an optional, derrived collection, which shows the associated objects directly.
@@ -143,9 +138,8 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
     #region Code First DBContext 
 
     public class PolymorphicNavigationContext : DbContext {
-
         public PolymorphicNavigationContext(string name) : base(name) {}
-        public PolymorphicNavigationContext()  : base() {}
+        public PolymorphicNavigationContext() : base() {}
         public DbSet<PolymorphicPayment> Payments { get; set; }
         public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
         public DbSet<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; }

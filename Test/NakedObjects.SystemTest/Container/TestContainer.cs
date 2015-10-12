@@ -10,13 +10,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Authorization.UsersAndRoles;
 
 namespace NakedObjects.SystemTest.Container {
     [TestClass]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
         protected override Type[] Types {
-            get { return new Type[] {typeof (Object1), typeof(Object2), typeof(ViewModel2)}; }
+            get { return new Type[] {typeof (Object1), typeof (Object2), typeof (ViewModel2)}; }
         }
 
         protected override object[] MenuServices {
@@ -39,7 +38,6 @@ namespace NakedObjects.SystemTest.Container {
             Assert.AreEqual(o2.TestInt, 0);
             Assert.IsNull(o2.TestNullableInt);
 
-
             Assert.AreEqual(o2.TestEnum, TestEnum.Value1);
             Assert.IsNull(o2.TestNullableEnum);
 
@@ -49,7 +47,7 @@ namespace NakedObjects.SystemTest.Container {
 
         [TestMethod]
         public void DefaultsViewModel() {
-            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
 
             var vm = testObject.NewViewModel();
@@ -75,7 +73,6 @@ namespace NakedObjects.SystemTest.Container {
 
             context.Database.Create();
         }
-
 
         [ClassCleanup]
         public static void ClassCleanup() {
@@ -123,12 +120,11 @@ namespace NakedObjects.SystemTest.Container {
 
         public TestEnum? TestNullableEnum { get; set; }
 
-        [EnumDataType(typeof(TestEnum))]
+        [EnumDataType(typeof (TestEnum))]
         public int TestEnumDt { get; set; }
 
-        [EnumDataType(typeof(TestEnum))]
+        [EnumDataType(typeof (TestEnum))]
         public int? TestNullableEnumDt { get; set; }
-
     }
 
     public enum TestEnum {
@@ -136,7 +132,7 @@ namespace NakedObjects.SystemTest.Container {
         Value2
     };
 
-    public class ViewModel2  : IViewModel{
+    public class ViewModel2 : IViewModel {
         public virtual int Id { get; set; }
 
         public DateTime TestDateTime { get; set; }
@@ -151,23 +147,25 @@ namespace NakedObjects.SystemTest.Container {
 
         public TestEnum? TestNullableEnum { get; set; }
 
-        [EnumDataType(typeof(TestEnum))]
+        [EnumDataType(typeof (TestEnum))]
         public int TestEnumDt { get; set; }
 
-        [EnumDataType(typeof(TestEnum))]
+        [EnumDataType(typeof (TestEnum))]
         public int? TestNullableEnumDt { get; set; }
 
+        #region IViewModel Members
 
         public string[] DeriveKeys() {
-          //  throw new NotImplementedException();
-            return new string[]{};
+            //  throw new NotImplementedException();
+            return new string[] {};
         }
 
         public void PopulateUsingKeys(string[] keys) {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
-    }
 
+        #endregion
+    }
 
     #endregion
 }

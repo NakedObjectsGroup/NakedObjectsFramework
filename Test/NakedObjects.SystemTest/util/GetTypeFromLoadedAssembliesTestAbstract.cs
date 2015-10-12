@@ -64,7 +64,6 @@ namespace NakedObjects.SystemTest.Util {
             return randomSelection;
         }
 
-
         public static void SetupTypeData(TestContext context) {
             for (int i = 0; i < 100; i++) {
                 ModuleBuilder mb = CreateModuleBuilder("Assembly" + i);
@@ -88,7 +87,6 @@ namespace NakedObjects.SystemTest.Util {
                 Console.WriteLine("Name: {0}\t\tTotal : {1}\r\n\tRuns :{2}", shortName, result.Value.TotalRun, indRuns);
             }
         }
-
 
         public static void OutputCsv(string name) {
             string fileName = name + DateTime.Now.Ticks;
@@ -151,7 +149,6 @@ namespace NakedObjects.SystemTest.Util {
             return sf.GetMethod().Name;
         }
 
-
         private long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) {
             return FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
         }
@@ -168,7 +165,6 @@ namespace NakedObjects.SystemTest.Util {
 
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
         }
-
 
         private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, IList<long> indRuns) {
             return Task<long>.Factory.StartNew(() => {
@@ -229,14 +225,12 @@ namespace NakedObjects.SystemTest.Util {
             CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(Func<string, Type> funcUnderTest) {
             // find each type in random order
             IList<string> randomList = Shuffle(MasterTypeList);
             var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
             CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(Func<string, Type> funcUnderTest) {
             // find a random selection of types 
@@ -245,12 +239,10 @@ namespace NakedObjects.SystemTest.Util {
             CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest) {
             Runs runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, MasterTypeList);
             CollateResults(GetCurrentMethod(), runs);
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomOrder(Func<string, Type> funcUnderTest) {
             IList<string> randomList = Shuffle(MasterTypeList);
@@ -258,19 +250,16 @@ namespace NakedObjects.SystemTest.Util {
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomSelection(Func<string, Type> funcUnderTest) {
             IList<string> randomList = RandomSelection(MasterTypeList);
             Runs runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, randomList);
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest) {
             Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
             CollateResults(GetCurrentMethod(), runs);
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrder(Func<string, Type> funcUnderTest) {
             IList<string> randomList = Shuffle(MasterTypeList);
@@ -278,33 +267,28 @@ namespace NakedObjects.SystemTest.Util {
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(Func<string, Type> funcUnderTest) {
             IList<string> randomList = RandomSelection(MasterTypeList);
             Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrder(Func<string, Type> funcUnderTest) {
-            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(Shuffle).ToArray();
+            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(Shuffle).ToArray();
             Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
             CollateResults(GetCurrentMethod(), runs);
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelection(Func<string, Type> funcUnderTest) {
-            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(RandomSelection).ToArray();
+            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(RandomSelection).ToArray();
             Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
             CollateResults(GetCurrentMethod(), runs);
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest) {
             Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
             CollateResults(GetCurrentMethod(), runs);
         }
-
 
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
             IList<string> randomList = Shuffle(MasterTypeList);
@@ -312,23 +296,20 @@ namespace NakedObjects.SystemTest.Util {
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
             IList<string> randomList = RandomSelection(MasterTypeList);
             Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
-            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(Shuffle).ToArray();
+            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(Shuffle).ToArray();
             Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
             CollateResults(GetCurrentMethod(), runs);
         }
 
-
         public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
-            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(RandomSelection).ToArray();
+            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(RandomSelection).ToArray();
             Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
             CollateResults(GetCurrentMethod(), runs);
         }

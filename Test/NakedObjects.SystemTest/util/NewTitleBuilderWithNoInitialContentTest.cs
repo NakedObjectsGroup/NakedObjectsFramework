@@ -55,7 +55,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("4.5", initiallyEmptyBuilder);
         }
 
-
         // Appends
 
         [TestMethod]
@@ -75,7 +74,6 @@ namespace NakedObjects.SystemTest.Util {
             initiallyEmptyBuilder.Append(4.5);
             AssertTitleIs("4.5", initiallyEmptyBuilder);
         }
-
 
         // Format
 
@@ -147,7 +145,6 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("The quick...", initiallyEmptyBuilder);
         }
 
-
         [TestMethod]
         public void TestTruncateToWordBoundary() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
@@ -200,5 +197,5 @@ namespace NakedObjects.SystemTest.Util {
             return "Harry Smith";
         }
     }
-    #pragma warning restore 618
+#pragma warning restore 618
 }

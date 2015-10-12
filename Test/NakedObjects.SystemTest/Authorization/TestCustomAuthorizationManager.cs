@@ -47,8 +47,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
                     typeof (BarService),
                     typeof (QuxService)
                 },
-                new string[]{ typeof(Foo).Namespace });
-
+                new string[] {typeof (Foo).Namespace});
 
             container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
         }
@@ -70,7 +69,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestInitialize()]
         public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();           
+            InitializeNakedObjectsFrameworkOnce();
             StartTest();
             SetUser("sven");
         }
@@ -87,11 +86,14 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         protected override object[] MenuServices {
-            get { return (new object[] {
-                new SimpleRepository<Foo>(),
-                new SimpleRepository<Bar>(), 
-                new SimpleRepository<FooSub>(),
-                new SimpleRepository<Qux>()}); }
+            get {
+                return (new object[] {
+                    new SimpleRepository<Foo>(),
+                    new SimpleRepository<Bar>(),
+                    new SimpleRepository<FooSub>(),
+                    new SimpleRepository<Qux>()
+                });
+            }
         }
 
         #endregion
@@ -100,7 +102,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void VisibilityUsingSpecificTypeAuthorizer() {
-            ITestObject foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 foo.GetPropertyByName("Prop1").AssertIsVisible();
                 Assert.Fail("Should not get to here");
@@ -112,7 +114,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void EditabilityUsingSpecificTypeAuthorizer() {
-            ITestObject qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject qux = GetTestService(typeof (SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
             try {
                 qux.GetPropertyByName("Prop1").AssertIsModifiable();
                 Assert.Fail("Should not get to here");
@@ -124,7 +126,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void DefaultAuthorizerCalledForNonSpecificType() {
-            ITestObject bar1 = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject bar1 = GetTestService(typeof (SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = bar1.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -132,7 +134,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void SubClassIsNotPickedUpByTypeAuthorizer() {
-            ITestObject fooSub = GetTestService(typeof(SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject fooSub = GetTestService(typeof (SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -140,7 +142,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
 
         [TestMethod]
         public void SubClassIsNotPickedUpByTypeAuthorizerWhereSubTypeNameExtendsSupertypeName() {
-            ITestObject fooSub = GetTestService(typeof(SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
+            ITestObject fooSub = GetTestService(typeof (SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
             ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
             prop1.AssertIsVisible();
             prop1.AssertIsModifiable();
@@ -178,6 +180,8 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             return true;
         }
 
+        #endregion
+
         public void Init() {
             throw new NotImplementedException();
         }
@@ -185,8 +189,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public void Shutdown() {
             //Does nothing
         }
-
-        #endregion
     }
 
     public class FooAuthorizer : ITypeAuthorizer<Foo> {
@@ -194,10 +196,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Foo> Members
-
-        public void Init() {
-            //Does nothing
-        }
 
         public bool IsEditable(IPrincipal principal, Foo target, string memberName) {
             Assert.IsNotNull(Container);
@@ -211,11 +209,15 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             throw new Exception(String.Format("FooAuthorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
         }
 
-        public void Shutdown() {
+        #endregion
+
+        public void Init() {
             //Does nothing
         }
 
-        #endregion
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class QuxAuthorizer : ITypeAuthorizer<Qux> {
@@ -223,10 +225,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Qux> Members
-
-        public void Init() {
-            //Does nothing
-        }
 
         //"QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1"
         public bool IsEditable(IPrincipal principal, Qux target, string memberName) {
@@ -241,11 +239,15 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             return true;
         }
 
-        public void Shutdown() {
+        #endregion
+
+        public void Init() {
             //Does nothing
         }
 
-        #endregion
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class Foo {

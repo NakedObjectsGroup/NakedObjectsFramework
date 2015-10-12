@@ -22,7 +22,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Audit;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
-using NakedObjects.Meta;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Component;
@@ -48,7 +47,7 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         private static int RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-            container.RegisterType(typeof(IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
+            container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
             return order;
         }
 
@@ -119,8 +118,6 @@ namespace NakedObjects.SystemTest.Reflect {
             Type[] types = AdventureWorksTypes();
             IUnityContainer container = GetContainer();
             var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
-
-          
 
             container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -254,7 +251,6 @@ namespace NakedObjects.SystemTest.Reflect {
         }
 
         [TestMethod]
-
         public void SerializeAdventureworksFacets() {
             // load adventurework
 
@@ -393,15 +389,19 @@ namespace NakedObjects.SystemTest.Reflect {
         #region Nested type: NullMenuFactory
 
         public class NullMenuFactory : IMenuFactory {
-            public IMenu NewMenu(string name) {
-                throw new NotImplementedException();
-            }
+            #region IMenuFactory Members
 
             public IMenu NewMenu<T>(bool addAllActions, string name = null) {
                 throw new NotImplementedException();
             }
 
             public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+
+            public IMenu NewMenu(string name) {
                 throw new NotImplementedException();
             }
         }
@@ -439,6 +439,8 @@ namespace NakedObjects.SystemTest.Reflect {
                 throw new NotImplementedException();
             }
 
+            #endregion
+
             public void Init() {
                 throw new NotImplementedException();
             }
@@ -446,8 +448,6 @@ namespace NakedObjects.SystemTest.Reflect {
             public void Shutdown() {
                 throw new NotImplementedException();
             }
-
-            #endregion
         }
 
         #endregion

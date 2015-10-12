@@ -26,21 +26,21 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public DbSet<CustomerFour> CustomerFours { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        //}
+        //    Database.SetInitializer(new DatabaseInitializer());
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-        //    Database.SetInitializer(new DatabaseInitializer());
-        //}
     }
 
-    public class DatabaseInitializer  {
+    public class DatabaseInitializer {
         public static void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.CustomerOnes.Add(new CustomerOne() {Id = 1});
             context.CustomerTwos.Add(new CustomerTwo() {Id = 1, Id2 = "1001"});
             context.CustomerTwos.Add(new CustomerTwo() {Id = 2, Id2 = "1002"});
             context.CustomerThrees.Add(new CustomerThree() {Id = 1, Id2 = "1001", Number = 2001});
-            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 16) });
-            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 17) });
+            context.CustomerFours.Add(new CustomerFour() {Id = 1, Id2 = new DateTime(2015, 1, 16)});
+            context.CustomerFours.Add(new CustomerFour() {Id = 1, Id2 = new DateTime(2015, 1, 17)});
             context.Suppliers.Add(new Supplier() {Id = 1, Id2 = 2001});
             context.Employees.Add(new Employee() {Id = 1, Id2 = "foo"});
             context.SaveChanges();
@@ -97,7 +97,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public virtual string Id2 { get; set; }
     }
 
-
     public class CustomerThree : IPayee {
         [Key]
         [Column(Order = 1)]
@@ -131,7 +130,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         [Column(Order = 2)]
         public virtual short Id2 { get; set; }
     }
-
 
     public class Employee : IPayee {
         [Key]

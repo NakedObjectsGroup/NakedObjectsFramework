@@ -25,7 +25,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         private ITestObject supplier1 = null;
 
         protected override string[] Namespaces {
-            get { return new[] { typeof(Payment).Namespace }; }
+            get { return new[] {typeof (Payment).Namespace}; }
         }
 
         protected override object[] MenuServices {
@@ -39,28 +39,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
                 };
             }
         }
-
-        #region Setup/Teardown
-
-        [ClassInitialize]
-        public static void SetupTestFixture(TestContext tc) {
-            Database.SetInitializer(new DatabaseInitializer());
-        }
-
-        [TestInitialize()]
-        public void TestInitialize() {
-            InitializeNakedObjectsFrameworkOnce();
-            StartTest();
-            payment1 = GetAllInstances<Payment>(0);
-            payee1 = payment1.GetPropertyByName("Payee");
-            key1 = payment1.GetPropertyByName("Payee Compound Key");
-            customer1 = GetAllInstances<Customer>(0);
-            customer2 = GetAllInstances<Customer>(1);
-            supplier1 = GetAllInstances<Supplier>(0);
-            emp1 = GetAllInstances<Employee>(1);
-            emp2 = GetAllInstances<Employee>(0); //They seem to be persisted in reverse order!
-        }
-        #endregion
 
         [TestCleanup]
         public void CleanUp() {
@@ -83,7 +61,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
         }
 
-
         [TestMethod]
         public void ChangeAssociatedObjectType() {
             payee1.SetObject(customer1);
@@ -94,14 +71,12 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
         }
 
-
         [TestMethod]
         public void ClearAssociatedObject() {
             payee1.SetObject(customer1);
             payee1.ClearObject();
             key1.AssertIsEmpty();
         }
-
 
         [TestMethod]
         public void GetAssociatedObject() {
@@ -120,7 +95,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         public void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }
-
 
         [TestMethod]
         public void SetAssociatedObjectObjectWithAStringKey() {
@@ -141,6 +115,29 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
             payee1.AssertObjectIsEqual(emp2);
         }
+
+        #region Setup/Teardown
+
+        [ClassInitialize]
+        public static void SetupTestFixture(TestContext tc) {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+
+        [TestInitialize()]
+        public void TestInitialize() {
+            InitializeNakedObjectsFrameworkOnce();
+            StartTest();
+            payment1 = GetAllInstances<Payment>(0);
+            payee1 = payment1.GetPropertyByName("Payee");
+            key1 = payment1.GetPropertyByName("Payee Compound Key");
+            customer1 = GetAllInstances<Customer>(0);
+            customer2 = GetAllInstances<Customer>(1);
+            supplier1 = GetAllInstances<Supplier>(0);
+            emp1 = GetAllInstances<Employee>(1);
+            emp2 = GetAllInstances<Employee>(0); //They seem to be persisted in reverse order!
+        }
+
+        #endregion
     }
 
     #region Classes used by test
@@ -171,7 +168,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             context.SaveChanges();
         }
     }
-
 
     public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
@@ -217,18 +213,15 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
     public interface IPayee {}
 
-
     public class Customer : IPayee {
         [Disabled]
         public virtual int Id { get; set; }
     }
 
-
     public class Supplier : IPayee {
         [Disabled]
         public virtual int Id { get; set; }
     }
-
 
     public class Employee : IPayee {
         [Key]

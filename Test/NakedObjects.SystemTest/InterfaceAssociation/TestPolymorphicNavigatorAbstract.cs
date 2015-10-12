@@ -9,38 +9,17 @@ using System;
 using System.Data.Entity.SqlServer;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NakedObjects.Xat;
-using NakedObjects.Services;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestClass]
     public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext> {
-                #region Run configuration
-        protected override object[] MenuServices {
-            get {
-                return (new object[] {
-                    new SimpleRepository<PolymorphicPayment>(),
-                    new SimpleRepository<CustomerAsPayee>(),
-                    new SimpleRepository<SupplierAsPayee>(),
-                    new SimpleRepository<InvoiceAsPayableItem>(),
-                    new SimpleRepository<ExpenseClaimAsPayableItem>()
-                });
-            }
-        }
-
-        protected override object[] SystemServices {
-            get { return new object[] {new Services.PolymorphicNavigator()}; }
-        }
-
-        #endregion
-        
         #region Setup/Teardown
 
         // to get EF SqlServer Dll in memory
         public SqlProviderServices instance = SqlProviderServices.Instance;
-
-
 
         #endregion
 
@@ -143,7 +122,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             ITestObject inv2 = GetTestService("Invoice As Payable Items").GetAction("New Instance").InvokeReturnObject().Save();
             string inv2Id = inv2.GetPropertyByName("Id").Title;
 
-
             ITestCollection links = payment.GetPropertyByName("Payable Item Links").ContentAsCollection;
             ITestCollection items = payment.GetPropertyByName("Payable Items").ContentAsCollection;
 
@@ -213,7 +191,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
             ITestCollection links = payment.GetPropertyByName("Payable Item Links").ContentAsCollection;
             ITestCollection items = payment.GetPropertyByName("Payable Items").ContentAsCollection;
-
 
             links.AssertCountIs(1);
             items.AssertCountIs(1);
@@ -294,5 +271,25 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             Assert.IsTrue(results.Contains(payment9));
             Assert.IsTrue(results.Contains(payment10));
         }
+
+        #region Run configuration
+
+        protected override object[] MenuServices {
+            get {
+                return (new object[] {
+                    new SimpleRepository<PolymorphicPayment>(),
+                    new SimpleRepository<CustomerAsPayee>(),
+                    new SimpleRepository<SupplierAsPayee>(),
+                    new SimpleRepository<InvoiceAsPayableItem>(),
+                    new SimpleRepository<ExpenseClaimAsPayableItem>()
+                });
+            }
+        }
+
+        protected override object[] SystemServices {
+            get { return new object[] {new Services.PolymorphicNavigator()}; }
+        }
+
+        #endregion
     }
 }
