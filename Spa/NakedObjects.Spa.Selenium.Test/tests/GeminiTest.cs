@@ -38,7 +38,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
 
-        protected const int CustomerServiceActions = 9;
+        protected const int CustomerServiceActions = 10;
         protected const int OrderServiceActions = 6;
         protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
