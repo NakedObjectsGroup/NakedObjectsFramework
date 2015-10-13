@@ -20,6 +20,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Single, PaneType.Home, "Home");
         }
 
+        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void BackAndForward() {
             br.Navigate().GoToUrl(Url);
