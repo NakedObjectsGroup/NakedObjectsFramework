@@ -93,11 +93,12 @@ namespace AdventureWorksModel {
         private Person GetContactFromUserNameAsEmail() {
             string username = UserName();
 
-            var q = from c in Container.Instances<Person>()
-                where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
-                select c;
+            //var q = from c in Container.Instances<Person>()
+            //    where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
+            //    select c;
 
-            return q.FirstOrDefault();
+            //return q.FirstOrDefault();
+            return null;
         }
 
         private string UserName() {

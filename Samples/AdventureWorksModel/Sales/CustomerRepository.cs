@@ -114,16 +114,7 @@ namespace AdventureWorksModel {
             return stores;
         }
 
-        [FinderAction]
-        public Customer CreateNewStoreCustomer(string name) {
-            var store = NewTransientInstance<Store>();
-            store.Name = name;
-            Persist(ref store);
-            var cust = NewTransientInstance<Customer>();
-            cust.Store = store;
-            Persist(ref cust);
-            return cust;
-        }
+       
 
         #endregion
 
