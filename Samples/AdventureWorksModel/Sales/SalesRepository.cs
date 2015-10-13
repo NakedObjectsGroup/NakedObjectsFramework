@@ -23,12 +23,12 @@ namespace AdventureWorksModel {
         [FinderAction]
         [TableView(true, "SalesTerritory")]
         public IQueryable<SalesPerson> FindSalesPersonByName([Optionally] string firstName, string lastName) {
-            IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
+            IQueryable<Person> matchingPersons = ContactRepository.FindContactByName(firstName, lastName);
 
             return from sp in Instances<SalesPerson>()
-                from contact in matchingContacts
-                where sp.Employee.ContactDetails.BusinessEntityID == contact.BusinessEntityID
-                orderby sp.Employee.ContactDetails.LastName, sp.Employee.ContactDetails.FirstName
+                from person in matchingPersons
+                where sp.BusinessEntityID == person.BusinessEntityID
+                orderby sp.EmployeeDetails.PersonDetails.LastName, sp.EmployeeDetails.PersonDetails.FirstName
                 select sp;
         }
 
@@ -44,7 +44,7 @@ namespace AdventureWorksModel {
         [Idempotent]
         public SalesPerson CreateNewSalesPerson([ContributedAction("Sales"), FindMenu] Employee employee) {
             var salesPerson = NewTransientInstance<SalesPerson>();
-            salesPerson.Employee = employee;
+            salesPerson.EmployeeDetails = employee;
             return salesPerson;
         }
 
@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson([MinLength(2)] string name) {
-            return Container.Instances<SalesPerson>().Where(sp => sp.Employee.ContactDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
+            return Container.Instances<SalesPerson>().Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
         #endregion

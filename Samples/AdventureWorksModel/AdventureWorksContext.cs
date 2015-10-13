@@ -96,7 +96,7 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new BusinessEntityMap());
             modelBuilder.Configurations.Add(new BusinessEntityAddressMap());
             modelBuilder.Configurations.Add(new BusinessEntityContactMap());
-            modelBuilder.Configurations.Add(new ContactMap());
+            modelBuilder.Configurations.Add(new PersonMap());
             modelBuilder.Configurations.Add(new ContactTypeMap());
             modelBuilder.Configurations.Add(new CountryRegionMap());
             modelBuilder.Configurations.Add(new EmailAddressMap());

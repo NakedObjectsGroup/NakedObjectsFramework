@@ -92,7 +92,7 @@
     <Compile Include="Mapping\BillOfMaterialMap.cs" />
     <Compile Include="Mapping\BusinessEntityMap.cs" />
     <Compile Include="Mapping\ContactCreditCardMap.cs" />
-    <Compile Include="Mapping\ContactMap.cs" />
+    <Compile Include="Mapping\PersonMap.cs" />
     <Compile Include="Mapping\ContactTypeMap.cs" />
     <Compile Include="Mapping\BusinessEntityContactMap.cs" />
     <Compile Include="Mapping\BusinessEntityAddressMap.cs" />

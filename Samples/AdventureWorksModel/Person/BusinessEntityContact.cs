@@ -1,15 +1,26 @@
 using NakedObjects;
 using System;
 
-namespace AdventureWorksModel
-{
-    public partial class BusinessEntityContact
-    {
+namespace AdventureWorksModel {
+    public partial class BusinessEntityContact {
+
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Title
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(ContactType).Append(":", Person);
+            return t.ToString();
+        }
+        #endregion
+
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
-                [NakedObjectsIgnore]
+        [NakedObjectsIgnore]
         public virtual int PersonID { get; set; }
-                [NakedObjectsIgnore]
+        [NakedObjectsIgnore]
         public virtual int ContactTypeID { get; set; }
         #region Row Guid and Modified Date
 
@@ -30,6 +41,7 @@ namespace AdventureWorksModel
 
         #endregion
 
+        [NakedObjectsIgnore]
         public virtual BusinessEntity BusinessEntity { get; set; }
         public virtual ContactType ContactType { get; set; }
         public virtual Person Person { get; set; }

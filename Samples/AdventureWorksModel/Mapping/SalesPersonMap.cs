@@ -27,7 +27,7 @@ namespace AdventureWorksModel
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            HasRequired(t => t.Employee).WithOptional(t => t.SalesPerson);
+            HasRequired(t => t.EmployeeDetails).WithOptional(t => t.SalesPerson);
             HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
         }

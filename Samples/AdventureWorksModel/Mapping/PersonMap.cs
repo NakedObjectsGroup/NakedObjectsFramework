@@ -2,9 +2,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
 {
-    public class ContactMap : EntityTypeConfiguration<Person>
+    public class PersonMap : EntityTypeConfiguration<Person>
     {
-        public ContactMap()
+        public PersonMap()
         {
             // Primary Key
             HasKey(t => t.BusinessEntityID);
@@ -47,6 +47,8 @@ namespace AdventureWorksModel
             Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+
+            HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
         }
     }
 }

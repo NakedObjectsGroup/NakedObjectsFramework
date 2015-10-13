@@ -35,7 +35,7 @@ namespace AdventureWorksModel {
 
         public override string ToString() {
             var t = Container.NewTitleBuilder();
-            t.Append(ContactDetails);
+            t.Append(PersonDetails);
             return t.ToString();
         }
 
@@ -46,24 +46,14 @@ namespace AdventureWorksModel {
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
 
-        #region Contact
-        //[NakedObjectsIgnore]
-        //public virtual int ContactDetailsID { get; set; }
-
-        [MemberOrder(1)]
-        public virtual Person ContactDetails {
-            get {
-                int id = this.BusinessEntityID;
-                return Container.Instances<Person>().Single(c => c.BusinessEntityID == id); 
-            }
-        }
-        #endregion
+         [MemberOrder(1)]
+        public virtual Person PersonDetails { get; set; }
 
         [MemberOrder(10)]
         public virtual string NationalIDNumber { get; set; }
 
         [MemberOrder(12)]
-        public virtual string Title { get; set; }
+        public virtual string JobTitle { get; set; }
 
         [MemberOrder(13)]
         [Mask("d")]

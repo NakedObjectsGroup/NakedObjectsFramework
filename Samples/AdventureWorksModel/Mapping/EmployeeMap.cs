@@ -18,7 +18,7 @@ namespace AdventureWorksModel
                 .IsRequired()
                 .HasMaxLength(256);
 
-            Property(t => t.Title)
+            Property(t => t.JobTitle)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -38,7 +38,7 @@ namespace AdventureWorksModel
             Property(t => t.NationalIDNumber).HasColumnName("NationalIDNumber");
             Property(t => t.LoginID).HasColumnName("LoginID");
             Ignore(t => t.ManagerID);//.HasColumnName("ManagerID");
-            Property(t => t.Title).HasColumnName("JobTitle");
+            Property(t => t.JobTitle).HasColumnName("JobTitle");
             Property(t => t.DateOfBirth).HasColumnName("BirthDate");
             Property(t => t.MaritalStatus).HasColumnName("MaritalStatus");
             Property(t => t.Gender).HasColumnName("Gender");
@@ -54,8 +54,8 @@ namespace AdventureWorksModel
             Ignore(t => t.Manager);
                 //.WithMany(t => t.DirectReports)
                 //.HasForeignKey(d => d.ManagerID);
-            HasOptional(t => t.SalesPerson).WithRequired(t => t.Employee);
-
+            HasOptional(t => t.SalesPerson).WithRequired(t => t.EmployeeDetails);
+            HasRequired(t => t.PersonDetails).WithOptional(t => t.Employee);
         }
     }
 }

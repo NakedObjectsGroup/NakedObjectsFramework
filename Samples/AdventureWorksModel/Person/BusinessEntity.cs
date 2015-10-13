@@ -54,6 +54,8 @@ namespace AdventureWorksModel
         private ICollection<BusinessEntityContact> _contacts = new List<BusinessEntityContact>();
 
         [DisplayName("Contacts")]
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(false, "ContactType", "Person")] 
         public virtual ICollection<BusinessEntityContact> BusinessEntityContacts {
             get { return _contacts; }
             set { _contacts = value; }

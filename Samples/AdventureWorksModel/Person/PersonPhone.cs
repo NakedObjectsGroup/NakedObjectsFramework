@@ -4,8 +4,20 @@ using System.Collections.Generic;
 
 namespace AdventureWorksModel
 {   
-    public partial class PersonPhone
-    {
+    public partial class PersonPhone {
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
+        #region Title
+        
+        public override string ToString() {
+            var t = Container.NewTitleBuilder();
+            t.Append(PhoneNumberType).Append(":", PhoneNumber);
+            return t.ToString();
+        }
+      
+        #endregion
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
         public virtual string PhoneNumber { get; set; }

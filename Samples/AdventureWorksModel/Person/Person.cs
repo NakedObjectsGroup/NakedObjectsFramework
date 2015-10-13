@@ -267,5 +267,9 @@ namespace AdventureWorksModel {
             }
         }
         #endregion
+
+
+        [NakedObjectsIgnore]
+        public virtual Employee Employee { get; set; }
     }
 }

@@ -38,8 +38,8 @@ namespace AdventureWorksModel {
 
             IQueryable<Employee> query = from emp in Instances<Employee>()
                 from contact in matchingContacts
-                where emp.ContactDetails.BusinessEntityID == contact.BusinessEntityID
-                orderby emp.ContactDetails.LastName
+                where emp.PersonDetails.BusinessEntityID == contact.BusinessEntityID
+                orderby emp.PersonDetails.LastName
                 select emp;
 
             return query;
