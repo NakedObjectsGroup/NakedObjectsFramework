@@ -70,6 +70,13 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Employee EmployeeDetails { get; set; }
 
+        [MemberOrder(11)]
+        public virtual Person PersonDetails {
+            get {
+                return EmployeeDetails.PersonDetails;
+            }
+        }
+
         #endregion
 
         #region SalesTerritory

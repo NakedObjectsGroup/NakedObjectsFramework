@@ -30,6 +30,8 @@ namespace AdventureWorksModel
             HasRequired(t => t.EmployeeDetails).WithOptional(t => t.SalesPerson);
             HasOptional(t => t.SalesTerritory).WithMany().HasForeignKey(t => t.SalesTerritoryID);
 
+            Ignore(t => t.PersonDetails);
+
         }
     }
 }
