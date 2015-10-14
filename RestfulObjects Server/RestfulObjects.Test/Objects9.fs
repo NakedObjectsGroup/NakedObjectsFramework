@@ -962,7 +962,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
-    let oid = oType + "/" + ktc "3"
+    let oid = oType + "/" + ktc "2"
     let disabledValue = 
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
         :: (makeObjectPropertyMember "ADisabledValue" oid "A Disabled Value" (TObjectVal(103)))
@@ -978,8 +978,8 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "3"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("3"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" oType) RepresentationTypes.DomainType "")
@@ -1013,7 +1013,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                            (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
                                             :: makeObjectPropertyMember "AUserDisabledValue" oid "A User Disabled Value" (TObjectVal(0))))
                                   TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" oid "A Value" (TObjectVal(102))))
-                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(3)))) ]))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(2)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value"))
@@ -1051,7 +1051,7 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
-    let oid = oType + "/" + ktc "4"
+    let oid = oType + "/" + ktc "3"
     let disabledValue = 
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
         :: (makePropertyMemberFormal "objects" "ADisabledValue" oid (TObjectVal(103)) false)
@@ -1067,8 +1067,8 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
     
     let expected = 
         [ //TProperty(JsonPropertyNames.DomainType, TObjectVal(oType));
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "4"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("4"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "3"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("3"))
           
           TProperty
               (JsonPropertyNames.Links, 
@@ -1105,7 +1105,7 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
                                            (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
                                             :: makePropertyMemberFormal "objects" "AUserDisabledValue" oid (TObjectVal(0)) false))
                                   TProperty("AValue", TObjectJson(makePropertyMemberFormal "objects" "AValue" oid (TObjectVal(102)) false))
-                                  TProperty("Id", TObjectJson(makePropertyMemberFormal "objects" "Id" oid (TObjectVal(4)) false)) ]))
+                                  TProperty("Id", TObjectJson(makePropertyMemberFormal "objects" "Id" oid (TObjectVal(3)) false)) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)

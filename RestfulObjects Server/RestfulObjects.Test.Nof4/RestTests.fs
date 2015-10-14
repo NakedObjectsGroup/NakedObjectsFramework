@@ -183,11 +183,9 @@ type Nof4Tests() =
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // temp
         member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
         
         [<Test>]
-        [<Ignore>] // temp
         member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
         
         [<Test>]
