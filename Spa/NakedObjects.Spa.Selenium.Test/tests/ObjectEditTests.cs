@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
-            br.Navigate().GoToUrl(Product870Url);
+            GoToUrl(Product870Url);
             EditObject();
 
             // set price and days to mfctr
@@ -33,7 +33,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeDateTime() {
-            br.Navigate().GoToUrl(Product870Url);
+            GoToUrl(Product870Url);
             EditObject();
 
             // set price and days to mfctr
@@ -56,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeChoices() {
-            br.Navigate().GoToUrl(Product870Url);
+            GoToUrl(Product870Url);
             EditObject();
 
             // set product line 
@@ -73,7 +73,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices() {
-            br.Navigate().GoToUrl(Product870Url);
+            GoToUrl(Product870Url);
             EditObject();
             // set product category and sub category
 
@@ -158,7 +158,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]

@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Home() {
-            br.Navigate().GoToUrl(Product968Url);
+            GoToUrl(Product968Url);
             WaitFor(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitFor(Pane.Single, PaneType.Home, "Home");
@@ -23,7 +23,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void BackAndForward() {
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
             GoToMenuFromHomePage("Customers");
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);

@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void QueryActionReturnsListView()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
             //Test content of collection
@@ -34,7 +34,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SwitchToTableViewAndBackToList()
         {
-            br.Navigate().GoToUrl(SpecialOffersMenuUrl);
+            GoToUrl(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitFor(Pane.Single, PaneType.Query, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
@@ -58,7 +58,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void NavigateToItemFromListView()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
 
@@ -72,7 +72,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void NavigateToItemFromTableView()
         {
-            br.Navigate().GoToUrl(SpecialOffersMenuUrl);
+            GoToUrl(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
             WaitFor(Pane.Single, PaneType.Query, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);

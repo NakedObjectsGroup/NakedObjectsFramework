@@ -20,7 +20,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickActionReturningObjectFromHomeSingle()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
             WaitFor(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
@@ -33,7 +33,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickActionReturningQueryFromHomeSingle()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             WaitFor(Pane.Single, PaneType.Home, "Home");
             RightClick(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Left, PaneType.Home, "Home");
@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickReferenceFromQuerySingle()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
@@ -56,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickReferencePropertyFromObjectSingle()
         {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = FindElementByCss(".property .reference", 0);
             Assert.AreEqual("Lynn Tsoflias", reference.Text);
@@ -68,7 +68,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickActionFromObjectSingle()
         {
-            br.Navigate().GoToUrl(CustomerTechnicalPartsActionsOpen);
+            GoToUrl(CustomerTechnicalPartsActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             RightClick(GetObjectAction("Last Order"));
             WaitFor(Pane.Left, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
@@ -78,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickHomeIconFromObjectSingle()
         {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             RightClick(HomeIcon());
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
@@ -88,7 +88,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
         {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             Click(SwapIcon());
             WaitFor(Pane.Left, PaneType.Home, "Home");
@@ -97,13 +97,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Customer-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
-        private const string twoObjectsB = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = BaseUrl + "#/gemini/object/object?object1=AdventureWorksModel.Customer-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjectsB = BaseUrl + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
 
         [TestMethod]
         public virtual void RightClickReferenceInLeftPaneObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -118,7 +118,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickReferenceInLeftPaneObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -133,7 +133,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickReferenceInRightPaneObject()
         {
-            br.Navigate().GoToUrl(twoObjectsB);
+            GoToUrl(twoObjectsB);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -148,7 +148,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickReferenceInRightPaneObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -163,7 +163,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void LeftClickHomeIconFromSplitObjectObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             Click(HomeIcon());
             WaitFor(Pane.Left, PaneType.Home, "Home");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
@@ -172,7 +172,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void RightClickHomeIconFromSplitObjectObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             RightClick(HomeIcon());
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Home, "Home");
@@ -181,7 +181,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ActionDialogOpensInCorrectPane()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -193,7 +193,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void RightClickIsSameAsLeftClickForDialogActions() {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
@@ -205,7 +205,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SwapPanes()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
             Click(SwapIcon());
@@ -216,7 +216,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void FullPaneFromLeft()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
             Click(FullIcon());
@@ -226,7 +226,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void FullPaneFromRight()
         {
-            br.Navigate().GoToUrl(twoObjects);
+            GoToUrl(twoObjects);
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
             RightClick(FullIcon());
@@ -252,7 +252,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]

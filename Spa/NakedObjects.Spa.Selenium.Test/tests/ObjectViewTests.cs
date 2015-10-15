@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class ObjectViewTests : GeminiTest {
         [TestMethod]
         public virtual void FooterIcons() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
 
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
@@ -26,7 +26,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Actions() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
             var actions = GetObjectActions();
@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void PropertiesAndCollections() {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
 
@@ -65,7 +65,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ClickReferenceProperty() {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             var reference = FindElementByCss(".property .reference", 0);
             Click(reference);
             WaitFor(Pane.Single, PaneType.Object, "Lynn Tsoflias");
@@ -73,7 +73,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void OpenCollectionAsList() {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
 
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == StoreCollections);
             var iconList = FindElementByCss(".icon-list", 0);
@@ -92,7 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
             var testUrl = StoreDetailsTwinCyclesActionsOpen +"&collection1_Addresses=List";
-            br.Navigate().GoToUrl(testUrl);
+            GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
             var title = row.Text;
             Click(row);
@@ -103,7 +103,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
             var testUrl = StoreDetailsTwinCyclesActionsOpen + "&collection1_Addresses=Table";
-            br.Navigate().GoToUrl(testUrl);
+            GoToUrl(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
 
@@ -115,21 +115,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void AttachmentProperty() {
-            br.Navigate().GoToUrl(Product968Url);
+            GoToUrl(Product968Url);
             wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == ProductProperties);
             wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
             Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0); 
         }
 
+        #region Actions
         [TestMethod]
         public virtual void DialogAction() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             OpenActionDialog("Search For Orders");
         }
 
         [TestMethod]
         public virtual void DialogActionOk() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
 
             var dialog = OpenActionDialog("Search For Orders");
 
@@ -143,17 +144,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectAction() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
 
         [TestMethod]
         public virtual void CollectionAction() {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             Click(GetObjectAction("Recent Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Recent Orders");
         }
+        #endregion
     }
 
     #region browsers specific subclasses
@@ -169,7 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]

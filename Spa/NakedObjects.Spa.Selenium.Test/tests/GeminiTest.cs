@@ -23,18 +23,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class GeminiTest {
         #region overhead
 
-        //protected const string Url = "http://localhost:49998/index.html";
-        protected const string Url = "http://nakedobjectstest.azurewebsites.net/";
+        protected const string BaseUrl = "http://localhost:49998/index.html";
+        //protected const string Url = "http://nakedobjectstest.azurewebsites.net/";
         
         protected const string Server = @"Saturn\SqlExpress";
         protected const string Database = "AdventureWorks";
         protected const string Backup = "AdventureWorks";
 
-        protected const string CustomersMenuUrl = Url + "#/gemini/home?menu1=CustomerRepository";
-        protected const string OrdersMenuUrl = Url + "#/gemini/home?menu1=OrderRepository";
-        protected const string SpecialOffersMenuUrl = Url + "#/gemini/home?menu1=SpecialOfferRepository";
-        protected const string ProductServiceUrl = Url + "#/gemini/home?menu1=ProductRepository";
-        protected const string SalesServiceUrl = Url + "#/gemini/home?menu1=SalesRepository";
+        protected const string CustomersMenuUrl = BaseUrl + "#/gemini/home?menu1=CustomerRepository";
+        protected const string OrdersMenuUrl = BaseUrl + "#/gemini/home?menu1=OrderRepository";
+        protected const string SpecialOffersMenuUrl = BaseUrl + "#/gemini/home?menu1=SpecialOfferRepository";
+        protected const string ProductServiceUrl = BaseUrl + "#/gemini/home?menu1=ProductRepository";
+        protected const string SalesServiceUrl = BaseUrl + "#/gemini/home?menu1=SalesRepository";
 
         protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
 
@@ -43,12 +43,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const int ProductServiceActions = 12;
         protected const int SalesServiceActions = 4;
 
-        protected const string CustomerTwinCyclesActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Customer-555&actions1=open";
-        protected const string CustomerTechnicalPartsActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Customer-30116&actions1=open";
-        protected const string StoreDetailsTwinCyclesActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Store-350&actions1=open";
-        protected const string Product968Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-968";
-        protected const string Product469Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-469";
-        protected const string Product870Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-870";
+        protected const string CustomerTwinCyclesActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Customer-555&actions1=open";
+        protected const string CustomerTechnicalPartsActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Customer-30116&actions1=open";
+        protected const string StoreDetailsTwinCyclesActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Store-350&actions1=open";
+        protected const string Product968Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-968";
+        protected const string Product469Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-469";
+        protected const string Product870Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-870";
 
         protected const int StoreActions = 8;
         protected const int StoreProperties = 6;
@@ -121,6 +121,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Helpers
+
+        protected void GoToUrl(string url)
+        {
+            br.Navigate().GoToUrl(url);
+        }
 
         protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
             wait.Until(d => {

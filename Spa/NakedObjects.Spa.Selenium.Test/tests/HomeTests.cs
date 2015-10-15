@@ -72,7 +72,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
@@ -86,7 +86,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsObject()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
             Click(GetObjectAction("Random Store"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
         }
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsCollection()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
@@ -104,7 +104,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamThrowsError()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
             var msg = wait.Until(d => d.FindElement(By.CssSelector(".error .message")));
@@ -114,7 +114,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsEmptyCollection()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
             Click(GetObjectAction("Orders In Process"));
             WaitFor(Pane.Single, PaneType.Query, "Orders In Process");
@@ -125,7 +125,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void DialogActionOK()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             FindElementByCss(".value  input").SendKeys("00022262");
@@ -148,7 +148,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]
@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitFirefoxDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]
@@ -187,7 +187,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitChromeDriver();
-            br.Navigate().GoToUrl(Url);
+            GoToUrl(BaseUrl);
         }
 
         [TestCleanup]

@@ -24,7 +24,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ChoicesParm()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             FindElementByCss(".value  select").SendKeys("Ascending");
             Click(OKButton());
@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void TestCancelDialog()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             CancelDialog();
         }
@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ScalarChoicesParmKeepsValue()
         {
-            br.Navigate().GoToUrl(OrdersMenuUrl);
+            GoToUrl(OrdersMenuUrl);
             GetObjectActions(OrderServiceActions);
             OpenActionDialog("Orders By Value");
 
@@ -56,7 +56,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ScalarParmKeepsValue()
         {
-            br.Navigate().GoToUrl(CustomersMenuUrl);
+            GoToUrl(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             FindElementByCss(".value input").SendKeys("00000042");
@@ -67,10 +67,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void DateTimeParmKeepsValue()
         {
-            br.Navigate().GoToUrl(CustomerTwinCyclesActionsOpen);
+            GoToUrl(CustomerTwinCyclesActionsOpen);
             OpenActionDialog("Search For Orders");
-            FindElementByCss(".value input",0).SendKeys("1 Jan 2003");
-            FindElementByCss(".value input",1).SendKeys("1 Dec 2003" + Keys.Escape);
+            FindElementByCss(".value input", 0).SendKeys("1 Jan 2003");
+            FindElementByCss(".value input", 1).SendKeys("1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
@@ -80,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void RefChoicesParmKeepsValue()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
             FindElementByCss(".value  select").SendKeys("Forks");
             Click(OKButton());
@@ -91,7 +91,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void MultipleRefChoicesDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
             var selected = new SelectElement(FindElementByCss("div#subcategories select"));
@@ -108,7 +108,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void MultipleRefChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
             FindElementByCss(".value  select").SendKeys("Handlebars");
@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ChoicesDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
             var slctPl = new SelectElement(FindElementByCss("div#productline select"));
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
             FindElementByCss("div#productline .value  select").SendKeys("R");
@@ -157,7 +157,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ConditionalChoicesDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
             var slctCs = new SelectElement(FindElementByCss("div#categories select"));
 
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ConditionalChoicesChangeDefaults()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
 
             OpenActionDialog("Find Products By Category");
 
@@ -201,10 +201,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
+        #region Auto Complete
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShow()
         {
-            br.Navigate().GoToUrl(SalesServiceUrl);
+            GoToUrl(SalesServiceUrl);
             OpenActionDialog("List Accounts For Sales Person");
 
             br.FindElement(By.CssSelector(".value input[type='text']")).SendKeys("Valdez");
@@ -220,7 +221,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmGo()
         {
-            br.Navigate().GoToUrl(SalesServiceUrl);
+            GoToUrl(SalesServiceUrl);
             WaitFor(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("List Accounts For Sales Person");
 
@@ -248,7 +249,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmDefault()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             WaitFor(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("Find Product");
 
@@ -261,7 +262,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShowSingleItem()
         {
-            br.Navigate().GoToUrl(ProductServiceUrl);
+            GoToUrl(ProductServiceUrl);
             OpenActionDialog("Find Product");
 
             var acElem = FindElementByCss(".value input[type='text']");
@@ -277,6 +278,64 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitFor(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
+        #endregion
+
+        #region Parameter validation
+        [TestMethod]
+        public virtual void MandatoryParameterEnforced()
+        {
+            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
+            var qty = WaitForCss(".parameter#quantity input");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
+            var validation = FindElementByCss(".parameter#quantity .validation");
+            Assert.AreEqual("Mandatory", validation.Text);
+            qty.SendKeys(Keys.Backspace + "1");
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "No Discount");
+        }
+
+        [TestMethod]
+        public virtual void ValidateSingleValueParameter()
+        {
+            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
+            var qty = WaitForCss(".parameter#quantity input");
+            qty.SendKeys("0");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
+            var validation = FindElementByCss(".parameter#quantity .validation");
+            Assert.AreEqual("Quantity must be > 0", validation.Text);
+            qty.SendKeys(Keys.Backspace+"1");
+            Click(OKButton());
+            WaitFor(Pane.Single, PaneType.Object, "No Discount");
+        }
+
+        [TestMethod]
+        public virtual void ValidateSingleRefParamFromChoices()
+        {
+            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
+            var reason = WaitForCss(".parameter#reason select");
+            reason.SendKeys("Price");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#reason .validation")).Text.Length > 0);
+            var validation = FindElementByCss(".parameter#reason .validation");
+            Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
+        }
+
+        [TestMethod, Ignore]
+        public virtual void CoValidationOfMultipleParameters()
+        {
+            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
+            WaitForCss(".parameter#qtyreceived input").SendKeys("100");
+            WaitForCss(".parameter#qtyrejected input").SendKeys("50");
+            WaitForCss(".parameter#qtyintostock input").SendKeys("49");
+            Click(OKButton());
+            //TODO: Test for co-validation message of '"Qty Into Stock + Qty Rejected must add up to Qty Received"'
+        }
+
+        #endregion
+
     }
 
     #region browsers specific subclasses
