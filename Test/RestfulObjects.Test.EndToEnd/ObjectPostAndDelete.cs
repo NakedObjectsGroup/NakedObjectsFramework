@@ -9,16 +9,18 @@ namespace RestfulObjects.Test.EndToEnd {
     public class ObjectPostAndDelete {
         #region Helpers
 
-        private const string objectsUrl = @"http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/";
+        private const string objectsUrl = @"http://mvc.nakedobjects.net:1081/UnitTestRest/objects/";
 
         #endregion
 
         [TestMethod]
+      
         public void AttemptPost() {
             Helpers.TestResponse(objectsUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
         }
 
         [TestMethod]
+       
         public void AttemptDelete() {
             Helpers.TestResponse(objectsUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, null, Methods.Delete, Codes.MethodNotValid);
         }
