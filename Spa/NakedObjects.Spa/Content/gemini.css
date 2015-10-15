@@ -172,8 +172,12 @@
         padding-right: 5px;
     }
 
-    .input-control input, select {
+    .input-control input {
         width: 230px;
+    }
+
+    select {
+        width: 225px; /*Allow space for drop-down arrow in IE*/
     }
 
     .name, .value, .property .reference {

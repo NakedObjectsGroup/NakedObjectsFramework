@@ -91,7 +91,7 @@
     <Compile Include="Mapping\AddressTypeMap.cs" />
     <Compile Include="Mapping\BillOfMaterialMap.cs" />
     <Compile Include="Mapping\BusinessEntityMap.cs" />
-    <Compile Include="Mapping\ContactCreditCardMap.cs" />
+    <Compile Include="Mapping\PersonCreditCardMap.cs" />
     <Compile Include="Mapping\PersonMap.cs" />
     <Compile Include="Mapping\ContactTypeMap.cs" />
     <Compile Include="Mapping\BusinessEntityContactMap.cs" />
@@ -207,7 +207,7 @@
     <Compile Include="Purchasing\ShipMethod.cs" />
     <Compile Include="Purchasing\Vendor.cs" />
     <Compile Include="Purchasing\VendorRepository.cs" />
-    <Compile Include="Sales\ContactCreditCard.cs" />
+    <Compile Include="Sales\PersonCreditCard.cs" />
     <Compile Include="Sales\CustomerContributedActions.cs" />
     <Compile Include="Sales\CustomerDashboard.cs" />
     <Compile Include="Sales\QuickOrderForm.cs" />

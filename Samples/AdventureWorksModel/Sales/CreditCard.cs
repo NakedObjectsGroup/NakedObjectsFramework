@@ -22,6 +22,17 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
 
+        public void Persisted() {
+            var link = Container.NewTransientInstance<PersonCreditCard>();
+            link.CreditCard = this;
+            link.Person = ForContact;
+            Container.Persist(ref link);
+
+            if (Creator != null) {
+                Creator.CreatedCardHasBeenSaved(this);
+            }
+        }
+
         public virtual void Updating() {
             ModifiedDate = DateTime.Now;
         }
@@ -57,14 +68,14 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual short ExpYear { get; set; }
 
-        private ICollection<ContactCreditCard> _ContactCreditCard = new List<ContactCreditCard>();
+        private ICollection<PersonCreditCard> _links = new List<PersonCreditCard>();
 
-        [DisplayName("Contacts")]
+        [DisplayName("Persons")]
         [MemberOrder(5)]
         //[TableOrder(True, "Contact")]
-        public virtual ICollection<ContactCreditCard> ContactCreditCard {
-            get { return _ContactCreditCard; }
-            set { _ContactCreditCard = value; }
+        public virtual ICollection<PersonCreditCard> PersonLinks {
+            get { return _links; }
+            set { _links = value; }
         }
 
         #region ModifiedDate
@@ -81,19 +92,6 @@ namespace AdventureWorksModel {
             var t = Container.NewTitleBuilder();
             t.Append(ObfuscatedNumber);
             return t.ToString();
-        }
-
-        #endregion
-
-        #region Life Cycle Methods  
-
-        public void Persisted() {
-            var link = Container.NewTransientInstance<ContactCreditCard>();
-            link.CreditCard = this;
-            link.Contact = ForContact;
-            Container.Persist(ref link);
-
-            Creator.CreatedCardHasBeenSaved(this);
         }
 
         #endregion
@@ -138,8 +136,7 @@ namespace AdventureWorksModel {
         [NotPersisted]
         public ICreditCardCreator Creator { get; set; }
 
-        [NakedObjectsIgnore]
-        [NotPersisted]
+        [NotPersisted][Disabled]
         public Person ForContact { get; set; }
 
         #endregion

@@ -597,14 +597,6 @@ namespace AdventureWorksModel {
             CreditCard = card;
         }
 
-        public CreditCard CreateNewCreditCard() {
-            var newCard = Container.NewTransientInstance<CreditCard>();
-            throw new NotImplementedException();
-            //newCard.ForContact = Contact;
-            //newCard.Creator = this;
-            //return newCard;
-        }
-
         #endregion
 
         #region AddNewSalesReason

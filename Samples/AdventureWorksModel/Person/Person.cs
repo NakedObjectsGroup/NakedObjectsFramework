@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects;
@@ -271,5 +272,19 @@ namespace AdventureWorksModel {
 
         [NakedObjectsIgnore]
         public virtual Employee Employee { get; set; }
+
+        #region CreditCards
+        public CreditCard CreateNewCreditCard() {
+            var newCard = Container.NewTransientInstance<CreditCard>();
+            newCard.ForContact = this;
+            return newCard;
+        }
+
+        public IList<CreditCard> ListCreditCards() {
+            int id = this.BusinessEntityID;
+            return Container.Instances<PersonCreditCard>().Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).ToList();
+        }
+
+        #endregion
     }
 }

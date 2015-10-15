@@ -12,7 +12,6 @@ namespace AdventureWorksModel
             //Ignores
             Ignore(t => t.Creator);
             Ignore(t => t.ForContact);
-            Ignore(t => t.ContactCreditCard);
             Ignore(t => t.ObfuscatedNumber);
 
             // Properties
@@ -32,7 +31,8 @@ namespace AdventureWorksModel
             Property(t => t.ExpMonth).HasColumnName("ExpMonth");
             Property(t => t.ExpYear).HasColumnName("ExpYear");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
-          
+
+            HasMany(t => t.PersonLinks).WithRequired(t => t.CreditCard);
         }
     }
 }

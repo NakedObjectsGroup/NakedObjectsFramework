@@ -9,8 +9,7 @@ using System;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("cellphone.png")]
-    public class ContactCreditCard {
+    public class PersonCreditCard {
         #region Life Cycle Methods
         public virtual void Persisting() {
             ModifiedDate = DateTime.Now;
@@ -22,13 +21,13 @@ namespace AdventureWorksModel {
         #endregion
 
         [NakedObjectsIgnore]
-        public virtual int ContactID { get; set; }
+        public virtual int PersonID { get; set; }
 
         [NakedObjectsIgnore]
         public virtual int CreditCardID { get; set; }
 
         [Title]
-        public virtual Person Contact { get; set; }
+        public virtual Person Person { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
 

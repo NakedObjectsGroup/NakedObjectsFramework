@@ -3,28 +3,28 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
 {
-    public class ContactCreditCardMap : EntityTypeConfiguration<ContactCreditCard>
+    public class PersonCreditCardMap : EntityTypeConfiguration<PersonCreditCard>
     {
-        public ContactCreditCardMap()
+        public PersonCreditCardMap()
         {
             // Primary Key
-            HasKey(t => new { t.ContactID, t.CreditCardID });
+            HasKey(t => new { t.PersonID, t.CreditCardID });
 
             // Properties
-            Property(t => t.ContactID)
+            Property(t => t.PersonID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             Property(t => t.CreditCardID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // Table & Column Mappings
-            ToTable("ContactCreditCard", "Sales");
-            Property(t => t.ContactID).HasColumnName("ContactID");
+            ToTable("PersonCreditCard", "Sales");
+            Property(t => t.PersonID).HasColumnName("BusinessEntityID");
             Property(t => t.CreditCardID).HasColumnName("CreditCardID");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            HasRequired(t => t.Contact).WithMany().HasForeignKey(t => t.ContactID); ;
+            HasRequired(t => t.Person).WithMany().HasForeignKey(t => t.PersonID); ;
             HasRequired(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID); ;
 
         }
