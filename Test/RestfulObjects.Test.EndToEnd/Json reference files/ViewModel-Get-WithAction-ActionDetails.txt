@@ -13,32 +13,32 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithActionViewModel/1/actions/AnActionReturnsNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionViewModel/1/actions/AnActionReturnsNull"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionViewModel\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithActionViewModel/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionViewModel/1"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsNull\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithActionViewModel/1/actions/AnActionReturnsNull/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithActionViewModel/1/actions/AnActionReturnsNull/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithActionViewModel/actions/AnActionReturnsNull"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionViewModel/actions/AnActionReturnsNull"
     }
   ]
 }

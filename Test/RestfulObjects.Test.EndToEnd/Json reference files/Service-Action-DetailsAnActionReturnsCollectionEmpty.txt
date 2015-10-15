@@ -15,38 +15,38 @@
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnActionReturnsCollectionEmpty"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsCollectionEmpty"
     },
     {
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithActionService\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService"
     },
     {
       "arguments": {},
       "rel": "urn:org.restfulobjects:rels/invoke;action=\"AnActionReturnsCollectionEmpty\"",
       "method": "POST",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/services/WithActionService/actions/AnActionReturnsCollectionEmpty/invoke"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/services/WithActionService/actions/AnActionReturnsCollectionEmpty/invoke"
     },
     {
       "rel": "urn:org.restfulobjects:rels/return-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/list"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/list"
     },
     {
       "rel": "urn:org.restfulobjects:rels/element-type",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithActionService/actions/AnActionReturnsCollectionEmpty"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithActionService/actions/AnActionReturnsCollectionEmpty"
     }
   ]
 }

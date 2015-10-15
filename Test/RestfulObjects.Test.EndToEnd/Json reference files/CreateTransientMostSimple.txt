@@ -6,7 +6,7 @@
         "rel": "describedby",
         "method": "GET",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple"
       },
       {
         "arguments": {
@@ -19,7 +19,7 @@
         "rel": "urn:org.restfulobjects:rels/persist",
         "method": "POST",
         "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8",
-        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/MostSimple"
+        "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/MostSimple"
       }
     ],
     "extensions": {
@@ -40,7 +40,7 @@
             "rel": "describedby",
             "method": "GET",
             "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/MostSimple/properties/Id"
+            "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/MostSimple/properties/Id"
           }
         ],
         "extensions": {

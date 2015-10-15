@@ -7,19 +7,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithCollection\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithCollection/1"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithCollection/1"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"MostSimple\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithCollection/1/collections/AnEmptySet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithCollection/1/collections/AnEmptySet"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithCollection/collections/AnEmptySet"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithCollection/collections/AnEmptySet"
     }
   ],
   "extensions": {

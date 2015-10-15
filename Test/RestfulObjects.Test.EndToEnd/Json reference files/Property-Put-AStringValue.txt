@@ -7,19 +7,19 @@
       "rel": "up",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"WithValue\"",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/2"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2"
     },
     {
       "rel": "self",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/2/properties/AStringValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/AStringValue"
     },
     {
       "rel": "describedby",
       "method": "GET",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/domain-types/WithValue/properties/AStringValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/domain-types/WithValue/properties/AStringValue"
     },
     {
       "arguments": {
@@ -28,13 +28,13 @@
       "rel": "urn:org.restfulobjects:rels/modify;property=\"AStringValue\"",
       "method": "PUT",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/2/properties/AStringValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/AStringValue"
     },
     {
       "rel": "urn:org.restfulobjects:rels/clear;property=\"AStringValue\"",
       "method": "DELETE",
       "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
-      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest7/objects/WithValue/2/properties/AStringValue"
+      "href": "http://mvc.nakedobjects.net:1081/UnitTestRest/objects/WithValue/2/properties/AStringValue"
     }
   ],
   "extensions": {
