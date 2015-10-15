@@ -201,7 +201,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShow()
         {
             br.Navigate().GoToUrl(SalesServiceUrl);
@@ -217,7 +217,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitFor(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmGo()
         {
             br.Navigate().GoToUrl(SalesServiceUrl);
@@ -245,7 +245,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             }
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmDefault()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
@@ -258,7 +258,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitFor(Pane.Single, PaneType.Object, "Adjustable Race");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShowSingleItem()
         {
             br.Navigate().GoToUrl(ProductServiceUrl);
