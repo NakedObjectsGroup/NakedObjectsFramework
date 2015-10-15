@@ -42,10 +42,9 @@ namespace AdventureWorksModel
 
         private ICollection<BusinessEntityAddress> _addresses = new List<BusinessEntityAddress>();
 
-        [DisplayName("Addresses")]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(false, "AddressType", "Address")] 
-        public virtual ICollection<BusinessEntityAddress> BusinessEntityAddresses
+        public virtual ICollection<BusinessEntityAddress> Addresses
         {
             get { return _addresses; }
             set { _addresses = value; }
@@ -53,10 +52,9 @@ namespace AdventureWorksModel
 
         private ICollection<BusinessEntityContact> _contacts = new List<BusinessEntityContact>();
 
-        [DisplayName("Contacts")]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         [TableView(false, "ContactType", "Person")] 
-        public virtual ICollection<BusinessEntityContact> BusinessEntityContacts {
+        public virtual ICollection<BusinessEntityContact> Contacts {
             get { return _contacts; }
             set { _contacts = value; }
         }

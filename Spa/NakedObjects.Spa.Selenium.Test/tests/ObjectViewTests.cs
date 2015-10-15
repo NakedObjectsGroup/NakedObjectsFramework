@@ -41,27 +41,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Recent Orders", actions[5].Text);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void PropertiesAndCollections() {
             br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
 
-            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 6);
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000 AnnualRevenue: 80000 BankName: International Security BusinessType: BM YearOpened: 1988 Specialty: Touring SquareFeet: 21000 Brands: AW Internet: T1 NumberEmployees: 11", properties[1].Text);
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
-            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2004"));
-            Assert.AreEqual("Account Number:\r\nAW00000555", properties[4].Text);
-            Assert.AreEqual("Sales Territory:\r\nAustralia", properties[5].Text);
+            Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
 
+            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count >= 2);
             ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
 
-            Assert.AreEqual("Addresses:\r\n1-Customer Addresses", collections[0].Text);
-            Assert.AreEqual("Contacts:\r\n1-Store Contacts", collections[1].Text);
+            Assert.AreEqual("Addresses:\r\n1-Addresses", collections[0].Text);
+            Assert.AreEqual("Contacts:\r\n1-Contacts", collections[1].Text);
         }
 
         [TestMethod]
@@ -72,7 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void OpenCollectionAsList() {
             br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
 
@@ -89,7 +88,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
             var testUrl = StoreDetailsTwinCyclesActionsOpen +"&collection1_Addresses=List";
@@ -100,7 +99,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Single, PaneType.Object, title);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
             var testUrl = StoreDetailsTwinCyclesActionsOpen + "&collection1_Addresses=Table";

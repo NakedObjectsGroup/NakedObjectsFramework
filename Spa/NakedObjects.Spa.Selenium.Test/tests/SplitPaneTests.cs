@@ -40,7 +40,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Query, "Highest Value Orders");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickReferenceFromQuerySingle()
         {
@@ -54,57 +53,53 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Object, "SO51131");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickReferencePropertyFromObjectSingle()
         {
             br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = FindElementByCss(".property .reference", 0);
             Assert.AreEqual("Lynn Tsoflias", reference.Text);
             RightClick(reference);
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitFor(Pane.Right, PaneType.Object, "Lynn Tsoflias");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickActionFromObjectSingle()
         {
-            br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            br.Navigate().GoToUrl(CustomerTechnicalPartsActionsOpen);
+            WaitFor(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             RightClick(GetObjectAction("Last Order"));
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
-            WaitFor(Pane.Right, PaneType.Object, "SO71926");
+            WaitFor(Pane.Left, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
+            WaitFor(Pane.Right, PaneType.Object, "SO67279");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickHomeIconFromObjectSingle()
         {
             br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             RightClick(HomeIcon());
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
         {
             br.Navigate().GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles");
             Click(SwapIcon());
             WaitFor(Pane.Left, PaneType.Home, "Home");
-            WaitFor(Pane.Right, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "Twin Cycles");
         }
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = Url + "#/gemini/object/object?object1=AdventureWorksModel.Customer-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjectsB = Url + "#/gemini/object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickReferenceInLeftPaneObject()
         {
@@ -112,7 +107,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
-            var reference = FindElementByCss(".property .reference", 1);
+            var reference = FindElementByCss(".property .reference", 0);
             Assert.AreEqual("Australia", reference.Text);
             RightClick(reference);
 
@@ -120,7 +115,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Object, "Australia");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void ClickReferenceInLeftPaneObject()
         {
@@ -128,7 +122,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
-            var reference = FindElementByCss(".property .reference", 1);
+            var reference = FindElementByCss(".property .reference", 0);
             Assert.AreEqual("Australia", reference.Text);
             Click(reference);
 
@@ -136,23 +130,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void ClickReferenceInRightPaneObject()
         {
-            br.Navigate().GoToUrl(twoObjects);
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            br.Navigate().GoToUrl(twoObjectsB);
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
-            var reference = FindElementByCss(".property .reference", 3);
-            Assert.AreEqual("Sandra Altamirano, Owner", reference.Text);
+            var reference = FindElementByCss(".property .reference", 2);
+            Assert.AreEqual("2253-217 Palmer Street ...", reference.Text);
             Click(reference);
 
-            WaitFor(Pane.Right, PaneType.Object, "Sandra Altamirano, Owner");
-            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitFor(Pane.Right, PaneType.Object, "2253-217 Palmer Street ...");
+            WaitFor(Pane.Left, PaneType.Object, "Twin Cycles");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickReferenceInRightPaneObject()
         {
@@ -160,15 +152,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
 
-            var reference = FindElementByCss(".property .reference", 3);
-            Assert.AreEqual("Sandra Altamirano, Owner", reference.Text);
+            var reference = FindElementByCss(".property .reference", 5);
+            Assert.AreEqual("CARGO TRANSPORT 5", reference.Text);
             RightClick(reference);
 
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
-            WaitFor(Pane.Left, PaneType.Object, "Sandra Altamirano, Owner");
+            WaitFor(Pane.Left, PaneType.Object, "CARGO TRANSPORT 5");
         }
 
-        [Ignore] // 13/10/2015
         [TestMethod]
         public virtual void LeftClickHomeIconFromSplitObjectObject()
         {
@@ -178,7 +169,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Object, "SO71926");
         }
 
-        [Ignore] // 13/10/2015
         [TestMethod]
         public virtual void RightClickHomeIconFromSplitObjectObject()
         {
@@ -188,7 +178,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Home, "Home");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void ActionDialogOpensInCorrectPane()
         {
@@ -202,7 +191,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             CancelDialog(Pane.Right);
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void RightClickIsSameAsLeftClickForDialogActions() {
             br.Navigate().GoToUrl(twoObjects);
@@ -214,7 +202,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void SwapPanes()
         {
@@ -226,7 +213,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Right, PaneType.Object, "Twin Cycles, AW00000555");
         }
 
-        [Ignore] // sec 13/10/2015
         [TestMethod]
         public virtual void FullPaneFromLeft()
         {
@@ -237,7 +223,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
         }
 
-        [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void FullPaneFromRight()
         {

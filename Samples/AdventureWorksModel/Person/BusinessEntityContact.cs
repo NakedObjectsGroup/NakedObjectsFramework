@@ -1,7 +1,9 @@
 using NakedObjects;
 using System;
+using System.ComponentModel;
 
 namespace AdventureWorksModel {
+    [DisplayName("Contact")]
     public partial class BusinessEntityContact {
 
         #region Injected Services

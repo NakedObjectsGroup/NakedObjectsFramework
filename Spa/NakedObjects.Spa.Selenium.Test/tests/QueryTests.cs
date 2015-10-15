@@ -55,11 +55,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
 
-        [TestMethod, Ignore] //ChoicesBillingAddress NotImplemented
+        [TestMethod]
         public virtual void NavigateToItemFromListView()
         {
             br.Navigate().GoToUrl(OrdersMenuUrl);
-            //WaitForSingleObject();
             Click(GetObjectAction("Highest Value Orders"));
             WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
 

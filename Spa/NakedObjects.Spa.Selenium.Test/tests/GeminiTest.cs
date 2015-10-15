@@ -23,8 +23,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class GeminiTest {
         #region overhead
 
-        //protected const string Url = "http://localhost:49998/index.html";
-        protected const string Url = "http://nakedobjectstest.azurewebsites.net/";
+        protected const string Url = "http://localhost:49998/index.html";
+       // protected const string Url = "http://nakedobjectstest.azurewebsites.net/";
         
         protected const string Server = @"Saturn\SqlExpress";
         protected const string Database = "AdventureWorks";
@@ -44,6 +44,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const int SalesServiceActions = 4;
 
         protected const string CustomerTwinCyclesActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Customer-555&actions1=open";
+        protected const string CustomerTechnicalPartsActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Customer-30116&actions1=open";
         protected const string StoreDetailsTwinCyclesActionsOpen = Url + "#/gemini/object?object1=AdventureWorksModel.Store-350&actions1=open";
         protected const string Product968Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-968";
         protected const string Product469Url = Url + "#/gemini/object?object1=AdventureWorksModel.Product-469";
