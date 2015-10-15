@@ -11,8 +11,8 @@
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <WorkingDir>build\working</WorkingDir>
-    <IISRestPath>\\Saturn\UnitTestRest7</IISRestPath>
-    <IISAjaxPath>\\Saturn\UnitTestAjax7</IISAjaxPath>
+    <IISRestPath>\\Mercury\UnitTestRest</IISRestPath>
+    <IISAjaxPath>\\Mercury\UnitTestAjax</IISAjaxPath>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
