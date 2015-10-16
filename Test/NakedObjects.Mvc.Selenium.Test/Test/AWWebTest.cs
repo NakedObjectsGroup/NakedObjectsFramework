@@ -47,7 +47,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
         #region overhead
 
         protected const string url = "http://mvc.nakedobjects.net:1081/UnitTestAjax";
-        protected const string server = @"Mercury\SqlExpress";
+        protected const string server = @"Mercury";
         protected const string database = "AdventureWorks";
         protected const string backup = "AdventureWorks";
 
@@ -67,6 +67,13 @@ namespace NakedObjects.Mvc.Selenium.Test {
                 DatabaseUtils.RestoreDatabase(database, backup, server);
             }
             catch (Exception e) {
+
+                string machineName = Environment.MachineName;
+
+                if (machineName.ToLower().Contains("jupiter")) {
+                    throw;
+                }
+
                 // just carry on - tests may fail
                 var m = e.Message;
                 Console.WriteLine(m);
