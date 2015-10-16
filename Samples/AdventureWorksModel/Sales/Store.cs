@@ -16,8 +16,6 @@ namespace AdventureWorksModel {
     [IconName("skyscraper.png")]
     public class Store : BusinessEntity, IBusinessEntityWithContacts {
         #region Injected Servives
-        public IDomainObjectContainer Container { set; protected get; }
-
         public SalesRepository SalesRepository { set; protected get; }
         #endregion
 

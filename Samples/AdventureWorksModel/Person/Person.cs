@@ -18,9 +18,6 @@ namespace AdventureWorksModel {
 
     [IconName("cellphone.png")]
     public class Person : BusinessEntity {
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
 
         #region Life Cycle Methods
         public override void Persisting() {

@@ -6,10 +6,10 @@ namespace AdventureWorksModel
     using System.Collections.Generic;
     using System.ComponentModel;
     
-    public class BusinessEntity : IBusinessEntity
-    {   
-        [NakedObjectsIgnore]
-        public virtual int BusinessEntityID { get; set; }
+    public class BusinessEntity : IBusinessEntity {
+        #region Injected Services 
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -21,6 +21,9 @@ namespace AdventureWorksModel
             BusinessEntityModifiedDate = DateTime.Now;
         }
         #endregion
+
+        [NakedObjectsIgnore]
+        public virtual int BusinessEntityID { get; set; }
 
         #region Row Guid and Modified Date
 
@@ -40,6 +43,7 @@ namespace AdventureWorksModel
 
         #endregion
 
+        #region Addresses
         private ICollection<BusinessEntityAddress> _addresses = new List<BusinessEntityAddress>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
@@ -49,6 +53,13 @@ namespace AdventureWorksModel
             get { return _addresses; }
             set { _addresses = value; }
         }
+
+        public Address CreateNewAddress() {
+            var _Address = Container.NewTransientInstance<Address>();
+            _Address.AddressFor = this;
+            return _Address;
+        }
+        #endregion
 
         private ICollection<BusinessEntityContact> _contacts = new List<BusinessEntityContact>();
 

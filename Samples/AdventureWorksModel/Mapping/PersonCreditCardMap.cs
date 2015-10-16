@@ -24,8 +24,8 @@ namespace AdventureWorksModel
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
-            HasRequired(t => t.Person).WithMany().HasForeignKey(t => t.PersonID); ;
-            HasRequired(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID); ;
+            HasRequired(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);
+            HasRequired(t => t.CreditCard).WithMany().HasForeignKey(t => t.CreditCardID);
 
         }
     }

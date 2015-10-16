@@ -32,8 +32,8 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; set; }
 
-        [NotPersisted][Optionally]
-        public virtual IBusinessEntity AddressFor { get; set; }
+        [NotPersisted][Disabled]
+        public virtual BusinessEntity AddressFor { get; set; }
 
         public void Persisting() {
             rowguid = Guid.NewGuid();
@@ -45,6 +45,9 @@ namespace AdventureWorksModel {
             ca.AddressID = this.AddressID;
             ca.AddressTypeID = this.AddressType.AddressTypeID;
             ca.BusinessEntityID = AddressFor.BusinessEntityID;
+            ca.AddressType = this.AddressType;
+            ca.rowguid = Guid.NewGuid();
+            ca.ModifiedDate = DateTime.Now;
             Container.Persist(ref ca);
         }
 
@@ -73,15 +76,15 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public string Validate(CountryRegion countryRegion, StateProvince stateProvince) {
-            IList<StateProvince> valid = StateProvincesForCountry(countryRegion);
+        //public string Validate(CountryRegion countryRegion, StateProvince stateProvince) {
+        //    IList<StateProvince> valid = StateProvincesForCountry(countryRegion);
 
-            if (valid.Contains(stateProvince)) {
-                return null;
-            }
+        //    if (valid.Contains(stateProvince)) {
+        //        return null;
+        //    }
 
-            return "Invalid region";
-        }
+        //    return "Invalid region";
+        //}
 
         #region Properties
 
@@ -111,10 +114,10 @@ namespace AdventureWorksModel {
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; set; }
 
-        [Executed(Where.Remotely)]
-        public IList<StateProvince> ChoicesStateProvince(CountryRegion countryRegion) {
-            return countryRegion != null ? StateProvincesForCountry(countryRegion) : new List<StateProvince>();
-        }
+        //[Executed(Where.Remotely)]
+        //public IList<StateProvince> ChoicesStateProvince(CountryRegion countryRegion) {
+        //    return countryRegion != null ? StateProvincesForCountry(countryRegion) : new List<StateProvince>();
+        //}
 
         #endregion
 
@@ -140,13 +143,13 @@ namespace AdventureWorksModel {
         #region CountryRegion (derived)
 
         [Disabled(WhenTo.OncePersisted)]
-        [NotPersisted]
+        [NotPersisted][Optionally]
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; set; }
 
-        public IList<CountryRegion> ChoicesCountryRegion() {
-            return ContactRepository.ValidCountries();
-        }
+        //public IList<CountryRegion> ChoicesCountryRegion() {
+        //    return ContactRepository.ValidCountries();
+        //}
 
         #endregion
     }
