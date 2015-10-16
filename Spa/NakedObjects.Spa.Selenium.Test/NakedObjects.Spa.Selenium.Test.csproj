@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tests\SplitPaneTests.cs" />
     <Compile Include="tests\QueryTests.cs" />
+    <Compile Include="tests\TestConfig.cs" />
     <Compile Include="tests\UrlTests.cs" />
     <Compile Include="tests\ObjectEditTests.cs" />
     <Compile Include="tests\DialogTests.cs" />
