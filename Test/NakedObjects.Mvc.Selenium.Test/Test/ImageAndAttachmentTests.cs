@@ -24,12 +24,12 @@ namespace NakedObjects.Mvc.Selenium.Test {
             var photoField = br.FindElement(By.CssSelector("#Product-Photo"));
 
             var alink = photoField.FindElement(By.CssSelector("a"));
-            Assert.AreEqual(url + "/Product/GetFile/testimage.jpg?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
+            Assert.AreEqual(url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
                 alink.GetAttribute("href"));
 
             var img = photoField.FindElement(By.CssSelector("img"));
-            Assert.AreEqual("testimage.jpg", img.GetAttribute("alt"));
-            Assert.AreEqual(url + "/Product/GetFile/testimage.jpg?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
+            Assert.AreEqual("frame_black_large.gif", img.GetAttribute("alt"));
+            Assert.AreEqual(url + "/Product/GetFile/frame_black_large.gif?Id=AdventureWorksModel.Product%3B1%3BSystem.Int32%3B747%3BFalse%3B%3B0&PropertyId=Photo",
                 img.GetAttribute("src"));
         }
 
@@ -41,7 +41,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             photoLink.Click();
 
-            Assert.AreEqual("(JPEG Image, 122 × 92 pixels)", br.Title);
+            Assert.AreEqual("(GIF Image, 240 × 149 pixels)", br.Title);
             Assert.IsTrue(br.Url.StartsWith("blob"));
         }
 
