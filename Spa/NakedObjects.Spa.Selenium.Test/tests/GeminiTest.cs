@@ -23,12 +23,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public abstract class GeminiTest {
         #region overhead
 
-        protected const string BaseUrl = "http://localhost:49998/index.html";
-        //protected const string Url = "http://nakedobjectstest.azurewebsites.net/";
-        
-        protected const string Server = @"Saturn\SqlExpress";
-        protected const string Database = "AdventureWorks";
-        protected const string Backup = "AdventureWorks";
+        protected const string BaseUrl = TestConfig.BaseUrl;
 
         protected const string CustomersMenuUrl = BaseUrl + "#/gemini/home?menu1=CustomerRepository";
         protected const string OrdersMenuUrl = BaseUrl + "#/gemini/home?menu1=OrderRepository";
