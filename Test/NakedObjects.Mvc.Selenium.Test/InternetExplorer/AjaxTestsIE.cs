@@ -56,6 +56,7 @@ namespace NakedObjects.Mvc.Selenium.Test.InternetExplorer {
         }
 
         [TestMethod]
+        [Ignore]
         public override void ActionConditionalMultipleChoices() {
             DoActionConditionalMultipleChoices();
         }
