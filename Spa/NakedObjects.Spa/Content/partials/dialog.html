@@ -26,10 +26,16 @@ under the License.-->
 
                     <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
 
-                        <!--<input ng-switch-when="false" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete/>-->
+                   
+                        <div ng-switch-when="false" ng-switch="parameter.hasPrompt">
 
-                        <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
-                            {{parameter.value}}
+                            <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
+                                {{parameter.value}}
+                            </div>
+
+                            <input ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete />
+           
+
                         </div>
 
 
