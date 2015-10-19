@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     /// Tests for the detailed operation of dialogs, including parameter rendering,
     /// choices, auto-complete, default values, formatting, and validation
     /// </summary>
-    public abstract class DialogTests : GeminiTest
+    public abstract class DialogTests : AWTest
     {
         [TestMethod]
         public virtual void ChoicesParm()
@@ -347,7 +347,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public new static void InitialiseClass(TestContext context)
         {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -369,7 +369,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
         {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -392,7 +392,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public new static void InitialiseClass(TestContext context)
         {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

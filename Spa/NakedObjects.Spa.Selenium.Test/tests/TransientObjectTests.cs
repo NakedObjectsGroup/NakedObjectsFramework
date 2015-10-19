@@ -13,7 +13,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
-    public abstract class TransientObjectTests : GeminiTest {
+    public abstract class TransientObjectTests : AWTest {
 
         [TestMethod] //Complete test & guard against duplicate keys?
         public void CreateAndSaveTransientObject()
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -119,7 +119,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

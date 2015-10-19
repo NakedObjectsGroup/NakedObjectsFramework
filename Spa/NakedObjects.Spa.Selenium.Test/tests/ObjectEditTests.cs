@@ -13,7 +13,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
-    public abstract class ObjectEditTests : GeminiTest {
+    public abstract class ObjectEditTests : AWTest {
 
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
@@ -152,7 +152,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -171,7 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class ObjectEditPageTestsFirefox : ObjectEditTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -195,7 +195,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

@@ -13,7 +13,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests applied from a Query view.
     /// </summary>
-    public abstract class QueryTests : GeminiTest {
+    public abstract class QueryTests : AWTest {
         [TestMethod]
         public virtual void QueryActionReturnsListView()
         {
@@ -97,7 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -116,7 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -135,7 +135,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

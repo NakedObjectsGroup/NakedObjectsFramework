@@ -14,7 +14,7 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
-    public abstract class ObjectViewTests : GeminiTest {
+    public abstract class ObjectViewTests : AWTest {
 
         [TestMethod]
         public virtual void Actions() {
@@ -152,7 +152,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -171,7 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -195,7 +195,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

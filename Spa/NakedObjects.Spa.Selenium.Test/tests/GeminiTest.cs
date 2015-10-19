@@ -26,17 +26,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string BaseUrl = TestConfig.BaseUrl;
         protected const string GeminiBaseUrl = TestConfig.BaseUrl+ "#/gemini/";
 
-        protected const string CustomersMenuUrl = GeminiBaseUrl + "home?menu1=CustomerRepository";
-        protected const string OrdersMenuUrl = GeminiBaseUrl + "home?menu1=OrderRepository";
-        protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?menu1=SpecialOfferRepository";
-        protected const string ProductServiceUrl = GeminiBaseUrl + "home?menu1=ProductRepository";
-        protected const string SalesServiceUrl = GeminiBaseUrl + "home?menu1=SalesRepository";
-
-        protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
-
-        protected const int CustomerServiceActions = 9;
-        protected const int OrderServiceActions = 6;
-
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
 
@@ -68,6 +57,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 }
             }
         }
+
 
         protected void InitFirefoxDriver() {
             br = new FirefoxDriver();
@@ -268,10 +258,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             }
         }
 
-        protected virtual void WaitForView(Pane pane, PaneType type, string title)
+        protected virtual void WaitForView(Pane pane, PaneType type, string title = null)
         {
             var selector =  CssSelectorFor(pane)+" ." + type.ToString().ToLower() + " .header .title";
-            wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
+            if (title != null)
+            {
+                wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
+            } else
+            {
+                WaitForCss(selector);
+            }
             if (pane == Pane.Single)
             {
                 AssertElementDoesNotExist(".split");

@@ -13,18 +13,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
-    public abstract class HomeTests : GeminiTest {
+    public abstract class HomeTests : AWTest {
 
        // [Ignore] // SEC 13/10/2015
         [TestMethod]
         public void WaitForSingleHome()
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
-            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
-
-            Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
-
-            ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
+            WaitForCss(".main-column");
+            var menus = WaitForCss(".menu", MainMenusCount);
             Assert.AreEqual("Customers", menus[0].Text);
             Assert.AreEqual("Orders", menus[1].Text);
             Assert.AreEqual("Products", menus[2].Text);
@@ -42,10 +39,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ClickOnVariousMenus() {
             GoToMenuFromHomePage("Customers");
-
-            wait.Until(d => d.FindElement(By.CssSelector(".actions")));
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
-            var actions = br.FindElements(By.CssSelector(".action"));
+            var actions = WaitForCss(".actions .action", CustomerServiceActions);
 
             Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
             Assert.AreEqual("Find Store By Name", actions[1].Text);
@@ -58,11 +52,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
 
             GoToMenuFromHomePage("Sales");
-
-            wait.Until(d => d.FindElement(By.CssSelector(".actions")));
-            actions = br.FindElements(By.CssSelector(".action"));
-            Assert.AreEqual(4, actions.Count);
-
+            actions = WaitForCss(".actions .action", 4); ;
             Assert.AreEqual("Create New Sales Person", actions[0].Text);
             Assert.AreEqual("Find Sales Person By Name", actions[1].Text);
             Assert.AreEqual("List Accounts For Sales Person", actions[2].Text);
@@ -73,8 +63,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
             Url(CustomersMenuUrl);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
             OpenActionDialog("Find Store By Name");
             OpenActionDialog("Find Customer By Account Number");
@@ -88,26 +77,26 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(CustomersMenuUrl);
             Click(GetObjectAction("Random Store"));
-            wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
+            WaitForView(Pane.Single, PaneType.Object);
         }
 
         [TestMethod]
         public virtual void ZeroParamReturnsCollection()
         {
             Url(OrdersMenuUrl);
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
+            WaitForCss(".actions .action", OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
-            wait.Until(d => d.FindElements(By.CssSelector(".reference")).Count == 20);
+            WaitForCss(".reference", 20);
         }
 
         [TestMethod]
         public virtual void ZeroParamThrowsError()
         {
             Url(CustomersMenuUrl);
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            WaitForCss(".actions .action", CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
-            var msg = wait.Until(d => d.FindElement(By.CssSelector(".error .message")));
+            var msg = WaitForCss(".error .message");
             Assert.AreEqual("Foo", msg.Text);
         }
 
@@ -115,7 +104,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ZeroParamReturnsEmptyCollection()
         {
             Url(OrdersMenuUrl);
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
+            WaitForCss(".actions .action", OrderServiceActions);
             Click(GetObjectAction("Orders In Process"));
             WaitForView(Pane.Single, PaneType.Query, "Orders In Process");
             var rows = br.FindElements(By.CssSelector("td"));
@@ -126,9 +115,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void DialogActionOK()
         {
             Url(CustomersMenuUrl);
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            WaitForCss(".value  input").SendKeys("00022262");
+            TypeIntoField("#accountnumber","00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
@@ -142,7 +131,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -161,7 +150,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class HomeTestsFirefox : HomeTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -181,7 +170,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]

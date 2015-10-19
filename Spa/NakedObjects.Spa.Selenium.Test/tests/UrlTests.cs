@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests only that a given URLs return the correct views. No actions performed on them
     /// </summary>
-    public abstract class UrlTests : GeminiTest
+    public abstract class UrlTests : AWTest
     {
         [TestMethod]
         public virtual void UnrecognisedUrlGoesToHome()
@@ -212,7 +212,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -231,7 +231,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class UrlTestsFirefox : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -251,7 +251,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
@@ -280,7 +280,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
         {
-            GeminiTest.InitialiseClass(context);
+            AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
