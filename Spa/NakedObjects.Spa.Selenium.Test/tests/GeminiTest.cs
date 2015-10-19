@@ -24,37 +24,18 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region overhead
 
         protected const string BaseUrl = TestConfig.BaseUrl;
+        protected const string GeminiBaseUrl = TestConfig.BaseUrl+ "#/gemini/";
 
-        protected const string CustomersMenuUrl = BaseUrl + "#/gemini/home?menu1=CustomerRepository";
-        protected const string OrdersMenuUrl = BaseUrl + "#/gemini/home?menu1=OrderRepository";
-        protected const string SpecialOffersMenuUrl = BaseUrl + "#/gemini/home?menu1=SpecialOfferRepository";
-        protected const string ProductServiceUrl = BaseUrl + "#/gemini/home?menu1=ProductRepository";
-        protected const string SalesServiceUrl = BaseUrl + "#/gemini/home?menu1=SalesRepository";
+        protected const string CustomersMenuUrl = GeminiBaseUrl + "home?menu1=CustomerRepository";
+        protected const string OrdersMenuUrl = GeminiBaseUrl + "home?menu1=OrderRepository";
+        protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?menu1=SpecialOfferRepository";
+        protected const string ProductServiceUrl = GeminiBaseUrl + "home?menu1=ProductRepository";
+        protected const string SalesServiceUrl = GeminiBaseUrl + "home?menu1=SalesRepository";
 
         protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
 
         protected const int CustomerServiceActions = 9;
         protected const int OrderServiceActions = 6;
-        protected const int ProductServiceActions = 12;
-        protected const int SalesServiceActions = 4;
-
-        protected const string CustomerTwinCyclesActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Customer-555&actions1=open";
-        protected const string CustomerTechnicalPartsActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Customer-30116&actions1=open";
-        protected const string StoreDetailsTwinCyclesActionsOpen = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Store-350&actions1=open";
-        protected const string Product968Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-968";
-        protected const string Product469Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-469";
-        protected const string Product870Url = BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-870";
-
-        protected const int StoreActions = 8;
-        protected const int StoreProperties = 6;
-        protected const int StoreCollections = 2;
-        protected const int ProductActions = 6;
-        protected const int ProductProperties = 23;
-
-        //protected const string url = "http://localhost:53103/";
-        //protected const string server = @".\SQLEXPRESS";
-        //protected const string database = "AdventureWorks";
-        //protected const string backup = "AdventureWorksInitialState";
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
@@ -117,9 +98,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         #region Helpers
 
-        protected void GoToUrl(string url)
+        protected void Url(string url)
         {
             br.Navigate().GoToUrl(url);
+        }
+
+        protected void GeminiUrl(string url)
+        {
+            br.Navigate().GoToUrl(GeminiBaseUrl+ url);
         }
 
         protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
@@ -165,20 +151,35 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.FindElement(By.CssSelector(cssSelector));
         }
 
-        protected virtual IWebElement FindElementByCss(string cssSelector)
+        /// <summary>
+        /// Waits until there are AT LEAST the specified count of matches & returns ALL matches
+        /// </summary>
+        protected virtual ReadOnlyCollection<IWebElement> WaitForCss(string cssSelector, int count)
         {
-            wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
-            return br.FindElement(By.CssSelector(cssSelector));
+            wait.Until(d => d.FindElements(By.CssSelector(cssSelector)).Count >= count);
+            return br.FindElements(By.CssSelector(cssSelector));
         }
 
-        protected virtual IWebElement FindElementByCss(string cssSelector, int number)
+        /// <summary>
+        /// Waits for the Nth match and returns it (counting from zero).
+        /// </summary>
+        protected virtual IWebElement WaitForCssNo(string cssSelector, int number)
         {
-            wait.Until(d => d.FindElements(By.CssSelector(cssSelector)).Count >= number+1);
-            return br.FindElements(By.CssSelector(cssSelector))[number];
+            return WaitForCss(cssSelector, number + 1)[number];
+        }
+
+        protected virtual void TypeIntoField(string cssFieldId, string characters)
+        {
+            WaitForCss("#"+ cssFieldId + " input").SendKeys(characters);
+        }
+
+        protected virtual void SelectDropDownOnField(string cssFieldId, string characters)
+        {
+            WaitForCss("#" + cssFieldId + " select").SendKeys(characters);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
-            WaitFor(Pane.Single, PaneType.Home, "Home");
+            WaitForView(Pane.Single, PaneType.Home, "Home");
             ReadOnlyCollection<IWebElement> menus = br.FindElements(By.CssSelector(".menu"));
             IWebElement menu = menus.FirstOrDefault(s => s.Text == menuName);
             if (menu != null) {
@@ -237,6 +238,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Query
         }
 
+        protected enum ClickType
+        {
+            Left,
+            Right
+        }
+
+        protected IWebElement GetReferenceProperty(string propertyName, string refTitle, Pane pane = Pane.Single) {
+            string propCss = CssSelectorFor(pane) + " " + ".property";
+            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
+                    .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName+":" &&
+                    we.FindElement(By.CssSelector(".reference")).Text == refTitle).Single()                                 
+            );
+            return prop.FindElement(By.CssSelector(".reference"));
+        }
+
         protected string CssSelectorFor(Pane pane)
         {
             switch (pane)
@@ -252,7 +268,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             }
         }
 
-        protected virtual void WaitFor(Pane pane, PaneType type, string title)
+        protected virtual void WaitForView(Pane pane, PaneType type, string title)
         {
             var selector =  CssSelectorFor(pane)+" ." + type.ToString().ToLower() + " .header .title";
             wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
@@ -276,7 +292,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void AssertTopItemInListIs(string title)
         {
-            string topItem = FindElementByCss(".collection tr td.reference").Text;
+            string topItem = WaitForCss(".collection tr td.reference").Text;
 
             Assert.AreEqual(title, topItem);
         }
@@ -337,23 +353,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
         #region Object Actions
-        protected ReadOnlyCollection<IWebElement> GetObjectActions(int? totalNumber = null, Pane pane = Pane.Single)
+        protected ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single)
         {
             var selector = CssSelectorFor(pane)+ ".actions .action";
-            if (totalNumber == null)
-            {
-                wait.Until(d => d.FindElements(By.CssSelector(selector)).Count > 0);
-            }
-            else
-            {
-                wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber.Value);
-            }
+            wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single)
         {
-            return GetObjectActions(null, pane).Where(a => a.Text == actionName).Single();
+            var selector = CssSelectorFor(pane) + ".actions .action";
+            var action =wait.Until(d => d.FindElements(By.CssSelector(selector)).
+                    Single(we => we.Text == actionName));
+            return action;
         }
 
         protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single)
@@ -362,7 +374,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var selector = CssSelectorFor(pane)+" .dialog ";
             var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
 
-            Assert.AreEqual(actionName, FindElementByCss(selector + "> .title").Text);
+            Assert.AreEqual(actionName, WaitForCss(selector + "> .title").Text);
             //Check it has OK & cancel buttons
             wait.Until(d => br.FindElement(By.CssSelector(selector +".ok")));
             wait.Until(d => br.FindElement(By.CssSelector(".cancel")));
@@ -377,7 +389,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected void CancelDialog(Pane pane = Pane.Single)
         {
            var selector = CssSelectorFor(pane)+".dialog ";
-             Click(FindElementByCss(selector + ".cancel"));
+             Click(WaitForCss(selector + ".cancel"));
 
                 wait.Until(dr => {
                     try
@@ -398,17 +410,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region ToolBar icons
         protected IWebElement HomeIcon()
         {
-            return FindElementByCss(".footer .icon-home");
+            return WaitForCss(".footer .icon-home");
         }
 
         protected IWebElement SwapIcon()
         {
-            return FindElementByCss(".footer .icon-swap");
+            return WaitForCss(".footer .icon-swap");
         }
 
         protected IWebElement FullIcon()
         {
-            return FindElementByCss(".footer .icon-full");
+            return WaitForCss(".footer .icon-full");
         }
         #endregion
     }

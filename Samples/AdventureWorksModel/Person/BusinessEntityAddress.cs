@@ -23,11 +23,13 @@ namespace AdventureWorksModel
             return t.ToString();
         }
 
-
+        [Disabled]
         public virtual int BusinessEntityID { get; set; }
 
+        [Disabled]
         public virtual int AddressID { get; set; }
 
+        [Disabled]
         public virtual int AddressTypeID { get; set; }
         #region Row Guid and Modified Date
 
@@ -56,7 +58,7 @@ namespace AdventureWorksModel
         [Optionally]
         public virtual Address Address { get; set; }
 
-        [NakedObjectsIgnore]
+        [MemberOrder(3)]
         public virtual BusinessEntity BusinessEntity { get; set; }
     }
 }

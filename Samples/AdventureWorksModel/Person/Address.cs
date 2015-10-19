@@ -88,7 +88,7 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [NakedObjectsIgnore]
+        [Disabled]
         public virtual int AddressID { get; set; }
 
         [MemberOrder(11)]

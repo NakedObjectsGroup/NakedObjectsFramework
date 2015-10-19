@@ -14,16 +14,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Home() {
-            GoToUrl(Product968Url);
-            WaitFor(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+            GeminiUrl( "object?object1=AdventureWorksModel.Product-968");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
-            WaitFor(Pane.Single, PaneType.Home, "Home");
+            WaitForView(Pane.Single, PaneType.Home, "Home");
         }
 
         [Ignore] // SEC 13/10/2015
         [TestMethod]
         public virtual void BackAndForward() {
-            GoToUrl(BaseUrl);
+            Url(BaseUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
             GoToMenuFromHomePage("Customers");
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);

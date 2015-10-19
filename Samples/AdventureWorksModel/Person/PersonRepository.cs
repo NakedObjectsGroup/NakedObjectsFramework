@@ -79,5 +79,32 @@ namespace AdventureWorksModel {
             }
             return baes.Select(bae => bae.Address);
         }
+
+
+        public IList<Address> RecentAddresses()
+        {
+            return Container.Instances<Address>().OrderByDescending(a => a.ModifiedDate).Take(10).ToList();
+        }
+
+        public IList<BusinessEntityAddress> RecentAddressLinks()
+        {
+            return Container.Instances<BusinessEntityAddress>().OrderByDescending(a => a.ModifiedDate).Take(10).ToList();
+        }
+
+
+        public BusinessEntityAddress CreateNewBusinessEntityAddress()
+        {
+            BusinessEntityAddress obj = Container.NewTransientInstance<BusinessEntityAddress>();
+            //set up any parameters
+            //Container.Persist(ref obj);
+            return obj;
+        }
+
+
+
+        public IQueryable<AddressType> AllAddressTypes()
+        {
+            return Container.Instances<AddressType>();
+        }
     }
 }

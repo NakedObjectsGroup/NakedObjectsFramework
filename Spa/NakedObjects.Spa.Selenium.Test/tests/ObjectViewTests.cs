@@ -15,21 +15,12 @@ using OpenQA.Selenium;
 namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class ObjectViewTests : GeminiTest {
-        [TestMethod]
-        public virtual void FooterIcons() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
-            wait.Until(d => d.FindElement(By.CssSelector(".object")));
-
-            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
-            WaitFor(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
-        }
 
         [TestMethod]
         public virtual void Actions() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
-            wait.Until(d => d.FindElement(By.CssSelector(".object")));
-            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
-            var actions = GetObjectActions();
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            var actions = GetObjectActions(6);
 
             //Assert.AreEqual("Create New Address", actions[0].Text);
            // Assert.AreEqual("Create New Contact", actions[1].Text);
@@ -43,7 +34,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void PropertiesAndCollections() {
-            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
 
@@ -64,58 +55,55 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ClickReferenceProperty() {
-            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-            var reference = FindElementByCss(".property .reference", 0);
+            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
+            var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             Click(reference);
-            WaitFor(Pane.Single, PaneType.Object, "Lynn Tsoflias");
+            WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
         [TestMethod]
         public virtual void OpenCollectionAsList() {
-            GoToUrl(StoreDetailsTwinCyclesActionsOpen);
-
-            wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == StoreCollections);
-            var iconList = FindElementByCss(".icon-list", 0);
-
+            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
+            WaitForCss(".collection", 2);
+            var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
 
-            wait.Until(d => d.FindElement(By.TagName("table")));
+            WaitForCss("table");
 
             // cancel table view 
-            Click(br.FindElement(By.CssSelector(".icon-summary")));
-
+            Click(WaitForCss(".icon-summary"));
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
         }
 
         [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
-            var testUrl = StoreDetailsTwinCyclesActionsOpen +"&collection1_Addresses=List";
-            GoToUrl(testUrl);
-            var row = wait.Until(dr => dr.FindElement(By.CssSelector("table .reference")));
-            var title = row.Text;
+            var testUrl = GeminiBaseUrl + "object?object1=AdventureWorksModel.Store-350&actions1=open" +"&collection1_Addresses=List";
+            Url(testUrl);
+            var row = WaitForCss("table .reference");
             Click(row);
-            WaitFor(Pane.Single, PaneType.Object, title);
+            WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
         }
 
         [TestMethod]
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
-            var testUrl = StoreDetailsTwinCyclesActionsOpen + "&collection1_Addresses=Table";
-            GoToUrl(testUrl);
+            var testUrl = GeminiBaseUrl + "object?object1=AdventureWorksModel.Store-350&actions1=open" + "&collection1_Addresses=Table";
+            Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
 
             var type = row.FindElements(By.CssSelector(".cell"))[0].Text;
             var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
             Click(row);
-            WaitFor(Pane.Single, PaneType.Object, type+": "+addr);
+            WaitForView(Pane.Single, PaneType.Object, type+": "+addr);
         }
 
         [TestMethod]
         public virtual void AttachmentProperty() {
-            GoToUrl(Product968Url);
-            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == ProductProperties);
+            GeminiUrl( "object?object1=AdventureWorksModel.Product-968");
+            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
             wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
             Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0); 
         }
@@ -123,13 +111,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region Actions
         [TestMethod]
         public virtual void DialogAction() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             OpenActionDialog("Search For Orders");
         }
 
         [TestMethod]
         public virtual void DialogActionOk() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
 
             var dialog = OpenActionDialog("Search For Orders");
 
@@ -138,21 +126,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Search For Orders");
+            WaitForView(Pane.Single, PaneType.Query, "Search For Orders");
         }
 
         [TestMethod]
         public virtual void ObjectAction() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
 
         [TestMethod]
         public virtual void CollectionAction() {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             Click(GetObjectAction("Recent Orders"));
-            WaitFor(Pane.Single, PaneType.Query, "Recent Orders");
+            WaitForView(Pane.Single, PaneType.Query, "Recent Orders");
         }
         #endregion
     }
@@ -170,7 +158,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            GoToUrl(BaseUrl);
+            Url(BaseUrl);
         }
 
         [TestCleanup]

@@ -24,18 +24,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ChoicesParm()
         {
-            GoToUrl(OrdersMenuUrl);
+            Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
-            FindElementByCss(".value  select").SendKeys("Ascending");
+            WaitForCss(".value  select").SendKeys("Ascending");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Orders By Value");
+            WaitForView(Pane.Single, PaneType.Query, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
         [TestMethod]
         public virtual void TestCancelDialog()
         {
-            GoToUrl(OrdersMenuUrl);
+            Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
             CancelDialog();
         }
@@ -43,75 +43,75 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void ScalarChoicesParmKeepsValue()
         {
-            GoToUrl(OrdersMenuUrl);
+            Url(OrdersMenuUrl);
             GetObjectActions(OrderServiceActions);
             OpenActionDialog("Orders By Value");
 
-            FindElementByCss(".value  select").SendKeys("Ascending");
+            WaitForCss(".value  select").SendKeys("Ascending");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Orders By Value");
+            WaitForView(Pane.Single, PaneType.Query, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
         [TestMethod]
         public virtual void ScalarParmKeepsValue()
         {
-            GoToUrl(CustomersMenuUrl);
+            Url(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            FindElementByCss(".value input").SendKeys("00000042");
+            WaitForCss(".value input").SendKeys("00000042");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
+            WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
         }
 
         [TestMethod]
         public virtual void DateTimeParmKeepsValue()
         {
-            GoToUrl(CustomerTwinCyclesActionsOpen);
+            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             OpenActionDialog("Search For Orders");
-            FindElementByCss(".value input", 0).SendKeys("1 Jan 2003");
-            FindElementByCss(".value input", 1).SendKeys("1 Dec 2003" + Keys.Escape);
+            TypeIntoField("#fromdate","1 Jan 2003");
+            TypeIntoField("#todate", "1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Search For Orders");
+            WaitForView(Pane.Single, PaneType.Query, "Search For Orders");
         }
 
         [TestMethod]
         public virtual void RefChoicesParmKeepsValue()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
-            FindElementByCss(".value  select").SendKeys("Forks");
+            WaitForCss(".value  select").SendKeys("Forks");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Category");
+            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
         }
 
         [TestMethod]
         public virtual void MultipleRefChoicesDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            var selected = new SelectElement(FindElementByCss("div#subcategories select"));
+            var selected = new SelectElement(WaitForCss("div#subcategories select"));
 
             Assert.AreEqual(2, selected.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
             Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Categories");
+            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
         [TestMethod]
         public virtual void MultipleRefChoicesChangeDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            FindElementByCss(".value  select").SendKeys("Handlebars");
+            WaitForCss(".value  select").SendKeys("Handlebars");
             IKeyboard kb = ((IHasInputDevices)br).Keyboard;
 
             kb.PressKey(Keys.Control);
@@ -119,85 +119,85 @@ namespace NakedObjects.Web.UnitTests.Selenium
             kb.ReleaseKey(Keys.Control);
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "List Products By Sub Categories");
+            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Categories");
             AssertTopItemInListIs("Front Brakes");
         }
 
         [TestMethod]
         public virtual void ChoicesDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            var slctPl = new SelectElement(FindElementByCss("div#productline select"));
-            var slctPc = new SelectElement(FindElementByCss("div#productclass select"));
+            var slctPl = new SelectElement(WaitForCss("div#productline select"));
+            var slctPc = new SelectElement(WaitForCss("div#productclass select"));
 
             Assert.AreEqual("M", slctPl.SelectedOption.Text);
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Find By Product Line And Class");
+            WaitForView(Pane.Single, PaneType.Query, "Find By Product Line And Class");
             AssertTopItemInListIs("Mountain-300 Black, 38");
         }
 
         [TestMethod]
         public virtual void ChoicesChangeDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            FindElementByCss("div#productline .value  select").SendKeys("R");
-            FindElementByCss("div#productclass .value  select").SendKeys("L");
+            WaitForCss("div#productline .value  select").SendKeys("R");
+            WaitForCss("div#productclass .value  select").SendKeys("L");
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Find By Product Line And Class");
+            WaitForView(Pane.Single, PaneType.Query, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
 
         [TestMethod]
         public virtual void ConditionalChoicesDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
-            var slctCs = new SelectElement(FindElementByCss("div#categories select"));
+            var slctCs = new SelectElement(WaitForCss("div#categories select"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(FindElementByCss("div#subcategories select")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("div#subcategories select")).AllSelectedOptions.Count == 2);
 
-            var slct = new SelectElement(FindElementByCss("div#subcategories select"));
+            var slct = new SelectElement(WaitForCss("div#subcategories select"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Find Products By Category");
+            WaitForView(Pane.Single, PaneType.Query, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
         [TestMethod]
         public virtual void ConditionalChoicesChangeDefaults()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
 
             OpenActionDialog("Find Products By Category");
 
-            var slctCs = new SelectElement(FindElementByCss("div#categories select"));
+            var slctCs = new SelectElement(WaitForCss("div#categories select"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(FindElementByCss("div#subcategories select")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("div#subcategories select")).AllSelectedOptions.Count == 2);
 
 
-            var slct = new SelectElement(FindElementByCss("div#subcategories select"));
+            var slct = new SelectElement(WaitForCss("div#subcategories select"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "Find Products By Category");
+            WaitForView(Pane.Single, PaneType.Query, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -205,38 +205,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShow()
         {
-            GoToUrl(SalesServiceUrl);
+            Url(SalesServiceUrl);
             OpenActionDialog("List Accounts For Sales Person");
 
             br.FindElement(By.CssSelector(".value input[type='text']")).SendKeys("Valdez");
 
             wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
 
-            Click(FindElementByCss(".ui-menu-item"));
+            Click(WaitForCss(".ui-menu-item"));
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
+            WaitForView(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
         }
 
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmGo()
         {
-            GoToUrl(SalesServiceUrl);
-            WaitFor(Pane.Single, PaneType.Home, "Home");
+            Url(SalesServiceUrl);
+            WaitForView(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("List Accounts For Sales Person");
 
-            FindElementByCss(".value input[type='text']").SendKeys("Valdez");
+            WaitForCss(".value input[type='text']").SendKeys("Valdez");
 
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
 
-            Click(FindElementByCss(".ui-menu-item"));
+            Click(WaitForCss(".ui-menu-item"));
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
+            WaitForView(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
 
             try
             {
-                FindElementByCss(".value input[type='text']");
+                WaitForCss(".value input[type='text']");
                 // found so it fails
                 Assert.Fail();
             }
@@ -249,23 +249,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmDefault()
         {
-            GoToUrl(ProductServiceUrl);
-            WaitFor(Pane.Single, PaneType.Home, "Home");
+            Url(ProductServiceUrl);
+            WaitForView(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("Find Product");
 
-            Assert.AreEqual("Adjustable Race", FindElementByCss(".value input[type='text']").GetAttribute("value"));
+            Assert.AreEqual("Adjustable Race", WaitForCss(".value input[type='text']").GetAttribute("value"));
 
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "Adjustable Race");
+            WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
 
         [TestMethod, Ignore] //DnD currently disabling the input
         public virtual void AutoCompleteParmShowSingleItem()
         {
-            GoToUrl(ProductServiceUrl);
+            Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
 
-            var acElem = FindElementByCss(".value input[type='text']");
+            var acElem = WaitForCss(".value input[type='text']");
 
             for (int i = 0; i < 15; i++)
             {
@@ -276,7 +276,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("BB Ball Bearing", item.Text);
             Click(item);
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "BB Ball Bearing");
+            WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
         #endregion
 
@@ -284,49 +284,49 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void MandatoryParameterEnforced()
         {
-            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
+            GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
             var qty = WaitForCss(".parameter#quantity input");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
-            var validation = FindElementByCss(".parameter#quantity .validation");
+            var validation = WaitForCss(".parameter#quantity .validation");
             Assert.AreEqual("Mandatory", validation.Text);
             qty.SendKeys(Keys.Backspace + "1");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "No Discount");
+            WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
         [TestMethod]
         public virtual void ValidateSingleValueParameter()
         {
-            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
+            GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
             var qty = WaitForCss(".parameter#quantity input");
             qty.SendKeys("0");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
-            var validation = FindElementByCss(".parameter#quantity .validation");
+            var validation = WaitForCss(".parameter#quantity .validation");
             Assert.AreEqual("Quantity must be > 0", validation.Text);
             qty.SendKeys(Keys.Backspace+"1");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "No Discount");
+            WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
         [TestMethod]
         public virtual void ValidateSingleRefParamFromChoices()
         {
-            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
+            GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
             var reason = WaitForCss(".parameter#reason select");
             reason.SendKeys("Price");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#reason .validation")).Text.Length > 0);
-            var validation = FindElementByCss(".parameter#reason .validation");
+            var validation = WaitForCss(".parameter#reason .validation");
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
 
         [TestMethod, Ignore]
         public virtual void CoValidationOfMultipleParameters()
         {
-            GoToUrl(BaseUrl + "#/gemini/object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
+            GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
             WaitForCss(".parameter#qtyreceived input").SendKeys("100");
             WaitForCss(".parameter#qtyrejected input").SendKeys("50");
             WaitForCss(".parameter#qtyintostock input").SendKeys("49");

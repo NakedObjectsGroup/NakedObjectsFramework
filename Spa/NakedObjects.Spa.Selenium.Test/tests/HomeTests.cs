@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void WaitForSingleHome()
         {
-            WaitFor(Pane.Single, PaneType.Home, "Home");
+            WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
 
             Assert.IsNotNull(br.FindElement(By.CssSelector(".main-column")));
@@ -72,7 +72,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
-            GoToUrl(CustomersMenuUrl);
+            Url(CustomersMenuUrl);
 
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
@@ -86,7 +86,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsObject()
         {
-            GoToUrl(CustomersMenuUrl);
+            Url(CustomersMenuUrl);
             Click(GetObjectAction("Random Store"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".single .object")));
         }
@@ -94,17 +94,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsCollection()
         {
-            GoToUrl(OrdersMenuUrl);
+            Url(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
-            WaitFor(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
             wait.Until(d => d.FindElements(By.CssSelector(".reference")).Count == 20);
         }
 
         [TestMethod]
         public virtual void ZeroParamThrowsError()
         {
-            GoToUrl(CustomersMenuUrl);
+            Url(CustomersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
             var msg = wait.Until(d => d.FindElement(By.CssSelector(".error .message")));
@@ -114,10 +114,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ZeroParamReturnsEmptyCollection()
         {
-            GoToUrl(OrdersMenuUrl);
+            Url(OrdersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == OrderServiceActions);
             Click(GetObjectAction("Orders In Process"));
-            WaitFor(Pane.Single, PaneType.Query, "Orders In Process");
+            WaitForView(Pane.Single, PaneType.Query, "Orders In Process");
             var rows = br.FindElements(By.CssSelector("td"));
             Assert.AreEqual(0, rows.Count);
         }
@@ -125,12 +125,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void DialogActionOK()
         {
-            GoToUrl(CustomersMenuUrl);
+            Url(CustomersMenuUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            FindElementByCss(".value  input").SendKeys("00022262");
+            WaitForCss(".value  input").SendKeys("00022262");
             Click(OKButton());
-            WaitFor(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
+            WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
         #endregion
     }
@@ -148,7 +148,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitIeDriver();
-            GoToUrl(BaseUrl);
+            Url(BaseUrl);
         }
 
         [TestCleanup]
@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitFirefoxDriver();
-            GoToUrl(BaseUrl);
+            Url(BaseUrl);
         }
 
         [TestCleanup]
@@ -187,7 +187,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestInitialize]
         public virtual void InitializeTest() {
             InitChromeDriver();
-            GoToUrl(BaseUrl);
+            Url(BaseUrl);
         }
 
         [TestCleanup]
