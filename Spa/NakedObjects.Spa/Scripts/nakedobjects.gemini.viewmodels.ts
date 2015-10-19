@@ -81,7 +81,7 @@ module NakedObjects.Angular.Gemini {
         color: string;
         doClick: (right?: boolean) => void;
 
-        canDropOn = (targetType: string) => _.any([""], t => t === targetType);
+        canDropOn = (targetType: string) => _.any([this.domainType], t => t === targetType);
 
         value: Object;
         reference: string;
