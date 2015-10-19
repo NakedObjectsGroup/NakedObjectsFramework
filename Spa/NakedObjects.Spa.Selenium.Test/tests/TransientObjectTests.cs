@@ -15,13 +15,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class TransientObjectTests : GeminiTest {
 
-        [TestMethod, Ignore] //Complete test & guard against duplicate keys?
+        [TestMethod] //Complete test & guard against duplicate keys?
         public void CreateAndSaveTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype", "Vista");
-            TypeIntoField("#cardnumber", "1111222233334444");
+            string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
+            TypeIntoField("#cardnumber", number);
             SelectDropDownOnField("#expmonth","12");
             SelectDropDownOnField("#expyear","2020");
             Click(GetSaveButton()); //TODO: Test that it has in fact saved the object
