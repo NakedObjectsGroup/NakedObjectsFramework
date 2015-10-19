@@ -247,8 +247,8 @@ module NakedObjects.Angular.Gemini {
 
             return context.getMenu(menuId).
                 then((menu: MenuRepresentation) => {
-                    const action = menu.actionMember(actionId);               
-                    const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
+                    const action = menu.actionMember(actionId);
+                    const valueParms = _.map(parms, p => ({ id: p.id, val: Value.fromValueString(p.val) }));
                     lastActionFriendlyName[paneId] = action.extensions().friendlyName;
                     return repLoader.invoke(action, valueParms);
                 }).

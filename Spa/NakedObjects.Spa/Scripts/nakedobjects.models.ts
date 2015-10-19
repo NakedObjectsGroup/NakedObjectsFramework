@@ -213,6 +213,14 @@ module NakedObjects {
             return (this.wrapped == null) ? "" : this.wrapped.toString();
         }
 
+        // todo rethink this - maybe encode value into json and decode directly
+        static fromValueString(valueString: string): Value {
+            if (valueString.indexOf("http") === 0) {
+                return new Value({ href: valueString });
+            }
+            return new Value(valueString);
+        }
+
         toValueString(): string {
             if (this.isReference()) {
                 return this.link().href();

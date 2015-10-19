@@ -333,7 +333,7 @@ module NakedObjects.Angular.Gemini {
         const accept = (draggable) => {
             const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
-            return draggableVm.canDropOn(droppableVm.returnType);
+            return draggableVm ? draggableVm.canDropOn(droppableVm.returnType) : false;
         }
 
         element.droppable({
