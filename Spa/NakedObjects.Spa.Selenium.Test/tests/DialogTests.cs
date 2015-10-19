@@ -202,7 +202,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         #region Auto Complete
-        [TestMethod, Ignore] //DnD currently disabling the input
+        [TestMethod]
         public virtual void AutoCompleteParmShow()
         {
             Url(SalesServiceUrl);
@@ -218,7 +218,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
         }
 
-        [TestMethod, Ignore] //DnD currently disabling the input
+        [TestMethod]
         public virtual void AutoCompleteParmGo()
         {
             Url(SalesServiceUrl);
@@ -246,7 +246,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             }
         }
 
-        [TestMethod, Ignore] //DnD currently disabling the input
+        [TestMethod]
         public virtual void AutoCompleteParmDefault()
         {
             Url(ProductServiceUrl);
@@ -259,7 +259,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
 
-        [TestMethod, Ignore] //DnD currently disabling the input
+        [TestMethod]
         public virtual void AutoCompleteParmShowSingleItem()
         {
             Url(ProductServiceUrl);

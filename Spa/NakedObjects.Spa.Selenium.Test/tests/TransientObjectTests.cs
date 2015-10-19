@@ -15,7 +15,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class TransientObjectTests : GeminiTest {
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //Complete test & guard against duplicate keys?
         public void CreateAndSaveTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
