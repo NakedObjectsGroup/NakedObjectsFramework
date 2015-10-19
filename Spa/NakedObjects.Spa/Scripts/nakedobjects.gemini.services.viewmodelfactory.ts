@@ -332,7 +332,7 @@ module NakedObjects.Angular.Gemini{
             }
 
             propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
-            propertyViewModel.hasPrompt = !!propertyRep.promptLink() && propertyRep.promptLink().arguments()["x-ro-searchTerm"];
+            propertyViewModel.hasPrompt = !!propertyRep.promptLink() && !!propertyRep.promptLink().arguments()["x-ro-searchTerm"];
             propertyViewModel.hasConditionalChoices =  !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
             if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
