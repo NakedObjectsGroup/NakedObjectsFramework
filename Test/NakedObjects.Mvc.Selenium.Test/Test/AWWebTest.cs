@@ -60,7 +60,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
-        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 10);
+        protected TimeSpan DefaultTimeOut = new TimeSpan(0, 0, 20);
 
         public static void Reset(TestContext context) {
             try {

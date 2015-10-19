@@ -166,11 +166,14 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             options = subcategories.FindElements(By.TagName("option"));
             Assert.AreEqual(21, options.Count);
+            var optionTexts = options.Select(o => o.Text).ToArray();
 
-            Assert.IsFalse(options.Any(we => we.Text == "Mountain Bikes"));
-            Assert.IsFalse(options.Any(we => we.Text == "Handlebars"));
-            Assert.IsTrue(options.Any(we => we.Text == "Caps"));
-            Assert.IsTrue(options.Any(we => we.Text == "Lights"));
+            Assert.IsFalse(optionTexts.Any(we => we == "Mountain Bikes"));
+            Assert.IsFalse(optionTexts.Any(we => we == "Handlebars"));
+            Assert.IsTrue(optionTexts.Any(we => we == "Caps"));
+            Assert.IsTrue(optionTexts.Any(we => we == "Lights"));
+
+            subcategories = br.FindElement(By.CssSelector("#ProductRepository-FindProductsByCategory-Subcategories"));
 
             subcategories.SelectListBoxItems(br, "Jerseys", "Shorts", "Socks", "Tights", "Vests");
 

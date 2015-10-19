@@ -20,8 +20,7 @@ namespace NakedObjects.Mvc.Selenium.Test.Firefox {
         [TestInitialize]
         public virtual void InitializeTest() {
             br = new FirefoxDriver();
-            // up the timeout on these tests - seems slow in new(!) server 
-            wait = new SafeWebDriverWait(br, (DefaultTimeOut + DefaultTimeOut));
+            wait = new SafeWebDriverWait(br, (DefaultTimeOut));
             br.Navigate().GoToUrl(url);
         }
 
