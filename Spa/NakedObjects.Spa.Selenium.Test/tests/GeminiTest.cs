@@ -170,12 +170,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected virtual void TypeIntoField(string cssFieldId, string characters)
         {
-            WaitForCss("#"+ cssFieldId + " input").SendKeys(characters);
+            WaitForCss(cssFieldId + " input").SendKeys(characters);
         }
 
         protected virtual void SelectDropDownOnField(string cssFieldId, string characters)
         {
-            WaitForCss("#" + cssFieldId + " select").SendKeys(characters);
+            WaitForCss(cssFieldId + " select").SendKeys(characters);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
