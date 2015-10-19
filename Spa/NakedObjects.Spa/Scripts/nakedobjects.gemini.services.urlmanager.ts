@@ -216,7 +216,7 @@ module NakedObjects.Angular.Gemini {
             search[action + paneId] = aid;
 
             if (dvm) {
-                _.each(dvm.parameters, p => search[`parm${paneId}_${p.id}`] = p.getValue().toString());
+                _.each(dvm.parameters, p => search[`parm${paneId}_${p.id}`] = p.getValue().toValueString());
             }
 
             $location.search(search);
