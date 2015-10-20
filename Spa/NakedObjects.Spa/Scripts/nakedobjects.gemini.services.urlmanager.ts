@@ -54,7 +54,7 @@ module NakedObjects.Angular.Gemini {
         const object = "object";
         const collection = "collection";
         const edit = "edit";
-        const query = "query";
+        const list = "list";
         const action = "action";
         const dialog = "dialog";
         const parm = "parm";
@@ -197,7 +197,7 @@ module NakedObjects.Angular.Gemini {
             const aid = actionMember.actionId();
             const search = clearPane($location.search(), paneId);
 
-            setupPaneNumberAndTypes(paneId, query);
+            setupPaneNumberAndTypes(paneId, list);
 
             const parent = actionMember.parent;
 
