@@ -68,21 +68,21 @@ module NakedObjects.Angular {
     export const appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
     export const nullTemplate = getSvrPath() + "Content/partials/null.html";
 
-    var singleErrorPageTemplate = getSvrPath() + "Content/partials/singleError.html";
+    var singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
 
     //All Gemini2 templates below:
-    const singleHomePageTemplate = getSvrPath() + "Content/partials/singleHome.html";
-    const singleObjectPageTemplate = getSvrPath() + "Content/partials/singleObject.html";
-    const singleQueryPageTemplate = getSvrPath() + "Content/partials/singleList.html";
-    const splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHome.html";
-    const splitHomeObjectPageTemplate = getSvrPath() + "Content/partials/splitHomeObject.html";
-    const splitHomeQueryPageTemplate = getSvrPath() + "Content/partials/splitHomeList.html";
-    const splitObjectHomePageTemplate = getSvrPath() + "Content/partials/splitObjectHome.html";
-    const splitObjectObjectPageTemplate = getSvrPath() + "Content/partials/splitObjectObject.html";
-    const splitObjectQueryPageTemplate = getSvrPath() + "Content/partials/splitObjectList.html";
-    const splitQueryHomePageTemplate = getSvrPath() + "Content/partials/splitListHome.html";
-    const splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitListObject.html";
-    const splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitListList.html";
+    const singleHomeTemplate = getSvrPath() + "Content/partials/singleHome.html";
+    const singleObjectTemplate = getSvrPath() + "Content/partials/singleObject.html";
+    const singleListTemplate = getSvrPath() + "Content/partials/singleList.html";
+    const splitHomeHomeTemplate = getSvrPath() + "Content/partials/splitHomeHome.html";
+    const splitHomeObjectTemplate = getSvrPath() + "Content/partials/splitHomeObject.html";
+    const splitHomeListTemplate = getSvrPath() + "Content/partials/splitHomeList.html";
+    const splitObjectHomeTemplate = getSvrPath() + "Content/partials/splitObjectHome.html";
+    const splitObjectObjectTemplate = getSvrPath() + "Content/partials/splitObjectObject.html";
+    const splitObjectListTemplate = getSvrPath() + "Content/partials/splitObjectList.html";
+    const splitListHomeTemplate = getSvrPath() + "Content/partials/splitListHome.html";
+    const splitListObjectTemplate = getSvrPath() + "Content/partials/splitListObject.html";
+    const splitListListTemplate = getSvrPath() + "Content/partials/splitListList.html";
 
     export const blankTemplate = getSvrPath() + "Content/partials/blank.html";
     export const homeTemplate = getSvrPath() + "Content/partials/home.html";
@@ -92,8 +92,8 @@ module NakedObjects.Angular {
     export const transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
 
 
-    export const queryListTemplate = getSvrPath() + "Content/partials/List.html";
-    export const queryTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
+    export const ListTemplate = getSvrPath() + "Content/partials/List.html";
+    export const ListAsTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
 
     export const footerTemplate = getSvrPath() + "Content/partials/footer.html";
     export const actionsTemplate = getSvrPath() + "Content/partials/actions.html";
@@ -110,55 +110,55 @@ module NakedObjects.Angular {
             
             //Gemini2 Urls below:
             when("/gemini/home", {
-                templateUrl: singleHomePageTemplate,
+                templateUrl: singleHomeTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/object", {
-                templateUrl: singleObjectPageTemplate,
+                templateUrl: singleObjectTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/query", {
-                templateUrl: singleQueryPageTemplate,
+                templateUrl: singleListTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/home/home", {
-                templateUrl: splitHomeHomePageTemplate,
+                templateUrl: splitHomeHomeTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/home/object", {
-                templateUrl: splitHomeObjectPageTemplate,
+                templateUrl: splitHomeObjectTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/home/query", {
-                templateUrl: splitHomeQueryPageTemplate,
+                templateUrl: splitHomeListTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/object/home", {
-                templateUrl: splitObjectHomePageTemplate,
+                templateUrl: splitObjectHomeTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/object/object", {
-                templateUrl: splitObjectObjectPageTemplate,
+                templateUrl: splitObjectObjectTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/object/query", {
-                templateUrl: splitObjectQueryPageTemplate,
+                templateUrl: splitObjectListTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/query/home", {
-                templateUrl: splitQueryHomePageTemplate,
+                templateUrl: splitListHomeTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/query/object", {
-                templateUrl: splitQueryObjectPageTemplate,
+                templateUrl: splitListObjectTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/query/query", {
-                templateUrl: splitQueryQueryPageTemplate,
+                templateUrl: splitListListTemplate,
                 controller: "BackgroundController"
             }).
             when("/gemini/error", {
-                templateUrl: singleErrorPageTemplate,
+                templateUrl: singleErrorTemplate,
                 controller: "ErrorController"
             }).
             //Cicero
