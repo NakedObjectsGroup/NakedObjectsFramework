@@ -165,6 +165,13 @@ module NakedObjects.Angular.Gemini {
             this.color = newValue.color;
         }
 
+        clear() {
+            this.value = null;
+            this.reference = "";
+            this.choice = null;
+            this.color = "";
+        }
+
         canDropOn = (targetType: string) => _.any(this.possibleDropTypes, t => t === targetType);
 
         getValue(): Value {

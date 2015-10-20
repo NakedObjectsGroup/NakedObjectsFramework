@@ -314,11 +314,22 @@ module NakedObjects.Angular.Gemini {
             ui.helper.data(draggableVmKey, draggableVm);
             element.data(draggableVmKey, draggableVm);
         });
+
+        element.on("keydown keypress", event => {
+            const cKeyCode = 67;
+            if (event.keyCode === cKeyCode && event.ctrlKey) {
+                const draggableVm = scope.property || scope.item || scope.$parent.object;
+
+                $("div.background").data(draggableVmKey, draggableVm);
+            }
+        });
+
     });
 
     app.directive("geminiEnter", () => (scope, element, attrs) => {
         element.bind("keydown keypress", event => {
-            if (event.which === 13) {
+            const enterKeyCode = 13;
+            if (event.which === enterKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.geminiEnter));
                 event.preventDefault();
             }
@@ -350,6 +361,27 @@ module NakedObjects.Angular.Gemini {
             const draggableVm = <IDraggableViewModel>  ui.draggable.data(draggableVmKey);
 
             droppableScope.$apply(() => droppableVm.drop(draggableVm));
+        });
+
+        element.on("keydown keypress", event => {
+            const vKeyCode = 86;
+            const deleteKeyCode = 46;
+            if (event.keyCode === vKeyCode && event.ctrlKey) {
+             
+                const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
+                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const draggableVm = <IDraggableViewModel>  $("div.background").data(draggableVmKey);
+
+                if (draggableVm) {
+                    droppableScope.$apply(() => droppableVm.drop(draggableVm));
+                }
+            }
+            if (event.keyCode === deleteKeyCode) {
+                const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
+                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+
+                scope.$apply(droppableVm.clear());
+            }
         });
     });
 
