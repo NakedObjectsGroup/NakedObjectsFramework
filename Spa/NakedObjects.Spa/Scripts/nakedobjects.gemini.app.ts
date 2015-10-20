@@ -68,21 +68,21 @@ module NakedObjects.Angular {
     export const appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
     export const nullTemplate = getSvrPath() + "Content/partials/null.html";
 
-    var singleErrorPageTemplate = getSvrPath() + "Content/partials/singleErrorPage.html";
+    var singleErrorPageTemplate = getSvrPath() + "Content/partials/singleError.html";
 
     //All Gemini2 templates below:
-    const singleHomePageTemplate = getSvrPath() + "Content/partials/singleHomePage.html";
-    const singleObjectPageTemplate = getSvrPath() + "Content/partials/singleObjectPage.html";
-    const singleQueryPageTemplate = getSvrPath() + "Content/partials/singleQueryPage.html";
-    const splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHomePage.html";
-    const splitHomeObjectPageTemplate = getSvrPath() + "Content/partials/splitHomeObjectPage.html";
-    const splitHomeQueryPageTemplate = getSvrPath() + "Content/partials/splitHomeQueryPage.html";
-    const splitObjectHomePageTemplate = getSvrPath() + "Content/partials/splitObjectHomePage.html";
-    const splitObjectObjectPageTemplate = getSvrPath() + "Content/partials/splitObjectObjectPage.html";
-    const splitObjectQueryPageTemplate = getSvrPath() + "Content/partials/splitObjectQueryPage.html";
-    const splitQueryHomePageTemplate = getSvrPath() + "Content/partials/splitQueryHomePage.html";
-    const splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitQueryObjectPage.html";
-    const splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitQueryQueryPage.html";
+    const singleHomePageTemplate = getSvrPath() + "Content/partials/singleHome.html";
+    const singleObjectPageTemplate = getSvrPath() + "Content/partials/singleObject.html";
+    const singleQueryPageTemplate = getSvrPath() + "Content/partials/singleList.html";
+    const splitHomeHomePageTemplate = getSvrPath() + "Content/partials/splitHomeHome.html";
+    const splitHomeObjectPageTemplate = getSvrPath() + "Content/partials/splitHomeObject.html";
+    const splitHomeQueryPageTemplate = getSvrPath() + "Content/partials/splitHomeList.html";
+    const splitObjectHomePageTemplate = getSvrPath() + "Content/partials/splitObjectHome.html";
+    const splitObjectObjectPageTemplate = getSvrPath() + "Content/partials/splitObjectObject.html";
+    const splitObjectQueryPageTemplate = getSvrPath() + "Content/partials/splitObjectList.html";
+    const splitQueryHomePageTemplate = getSvrPath() + "Content/partials/splitListHome.html";
+    const splitQueryObjectPageTemplate = getSvrPath() + "Content/partials/splitListObject.html";
+    const splitQueryQueryPageTemplate = getSvrPath() + "Content/partials/splitListList.html";
 
     export const blankTemplate = getSvrPath() + "Content/partials/blank.html";
     export const homeTemplate = getSvrPath() + "Content/partials/home.html";
@@ -92,8 +92,8 @@ module NakedObjects.Angular {
     export const transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
 
 
-    export const queryListTemplate = getSvrPath() + "Content/partials/queryList.html";
-    export const queryTableTemplate = getSvrPath() + "Content/partials/queryTable.html";
+    export const queryListTemplate = getSvrPath() + "Content/partials/List.html";
+    export const queryTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
 
     export const footerTemplate = getSvrPath() + "Content/partials/footer.html";
     export const actionsTemplate = getSvrPath() + "Content/partials/actions.html";

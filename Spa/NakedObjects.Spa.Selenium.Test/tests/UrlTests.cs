@@ -273,7 +273,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #endregion
 
     #region Running all tests in one go
-    //[TestClass]
+    [TestClass]
     public class MegaUrlTestFirefox : UrlTests
     {
         [ClassInitialize]
@@ -300,15 +300,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Home();
             UnrecognisedUrlGoesToHome();
+            HomeWithMenu();
             Object();
             ObjectInEditMode();
             ObjectWithActions();
             ObjectWithCollections();
             ObjectWithNoSuchObject();
-            //QueryZeroParameterAction();
-            SplitHomeHome();
-            SplitObjectHome();
-            //SplitQueryHome();
+            this.SplitHomeHome();
+            this.SplitHomeObject();
+            this.SplitHomeQuery();
+            this.SplitObjectHome();
+            this.SplitObjectObject();
+            this.SplitObjectQuery();
+            this.SplitQueryHome();
+            this.SplitQueryObject();
+            this.SplitQueryQuery();
         }
     }
     #endregion
