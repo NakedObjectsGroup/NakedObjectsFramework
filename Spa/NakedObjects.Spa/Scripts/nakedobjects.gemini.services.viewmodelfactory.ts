@@ -279,7 +279,7 @@ module NakedObjects.Angular.Gemini{
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
-            dialogViewModel.isQuery = actionMember.invokeLink().method() === "GET";
+            dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
 
@@ -449,7 +449,7 @@ module NakedObjects.Angular.Gemini{
 
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList(collection, state, paneId);
-                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setQueryState, paneId);
+                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setListState, paneId);
             }
 
             if (collectionVm) {

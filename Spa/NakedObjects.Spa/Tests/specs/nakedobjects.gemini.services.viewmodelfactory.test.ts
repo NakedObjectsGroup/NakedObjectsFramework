@@ -195,7 +195,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             it("creates a dialog view model", () => {
                 expect(resultVm.title).toBe("a title");
-                expect(resultVm.isQuery).toBe(false);
+                expect(resultVm.isQueryOnly).toBe(false);
                 expect(resultVm.message).toBe("");
                 expect(resultVm.parameters.length).toBe(0);
 

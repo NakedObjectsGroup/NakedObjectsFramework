@@ -294,7 +294,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
             
-                urlManager.setQuery(action11, 1);
+                urlManager.setList(action11, 1);
             }));
 
 
@@ -316,7 +316,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action12, 1);
+                urlManager.setList(action12, 1);
             }));
 
 
@@ -338,7 +338,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action11, 1);
+                urlManager.setList(action11, 1);
             }));
 
 
@@ -360,7 +360,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action12, 1);
+                urlManager.setList(action12, 1);
             }));
 
 
@@ -397,7 +397,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action11, 1, dvm);
+                urlManager.setList(action11, 1, dvm);
             }));
 
 
@@ -421,7 +421,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action21, 2);
+                urlManager.setList(action21, 2);
             }));
 
 
@@ -443,7 +443,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action22, 2);
+                urlManager.setList(action22, 2);
             }));
 
 
@@ -465,7 +465,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action21, 2);
+                urlManager.setList(action21, 2);
             }));
 
 
@@ -487,7 +487,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action22, 2);
+                urlManager.setList(action22, 2);
             }));
 
 
@@ -524,7 +524,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setQuery(action21, 2, dvm);
+                urlManager.setList(action21, 2, dvm);
             }));
 
 
@@ -745,7 +745,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection1 = "Summary";
 
-                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                    urlManager.setListState(1, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
                 }));
 
                 it("sets the collection state in the search", () => {
@@ -764,7 +764,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection1 = "List";
 
-                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                    urlManager.setListState(1, NakedObjects.Angular.Gemini.CollectionViewState.List);
                 }));
 
                 it("sets the collection state in the search", () => {
@@ -783,7 +783,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection1 = "Table";
 
-                    urlManager.setQueryState(1, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                    urlManager.setListState(1, NakedObjects.Angular.Gemini.CollectionViewState.Table);
                 }));
 
                 it("sets the collection state in the search", () => {
@@ -802,7 +802,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection2 = "Summary";
 
-                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                    urlManager.setListState(2, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
                 }));
 
                 it("sets the collection state in the search", () => {
@@ -821,7 +821,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection2 = "List";
 
-                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                    urlManager.setListState(2, NakedObjects.Angular.Gemini.CollectionViewState.List);
                 }));
 
                 it("sets the collection state in the search", () => {
@@ -840,7 +840,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
                     search.collection2 = "Table";
 
-                    urlManager.setQueryState(2, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                    urlManager.setListState(2, NakedObjects.Angular.Gemini.CollectionViewState.Table);
                 }));
 
                 it("sets the collection state in the search", () => {

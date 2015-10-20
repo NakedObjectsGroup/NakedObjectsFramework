@@ -31,8 +31,8 @@ module NakedObjects.Angular.Gemini {
         
         getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
        
-        getQuery: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
-        getQueryFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
+        getList: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : (paneId : number) => string;
       
 
@@ -60,7 +60,7 @@ module NakedObjects.Angular.Gemini {
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;
            
         setLastActionFriendlyName: (fn : string, paneId : number) => void;
-        setQuery(paneId : number, listRepresentation: ListRepresentation);
+        setList(paneId : number, listRepresentation: ListRepresentation);
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
@@ -224,18 +224,18 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setQuery(paneId, resultList);
+                context.setList(paneId, resultList);
                 return $q.when(resultList);
             } else {
                 return $q.reject("expect list");
             }
         }
 
-        context.setQuery = (paneId : number, query: ListRepresentation) => {
-            currentCollections[paneId] = query;
+        context.setList = (paneId : number, list: ListRepresentation) => {
+            currentCollections[paneId] = list;
         }
 
-        context.getQuery = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: string }[]) => {
+        context.getList = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: string }[]) => {
             const currentCollection = currentCollections[paneId];
 
             if (currentCollection) {
@@ -255,7 +255,7 @@ module NakedObjects.Angular.Gemini {
                 then((result : ActionResultRepresentation) => handleResult(paneId, result) );
         };
 
-        context.getQueryFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
+        context.getListFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
 
             const currentCollection = currentCollections[paneId];
 
@@ -373,9 +373,9 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setQuery(paneId, resultList);
+                context.setList(paneId, resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName, paneId);
-                urlManager.setQuery(action, paneId,  dvm);
+                urlManager.setList(action, paneId,  dvm);
             }
         };
 

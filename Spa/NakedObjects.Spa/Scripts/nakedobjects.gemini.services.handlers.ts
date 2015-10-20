@@ -24,7 +24,7 @@ module NakedObjects.Angular.Gemini {
         handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHome($scope: INakedObjectsScope, routeData : PaneRouteData): void;
-        handleQuery($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
     app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager : IUrlManager) {
@@ -117,10 +117,10 @@ module NakedObjects.Angular.Gemini {
 
         };
 
-        handlers.handleQuery = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+        handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            var promise = routeData.objectId ? context.getQueryFromObject(routeData.paneId,  routeData.objectId, routeData.actionId, routeData.parms) :
-                context.getQuery(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms);
+            var promise = routeData.objectId ? context.getListFromObject(routeData.paneId,  routeData.objectId, routeData.actionId, routeData.parms) :
+                context.getList(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms);
 
             promise.
                 then((list: ListRepresentation) => {

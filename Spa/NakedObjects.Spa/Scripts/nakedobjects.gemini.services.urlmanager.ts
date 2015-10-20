@@ -26,14 +26,14 @@ module NakedObjects.Angular.Gemini {
         closeDialog(paneId: number);
 
         setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
-        setQuery(action: ActionMember, paneId: number, dvm?: DialogViewModel);
+        setList(action: ActionMember, paneId: number, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember, paneId: number);
         setItem(link: Link, paneId: number): void;
 
         toggleObjectMenu(paneId: number): void;
 
         setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
-        setQueryState(paneId: number, state: CollectionViewState): void;
+        setListState(paneId: number, state: CollectionViewState): void;
 
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
@@ -193,7 +193,7 @@ module NakedObjects.Angular.Gemini {
             setObjectSearch(paneId, oid);  
         };
 
-        helper.setQuery = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
+        helper.setList = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
             const aid = actionMember.actionId();
             const search = clearPane($location.search(), paneId);
 
@@ -253,7 +253,7 @@ module NakedObjects.Angular.Gemini {
             setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
         };
 
-        helper.setQueryState = (paneId: number, state: CollectionViewState) => {
+        helper.setListState = (paneId: number, state: CollectionViewState) => {
             const collectionPrefix = `${collection}${paneId}`;
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };

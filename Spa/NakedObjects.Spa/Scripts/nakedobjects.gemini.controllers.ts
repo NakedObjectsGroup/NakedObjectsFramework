@@ -38,12 +38,12 @@ module NakedObjects.Angular.Gemini {
 
     app.controller("Pane1ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();
-        handlers.handleQuery($scope, routeData.pane1);
+        handlers.handleList($scope, routeData.pane1);
     });
 
     app.controller("Pane2ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();
-        handlers.handleQuery($scope, routeData.pane2);
+        handlers.handleList($scope, routeData.pane2);
     });
 
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
