@@ -61,7 +61,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         const rawLink = {
             title: "a title",
             href: "http://objects/AdventureWorksModel.Product/1",
-            rel: 'urn: org.restfulobjects:rels/details;action="anAction"'
+            rel: 'urn: org.restfulobjects:rels/details;action="anAction"',
+            type : ";x-ro-domain-type='atype'"
         };
 
         describe("from populated rep", () => {
@@ -86,7 +87,12 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         let resultVm: NakedObjects.Angular.Gemini.ItemViewModel;
         let setItem: jasmine.Spy;
-        const rawLink = { title: "a title", href: "http://objects/AdventureWorksModel.Product/1" };
+        const rawLink = {
+            title: "a title",
+            href: "http://objects/AdventureWorksModel.Product/1",
+            rel: 'urn: org.restfulobjects:rels/details;action="anAction"',
+            type: ";x-ro-domain-type='atype'"
+        };
 
 
         describe("from populated rep", () => {
