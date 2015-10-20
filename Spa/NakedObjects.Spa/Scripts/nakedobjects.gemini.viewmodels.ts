@@ -17,11 +17,12 @@
 module NakedObjects.Angular.Gemini {
 
     export interface IDraggableViewModel {
-        canDropOn(returnType: string);
+        canDropOn:  (targetType: string) => ng.IPromise<boolean>;
         value : Object;
         reference: string;
         choice: ChoiceViewModel;
         color: string;
+        draggableType : string;
     }
 
     export class AttachmentViewModel {
@@ -81,12 +82,13 @@ module NakedObjects.Angular.Gemini {
         color: string;
         doClick: (right?: boolean) => void;
 
-        canDropOn = (targetType: string) => _.any([this.domainType], t => t === targetType);
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
         value: Object;
         reference: string;
         choice: ChoiceViewModel;
         domainType: string;
+        draggableType : string;
     }
 
     export class ItemViewModel extends LinkViewModel{
@@ -124,8 +126,6 @@ module NakedObjects.Angular.Gemini {
         hasAutoAutoComplete: boolean;
         color: string;
 
-        possibleDropTypes : string[];
-
         setSelectedChoice() {}
 
         prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
@@ -158,12 +158,14 @@ module NakedObjects.Angular.Gemini {
             return this.getValue().toString();
         }
 
-        drop(newValue: IDraggableViewModel) {
+        setNewValue(newValue: IDraggableViewModel) {
             this.value = newValue.value;
             this.reference = newValue.reference;
             this.choice = newValue.choice;
             this.color = newValue.color;
         }
+
+        drop : (newValue: IDraggableViewModel) => void;
 
         clear() {
             this.value = null;
@@ -171,8 +173,6 @@ module NakedObjects.Angular.Gemini {
             this.choice = null;
             this.color = "";
         }
-
-        canDropOn = (targetType: string) => _.any(this.possibleDropTypes, t => t === targetType);
 
         getValue(): Value {
            
@@ -241,8 +241,10 @@ module NakedObjects.Angular.Gemini {
         target: string;       
         isEditable: boolean;    
         attachment: AttachmentViewModel;
+        draggableType : string;
 
-        doClick(right? : boolean) : void { }
+        doClick(right?: boolean): void { }
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;
     } 
 
     export class CollectionViewModel {
@@ -297,7 +299,8 @@ module NakedObjects.Angular.Gemini {
         doSave(): void { }
         toggleActionMenu(): void { }
         isTransient: boolean;
-        onPaneId : number;
+        onPaneId: number;
+        draggableType : string;
 
         doEdit(): void { }
         doEditCancel(): void { }
@@ -306,7 +309,7 @@ module NakedObjects.Angular.Gemini {
             return  !this.isTransient &&  _.any(this.properties, (p) => p.isEditable);
         }
 
-        canDropOn = (targetType: string) => _.any([this.domainType], t => t === targetType);
+        canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
         value: Object;
         reference: string;

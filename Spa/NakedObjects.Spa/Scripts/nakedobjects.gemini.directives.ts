@@ -284,7 +284,7 @@ module NakedObjects.Angular.Gemini {
     app.directive("geminiDrag", () => (scope, element) => {
 
         const cloneDraggable = () => {
-            let cloned;
+            let cloned: JQuery;
 
              // make the dragged element look like a reference 
             if ($(element)[0].nodeName.toLowerCase() === "tr") {
@@ -344,23 +344,38 @@ module NakedObjects.Angular.Gemini {
         const accept = (draggable) => {
             const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
-            return draggableVm ? draggableVm.canDropOn(droppableVm.returnType) : false;
+
+            if (draggableVm) {
+                draggableVm.canDropOn(droppableVm.returnType).
+                    then((canDrop: boolean) => {
+                        if (canDrop) {
+                            element.addClass("candrop");
+                        } else {
+                            element.removeClass("candrop");
+                        }
+                    }).
+                    catch(() => element.removeClass("candrop"));
+                return true;
+            }
+            return false;
         }
 
         element.droppable({
             tolerance: "touch",
-            activeClass: "candrop",
             hoverClass: "dropping",
             accept: accept
         });
 
         element.on("drop", (event, ui) => {
 
-            const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
-            const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
-            const draggableVm = <IDraggableViewModel>  ui.draggable.data(draggableVmKey);
+            if (element.hasClass("candrop")) {
 
-            droppableScope.$apply(() => droppableVm.drop(draggableVm));
+                const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
+                const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
+                const draggableVm = <IDraggableViewModel> ui.draggable.data(draggableVmKey);
+
+                droppableScope.$apply(() => droppableVm.drop(draggableVm));
+            }
         });
 
         element.on("keydown keypress", event => {

@@ -464,7 +464,13 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
+        const subTypeCache: { [index: string]: { [index: string]: boolean } } = {};
+
         context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
+
+            if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
+                return $q.when(subTypeCache[toCheckType][againstType]);
+            }
 
             const isSubTypeOf = new DomainTypeActionInvokeRepresentation();
 
@@ -472,7 +478,11 @@ module NakedObjects.Angular.Gemini {
 
             return repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {
-                    return updatedObject.value();
+                    const is = updatedObject.value();
+                    const entry:  { [index: string]: boolean   } = {};
+                    entry[againstType] = is;
+                    subTypeCache[toCheckType] = entry;
+                    return is;
                 }).
                 catch((error: any) => {
                     return false;

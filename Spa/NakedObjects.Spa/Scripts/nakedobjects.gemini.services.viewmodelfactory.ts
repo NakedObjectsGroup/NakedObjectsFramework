@@ -65,8 +65,8 @@ module NakedObjects.Angular.Gemini{
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());
 
-            //temp comment out
             linkViewModel.domainType = linkRep.type().domainType;
+            linkViewModel.draggableType = linkViewModel.domainType;
 
             // for dropping 
             const value = new Value(linkRep);
@@ -74,6 +74,8 @@ module NakedObjects.Angular.Gemini{
             linkViewModel.value = value.toString();
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = ChoiceViewModel.create(value, "");
+
+            linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
         }
 
 
@@ -136,6 +138,17 @@ module NakedObjects.Angular.Gemini{
             parmViewModel.title = parmRep.extensions().friendlyName;
             parmViewModel.returnType = parmRep.extensions().returnType;
             parmViewModel.format = parmRep.extensions().format;
+
+            parmViewModel.drop = (newValue: IDraggableViewModel) => {
+                context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
+                    then((canDrop: boolean) => {
+                        if (canDrop) {
+                            parmViewModel.setNewValue(newValue);
+                        }
+                    }
+                );
+            }; 
+
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
                 return ChoiceViewModel.create(v, parmRep.parameterId(), n);
@@ -297,9 +310,19 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
             propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
+            propertyViewModel.draggableType = propertyViewModel.returnType;
 
-            // todo populate this with list of compatible types - either from domain type call or custom extensions 
-            propertyViewModel.possibleDropTypes = [propertyRep.extensions().returnType];
+            propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
+
+            propertyViewModel.drop = (newValue: IDraggableViewModel) => {
+                context.isSubTypeOf(newValue.draggableType, propertyViewModel.returnType).
+                    then((canDrop: boolean) => {
+                            if (canDrop) {
+                                propertyViewModel.setNewValue(newValue);
+                            }
+                        }
+                    );
+            }; 
 
             propertyViewModel.doClick = (right? : boolean) => {
                 urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
@@ -510,6 +533,8 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.isTransient = !!objectRep.persistLink();
 
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
+            objectViewModel.domainType = objectRep.domainType();
+            objectViewModel.draggableType = objectViewModel.domainType;
 
             const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
        
@@ -518,11 +543,13 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
             objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
 
+            objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
+
+
             const properties = objectRep.propertyMembers();
             const collections = objectRep.collectionMembers();
             const actions = objectRep.actionMembers();
 
-            objectViewModel.domainType = objectRep.domainType();
             objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();
 
             objectViewModel.message = "";
