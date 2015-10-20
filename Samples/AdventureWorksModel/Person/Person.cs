@@ -231,7 +231,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public override bool HideBusinessEntityContacts() {
+        public override bool HideContacts() {
             return true;
         }
 

@@ -70,10 +70,8 @@ namespace AdventureWorksModel
             set { _contacts = value; }
         }
 
-        public virtual bool HideBusinessEntityContacts() {
+        public virtual bool HideContacts() {
             return false;
         }
-
-
     }
 }

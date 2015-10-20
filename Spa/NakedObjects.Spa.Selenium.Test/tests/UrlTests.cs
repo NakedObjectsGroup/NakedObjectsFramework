@@ -86,7 +86,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectWithActions()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
-            GetObjectActions(8);
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
         }
@@ -143,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "home/object?object2=AdventureWorksModel.Store-350");
             WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Object,  "Twin Cycles, AW00000555");
+            WaitForView(Pane.Right, PaneType.Object,  "Twin Cycles");
         }
 
         [TestMethod]
@@ -158,23 +157,23 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitObjectHome()
         {
             GeminiUrl( "object/home?object1=AdventureWorksModel.Store-350");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
 
         [TestMethod]
         public virtual void SplitObjectObject()
         {
-            GeminiUrl( "object/object?object1=AdventureWorksModel.Store-350&object2=AdventureWorksModel.Store-359");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
-            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
+            GeminiUrl( "object/object?object1=AdventureWorksModel.Store-350&object2=AdventureWorksModel.Store-604");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
 
         [TestMethod]
         public virtual void SplitObjectQuery()
         {
             GeminiUrl( "object/query?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Query,  "Highest Value Orders");
         }
 
@@ -191,7 +190,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
             WaitForView(Pane.Left, PaneType.Query, "Highest Value Orders");
-            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center, AW00000359");
+            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
 
         [TestMethod]
@@ -227,7 +226,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class UrlTestsFirefox : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
