@@ -263,7 +263,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         });
     });
 
-    describe("setQuery", () => {
+    describe("setList", () => {
 
         let location: ng.ILocationService;
         const obj = new NakedObjects.DomainObjectRepresentation();
@@ -723,7 +723,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
         });
 
-        describe("setQueryState", () => {
+        describe("setListState", () => {
 
             const preSearch: any = { menu1: "menu1", menu2: "menu2" };
           

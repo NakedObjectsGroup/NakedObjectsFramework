@@ -117,14 +117,14 @@ describe("nakedobjects.gemini.controllers", () => {
         });
     });
 
-    describe("Pane1QueryController", () => {
-        let handleQuery: jasmine.Spy;
+    describe("Pane1ListController", () => {
+        let handleList: jasmine.Spy;
         let getRouteData: jasmine.Spy;
         let testRouteData: NakedObjects.Angular.Gemini.RouteData;
 
         beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
             $scope = $rootScope.$new();
-            handleQuery = spyOn(handlers, "handleQuery");
+            handleList = spyOn(handlers, "handleList");
             testRouteData = new NakedObjects.Angular.Gemini.RouteData();
             getRouteData = spyOn(urlManager, "getRouteData");
             getRouteData.and.returnValue(testRouteData);
@@ -133,7 +133,7 @@ describe("nakedobjects.gemini.controllers", () => {
         describe("on Pane 1", () => {
 
             beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
-                ctrl = $controller("Pane1QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+                ctrl = $controller("Pane1ListController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
             }));
 
             it("should call getRouteData", () => {
@@ -141,14 +141,14 @@ describe("nakedobjects.gemini.controllers", () => {
             });
 
             it("should call the handler for the correct pane", () => {
-                expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane1);
+                expect(handleList).toHaveBeenCalledWith($scope, testRouteData.pane1);
             });
         });
 
         describe("on Pane 2", () => {
 
             beforeEach(inject(($rootScope, $controller, handlers, urlManager) => {
-                ctrl = $controller("Pane2QueryController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
+                ctrl = $controller("Pane2ListController", { $scope: $scope, handlers: handlers, urlManager: urlManager });
             }));
 
             it("should call getRouteData", () => {
@@ -156,7 +156,7 @@ describe("nakedobjects.gemini.controllers", () => {
             });
 
             it("should call the handler for the correct pane", () => {
-                expect(handleQuery).toHaveBeenCalledWith($scope, testRouteData.pane2);
+                expect(handleList).toHaveBeenCalledWith($scope, testRouteData.pane2);
             });
         });
     });

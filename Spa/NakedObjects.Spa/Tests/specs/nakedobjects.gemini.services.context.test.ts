@@ -347,7 +347,7 @@ describe("nakedObjects.gemini.services.context ", () => {
     });
 
 
-    //describe("getQuery", () => {
+    //describe("getList", () => {
 
     //    const testObject = new NakedObjects.ListRepresentation();
     //    let localContext: NakedObjects.Angular.Gemini.IContext;
@@ -363,9 +363,9 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     //        beforeEach(inject(() => {
 
-    //            (<any>localContext).setQuery(testObject);
+    //            (<any>localContext).setList(testObject);
 
-    //            result = localContext.getQuery("", "", []);
+    //            result = localContext.getList("", "", []);
     //            timeout.flush();
     //        }));
 
@@ -377,7 +377,7 @@ describe("nakedObjects.gemini.services.context ", () => {
     //    describe("when collection is not set", () => {
 
     //        beforeEach(inject(() => {
-    //            result = localContext.getQuery("", "", []);
+    //            result = localContext.getList("", "", []);
     //            timeout.flush();
     //        }));
 

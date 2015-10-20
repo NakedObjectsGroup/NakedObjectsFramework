@@ -328,11 +328,11 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         describe("from empty list rep", () => {
 
-            let setQueryState: jasmine.Spy;
+            let setListState: jasmine.Spy;
             const lr = new NakedObjects.ListRepresentation(rawEmptyList);
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                setQueryState = spyOn(urlManager, "setQueryState");
+                setListState = spyOn(urlManager, "setListState");
                 resultVm = viewModelFactory.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.Summary, 1);
             }));
 
@@ -344,11 +344,11 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 expect(resultVm.pluralName).toBe("Objects");
 
                 resultVm.doSummary();
-                expect(setQueryState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
+                expect(setListState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.Summary);
                 resultVm.doList();
-                expect(setQueryState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.List);
+                expect(setListState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.List);
                 resultVm.doTable();
-                expect(setQueryState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.Table);
+                expect(setListState).toHaveBeenCalledWith(1, NakedObjects.Angular.Gemini.CollectionViewState.Table);
             });
         });
 
