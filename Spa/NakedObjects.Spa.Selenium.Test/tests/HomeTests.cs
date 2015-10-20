@@ -86,7 +86,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Url(OrdersMenuUrl);
             WaitForCss(".actions .action", OrderServiceActions);
             Click(GetObjectAction("Highest Value Orders"));
-            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             WaitForCss(".reference", 20);
         }
 
@@ -106,7 +106,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Url(OrdersMenuUrl);
             WaitForCss(".actions .action", OrderServiceActions);
             Click(GetObjectAction("Orders In Process"));
-            WaitForView(Pane.Single, PaneType.Query, "Orders In Process");
+            WaitForView(Pane.Single, PaneType.List, "Orders In Process");
             var rows = br.FindElements(By.CssSelector("td"));
             Assert.AreEqual(0, rows.Count);
         }

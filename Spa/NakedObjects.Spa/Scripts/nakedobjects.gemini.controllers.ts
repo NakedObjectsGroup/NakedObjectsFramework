@@ -36,12 +36,12 @@ module NakedObjects.Angular.Gemini {
         handlers.handleObject($scope, routeData.pane2);
     });
 
-    app.controller("Pane1QueryController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+    app.controller("Pane1ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();
         handlers.handleQuery($scope, routeData.pane1);
     });
 
-    app.controller("Pane2QueryController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+    app.controller("Pane2ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();
         handlers.handleQuery($scope, routeData.pane2);
     });

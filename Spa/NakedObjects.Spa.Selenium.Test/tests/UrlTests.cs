@@ -123,7 +123,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             GeminiUrl( "query?menu1=OrderRepository&action1=HighestValueOrders");
             wait.Until(d => d.FindElement(By.CssSelector(".query")));
-            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
         }
         #endregion
 
@@ -150,7 +150,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "home/query?&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
 
         [TestMethod]
@@ -174,14 +174,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "object/query?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            WaitForView(Pane.Right, PaneType.Query,  "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.List,  "Highest Value Orders");
         }
 
         [TestMethod]
         public virtual void SplitQueryHome()
         {
             GeminiUrl( "query/home?menu1=OrderRepository&action1=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
 
@@ -189,7 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitQueryObject()
         {
             GeminiUrl( "query/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
-            WaitForView(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
 
@@ -198,8 +198,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "query/query?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
 
-            WaitForView(Pane.Left, PaneType.Query, "Highest Value Orders");
-            WaitForView(Pane.Right, PaneType.Query, "Current Special Offers");
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.List, "Current Special Offers");
         }
         #endregion
 

@@ -28,7 +28,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Orders By Value");
             WaitForCss(".value  select").SendKeys("Ascending");
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Orders By Value");
+            WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
@@ -49,7 +49,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             WaitForCss(".value  select").SendKeys("Ascending");
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Orders By Value");
+            WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
 
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Search For Orders");
+            WaitForView(Pane.Single, PaneType.List, "Search For Orders");
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("List Products By Sub Category");
             WaitForCss(".value  select").SendKeys("Forks");
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Category");
+            WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
         }
 
@@ -101,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Categories");
+            WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -119,7 +119,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             kb.ReleaseKey(Keys.Control);
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "List Products By Sub Categories");
+            WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             AssertTopItemInListIs("Front Brakes");
         }
 
@@ -136,7 +136,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Find By Product Line And Class");
+            WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("Mountain-300 Black, 38");
         }
 
@@ -150,7 +150,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForCss("div#productclass .value  select").SendKeys("L");
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Find By Product Line And Class");
+            WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
 
@@ -172,7 +172,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Find Products By Category");
+            WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -197,7 +197,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Find Products By Category");
+            WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
@@ -215,7 +215,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".ui-menu-item"));
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
+            WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
 
         [TestMethod]
@@ -232,7 +232,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".ui-menu-item"));
 
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "List Accounts For Sales Person");
+            WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
 
             try
             {

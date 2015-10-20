@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Query, "Search For Orders");
+            WaitForView(Pane.Single, PaneType.List, "Search For Orders");
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void CollectionAction() {
             GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             Click(GetObjectAction("Recent Orders"));
-            WaitForView(Pane.Single, PaneType.Query, "Recent Orders");
+            WaitForView(Pane.Single, PaneType.List, "Recent Orders");
         }
         #endregion
     }

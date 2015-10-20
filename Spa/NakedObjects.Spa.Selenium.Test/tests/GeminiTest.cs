@@ -225,7 +225,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Home,
             Object,
-            Query
+            List
         }
 
         protected enum ClickType

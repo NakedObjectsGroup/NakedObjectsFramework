@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
-            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
             Assert.AreEqual("20-Objects", WaitForCss(".collection .summary .details").Text);
             WaitForCss(".icon-table");
@@ -36,7 +36,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
-            WaitForView(Pane.Single, PaneType.Query, "Current Special Offers");
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
@@ -60,7 +60,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
-            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
 
             // select item
             var row = wait.Until( dr => dr.FindElement(By.CssSelector("table .reference")));
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectAction("Current Special Offers"));
-            WaitForView(Pane.Single, PaneType.Query, "Current Special Offers");
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);

@@ -37,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             RightClick(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
 
         [TestMethod]
@@ -45,11 +45,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Url(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
-            WaitForView(Pane.Single, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             var row = WaitForCss("table .reference");
             Assert.AreEqual("SO51131", row.Text);
             RightClick(row);
-            WaitForView(Pane.Left, PaneType.Query, "Highest Value Orders");
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "SO51131");
         }
 

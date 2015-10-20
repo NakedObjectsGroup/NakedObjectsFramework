@@ -37,7 +37,7 @@
         float: left;
     }
 /*Three main roots*/
-    .home, .object, .query, .error {
+    .home, .object, .list, .error {
         padding-left: 20px;
         height: 100%;
         overflow-y: auto;
@@ -249,8 +249,8 @@
         padding-left: 0px; /*Because it is a heading, so outdented*/
         float: left;
     }
-    /*Collections within query*/
-    .query .collection .details {
+    /*Collections within list*/
+    .list .collection .details {
         padding-left: 40px; /*To align with first column text, allowing for checkbox*/
         width: 350px;
         float: left;
