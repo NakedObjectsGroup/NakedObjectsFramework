@@ -299,7 +299,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/query");
+                expect(location.path()).toBe("/gemini/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -321,7 +321,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/query");
+                expect(location.path()).toBe("/gemini/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -343,7 +343,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/query/home");
+                expect(location.path()).toBe("/gemini/list/home");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -365,7 +365,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/query/home");
+                expect(location.path()).toBe("/gemini/list/home");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -402,7 +402,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/query");
+                expect(location.path()).toBe("/gemini/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -426,7 +426,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/home/query");
+                expect(location.path()).toBe("/gemini/home/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -448,7 +448,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/home/query");
+                expect(location.path()).toBe("/gemini/home/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -470,7 +470,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/home/query");
+                expect(location.path()).toBe("/gemini/home/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -492,7 +492,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/home/query");
+                expect(location.path()).toBe("/gemini/home/list");
                 expect(location.search()).toEqual(search);
             });
         });
@@ -529,7 +529,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
 
             it("sets the path, clears other pane settings and sets the object and action in the search", () => {
-                expect(location.path()).toBe("/gemini/home/query");
+                expect(location.path()).toBe("/gemini/home/list");
                 expect(location.search()).toEqual(search);
             });
         });

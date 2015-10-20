@@ -39,7 +39,7 @@ module NakedObjects.Angular {
         dialog: Angular.Gemini.DialogViewModel;
         error: Angular.Gemini.ErrorViewModel;
         errorTemplate: string;
-        queryTemplate: string;
+        listTemplate: string;
         collection: Angular.Gemini.CollectionViewModel;
         title: string;
         toolBar: ToolBarViewModel;
@@ -200,7 +200,12 @@ module NakedObjects.Angular {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroController"
             }).
+            //TODO: remove
             when("/cicero/query", {
+                templateUrl: ciceroTemplate,
+                controller: "CiceroController"
+            }).
+            when("/cicero/list", {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroController"
             }).
