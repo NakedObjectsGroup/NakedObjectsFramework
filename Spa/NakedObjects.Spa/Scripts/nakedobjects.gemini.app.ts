@@ -117,7 +117,12 @@ module NakedObjects.Angular {
                 templateUrl: singleObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/query", {
+            //TODO: Remove
+            when("/gemini/query", { 
+                templateUrl: singleListTemplate,
+                controller: "BackgroundController"
+            }).
+            when("/gemini/list", {
                 templateUrl: singleListTemplate,
                 controller: "BackgroundController"
             }).
@@ -129,7 +134,12 @@ module NakedObjects.Angular {
                 templateUrl: splitHomeObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/home/query", {
+            //TODO: remove
+            when("/gemini/home/query", { 
+                templateUrl: splitHomeListTemplate,
+                controller: "BackgroundController"
+            }).
+            when("/gemini/home/list", {
                 templateUrl: splitHomeListTemplate,
                 controller: "BackgroundController"
             }).
@@ -141,19 +151,39 @@ module NakedObjects.Angular {
                 templateUrl: splitObjectObjectTemplate,
                 controller: "BackgroundController"
             }).
+            //TODO: remove
             when("/gemini/object/query", {
                 templateUrl: splitObjectListTemplate,
                 controller: "BackgroundController"
             }).
+            when("/gemini/object/list", {
+                templateUrl: splitObjectListTemplate,
+                controller: "BackgroundController"
+            }).
+             //TODO: remove
             when("/gemini/query/home", {
                 templateUrl: splitListHomeTemplate,
                 controller: "BackgroundController"
             }).
+            when("/gemini/list/home", {
+                templateUrl: splitListHomeTemplate,
+                controller: "BackgroundController"
+            }).
+            //TODO: remove
             when("/gemini/query/object", {
                 templateUrl: splitListObjectTemplate,
                 controller: "BackgroundController"
             }).
+            when("/gemini/list/object", {
+                templateUrl: splitListObjectTemplate,
+                controller: "BackgroundController"
+            }).
+            //TODO: remove
             when("/gemini/query/query", {
+                templateUrl: splitListListTemplate,
+                controller: "BackgroundController"
+            }).
+            when("/gemini/list/list", {
                 templateUrl: splitListListTemplate,
                 controller: "BackgroundController"
             }).
