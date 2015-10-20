@@ -11,11 +11,11 @@ using OpenQA.Selenium;
 namespace NakedObjects.Web.UnitTests.Selenium {
 
     /// <summary>
-    /// Tests applied from a Query view.
+    /// Tests applied from a List view.
     /// </summary>
-    public abstract class QueryTests : AWTest {
+    public abstract class ListTests : AWTest {
         [TestMethod]
-        public virtual void QueryActionReturnsListView()
+        public virtual void ActionReturnsListView()
         {
             Url(OrdersMenuUrl);
             Click(GetObjectAction("Highest Value Orders"));
@@ -92,7 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses
 
     //[TestClass, Ignore]
-    public class QueryTestsIe : QueryTests
+    public class ListTestsIe : ListTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -112,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class QueryTestsFirefox : QueryTests
+    public class ListTestsFirefox : ListTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -131,7 +131,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     //[TestClass, Ignore]
-    public class QueryTestsChrome : QueryTests {
+    public class ListTestsChrome : ListTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");

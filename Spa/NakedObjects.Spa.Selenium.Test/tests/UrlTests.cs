@@ -118,7 +118,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void QueryZeroParameterAction()
+        public virtual void ListZeroParameterAction()
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             GeminiUrl( "list?menu1=OrderRepository&action1=HighestValueOrders");
@@ -146,7 +146,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void SplitHomeQuery()
+        public virtual void SplitHomeList()
         {
             GeminiUrl( "home/list?&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Home, "Home");
@@ -170,7 +170,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void SplitObjectQuery()
+        public virtual void SplitObjectList()
         {
             GeminiUrl( "object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
@@ -178,7 +178,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void SplitQueryHome()
+        public virtual void SplitListHome()
         {
             GeminiUrl( "list/home?menu1=OrderRepository&action1=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
@@ -186,7 +186,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod] 
-        public virtual void SplitQueryObject()
+        public virtual void SplitListObject()
         {
             GeminiUrl( "list/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
@@ -194,7 +194,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void SplitQueryQuery()
+        public virtual void SplitListList()
         {
             GeminiUrl( "list/list?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
 
@@ -308,13 +308,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ObjectWithNoSuchObject();
             this.SplitHomeHome();
             this.SplitHomeObject();
-            this.SplitHomeQuery();
+            this.SplitHomeList();
             this.SplitObjectHome();
             this.SplitObjectObject();
-            this.SplitObjectQuery();
-            this.SplitQueryHome();
-            this.SplitQueryObject();
-            this.SplitQueryQuery();
+            this.SplitObjectList();
+            this.SplitListHome();
+            this.SplitListObject();
+            this.SplitListList();
         }
     }
     #endregion
