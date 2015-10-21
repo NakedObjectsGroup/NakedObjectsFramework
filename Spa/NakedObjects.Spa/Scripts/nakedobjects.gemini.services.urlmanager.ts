@@ -44,6 +44,7 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
+        setParameter: (p: ParameterViewModel, paneId: number) => void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -84,7 +85,7 @@ module NakedObjects.Angular.Gemini {
 
             // todo make parm ids dictionary same as collections ids ? 
             const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
-            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + paneId), val: v } });
+            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -93,9 +94,9 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-        function clearSearch(parmId: string) {
+        function clearSearch(parmIds: string[]) {
             let search = $location.search();
-            search = _.omit(search, parmId);
+             _.forEach(parmIds, parmId => search = _.omit(search, parmId));
             $location.search(search);
         }
 
@@ -176,6 +177,10 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
+        function setParameter(paneId : number, search : any, p : ParameterViewModel) {
+            search[`parm${paneId}_${p.id}`] = p.getValue().toValueString();
+        }
+
         helper.setMenu = (menuId: string, paneId: number) => {
             setSearch(`${menu}${paneId}`, menuId, false);
         };
@@ -185,7 +190,11 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.closeDialog = (paneId: number) => {
-            clearSearch(`${dialog}${paneId}`);
+            const dialogId = `${dialog}${paneId}`;
+            const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0);
+            ids.push(dialogId);
+
+            clearSearch(ids);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
@@ -216,9 +225,15 @@ module NakedObjects.Angular.Gemini {
             search[action + paneId] = aid;
 
             if (dvm) {
-                _.each(dvm.parameters, p => search[`parm${paneId}_${p.id}`] = p.getValue().toValueString());
+                _.each(dvm.parameters, p => setParameter(paneId, search, p));
             }
 
+            $location.search(search);
+        };
+
+        helper.setParameter = (pvm: ParameterViewModel, paneId: number) => {
+            const search = $location.search();
+            setParameter(paneId, search, pvm);
             $location.search(search);
         };
 

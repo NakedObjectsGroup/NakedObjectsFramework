@@ -108,7 +108,7 @@ module NakedObjects.Angular.Gemini {
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel(action, routeData.paneId);
+                            $scope.dialog = viewModelFactory.dialogViewModel(action, routeData.parms, routeData.paneId);
                         }
                     }).catch(error => {
                         setError(error);
@@ -178,7 +178,7 @@ module NakedObjects.Angular.Gemini {
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                         const action = object.actionMember(routeData.dialogId);
-                        $scope.dialog = viewModelFactory.dialogViewModel(action, routeData.paneId);
+                        $scope.dialog = viewModelFactory.dialogViewModel(action, routeData.parms, routeData.paneId);
                     }
 
                 }).catch(error => {

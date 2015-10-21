@@ -64,7 +64,7 @@ under the License.-->
                                 <div ng-switch-when="date-time">
                                     <input type="text" ng-model="$parent.parameter.value" gemini-datepicker/>
                                 </div>
-                                <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value"/>
+                                <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                             <div ng-switch-when="boolean">

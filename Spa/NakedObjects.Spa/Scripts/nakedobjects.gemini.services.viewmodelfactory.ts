@@ -24,13 +24,13 @@ module NakedObjects.Angular.Gemini{
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
-        dialogViewModel(actionRep: ActionMember, paneId : number): DialogViewModel;
+        dialogViewModel(actionRep: ActionMember, parms: { id: string;val: string }[], paneId: number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
-        parameterViewModel(parmRep: Parameter, previousValue: string): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, paneId): PropertyViewModel;
+        parameterViewModel(parmRep: Parameter, previousValue: string, paneId : number): ParameterViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, paneId : number): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
@@ -124,7 +124,7 @@ module NakedObjects.Angular.Gemini{
         }
 
          // tested
-        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: string) => {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: string, paneId : number) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -148,6 +148,10 @@ module NakedObjects.Angular.Gemini{
                     }
                 );
             }; 
+
+            parmViewModel.blur = () => {
+                urlManager.setParameter(parmViewModel, paneId);
+            }
 
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
@@ -288,13 +292,13 @@ module NakedObjects.Angular.Gemini{
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = (actionMember: ActionMember, paneId : number) => {
+        viewModelFactory.dialogViewModel = (actionMember: ActionMember, parms: { id: string;val: string }[], paneId: number) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, ""));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || {val : ""} ).val, paneId));
 
             dialogViewModel.doClose = () => urlManager.closeDialog(paneId);
             dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);

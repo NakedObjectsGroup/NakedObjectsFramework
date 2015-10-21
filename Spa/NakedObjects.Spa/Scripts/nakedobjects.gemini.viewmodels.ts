@@ -211,6 +211,7 @@ module NakedObjects.Angular.Gemini {
 
     export class ParameterViewModel extends ValueViewModel{
         dflt: string;       
+        blur : () => void;
     } 
 
     export class ActionViewModel {
