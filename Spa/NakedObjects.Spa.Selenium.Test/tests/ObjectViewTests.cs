@@ -49,8 +49,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count >= 2);
             ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Addresses:\r\n1 Items");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Items");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Addresses:\r\n1 Item(s)");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
         }
 
         [TestMethod]

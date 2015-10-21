@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.AreEqual("20 Items", WaitForCss(".collection .summary .details").Text);
+            Assert.AreEqual("20 Item(s)", WaitForCss(".collection .summary .details").Text);
             WaitForCss(".icon-table");
             AssertElementDoesNotExist(".icon-list");
             AssertElementDoesNotExist(".icon-summary");
