@@ -29,10 +29,10 @@ module NakedObjects.Angular.Gemini {
       
         getPreviousUrl: () => string;
         
-        getSelectedChoice: (parm: string, search: string) => ChoiceViewModel[];
+        //getSelectedChoice: (parm: string, search: Value) => ChoiceViewModel[];
        
-        getList: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : string }[]) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: string }[]) => angular.IPromise<ListRepresentation>;
+        getList: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : Value }[]) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: Value }[]) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : (paneId : number) => string;
       
 
@@ -44,8 +44,8 @@ module NakedObjects.Angular.Gemini {
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
         setError: (object: ErrorRepresentation) => void;
-        clearSelectedChoice: (parm: string) => void;
-        setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
+        //clearSelectedChoice: (parm: string) => void;
+        //setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
 
         isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
         isSuperTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
@@ -235,7 +235,7 @@ module NakedObjects.Angular.Gemini {
             currentCollections[paneId] = list;
         }
 
-        context.getList = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: string }[]) => {
+        context.getList = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: Value }[]) => {
             const currentCollection = currentCollections[paneId];
 
             if (currentCollection) {
@@ -248,14 +248,14 @@ module NakedObjects.Angular.Gemini {
             return context.getMenu(menuId).
                 then((menu: MenuRepresentation) => {
                     const action = menu.actionMember(actionId);
-                    const valueParms = _.map(parms, p => ({ id: p.id, val: Value.fromValueString(p.val) }));
+                    const valueParms = _.map(parms, p => ({ id: p.id, val: p.val }));
                     lastActionFriendlyName[paneId] = action.extensions().friendlyName;
                     return repLoader.invoke(action, valueParms);
                 }).
                 then((result : ActionResultRepresentation) => handleResult(paneId, result) );
         };
 
-        context.getListFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: string }[]) => {
+        context.getListFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: Value }[]) => {
 
             const currentCollection = currentCollections[paneId];
 
@@ -268,7 +268,7 @@ module NakedObjects.Angular.Gemini {
             return context.getObjectByOid(paneId, objectId).
                 then((object: DomainObjectRepresentation) => {
                     const action = object.actionMember(actionId);
-                    const valueParms = _.map(parms, (p) => { return { id: p.id, val: new Value(p.val) } });
+                    const valueParms = _.map(parms, p => ({ id: p.id, val: p.val }));
                     lastActionFriendlyName[paneId] = action.extensions().friendlyName;
 
                     return repLoader.invoke(action, valueParms);
@@ -292,17 +292,17 @@ module NakedObjects.Angular.Gemini {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        var selectedChoice: { [parm: string]: { [search: string]: ChoiceViewModel[] } } = {};
+        //var selectedChoice: { [parm: string]: { [search: string]: ChoiceViewModel[] } } = {};
 
-        context.getSelectedChoice = (parm: string, search: string) => selectedChoice[parm] ? selectedChoice[parm][search] : [];
+        //context.getSelectedChoice = (parm: string, search: Value) => selectedChoice[parm] ? selectedChoice[parm][search.toString()] : [];
 
-        context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
-            selectedChoice[parm] = selectedChoice[parm] || {};
-            selectedChoice[parm][search] = selectedChoice[parm][search] || [];
-            selectedChoice[parm][search].push(cvm);
-        };
+        //context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
+        //    selectedChoice[parm] = selectedChoice[parm] || {};
+        //    selectedChoice[parm][search] = selectedChoice[parm][search] || [];
+        //    selectedChoice[parm][search].push(cvm);
+        //};
 
-        context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
+        //context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
 
         context.getLastActionFriendlyName = (paneId : number) => {
             return lastActionFriendlyName[paneId] || "";
@@ -411,8 +411,8 @@ module NakedObjects.Angular.Gemini {
             if (dvm) {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
-                _.each(parameters, (parm) => invoke.setParameter(parm.id, parm.getValue()));
-                _.each(parameters, (parm) => parm.setSelectedChoice());
+                _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
+                _.each(parameters, parm => urlManager.setParameter(parm, paneId, false));
             }
 
             repLoader.populate(invoke, true).

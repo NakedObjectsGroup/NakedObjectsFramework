@@ -44,7 +44,7 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
-        setParameter: (p: ParameterViewModel, paneId: number) => void;
+        setParameter: (p: ParameterViewModel, paneId: number, reload? : boolean) => void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -85,7 +85,7 @@ module NakedObjects.Angular.Gemini {
 
             // todo make parm ids dictionary same as collections ids ? 
             const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
-            paneRouteData.parms = _.map(parmIds, (v, k) => { return { id: k.substr(k.indexOf("_") + 1), val: v } });
+            paneRouteData.parms = _.map(parmIds, (v, k) => ({ id: k.substr(k.indexOf("_") + 1), val: Value.fromJsonString(decodeURIComponent(v))}));
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -178,7 +178,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setParameter(paneId : number, search : any, p : ParameterViewModel) {
-            search[`parm${paneId}_${p.id}`] = p.getValue().toValueString();
+            search[`parm${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
@@ -231,10 +231,15 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setParameter = (pvm: ParameterViewModel, paneId: number) => {
+        helper.setParameter = (pvm: ParameterViewModel, paneId: number, reload = true) => {
+
             const search = $location.search();
             setParameter(paneId, search, pvm);
             $location.search(search);
+
+            if (!reload) {
+                $location.replace();
+            }
         };
 
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {

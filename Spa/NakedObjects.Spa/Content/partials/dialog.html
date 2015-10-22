@@ -1,16 +1,4 @@
-﻿<!--Copyright 2014 Stef Cascarini, Dan Haywood, Richard Pawson
-Licensed under the Apache License, Version 2.0(the
-"License"); you may not use this file except in compliance
-with the License.You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.See the License for the
-specific language governing permissions and limitations
-under the License.-->
-
-<div class="title">
+﻿<div class="title">
     {{dialog.title}}
     <div class="cancel icon-cancel clickable-area" ng-click="dialog.doClose()" ></div>
 </div>
@@ -24,31 +12,26 @@ under the License.-->
 
                     <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference"/>
 
-                    <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
-
-                   
+                    <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">                   
                         <div ng-switch-when="false" ng-switch="parameter.hasPrompt">
 
-                            <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
+                            <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop ng-blur="parameter.blur()">
                                 {{parameter.value}}
                             </div>
 
-                            <input ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop/>
-           
-
+                            <input ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop ng-blur="parameter.blur()"/>
                         </div>
 
-
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
                         </div>
 
                     </div>
 
                     <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"></select>
-                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"></select>
+                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
+                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
                     </div>
                 </div>
             </div>
@@ -62,31 +45,31 @@ under the License.-->
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input type="text" ng-model="$parent.parameter.value" gemini-datepicker/>
+                                    <input type="text" ng-model="$parent.parameter.value" gemini-datepicker ng-blur="parameter.blur()"/>
                                 </div>
                                 <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                             <div ng-switch-when="boolean">
-                                <input type="checkbox" ng-model="parameter.value"/>
+                                <input type="checkbox" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                             <div ng-switch-default>
-                                <input type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value"/>
+                                <input type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                         </div>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
-                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
+                            <select multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
                         </div>
 
                     </div>
 
                     <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"><option></option></select>
-                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"></select>
+                        <select ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"><option></option></select>
+                        <select multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
                     </div>
                 </div>
             </div>
@@ -97,5 +80,5 @@ under the License.-->
         {{dialog.message}}
     </div>
         
-    <input class="ok" type="submit" value="OK" style="float: right" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="ok" type="submit" value="OK" style="float: right" gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
 </form>

@@ -45,10 +45,12 @@ module NakedObjects.Angular.Gemini {
         name: string;
         value: string;
         search: string; 
-        isEnum : boolean; 
+        isEnum: boolean; 
+        wrapped : Value;
 
         static create(value: Value, id : string, name? : string, searchTerm? : string) {
             const choiceViewModel = new ChoiceViewModel();
+            choiceViewModel.wrapped = value;
             choiceViewModel.id = id;
             choiceViewModel.name = name || value.toString(); 
             choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
@@ -126,7 +128,7 @@ module NakedObjects.Angular.Gemini {
         hasAutoAutoComplete: boolean;
         color: string;
 
-        setSelectedChoice() {}
+        //setSelectedChoice() {}
 
         prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
             return null;
@@ -181,12 +183,10 @@ module NakedObjects.Angular.Gemini {
                 if (this.isMultipleChoices) {
                     const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
-                        const selValues = _.map(selections, (cvm: ChoiceViewModel) => cvm.value);
+                        const selValues = _.map(selections, cvm => cvm.value);
                         return new Value(selValues);
                     }
-                    const selRefs = _.map(selections, (cvm: ChoiceViewModel) => {
-                        return { href: cvm.value, title: cvm.name };
-                    }); // reference 
+                    const selRefs = _.map(selections, cvm => ({ href: cvm.value, title: cvm.name })); // reference 
                     return new Value(selRefs);
                 }
 
