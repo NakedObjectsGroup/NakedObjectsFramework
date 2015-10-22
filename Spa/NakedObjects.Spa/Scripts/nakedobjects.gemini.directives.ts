@@ -295,7 +295,7 @@ module NakedObjects.Angular.Gemini {
 
     const draggableVmKey = "dvmk";
 
-    app.directive("geminiDrag", () => (scope, element) => {
+    app.directive("geminiDrag", ($compile) => (scope, element) => {
 
         const cloneDraggable = () => {
             let cloned: JQuery;
@@ -332,9 +332,12 @@ module NakedObjects.Angular.Gemini {
         element.on("keydown keypress", event => {
             const cKeyCode = 67;
             if (event.keyCode === cKeyCode && event.ctrlKey) {
-                const draggableVm = scope.property || scope.item || scope.$parent.object;
-
-                $("div.background").data(draggableVmKey, draggableVm);
+                const draggableVm = scope.property || scope.item || scope.$parent.object;              
+                const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].innerText}</div>`)(scope);        
+                compiledClone.data(draggableVmKey, draggableVm);
+                $("div.footer div.currentcopy").empty();
+                $("div.footer div.currentcopy").append(compiledClone);
+                event.preventDefault();
             }
         });
 
@@ -396,10 +399,11 @@ module NakedObjects.Angular.Gemini {
             const vKeyCode = 86;
             const deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
+                event.preventDefault();
              
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
-                const draggableVm = <IDraggableViewModel>  $("div.background").data(draggableVmKey);
+                const draggableVm = <IDraggableViewModel>  $("div.footer div.currentcopy .reference").data(draggableVmKey);
 
                 if (draggableVm) {
                     droppableScope.$apply(() => droppableVm.drop(draggableVm));
