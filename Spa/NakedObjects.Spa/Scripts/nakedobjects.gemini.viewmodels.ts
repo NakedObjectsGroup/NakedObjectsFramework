@@ -210,13 +210,15 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ParameterViewModel extends ValueViewModel{
-        dflt: string;       
+        dflt: string;
+        description: string;       
         blur : () => void;
     } 
 
     export class ActionViewModel {
         menuPath : string;
         title: string;
+        description: string;
         doInvoke: (right?: boolean) => void;
     } 
 
@@ -243,7 +245,7 @@ module NakedObjects.Angular.Gemini {
         isEditable: boolean;    
         attachment: AttachmentViewModel;
         draggableType : string;
-
+        description: string;
         doClick(right?: boolean): void { }
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
     } 

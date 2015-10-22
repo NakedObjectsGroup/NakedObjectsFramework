@@ -129,6 +129,7 @@ module NakedObjects.Angular.Gemini{
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
+            parmViewModel.description = parmRep.extensions().description;
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
             parmViewModel.argId = parmViewModel.id.toLowerCase();
@@ -284,6 +285,7 @@ module NakedObjects.Angular.Gemini{
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
+            actionViewModel.description = actionRep.extensions().description;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
@@ -309,6 +311,7 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, paneId : number) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
+            propertyViewModel.description = propertyRep.extensions().description;
             propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;

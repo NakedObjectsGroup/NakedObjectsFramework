@@ -62,9 +62,9 @@ under the License.-->
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input type="text" ng-model="$parent.parameter.value" gemini-datepicker/>
+                                    <input type="text" placeholder= "{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker/>
                                 </div>
-                                <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
+                                <input ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                             <div ng-switch-when="boolean">
@@ -72,7 +72,7 @@ under the License.-->
                             </div>
 
                             <div ng-switch-default>
-                                <input type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value"/>
+                                <input type="text" placeholder="{{parameter.description}}" ng-model="parameter.value"/>
                             </div>
 
                         </div>

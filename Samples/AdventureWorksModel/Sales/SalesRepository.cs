@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        [Idempotent]
+        [Idempotent][Description("... from an existing Employee")]
         public SalesPerson CreateNewSalesPerson([ContributedAction("Sales"), FindMenu] Employee employee) {
             var salesPerson = NewTransientInstance<SalesPerson>();
             salesPerson.EmployeeDetails = employee;
