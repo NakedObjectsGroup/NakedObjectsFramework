@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            var selected = new SelectElement(WaitForCss("div#subcategories select"));
+            var selected = new SelectElement(WaitForCss("select#subcategories"));
 
             Assert.AreEqual(2, selected.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.First().Text);
@@ -129,8 +129,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            var slctPl = new SelectElement(WaitForCss("div#productline select"));
-            var slctPc = new SelectElement(WaitForCss("div#productclass select"));
+            var slctPl = new SelectElement(WaitForCss("select#productline"));
+            var slctPc = new SelectElement(WaitForCss("select#productclass"));
 
             Assert.AreEqual("M", slctPl.SelectedOption.Text);
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
@@ -146,8 +146,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            WaitForCss("div#productline .value  select").SendKeys("R");
-            WaitForCss("div#productclass .value  select").SendKeys("L");
+            SelectDropDownOnField("#productline","R");
+            SelectDropDownOnField("#productclass","L");
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
@@ -159,13 +159,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
-            var slctCs = new SelectElement(WaitForCss("div#categories select"));
+            var slctCs = new SelectElement(WaitForCss("select#categories"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(WaitForCss("div#subcategories select")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("select#subcategories")).AllSelectedOptions.Count == 2);
 
-            var slct = new SelectElement(WaitForCss("div#subcategories select"));
+            var slct = new SelectElement(WaitForCss("select#subcategories"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -183,14 +183,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             OpenActionDialog("Find Products By Category");
 
-            var slctCs = new SelectElement(WaitForCss("div#categories select"));
+            var slctCs = new SelectElement(WaitForCss("select#categories"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(WaitForCss("div#subcategories select")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("select#subcategories")).AllSelectedOptions.Count == 2);
 
 
-            var slct = new SelectElement(WaitForCss("div#subcategories select"));
+            var slct = new SelectElement(WaitForCss("select#subcategories"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -285,10 +285,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void MandatoryParameterEnforced()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
-            var qty = WaitForCss(".parameter#quantity input");
+            var qty = WaitForCss("input#quantity");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
-            var validation = WaitForCss(".parameter#quantity .validation");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
+            var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Mandatory", validation.Text);
             qty.SendKeys(Keys.Backspace + "1");
             Click(OKButton());
@@ -299,11 +299,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
-            var qty = WaitForCss(".parameter#quantity input");
+            var qty = WaitForCss("input#quantity");
             qty.SendKeys("0");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#quantity .validation")).Text.Length > 0);
-            var validation = WaitForCss(".parameter#quantity .validation");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
+            var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Quantity must be > 0", validation.Text);
             qty.SendKeys(Keys.Backspace+"1");
             Click(OKButton());
@@ -315,11 +315,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
-            var reason = WaitForCss(".parameter#reason select");
+            var reason = WaitForCss("select#reason");
             reason.SendKeys("Price");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter#reason .validation")).Text.Length > 0);
-            var validation = WaitForCss(".parameter#reason .validation");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
+            var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
 
@@ -327,9 +327,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
-            WaitForCss(".parameter#qtyreceived input").SendKeys("100");
-            WaitForCss(".parameter#qtyrejected input").SendKeys("50");
-            WaitForCss(".parameter#qtyintostock input").SendKeys("49");
+            TypeIntoField("#qtyreceived","100");
+            TypeIntoField("#qtyrejected","50");
+            TypeIntoField("#qtyintostock","49");
             Click(OKButton());
             //TODO: Test for co-validation message of '"Qty Into Stock + Qty Rejected must add up to Qty Received"'
         }
@@ -340,7 +340,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ParameterDescriptionRenderedAsPlacholder()
         {
             GeminiUrl("home?menu1=CustomerRepository&dialog1=FindStoreByName");
-            var name = WaitForCss(".parameter#name input");
+            var name = WaitForCss("input#name");
             Assert.AreEqual("partial match", name.GetAttribute("placeholder"));
         }
     }
