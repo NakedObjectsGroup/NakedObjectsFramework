@@ -41,6 +41,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector("#expmonth .validation")).Text == "Mandatory");
         }
 
+
+        [TestMethod]
+        public virtual void PropertyDescriptionRenderedAsPlacholder()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
+            Click(GetObjectAction("Create New Credit Card"));
+            var name = WaitForCss(".property#cardnumber input");
+            Assert.AreEqual("Without spaces", name.GetAttribute("placeholder"));
+        }
+
         [TestMethod]
         public void CancelTransientObject()
         {

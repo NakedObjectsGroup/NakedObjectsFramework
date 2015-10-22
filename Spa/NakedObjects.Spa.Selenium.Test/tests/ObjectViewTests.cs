@@ -142,6 +142,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Recent Orders"));
             WaitForView(Pane.Single, PaneType.List, "Recent Orders");
         }
+
+        [TestMethod]
+        public virtual void DescriptionRenderedAsTooltip()
+        {
+            GeminiUrl("home?menu1=SalesRepository");
+            var a = GetObjectAction("Create New Sales Person");
+            Assert.AreEqual("... from an existing Employee", a.GetAttribute("title"));
+        }
         #endregion
     }
 
