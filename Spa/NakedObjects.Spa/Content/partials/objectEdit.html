@@ -2,10 +2,10 @@
     <div class="header">
         <div class="type">{{object.domainType}}</div>
         <div class="title">Editing - {{object.title}}</div>
-        <div class="action clickable-area" ng-click="object.doSave()">
+        <div class="action clickable-area" tabindex="0" ng-click="object.doSave()">
             Save
         </div>
-        <div class="action clickable-area" ng-click="object.doEditCancel()">
+        <div class="action clickable-area" tabindex="0" ng-click="object.doEditCancel()">
             Cancel
         </div>
     </div>
@@ -70,10 +70,10 @@
 
                                 <div ng-switch-when="string" ng-switch="property.format">
                                     <div ng-switch-when="date-time">
-                                        <input type='text' ng-model="$parent.property.value" gemini-datepicker />
+                                        <input type='text' placeholder='{{property.description}}' ng-model="$parent.property.value" gemini-datepicker />
                                     </div>
                                     <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                                    <input ng-switch-default type='text' placeholder='{{property.value}}' ng-model="property.value" />
+                                    <input ng-switch-default type='text' placeholder='{{property.description}}' ng-model="property.value" />
                                 </div>
 
                                 <div ng-switch-when="boolean">
@@ -81,7 +81,7 @@
                                 </div>
 
                                 <div ng-switch-default>
-                                    <input type='text' placeholder='{{property.value}}' ng-model="property.value" />
+                                    <input type='text' placeholder='{{property.description}}' ng-model="property.value" />
                                 </div>
 
                             </div>

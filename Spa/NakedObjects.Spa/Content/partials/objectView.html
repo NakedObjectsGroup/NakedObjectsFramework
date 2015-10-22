@@ -2,10 +2,10 @@
     <div class="header">
         <div class="type">{{object.domainType}}</div>
         <div class="title"  gemini-drag tabindex="0">{{object.title}}</div>
-        <div class="menu clickable-area" ng-click="object.toggleActionMenu()">
+        <div class="menu clickable-area" tabindex="0" ng-click="object.toggleActionMenu()">
             Actions
         </div>
-        <div class="action clickable-area" ng-click="object.doEdit()">
+        <div class="action clickable-area" tabindex="0" ng-click="object.doEdit()">
             Edit
         </div>
         <div class="messages">{{object.message}}</div>

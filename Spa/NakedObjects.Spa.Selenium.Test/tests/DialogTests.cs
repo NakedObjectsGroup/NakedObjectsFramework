@@ -336,6 +336,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         #endregion
 
+        [TestMethod]
+        public virtual void ParameterDescriptionRenderedAsPlacholder()
+        {
+            GeminiUrl("home?menu1=CustomerRepository&dialog1=FindStoreByName");
+            var name = WaitForCss(".parameter#name input");
+            Assert.AreEqual("partial match", name.GetAttribute("placeholder"));
+        }
     }
 
     #region browsers specific subclasses

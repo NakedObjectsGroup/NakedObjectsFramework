@@ -1,6 +1,5 @@
 ﻿<div class="title">
     {{dialog.title}}
-    <div class="cancel icon-cancel clickable-area" ng-click="dialog.doClose()" ></div>
 </div>
 <form>
     <div class="parameters">
@@ -45,9 +44,9 @@
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input type="text" ng-model="$parent.parameter.value" gemini-datepicker ng-blur="parameter.blur()"/>
+                                    <input type="text" placeholder= "{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker ng-blur="parameter.blur()"/>
                                 </div>
-                                <input ng-switch-default type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
+                                <input ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                             <div ng-switch-when="boolean">
@@ -55,7 +54,7 @@
                             </div>
 
                             <div ng-switch-default>
-                                <input type="text" placeholder="{{parameter.dflt}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
+                                <input type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" ng-blur="parameter.blur()"/>
                             </div>
 
                         </div>
@@ -79,6 +78,6 @@
         </div>
         {{dialog.message}}
     </div>
-        
-    <input class="ok" type="submit" value="OK" style="float: right" gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="ok" tabindex="0" type="submit" value="OK"  gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="cancel" tabindex="0" type="button" ng-click="dialog.doClose()" value="Cancel" />
 </form>

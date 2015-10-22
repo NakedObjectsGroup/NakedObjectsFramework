@@ -45,7 +45,7 @@ namespace AdventureWorksModel {
         public virtual string CardType { get; set; }
 
         [Hidden(WhenTo.OncePersisted)]
-        [MemberOrder(2)]
+        [MemberOrder(2)][Description("Without spaces")]
         public virtual string CardNumber { get; set; }
 
         private string _ObfuscatedNumber;

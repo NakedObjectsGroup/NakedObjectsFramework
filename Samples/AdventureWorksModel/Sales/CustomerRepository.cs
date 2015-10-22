@@ -79,7 +79,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
-            public IQueryable<Customer> FindStoreByName(string name) {
+            public IQueryable<Customer> FindStoreByName([Description("partial match")]string name) {
                 var customers = Instances<Customer>();
                 var stores = Instances<Store>();
                 return from c in customers
