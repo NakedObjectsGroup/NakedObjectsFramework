@@ -97,10 +97,16 @@
         color: black;
     }
 
-    .menu:hover, .menu.selected,  .action:hover, .action.selected {
+    .menu:hover, .menu.selected, .menu:focus {
         outline: solid;
         outline-width: 1px;
         outline-color: white;
+    }
+
+    .action:hover, .action:focus, .action.selected {
+        outline: solid;
+        outline-width: 2px;
+        outline-color: blue;
     }
 
     .object .menu:hover, .object .menu.selected, .object .action:hover, .object .action.selected {
@@ -172,7 +178,7 @@
         padding-right: 5px;
     }
 
-    .input-control input {
+    .input-control input:not([type='checkbox'])  {
         width: 230px;
     }
 
@@ -528,6 +534,7 @@ input[type=submit] {
     *zoom: 1;
     color: white;
     background-color: black;
+    float: right;
 }
 
 /*Cicero*/

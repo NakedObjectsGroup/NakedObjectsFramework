@@ -12,7 +12,6 @@ under the License.-->
 
 <div class="title">
     {{dialog.title}}
-    <div class="cancel icon-cancel clickable-area" ng-click="dialog.doClose()" ></div>
 </div>
 <form>
     <div class="parameters">
@@ -96,6 +95,6 @@ under the License.-->
         </div>
         {{dialog.message}}
     </div>
-        
-    <input class="ok" type="submit" value="OK" style="float: right" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="ok" tabindex="0" type="submit" value="OK" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />   
+    <input class="cancel" tabindex="0" type="button" ng-click="dialog.doClose()" value="Cancel" />
 </form>
