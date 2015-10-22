@@ -24,12 +24,12 @@ module NakedObjects.Angular.Gemini{
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
-        dialogViewModel(actionRep: ActionMember, parms: { id: string;val: string }[], paneId: number): DialogViewModel;
+        dialogViewModel(actionRep: ActionMember, parms: { id: string;val: Value }[], paneId: number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
-        parameterViewModel(parmRep: Parameter, previousValue: string, paneId : number): ParameterViewModel;
+        parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, paneId : number): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -124,7 +124,7 @@ module NakedObjects.Angular.Gemini{
         }
 
          // tested
-        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: string, paneId : number) => {
+        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: Value, paneId : number) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -151,9 +151,8 @@ module NakedObjects.Angular.Gemini{
             }; 
 
             parmViewModel.blur = () => {
-                urlManager.setParameter(parmViewModel, paneId);
+                urlManager.setParameter(parmViewModel, paneId, false);
             }
-
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
                 return ChoiceViewModel.create(v, parmRep.parameterId(), n);
@@ -180,71 +179,48 @@ module NakedObjects.Angular.Gemini{
 
             if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                 
-                if (parmViewModel.isMultipleChoices) {                
-                    parmViewModel.setSelectedChoice = () => {
-                        var search = parmViewModel.getMemento();
-                        _.forEach(parmViewModel.multiChoices, (c) => {
-                            context.setSelectedChoice(parmViewModel.id, search, c);
-                        });  
-                    };         
-                } else {
-                   
-                    parmViewModel.setSelectedChoice = () =>  {
-                        context.setSelectedChoice(parmViewModel.id, parmViewModel.getMemento(), parmViewModel.choice);
-                    };
-                }
 
-                function setCurrentChoices(choices : ChoiceViewModel[]) {
+                function setCurrentChoices(vals : Value) {
+
+                    const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
+
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
-                        parmViewModel.multiChoices = choices;
+                        parmViewModel.multiChoices = choicesToSet;
                     } else {
-                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, (c: ChoiceViewModel) => {
-                            return _.any(choices, (cvm: ChoiceViewModel) => {
-                                return c.match(cvm);
-                            });
-                        });
+                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, cvm => c.match(cvm)));
                     }
                 }
 
-                function setCurrentChoice(choice: ChoiceViewModel) {
+                function setCurrentChoice(val: Value) {
+                    const choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                         parmViewModel.choice = choice;
                     } else {
-                        parmViewModel.choice = _.find(parmViewModel.choices, (c: ChoiceViewModel) => {
-                            return c.match(choice);
-                        });
+                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choice));
                     }
                 }
 
                 if (previousValue) {                            
                     if (parmViewModel.isMultipleChoices) {
-                        var scs = context.getSelectedChoice(parmViewModel.id, previousValue);
-                        setCurrentChoices(scs);
+                        setCurrentChoices(previousValue);
                     } else {
-                        var sc = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
-                        setCurrentChoice(sc);
+                        setCurrentChoice(previousValue);
                     }
                 } else if (parmViewModel.dflt) {
                     let dflt = parmRep.default();
                   
                     if (parmViewModel.isMultipleChoices) {
-                        var dfltChoices = _.map(dflt.list(), (v) => {
-                            return ChoiceViewModel.create(v, parmViewModel.id, v.link() ? v.link().title() : null);
-                        });
-                        setCurrentChoices(dfltChoices);
+                        setCurrentChoices(dflt);
                     } else {
-                        var dfltChoice = ChoiceViewModel.create(dflt, parmViewModel.id, dflt.link() ? dflt.link().title() : null);
-                        setCurrentChoice(dfltChoice);
+                        setCurrentChoice(dflt);
                     }
-                }
-                // clear any previous 
-                context.clearSelectedChoice(parmViewModel.id);
-               
+                }               
             } else {
                 if (parmRep.extensions().returnType === "boolean") {
-                    parmViewModel.value = previousValue ? previousValue.toLowerCase() === 'true' : parmRep.default().scalar();
+                    parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else {
-                    parmViewModel.value = previousValue || parmViewModel.dflt;
+                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
             }
 
@@ -262,14 +238,13 @@ module NakedObjects.Angular.Gemini{
                 var currentChoice : ChoiceViewModel = null;
 
                 if (previousValue) {
-                    currentChoice = context.getSelectedChoice(parmViewModel.id, previousValue).pop();
+                    currentChoice = ChoiceViewModel.create(previousValue, parmViewModel.id, previousValue.link() ? previousValue.link().title() : null);
                 }
                 else if (parmViewModel.dflt) {
                     let dflt = parmRep.default();
                     currentChoice =  ChoiceViewModel.create(dflt, parmViewModel.id,  dflt.link().title());
                 }
-                context.clearSelectedChoice(parmViewModel.id);
-
+ 
                 var currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
               
                 addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
@@ -294,16 +269,17 @@ module NakedObjects.Angular.Gemini{
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = (actionMember: ActionMember, parms: { id: string;val: string }[], paneId: number) => {
+        viewModelFactory.dialogViewModel = (actionMember: ActionMember, parms: { id: string;val: Value }[], paneId: number) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || {val : ""} ).val, paneId));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || {val : null} ).val, paneId));
 
             dialogViewModel.doClose = () => urlManager.closeDialog(paneId);
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) =>
+                context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
 
             return dialogViewModel;
         };

@@ -394,7 +394,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         describe("from populated rep", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anId"), "pv", 1);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anId"), new NakedObjects.Value("pv"), 1);
             }));
 
             it("creates a parameter view model", () => {
@@ -428,7 +428,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.default = 1;
 
 
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), "", 1);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
             }));
 
             it("creates a parameter view model with choices", () => {
@@ -460,7 +460,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
 
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), "", 1);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
             }));
 
             it("creates a parameter view model with prompt", () => {
@@ -493,7 +493,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
 
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), "", 1);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
             }));
 
             it("creates a parameter view model with prompt", () => {

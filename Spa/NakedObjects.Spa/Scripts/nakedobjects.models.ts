@@ -185,29 +185,17 @@ module NakedObjects {
         }
 
         list(): Value[] {
-            if (this.isList()) {
-                return _.map(this.wrapped, (i: any) => {
-                    return new Value(i);
-                });
-            }
-            return null;
+            return this.isList() ? _.map(this.wrapped, i => new Value(i)) : null;
         }
 
         toString(): string {
             if (this.isReference()) {
                 return this.link().title();
             }
-            if (this.isList()) {
-                const ss = _.map(this.list(), (v: any) => {
-                    return v.toString();
-                });
-                if (ss.length === 0) {
-                    return "";
-                }
 
-                return _.reduce(ss, (m: string, s: string) => {
-                    return m + "-" + s;
-                });
+            if (this.isList()) {
+                const ss = _.map(this.list(), v =>  v.toString());
+                return ss.length === 0 ? "" : _.reduce(ss, (m : string, s: string) => m + "-" + s);
             }
 
             return (this.wrapped == null) ? "" : this.wrapped.toString();
@@ -221,11 +209,20 @@ module NakedObjects {
             return new Value(valueString);
         }
 
+        static fromJsonString(jsonString: string): Value {
+            return new Value(JSON.parse(jsonString));
+        }
+
         toValueString(): string {
             if (this.isReference()) {
                 return this.link().href();
             }
             return (this.wrapped == null) ? "" : this.wrapped.toString();
+        }
+
+        toJsonString(): string {
+            const raw = (this.wrapped instanceof  Link) ?  (<Link>this.wrapped).wrapped : this.wrapped; 
+            return JSON.stringify(raw);
         }
 
         set(target: Object, name?: string) {
@@ -1653,8 +1650,11 @@ module NakedObjects {
     // matches the Link representation 2.7
     export class Link extends ModelShim {
 
+        wrapped : any;
+
         constructor(object?) {
             super(object);
+            this.wrapped = object;
         }
 
         href(): string {

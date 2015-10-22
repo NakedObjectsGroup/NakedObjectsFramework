@@ -391,8 +391,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
-                search.parm1_pid1 = "val1";
-                search.parm1_pid2 = "val2";
+                search.parm1_pid1 = "%22val1%22";
+                search.parm1_pid2 = "%22val2%22";
 
                 location.path("/gemini/home");
                 location.search(preSearch);
@@ -518,8 +518,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
-                search.parm2_pid1 = "val1";
-                search.parm2_pid2 = "val2";
+                search.parm2_pid1 = "%22val1%22";
+                search.parm2_pid2 = "%22val2%22";
 
                 location.path("/gemini/home");
                 location.search(preSearch);
