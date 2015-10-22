@@ -2,10 +2,10 @@
     <div class="header">
         <div class="type">{{object.domainType}}</div>
         <div class="title">Editing - {{object.title}}</div>
-        <div class="action clickable-area" tabindex="0" ng-click="object.doSave()">
+        <div class="action clickable-area" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave()">
             Save
         </div>
-        <div class="action clickable-area" tabindex="0" ng-click="object.doEditCancel()">
+        <div class="action clickable-area" tabindex="0" gemini-enter="object.doEditCancel()" ng-click="object.doEditCancel()">
             Cancel
         </div>
     </div>
