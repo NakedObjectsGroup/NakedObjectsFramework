@@ -35,6 +35,7 @@ module NakedObjects.Angular.Gemini {
         actionId: string;
         state: CollectionViewState;
         parms: _.Dictionary<Value>;
+        props: _.Dictionary<Value>;
         dialogId: string;
     }
 }
