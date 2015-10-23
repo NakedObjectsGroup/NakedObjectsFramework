@@ -14,8 +14,8 @@ module NakedObjects.Angular.Gemini{
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
         dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number): DialogViewModel;
 
-        collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
-        collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, paneId : number): PropertyViewModel;
@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini{
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
-        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel;
+        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
     }
 
@@ -256,7 +256,7 @@ module NakedObjects.Angular.Gemini{
 
             dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
 
-            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameter(actionMember.actionId(), p, paneId, false));
+            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
             const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
             const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
@@ -368,7 +368,7 @@ module NakedObjects.Angular.Gemini{
             return propertyViewModel;
         };
         
-        function getItems(cvm: CollectionViewModel, links: Link[],  populateItems: boolean) {
+        function getItems($scope: ng.IScope, cvm: CollectionViewModel, links: Link[],  populateItems: boolean) {
 
             if (populateItems) {
                 return _.map(links, link => {
@@ -376,7 +376,7 @@ module NakedObjects.Angular.Gemini{
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
-                            ivm.target = viewModelFactory.domainObjectViewModel(obj, {}, 1);
+                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, 1);
 
                             if (!cvm.header) {
                                 cvm.header = _.map(ivm.target.properties, property => property.title);
@@ -389,7 +389,7 @@ module NakedObjects.Angular.Gemini{
             }
         }
 
-        function create(collectionRep: CollectionMember, state: CollectionViewState, paneId : number) {
+        function create($scope: ng.IScope, collectionRep: CollectionMember, state: CollectionViewState, paneId : number) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value().models;
 
@@ -400,7 +400,7 @@ module NakedObjects.Angular.Gemini{
             collectionViewModel.pluralName = collectionRep.extensions().pluralName;
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
 
-            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
 
             switch (state) {
             case CollectionViewState.List:
@@ -416,7 +416,7 @@ module NakedObjects.Angular.Gemini{
             return collectionViewModel;
         }
        
-        function createFromList(listRep: ListRepresentation, state: CollectionViewState, paneId : number) {
+        function createFromList($scope : ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId : number) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
 
@@ -424,23 +424,23 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
-            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
 
             return collectionViewModel;
         }
 
       
-        viewModelFactory.collectionViewModel = (collection: any, state: CollectionViewState, paneId : number) => {
+        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId : number) => {
             let collectionVm: CollectionViewModel = null;
             let setState: (state: CollectionViewState) => void;
 
             if (collection instanceof CollectionMember) {
-                collectionVm = create(collection, state, paneId);
+                collectionVm = create($scope, collection, state, paneId);
                 setState = <(state: CollectionViewState) => void> _.partial(urlManager.setCollectionMemberState, paneId, collection);
             }
 
             if (collection instanceof ListRepresentation) {
-                collectionVm = createFromList(collection, state, paneId);
+                collectionVm = createFromList($scope, collection, state, paneId);
                 setState = <(state: CollectionViewState) => void> _.partial(urlManager.setListState, paneId);
             }
 
@@ -478,9 +478,7 @@ module NakedObjects.Angular.Gemini{
             return menusViewModel;
         };
 
-
-
-       
+      
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, paneId : number) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();
@@ -492,13 +490,11 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = ($scope : ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
 
             objectViewModel.onPaneId = paneId;
-
             objectViewModel.isTransient = !!objectRep.persistLink();
-
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
             objectViewModel.domainType = objectRep.domainType();
             objectViewModel.draggableType = objectViewModel.domainType;
@@ -506,12 +502,10 @@ module NakedObjects.Angular.Gemini{
             const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
        
             objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
-
             objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
             objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
 
             objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
-
 
             const properties = objectRep.propertyMembers();
             const collections = objectRep.collectionMembers();
@@ -523,14 +517,14 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
             objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()], paneId ));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId ));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
               
             const link = objectRep.selfLink();
             if (link) {
-                // not transient - can't drag transients so no need to set up IDraggable members
+                // not transient - can't drag transients so no need to set up IDraggable members on transients
                 link.set("title", objectViewModel.title);
 
                 const value = new Value(link);
@@ -539,6 +533,28 @@ module NakedObjects.Angular.Gemini{
                 objectViewModel.reference = value.toValueString();
                 objectViewModel.choice = ChoiceViewModel.create(value, "");
             }
+
+            let deregisterLocationWatch: Function = () => {};
+            let deregisterSearchWatch: Function = () => { };
+
+            objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
+
+            objectViewModel.doEdit = () => {
+                const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
+                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p, paneId, false));
+                deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
+                deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
+
+                urlManager.setObjectEdit(true, paneId);
+            }
+
+            const returnFunc = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
+
+            objectViewModel.doEditCancel = () => {
+                deregisterLocationWatch();
+                deregisterSearchWatch();
+                returnFunc();
+            };
 
             return objectViewModel;
         };

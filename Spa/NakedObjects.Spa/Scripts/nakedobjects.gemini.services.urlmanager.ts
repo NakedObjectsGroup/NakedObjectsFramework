@@ -32,7 +32,8 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
-        setParameter: (dialogId: string, p: ParameterViewModel, paneId: number, reload? : boolean) => void;
+        setParameterValue: (dialogId: string, p: ParameterViewModel, paneId: number, reload?: boolean) => void;
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -47,12 +48,31 @@ module NakedObjects.Angular.Gemini {
         const action = "action";
         const dialog = "dialog";
         const parm = "parm";
+        const prop = "prop";
         const actions = "actions";
 
         const gemini = "gemini";
         const cicero = "cicero";
 
         const capturedPanes = [];
+
+        function getIds(typeOfId : string,  paneId : number) {
+            return <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
+        }
+
+        function mapIds(ids : _.Dictionary<string>) : _.Dictionary<string>  {
+            //missing from lodash types :-( 
+            return (<any>_).mapKeys(ids, (v, k : string) => k.substr(k.indexOf("_") + 1));
+        }
+
+        function getAndMapIds(typeOfId: string, paneId: number) {
+            const ids = getIds(typeOfId, paneId);
+            return mapIds(ids);
+        }
+
+        function getMappedValues(mappedIds: _.Dictionary<string>) {
+            return _.mapValues(mappedIds, v => Value.fromJsonString(decodeURIComponent(v)));
+        }
 
         function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
             paneRouteData.menuId = $routeParams[menu + paneId];
@@ -66,14 +86,14 @@ module NakedObjects.Angular.Gemini {
             const rawCollectionState: string = $routeParams[collection + paneId];
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
-            const collIds = <_.Dictionary<string>>  _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
-            //missing from lodash types :-( 
-            const collKeyMap: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            const collKeyMap = getAndMapIds(collection, paneId);
             paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
 
-            const parmIds = <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
-            const parmKeyMap: _.Dictionary<string> = (<any>_).mapKeys(parmIds, (v, k) => k.substr(k.indexOf("_") + 1));
-            paneRouteData.parms = _.mapValues(parmKeyMap, v => Value.fromJsonString(decodeURIComponent(v)));
+            const parmKeyMap = getAndMapIds(parm, paneId);
+            paneRouteData.parms = getMappedValues(parmKeyMap);
+
+            const propKeyMap = getAndMapIds(prop, paneId);
+            paneRouteData.props = getMappedValues(propKeyMap);
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -166,7 +186,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setParameter(paneId: number, search: any, p: ParameterViewModel) {
-            search[`parm${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+            search[`${parm}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
@@ -224,7 +244,7 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setParameter = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
+        helper.setParameterValue = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
 
             const search = $location.search();
 
@@ -238,6 +258,25 @@ module NakedObjects.Angular.Gemini {
                 }
             }
         };
+
+        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => {
+
+            const search = $location.search();
+            const oid = toOid(obj.domainType(), obj.instanceId());
+
+            // only add parm if matching object (to catch case when swapping panes) 
+            if (search[`${object}${paneId}`] === oid) {
+
+                search[`${prop}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+
+                $location.search(search);
+
+                if (!reload) {
+                    $location.replace();
+                }
+            }
+        };
+
 
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
             const href = propertyMember.value().link().href();
