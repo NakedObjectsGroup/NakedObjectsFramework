@@ -117,7 +117,13 @@ module NakedObjects.Angular.Gemini{
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
-            parmViewModel.description = parmRep.extensions().description;
+            parmViewModel.optional = parmRep.extensions().optional;
+            var mandatoryIndicator = "";
+            if (!parmViewModel.optional) {
+                mandatoryIndicator = "* ";
+            }
+            parmViewModel.description = mandatoryIndicator + parmRep.extensions().description;
+            parmViewModel.optional = parmRep.extensions().optional;
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
             parmViewModel.argId = parmViewModel.id.toLowerCase();
@@ -275,7 +281,12 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, paneId : number) => {
             var propertyViewModel = new PropertyViewModel();
             propertyViewModel.title = propertyRep.extensions().friendlyName;
-            propertyViewModel.description = propertyRep.extensions().description;
+            propertyViewModel.optional = propertyRep.extensions().optional;
+            var mandatoryIndicator = "";
+            if (!propertyViewModel.optional) {
+                mandatoryIndicator = "* ";
+            }
+            propertyViewModel.description = mandatoryIndicator + propertyRep.extensions().description;
             propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;

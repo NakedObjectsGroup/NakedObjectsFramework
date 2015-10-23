@@ -36,11 +36,11 @@
 
                             </div>
 
-                            <select id="{{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select id="{{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
 
                         </div>
 
-                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"></select>
+                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled selected>{{property.description}}</option></select>
                     </div>
                 </div>
                 <div ng-switch-when="scalar" ng-switch="property.isEditable">
@@ -86,10 +86,10 @@
 
                             </div>
 
-                            <select id="{{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices></select>
+                            <select id="{{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
 
                         </div>
-                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"></select>
+                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled selected>{{property.description}}</option></select>
                     </div>
                 </div>
                 <div class="validation">{{property.message}}</div>

@@ -115,6 +115,8 @@ module NakedObjects.Angular.Gemini {
         minLength: number;
         hasAutoAutoComplete: boolean;
         color: string;
+        description: string;
+        optional: boolean;
 
         //setSelectedChoice() {}
 
@@ -198,8 +200,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ParameterViewModel extends ValueViewModel{
-        dflt: string;
-        description: string;       
+        dflt: string;       
         blur : () => void;
     } 
 
@@ -233,7 +234,6 @@ module NakedObjects.Angular.Gemini {
         isEditable: boolean;    
         attachment: AttachmentViewModel;
         draggableType : string;
-        description: string;
         doClick(right?: boolean): void { }
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
     } 
