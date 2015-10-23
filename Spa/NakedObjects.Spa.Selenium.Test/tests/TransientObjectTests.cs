@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
@@ -29,7 +28,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void MissingMandatoryFieldsNotified()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -37,14 +36,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectDropDownOnField("#cardtype", "Vista");
             SelectDropDownOnField("#expyear", "2020");
             Click(GetSaveButton());
-            //TODO: these selectors don't work:
-            //wait.Until(dr => dr.FindElement(By.CssSelector("#cardnumber .validation")).Text == "Mandatory");
-            //wait.Until(dr => dr.FindElement(By.CssSelector("#expmonth .validation")).Text == "Mandatory");
+            wait.Until(dr =>dr.FindElements(By.CssSelector(".validation")).Count(e => e.Text == "Mandatory") ==2);
         }
 
-
         [TestMethod]
-        public virtual void PropertyDescriptionRenderedAsPlacholder()
+        public virtual void PropertyDescriptionAndRequiredRenderedAsPlacholder()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
