@@ -359,7 +359,12 @@ module NakedObjects.Angular.Gemini {
 
                     if (errorValue) {
                         vmi.value = errorValue.value.toValueString();
-                        vmi.message = errorValue.invalidReason;
+                        if (errorValue.invalidReason == 'Mandatory') {
+                            vmi.description = 'REQUIRED ' + vmi.description;
+                        } else {
+                            vmi.message = errorValue.invalidReason;
+                        }                    
+                        vmi.status = 'invalid';
                     }
                 });
                 if (vm) {

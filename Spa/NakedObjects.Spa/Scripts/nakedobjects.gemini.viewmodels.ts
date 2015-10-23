@@ -117,6 +117,7 @@ module NakedObjects.Angular.Gemini {
         color: string;
         description: string;
         optional: boolean;
+        status: string;  //set to 'invalid' for invalid entry e.g. to change colour
 
         //setSelectedChoice() {}
 

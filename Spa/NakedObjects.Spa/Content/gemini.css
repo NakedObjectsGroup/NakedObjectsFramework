@@ -36,7 +36,7 @@
         overflow-x: auto;
         float: left;
     }
-/*Three main roots*/
+/*Main roots*/
     .home, .object, .list, .error {
         padding-left: 20px;
         height: 100%;
@@ -191,17 +191,18 @@
     }
 
 /*Validation messages*/
-
+    .invalid {
+        color: red;
+    }
     .validation {
-        padding-left: 10px;
-        font-size: 16pt;
+        margin-left: 155px;
+        font-size: 11pt;
     }
     .property .validation {
         color: white;
     }
-
     .parameter .validation {
-        color: red;
+        color: black;
     }
     
 /* Drag and drop*/
