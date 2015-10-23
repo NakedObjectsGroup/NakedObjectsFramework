@@ -10,19 +10,19 @@
                     <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference" />
                     <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
                         <div ng-switch-when="false" ng-switch="parameter.hasPrompt">
-                            <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop ng-blur="parameter.blur()">
+                            <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop >
                                 {{parameter.value}}
                             </div>
-                            <input id="{{parameter.argId}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop ng-blur="parameter.blur()" />
+                            <input id="{{parameter.argId}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop  />
                         </div>
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
-                            <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
+                            <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ></select>
+                            <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ></select>
                         </div>
                     </div>
                     <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                        <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
-                        <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
+                        <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ></select>
+                        <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ></select>
                     </div>
                 </div>
             </div>
@@ -36,31 +36,31 @@
 
                             <div ng-switch-when="string" ng-switch="parameter.format">
                                 <div ng-switch-when="date-time">
-                                    <input id="{{parameter.argId}}" type="text" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker ng-blur="parameter.blur()" />
+                                    <input id="{{parameter.argId}}" type="text" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker  />
                                 </div>
-                                <input id="{{parameter.argId}}" ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" ng-blur="parameter.blur()" />
+                                <input id="{{parameter.argId}}" ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value"  />
                             </div>
 
                             <div ng-switch-when="boolean">
-                                <input id="{{parameter.argId}}" type="checkbox" ng-model="parameter.value" ng-blur="parameter.blur()" />
+                                <input id="{{parameter.argId}}" type="checkbox" ng-model="parameter.value"  />
                             </div>
 
                             <div ng-switch-default>
-                                <input id="{{parameter.argId}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" ng-blur="parameter.blur()" />
+                                <input id="{{parameter.argId}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value"  />
                             </div>
 
                         </div>
 
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                            <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
-                            <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ng-blur="parameter.blur()"></select>
+                            <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ></select>
+                            <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ></select>
                         </div>
 
                     </div>
 
                     <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-                        <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"><option></option></select>
-                        <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ng-blur="parameter.blur()"></select>
+                        <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" ><option></option></select>
+                        <select id="{{parameter.argId}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices" ></select>
                     </div>
                 </div>
             </div>
@@ -70,6 +70,6 @@
         </div>
         {{dialog.message}}
     </div>
-    <input class="ok" tabindex="0" type="submit" value="OK" gemini-enter="dialog.doInvoke()" gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
+    <input class="ok" tabindex="0" type="submit" value="OK" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
     <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doClose()" ng-click="dialog.doClose()" value="Cancel" />
 </form>
