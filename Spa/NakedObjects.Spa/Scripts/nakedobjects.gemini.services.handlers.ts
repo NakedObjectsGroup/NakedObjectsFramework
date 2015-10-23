@@ -141,12 +141,15 @@ module NakedObjects.Angular.Gemini {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.object =  <any>{ color :  color.toColorFromType(dt)}
+            $scope.object = <any>{ color: color.toColorFromType(dt) }
+
+            // only pass previous values if editing 
+            const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
                              
-                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData.collections, routeData.paneId);
+                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData.collections, previousValues, routeData.paneId);
 
                     $scope.object = ovm;
                   

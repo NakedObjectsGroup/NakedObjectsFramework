@@ -18,12 +18,12 @@ module NakedObjects.Angular.Gemini{
         collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
 
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, paneId : number): PropertyViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
-        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel;
+        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>, paneId : number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
     }
 
@@ -270,16 +270,19 @@ module NakedObjects.Angular.Gemini{
             return dialogViewModel;
         };
 
-        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, paneId : number) => {
-            var propertyViewModel = new PropertyViewModel();
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number) => {
+            const propertyViewModel = new PropertyViewModel();
+
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.optional = propertyRep.extensions().optional;
-            var mandatoryIndicator = "";
-            if (!propertyViewModel.optional) {
-                mandatoryIndicator = "* ";
-            }
+           
+            const mandatoryIndicator = propertyViewModel.optional ? "" : "*";
+
             propertyViewModel.description = mandatoryIndicator + propertyRep.extensions().description;
-            propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().isNull() ? propertyViewModel.description : propertyRep.value().toString();
+
+            const value = previousValue || propertyRep.value();
+
+            propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
@@ -376,7 +379,7 @@ module NakedObjects.Angular.Gemini{
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
-                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, 1);
+                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, {}, 1);
 
                             if (!cvm.header) {
                                 cvm.header = _.map(ivm.target.properties, property => property.title);
@@ -490,7 +493,7 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = ($scope : ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = ($scope : ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>,  paneId : number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
 
             objectViewModel.onPaneId = paneId;
@@ -501,10 +504,6 @@ module NakedObjects.Angular.Gemini{
 
             const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
        
-            objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
-            objectViewModel.doEdit = () => urlManager.setObjectEdit(true, paneId);
-            objectViewModel.doEditCancel = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
-
             objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
 
             const properties = objectRep.propertyMembers();
@@ -516,7 +515,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.message = "";
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
-            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, paneId));
+            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, parms[id], paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId ));
 
             // for dropping
@@ -541,7 +540,8 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.doEdit = () => {
                 const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
-                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p, paneId, false));
+                const setProperties = () => _.forEach(editProperties,
+                    p => urlManager.setPropertyValue(objectRep, p, paneId, false));
                 deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
                 deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
