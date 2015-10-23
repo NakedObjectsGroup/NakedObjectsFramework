@@ -7,26 +7,25 @@ module NakedObjects.Angular {
 
     export interface IRepLoader {
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean, r?: IHateoasModel) => ng.IPromise<T>;
-        invoke: (action : ActionMember, parms : {id : string, val : Value}[]) => ng.IPromise<ActionResultRepresentation>;
-
+        invoke: (action: ActionMember, parms: _.Dictionary<Value>) => ng.IPromise<ActionResultRepresentation>;
     }
 
     // TODO investigate using transformations to transform results 
     app.service("repLoader", function ($http, $q, $rootScope) {
 
-        var repLoader = this; 
+        const repLoader = this; 
         repLoader.loadingCount = 0; 
 
         function getUrl(model: IHateoasModel): string {
 
-            var url = model.url();
+            let url = model.url();
 
             if (model.method === "GET" || model.method === "DELETE") {
-                var asJson = _.clone((<any>model).attributes);
+                const asJson = _.clone((<any>model).attributes);
 
                 if (_.toArray(asJson).length > 0) {
-                    var map = JSON.stringify(asJson);
-                    var encodedMap = encodeURI(map);
+                    const map = JSON.stringify(asJson);
+                    const encodedMap = encodeURI(map);
                     url += `?${encodedMap}`;
                 }
             }
@@ -36,7 +35,7 @@ module NakedObjects.Angular {
 
         function getData(model: IHateoasModel): Object {
 
-            var data = {};
+            let data = {};
 
             if (model.method === "POST" || model.method === "PUT") {
                 data = _.clone((<any>model).attributes);
@@ -45,27 +44,26 @@ module NakedObjects.Angular {
             return data;
         }
 
-        repLoader.populate = function <T>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T>
-        {
+        repLoader.populate = <T>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
 
-            var response = expected || model;
-            var useCache = !ignoreCache;
+            const response = expected || model;
+            const useCache = !ignoreCache;
 
-            var delay = $q.defer();
+            const delay = $q.defer();
 
-            var config = {
+            const config = {
                 url: getUrl(model),
                 method: model.method,
                 cache: useCache,
                 data: getData(model)
             };
 
-            $rootScope.$broadcast("ajax-change", ++repLoader.loadingCount); 
+            $rootScope.$broadcast("ajax-change", ++this.loadingCount); 
             $http(config).
                 success(function (data, status, headers, config) {
                     (<any>response).attributes = data; // TODO make typed 
                     delay.resolve(response);
-                    $rootScope.$broadcast("ajax-change", --repLoader.loadingCount); 
+                    $rootScope.$broadcast("ajax-change", --this.loadingCount); 
                 }).
                 error(function (data, status, headers, config) {
 
@@ -80,17 +78,17 @@ module NakedObjects.Angular {
                     else {
                         delay.reject(headers().warning);
                     }
-                    $rootScope.$broadcast("ajax-change", --repLoader.loadingCount); 
+                    $rootScope.$broadcast("ajax-change", --this.loadingCount); 
                 });
 
             return delay.promise;
         };
 
 
-        repLoader.invoke = function (action: ActionMember, parms: { id: string, val: Value }[]) : ng.IPromise < ActionResultRepresentation > {
-            var invoke = action.getInvoke();                                          
-            _.each(parms, (vp) => invoke.setParameter(vp.id, vp.val));
-            return repLoader.populate (invoke, true);
+        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>): ng.IPromise < ActionResultRepresentation > => {
+            const invoke = action.getInvoke();                                          
+            _.each(parms, (v, k) => invoke.setParameter(k, v));
+            return this.populate (invoke, true);
         }
 
     });

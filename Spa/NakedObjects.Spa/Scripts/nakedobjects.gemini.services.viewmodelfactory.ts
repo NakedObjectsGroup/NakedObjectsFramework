@@ -12,7 +12,7 @@ module NakedObjects.Angular.Gemini{
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
-        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: { id: string;val: Value }[], paneId: number): DialogViewModel;
+        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini{
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
-        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel;
+        domainObjectViewModel(objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
     }
 
@@ -247,13 +247,13 @@ module NakedObjects.Angular.Gemini{
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: { id: string; val: Value }[], paneId: number) => {
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || { val: null }).val, paneId));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
 
             dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
 
@@ -493,7 +493,7 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: { [index: string]: CollectionViewState }, paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = (objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, paneId : number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
 
             objectViewModel.onPaneId = paneId;

@@ -18,8 +18,8 @@ module NakedObjects.Angular.Gemini {
         getPreviousUrl: () => string;
         
         
-        getList: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : Value }[]) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: Value }[]) => angular.IPromise<ListRepresentation>;
+        getList: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : (paneId : number) => string;
       
 
@@ -58,7 +58,7 @@ module NakedObjects.Angular.Gemini {
         // cached values
         let currentHome: HomePageRepresentation = null;
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
-        const currentMenuList: { [index: string]: MenuRepresentation } = {};
+        const currentMenuList: _.Dictionary<MenuRepresentation> = {};
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
@@ -221,7 +221,7 @@ module NakedObjects.Angular.Gemini {
             currentCollections[paneId] = list;
         }
 
-        context.getList = (paneId : number, menuId: string, actionId: string, parms : {id: string; val: Value }[]) => {
+        context.getList = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>) => {
             const currentCollection = currentCollections[paneId];
 
             if (currentCollection) {
@@ -234,14 +234,13 @@ module NakedObjects.Angular.Gemini {
             return context.getMenu(menuId).
                 then((menu: MenuRepresentation) => {
                     const action = menu.actionMember(actionId);
-                    const valueParms = _.map(parms, p => ({ id: p.id, val: p.val }));
                     lastActionFriendlyName[paneId] = action.extensions().friendlyName;
-                    return repLoader.invoke(action, valueParms);
+                    return repLoader.invoke(action, parms);
                 }).
                 then((result : ActionResultRepresentation) => handleResult(paneId, result) );
         };
 
-        context.getListFromObject = (paneId : number, objectId: string, actionId: string, parms: { id: string; val: Value }[]) => {
+        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
 
             const currentCollection = currentCollections[paneId];
 
@@ -254,10 +253,9 @@ module NakedObjects.Angular.Gemini {
             return context.getObjectByOid(paneId, objectId).
                 then((object: DomainObjectRepresentation) => {
                     const action = object.actionMember(actionId);
-                    const valueParms = _.map(parms, p => ({ id: p.id, val: p.val }));
                     lastActionFriendlyName[paneId] = action.extensions().friendlyName;
 
-                    return repLoader.invoke(action, valueParms);
+                    return repLoader.invoke(action, parms);
                 }).
                 then((result: ActionResultRepresentation) => handleResult(paneId, result));
             
@@ -439,8 +437,8 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        const subTypeCache: { [index: string]: { [index: string]: boolean } } = {};
-
+        const subTypeCache: _.Dictionary<_.Dictionary<boolean>> = {};
+       
         context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
 
             if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
@@ -454,7 +452,7 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {
                     const is = updatedObject.value();
-                    const entry:  { [index: string]: boolean   } = {};
+                    const entry: _.Dictionary<boolean> = {};
                     entry[againstType] = is;
                     subTypeCache[toCheckType] = entry;
                     return is;
