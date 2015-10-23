@@ -113,7 +113,7 @@ module NakedObjects.Angular.Gemini {
             promise.
                 then((list: ListRepresentation) => {
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel(list, routeData.state, routeData.paneId);
+                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId);
                     $scope.title = context.getLastActionFriendlyName(routeData.paneId);
                 }).catch( error => {
                     setError(error);
@@ -146,7 +146,7 @@ module NakedObjects.Angular.Gemini {
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
                              
-                    const ovm = viewModelFactory.domainObjectViewModel(object, routeData.collections, routeData.paneId);
+                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData.collections, routeData.paneId);
 
                     $scope.object = ovm;
                   

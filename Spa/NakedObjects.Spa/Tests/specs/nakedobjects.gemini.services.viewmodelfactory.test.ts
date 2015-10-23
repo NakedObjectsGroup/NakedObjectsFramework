@@ -9,15 +9,19 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
     beforeEach(angular.mock.module("app"));
 
+   
+
     describe("create errorViewModel", () => {
 
         let resultVm: NakedObjects.Angular.Gemini.ErrorViewModel;
         const rawError = { message: "a message", stackTrace: ["line1", "line2"] };
         const emptyError = {};
+       
 
         describe("from populated rep", () => {
 
-            beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
+            beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
+              
                 resultVm = viewModelFactory.errorViewModel(new NakedObjects.ErrorRepresentation(rawError));
             }));
 
@@ -259,9 +263,11 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             let setCollectionMemberState: jasmine.Spy;
             const cm = new NakedObjects.CollectionMember(rawEmptyCollection, {}, "");
+            let $scope: ng.IScope;
 
-            beforeEach(inject((viewModelFactory : NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                resultVm = viewModelFactory.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);
+            beforeEach(inject(($rootScope, viewModelFactory : NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
+                $scope = $rootScope.$new();
+                resultVm = viewModelFactory.collectionViewModel($scope, cm, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);
 
                 setCollectionMemberState = spyOn(urlManager, "setCollectionMemberState");
             }));
@@ -290,8 +296,11 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             const cm = new NakedObjects.CollectionMember(rawCollection, {}, "");
             let vmf: NakedObjects.Angular.Gemini.IViewModelFactory;
+            let $scope: ng.IScope;
+
           
-            beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
+            beforeEach(inject(($rootScope, viewModelFactory, urlManager, repLoader, $q) => {
+                $scope = $rootScope.$new();
                 setCollectionMemberState = spyOn(urlManager, "setCollectionMemberState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
                 populate = spyOn(repLoader, "populate");
@@ -300,14 +309,14 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             }));
 
             it("creates a dialog view model with items", () => {  
-                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);                    
+                resultVm = vmf.collectionViewModel($scope, cm, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);                    
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
-                resultVm = vmf.collectionViewModel(cm, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
+                resultVm = vmf.collectionViewModel($scope, cm, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate.calls.count()).toBe(2);
@@ -318,10 +327,12 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             let setListState: jasmine.Spy;
             const lr = new NakedObjects.ListRepresentation(rawEmptyList);
+            let $scope: ng.IScope;
 
-            beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
+            beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
+                $scope = $rootScope.$new();
                 setListState = spyOn(urlManager, "setListState");
-                resultVm = viewModelFactory.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.Summary, 1);
+                resultVm = viewModelFactory.collectionViewModel($scope, lr, NakedObjects.Angular.Gemini.CollectionViewState.Summary, 1);
             }));
 
             it("creates a dialog view model", () => {
@@ -347,9 +358,11 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let populate: jasmine.Spy;
             const lr = new NakedObjects.ListRepresentation(rawList);
             let vmf: NakedObjects.Angular.Gemini.IViewModelFactory;
-         
+            let $scope: ng.IScope;
 
-            beforeEach(inject((viewModelFactory, urlManager, repLoader, $q) => {
+            beforeEach(inject(($rootScope, viewModelFactory, urlManager, repLoader, $q) => {
+                $scope = $rootScope.$new();
+
                 setCollectionMemberState = spyOn(urlManager, "setCollectionMemberState");
                 itemViewModel = spyOn(viewModelFactory, "itemViewModel");
                 populate = spyOn(repLoader, "populate");
@@ -358,14 +371,14 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             }));
 
             it("creates a dialog view model with items", () => {
-                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);
+                resultVm = vmf.collectionViewModel($scope, lr, NakedObjects.Angular.Gemini.CollectionViewState.List, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate).not.toHaveBeenCalled();
             });
 
             it("it populates table items", () => {
-                resultVm = vmf.collectionViewModel(lr, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
+                resultVm = vmf.collectionViewModel($scope, lr, NakedObjects.Angular.Gemini.CollectionViewState.Table, 1);
                 expect(resultVm.items.length).toBe(2);
                 expect(itemViewModel.calls.count()).toBe(2);
                 expect(populate.calls.count()).toBe(2);
@@ -506,10 +519,15 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         const rawObject = { domainType: "an object", links: [rawSelfLink], title: "a title", extensions: { friendlyName: "a name" } };
 
+
         describe("from populated rep", () => {
 
-            beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                resultVm = viewModelFactory.domainObjectViewModel(new NakedObjects.DomainObjectRepresentation(rawObject), {}, 1);
+            
+
+            beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
+                let $scope = $rootScope.$new();
+
+                resultVm = viewModelFactory.domainObjectViewModel($scope, new NakedObjects.DomainObjectRepresentation(rawObject), {}, 1);
             }));
 
             it("creates a object view model", () => {
@@ -524,14 +542,17 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         describe("from transient populated rep", () => {
 
-            beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
+            beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
+                let $scope = $rootScope.$new();
+
+
                 const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
                 rawObject.links.pop();
                 rawObject.links.push(rawPersistLink);
                 const doRep = new NakedObjects.DomainObjectRepresentation(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
 
-                resultVm = viewModelFactory.domainObjectViewModel(doRep, {}, 1);
+                resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, 1);
             }));
 
             it("creates a object view model", () => {

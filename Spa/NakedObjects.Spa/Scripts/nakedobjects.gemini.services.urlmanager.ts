@@ -32,7 +32,8 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
-        setParameter: (dialogId: string, p: ParameterViewModel, paneId: number, reload? : boolean) => void;
+        setParameterValue: (dialogId: string, p: ParameterViewModel, paneId: number, reload?: boolean) => void;
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -47,6 +48,7 @@ module NakedObjects.Angular.Gemini {
         const action = "action";
         const dialog = "dialog";
         const parm = "parm";
+        const prop = "prop";
         const actions = "actions";
 
         const gemini = "gemini";
@@ -166,7 +168,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setParameter(paneId: number, search: any, p: ParameterViewModel) {
-            search[`parm${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+            search[`${parm}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
@@ -224,7 +226,7 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setParameter = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
+        helper.setParameterValue = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
 
             const search = $location.search();
 
@@ -238,6 +240,25 @@ module NakedObjects.Angular.Gemini {
                 }
             }
         };
+
+        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => {
+
+            const search = $location.search();
+            const oid = toOid(obj.domainType(), obj.instanceId());
+
+            // only add parm if matching object (to catch case when swapping panes) 
+            if (search[`${object}${paneId}`] === oid) {
+
+                search[`${prop}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+
+                $location.search(search);
+
+                if (!reload) {
+                    $location.replace();
+                }
+            }
+        };
+
 
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
             const href = propertyMember.value().link().href();

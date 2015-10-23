@@ -385,7 +385,7 @@ module NakedObjects.Angular.Gemini {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
                 _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
-                _.each(parameters, parm => urlManager.setParameter(action.actionId(), parm, paneId, false));
+                _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
             repLoader.populate(invoke, true).
