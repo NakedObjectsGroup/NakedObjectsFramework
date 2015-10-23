@@ -122,7 +122,6 @@ module NakedObjects.Angular.Gemini{
                 mandatoryIndicator = "* ";
             }
             parmViewModel.description = mandatoryIndicator + parmRep.extensions().description;
-            parmViewModel.optional = parmRep.extensions().optional;
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
             parmViewModel.argId = parmViewModel.id.toLowerCase();
@@ -198,7 +197,7 @@ module NakedObjects.Angular.Gemini{
                 if (parmRep.extensions().returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else {
-                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || parmViewModel.description;
+                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
             }
 

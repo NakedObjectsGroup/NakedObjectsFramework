@@ -108,7 +108,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
 
-            Assert.AreEqual(4, br.FindElements(By.CssSelector("select#productcategory option")).Count);
+            Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory option")).Count);
 
             wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 9);
 

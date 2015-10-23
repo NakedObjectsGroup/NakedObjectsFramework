@@ -63,5 +63,10 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        public void TestAction(SalesReason reason)
+        {
+
+        }
     }
 }

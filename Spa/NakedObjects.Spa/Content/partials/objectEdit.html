@@ -40,7 +40,7 @@
 
                         </div>
 
-                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled selected>{{property.description}}</option></select>
+                        <select id="{{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled>{{property.description}}</option></select>
                     </div>
                 </div>
                 <div ng-switch-when="scalar" ng-switch="property.isEditable">

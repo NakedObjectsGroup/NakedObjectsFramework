@@ -49,7 +49,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             var name = WaitForCss("input#cardnumber");
-            Assert.AreEqual("Without spaces", name.GetAttribute("placeholder"));
+            Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
 
         [TestMethod]

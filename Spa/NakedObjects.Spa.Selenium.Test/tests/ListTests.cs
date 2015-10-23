@@ -23,8 +23,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Test content of collection
             Assert.AreEqual("20 Item(s)", WaitForCss(".collection .summary .details").Text);
             WaitForCss(".icon-table");
-            AssertElementDoesNotExist(".icon-list");
-            AssertElementDoesNotExist(".icon-summary");
+            WaitUntilElementDoesNotExist(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-summary");
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Count);
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
@@ -41,16 +41,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
             var iconList = WaitForCss(".icon-list");
-            AssertElementDoesNotExist(".icon-table");
-            AssertElementDoesNotExist(".icon-summary");
+            WaitUntilElementDoesNotExist(".icon-table");
+            WaitUntilElementDoesNotExist(".icon-summary");
 
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr")).Count > 1);
  
             //Switch back to List view
             Click(iconList);
             WaitForCss(".icon-table");
-            AssertElementDoesNotExist(".icon-list");
-            AssertElementDoesNotExist(".icon-summary");
+            WaitUntilElementDoesNotExist(".icon-list");
+            WaitUntilElementDoesNotExist(".icon-summary");
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }

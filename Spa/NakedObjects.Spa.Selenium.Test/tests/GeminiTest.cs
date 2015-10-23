@@ -160,12 +160,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected virtual void TypeIntoField(string cssFieldId, string characters)
         {
-            WaitForCss(" input" +cssFieldId).SendKeys(characters);
+            WaitForCss(cssFieldId).SendKeys(characters);
         }
 
         protected virtual void SelectDropDownOnField(string cssFieldId, string characters)
         {
-            WaitForCss("select"+cssFieldId).SendKeys(characters);
+            var selected = new SelectElement(WaitForCss(cssFieldId));
+            selected.SelectByText(characters);
+        }
+
+        protected virtual void SelectDropDownOnField(string cssFieldId, int index)
+        {
+            var selected = new SelectElement(WaitForCss(cssFieldId));
+            selected.SelectByIndex(index);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -270,10 +277,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             }
             if (pane == Pane.Single)
             {
-                AssertElementDoesNotExist(".split");
+                WaitUntilElementDoesNotExist(".split");
             } else
             {
-                AssertElementDoesNotExist(".single");
+                WaitUntilElementDoesNotExist(".single");
             }
             AssertFooterExists();
         }
@@ -298,7 +305,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
         }
 
-        protected void AssertElementDoesNotExist(string cssSelector)
+        protected void WaitUntilElementDoesNotExist(string cssSelector)
         {
             wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == 0);
         }
