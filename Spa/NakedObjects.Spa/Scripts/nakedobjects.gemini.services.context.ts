@@ -17,8 +17,7 @@ module NakedObjects.Angular.Gemini {
       
         getPreviousUrl: () => string;
         
-        //getSelectedChoice: (parm: string, search: Value) => ChoiceViewModel[];
-       
+        
         getList: (paneId : number, menuId: string, actionId: string, parms : {id :string, val : Value }[]) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId : number, objectId: string, actionId: string, parms: { id: string, val: Value }[]) => angular.IPromise<ListRepresentation>;
         getLastActionFriendlyName : (paneId : number) => string;
@@ -32,8 +31,7 @@ module NakedObjects.Angular.Gemini {
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
         setError: (object: ErrorRepresentation) => void;
-        //clearSelectedChoice: (parm: string) => void;
-        //setSelectedChoice: (parm: string, search: string, cvm: ChoiceViewModel) => void;
+     
 
         isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
         isSuperTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
@@ -280,17 +278,6 @@ module NakedObjects.Angular.Gemini {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        //var selectedChoice: { [parm: string]: { [search: string]: ChoiceViewModel[] } } = {};
-
-        //context.getSelectedChoice = (parm: string, search: Value) => selectedChoice[parm] ? selectedChoice[parm][search.toString()] : [];
-
-        //context.setSelectedChoice = (parm: string, search: string, cvm: ChoiceViewModel) => {
-        //    selectedChoice[parm] = selectedChoice[parm] || {};
-        //    selectedChoice[parm][search] = selectedChoice[parm][search] || [];
-        //    selectedChoice[parm][search].push(cvm);
-        //};
-
-        //context.clearSelectedChoice = (parm: string) => selectedChoice[parm] = null;
 
         context.getLastActionFriendlyName = (paneId : number) => {
             return lastActionFriendlyName[paneId] || "";
@@ -400,7 +387,7 @@ module NakedObjects.Angular.Gemini {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
                 _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
-                _.each(parameters, parm => urlManager.setParameter(parm, paneId, false));
+                _.each(parameters, parm => urlManager.setParameter(action.actionId(), parm, paneId, false));
             }
 
             repLoader.populate(invoke, true).

@@ -196,12 +196,10 @@ module NakedObjects.Angular.Gemini {
             // reference
             return new Value(this.reference ? { href: this.reference } : null);
         }
-
     }
 
     export class ParameterViewModel extends ValueViewModel{
         dflt: string;       
-        blur : () => void;
     } 
 
     export class ActionViewModel {

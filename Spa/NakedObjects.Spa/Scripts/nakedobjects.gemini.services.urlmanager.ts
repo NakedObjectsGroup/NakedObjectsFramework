@@ -32,7 +32,7 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
-        setParameter: (p: ParameterViewModel, paneId: number, reload? : boolean) => void;
+        setParameter: (dialogId: string, p: ParameterViewModel, paneId: number, reload? : boolean) => void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -165,12 +165,17 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-        function setParameter(paneId : number, search : any, p : ParameterViewModel) {
+        function setParameter(paneId: number, search: any, p: ParameterViewModel) {
             search[`parm${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
-            setSearch(`${menu}${paneId}`, menuId, false);
+            let search = $location.search();
+            if (search[`${menu}${paneId}`] !== menuId) {
+                search = clearPane(search, paneId);
+                search[`${menu}${paneId}`] = menuId;
+                $location.search(search);
+            }
         };
 
         helper.setDialog = (dialogId: string, paneId: number) => {
@@ -219,14 +224,18 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setParameter = (pvm: ParameterViewModel, paneId: number, reload = true) => {
+        helper.setParameter = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
 
             const search = $location.search();
-            setParameter(paneId, search, pvm);
-            $location.search(search);
 
-            if (!reload) {
-                $location.replace();
+            // only add parm if matching dialog (to catch case when swapping panes) 
+            if (search[`${dialog}${paneId}`] === dialogId) {
+                setParameter(paneId, search, pvm);
+                $location.search(search);
+
+                if (!reload) {
+                    $location.replace();
+                }
             }
         };
 

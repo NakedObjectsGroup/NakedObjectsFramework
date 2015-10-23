@@ -12,7 +12,7 @@ module NakedObjects.Angular.Gemini{
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
         actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
-        dialogViewModel(actionRep: ActionMember, parms: { id: string;val: Value }[], paneId: number): DialogViewModel;
+        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: { id: string;val: Value }[], paneId: number): DialogViewModel;
 
         collectionViewModel(collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel(collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
@@ -107,8 +107,7 @@ module NakedObjects.Angular.Gemini{
                 defer.resolve(ccs);
 
                 return defer.promise;
-            }
-
+            };
         }
 
          // tested
@@ -143,10 +142,6 @@ module NakedObjects.Angular.Gemini{
                     }
                 );
             }; 
-
-            parmViewModel.blur = () => {
-                urlManager.setParameter(parmViewModel, paneId, false);
-            }
 
             parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
                 return ChoiceViewModel.create(v, parmRep.parameterId(), n);
@@ -263,17 +258,26 @@ module NakedObjects.Angular.Gemini{
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = (actionMember: ActionMember, parms: { id: string;val: Value }[], paneId: number) => {
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: { id: string; val: Value }[], paneId: number) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || {val : null} ).val, paneId));
+            dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, (_.find(parms, p => p.id === parm.parameterId()) || { val: null }).val, paneId));
 
-            dialogViewModel.doClose = () => urlManager.closeDialog(paneId);
-            dialogViewModel.doInvoke = (right?: boolean) =>
-                context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
+
+            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameter(actionMember.actionId(), p, paneId, false));
+
+            const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
+            const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
+
+            dialogViewModel.doClose = () => {
+                deregisterLocationWatch();
+                deregisterSearchWatch();
+                urlManager.closeDialog(paneId);
+            };
 
             return dialogViewModel;
         };
@@ -308,8 +312,7 @@ module NakedObjects.Angular.Gemini{
 
             propertyViewModel.doClick = (right? : boolean) => {
                 urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
-            }
-
+            };
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),
                     propertyRep.attachmentLink().type().asString,
@@ -542,9 +545,7 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.toggleActionMenu = () => {
                 urlManager.toggleObjectMenu(paneId);
-            }
-
-            // for dropping 
+            }; // for dropping 
 
             const link = objectRep.selfLink();
             if (link) {
@@ -586,8 +587,7 @@ module NakedObjects.Angular.Gemini{
 
             tvm.goHome = (right? : boolean) => {
                 urlManager.setHome(clickHandler.pane(1, right));
-            }
-
+            };
             tvm.goBack = () => {
                 navigation.back();
             };
@@ -605,9 +605,7 @@ module NakedObjects.Angular.Gemini{
             };
 
             return tvm;
-        }
-
-        //Cicero
+        }; //Cicero
         viewModelFactory.ciceroViewModel = (wrapped: any) => {
             const vm = new CiceroViewModel();
             vm.wrapped = wrapped;
@@ -630,9 +628,9 @@ module NakedObjects.Angular.Gemini{
                     $location.path(newPath).search({});
                 }
                //TODO: get direct output and put it in the announcement
-            }
+            };
             return vm;
-        }
+        };
     });
 
 }

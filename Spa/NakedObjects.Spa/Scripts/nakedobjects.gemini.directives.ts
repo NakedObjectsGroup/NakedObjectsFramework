@@ -239,7 +239,7 @@ module NakedObjects.Angular.Gemini {
 
 
                 function setListeners() {
-                    _.forEach(pArgs, (v, n) => $(`#${n} :input`).on("change", () => populateDropdown()));
+                    _.forEach(pArgs, (v, n) => $(`#${n}`).on("change", () => populateDropdown()));
                     $(element).on("change", optionChanged);
                 }
 
