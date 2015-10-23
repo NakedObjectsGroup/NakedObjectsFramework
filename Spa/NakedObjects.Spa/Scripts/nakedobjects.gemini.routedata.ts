@@ -4,7 +4,7 @@
 module NakedObjects.Angular.Gemini {
 
     export enum CollectionViewState {
-        Summary, 
+        Summary,
         List,
         Table
     }
@@ -25,17 +25,16 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class PaneRouteData {
-        constructor(public paneId : number) {}
+        constructor(public paneId: number) {}
 
-        objectId : string;
-        menuId : string;
+        objectId: string;
+        menuId: string;
         collections: _.Dictionary<CollectionViewState>;
         edit: boolean;
-        actionsOpen : string;
+        actionsOpen: string;
         actionId: string;
         state: CollectionViewState;
-        // todo make parm ids dictionary same as collections ids ? 
-        parms: { id: string; val: Value }[];
-        dialogId : string;
+        parms: _.Dictionary<Value>;
+        dialogId: string;
     }
 }

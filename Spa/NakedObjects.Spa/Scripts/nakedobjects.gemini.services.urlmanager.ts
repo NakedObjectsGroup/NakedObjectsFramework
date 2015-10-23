@@ -66,14 +66,14 @@ module NakedObjects.Angular.Gemini {
             const rawCollectionState: string = $routeParams[collection + paneId];
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
-            const collIds = <{ [index: string]: string }> _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
+            const collIds = <_.Dictionary<string>>  _.pick($routeParams, (v: string, k: string) => k.indexOf(collection + paneId) === 0);
             //missing from lodash types :-( 
-            const keysMapped: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
-            paneRouteData.collections = _.mapValues(keysMapped, v => CollectionViewState[v]);
+            const collKeyMap: _.Dictionary<string> = (<any>_).mapKeys(collIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
 
-            // todo make parm ids dictionary same as collections ids ? 
-            const parmIds = <{ [index: string]: string }> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
-            paneRouteData.parms = _.map(parmIds, (v, k) => ({ id: k.substr(k.indexOf("_") + 1), val: Value.fromJsonString(decodeURIComponent(v))}));
+            const parmIds = <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(parm + paneId) === 0);
+            const parmKeyMap: _.Dictionary<string> = (<any>_).mapKeys(parmIds, (v, k) => k.substr(k.indexOf("_") + 1));
+            paneRouteData.parms = _.mapValues(parmKeyMap, v => Value.fromJsonString(decodeURIComponent(v)));
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
