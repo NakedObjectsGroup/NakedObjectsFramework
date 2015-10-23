@@ -178,7 +178,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, context, urlManager) => {
                 invokeAction = spyOn(context, "invokeAction");
                 closeDialog = spyOn(urlManager, "closeDialog");
-                resultVm = viewModelFactory.dialogViewModel(am, [], 1);
+                resultVm = viewModelFactory.dialogViewModel(null, am, [], 1);
             }));
 
             it("creates a dialog view model", () => {
