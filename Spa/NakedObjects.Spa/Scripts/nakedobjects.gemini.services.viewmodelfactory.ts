@@ -137,10 +137,7 @@ module NakedObjects.Angular.Gemini{
                 );
             }; 
 
-            parmViewModel.choices = _.map(parmRep.choices(), (v, n) => {
-                return ChoiceViewModel.create(v, parmRep.parameterId(), n);
-            });
-
+            parmViewModel.choices = _.map(parmRep.choices(), (v, n) =>  ChoiceViewModel.create(v, parmRep.parameterId(), n));
             parmViewModel.hasChoices = parmViewModel.choices.length > 0;
             parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
             parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
@@ -148,7 +145,7 @@ module NakedObjects.Angular.Gemini{
 
             if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
 
-                var promptRep = parmRep.getPrompts();
+                const promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
                     parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, parmViewModel.id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
@@ -162,7 +159,6 @@ module NakedObjects.Angular.Gemini{
 
             if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                 
-
                 function setCurrentChoices(vals : Value) {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
@@ -170,35 +166,28 @@ module NakedObjects.Angular.Gemini{
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
                         parmViewModel.multiChoices = choicesToSet;
                     } else {
-                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, cvm => c.match(cvm)));
+                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
                     }
                 }
 
                 function setCurrentChoice(val: Value) {
-                    const choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                    const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
                     if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
-                        parmViewModel.choice = choice;
+                        parmViewModel.choice = choiceToSet;
                     } else {
-                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choice));
+                        parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
                     }
                 }
-
-                if (previousValue) {                            
+        
+                if (previousValue || parmViewModel.dflt) {
+                    const toSet = previousValue || parmRep.default();                    
                     if (parmViewModel.isMultipleChoices) {
-                        setCurrentChoices(previousValue);
+                        setCurrentChoices(toSet);
                     } else {
-                        setCurrentChoice(previousValue);
+                        setCurrentChoice(toSet);
                     }
-                } else if (parmViewModel.dflt) {
-                    let dflt = parmRep.default();
-                  
-                    if (parmViewModel.isMultipleChoices) {
-                        setCurrentChoices(dflt);
-                    } else {
-                        setCurrentChoice(dflt);
-                    }
-                }               
+                }             
             } else {
                 if (parmRep.extensions().returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
@@ -210,7 +199,7 @@ module NakedObjects.Angular.Gemini{
             var remoteMask = parmRep.extensions()["x-ro-nof-mask"];
 
             if (remoteMask && parmRep.isScalar()) {
-                var localFilter = mask.toLocalFilter(remoteMask);
+                const localFilter = mask.toLocalFilter(remoteMask);
                 if (localFilter) {
                     parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
                 }
@@ -218,7 +207,7 @@ module NakedObjects.Angular.Gemini{
 
             if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
 
-                var currentChoice : ChoiceViewModel = null;
+                let currentChoice : ChoiceViewModel = null;
 
                 if (previousValue) {
                     currentChoice = ChoiceViewModel.create(previousValue, parmViewModel.id, previousValue.link() ? previousValue.link().title() : null);
@@ -228,7 +217,7 @@ module NakedObjects.Angular.Gemini{
                     currentChoice =  ChoiceViewModel.create(dflt, parmViewModel.id,  dflt.link().title());
                 }
  
-                var currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
+                const currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
               
                 addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
             } 
@@ -299,9 +288,7 @@ module NakedObjects.Angular.Gemini{
                     );
             }; 
 
-            propertyViewModel.doClick = (right? : boolean) => {
-                urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
-            };
+            propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),
                     propertyRep.attachmentLink().type().asString,
@@ -318,13 +305,11 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.hasPrompt = propertyRep.hasPrompt();
 
             if (propertyRep.hasChoices()) {
-                
-                var choices =  propertyRep.choices();
+
+                const choices = propertyRep.choices();
 
                 if (choices) {
-                    propertyViewModel.choices = _.map(choices, (v, n) => {
-                        return ChoiceViewModel.create(v, id, n);
-                    });
+                    propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
                 }
             }
 
@@ -358,8 +343,8 @@ module NakedObjects.Angular.Gemini{
             } 
 
             if (propertyRep.isScalar()) {
-                var remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
-                var localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
+                const remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
+                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
                 if (localFilter) {
                     propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                 }
@@ -450,8 +435,6 @@ module NakedObjects.Angular.Gemini{
             }
 
             if (collectionVm) {
-                
-
                 collectionVm.doSummary = () => setState(CollectionViewState.Summary);
                 collectionVm.doList = () => setState(CollectionViewState.List);
                 collectionVm.doTable = () => setState(CollectionViewState.Table);            
@@ -462,10 +445,10 @@ module NakedObjects.Angular.Gemini{
 
      
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
-            var servicesViewModel = new ServicesViewModel();
+            const servicesViewModel = new ServicesViewModel();
 
             // filter out contributed action services 
-            var links = _.filter(servicesRep.value().models, (m: Link) => {
+            const links = _.filter(servicesRep.value().models, m => {
                 var sid = m.rel().parms[0].value;
                 return sid.indexOf("ContributedActions") === -1; 
             });
@@ -532,10 +515,9 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, collectionStates[collection.collectionId()], paneId ));
 
-            objectViewModel.toggleActionMenu = () => {
-                urlManager.toggleObjectMenu(paneId);
-            }; // for dropping 
-
+            // for dropping
+            objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
+              
             const link = objectRep.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members
@@ -554,44 +536,18 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.toolBarViewModel = ($scope) => {
             var tvm = new ToolBarViewModel();
 
-            $scope.$on("ajax-change", (event, count) => {
-                if (count > 0) {
-                    tvm.loading = "Loading...";
-                } else {
-                    tvm.loading = "";
-                }
-            });
+            $scope.$on("ajax-change", (event, count) => tvm.loading = count > 0 ? "Loading..." : "");
+            $scope.$on("back", () => navigation.back());
+            $scope.$on("forward", () => navigation.forward());
 
-            $scope.$on("back", () => {
-                navigation.back();
-            });
-
-            $scope.$on("forward", () => {
-                navigation.forward();
-            });
+            tvm.goHome = (right?: boolean) => urlManager.setHome(clickHandler.pane(1, right));
+            tvm.goBack = () => navigation.back();
+            tvm.goForward = () => navigation.forward();
+            tvm.swapPanes = () => urlManager.swapPanes();
+            tvm.singlePane = (right?: boolean) => urlManager.singlePane(clickHandler.pane(1, right));
 
             tvm.template = appBarTemplate;
-
             tvm.footerTemplate = footerTemplate;
-
-            tvm.goHome = (right? : boolean) => {
-                urlManager.setHome(clickHandler.pane(1, right));
-            };
-            tvm.goBack = () => {
-                navigation.back();
-            };
-
-            tvm.goForward = () => {
-                navigation.forward();
-            };
-
-            tvm.swapPanes = () => {
-                urlManager.swapPanes();
-            };
-
-            tvm.singlePane = (right?: boolean) => {
-                urlManager.singlePane(clickHandler.pane(1, right));
-            };
 
             return tvm;
         }; //Cicero
