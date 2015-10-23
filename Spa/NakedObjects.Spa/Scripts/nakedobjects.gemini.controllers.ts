@@ -52,12 +52,15 @@ module NakedObjects.Angular.Gemini {
         const pane = routeData.pane1;
 
         if (pane.objectId) {
-            var [dt, ...id] = pane.objectId.split("-");
+            const [dt, ...id] = pane.objectId.split("-");
+
+            // only pass previous values if editing 
+            const previousValues: _.Dictionary<Value> = pane.edit ? pane.props : {};
 
             context.getObject(pane.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
-                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, pane.paneId);
+                const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.paneId);
                     const cvm = viewModelFactory.ciceroViewModel(ovm);
                     $scope.cicero = cvm;
 
