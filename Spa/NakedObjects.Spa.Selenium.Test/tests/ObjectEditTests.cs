@@ -77,15 +77,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EditObject();
             // set product category and sub category
 
-            var selected = new SelectElement(br.FindElement(By.CssSelector("select#productcategory")));
-
             // this makes tests really fragile
             //Assert.AreEqual("Accessories", selected.SelectedOption.Text);
 
             //Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
             //Assert.AreEqual(13, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
 
-            SelectDropDownOnField("#productcategory", "Clothing" + Keys.Tab);
+            SelectDropDownOnField("#productcategory", "Clothing");
 
             wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 9);
 
@@ -114,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory option")).Count);
 
-            SelectDropDownOnField("#productcategory","Bikes" + Keys.Tab);
+            SelectDropDownOnField("#productcategory","Bikes");
 
             wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 4);
 
@@ -130,12 +128,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // set values back
             EditObject();
 
-            SelectDropDownOnField("#productcategory", "Accessories" + Keys.Tab);
+            SelectDropDownOnField("#productcategory", "Accessories");
 
             var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory")));
             wait.Until(d => slpsc.Options.Count == 13);
 
-            SelectDropDownOnField("#productsubcategory", "Bottles and Cages" + Keys.Tab);
+            SelectDropDownOnField("#productsubcategory", "Bottles and Cages");
             SaveObject();
 
             properties = br.FindElements(By.CssSelector(".property"));

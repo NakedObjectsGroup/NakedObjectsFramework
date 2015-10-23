@@ -295,7 +295,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
-        [TestMethod, Ignore] //Issue with needing 2 clicks on OK
+        [TestMethod, Ignore] //RWP: Issue with needing 2 clicks on OK
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
@@ -310,7 +310,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
-        [TestMethod, Ignore] //Issue with needing 2 clicks on OK
+        [TestMethod, Ignore] //RWP: Issue with needing 2 clicks on OK
         public virtual void ValidateSingleRefParamFromChoices()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
