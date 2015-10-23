@@ -32,7 +32,7 @@
                                     {{property.value}}
                                 </div>
 
-                                <input id="{{property.argId}}" ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
+                                <input id="{{property.argId}}" placeholder='{{property.description}}' ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
 
                             </div>
 

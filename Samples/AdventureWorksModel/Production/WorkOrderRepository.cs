@@ -21,7 +21,7 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        public WorkOrder CreateNewWorkOrder([ContributedAction("Work Orders"), FindMenu] Product product) {
+        public WorkOrder CreateNewWorkOrder([ContributedAction("Work Orders"), FindMenu, Description("product partial name")] Product product) {
             var wo = NewTransientInstance<WorkOrder>();
             wo.Product = product;
 

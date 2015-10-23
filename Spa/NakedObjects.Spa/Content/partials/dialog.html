@@ -13,7 +13,7 @@
                             <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop >
                                 {{parameter.value}}
                             </div>
-                            <input id="{{parameter.argId}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop  />
+                            <input id="{{parameter.argId}}" placeholder="{{parameter.description}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop  />
                         </div>
                         <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
                             <select id="{{parameter.argId}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices ><option value="" disabled selected>{{property.description}}</option></select>

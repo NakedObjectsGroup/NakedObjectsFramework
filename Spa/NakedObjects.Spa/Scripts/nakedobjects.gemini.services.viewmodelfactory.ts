@@ -209,7 +209,7 @@ module NakedObjects.Angular.Gemini{
                 if (parmRep.extensions().returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else {
-                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
+                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || parmViewModel.description;
                 }
             }
 
@@ -291,7 +291,7 @@ module NakedObjects.Angular.Gemini{
                 mandatoryIndicator = "* ";
             }
             propertyViewModel.description = mandatoryIndicator + propertyRep.extensions().description;
-            propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().toString();
+            propertyViewModel.value = propertyRep.isScalar() ? propertyRep.value().scalar() : propertyRep.value().isNull() ? propertyViewModel.description : propertyRep.value().toString();
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
