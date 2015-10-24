@@ -276,7 +276,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.optional = propertyRep.extensions().optional;
            
-            const required = propertyViewModel.optional ? "" : "*";
+            const required = propertyViewModel.optional ? "" : "* ";
 
             propertyViewModel.description = required + propertyRep.extensions().description;
 
