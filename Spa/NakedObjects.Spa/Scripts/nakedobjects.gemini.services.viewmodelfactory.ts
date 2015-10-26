@@ -549,11 +549,12 @@ module NakedObjects.Angular.Gemini{
                 };
 
                 const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
+                objectViewModel.doSave = viewObject => savehandler(objectRep, objectViewModel, viewObject);
             }
 
           
-            objectViewModel.doEdit = () => {           
+            objectViewModel.doEdit = () => {
+                urlManager.pushUrlState(paneId);           
                 urlManager.setObjectEdit(true, paneId);
             }       
 
