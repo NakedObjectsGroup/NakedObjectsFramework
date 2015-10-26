@@ -181,7 +181,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setObject(obj1, 1, false);
+                urlManager.setObject(obj1, 1);
             }));
 
 
@@ -200,7 +200,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setObject(obj1, 1, false);
+                urlManager.setObject(obj1, 1);
             }));
 
 
@@ -220,7 +220,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home");
                 location.search(preSearch);
 
-                urlManager.setObject(obj2, 2, false);
+                urlManager.setObject(obj2, 2);
             }));
 
 
@@ -240,7 +240,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
-                urlManager.setObject(obj2, 2, false);
+                urlManager.setObject(obj2, 2);
             }));
 
 

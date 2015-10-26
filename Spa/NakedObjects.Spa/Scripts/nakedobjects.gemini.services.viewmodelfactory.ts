@@ -549,7 +549,7 @@ module NakedObjects.Angular.Gemini{
                 };
 
                 const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = (edit) => savehandler(objectRep, objectViewModel, edit);
+                objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
             }
 
           

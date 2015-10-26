@@ -13,7 +13,7 @@ module NakedObjects.Angular.Gemini {
         setDialog(dialogId: string, paneId: number);
         closeDialog(paneId: number);
 
-        setObject(resultObject: DomainObjectRepresentation, paneId: number, edit : boolean, mode?: ApplicationMode);
+        setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
         setList(action: ActionMember, paneId: number, dvm?: DialogViewModel);
         setProperty(propertyMember: PropertyMember, paneId: number);
         setItem(link: Link, paneId: number): void;
@@ -177,12 +177,11 @@ module NakedObjects.Angular.Gemini {
             return toOid(results[2],results[3]);
         }
 
-        function setObjectSearch(paneId: number, oid: string, editFlag : boolean,  mode?: ApplicationMode) {
+        function setObjectSearch(paneId: number, oid: string,  mode?: ApplicationMode) {
             setupPaneNumberAndTypes(paneId, object, mode);
 
             const search = clearPane($location.search(), paneId);
             search[object + paneId] = oid;
-            search[edit + paneId] = editFlag.toString();
             
             $location.search(search);
         }
@@ -212,9 +211,9 @@ module NakedObjects.Angular.Gemini {
             clearSearch(ids);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation,  paneId: number, edit : boolean) => {
+        helper.setObject = (resultObject: DomainObjectRepresentation,  paneId: number) => {
             const oid = toOid(resultObject.domainType(), resultObject.instanceId());
-            setObjectSearch(paneId, oid, edit);  
+            setObjectSearch(paneId, oid);  
         };
 
         helper.setList = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
@@ -283,13 +282,13 @@ module NakedObjects.Angular.Gemini {
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
             const href = propertyMember.value().link().href();
             const oid = getOidFromHref(href);
-            setObjectSearch(paneId, oid, false);
+            setObjectSearch(paneId, oid);
         };
 
         helper.setItem = (link: Link, paneId: number) => {
             const href = link.href();
             const oid = getOidFromHref(href);
-            setObjectSearch(paneId, oid, false);
+            setObjectSearch(paneId, oid);
         };
 
         helper.toggleObjectMenu = (paneId: number) => {
