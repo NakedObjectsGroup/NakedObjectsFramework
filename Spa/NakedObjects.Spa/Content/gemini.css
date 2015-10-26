@@ -326,9 +326,16 @@ th, td {
             outline-color: white;
         }
 
-    .footer .icons, .footer .messages {
+    .footer a, .footer .currentcopy {
         float: left;
     }
+
+    .footer .currentcopy {
+        display: inline-block;
+        margin-left: 20px;
+        margin-top: 10px;
+    }
+
 
 .messages {
     font-size: 12pt;
