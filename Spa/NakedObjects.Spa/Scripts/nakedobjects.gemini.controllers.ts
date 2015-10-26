@@ -60,7 +60,7 @@ module NakedObjects.Angular.Gemini {
             context.getObject(pane.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
-                const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.paneId);
+                const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
                     const cvm = viewModelFactory.ciceroViewModel(ovm);
                     $scope.cicero = cvm;
 
