@@ -364,7 +364,6 @@ module NakedObjects.Angular.Gemini {
                         } else {
                             vmi.message = errorValue.invalidReason;
                         }                    
-                        vmi.status = 'invalid';
                     }
                 });
                 if (vm) {

@@ -191,9 +191,7 @@
     }
 
 /*Validation messages*/
-    .invalid {
-        color: red;
-    }
+
     .validation {
         margin-left: 155px;
         font-size: 11pt;
