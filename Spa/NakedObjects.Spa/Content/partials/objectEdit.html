@@ -1,11 +1,11 @@
 ﻿<div class="object edit" ng-class="object.color">
-    <div class="header">
+    <div class="header" ng-switch="object.isTransient">
         <div class="type">{{object.domainType}}</div>
         <div class="title">Editing - {{object.title}}</div>
         <div class="action clickable-area" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave(true)">
             Save
         </div>
-        <div class="action clickable-area" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave(false)">
+        <div  ng-switch-when="true"  class="action clickable-area" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave(false)">
             Save And Close
         </div>
         <div class="action clickable-area" tabindex="0" gemini-enter="object.doEditCancel()" ng-click="object.doEditCancel()">

@@ -27,8 +27,8 @@ module NakedObjects.Angular.Gemini {
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
       
         invokeAction(action: ActionMember, paneId : number, dvm?: DialogViewModel);
-        updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, edit : boolean);
-        saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, edit : boolean);
+        updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+        saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
 
         setError: (object: ErrorRepresentation) => void;
      
@@ -331,7 +331,7 @@ module NakedObjects.Angular.Gemini {
 
                 context.setObject(paneId, resultObject);
                 urlManager.pushUrlState(paneId);
-                urlManager.setObject(resultObject, paneId, false);
+                urlManager.setObject(resultObject, paneId);
             }
 
             // persistent object
@@ -341,7 +341,7 @@ module NakedObjects.Angular.Gemini {
                 // so we don't hit the server again. 
 
                 context.setObject(paneId, resultObject);
-                urlManager.setObject(resultObject, paneId, false);
+                urlManager.setObject(resultObject, paneId);
             }
 
             if (result.resultType() === "list") {
@@ -401,7 +401,7 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel, edit : boolean) => {
+        context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
             const update = object.getUpdateMap();
 
             const properties = _.filter(ovm.properties, property => property.isEditable);
@@ -418,14 +418,15 @@ module NakedObjects.Angular.Gemini {
                     $cacheFactory.get("$http").remove(updatedObject.url());
 
                     context.setObject(ovm.onPaneId, updatedObject);
-                    urlManager.setObject(updatedObject, ovm.onPaneId, edit);
+                  
+                    urlManager.setObject(updatedObject, ovm.onPaneId);             
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
                 });
         };
 
-        context.saveObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel, edit : boolean) => {
+        context.saveObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean) => {
             const persist = object.getPersistMap();
 
             const properties = _.filter(ovm.properties, property => property.isEditable);
@@ -433,8 +434,13 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    urlManager.popUrlState(ovm.onPaneId);
-                    context.setObject(ovm.onPaneId, updatedObject);                
+                    context.setObject(ovm.onPaneId, updatedObject);   
+                
+                    if (viewObject) {
+                        urlManager.setObject(updatedObject, ovm.onPaneId);
+                    } else {
+                        urlManager.popUrlState(ovm.onPaneId);
+                    }             
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
