@@ -112,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl( "object?object1=AdventureWorksModel.Store-350&edit1=true");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".edit")));
-            GetSaveButton();
+            SaveButton();
             GetCancelEditButton();
            // AssertObjectElementsPresent();
         }

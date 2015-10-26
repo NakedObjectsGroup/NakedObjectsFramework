@@ -14,18 +14,38 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class TransientObjectTests : AWTest {
 
-        [TestMethod] //Complete test & guard against duplicate keys?
+        [TestMethod] 
         public void CreateAndSaveTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
+            var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
             TypeIntoField("#cardnumber", number);
             SelectDropDownOnField("#expmonth","12");
             SelectDropDownOnField("#expyear","2020");
-            Click(GetSaveButton()); //TODO: Test that it has in fact saved the object
+            Click(SaveButton()); 
+            WaitForView(Pane.Single, PaneType.Object, obfuscated);
+        }
+
+        [TestMethod]
+        public void SaveAndClose()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
+            Click(GetObjectAction("Create New Credit Card"));
+            SelectDropDownOnField("#cardtype", "Vista");
+            string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
+            var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+            TypeIntoField("#cardnumber", number);
+            SelectDropDownOnField("#expmonth", "12");
+            SelectDropDownOnField("#expyear", "2020");
+            Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
+            //But check that credit card was saved nonetheless
+            GetObjectAction("List Credit Cards").Click();
+            WaitForView(Pane.Single, PaneType.List, "List Credit Cards");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Last().Text == obfuscated);
         }
 
         [TestMethod]
@@ -35,7 +55,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype", "Vista");
             SelectDropDownOnField("#expyear", "2020");
-            Click(GetSaveButton());
+            Click(SaveButton());
             wait.Until(dr => dr.FindElement(
                 By.CssSelector("input#cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
             wait.Until(dr => dr.FindElement(
@@ -71,7 +91,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             TypeIntoField("#cardnumber", "1111222233334444");
             SelectDropDownOnField("#expmonth", "1");
             SelectDropDownOnField("#expyear", "2008");
-            Click(GetSaveButton());
+            Click(SaveButton());
             //TODO: Test that dave has failed and message is shown
 
         }

@@ -334,7 +334,7 @@ module NakedObjects.Angular.Gemini {
                 const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].innerText}</div>`)(scope);        
                 compiledClone.data(draggableVmKey, draggableVm);
                 $("div.footer div.currentcopy").empty();
-                $("div.footer div.currentcopy").append("<span>Clipboard:</span>").append(compiledClone);
+                $("div.footer div.currentcopy").append("<span>Copying...</span>").append(compiledClone);
                 event.preventDefault();
             }
         });

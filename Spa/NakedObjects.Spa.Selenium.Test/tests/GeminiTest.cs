@@ -317,8 +317,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #region Editing & Saving
         protected void EditObject()
         {
-            Click(GetEditButton());
-            GetSaveButton();
+            Click(EditButton());
+            SaveButton();
             GetCancelEditButton();
             var title = br.FindElement(By.CssSelector(".header .title")).Text;
             Assert.IsTrue(title.StartsWith("Editing"));
@@ -326,8 +326,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void SaveObject()
         {
-            Click(GetSaveButton());
-            GetEditButton(); //To wait for save completed
+            Click(SaveButton());
+            EditButton(); //To wait for save completed
             var title = br.FindElement(By.CssSelector(".header .title")).Text;
             Assert.IsFalse(title.StartsWith("Editing"));
         }
@@ -337,12 +337,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.FindElements(By.CssSelector(".header .action")).Single(e => e.Text == text);
         }
 
-        protected IWebElement GetEditButton() {
+        protected IWebElement EditButton() {
             return GetButton("Edit");
         }
 
-        protected IWebElement GetSaveButton() {
+        protected IWebElement SaveButton() {
             return GetButton("Save");
+        }
+
+        protected IWebElement SaveAndCloseButton()
+        {
+            return GetButton("Save & Close");
         }
 
         protected IWebElement GetCancelEditButton()

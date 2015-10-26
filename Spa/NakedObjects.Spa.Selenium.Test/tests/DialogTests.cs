@@ -22,6 +22,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
     public abstract class DialogTests : AWTest
     {
         [TestMethod]
+        public virtual void OKButtonCalledGetOnAQueryActionDoOnOthers()
+        {
+            Url(OrdersMenuUrl);
+            OpenActionDialog("Orders By Value");
+            Assert.AreEqual("Get", OKButton().GetAttribute("value"));
+            GeminiUrl("home?menu1=SalesRepository");
+            OpenActionDialog("Create New Sales Person");
+            Assert.AreEqual("Do", OKButton().GetAttribute("value"));
+        }
+
+
+        [TestMethod]
         public virtual void ChoicesParm()
         {
             Url(OrdersMenuUrl);
