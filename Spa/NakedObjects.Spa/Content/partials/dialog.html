@@ -58,6 +58,6 @@
   </div>
   {{dialog.message}}
  </div>
- <input class="ok" tabindex="0" type="submit" value="OK" gemini-enter="dialog.doInvoke()" gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
+ <input class="ok" tabindex="0" type="submit" value="{{dialog.isQueryOnly ? 'Get' : 'Do'}}" gemini-enter="dialog.doInvoke()" gemini-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
  <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doClose()" ng-click="dialog.doClose()" value="Cancel" />
 </form>
