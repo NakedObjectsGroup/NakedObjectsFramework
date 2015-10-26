@@ -8,51 +8,61 @@ module NakedObjects.Angular.Gemini {
     }
 
     // based on code in AngularJs, Green and Seshadri, O'Reilly
-    app.directive("geminiDatepicker", ($filter : ng.IFilterService): ng.IDirective => {
+    app.directive("geminiDatepicker", ($filter : ng.IFilterService, $timeout : ng.ITimeoutService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
             restrict: "A",
             // Always use along with an ng-model
             require: "?ngModel",
+
+            // to make sure dynamic ids on element get picked up
+            transclude : true,
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
                 select: "&"        // Bind the select function we refer to the right scope
             },
             link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
-                if (!ngModel) return;
+                // also for dynamic ids - need to wrap link in timeout. 
+                $timeout(() => {
+                    if (!ngModel) return;
 
-                const updateModel = dateTxt => {
-                    scope.$apply(() => {
-                        // Call the internal AngularJS helper to
-                        // update the two way binding
+                    const updateModel = dateTxt => {
+                        scope.$apply(() => {
+                            // Call the internal AngularJS helper to
+                            // update the two way binding
 
-                        ngModel.$parsers.push(val=> new Date(val).toISOString());
-                        ngModel.$setViewValue(dateTxt);
-                    });
-                };
+                            ngModel.$parsers.push(val => new Date(val).toISOString());
+                            ngModel.$setViewValue(dateTxt);
+                        });
+                    };
 
-                const onSelect = dateTxt => {
-                    updateModel(dateTxt);
-                    if (scope.select) {
-                        scope.$apply(() => scope.select({ date: dateTxt }));
-                    }
-                };
+                    const onSelect = dateTxt => {
+                        updateModel(dateTxt);
+                        if (scope.select) {
+                            scope.$apply(() => scope.select({ date: dateTxt }));
+                        }
+                    };
 
-                const optionsObj = {
-                    dateFormat: "d M yy", // datepicker format
-                    onSelect: onSelect
-                }; 
+                    const optionsObj = {
+                        dateFormat: "d M yy", // datepicker format
+                        onSelect: onSelect
+                    };
 
-                ngModel.$render = () => {
-                    const formattedDate = $filter("date")(ngModel.$viewValue, "d MMM yyyy"); // angularjs format
+                    ngModel.$render = () => {
+                        const formattedDate = $filter("date")(ngModel.$viewValue, "d MMM yyyy"); // angularjs format
 
-                    // Use the AngularJS internal 'binding-specific' variable
-                    element.datepicker("setDate", formattedDate);
-                };
+                        // Use the AngularJS internal 'binding-specific' variable
+                        //element.datepicker("setDate", formattedDate);
 
-                element.datepicker(optionsObj);
+
+                        element.datepicker("setDate", formattedDate);
+                    };
+
+
+                    element.datepicker(optionsObj);
+                });
             }
         };
     });

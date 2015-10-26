@@ -527,7 +527,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
                 let $scope = $rootScope.$new();
 
-                resultVm = viewModelFactory.domainObjectViewModel($scope, new NakedObjects.DomainObjectRepresentation(rawObject), {}, null, 1);
+                resultVm = viewModelFactory.domainObjectViewModel($scope, new NakedObjects.DomainObjectRepresentation(rawObject), {}, null, false, 1);
             }));
 
             it("creates a object view model", () => {
@@ -552,7 +552,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 const doRep = new NakedObjects.DomainObjectRepresentation(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
 
-                resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, 1);
+                resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, false, 1);
             }));
 
             it("creates a object view model", () => {

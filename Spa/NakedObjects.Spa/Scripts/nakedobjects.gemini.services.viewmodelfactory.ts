@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini{
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
-        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>, paneId : number): DomainObjectViewModel;
+        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>, editing : boolean, paneId : number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
     }
 
@@ -286,7 +286,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType;
             propertyViewModel.format = propertyRep.extensions().format;
-            propertyViewModel.reference = propertyRep.isScalar() || propertyRep.value().isNull() ? "" : propertyRep.value().link().href();
+            propertyViewModel.reference = propertyRep.isScalar() || value.isNull() ? "" : value.link().href();
             propertyViewModel.draggableType = propertyViewModel.returnType;
 
             propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
@@ -346,7 +346,7 @@ module NakedObjects.Angular.Gemini{
 
             if (propertyViewModel.hasChoices || propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
 
-                var currentChoice: ChoiceViewModel = ChoiceViewModel.create(propertyRep.value(), id);
+                var currentChoice: ChoiceViewModel = ChoiceViewModel.create(value, id);
 
                 if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
                     propertyViewModel.choice = currentChoice;
@@ -365,7 +365,7 @@ module NakedObjects.Angular.Gemini{
 
             // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
             if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(propertyRep.value(), id), id, propertyRep.value());            
+                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);            
             } 
 
             return propertyViewModel;
@@ -379,7 +379,7 @@ module NakedObjects.Angular.Gemini{
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
-                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, {}, 1);
+                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, {}, false, 1);
 
                             if (!cvm.header) {
                                 cvm.header = _.map(ivm.target.properties, property => property.title);
@@ -493,7 +493,7 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = ($scope : ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>,  paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = ($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
 
             objectViewModel.onPaneId = paneId;
@@ -502,7 +502,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.domainType = objectRep.domainType();
             objectViewModel.draggableType = objectViewModel.domainType;
 
-            const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
+            
        
             objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
 
@@ -515,7 +515,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.message = "";
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
-            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, parms[id], paneId));
+            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, props[id], paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId ));
 
             // for dropping
@@ -533,28 +533,30 @@ module NakedObjects.Angular.Gemini{
                 objectViewModel.choice = ChoiceViewModel.create(value, "");
             }
 
-            let deregisterLocationWatch: Function = () => {};
-            let deregisterSearchWatch: Function = () => { };
+            if (editing || objectViewModel.isTransient) {
 
-            objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
-
-            objectViewModel.doEdit = () => {
                 const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
                 const setProperties = () => _.forEach(editProperties,
                     p => urlManager.setPropertyValue(objectRep, p, paneId, false));
-                deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
-                deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
+                const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
+                const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
-                urlManager.setObjectEdit(true, paneId);
+                const returnFunc = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
+
+                objectViewModel.doEditCancel = () => {
+                    deregisterLocationWatch();
+                    deregisterSearchWatch();
+                    returnFunc();
+                };
+
+                const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
+                objectViewModel.doSave = () => savehandler(objectRep, objectViewModel);
             }
 
-            const returnFunc = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
-
-            objectViewModel.doEditCancel = () => {
-                deregisterLocationWatch();
-                deregisterSearchWatch();
-                returnFunc();
-            };
+          
+            objectViewModel.doEdit = () => {           
+                urlManager.setObjectEdit(true, paneId);
+            }       
 
             return objectViewModel;
         };
