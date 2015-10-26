@@ -329,26 +329,35 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     });
 
-    //describe("getObjectByOid", () => {
+    describe("getObjectByOid", () => {
+        const testHome = new NakedObjects.HomePageRepresentation();
+        let localContext: NakedObjects.Angular.Gemini.IContext;
+        let result: angular.IPromise<NakedObjects.DomainObjectRepresentation>;
+        let populate: jasmine.Spy;
+        let timeout: ng.ITimeoutService;
 
-    //    describe("when get a domain object by id", () => {
 
-    //        let getObject: jasmine.Spy;
-    //        let localContext: NakedObjects.Angular.Gemini.IContext;
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
+            localContext = context;
+            timeout = $timeout;
 
-    //        beforeEach(inject((context) => {
-    //            localContext = context;
-    //            getObject = spyOn(context, "getObject");                          
-    //        }));
+            populate = spyOn(repLoader, "populate");
+            populate.and.returnValue($q.when(testHome));
+        }));
 
-    //        describe("getObject is called with pane, dt and id", () => {
-    //            let a = localContext.getObjectByOid(1, "adt-anid");
-    //            expect(getObject).toHaveBeenCalled();
-    //        });
-         
-    //    });
-    
-    //});
+        describe("populates Home rep", () => {
+
+            beforeEach(inject(() => {
+                result = localContext.getObjectByOid(1, "");
+            }));
+
+            it("returns object representation", () => {
+                //expect(populate).toHaveBeenCalled();
+                //result.then((hr) => expect(hr).toBe(testHome));
+                //timeout.flush();
+            });
+        });
+    });
 
 
     describe("getList", () => {
