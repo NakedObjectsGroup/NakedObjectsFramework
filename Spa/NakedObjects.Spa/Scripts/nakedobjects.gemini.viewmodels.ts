@@ -285,7 +285,7 @@ module NakedObjects.Angular.Gemini {
         collections: CollectionViewModel[];
         actions: ActionViewModel[];
         color: string; 
-        doSave(): void { }
+        doSave(edit : boolean): void { }
         toggleActionMenu(): void { }
         isTransient: boolean;
         onPaneId: number;
