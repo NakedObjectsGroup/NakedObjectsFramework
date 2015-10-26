@@ -293,21 +293,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Parameter validation
-        [TestMethod, Ignore] //RWP: 2-clicks needed on OK
+        [TestMethod] //RWP: 2-clicks needed on OK
         public virtual void MandatoryParameterEnforced()
         {
             GeminiUrl("home?menu1=SalesRepository&dialog1=FindSalesPersonByName");
-            var firstName = WaitForCss("input#firstname");
-            Assert.AreEqual("", firstName.GetAttribute("placeholder"));
-            var lastName = WaitForCss("input#lastname");
-            Assert.AreEqual("* ", lastName.GetAttribute("placeholder"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname")).GetAttribute("placeholder") == "");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname")).GetAttribute("placeholder") == "* ");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
-            var validation = WaitForCss(".parameter .validation");
-            Assert.AreEqual("Mandatory", validation.Text);
-            TypeIntoField("#lastName", "a");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname")).GetAttribute("placeholder") == "REQUIRED * ");
+            TypeIntoField("input#lastname", "a");
             Click(OKButton());
-            WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name ");
+            WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
 
         [TestMethod, Ignore] //RWP: Issue with needing 2 clicks on OK
