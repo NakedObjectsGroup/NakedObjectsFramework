@@ -36,11 +36,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectDropDownOnField("#cardtype", "Vista");
             SelectDropDownOnField("#expyear", "2020");
             Click(GetSaveButton());
-            wait.Until(dr =>dr.FindElements(By.CssSelector(".validation")).Count(e => e.Text == "Mandatory") ==2);
+            wait.Until(dr => dr.FindElement(
+                By.CssSelector("input#cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
+            wait.Until(dr => dr.FindElement(
+                By.CssSelector("select#expmonth option[selected='selected']")).Text =="REQUIRED *");
+
         }
 
         [TestMethod]
-        public virtual void PropertyDescriptionAndRequiredRenderedAsPlacholder()
+        public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));

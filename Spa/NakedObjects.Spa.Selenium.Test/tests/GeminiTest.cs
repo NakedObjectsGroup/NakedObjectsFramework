@@ -137,8 +137,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected virtual IWebElement WaitForCss(string cssSelector)
         {
-            wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
-            return br.FindElement(By.CssSelector(cssSelector));
+            return wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
         }
 
         /// <summary>
