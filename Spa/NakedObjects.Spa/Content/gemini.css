@@ -50,7 +50,7 @@
     }
 
     .properties, .dialog {
-        width: 390px;
+        width: 410px;
         padding: 5px;
         margin-bottom: 20px;
     }
@@ -70,6 +70,10 @@
         font-weight: 200;
         font-size: 24pt;
         line-height: 38pt;
+        margin-left: 1px; /*Make room for focus outline*/
+        padding-left: 5px;
+        margin-right: 20px;
+        margin-top: 2px;
     }
 
     .header .type {
@@ -81,36 +85,15 @@
         display: none; /*Change this to display type (e.g. for accessibility)*/
     }
 
+
 /*Menus & actions*/
     .menu, .header .action {
         float: left;
         padding: 5px;
-        margin-top: 20px;
         margin-left: 1px; /*Else hover outline is hidden on the left-most menu*/
         margin-right: 10px;
         margin-bottom: 5px; /*Else hover outline is hidden on the bottom*/
-        font-size: 14pt;
-    }
-
-    .object .header .menu, .object .header .action {
-        background-color: white;
-        color: black;
-    }
-
-    .menu:hover, .menu.selected, .menu:focus {
-        outline: solid;
-        outline-width: 1px;
-        outline-color: white;
-    }
-
-    .action:hover, .action:focus, .action.selected {
-        outline: solid;
-        outline-width: 2px;
-        outline-color: blue;
-    }
-
-    .object .menu:hover, .object .menu.selected, .object .action:hover, .object .action.selected {
-        outline-color: black;
+        font-size: 16pt;
     }
 
 /*Fix to make menus/actions/reference properties clickable*/
@@ -124,8 +107,8 @@
         width: 150px;
         padding: 2px 5px;
         margin-bottom: 5px;
-        background-color: white;
-        color: black;
+        /*background-color: white;
+        color: black;*/
         font-weight: bolder; /*Because black on white light looks too faint*/
     }
 
@@ -173,17 +156,18 @@
     }
 
     .reference, .value, .details {
-        width: 230px;
+        width: 245px;
         padding-left: 5px;
         padding-right: 5px;
+        margin: 1px;
     }
 
     .input-control input:not([type='checkbox'])  {
-        width: 230px;
+        width: 245px;
     }
 
     select {
-        width: 225px; /*Allow space for drop-down arrow in IE*/
+        width: 240px; /*Allow space for drop-down arrow in IE*/
     }
 
     .name, .value, .property .reference {
@@ -227,19 +211,36 @@
         background-color: white;
     }
 
-/*TODO:  Review for consistent use of black & white */
-/*Hovering & active behaviour*/
-.reference:hover, .clickable-row:hover, input:hover {
-    outline: auto;
-    outline-width: 1px;
-    outline-color: black;
-}
+/*Hover & Focus*/
 
-.reference:active, .clickable-row:active, .menu:active {
-    outline: auto;
-    outline-width: 1px;
-    outline-color: white;
-}
+   .dialog input:not([type='checkbox']):focus, 
+   .dialog input:not([type='checkbox']):hover
+ {
+        outline: solid;
+        outline-width: 1px;
+        outline-color: black;
+    }
+
+   .menu:hover, .menu:focus, 
+   .reference:hover, .reference:focus,
+   .clickable-row:hover,  .clickable-row:focus,
+   div.hover, div.focus,
+    .action:hover, .action:focus, 
+    .footer a:hover, .footer a:focus
+     {
+        outline: solid;
+        outline-width: 1px;
+        outline-color: white;
+    }
+
+      .title:focus
+     {
+        outline:dotted;
+        outline-width: 1px;
+        outline-color: white;
+    }
+
+
 
 /*Collections */
     .collection:not(:last-child){
@@ -529,6 +530,7 @@ input[type=reset],
 input[type=submit] {
     margin-left:5px;
     margin-top: 10px;
+    margin-right: 5px;
     display: inline-block;
     padding: 4px 12px;
     text-align: center;
@@ -537,10 +539,15 @@ input[type=submit] {
     cursor: pointer;
     width: auto;
     *zoom: 1;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
     float: right;
+    outline: solid;
+    outline-color: lightgrey;
+    outline-width: 1px;
 }
+
+.dialog
 
 /*Cicero*/
 .cicero, .cicero input {
