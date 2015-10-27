@@ -52,14 +52,9 @@ module NakedObjects.Angular.Gemini {
 
                     ngModel.$render = () => {
                         const formattedDate = $filter("date")(ngModel.$viewValue, "d MMM yyyy"); // angularjs format
-
                         // Use the AngularJS internal 'binding-specific' variable
-                        //element.datepicker("setDate", formattedDate);
-
-
                         element.datepicker("setDate", formattedDate);
                     };
-
 
                     element.datepicker(optionsObj);
                 });
