@@ -204,7 +204,7 @@ module NakedObjects.Angular.Gemini {
             currentCollections[paneId] = list;
         }
 
-        const getList = (paneId: number, resultPromise : ng.IPromise<ActionResultRepresentation>) => {
+        const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>) => {
             const currentCollection = currentCollections[paneId];
 
             if (currentCollection) {
@@ -213,7 +213,7 @@ module NakedObjects.Angular.Gemini {
                 return $q.when(currentCollection);
             }
 
-            return resultPromise.then((result: ActionResultRepresentation) => handleResult(paneId, result));
+            return resultPromise().then(result => handleResult(paneId, result));
         };
 
         function cacheActionNameAndInvoke(paneId : number, action: ActionMember, parms: _.Dictionary<Value>) {
@@ -222,18 +222,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>) => {
-
-            const promise = context.getMenu(menuId).
-                then((menu: MenuRepresentation) => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms));
-
+            const promise = () => context.getMenu(menuId).then(menu => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms));
             return getList(paneId, promise);
         };
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
-
-            const promise = context.getObjectByOid(paneId, objectId).
-                then((object: DomainObjectRepresentation) => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms));
-
+            const promise = () => context.getObjectByOid(paneId, objectId).then(object => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms));
             return getList(paneId, promise);
         };
 

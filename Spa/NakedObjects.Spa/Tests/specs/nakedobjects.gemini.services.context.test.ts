@@ -395,58 +395,151 @@ describe("nakedObjects.gemini.services.context ", () => {
         });
     });
 
-    //describe("getListFromMenu", () => {
+    describe("getListFromMenu", () => {
 
-    //    const testObject = new NakedObjects.ListRepresentation();
-    //    let localContext: NakedObjects.Angular.Gemini.IContext;
-    //    let result: angular.IPromise<NakedObjects.ListRepresentation>;
-    //    let timeout: ng.ITimeoutService;
+        const testList = new NakedObjects.ListRepresentation();
+        const testAction = new NakedObjects.ActionMember({}, {}, "");
+        const testMenu = new NakedObjects.MenuRepresentation();
+        let localContext: NakedObjects.Angular.Gemini.IContext;
+        const testActionResult = new NakedObjects.ActionResultRepresentation();
+        const testResult = new NakedObjects.Result({}, "list");
 
-    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-    //        localContext = context;
-    //        timeout = $timeout;
-    //    }));
+        let timeout: ng.ITimeoutService;
+        let getMenu: jasmine.Spy;
+        let actionMember: jasmine.Spy;
+        let invoke: jasmine.Spy;
 
-    //    describe("on first call", () => {
+        beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
+            localContext = context;
+            timeout = $timeout;
 
-    //        beforeEach(inject(() => {
-    //            result = localContext.getListFromMenu(1, "", "", {});
-    //            timeout.flush();
-    //        }));
 
-    //        it("populate a new list", () => {
-    //            result.then((hr) => expect(hr).toBe(testObject));
-    //        });
-    //    });
-    //});
+            actionMember = spyOn(testMenu, "actionMember");
+            actionMember.and.returnValue(testAction);
+            spyOn(testAction, "extensions").and.returnValue({ friendlyName: "aName" });
 
-    //describe("getListFromObject", () => {
+            invoke = spyOn(repLoader, "invoke");
+            invoke.and.returnValue($q.when(testActionResult));
 
-    //    const testObject = new NakedObjects.ListRepresentation();
-    //    let localContext: NakedObjects.Angular.Gemini.IContext;
-    //    let result: angular.IPromise<NakedObjects.ListRepresentation>;
-    //    let timeout: ng.ITimeoutService;
+            spyOn(testActionResult, "result").and.returnValue(testResult);
+            spyOn(testResult, "list").and.returnValue(testList);
+            spyOn(testActionResult, "resultType").and.returnValue("list");
+        }));
 
-    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-    //        localContext = context;
-    //        timeout = $timeout;
-    //    }));
+        describe("on first call", () => {
 
-    //    describe("when collection is set", () => {
+            let result: angular.IPromise<NakedObjects.ListRepresentation>;
 
-    //        beforeEach(inject(() => {
+            beforeEach(inject(($q, context) => {
+                getMenu = spyOn(context, "getMenu");
+                getMenu.and.returnValue($q.when(testMenu));
+            }));
 
-    //            (<any>localContext).setList(1, testObject);
+            it("return a new list", () => {
+                result = localContext.getListFromMenu(1, "", "", {});
+                timeout.flush();
+                expect(getMenu).toHaveBeenCalled();
+                result.then(hr => expect(hr).toBe(testList));
+                timeout.flush();
+            });
+        });
 
-    //            result = localContext.getListFromObject(1, "", "", {});
-    //            timeout.flush();
-    //        }));
+        describe("on second call", () => {
 
-    //        it("returns collection representation", () => {
-    //            result.then((hr) => expect(hr).toBe(testObject));
-    //        });
-    //    });
-    //});
+            let result: angular.IPromise<NakedObjects.ListRepresentation>;
+
+            beforeEach(inject(($q, context) => {
+                getMenu = spyOn(context, "getMenu");
+                getMenu.and.returnValue($q.when(testMenu));
+            }));
+
+            it("return a cached list", () => {
+                result = localContext.getListFromMenu(1, "", "", {});
+                timeout.flush();
+                result = localContext.getListFromMenu(1, "", "", {});
+                timeout.flush();
+
+                expect(getMenu).toHaveBeenCalled();
+                expect(getMenu.calls.count()).toBe(1);
+                result.then(hr => expect(hr).toBe(testList));
+                timeout.flush();
+            });
+        });
+    });
+
+    describe("getListFromObject", () => {
+
+        const testList = new NakedObjects.ListRepresentation();
+        const testAction = new NakedObjects.ActionMember({}, {}, "");
+        const testObject = new NakedObjects.DomainObjectRepresentation();
+        let localContext: NakedObjects.Angular.Gemini.IContext;
+        const testActionResult = new NakedObjects.ActionResultRepresentation();
+        const testResult = new NakedObjects.Result({}, "list");
+
+        let timeout: ng.ITimeoutService;
+        let getObjectByOid: jasmine.Spy;
+        let actionMember: jasmine.Spy;
+        let invoke: jasmine.Spy;
+
+        beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
+            localContext = context;
+            timeout = $timeout;
+
+         
+
+            actionMember = spyOn(testObject, "actionMember");
+            actionMember.and.returnValue(testAction);
+            spyOn(testAction, "extensions").and.returnValue({ friendlyName: "aName" });
+
+            invoke = spyOn(repLoader, "invoke");
+            invoke.and.returnValue($q.when(testActionResult));
+
+            spyOn(testActionResult, "result").and.returnValue(testResult);
+            spyOn(testResult, "list").and.returnValue(testList);
+            spyOn(testActionResult, "resultType").and.returnValue("list");
+        }));
+
+        describe("on first call", () => {
+
+            let result: angular.IPromise<NakedObjects.ListRepresentation>;
+
+            beforeEach(inject(($q, context) => {
+                getObjectByOid = spyOn(context, "getObjectByOid");
+                getObjectByOid.and.returnValue($q.when(testObject));
+            }));
+
+            it("return a new list", () => {
+                result = localContext.getListFromObject(1, "", "", {});
+                timeout.flush();
+                expect(getObjectByOid).toHaveBeenCalled();
+                result.then(hr => expect(hr).toBe(testList));
+                timeout.flush();
+            });
+        });
+
+        describe("on second call", () => {
+
+            let result: angular.IPromise<NakedObjects.ListRepresentation>;
+
+            beforeEach(inject(($q, context) => {
+                getObjectByOid = spyOn(context, "getObjectByOid");
+                getObjectByOid.and.returnValue($q.when(testObject));
+            }));
+
+            it("return a cached list", () => {
+                result = localContext.getListFromObject(1, "", "", {});
+                timeout.flush();
+                result = localContext.getListFromObject(1, "", "", {});
+                timeout.flush();
+
+                expect(getObjectByOid).toHaveBeenCalled();
+                expect(getObjectByOid.calls.count()).toBe(1);
+                result.then(hr => expect(hr).toBe(testList));
+                timeout.flush();
+            });
+        });
+    });
+
 
     describe("prompt", () => {
 
