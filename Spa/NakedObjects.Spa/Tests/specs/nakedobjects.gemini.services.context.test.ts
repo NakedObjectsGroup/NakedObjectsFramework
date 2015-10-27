@@ -8,36 +8,6 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     beforeEach(angular.mock.module("app"));
 
-    describe("getHome", () => {
-        const testHome = new NakedObjects.HomePageRepresentation();
-        let localContext: NakedObjects.Angular.Gemini.IContext;
-        let result: angular.IPromise<NakedObjects.HomePageRepresentation>;
-        let populate: jasmine.Spy;
-        let timeout: ng.ITimeoutService;
-
-
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
-            localContext = context;
-            timeout = $timeout;
-
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testHome));
-        }));
-
-        describe("populates Home rep", () => {
-
-            beforeEach(inject(() => {
-                result = localContext.getHome();
-            }));
-
-            it("returns home representation", () => {
-                expect(populate).toHaveBeenCalled();
-                result.then((hr) => expect(hr).toBe(testHome));
-                timeout.flush();
-            });
-        });
-    });
-
     describe("getVersion", () => {
         const testVersion = new NakedObjects.VersionRepresentation();
         const testHome = new NakedObjects.HomePageRepresentation();
@@ -48,12 +18,10 @@ describe("nakedObjects.gemini.services.context ", () => {
         let getVersion: jasmine.Spy;
         let timeout: ng.ITimeoutService;
 
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context) => {
             localContext = context;
             timeout = $timeout;
 
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testVersion));
             getHome = spyOn(context, "getHome");
             getHome.and.returnValue($q.when(testHome));
             getVersion = spyOn(testHome, "getVersion");
@@ -62,13 +30,26 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         describe("populates Version rep", () => {
 
-            beforeEach(inject(() => {
-                result = localContext.getVersion();
-                timeout.flush();
+            beforeEach(inject(($q, repLoader) => {
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when(testVersion));
             }));
 
-            it("returns version representation", () => {
+            it("returns new version representation on first call", () => {
+                result = localContext.getVersion();
+                timeout.flush();
                 expect(populate).toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testVersion));
+                timeout.flush();
+            });
+
+            it("returns cacahed version representation on second call", () => {
+                result = localContext.getVersion();
+                timeout.flush();
+                result = localContext.getVersion();
+                timeout.flush();
+                expect(populate).toHaveBeenCalled();
+                expect(populate.calls.count()).toBe(1);
                 result.then((hr) => expect(hr).toBe(testVersion));
                 timeout.flush();
             });
@@ -85,30 +66,43 @@ describe("nakedObjects.gemini.services.context ", () => {
         let getMenus: jasmine.Spy;
         let timeout: ng.ITimeoutService;
 
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context) => {
             localContext = context;
             timeout = $timeout;
 
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testMenus));
             getHome = spyOn(context, "getHome");
             getHome.and.returnValue($q.when(testHome));
             getMenus = spyOn(testHome, "getMenus");
             getMenus.and.returnValue(testMenus);
-
         }));
 
         describe("populates menus rep", () => {
 
-            beforeEach(inject(() => {
-                result = localContext.getMenus();
-                timeout.flush();
+            beforeEach(inject(($q, repLoader) => {
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when(testMenus));
             }));
 
-            it("returns menus representation", () => {
+            it("returns new menus representation on first call", () => {
+                result = localContext.getMenus();
+                timeout.flush();
                 expect(getHome).toHaveBeenCalled();
                 expect(getMenus).toHaveBeenCalled();
                 expect(populate).toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testMenus));
+                timeout.flush();
+            });
+
+            it("returns cached menus representation on second call", () => {
+                result = localContext.getMenus();
+                timeout.flush();
+                result = localContext.getMenus();
+                timeout.flush();
+
+                expect(getHome).toHaveBeenCalled();
+                expect(getMenus).toHaveBeenCalled();
+                expect(populate).toHaveBeenCalled();
+                expect(populate.calls.count()).toBe(1);
                 result.then((hr) => expect(hr).toBe(testMenus));
                 timeout.flush();
             });
@@ -130,8 +124,6 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
 
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testMenu));
 
             getMenus = spyOn(context, "getMenus");
             getMenus.and.returnValue($q.when(testMenus));
@@ -141,15 +133,44 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         describe("populates menu rep", () => {
 
-            beforeEach(inject(() => {
-                result = localContext.getMenu("anId");
-                timeout.flush();
+            beforeEach(inject(($q, repLoader) => {
+                populate = spyOn(repLoader, "populate");
+                populate.and.returnValue($q.when(testMenu));
             }));
 
-            it("returns menu representation", () => {
+            it("returns new menu representation", () => {
+                result = localContext.getMenu("anId");
+                timeout.flush();
                 expect(getMenus).toHaveBeenCalled();
                 expect(getMenu).toHaveBeenCalledWith("anId");
                 expect(populate).toHaveBeenCalled();
+                result.then((hr) => expect(hr).toBe(testMenu));
+                timeout.flush();
+            });
+
+            it("returns cached menu representation with same id", () => {
+                result = localContext.getMenu("anId");
+                timeout.flush();
+                result = localContext.getMenu("anId");
+                timeout.flush();
+                expect(getMenus).toHaveBeenCalled();
+                expect(getMenu).toHaveBeenCalledWith("anId");
+                expect(populate).toHaveBeenCalled();
+                expect(populate.calls.count()).toBe(1);
+                result.then((hr) => expect(hr).toBe(testMenu));
+                timeout.flush();
+            });
+
+            it("returns new menu representation with different id", () => {
+                result = localContext.getMenu("anId1");
+                timeout.flush();
+                result = localContext.getMenu("anId2");
+                timeout.flush();
+                expect(getMenus).toHaveBeenCalled();
+                expect(getMenu).toHaveBeenCalledWith("anId1");
+                expect(getMenu).toHaveBeenCalledWith("anId2");
+                expect(populate).toHaveBeenCalled();
+                expect(populate.calls.count()).toBe(2);
                 result.then((hr) => expect(hr).toBe(testMenu));
                 timeout.flush();
             });
@@ -167,11 +188,9 @@ describe("nakedObjects.gemini.services.context ", () => {
         let populate: jasmine.Spy;
         let timeout: ng.ITimeoutService;
 
-        describe("getting a domain object", () => {
+        describe("populates a domain object", () => {
 
-            beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
-                populate = spyOn(repLoader, "populate");
-                populate.and.returnValue($q.when(testObject));
+            beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context) => {
 
                 getDomainObject = spyOn(context, "getDomainObject");
                 getDomainObject.and.callThrough();
@@ -187,34 +206,40 @@ describe("nakedObjects.gemini.services.context ", () => {
                 timeout = $timeout;
             }));
 
-            describe("when currentObject is set", () => {
+            describe("on first call", () => {
 
-                beforeEach(inject(() => {
-                    (<any> localContext).setObject(testObject);
-                    result = localContext.getObject(1, "test", ["1"]);
-                    timeout.flush();
+                beforeEach(inject(($q, repLoader) => {
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
                 }));
 
 
-                it("returns object representation", () => {
+                it("return new object ", () => {
+                    result = localContext.getObject(1, "test", ["1"]);
+                    timeout.flush();
                     expect(getDomainObject).toHaveBeenCalledWith(1, "test", "1");
                     expect(getService).not.toHaveBeenCalled();
+                    expect(populate).toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
             });
 
-            describe("when currentObject is set but not same", () => {
+            describe("when cached object is not same", () => {
 
-                beforeEach(inject(() => {
-
-                    (<any> localContext).setObject(testObject);
-                    result = localContext.getObject(1, "test2", ["2"]);
-                    timeout.flush();
+                beforeEach(inject(($q, repLoader) => {
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
                 }));
 
-                it("returns object representation", () => {
+                it("return new object", () => {
+                    result = localContext.getObject(1, "test", ["1"]);
+                    timeout.flush();
+                    result = localContext.getObject(1, "test2", ["2"]);
+                    timeout.flush();
                     expect(populate).toHaveBeenCalled();
+                    expect(populate.calls.count()).toBe(2);
+                    expect(getDomainObject).toHaveBeenCalledWith(1, "test", "1");
                     expect(getDomainObject).toHaveBeenCalledWith(1, "test2", "2");
                     expect(getService).not.toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
@@ -222,15 +247,21 @@ describe("nakedObjects.gemini.services.context ", () => {
                 });
             });
 
-            describe("when currentObject is not set", () => {
+            describe("on second call", () => {
 
-                beforeEach(inject(() => {
-                    result = localContext.getObject(1, "test", ["1"]);
-                    timeout.flush();
+                beforeEach(inject(($q, repLoader) => {
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
                 }));
 
-                it("returns object representation", () => {
+                it("returns a cached object", () => {
+                    result = localContext.getObject(1, "test", ["1"]);
+                    timeout.flush();
+                    result = localContext.getObject(1, "test", ["1"]);
+                    timeout.flush();
+
                     expect(populate).toHaveBeenCalled();
+                    expect(populate.calls.count()).toBe(1);
                     expect(getDomainObject).toHaveBeenCalledWith(1, "test", "1");
                     expect(getService).not.toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
@@ -239,15 +270,14 @@ describe("nakedObjects.gemini.services.context ", () => {
             });
         });
 
-        describe("getting a service", () => {
+        describe("populates a service", () => {
 
             const testServices = new NakedObjects.DomainServicesRepresentation();
             let getServices: jasmine.Spy;
             let getServiceRep: jasmine.Spy;
 
-            beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
-                populate = spyOn(repLoader, "populate");
-                populate.and.returnValue($q.when(testObject));
+            beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context) => {
+
 
                 getDomainObject = spyOn(context, "getDomainObject");
                 getDomainObject.and.callThrough();
@@ -269,96 +299,101 @@ describe("nakedObjects.gemini.services.context ", () => {
                 timeout = $timeout;
             }));
 
-            describe("when currentObject is set", () => {
+            describe("on first call", () => {
 
-                beforeEach(inject(() => {
-                    (<any> localContext).setObject(testObject);
-                    result = localContext.getObject(1, "test");
-                    timeout.flush();
+                beforeEach(inject(($q, repLoader) => {
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
                 }));
 
 
                 it("returns service representation", () => {
+                    result = localContext.getObject(1, "sid");
+                    timeout.flush();
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith(1, "test");
+                    expect(getService).toHaveBeenCalledWith(1, "sid");
+                    expect(populate).toHaveBeenCalled();
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
             });
 
-            describe("when currentObject is set but not same", () => {
+            describe("when cached object is not the same", () => {
 
 
-                beforeEach(inject(() => {
+                beforeEach(inject(($q, repLoader) => {
 
-                    (<any> localContext).setObject(testObject);
-                    result = localContext.getObject(1, "test2");
-                    timeout.flush();
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
+
                 }));
 
 
                 it("returns service representation", () => {
+                    result = localContext.getObject(1, "sid");
+                    timeout.flush();
+                    result = localContext.getObject(1, "sid2");
+                    timeout.flush();
                     expect(populate).toHaveBeenCalled();
+                    expect(populate.calls.count()).toBe(2);
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith(1, "test2");
+                    expect(getService).toHaveBeenCalledWith(1, "sid2");
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
             });
 
+            describe("on second call", () => {
 
-            describe("when currentObject is not set", () => {
-
-                beforeEach(inject(() => {
-
-                    result = localContext.getObject(1, "test");
-                    timeout.flush();
+                beforeEach(inject(($q, repLoader) => {
+                    populate = spyOn(repLoader, "populate");
+                    populate.and.returnValue($q.when(testObject));
                 }));
 
 
                 it("returns service representation", () => {
+                    result = localContext.getObject(1, "sid");
+                    timeout.flush();
+                    result = localContext.getObject(1, "sid");
+                    timeout.flush();
+
                     expect(populate).toHaveBeenCalled();
+                    expect(populate.calls.count()).toBe(1);
                     expect(getDomainObject).not.toHaveBeenCalled();
-                    expect(getService).toHaveBeenCalledWith(1, "test");
+                    expect(getService).toHaveBeenCalledWith(1, "sid");
                     result.then((hr) => expect(hr).toBe(testObject));
                     timeout.flush();
                 });
             });
         });
-
 
     });
 
     describe("getObjectByOid", () => {
-        const testHome = new NakedObjects.HomePageRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
-        let result: angular.IPromise<NakedObjects.DomainObjectRepresentation>;
-        let populate: jasmine.Spy;
+        let testObject: angular.IPromise<NakedObjects.DomainObjectRepresentation>;
+        let getObject: jasmine.Spy;
         let timeout: ng.ITimeoutService;
 
 
-        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context, repLoader) => {
+        beforeEach(inject(($q, $timeout, $rootScope, $routeParams, context) => {
             localContext = context;
             timeout = $timeout;
 
-            populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testHome));
+            getObject = spyOn(context, "getObject");
+            getObject.and.returnValue($q.when(testObject));
         }));
 
         describe("populates Home rep", () => {
-
-            beforeEach(inject(() => {
-                result = localContext.getObjectByOid(1, "");
-            }));
-
             it("returns object representation", () => {
-                //expect(populate).toHaveBeenCalled();
-                //result.then((hr) => expect(hr).toBe(testHome));
-                //timeout.flush();
+                const result = localContext.getObjectByOid(1, "type-1");
+                timeout.flush();
+                expect(getObject).toHaveBeenCalledWith(1, "type", ["1"]);
+                result.then((hr) => expect(hr).toBe(testObject));
+                timeout.flush();
             });
         });
     });
-
 
     describe("getList", () => {
 
@@ -415,7 +450,75 @@ describe("nakedObjects.gemini.services.context ", () => {
             });
         });
     });
-    
+
+    describe("prompt", () => {
+
+        const testPrompt = new NakedObjects.PromptRepresentation();
+        const testPromptResult = new NakedObjects.PromptRepresentation();
+
+        let localContext: NakedObjects.Angular.Gemini.IContext;
+        let timeout: ng.ITimeoutService;
+        let setResult: jasmine.Spy;
+        let populate: jasmine.Spy;
+        let result: ng.IPromise<NakedObjects.Angular.Gemini.ChoiceViewModel[]>;
+
+        beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
+            localContext = context;
+            timeout = $timeout;
+
+            spyOn(testPromptResult, "choices").and.returnValue([]);
+
+            populate = spyOn(repLoader, "populate");
+            populate.and.returnValue($q.when(testPromptResult));
+        }));
+
+        describe("invoke", () => {
+
+            beforeEach(inject(() => {
+                result = localContext.prompt(testPrompt, "", "");
+                timeout.flush();
+            }));
+
+            it("returns collection representation", () => {
+                // expect(setResult).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe("conditionalChoices", () => {
+
+        const testPrompt = new NakedObjects.PromptRepresentation();
+        const testPromptResult = new NakedObjects.PromptRepresentation();
+
+        let localContext: NakedObjects.Angular.Gemini.IContext;
+        let timeout: ng.ITimeoutService;
+        let setResult: jasmine.Spy;
+        let populate: jasmine.Spy;
+        let result: ng.IPromise<NakedObjects.Angular.Gemini.ChoiceViewModel[]>;
+
+        beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
+            localContext = context;
+            timeout = $timeout;
+
+            spyOn(testPromptResult, "choices").and.returnValue([]);
+
+            populate = spyOn(repLoader, "populate");
+            populate.and.returnValue($q.when(testPromptResult));
+        }));
+
+        describe("invoke", () => {
+
+            beforeEach(inject(() => {
+                result = localContext.conditionalChoices(testPrompt, "", {});
+                timeout.flush();
+            }));
+
+            it("returns collection representation", () => {
+                // expect(setResult).toHaveBeenCalled();
+            });
+        });
+    });
+
     describe("invokeAction", () => {
 
         const testAction = new NakedObjects.ActionMember(null, null, null);
@@ -461,7 +564,7 @@ describe("nakedObjects.gemini.services.context ", () => {
         testOvm.properties = [];
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
-       
+
         let timeout: ng.ITimeoutService;
         let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
@@ -570,7 +673,5 @@ describe("nakedObjects.gemini.services.context ", () => {
             });
         });
     });
-
-
 
 });

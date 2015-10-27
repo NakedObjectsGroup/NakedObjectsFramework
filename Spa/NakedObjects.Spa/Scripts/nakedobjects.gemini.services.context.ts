@@ -5,23 +5,18 @@
 module NakedObjects.Angular.Gemini {
 
     export interface IContext {
-        getHome: () => ng.IPromise<HomePageRepresentation>;
+        
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-
         getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
-        getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;
-        
-        getError: () => ErrorRepresentation;
-      
-        getPreviousUrl: () => string;
-        
-        
+        getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;    
         getList: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
-        getLastActionFriendlyName : (paneId : number) => string;
-      
+
+        getLastActionFriendlyName: (paneId: number) => string;
+        getError: () => ErrorRepresentation;
+        getPreviousUrl: () => string;
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
@@ -31,20 +26,17 @@ module NakedObjects.Angular.Gemini {
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
 
         setError: (object: ErrorRepresentation) => void;
-     
-
+    
         isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
-        isSuperTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
-
     }
 
     interface IContextInternal extends IContext {
+        getHome: () => ng.IPromise<HomePageRepresentation>;
         getDomainObject: (paneId : number, type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
 
-        setObject: (paneId : number, object: DomainObjectRepresentation) => void;
-           
+        setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
         setLastActionFriendlyName: (fn : string, paneId : number) => void;
         setList(paneId : number, listRepresentation: ListRepresentation);
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
@@ -56,14 +48,14 @@ module NakedObjects.Angular.Gemini {
         const context = <IContextInternal>this;
 
         // cached values
-        let currentHome: HomePageRepresentation = null;
+       
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
         const currentMenuList: _.Dictionary<MenuRepresentation> = {};
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
         const currentCollections:  ListRepresentation[] = []; // per pane 
-        let lastActionFriendlyName: string[] = [];
+        const lastActionFriendlyName: string[] = [];
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
@@ -132,16 +124,9 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.getHome = () => {
-
-            if (currentHome) {
-                return $q.when(currentHome);
-            }
-
-            return repLoader.populate<HomePageRepresentation>(new HomePageRepresentation()).
-                then((home: HomePageRepresentation) => {
-                    currentHome = home;
-                    return $q.when(home);
-                });
+            // for moment don't bother caching only called on startup and for whatever resaon cacahe doesn't work. 
+            // once version cached no longer called.  
+            return repLoader.populate<HomePageRepresentation>(new HomePageRepresentation());
         };
 
         context.getServices = () => {
@@ -152,7 +137,7 @@ module NakedObjects.Angular.Gemini {
 
             return context.getHome().
                 then((home: HomePageRepresentation) => {
-                    var ds = home.getDomainServices();
+                    const ds = home.getDomainServices();
                     return repLoader.populate<DomainServicesRepresentation>(ds);
                 }).
                 then((services: DomainServicesRepresentation) => {
@@ -263,55 +248,38 @@ module NakedObjects.Angular.Gemini {
 
         context.setObject = (paneId : number, co) => currentObjects[paneId] = co;
           
-        var currentError: ErrorRepresentation = null;
+        let currentError: ErrorRepresentation = null;
 
         context.getError = () => currentError;
 
         context.setError = (e: ErrorRepresentation) => currentError = e;
        
-
-        var previousUrl: string = null;
+        let previousUrl: string = null;
 
         context.getPreviousUrl = () => previousUrl;
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
+        context.getLastActionFriendlyName = (paneId: number) => lastActionFriendlyName[paneId] || "";
 
-        context.getLastActionFriendlyName = (paneId : number) => {
-            return lastActionFriendlyName[paneId] || "";
-        };
+        context.setLastActionFriendlyName = (fn: string, paneId: number) => lastActionFriendlyName[paneId] = fn;
+       
+        const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
+            $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
-        context.setLastActionFriendlyName = (fn : string, paneId : number) => {
-            lastActionFriendlyName[paneId] = fn;
-        };
-
-        // from rh
-
-        const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) => {
-            const delay = $q.defer<ChoiceViewModel[]>();
-
-            const cvms = _.map(p.choices(), (v, k) => {
-                return ChoiceViewModel.create(v, id, k, searchTerm);
-            });
-
-            delay.resolve(cvms);
-            return delay.promise;
-        }
-
-        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]> => {
+        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: () => void) => {
             promptRep.reset();
-            promptRep.setSearchTerm(searchTerm);
+            setupPrompt();
             const createcvm = <(p: PromptRepresentation) => angular.IPromise<Gemini.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, searchTerm));
             return repLoader.populate(promptRep, true).then(createcvm);
         };
 
-        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]> => {
-            promptRep.reset();
-            promptRep.setArguments(args);
-            const createcvm = <(p: PromptRepresentation) => angular.IPromise<Gemini.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, null));
-            return repLoader.populate(promptRep, true).then(createcvm);
-        };
+        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string) =>
+            doPrompt(promptRep, id, searchTerm, () => promptRep.setSearchTerm(searchTerm));
 
+        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
+            doPrompt(promptRep, id, null, () => promptRep.setArguments(args));
+      
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel) => {
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
@@ -355,12 +323,12 @@ module NakedObjects.Angular.Gemini {
         context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
             if (error instanceof ErrorMap) {
                 _.each(vms, vmi => {
-                    var errorValue = error.valuesMap()[vmi.id];
+                    const errorValue = error.valuesMap()[vmi.id];
 
                     if (errorValue) {
                         vmi.value = errorValue.value.toValueString();
-                        if (errorValue.invalidReason == 'Mandatory') {
-                            vmi.description = 'REQUIRED ' + vmi.description;
+                        if (errorValue.invalidReason === "Mandatory") {
+                            vmi.description = `REQUIRED ${vmi.description}`;
                         } else {
                             vmi.message = errorValue.invalidReason;
                         }                    
@@ -457,6 +425,7 @@ module NakedObjects.Angular.Gemini {
 
             const isSubTypeOf = new DomainTypeActionInvokeRepresentation();
 
+            // todo should be in model ?
             isSubTypeOf.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke?supertype=${toCheckType}`;
 
             return repLoader.populate(isSubTypeOf, true).
@@ -470,18 +439,6 @@ module NakedObjects.Angular.Gemini {
                 catch((error: any) => {
                     return false;
                 });            
-        }
-
-        context.isSuperTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
-            const isSuperTypeOf = new DomainTypeActionInvokeRepresentation();
-
-            return repLoader.populate(isSuperTypeOf, true).
-                then((updatedObject: DomainTypeActionInvokeRepresentation) => {
-                    return updatedObject.value();
-                }).
-                catch((error: any) => {
-                    return false;
-                });
         }
 
     });
