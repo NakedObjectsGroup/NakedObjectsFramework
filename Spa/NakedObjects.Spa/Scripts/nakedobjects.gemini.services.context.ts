@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;    
-        getList: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
+        getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
 
         getLastActionFriendlyName: (paneId: number) => string;
@@ -146,7 +146,6 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-
         context.getMenus = () => {
             if (currentMenus) {
                 return $q.when(currentMenus);
@@ -162,7 +161,6 @@ module NakedObjects.Angular.Gemini {
                     return $q.when(currentMenus);
                 });
         };
-
 
         context.getVersion = () => {
 
@@ -206,27 +204,7 @@ module NakedObjects.Angular.Gemini {
             currentCollections[paneId] = list;
         }
 
-        context.getList = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>) => {
-            const currentCollection = currentCollections[paneId];
-
-            if (currentCollection) {
-                // use once 
-                currentCollections[paneId] = null;
-
-                return $q.when (currentCollection);
-            }
-
-            return context.getMenu(menuId).
-                then((menu: MenuRepresentation) => {
-                    const action = menu.actionMember(actionId);
-                    lastActionFriendlyName[paneId] = action.extensions().friendlyName;
-                    return repLoader.invoke(action, parms);
-                }).
-                then((result : ActionResultRepresentation) => handleResult(paneId, result) );
-        };
-
-        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
-
+        const getList = (paneId: number, resultPromise : ng.IPromise<ActionResultRepresentation>) => {
             const currentCollection = currentCollections[paneId];
 
             if (currentCollection) {
@@ -235,15 +213,28 @@ module NakedObjects.Angular.Gemini {
                 return $q.when(currentCollection);
             }
 
-            return context.getObjectByOid(paneId, objectId).
-                then((object: DomainObjectRepresentation) => {
-                    const action = object.actionMember(actionId);
-                    lastActionFriendlyName[paneId] = action.extensions().friendlyName;
+            return resultPromise.then((result: ActionResultRepresentation) => handleResult(paneId, result));
+        };
 
-                    return repLoader.invoke(action, parms);
-                }).
-                then((result: ActionResultRepresentation) => handleResult(paneId, result));
-            
+        function cacheActionNameAndInvoke(paneId : number, action: ActionMember, parms: _.Dictionary<Value>) {
+            lastActionFriendlyName[paneId] = action.extensions().friendlyName;
+            return repLoader.invoke(action, parms);
+        }
+
+        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>) => {
+
+            const promise = context.getMenu(menuId).
+                then((menu: MenuRepresentation) => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms));
+
+            return getList(paneId, promise);
+        };
+
+        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
+
+            const promise = context.getObjectByOid(paneId, objectId).
+                then((object: DomainObjectRepresentation) => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms));
+
+            return getList(paneId, promise);
         };
 
         context.setObject = (paneId : number, co) => currentObjects[paneId] = co;

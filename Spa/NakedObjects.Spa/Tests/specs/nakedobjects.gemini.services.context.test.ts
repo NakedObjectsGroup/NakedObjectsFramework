@@ -395,61 +395,58 @@ describe("nakedObjects.gemini.services.context ", () => {
         });
     });
 
-    describe("getList", () => {
+    //describe("getListFromMenu", () => {
 
-        const testObject = new NakedObjects.ListRepresentation();
-        let localContext: NakedObjects.Angular.Gemini.IContext;
-        let result: angular.IPromise<NakedObjects.ListRepresentation>;
-        let timeout: ng.ITimeoutService;
+    //    const testObject = new NakedObjects.ListRepresentation();
+    //    let localContext: NakedObjects.Angular.Gemini.IContext;
+    //    let result: angular.IPromise<NakedObjects.ListRepresentation>;
+    //    let timeout: ng.ITimeoutService;
 
-        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-            localContext = context;
-            timeout = $timeout;
-        }));
+    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+    //        localContext = context;
+    //        timeout = $timeout;
+    //    }));
 
-        describe("when collection is set", () => {
+    //    describe("on first call", () => {
 
-            beforeEach(inject(() => {
+    //        beforeEach(inject(() => {
+    //            result = localContext.getListFromMenu(1, "", "", {});
+    //            timeout.flush();
+    //        }));
 
-                (<any>localContext).setList(1, testObject);
+    //        it("populate a new list", () => {
+    //            result.then((hr) => expect(hr).toBe(testObject));
+    //        });
+    //    });
+    //});
 
-                result = localContext.getList(1, "", "", {});
-                timeout.flush();
-            }));
+    //describe("getListFromObject", () => {
 
-            it("returns collection representation", () => {
-                result.then((hr) => expect(hr).toBe(testObject));
-            });
-        });
-    });
+    //    const testObject = new NakedObjects.ListRepresentation();
+    //    let localContext: NakedObjects.Angular.Gemini.IContext;
+    //    let result: angular.IPromise<NakedObjects.ListRepresentation>;
+    //    let timeout: ng.ITimeoutService;
 
-    describe("getListFromObject", () => {
+    //    beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
+    //        localContext = context;
+    //        timeout = $timeout;
+    //    }));
 
-        const testObject = new NakedObjects.ListRepresentation();
-        let localContext: NakedObjects.Angular.Gemini.IContext;
-        let result: angular.IPromise<NakedObjects.ListRepresentation>;
-        let timeout: ng.ITimeoutService;
+    //    describe("when collection is set", () => {
 
-        beforeEach(inject(($rootScope, $routeParams, $timeout, context) => {
-            localContext = context;
-            timeout = $timeout;
-        }));
+    //        beforeEach(inject(() => {
 
-        describe("when collection is set", () => {
+    //            (<any>localContext).setList(1, testObject);
 
-            beforeEach(inject(() => {
+    //            result = localContext.getListFromObject(1, "", "", {});
+    //            timeout.flush();
+    //        }));
 
-                (<any>localContext).setList(1, testObject);
-
-                result = localContext.getListFromObject(1, "", "", {});
-                timeout.flush();
-            }));
-
-            it("returns collection representation", () => {
-                result.then((hr) => expect(hr).toBe(testObject));
-            });
-        });
-    });
+    //        it("returns collection representation", () => {
+    //            result.then((hr) => expect(hr).toBe(testObject));
+    //        });
+    //    });
+    //});
 
     describe("prompt", () => {
 
