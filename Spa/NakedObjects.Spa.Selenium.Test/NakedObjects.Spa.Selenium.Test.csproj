@@ -77,12 +77,13 @@
     <Compile Include="tests\AWDemoTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="drivers\chromedriver.exe" />
-    <EmbeddedResource Include="drivers\IEDriverServer.exe" />
     <Content Include="tests\Tests_still_to_be_written.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="drivers\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
