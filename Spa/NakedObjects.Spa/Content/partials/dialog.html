@@ -10,7 +10,7 @@
      <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference" />
      <div ng-switch-when="false" ng-switch="parameter.hasConditionalChoices">
       <div ng-switch-when="false" ng-switch="parameter.hasPrompt">
-       <div ng-switch-when="false" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
+       <div ng-switch-when="false" tabindex="0" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
         {{parameter.value}}
        </div>
        <input id="{{parameter.argId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop />

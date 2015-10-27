@@ -10,9 +10,11 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Web.UnitTests.Selenium
+{
 
-    public abstract class CopyAndPasteTests : AWTest {
+    public abstract class CopyAndPasteTests : AWTest
+    {
 
         [TestMethod]
         public virtual void CopyTitleOrPropertyIntoClipboard()
@@ -43,7 +45,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Southeast", target.Text);
             CopyToClipboard(target);
         }
-                    [TestMethod]
+        [TestMethod]
         public virtual void CopyListItemIntoClipboard()
         {
             GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&menu2=PersonRepository&action2=ValidCountries");
@@ -57,30 +59,44 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             CopyToClipboard(item);
 
             //Copy item from list, right pane
-
+            //TODO: Very strange: when try to start with title of pane2, active element not selected, so use Actions!
             WaitForCss("#pane2 .header .menu").Click();
-            Assert.AreEqual("Actions", br.SwitchTo().ActiveElement().Text);
-
-             item = Tab(4);
+            item = Tab(4);
             Assert.AreEqual("Australia", item.Text);
             CopyToClipboard(item);
 
         }
 
-        private void CopyToClipboard(IWebElement element)
+        [TestMethod]
+        public virtual void PasteIntoEditableReferenceField()
         {
-            var title = element.Text;
-            element.SendKeys(Keys.Control + "c");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".footer .currentcopy .reference")).Text == title);
+            GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true&prop1_Name=%2522Touring%2520Services%2522&prop1_SalesPerson=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesPerson%252F279%2522%252C%2522title%2522%253A%2522Tsvi%2520Reiter%2522%257D");
+            WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
+            Assert.AreEqual("Tsvi Reiter", WaitForCss("#pane1 input#salesperson").GetAttribute("value"));
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Tete Mensa-Annan", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            PasteIntoInputField("#pane1 input#salesperson");
         }
 
-        private IWebElement Tab(int numberIfTabs = 1)
+        [TestMethod, Ignore] //Test not working yet!
+        public virtual void PasteIntoDialog()
         {
-            for (int i = 1; i <= numberIfTabs; i++)
-            {
-                br.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
-            }
-            return br.SwitchTo().ActiveElement();
+            GeminiUrl("home/object?prop1_Name=%2522Touring%2520Services%2522&prop1_SalesPerson=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesPerson%252F279%2522%252C%2522title%2522%253A%2522Tsvi%2520Reiter%2522%257D&menu1=SalesRepository&dialog1=CreateNewSalesPerson&parm1_employee=null&object2=AdventureWorksModel.Employee-206");
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Stuart Munson", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            string selector = "#pane1 .parameter .value";
+            var target = WaitForCss(selector);
+            Assert.AreEqual("", target.Text);
+
+            //TODO: factor out
+            var copying = WaitForCss(".footer .currentcopy .reference").Text;
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == copying);
         }
     }
 
@@ -90,19 +106,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class CopyAndPasteTestsIe : CopyAndPasteTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
@@ -111,23 +130,27 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class CopyAndPasteTestsFirefox : CopyAndPasteTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element) {
+        protected override void ScrollTo(IWebElement element)
+        {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
@@ -135,18 +158,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class CopyAndPasteTestsChrome : CopyAndPasteTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }

@@ -430,5 +430,33 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return WaitForCss(".footer .icon-full");
         }
         #endregion
+
+        #region Keyboard navigation 
+        protected void CopyToClipboard(IWebElement element)
+        {
+            var title = element.Text;
+            element.SendKeys(Keys.Control + "c");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".footer .currentcopy .reference")).Text == title);
+        }
+
+        protected IWebElement PasteIntoInputField(string cssSelector)
+        {
+            var target = WaitForCss(cssSelector);
+            var copying = WaitForCss(".footer .currentcopy .reference").Text;
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).GetAttribute("value") == copying);
+            return WaitForCss(cssSelector);
+        }
+
+        protected IWebElement Tab(int numberIfTabs = 1)
+        {
+            for (int i = 1; i <= numberIfTabs; i++)
+            {
+                br.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
+            }
+            return br.SwitchTo().ActiveElement();
+        }
+        #endregion
     }
 }
