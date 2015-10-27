@@ -331,7 +331,7 @@ module NakedObjects.Angular.Gemini {
             const cKeyCode = 67;
             if (event.keyCode === cKeyCode && event.ctrlKey) {
                 const draggableVm = scope.property || scope.item || scope.$parent.object;              
-                const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].innerText}</div>`)(scope);        
+                const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].textContent}</div>`)(scope);        
                 compiledClone.data(draggableVmKey, draggableVm);
                 $("div.footer div.currentcopy").empty();
                 $("div.footer div.currentcopy").append("<span>Copying...</span>").append(compiledClone);
