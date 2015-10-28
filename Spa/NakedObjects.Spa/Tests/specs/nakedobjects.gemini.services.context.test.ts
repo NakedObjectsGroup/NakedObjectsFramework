@@ -485,7 +485,6 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
 
-         
 
             actionMember = spyOn(testObject, "actionMember");
             actionMember.and.returnValue(testAction);
@@ -554,7 +553,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
 
-            spyOn(testPromptResult, "choices").and.returnValue({ "test1" : new NakedObjects.Value("1"), "test2" : new NakedObjects.Value("2")    });
+            spyOn(testPromptResult, "choices").and.returnValue({ "test1": new NakedObjects.Value("1"), "test2": new NakedObjects.Value("2") });
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testPromptResult));
@@ -565,7 +564,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             const cvm1 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("1"), "id", "test1", "search");
             const cvm2 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("2"), "id", "test2", "search");
 
-            const cvmExpected = [cvm1, cvm2 ];
+            const cvmExpected = [cvm1, cvm2];
 
             beforeEach(inject(() => {
                 result = localContext.prompt(testPrompt, "id", "search");
@@ -609,7 +608,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             const cvmExpected = [cvm1, cvm2];
 
             beforeEach(inject(() => {
-                result = localContext.conditionalChoices(testPrompt, "id", {anarg: new NakedObjects.Value("avalue")});
+                result = localContext.conditionalChoices(testPrompt, "id", { anarg: new NakedObjects.Value("avalue") });
                 timeout.flush();
             }));
 
@@ -626,36 +625,130 @@ describe("nakedObjects.gemini.services.context ", () => {
     describe("invokeAction", () => {
 
         const testAction = new NakedObjects.ActionMember(null, null, null);
-        const testInvoke = new NakedObjects.DomainTypeActionInvokeRepresentation();
-        const testResult = new NakedObjects.ActionResultRepresentation();
+        const testActionResult = new NakedObjects.ActionResultRepresentation();
+        const testResult = new NakedObjects.Result({}, "");
+        const testObject = new NakedObjects.DomainObjectRepresentation();
+        const testList = new NakedObjects.ListRepresentation();
+
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
-        let result: angular.IPromise<NakedObjects.ListRepresentation>;
         let timeout: ng.ITimeoutService;
-        let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
 
         beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader) => {
             localContext = context;
             timeout = $timeout;
-            spyOn(testAction, "getInvoke").and.returnValue(testInvoke);
-            setResult = spyOn(context, "setResult");
-            setResult.and.returnValue(testInvoke);
+            spyOn(testAction, "getInvoke").and.returnValue(testActionResult);
+            spyOn(testAction, "extensions").and.returnValue({ friendlyName: "aName" });
             populate = spyOn(repLoader, "populate");
-            populate.and.returnValue($q.when(testResult));
+            populate.and.returnValue($q.when(testActionResult));
         }));
 
-        describe("invoke", () => {
+        describe("and return object", () => {
 
             beforeEach(inject(() => {
+                spyOn(testObject, "serviceId").and.returnValue(null);
+                spyOn(testObject, "instanceId").and.returnValue("id");
+                spyOn(testObject, "domainType").and.returnValue("dt");
+                spyOn(testObject, "persistLink").and.returnValue(null);
+                spyOn(testResult, "object").and.returnValue(testObject);
+                spyOn(testActionResult, "resultType").and.returnValue("object");
+                spyOn(testResult, "isNull").and.returnValue(false);
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+
                 localContext.invokeAction(testAction, 1);
                 timeout.flush();
             }));
 
-            it("returns collection representation", () => {
-                expect(setResult).toHaveBeenCalled();
+            it("sets domain object on context", () => {
+                (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testObject));
+                timeout.flush();
             });
         });
+
+        describe("and return transient", () => {
+
+            beforeEach(inject(() => {
+                spyOn(testObject, "serviceId").and.returnValue(null);
+                spyOn(testObject, "instanceId").and.returnValue("id");
+                spyOn(testObject, "domainType").and.returnValue("dt");
+                spyOn(testObject, "set");
+                spyOn(testObject, "extensions").and.returnValue({ domainType: "dt" });
+                spyOn(testObject, "persistLink").and.returnValue({});
+                spyOn(testResult, "object").and.returnValue(testObject);
+                spyOn(testActionResult, "resultType").and.returnValue("object");
+                spyOn(testResult, "isNull").and.returnValue(false);
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+
+                localContext.invokeAction(testAction, 1);
+                timeout.flush();
+            }));
+
+            it("sets domain object on context", () => {
+                (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testObject));
+                timeout.flush();
+            });
+
+        });
+
+        describe("and return list", () => {
+
+            beforeEach(inject(() => {
+
+                spyOn(testResult, "list").and.returnValue(testList);
+                spyOn(testActionResult, "resultType").and.returnValue("list");
+                spyOn(testResult, "isNull").and.returnValue(false);
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+
+                localContext.invokeAction(testAction, 1);
+                timeout.flush();
+            }));
+
+            it("sets list on context", () => {
+                localContext.getListFromObject(1, "dt", "id", {}).then(hr => expect(hr).toEqual(testList));
+
+                timeout.flush();
+            });
+        });
+
+        describe("and return null", () => {
+
+            beforeEach(inject(() => {
+                spyOn(testActionResult, "resultType").and.returnValue("object");
+                spyOn(testResult, "isNull").and.returnValue(true);
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+                localContext.invokeAction(testAction, 1);
+                timeout.flush();
+            }));
+
+            it("does nothing", () => {
+                //expect(setResult).toHaveBeenCalled();
+            });
+        });
+
+        describe("and return null", () => {
+
+            const testDvm = new NakedObjects.Angular.Gemini.DialogViewModel();
+            const testPvm = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            testDvm.parameters = [testPvm];
+            testPvm.id = "test";
+            testPvm.value = "";
+            testPvm.type = "scalar";
+
+            beforeEach(inject(() => {
+                spyOn(testActionResult, "setParameter");
+                spyOn(testActionResult, "resultType").and.returnValue("object");
+                spyOn(testResult, "isNull").and.returnValue(true);
+                spyOn(testActionResult, "result").and.returnValue(testResult);
+                localContext.invokeAction(testAction, 1, testDvm);
+                timeout.flush();
+            }));
+
+            it("sets dialog message", () => {
+                expect(testDvm.message).toBe("no result found");
+            });
+        });
+
     });
 
     describe("updateObject", () => {
@@ -663,14 +756,12 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testObject = new NakedObjects.DomainObjectRepresentation({});
         const testUpdate = <NakedObjects.UpdateMap>{};
         const testUpdatedObject = new NakedObjects.DomainObjectRepresentation();
-        const testResult = new NakedObjects.ActionResultRepresentation();
         const testOvm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
         testOvm.properties = [];
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
 
         let timeout: ng.ITimeoutService;
-        let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
 
         beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader, urlManager) => {
@@ -685,15 +776,16 @@ describe("nakedObjects.gemini.services.context ", () => {
             spyOn(urlManager, "setObject");
         }));
 
-        describe("update", () => {
+        describe("successfully update object", () => {
 
             beforeEach(inject(() => {
                 localContext.updateObject(testObject, testOvm);
                 timeout.flush();
             }));
 
-            it("returns collection representation", () => {
-                //expect(setResult).toHaveBeenCalled();
+            it("sets object on context", () => {
+                (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testUpdatedObject));
+                timeout.flush();
             });
         });
     });
@@ -703,14 +795,12 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testObject = new NakedObjects.DomainObjectRepresentation({});
         const testPersist = <NakedObjects.PersistMap>{};
         const testUpdatedObject = new NakedObjects.DomainObjectRepresentation();
-        const testResult = new NakedObjects.ActionResultRepresentation();
         const testOvm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
         testOvm.properties = [];
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
 
         let timeout: ng.ITimeoutService;
-        let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
 
         beforeEach(inject(($q, $rootScope, $routeParams, $timeout, context, repLoader, urlManager) => {
