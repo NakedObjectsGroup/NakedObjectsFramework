@@ -17,7 +17,7 @@
             <div class="property" ng-repeat="property in object.properties" ng-switch="property.type">
 
                 <div class="name">{{property.title}}:</div>
-                <div ng-switch-when="ref" class="reference clickable-area" ng-class="property.color" ng-click="property.doClick()" gemini-rightclick="property.doClick(true)" gemini-drag tabindex="0">
+                <div ng-switch-when="ref" class="reference clickable-area" ng-class="property.color" ng-click="property.doClick()" gemini-rightclick="property.doClick(true)" gemini-drag gemini-enter="property.doClick()" tabindex="0">
                         {{property.value}}
                 </div>
 
