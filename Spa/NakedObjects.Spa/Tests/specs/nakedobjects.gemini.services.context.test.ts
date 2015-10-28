@@ -540,7 +540,6 @@ describe("nakedObjects.gemini.services.context ", () => {
         });
     });
 
-
     describe("prompt", () => {
 
         const testPrompt = new NakedObjects.PromptRepresentation();
@@ -548,7 +547,6 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
         let timeout: ng.ITimeoutService;
-        let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
         let result: ng.IPromise<NakedObjects.Angular.Gemini.ChoiceViewModel[]>;
 
@@ -556,21 +554,29 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
 
-            spyOn(testPromptResult, "choices").and.returnValue([]);
+            spyOn(testPromptResult, "choices").and.returnValue({ "test1" : new NakedObjects.Value("1"), "test2" : new NakedObjects.Value("2")    });
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testPromptResult));
         }));
 
-        describe("invoke", () => {
+        describe("returns array of ChoiceViewModels", () => {
+
+            const cvm1 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("1"), "id", "test1", "search");
+            const cvm2 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("2"), "id", "test2", "search");
+
+            const cvmExpected = [cvm1, cvm2 ];
 
             beforeEach(inject(() => {
-                result = localContext.prompt(testPrompt, "", "");
+                result = localContext.prompt(testPrompt, "id", "search");
                 timeout.flush();
             }));
 
             it("returns collection representation", () => {
-                // expect(setResult).toHaveBeenCalled();
+                expect(testPrompt.attributes["x-ro-searchTerm"].value).toBe("search");
+                expect(populate).toHaveBeenCalledWith(testPrompt, true);
+                result.then(hr => expect(hr).toEqual(cvmExpected));
+                timeout.flush();
             });
         });
     });
@@ -582,7 +588,6 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         let localContext: NakedObjects.Angular.Gemini.IContext;
         let timeout: ng.ITimeoutService;
-        let setResult: jasmine.Spy;
         let populate: jasmine.Spy;
         let result: ng.IPromise<NakedObjects.Angular.Gemini.ChoiceViewModel[]>;
 
@@ -590,21 +595,30 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
 
-            spyOn(testPromptResult, "choices").and.returnValue([]);
+            spyOn(testPromptResult, "choices").and.returnValue({ "test1": new NakedObjects.Value("1"), "test2": new NakedObjects.Value("2") });
 
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testPromptResult));
         }));
 
-        describe("invoke", () => {
+        describe("returns array of ChoiceViewModels", () => {
+
+            const cvm1 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("1"), "id", "test1", null);
+            const cvm2 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("2"), "id", "test2", null);
+
+            const cvmExpected = [cvm1, cvm2];
 
             beforeEach(inject(() => {
-                result = localContext.conditionalChoices(testPrompt, "", {});
+                result = localContext.conditionalChoices(testPrompt, "id", {anarg: new NakedObjects.Value("avalue")});
                 timeout.flush();
             }));
 
             it("returns collection representation", () => {
-                // expect(setResult).toHaveBeenCalled();
+                expect(testPrompt.attributes["x-ro-searchTerm"]).toBeUndefined();
+                expect(testPrompt.attributes["anarg"].value).toBe("avalue");
+                expect(populate).toHaveBeenCalledWith(testPrompt, true);
+                result.then(hr => expect(hr).toEqual(cvmExpected));
+                timeout.flush();
             });
         });
     });

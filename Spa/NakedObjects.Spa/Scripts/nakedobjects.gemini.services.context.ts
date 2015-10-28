@@ -342,6 +342,8 @@ module NakedObjects.Angular.Gemini {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
                 _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
+
+                // todo do we still need to do this ? Test
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
