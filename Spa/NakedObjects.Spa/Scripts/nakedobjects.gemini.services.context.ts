@@ -308,7 +308,7 @@ module NakedObjects.Angular.Gemini {
         context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
             if (error instanceof ErrorMap) {
                 _.each(vms, vmi => {
-                    const errorValue = error.valuesMap()[vmi.id];
+                    const errorValue = (<ErrorMap>error).valuesMap()[vmi.id];
 
                     if (errorValue) {
                         vmi.value = errorValue.value.toValueString();
