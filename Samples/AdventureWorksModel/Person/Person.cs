@@ -158,9 +158,9 @@ namespace AdventureWorksModel {
 
         public virtual string ValidateChangePassword(string oldPassword, string newPassword, string confirm) {
             var rb = new ReasonBuilder();
-            if (Hashed(oldPassword, Password.PasswordSalt) != Password.PasswordHash) {
-                rb.Append("Old Password is incorrect");
-            }
+            //if (Hashed(oldPassword, Password.PasswordSalt) != Password.PasswordHash) {
+            //    rb.Append("Old Password is incorrect");
+            //}
             if (newPassword != confirm) {
                 rb.Append("New Password and Confirmation don't match");
             }
