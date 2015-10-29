@@ -259,6 +259,11 @@ type Nof4Tests() =
         member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
         
         [<Test>]
+        member x.PersistWithValueTransientObjectFailCrossValidation() = Objects9.PersistWithValueTransientObjectFailCrossValidation x.api
+
+    
+
+        [<Test>]
         member x.Error() = Error10.Error x.api
         
         [<Test>]     

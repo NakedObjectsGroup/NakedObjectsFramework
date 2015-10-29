@@ -15,6 +15,14 @@ namespace RestfulObjects.Snapshot.Utility {
             Flags = flags;
         }
 
+        public BadPersistArgumentsException(string message, ObjectContextFacade context, RestControlFlags flags) : base(message, context) {
+            Flags = flags;
+        }
+
+        public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) {
+            Flags = flags;
+        }
+
         public RestControlFlags Flags { get; private set; }
     }
 }

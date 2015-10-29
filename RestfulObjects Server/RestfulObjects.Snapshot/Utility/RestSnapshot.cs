@@ -408,6 +408,9 @@ namespace RestfulObjects.Snapshot.Utility {
                 if (contextNosException.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable)) {
                     representation = NullRepresentation.Create();
                 }
+                else if (e is BadPersistArgumentsException && contextNosException.ContextFacade != null && contextNosException.Contexts.Any()) {
+                    representation = ArgumentsRepresentation.Create(oidStrategy, req, contextNosException.ContextFacade, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
+                }
                 else if (contextNosException.ContextFacade != null) {
                     representation = ArgumentsRepresentation.Create(oidStrategy , req, contextNosException.ContextFacade, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
                 }
@@ -499,12 +502,12 @@ namespace RestfulObjects.Snapshot.Utility {
                     warnings.Add("object is immutable");
                     allowHeaders.Add("GET");
                 }
-                else if (bae.Contexts.Any()) {
-                    foreach (string w in bae.Contexts.Where(c => !String.IsNullOrEmpty(c.Reason)).Select(c => c.Reason)) {
+                else if (bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason))) {
+                    foreach (string w in bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason)) {
                         warnings.Add(w);
                     }
                 }
-                else {
+                else if (!string.IsNullOrWhiteSpace(bae.Message) ) {
                     warnings.Add(bae.Message);
                 }
             }

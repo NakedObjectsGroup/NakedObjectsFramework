@@ -16,12 +16,12 @@ namespace NakedObjects.Facade {
         protected WithContextNOSException(string message) : base(message) {}
         protected WithContextNOSException(string message, Exception e) : base(message, e) {}
 
-        protected WithContextNOSException(string message, IList<ContextFacade> contexts) : base(message) {
-            Contexts = contexts;
-        }
+        protected WithContextNOSException(string message, IList<ContextFacade> contexts) : this(message, null, contexts) {}
 
-        protected WithContextNOSException(string message, ContextFacade context)
-            : base(message) {
+        protected WithContextNOSException(string message, ContextFacade context) : this(message, context, null) {}
+
+        protected WithContextNOSException(string message, ContextFacade context, IList<ContextFacade> contexts) : this(message) {
+            Contexts = contexts;
             ContextFacade = context;
         }
 

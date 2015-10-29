@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -50,6 +51,48 @@ namespace RestfulObjects.Snapshot.Representations {
             return Create(opts.ToArray());
         }
 
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+            var memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+            IObjectFacade target = contexts.First().Target;
+            MapRepresentation mapRepresentation;
+
+            if (format == Format.Full) {
+                var tempProperties = new List<OptionalProperty>();
+
+                if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
+                    tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
+                }
+
+                if (flags.SimpleDomainModel) {
+                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
+                    tempProperties.Add(dt);
+                }
+
+                if (flags.FormalDomainModel) {
+                    var links = new OptionalProperty(JsonPropertyNames.Links, new[] {
+                        Create(new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
+                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(oidStrategy, req, target.Specification).GetDomainTypeUri()))
+                    });
+                    tempProperties.Add(links);
+                }
+
+                if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
+                    tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
+                }
+
+                var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues.ToArray()));
+                tempProperties.Add(members);
+                mapRepresentation = Create(tempProperties.ToArray());
+            }
+            else {
+                mapRepresentation = Create(memberValues.ToArray());
+            }
+
+            mapRepresentation.SetContentType(mt);
+
+            return mapRepresentation;
+        }
+
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var objectContext = context as ObjectContextFacade;
             var actionResultContext = context as ActionResultContextFacade;
@@ -83,37 +126,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            OptionalProperty[] memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToArray();
-            IObjectFacade target = contexts.First().Target;
-            MapRepresentation mapRepresentation;
-
-            if (format == Format.Full) {
-                var tempProperties = new List<OptionalProperty>();
-
-                if (flags.SimpleDomainModel) {
-                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
-                    tempProperties.Add(dt);
-                }
-
-                if (flags.FormalDomainModel) {
-                    var links = new OptionalProperty(JsonPropertyNames.Links, new[] {
-                        Create(new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
-                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(oidStrategy, req, target.Specification).GetDomainTypeUri()))
-                    });
-                    tempProperties.Add(links);
-                }
-
-                var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues));
-                tempProperties.Add(members);
-                mapRepresentation = Create(tempProperties.ToArray());
-            }
-            else {
-                mapRepresentation = Create(memberValues);
-            }
-
-            mapRepresentation.SetContentType(mt);
-
-            return mapRepresentation;
-        }
+            return Create(oidStrategy, req, null, contexts, format, flags, mt);
+        }      
     }
 }

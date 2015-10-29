@@ -12,5 +12,7 @@ namespace RestfulObjects.Test.Data {
     public class MostSimple {
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
+
+
     }
 }
