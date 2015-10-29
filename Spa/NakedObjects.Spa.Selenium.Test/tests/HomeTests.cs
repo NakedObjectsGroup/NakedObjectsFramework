@@ -15,7 +15,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// </summary>
     public abstract class HomeTests : AWTest {
 
-       // [Ignore] // SEC 13/10/2015
         [TestMethod]
         public void WaitForSingleHome()
         {
