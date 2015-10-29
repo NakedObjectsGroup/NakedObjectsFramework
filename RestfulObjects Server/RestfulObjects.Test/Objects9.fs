@@ -2174,4 +2174,56 @@ let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) =
     Assert.AreEqual
         ("199 RestfulObjects \"No such domain type " + dt + "\"", 
          persistResult.Headers.Warning.ToString()) //
-   
+  
+let PersistWithValueTransientObjectFailCrossValidation(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithValue"
+    let ourl = sprintf "%s/%s" "services" oType
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let args = CreateArgMap(new JObject())
+    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
+    let transientResult = api.PostInvokeOnService(oType, pid, args)
+    let jsonTransient = readSnapshotToJson transientResult
+    let parsedTransient = JObject.Parse(jsonTransient)
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[1] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let aValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
+        |> Seq.find (fun i -> (i :?> JProperty).Name = "AValue")
+    let m = aValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (aValue.First :?> JObject).Add(JsonPropertyNames.Value, JToken.Parse("101"))
+    let pArgs = CreatePersistArgMap(args.First :?> JObject)
+    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+    api.Request <- jsonPostMsg link (args.First.ToString())
+    let persistResult = api.PostPersist(dt, pArgs)
+    let jsonPersist = readSnapshotToJson persistResult
+    let parsedPersist = JObject.Parse(jsonPersist)
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    
+    let members = 
+        [ TProperty("AChoicesValue",  TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
+          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
+          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
+          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(101)) ]))
+          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
+    
+    let expected =  [ 
+        TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed"))
+        TProperty(JsonPropertyNames.Links,  TArray([ TObjectJson([ TProperty(JsonPropertyNames.Rel, TObjectVal("describedby"))
+                                                                   TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "domain-types/%s" oType))) ]) ]))
+        TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+        TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"Arguments invalid\"", persistResult.Headers.Warning.ToString())
+    compareObject expected parsedPersist

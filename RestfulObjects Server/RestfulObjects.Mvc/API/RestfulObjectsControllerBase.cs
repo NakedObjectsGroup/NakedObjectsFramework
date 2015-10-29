@@ -831,9 +831,13 @@ namespace RestfulObjects.Mvc {
         }
 
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
-            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
-                throw new BadPersistArgumentsException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
+         
+            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
+                throw new BadPersistArgumentsException("Arguments invalid", objectContext, objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
             }
+            //if (!string.IsNullOrEmpty(objectContext.Reason)) {
+            //    throw new BadPersistArgumentsException("Arguments invalid", objectContext, objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
+            //}
         }
 
         private void VerifyActionType(ActionContextFacade context, string method) {

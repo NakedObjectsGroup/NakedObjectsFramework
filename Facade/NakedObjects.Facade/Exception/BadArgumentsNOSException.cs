@@ -14,5 +14,8 @@ namespace NakedObjects.Facade {
 
         public BadArgumentsNOSException(string message, ContextFacade context)
             : base(message, context) {}
+
+        public BadArgumentsNOSException(string message, ContextFacade context, IList<ContextFacade> contexts)
+           : base(message, context, contexts) { }
     }
 }
