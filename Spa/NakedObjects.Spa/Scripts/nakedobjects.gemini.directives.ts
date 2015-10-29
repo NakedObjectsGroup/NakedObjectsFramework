@@ -276,6 +276,7 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
+    //The 'right-click' functionality is also triggered by shift-enter
     app.directive("geminiRightclick", $parse => (scope, element, attrs) => {
         const fn = $parse(attrs.geminiRightclick);
         element.bind("contextmenu", event => {
@@ -283,6 +284,13 @@ module NakedObjects.Angular.Gemini {
                 event.preventDefault();
                 fn(scope, { $event: event });
             });
+        });
+        element.bind("keydown keypress", event => {
+            const enterKeyCode = 13;
+            if (event.keyCode === enterKeyCode && event.shiftKey) {
+                scope.$apply(() => scope.$eval(attrs.geminiRightclick));
+                event.preventDefault();
+            }
         });
     });
 
