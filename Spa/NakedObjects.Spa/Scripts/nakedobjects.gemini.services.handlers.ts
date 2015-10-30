@@ -99,7 +99,7 @@ module NakedObjects.Angular.Gemini {
                             $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
                         }
                         else {
-                            focusManager.focusOn("firstaction");
+                            focusManager.focusOn("firstaction", routeData.paneId);
                         }
                     }).catch(error => {
                         setError(error);
