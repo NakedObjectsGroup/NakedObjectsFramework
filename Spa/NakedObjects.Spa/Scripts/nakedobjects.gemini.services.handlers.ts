@@ -15,7 +15,7 @@ module NakedObjects.Angular.Gemini {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager : IUrlManager) {
+    app.service("handlers", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager ){
         const handlers = <IHandlers>this;
 
         function setVersionError(error) {
@@ -97,6 +97,9 @@ module NakedObjects.Angular.Gemini {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(routeData.dialogId);
                             $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                        }
+                        else {
+                            focusManager.focusOn("firstaction");
                         }
                     }).catch(error => {
                         setError(error);

@@ -353,6 +353,21 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
+    app.directive('geminiFocuson', function () {
+        return function (scope, elem, attr) {
+            scope.$on('geminiFocuson', function (e, name) {
+                if (name === attr.geminiFocuson) {
+                    // focus on first menu item or action
+
+                   $(elem).find("div.action").first().focus();
+
+
+                }
+            });
+        };
+    });
+
+
     app.directive("geminiDrop", () => (scope, element) => {
 
         const propertyScope = () => scope.$parent.$parent.$parent.$parent;
