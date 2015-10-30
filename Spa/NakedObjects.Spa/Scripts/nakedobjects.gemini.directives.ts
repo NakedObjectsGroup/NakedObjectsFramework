@@ -358,7 +358,7 @@ module NakedObjects.Angular.Gemini {
             if (name === "firstaction") {
                 // focus on first menu item or action
                     
-                $(elem).find(`#pane${paneId} div.action, div.action`).first().focus();
+                $(elem).find(`#pane${paneId}.split div.action, div.single div.action`).first().focus();
             }
         });
     });

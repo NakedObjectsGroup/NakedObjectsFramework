@@ -36,6 +36,7 @@ module NakedObjects.Angular.Gemini{
         context: IContext,
         mask: IMask,    
         urlManager: IUrlManager,
+        focusManager: IFocusManager,
         navigation: INavigation,
         clickHandler : IClickHandler) {
 
@@ -69,7 +70,11 @@ module NakedObjects.Angular.Gemini{
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId : number) => {
             const linkViewModel = new LinkViewModel();
-            linkViewModel.doClick = () => urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
+            linkViewModel.doClick = () => {
+                // because may be clicking on menu already open so want to reset focus
+                focusManager.focusOn("firstaction", paneId);
+                urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
+            };
             initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
         };

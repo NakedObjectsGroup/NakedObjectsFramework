@@ -34,6 +34,8 @@ module NakedObjects.Angular.Gemini {
         singlePane(paneId : number) : void;
         setParameterValue: (dialogId: string, p: ParameterViewModel, paneId: number, reload?: boolean) => void;
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
+
+        currentpane() : number;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -55,6 +57,8 @@ module NakedObjects.Angular.Gemini {
         const cicero = "cicero";
 
         const capturedPanes = [];
+
+        let currentPaneId = 1;
 
         function getIds(typeOfId : string,  paneId : number) {
             return <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
@@ -191,19 +195,23 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
+            currentPaneId = paneId;
             let search = $location.search();
             if (search[`${menu}${paneId}`] !== menuId) {
                 search = clearPane(search, paneId);
                 search[`${menu}${paneId}`] = menuId;
                 $location.search(search);
             }
+
         };
 
         helper.setDialog = (dialogId: string, paneId: number) => {
+            currentPaneId = paneId;
             setSearch(`${dialog}${paneId}`, dialogId, false);
         };
 
         helper.closeDialog = (paneId: number) => {
+            currentPaneId = paneId;
             const dialogId = `${dialog}${paneId}`;
             const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0);
             ids.push(dialogId);
@@ -211,12 +219,15 @@ module NakedObjects.Angular.Gemini {
             clearSearch(ids);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation,  paneId: number) => {
+        helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
+            currentPaneId = paneId;
             const oid = toOid(resultObject.domainType(), resultObject.instanceId());
             setObjectSearch(paneId, oid);  
         };
 
         helper.setList = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
+            currentPaneId = paneId;
+
             const aid = actionMember.actionId();
             const search = clearPane($location.search(), paneId);
 
@@ -246,6 +257,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setParameterValue = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
+            currentPaneId = paneId;
 
             const search = $location.search();
 
@@ -261,6 +273,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => {
+            currentPaneId = paneId;
 
             const search = $location.search();
             const oid = toOid(obj.domainType(), obj.instanceId());
@@ -280,18 +293,24 @@ module NakedObjects.Angular.Gemini {
 
 
         helper.setProperty = (propertyMember: PropertyMember, paneId: number) => {
+            currentPaneId = paneId;
+
             const href = propertyMember.value().link().href();
             const oid = getOidFromHref(href);
             setObjectSearch(paneId, oid);
         };
 
         helper.setItem = (link: Link, paneId: number) => {
+            currentPaneId = paneId;
+
             const href = link.href();
             const oid = getOidFromHref(href);
             setObjectSearch(paneId, oid);
         };
 
         helper.toggleObjectMenu = (paneId: number) => {
+            currentPaneId = paneId;
+
             let search = $location.search();
             const paneActionsId = actions + paneId;
             const actionsId = search[paneActionsId];
@@ -306,17 +325,23 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setCollectionMemberState = (paneId: number, collectionObject: CollectionMember, state: CollectionViewState) => {
+            currentPaneId = paneId;
+
             const collectionPrefix = `${collection}${paneId}`;
             setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
         };
 
         helper.setListState = (paneId: number, state: CollectionViewState) => {
+            currentPaneId = paneId;
+
             const collectionPrefix = `${collection}${paneId}`;
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };
 
 
         helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
+            currentPaneId = paneId;
+
             setSearch(edit + paneId, editFlag.toString(), false);
         };
 
@@ -324,7 +349,9 @@ module NakedObjects.Angular.Gemini {
             $location.path("/gemini/error").search({});
         };
 
-        helper.setHome = (paneId: number, mode ? : ApplicationMode) => {
+        helper.setHome = (paneId: number, mode?: ApplicationMode) => {
+            currentPaneId = paneId;
+
             setupPaneNumberAndTypes(paneId, home);
             // clear search on this pane 
             $location.search(clearPane($location.search(), paneId));
@@ -340,6 +367,8 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.pushUrlState = (paneId: number) => {
+            currentPaneId = paneId;
+
             const path = $location.path();
             const segments = path.split("/");
 
@@ -350,6 +379,8 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.popUrlState = (paneId: number) => {
+            currentPaneId = paneId;
+
             const capturedPane = capturedPanes[paneId];
 
             if (capturedPane) {
@@ -362,6 +393,8 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.clearUrlState = (paneId: number) => {
+            currentPaneId = paneId;
+
             capturedPanes[paneId] = null;
         }
 
@@ -380,9 +413,12 @@ module NakedObjects.Angular.Gemini {
             const search = swapSearchIds($location.search());
 
             $location.path(newPath).search(search);
-        } 
+        }
+
+        helper.currentpane = () => currentPaneId;
 
         helper.singlePane = (paneId: number) => {
+            currentPaneId = 1;
 
             if (!singlePane()) {
            
