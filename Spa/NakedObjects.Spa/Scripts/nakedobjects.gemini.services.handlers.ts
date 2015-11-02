@@ -11,11 +11,11 @@ module NakedObjects.Angular.Gemini {
         handleError($scope: INakedObjectsScope): void;
         handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
-        handleHome($scope: INakedObjectsScope, routeData : PaneRouteData): void;
+        handleHome($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager ){
+    app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
         const handlers = <IHandlers>this;
 
         function setVersionError(error) {
@@ -26,12 +26,10 @@ module NakedObjects.Angular.Gemini {
 
         function setError(error: ErrorRepresentation);
         function setError(error: ErrorMap);
-
         function setError(error: any) {
             if (error instanceof ErrorRepresentation) {
                 context.setError(error);
-            }
-            else if (error instanceof ErrorMap) {
+            } else if (error instanceof ErrorMap) {
                 const em = <ErrorMap>error;
                 const errorRep = new ErrorRepresentation({ message: `unexpected error map: ${em.warningMessage}` });
                 context.setError(errorRep);
@@ -82,9 +80,14 @@ module NakedObjects.Angular.Gemini {
                 then((menus: MenusRepresentation) => {
                     $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
                     $scope.homeTemplate = homeTemplate;
+
+                    if (!routeData.menuId) {
+                        focusManager.focusOn(FocusTarget.FirstMenu, urlManager.currentpane());
+                    }
                 }).catch(error => {
                     setError(error);
                 });
+
 
             if (routeData.menuId) {
                 context.getMenu(routeData.menuId).
@@ -111,7 +114,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            var promise = routeData.objectId ? context.getListFromObject(routeData.paneId,  routeData.objectId, routeData.actionId, routeData.parms) :
+            var promise = routeData.objectId ? context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms) :
                 context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms);
 
             promise.
@@ -119,7 +122,8 @@ module NakedObjects.Angular.Gemini {
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId);
                     $scope.title = context.getLastActionFriendlyName(routeData.paneId);
-                }).catch( error => {
+                    focusManager.focusOn(FocusTarget.FirstItem, urlManager.currentpane());
+                }).catch(error => {
                     setError(error);
                 });
         };
@@ -135,7 +139,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
 
-           $scope.toolBar = viewModelFactory.toolBarViewModel($scope); 
+            $scope.toolBar = viewModelFactory.toolBarViewModel($scope);
         };
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
@@ -145,21 +149,19 @@ module NakedObjects.Angular.Gemini {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.object = <any>{ color: color.toColorFromType(dt) }
-
-            // only pass previous values if editing 
+            $scope.object = <any>{ color: color.toColorFromType(dt) }; // only pass previous values if editing 
             const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
-                             
+
                     const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData.collections, previousValues, routeData.edit, routeData.paneId);
 
                     $scope.object = ovm;
-                  
+
                     if (routeData.edit || ovm.isTransient) {
                         $scope.objectTemplate = objectEditTemplate;
-                        $scope.actionsTemplate = nullTemplate;                      
+                        $scope.actionsTemplate = nullTemplate;
                     } else {
                         $scope.objectTemplate = objectViewTemplate;
                         $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
@@ -177,8 +179,7 @@ module NakedObjects.Angular.Gemini {
                         const action = object.actionMember(routeData.dialogId);
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
                         focusTarget = FocusTarget.Dialog;
-                    }
-                    else if (routeData.actionsOpen) {
+                    } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.FirstAction;
                     } else {
                         focusTarget = FocusTarget.ObjectTitle;

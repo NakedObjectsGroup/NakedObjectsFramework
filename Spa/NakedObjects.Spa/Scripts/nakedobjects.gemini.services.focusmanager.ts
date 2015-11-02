@@ -6,9 +6,11 @@
 module NakedObjects.Angular.Gemini {
 
     export enum FocusTarget {
+        FirstMenu, 
         FirstAction, 
         ObjectTitle, 
-        Dialog
+        Dialog,
+        FirstItem
     }
 
     export const geminiFocusEvent = "geminiFocuson";

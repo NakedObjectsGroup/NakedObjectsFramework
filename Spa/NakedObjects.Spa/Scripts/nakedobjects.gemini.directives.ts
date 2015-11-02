@@ -358,6 +358,9 @@ module NakedObjects.Angular.Gemini {
 
             $timeout(() => {
                 switch (target) {
+                    case FocusTarget.FirstMenu:
+                        $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`).first().focus();
+                        break;
                     case FocusTarget.FirstAction:
                         $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first().focus();
                         break;
@@ -366,6 +369,9 @@ module NakedObjects.Angular.Gemini {
                         break;
                     case FocusTarget.Dialog:
                         $(elem).find(`#pane${paneId}.split div.parameters .parameter, div.single div.parameters .parameter`).first().find(":input").first().focus();
+                        break;
+                    case FocusTarget.FirstItem:
+                        $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`).first().focus();
                         break;
                 }
             });
