@@ -10,7 +10,8 @@ module NakedObjects.Angular.Gemini {
         FirstAction, 
         ObjectTitle, 
         Dialog,
-        FirstItem
+        FirstItem, 
+        FirstProperty
     }
 
     export const geminiFocusEvent = "geminiFocuson";

@@ -411,6 +411,7 @@ module NakedObjects.Angular.Gemini {
             const [, mode, oldPane1, oldPane2 = home] = segments;
             const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
             const search = swapSearchIds($location.search());
+            currentPaneId = currentPaneId === 1 ? 2 : 1;
 
             $location.path(newPath).search(search);
         }

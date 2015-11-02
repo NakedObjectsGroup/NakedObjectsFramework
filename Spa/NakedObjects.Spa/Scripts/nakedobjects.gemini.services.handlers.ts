@@ -149,7 +149,9 @@ module NakedObjects.Angular.Gemini {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.object = <any>{ color: color.toColorFromType(dt) }; // only pass previous values if editing 
+            $scope.object = <any>{ color: color.toColorFromType(dt) }; 
+            
+            // only pass previous values if editing 
             const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
             context.getObject(routeData.paneId, dt, id).
@@ -181,6 +183,8 @@ module NakedObjects.Angular.Gemini {
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.FirstAction;
+                    } else if (routeData.edit || ovm.isTransient) {
+                        focusTarget = FocusTarget.FirstProperty;
                     } else {
                         focusTarget = FocusTarget.ObjectTitle;
                     }
