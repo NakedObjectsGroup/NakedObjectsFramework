@@ -376,24 +376,25 @@ module NakedObjects.Angular.Gemini{
             return propertyViewModel;
         };
         
-        function getItems($scope: ng.IScope, cvm: CollectionViewModel, links: Link[],  populateItems: boolean) {
+        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[],  populateItems: boolean) {
 
             if (populateItems) {
                 return _.map(links, link => {
-                    const ivm = viewModelFactory.itemViewModel(link, cvm.onPaneId);
+                    const itemViewModel = viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId);
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
-                            ivm.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, {}, false, 1);
+                            itemViewModel.target = viewModelFactory.domainObjectViewModel($scope, obj, {}, {}, false, 1);
 
-                            if (!cvm.header) {
-                                cvm.header = _.map(ivm.target.properties, property => property.title);
+                            if (!collectionViewModel.header) {
+                                collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
+                                focusManager.focusOn(FocusTarget.FirstItem, urlManager.currentpane());
                             }
                         });
-                    return ivm;
+                    return itemViewModel;
                 });
             } else {
-                return _.map(links, link => viewModelFactory.itemViewModel(link, cvm.onPaneId));
+                return _.map(links, link => viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId));
             }
         }
 
