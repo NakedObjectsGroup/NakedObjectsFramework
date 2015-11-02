@@ -10,6 +10,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.browser.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.simple.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
+/// <reference path="../../Scripts/nakedobjects.gemini.services.focusmanager.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 
 describe("nakedobjects.gemini.controllers", () => {

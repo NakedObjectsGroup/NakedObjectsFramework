@@ -37,6 +37,7 @@ module.exports = function(config) {
       'Scripts/nakedobjects.gemini.services.context.js',
       'Scripts/nakedobjects.gemini.services.handlers.js',
       'Scripts/nakedobjects.gemini.services.urlmanager.js',
+      'Scripts/nakedobjects.gemini.services.focusmanager.js',
       'Scripts/nakedobjects.gemini.services.navigation.browser.js',
       'Scripts/nakedobjects.gemini.services.clickhandler.js',
       'Tests/specs/nakedobjects.gemini.controllers.test.js',
