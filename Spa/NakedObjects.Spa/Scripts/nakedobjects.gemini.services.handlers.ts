@@ -174,6 +174,9 @@ module NakedObjects.Angular.Gemini {
                         const action = object.actionMember(routeData.dialogId);
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
                     }
+                    else if (routeData.actionsOpen) {
+                        focusManager.focusOn("firstaction", urlManager.currentpane());
+                    }
 
                 }).catch(error => {
                     setError(error);
