@@ -81,35 +81,31 @@ module NakedObjects.Angular.Gemini {
                     $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
                     $scope.homeTemplate = homeTemplate;
 
-                    if (!routeData.menuId) {
+                    if (routeData.menuId) {
+                        context.getMenu(routeData.menuId).
+                            then((menu: MenuRepresentation) => {
+                                $scope.actionsTemplate = actionsTemplate;
+                                const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, routeData.paneId)) };
+                                $scope.object = actions;
+
+                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstAction;
+
+                                if (routeData.dialogId) {
+                                    $scope.dialogTemplate = dialogTemplate;
+                                    const action = menu.actionMember(routeData.dialogId);
+                                    $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                                }
+
+                                focusManager.focusOn(focusTarget, urlManager.currentpane());
+                            }).catch(error => {
+                                setError(error);
+                            });
+                    } else {
                         focusManager.focusOn(FocusTarget.FirstMenu, urlManager.currentpane());
                     }
                 }).catch(error => {
                     setError(error);
                 });
-
-
-            if (routeData.menuId) {
-                context.getMenu(routeData.menuId).
-                    then((menu: MenuRepresentation) => {
-                        $scope.actionsTemplate = actionsTemplate;
-                        const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, routeData.paneId)) };
-                        $scope.object = actions;
-
-                        const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstAction;
-
-                        if (routeData.dialogId) {
-                            $scope.dialogTemplate = dialogTemplate;
-                            const action = menu.actionMember(routeData.dialogId);
-                            $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
-                        }
-
-                        focusManager.focusOn(focusTarget, urlManager.currentpane());
-                    }).catch(error => {
-                        setError(error);
-                    });
-            }
-
         };
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
