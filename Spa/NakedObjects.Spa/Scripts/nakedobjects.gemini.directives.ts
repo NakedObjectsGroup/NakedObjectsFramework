@@ -353,13 +353,22 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
-    app.directive("geminiFocuson", () => (scope, elem, attr) => {
-        scope.$on("geminiFocuson", (e, name, paneId) => {
-            if (name === "firstaction") {
-                // focus on first menu item or action
-                    
-                $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first().focus();
-            }
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService) => (scope, elem, attr) => {
+        scope.$on(geminiFocusEvent, (e, target: FocusTarget, paneId) => {
+
+            $timeout(() => {
+                switch (target) {
+                    case FocusTarget.FirstAction:
+                        $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first().focus();
+                        break;
+                    case FocusTarget.ObjectTitle:
+                        $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`).first().focus();
+                        break;
+                    case FocusTarget.Dialog:
+                        $(elem).find(`#pane${paneId}.split div.parameters .parameter, div.single div.parameters .parameter`).first().find(":input").first().focus();
+                        break;
+                }
+            });
         });
     });
 

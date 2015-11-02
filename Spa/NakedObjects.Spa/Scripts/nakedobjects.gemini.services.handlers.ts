@@ -93,14 +93,15 @@ module NakedObjects.Angular.Gemini {
                         const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, routeData.paneId)) };
                         $scope.object = actions;
 
+                        const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstAction;
+
                         if (routeData.dialogId) {
                             $scope.dialogTemplate = dialogTemplate;
                             const action = menu.actionMember(routeData.dialogId);
                             $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
                         }
-                        else {
-                            focusManager.focusOn("firstaction", urlManager.currentpane());
-                        }
+
+                        focusManager.focusOn(focusTarget, urlManager.currentpane());
                     }).catch(error => {
                         setError(error);
                     });
@@ -169,14 +170,21 @@ module NakedObjects.Angular.Gemini {
                     // cache
                     cacheRecentlyViewed(object);
 
+                    let focusTarget: FocusTarget;
+
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                         const action = object.actionMember(routeData.dialogId);
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                        focusTarget = FocusTarget.Dialog;
                     }
                     else if (routeData.actionsOpen) {
-                        focusManager.focusOn("firstaction", urlManager.currentpane());
+                        focusTarget = FocusTarget.FirstAction;
+                    } else {
+                        focusTarget = FocusTarget.ObjectTitle;
                     }
+
+                    focusManager.focusOn(focusTarget, urlManager.currentpane());
 
                 }).catch(error => {
                     setError(error);

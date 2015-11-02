@@ -5,16 +5,24 @@
 
 module NakedObjects.Angular.Gemini {
 
-    export interface IFocusManager {
-        focusOn(name: string, paneId : number): void;
+    export enum FocusTarget {
+        FirstAction, 
+        ObjectTitle, 
+        Dialog
     }
 
-    app.service("focusManager", function ($timeout, $rootScope) {
+    export const geminiFocusEvent = "geminiFocuson";
+
+    export interface IFocusManager {
+        focusOn(target: FocusTarget, paneId : number): void;
+    }
+
+    app.service("focusManager", function ($timeout : ng.ITimeoutService,  $rootScope : ng.IRootScopeService) {
         const helper = <IFocusManager>this;
 
-        helper.focusOn = (name: string, paneId : number) => {
+        helper.focusOn = (target: FocusTarget, paneId : number) => {
             $timeout(() => {
-                $rootScope.$broadcast("geminiFocuson", name, paneId);
+                $rootScope.$broadcast(geminiFocusEvent, target, paneId);
             });
         }
     });
