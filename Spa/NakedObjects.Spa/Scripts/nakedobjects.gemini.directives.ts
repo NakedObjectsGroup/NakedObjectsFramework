@@ -374,10 +374,10 @@ module NakedObjects.Angular.Gemini {
                         $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`).first().focus();
                         break;
                     case FocusTarget.FirstProperty:
-                        $(elem).find(`#pane${paneId}.split div.properties div.property :input, div.single div.properties div.property :input`).first().focus();
+                        $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`).first().focus();
                         break;
                 }
-            });
+            }, 0, false);
         });
     });
 

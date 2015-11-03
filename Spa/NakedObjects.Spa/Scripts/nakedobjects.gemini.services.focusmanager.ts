@@ -23,10 +23,7 @@ module NakedObjects.Angular.Gemini {
     app.service("focusManager", function ($timeout : ng.ITimeoutService,  $rootScope : ng.IRootScopeService) {
         const helper = <IFocusManager>this;
 
-        helper.focusOn = (target: FocusTarget, paneId : number) => {
-            $timeout(() => {
-                $rootScope.$broadcast(geminiFocusEvent, target, paneId);
-            });
-        }
+        helper.focusOn = (target: FocusTarget, paneId: number) =>
+            $timeout(() => $rootScope.$broadcast(geminiFocusEvent, target, paneId), 0, false);
     });
 }
