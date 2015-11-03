@@ -371,7 +371,7 @@ module NakedObjects.Angular.Gemini {
                         focusElement = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`).first();
                         break;
                     case FocusTarget.Dialog:
-                        focusElement = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input, div.single div.parameters div.parameter :input`).first();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input[type!='hidden'], div.single div.parameters div.parameter :input[type!='hidden']`).first();
                         break;
                     case FocusTarget.FirstItem:
                         focusElement = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`).first();

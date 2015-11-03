@@ -5,7 +5,7 @@
         <div class="menu clickable-area" tabindex="0" gemini-enter="object.toggleActionMenu()" ng-click="object.toggleActionMenu()">
             Actions
         </div>
-        <div class="action clickable-area" tabindex="0" gemini-enter="object.doEdit()" ng-click="object.doEdit()">
+        <div class="action clickable-area" tabindex="0" gemini-enter="object.doEdit()" ng-click="object.doEdit()" ng-hide="object.hideEdit()">
             Edit
         </div>
         <div class="messages">{{object.message}}</div>
