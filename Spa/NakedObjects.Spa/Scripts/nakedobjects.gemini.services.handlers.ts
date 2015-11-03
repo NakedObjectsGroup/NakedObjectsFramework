@@ -118,7 +118,7 @@ module NakedObjects.Angular.Gemini {
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId);
                     $scope.title = context.getLastActionFriendlyName(routeData.paneId);
-                    focusManager.focusOn(FocusTarget.FirstItem, urlManager.currentpane());
+                    focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
                 }).catch(error => {
                     setError(error);
                 });

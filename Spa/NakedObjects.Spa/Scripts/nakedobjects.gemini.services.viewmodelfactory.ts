@@ -71,9 +71,9 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.linkViewModel = (linkRep: Link, paneId : number) => {
             const linkViewModel = new LinkViewModel();
             linkViewModel.doClick = () => {
-                // because may be clicking on menu already open so want to reset focus
-                focusManager.focusOn(FocusTarget.FirstAction, paneId);
+                // because may be clicking on menu already open so want to reset focus             
                 urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
+                focusManager.focusOn(FocusTarget.FirstAction, paneId);
             };
             initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
@@ -388,7 +388,7 @@ module NakedObjects.Angular.Gemini{
 
                             if (!collectionViewModel.header) {
                                 collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
-                                focusManager.focusOn(FocusTarget.FirstItem, urlManager.currentpane());
+                                focusManager.focusOn(FocusTarget.FirstTableItem, urlManager.currentpane());
                             }
                         });
                     return itemViewModel;
