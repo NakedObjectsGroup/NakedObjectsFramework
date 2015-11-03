@@ -353,29 +353,43 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService) => (scope, elem, attr) => {
-        scope.$on(geminiFocusEvent, (e, target: FocusTarget, paneId) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager : IFocusManager) => (scope, elem, attr) => {
+        scope.$on(geminiFocusEvent, (e, target: FocusTarget, paneId : number, count : number) => {
 
             $timeout(() => {
+
+                let focusElement: JQuery;
+
                 switch (target) {
                     case FocusTarget.FirstMenu:
-                        $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`).first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`).first();
                         break;
                     case FocusTarget.FirstAction:
-                        $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first();
                         break;
                     case FocusTarget.ObjectTitle:
-                        $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`).first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`).first();
                         break;
                     case FocusTarget.Dialog:
-                        $(elem).find(`#pane${paneId}.split div.parameters div.parameter, div.single div.parameters div.parameter`).first().find(":input").first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.parameters div.parameter, div.single div.parameters div.parameter`).first().find(":input").first();
                         break;
                     case FocusTarget.FirstItem:
-                        $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`).first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`).first();
                         break;
                     case FocusTarget.FirstProperty:
-                        $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`).first().focus();
+                        focusElement = $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`).first();
                         break;
+                }
+
+                if (focusElement) {
+                    if (focusElement.length > 0) {
+                        focusElement.focus();
+                    } else {
+                        // haven't found anything to focus - try again - but not forever
+                        if (count < 10) {
+                            focusManager.focusOn(target, paneId, ++count);
+                        }
+                    }
                 }
             }, 0, false);
         });

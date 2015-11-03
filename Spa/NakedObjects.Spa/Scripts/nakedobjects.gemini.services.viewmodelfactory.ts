@@ -578,7 +578,10 @@ module NakedObjects.Angular.Gemini{
             tvm.goBack = () => navigation.back();
             tvm.goForward = () => navigation.forward();
             tvm.swapPanes = () => urlManager.swapPanes();
-            tvm.singlePane = (right?: boolean) => urlManager.singlePane(clickHandler.pane(1, right));
+            tvm.singlePane = (right?: boolean) => {
+                urlManager.singlePane(clickHandler.pane(1, right));
+                focusManager.refresh(1);
+            };
 
             tvm.template = appBarTemplate;
             tvm.footerTemplate = footerTemplate;
