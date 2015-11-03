@@ -499,7 +499,7 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = ($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
 
             objectViewModel.onPaneId = paneId;
@@ -562,7 +562,13 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.doEdit = () => {
                 urlManager.pushUrlState(paneId);           
                 urlManager.setObjectEdit(true, paneId);
-            }       
+            }     
+            
+            objectViewModel.doReload = () => 
+                context.reloadObject(paneId, objectRep).
+                    then((updatedObject: DomainObjectRepresentation) =>    
+                        $scope.object = viewModelFactory.domainObjectViewModel($scope, updatedObject, collectionStates, props, editing, paneId));
+              
 
             return objectViewModel;
         };

@@ -293,6 +293,7 @@ module NakedObjects.Angular.Gemini {
 
         doEdit(): void { }
         doEditCancel(): void { }
+        doReload(): void { }
 
         hideEdit(): boolean {
             return  this.isTransient ||  _.all(this.properties, p => !p.isEditable);

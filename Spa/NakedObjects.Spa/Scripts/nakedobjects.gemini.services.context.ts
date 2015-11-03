@@ -24,6 +24,7 @@ module NakedObjects.Angular.Gemini {
         invokeAction(action: ActionMember, paneId : number, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
+        reloadObject: (paneId : number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
         setError: (object: ErrorRepresentation) => void;
     
@@ -88,6 +89,18 @@ module NakedObjects.Angular.Gemini {
                     return $q.when(obj);
                 });
         };
+
+        context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => {
+
+            const reloadedObject = new DomainObjectRepresentation();
+            reloadedObject.hateoasUrl = getAppPath() + "/objects/" + object.domainType() + "/" + object.instanceId();
+
+            return repLoader.populate<DomainObjectRepresentation>(reloadedObject, true).
+                then((obj: DomainObjectRepresentation) => {
+                    currentObjects[paneId] = obj;
+                    return $q.when(obj);
+                });
+        }
 
         context.getService = (paneId : number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 

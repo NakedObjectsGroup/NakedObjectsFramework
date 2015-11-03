@@ -8,6 +8,9 @@
         <div class="action clickable-area" tabindex="0" gemini-enter="object.doEdit()" ng-click="object.doEdit()" ng-hide="object.hideEdit()">
             Edit
         </div>
+        <div class="action clickable-area" tabindex="0" gemini-enter="object.doReload()" ng-click="object.doReload()">
+            Reload
+        </div>
         <div class="messages">{{object.message}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
