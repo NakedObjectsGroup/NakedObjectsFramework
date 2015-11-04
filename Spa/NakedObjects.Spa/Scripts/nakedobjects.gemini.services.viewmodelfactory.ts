@@ -499,17 +499,15 @@ module NakedObjects.Angular.Gemini{
             return serviceViewModel;
         };
   
-        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
-            const objectViewModel = new DomainObjectViewModel();
-
+        // seperate function so we can reuse in reload
+        function setupDomainObjectViewModel (objectViewModel : DomainObjectViewModel,  $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId: number) {
+           
             objectViewModel.onPaneId = paneId;
             objectViewModel.isTransient = !!objectRep.persistLink();
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
             objectViewModel.domainType = objectRep.domainType();
             objectViewModel.draggableType = objectViewModel.domainType;
 
-            
-       
             objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
 
             const properties = objectRep.propertyMembers();
@@ -521,12 +519,12 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.message = "";
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
-            objectViewModel.properties = _.map(properties, (property, id) =>  viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId ));
+            objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
-              
+
             const link = objectRep.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients
@@ -558,18 +556,23 @@ module NakedObjects.Angular.Gemini{
                 objectViewModel.doSave = viewObject => savehandler(objectRep, objectViewModel, viewObject);
             }
 
-          
-            objectViewModel.doEdit = () => {
-                urlManager.pushUrlState(paneId);           
-                urlManager.setObjectEdit(true, paneId);
-            }     
-            
-            objectViewModel.doReload = () => 
-                context.reloadObject(paneId, objectRep).
-                    then((updatedObject: DomainObjectRepresentation) =>    
-                        $scope.object = viewModelFactory.domainObjectViewModel($scope, updatedObject, collectionStates, props, editing, paneId));
-              
 
+            objectViewModel.doEdit = () => {
+                urlManager.pushUrlState(paneId);
+                urlManager.setObjectEdit(true, paneId);
+            }
+
+            objectViewModel.doReload = () =>
+                context.reloadObject(paneId, objectRep).
+                    then((updatedObject: DomainObjectRepresentation) =>
+                    setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId));
+                
+        };
+
+
+        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
+            const objectViewModel = new DomainObjectViewModel();
+            setupDomainObjectViewModel(objectViewModel, $scope, objectRep, collectionStates, props, editing, paneId);
             return objectViewModel;
         };
 
