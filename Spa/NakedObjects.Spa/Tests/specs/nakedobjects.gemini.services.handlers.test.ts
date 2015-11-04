@@ -127,7 +127,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
                 $scope = $rootScope.$new();
-                spyOn(testVm, "showEdit").and.returnValue(true);
+                spyOn(testVm, "hideEdit").and.returnValue(false);
 
                 $scope.$parent.object = testVm;
 
