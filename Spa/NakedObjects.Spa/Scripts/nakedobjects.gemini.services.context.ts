@@ -21,7 +21,7 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
       
-        invokeAction(action: ActionMember, paneId : number, dvm?: DialogViewModel);
+        invokeAction(action: ActionMember, paneId : number, ovm? : DomainObjectViewModel, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
         reloadObject: (paneId : number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
@@ -347,7 +347,20 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        context.invokeAction = (action: ActionMember, paneId : number,  dvm?: DialogViewModel) => {
+        function reloadObjectTargetIfNonQuery(action: ActionMember) {
+            const parent = action.parent;
+            const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
+
+            if (actionIsNotQueryOnly && parent instanceof DomainObjectRepresentation) {
+                // reload as Put/Post on target.
+
+
+
+            }
+        }
+
+
+        context.invokeAction = (action: ActionMember, paneId : number, ovm? : DomainObjectViewModel, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];
 
@@ -363,6 +376,13 @@ module NakedObjects.Angular.Gemini {
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
                     context.setResult(action, result, paneId, dvm);
+                    
+                    if (ovm) {
+                        const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
+                        if (actionIsNotQueryOnly) {
+                            ovm.doReload();
+                        }
+                    }
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, parameters, dvm);

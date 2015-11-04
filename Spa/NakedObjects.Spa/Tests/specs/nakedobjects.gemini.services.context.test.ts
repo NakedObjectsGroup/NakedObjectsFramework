@@ -751,7 +751,7 @@ describe("nakedObjects.gemini.services.context ", () => {
                 spyOn(testActionResult, "resultType").and.returnValue("object");
                 spyOn(testResult, "isNull").and.returnValue(true);
                 spyOn(testActionResult, "result").and.returnValue(testResult);
-                localContext.invokeAction(testAction, 1, testDvm);
+                localContext.invokeAction(testAction, 1, null, testDvm);
                 timeout.flush();
             }));
 
@@ -778,7 +778,7 @@ describe("nakedObjects.gemini.services.context ", () => {
                 spyOn(testActionResult, "resultType").and.returnValue("object");
                 spyOn(testResult, "isNull").and.returnValue(true);
                 spyOn(testActionResult, "result").and.returnValue(testResult);
-                localContext.invokeAction(testAction, 1, testDvm);
+                localContext.invokeAction(testAction, 1, null, testDvm);
                 timeout.flush();
             }));
 

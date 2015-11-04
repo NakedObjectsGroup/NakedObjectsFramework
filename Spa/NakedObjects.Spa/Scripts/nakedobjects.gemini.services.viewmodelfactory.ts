@@ -11,8 +11,8 @@ module NakedObjects.Angular.Gemini{
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
-        actionViewModel(actionRep: ActionMember, paneId : number): ActionViewModel;
-        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number): DialogViewModel;
+        actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
+        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm? : DomainObjectViewModel): DialogViewModel;
 
         collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
         collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
@@ -237,8 +237,7 @@ module NakedObjects.Angular.Gemini{
             return parmViewModel;
         };
 
-        // tested
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId : number) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel) => {
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
@@ -246,12 +245,14 @@ module NakedObjects.Angular.Gemini{
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ? (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) : (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
+            actionViewModel.doInvoke = actionRep.extensions().hasParams ?
+                (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
+                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right), ovm);
 
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number) => {
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
             dialogViewModel.title = actionMember.extensions().friendlyName;
@@ -259,7 +260,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
 
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), ovm, dialogViewModel);
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
@@ -518,7 +519,7 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.message = "";
 
-            objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
+            objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId, objectViewModel));
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId));
 
@@ -565,7 +566,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.doReload = () =>
                 context.reloadObject(paneId, objectRep).
                     then((updatedObject: DomainObjectRepresentation) =>
-                    setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId));
+                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId));
                 
         };
 
