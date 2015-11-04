@@ -287,34 +287,37 @@ module NakedObjects.Angular.Gemini {
             }
 
             const resultObject = result.result().object(); 
+          
+            if (result.resultType() === "object") {
+                if (resultObject.persistLink()) {
+                    // transient object
+                    const domainType = resultObject.extensions().domainType;
+                    resultObject.set("domainType", domainType);
+                    resultObject.set("instanceId", "0");
+                    resultObject.hateoasUrl = `/${domainType}/0`;
 
-            // transient object
-            if (result.resultType() === "object" && resultObject.persistLink()) {
-                const domainType = resultObject.extensions().domainType;
-                resultObject.set("domainType", domainType);
-                resultObject.set("instanceId", "0");
-                resultObject.hateoasUrl = `/${domainType}/0`;
+                    context.setObject(paneId, resultObject);
+                    urlManager.pushUrlState(paneId);
+                    urlManager.setObject(resultObject, paneId);
+                }
+                else {
 
-                context.setObject(paneId, resultObject);
-                urlManager.pushUrlState(paneId);
-                urlManager.setObject(resultObject, paneId);
+                    // persistent object
+                    // set the object here and then update the url. That should reload the page but pick up this object 
+                    // so we don't hit the server again. 
+
+                    context.setObject(paneId, resultObject);
+                    urlManager.setObject(resultObject, paneId);
+                }
             }
 
-            // persistent object
-            if (result.resultType() === "object" && !resultObject.persistLink()) {
-
-                // set the object here and then update the url. That should reload the page but pick up this object 
-                // so we don't hit the server again. 
-
-                context.setObject(paneId, resultObject);
-                urlManager.setObject(resultObject, paneId);
-            }
-
-            if (result.resultType() === "list") {
+            else if (result.resultType() === "list") {
                 const resultList = result.result().list();
                 context.setList(paneId, resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName, paneId);
-                urlManager.setList(action, paneId,  dvm);
+                urlManager.setList(action, paneId, dvm);
+            } else if (dvm) {
+                urlManager.closeDialog(dvm.onPaneId);
             }
         };
 

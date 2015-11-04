@@ -214,6 +214,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         message: string;
         isQueryOnly: boolean;
+        onPaneId: number;
 
         parameters: ParameterViewModel[];
 

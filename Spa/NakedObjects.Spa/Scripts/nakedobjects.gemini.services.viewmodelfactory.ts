@@ -259,6 +259,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
+            dialogViewModel.onPaneId = paneId;
 
             dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), ovm, dialogViewModel);
 
