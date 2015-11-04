@@ -1673,12 +1673,16 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                   TArray([ TObjectJson(obj1)
                            TObjectJson(obj2) ]))
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
-                                  
+                    TObjectJson([ pageProp
+                                  resultProp                         
                                   TProperty
                                       (JsonPropertyNames.Links, 
                                        
@@ -1754,6 +1758,10 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -1763,8 +1771,8 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
-                                  
+                    TObjectJson([ pageProp
+                                  resultProp                                  
                                   TProperty
                                       (JsonPropertyNames.Links, 
                                        
@@ -1813,6 +1821,10 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeLinkPropWithMethodAndTypes "GET" RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType "" false
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -1822,7 +1834,8 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -1866,11 +1879,16 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let resultProp = TProperty(JsonPropertyNames.Value, TArray([]))
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -1994,6 +2012,10 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2003,8 +2025,8 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
-                                  
+                    TObjectJson([ pageProp
+                                  resultProp                                  
                                   TProperty
                                       (JsonPropertyNames.Links, 
                                        
@@ -2160,6 +2182,10 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2169,7 +2195,8 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -2319,6 +2346,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2328,7 +2359,8 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -2425,6 +2457,10 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2434,7 +2470,8 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -2519,6 +2556,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2528,7 +2569,8 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
-                    TObjectJson([ resultProp
+                    TObjectJson([ pageProp
+                                  resultProp
                                   
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -2615,6 +2657,10 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2626,6 +2672,7 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                            ([ TObjectJson
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  pageProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -2710,6 +2757,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2721,6 +2772,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                            ([ TObjectJson
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  pageProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -2856,6 +2908,11 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
+
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2867,6 +2924,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                            ([ TObjectJson
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  pageProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -2954,6 +3012,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                     :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
                            "" roType true) ])
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2965,6 +3027,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                            ([ TObjectJson
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  pageProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -3042,6 +3105,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -3053,6 +3120,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
                                            ([ TObjectJson
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
+                                  pageProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))

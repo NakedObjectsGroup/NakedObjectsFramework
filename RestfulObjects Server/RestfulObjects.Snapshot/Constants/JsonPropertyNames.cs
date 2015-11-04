@@ -70,5 +70,6 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string SubTypes = "subtypes";
         public const string SuperTypes = "supertypes";
         public const string MenuId = "menuId";
+        public const string Pagination = "pagination";
     }
 }

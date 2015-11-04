@@ -123,6 +123,7 @@
     <Compile Include="RelTypes\ValueRelType.cs" />
     <Compile Include="RelTypes\DefaultRelType.cs" />
     <Compile Include="Representation\FilterFromInvokeRepresentation.cs" />
+    <Compile Include="Representation\PagedListRepresentation.cs" />
     <Compile Include="Representation\MenuRepresentation.cs" />
     <Compile Include="Strategies\AbstractStrategy.cs" />
     <Compile Include="Representation\ActionResultRepresentation.cs" />

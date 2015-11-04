@@ -120,10 +120,6 @@ namespace RestfulObjects.Snapshot.Representations {
             return new ListRepresentation(oidStrategy, listContext, req, flags);
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new ListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
-        }
-
         internal static Representation Create(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags) {
             // filter out System types
             specs = specs.Where(s => !s.FullName.StartsWith("System.") && !s.FullName.StartsWith("Microsoft.")).ToArray();
