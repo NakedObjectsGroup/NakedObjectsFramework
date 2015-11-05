@@ -1675,7 +1675,10 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -1760,7 +1763,10 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -1823,7 +1829,10 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -1881,7 +1890,10 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(0))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -2014,7 +2026,10 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2184,7 +2199,10 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2348,7 +2366,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2459,7 +2480,10 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2558,7 +2582,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2659,7 +2686,10 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -2759,7 +2789,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -2911,7 +2944,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
 
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -3014,7 +3050,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -3107,7 +3146,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([]))
+                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                               TProperty("pageSize", TObjectVal(20)) 
+                               TProperty("numPages", TObjectVal(1)) 
+                               TProperty("totalCount", TObjectVal(2))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))

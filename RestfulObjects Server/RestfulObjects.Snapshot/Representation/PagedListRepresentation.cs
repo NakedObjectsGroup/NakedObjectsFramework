@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -27,14 +28,44 @@ namespace RestfulObjects.Snapshot.Representations {
             //    list = objectContext.Target;
             //}
 
-            SetPagination();
+            SetPagination(objectContext.Target, flags);
         }
 
         [DataMember(Name = JsonPropertyNames.Pagination)]
         public MapRepresentation Pagination { get; set; }
 
-        private void SetPagination() {
+        // "pagination": { 
+        //"page": 3, 
+        //"pageSize": 25,
+        //"numPages": 4,
+        //"totalCount": 82, 
+        //"links": [ {  
+        //"rel": "previous", 
+        //"href": ...,    
+        //"type": ...,       }, 
+        //{         "rel": "next",
+        //"href": ..., 
+        //"type": ...,       }     ]   
+
+
+        // custom extebnsion for pagination 
+        private void SetPagination(IObjectFacade list, RestControlFlags flags) {
             Pagination = new MapRepresentation();
+
+            var totalCount = list.Count();
+            var pageSize = flags.PageSize;
+            var page = 1;
+            var numPages = totalCount/pageSize + 1;
+
+            var exts = new Dictionary<string, object> {
+                {"page", page},
+                {"pageSize", pageSize},
+                {"numPages", numPages},
+                {"totalCount", totalCount}
+            };
+
+            Pagination = RestUtils.CreateMap(exts);
+
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
