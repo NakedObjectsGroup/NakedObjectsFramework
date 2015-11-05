@@ -16,45 +16,27 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PagedListRepresentation : ListRepresentation {
+
+        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
+            return objectContext.Target.Page(flags.Page, flags.PageSize);
+        }
+
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
-            : base(oidStrategy, objectContext, req, flags, actionContext) {
-            //IObjectFacade list;
-
-            //if (flags.PageSize > 0 && objectContext.Target.Count() > flags.PageSize) {
-            //    warnings.Add(string.Format("Result contains more than {0} objects only returning the first {0}", flags.PageSize));
-            //    list = objectContext.Target.Page(1, flags.PageSize);
-            //}
-            //else {
-            //    list = objectContext.Target;
-            //}
-
+            : base(oidStrategy, Page(objectContext, flags), req, flags, actionContext) {
+          
             SetPagination(objectContext.Target, flags);
         }
 
         [DataMember(Name = JsonPropertyNames.Pagination)]
         public MapRepresentation Pagination { get; set; }
 
-        // "pagination": { 
-        //"page": 3, 
-        //"pageSize": 25,
-        //"numPages": 4,
-        //"totalCount": 82, 
-        //"links": [ {  
-        //"rel": "previous", 
-        //"href": ...,    
-        //"type": ...,       }, 
-        //{         "rel": "next",
-        //"href": ..., 
-        //"type": ...,       }     ]   
-
-
-        // custom extebnsion for pagination 
+        // custom extension for pagination 
         private void SetPagination(IObjectFacade list, RestControlFlags flags) {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
             var pageSize = flags.PageSize;
-            var page = 1;
+            var page = flags.Page;
             var numPages = totalCount/pageSize + 1;
 
             var exts = new Dictionary<string, object> {

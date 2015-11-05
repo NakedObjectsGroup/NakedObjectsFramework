@@ -35,18 +35,9 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(true);
         }
 
-        protected ListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
+        protected ListRepresentation(IOidStrategy oidStrategy, IObjectFacade list, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
-            IObjectFacade list;
-
-            if (flags.PageSize > 0 && objectContext.Target.Count() > flags.PageSize) {
-                warnings.Add(string.Format("Result contains more than {0} objects only returning the first {0}", flags.PageSize));
-                list = objectContext.Target.Page(1, flags.PageSize);
-            }
-            else {
-                list = objectContext.Target;
-            }
-
+         
             Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no)).ToArray();
 
             SetLinks(req, actionContext);

@@ -30,12 +30,17 @@ namespace RestfulObjects.Snapshot.Utility {
         public const string FollowLinksReserved = ReservedPrefix + "follow-links";
         public const string SortByReserved = ReservedPrefix + "sort-by";
         public const string SearchTermReserved = ReservedPrefix + "searchTerm";
+        // custom extensions 
+        public const string PageReserved = ReservedPrefix + "page";
+        public const string PageSizeReserved = ReservedPrefix + "page-size";
+
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
         public static DomainModelType ConfiguredDomainModelType { get; set; }
         public static int ConfiguredPageSize { get; set; }
 
+        public int Page { get; private set; }
         public int PageSize { get; private set; }
         public bool ValidateOnly { get; private set; }
         public bool DomainType { get; private set; }
@@ -50,6 +55,13 @@ namespace RestfulObjects.Snapshot.Utility {
             if (value is string) return Boolean.Parse((string) value);
             if (value is bool) return (bool) value;
             return false;
+        }
+
+        private static int GetInt(object value) {
+            if (value == null) return 0;
+            if (value is string) return int.Parse((string)value);
+            if (value is int) return (int)value;
+            return 0;
         }
 
 
@@ -73,6 +85,16 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
+        private static int GetPageSize(object value) {
+            var i = GetInt(value);
+            return i == 0 ? ConfiguredPageSize : i;
+        }
+
+        private static int GetPage(object value) {
+            var i = GetInt(value);
+            return i == 0 ? 1 : i;
+        }
+
         private static RestControlFlags GetFlags(Func<string, object> getValue) {
             var controlFlags = new RestControlFlags {
                 ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),
@@ -82,7 +104,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = GetBool(getValue(FollowLinksReserved)),
                 SortBy = GetBool(getValue(SortByReserved)),
                 BlobsClobs = false,
-                PageSize = ConfiguredPageSize
+                Page = GetPage(getValue(PageReserved)),
+                PageSize = GetPageSize(getValue(PageSizeReserved)),
             };
 
             return controlFlags;
@@ -106,7 +129,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,
-                PageSize = ConfiguredPageSize
+                PageSize = ConfiguredPageSize,
+                Page = 1
             };
 
             return controlFlags;
