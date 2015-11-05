@@ -64,6 +64,14 @@ module NakedObjects {
         validateOnly: string;
     }
 
+    export interface IPagination {
+        page: number;
+        pageSize: number;
+        numPages: number;
+        totalCount: number;
+    }
+
+
     export class RelParm {
 
         name: string;
@@ -1401,7 +1409,9 @@ module NakedObjects {
             return Links.wrapLinks(this.get("value"));
         }
 
-
+        pagination(): IPagination {
+            return this.get("pagination");
+        }
     }
 
     // matches the error representation 10.0 
