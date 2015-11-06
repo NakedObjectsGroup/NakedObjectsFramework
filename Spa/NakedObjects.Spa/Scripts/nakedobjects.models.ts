@@ -319,7 +319,8 @@ module NakedObjects {
 
         // improve this to be more robust
         addUrlParms(parms: _.Dictionary<string>) {
-            this.suffix = _.reduce(parms, (result : string, n : string, key : string) => result === "" ? "" : `?${result}&${key}=${n}` );
+            this.suffix = _.reduce(parms, (result: string, n: string, key: string) =>
+               (result === "" ? "?" : result + "&") + key + "=" + n, "");
         }
     }
 
