@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;    
-        getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
+        getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>, page? : number, pageSize? : number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
 
         getLastActionFriendlyName: (paneId: number) => string;
@@ -229,18 +229,22 @@ module NakedObjects.Angular.Gemini {
             return resultPromise().then(result => handleResult(paneId, result));
         };
 
-        function cacheActionNameAndInvoke(paneId : number, action: ActionMember, parms: _.Dictionary<Value>) {
+        function cacheActionNameAndInvoke(paneId : number, action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) {
             lastActionFriendlyName[paneId] = action.extensions().friendlyName;
-            return repLoader.invoke(action, parms);
+            return repLoader.invoke(action, parms, urlParms);
         }
 
-        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>) => {
-            const promise = () => context.getMenu(menuId).then(menu => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms));
+        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page? : number, pageSize? : number) => {
+
+            const urlParms: _.Dictionary<string> =
+                (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
+
+            const promise = () => context.getMenu(menuId).then(menu => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms, urlParms));
             return getList(paneId, promise);
         };
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
-            const promise = () => context.getObjectByOid(paneId, objectId).then(object => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms));
+            const promise = () => context.getObjectByOid(paneId, objectId).then(object => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms, {}));
             return getList(paneId, promise);
         };
 

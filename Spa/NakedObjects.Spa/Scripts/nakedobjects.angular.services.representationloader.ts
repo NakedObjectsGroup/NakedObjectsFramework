@@ -7,7 +7,7 @@ module NakedObjects.Angular {
 
     export interface IRepLoader {
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean, r?: IHateoasModel) => ng.IPromise<T>;
-        invoke: (action: ActionMember, parms: _.Dictionary<Value>) => ng.IPromise<ActionResultRepresentation>;
+        invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
 
     // TODO investigate using transformations to transform results 
@@ -85,8 +85,9 @@ module NakedObjects.Angular {
         };
 
 
-        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>): ng.IPromise < ActionResultRepresentation > => {
-            const invoke = action.getInvoke();                                          
+        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
+            const invoke = action.getInvoke(); 
+            invoke.addUrlParms(urlParms);                                         
             _.each(parms, (v, k) => invoke.setParameter(k, v));
             return this.populate (invoke, true);
         }

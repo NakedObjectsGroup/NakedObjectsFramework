@@ -111,7 +111,7 @@ module NakedObjects.Angular.Gemini {
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
             var promise = routeData.objectId ? context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms) :
-                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms);
+                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms, routeData.page, routeData.pageSize);
 
             promise.
                 then((list: ListRepresentation) => {

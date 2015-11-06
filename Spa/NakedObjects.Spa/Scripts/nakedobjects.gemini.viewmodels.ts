@@ -250,6 +250,15 @@ module NakedObjects.Angular.Gemini {
         doTable(): void { }
         doList(): void { }
 
+        pagePrevious(): void { }
+        pageNext(): void { }
+        pageLast(): void {}
+
+        pagePreviousDisabled(): boolean { return false; }
+        pageNextDisabled(): boolean { return false; }
+
+        description(): string { return this.size.toString()}
+
         template: string;
     } 
 

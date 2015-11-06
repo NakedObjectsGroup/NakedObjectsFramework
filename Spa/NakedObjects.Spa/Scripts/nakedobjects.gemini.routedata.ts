@@ -37,5 +37,7 @@ module NakedObjects.Angular.Gemini {
         parms: _.Dictionary<Value>;
         props: _.Dictionary<Value>;
         dialogId: string;
+        page: number;
+        pageSize : number;
     }
 }

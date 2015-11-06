@@ -22,6 +22,7 @@ module NakedObjects.Angular.Gemini {
 
         setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
         setListState(paneId: number, state: CollectionViewState): void;
+        setListPaging(paneId: number, newPage: number, newPageSize: number): void;
 
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
@@ -52,6 +53,9 @@ module NakedObjects.Angular.Gemini {
         const parm = "parm";
         const prop = "prop";
         const actions = "actions";
+        const page = "page";
+        const pageSize = "pageSize";
+
 
         const gemini = "gemini";
         const cicero = "cicero";
@@ -98,6 +102,9 @@ module NakedObjects.Angular.Gemini {
 
             const propKeyMap = getAndMapIds(prop, paneId);
             paneRouteData.props = getMappedValues(propKeyMap);
+
+            paneRouteData.page = $routeParams[page + paneId];
+            paneRouteData.pageSize = $routeParams[pageSize + paneId];
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -338,6 +345,15 @@ module NakedObjects.Angular.Gemini {
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };
 
+        helper.setListPaging = (paneId: number, newPage : number, newPageSize:number) => {
+            currentPaneId = paneId;
+            const search = $location.search();
+
+            search[`${page}${paneId}`] = newPage;
+            search[`${pageSize}${paneId}`] = newPageSize;
+
+            $location.search(search);
+        };
 
         helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
             currentPaneId = paneId;

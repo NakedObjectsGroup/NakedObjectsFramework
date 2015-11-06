@@ -41,7 +41,7 @@ module NakedObjects {
         }
         hateoasUrl: string = "";
         method: string = "GET";
-        private suffix: string = "";
+        suffix: string = "";
         url(): string {
             return (this.hateoasUrl || super.url()) + this.suffix;
         }

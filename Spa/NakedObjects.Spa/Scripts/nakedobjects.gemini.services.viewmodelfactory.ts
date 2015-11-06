@@ -433,9 +433,37 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.onPaneId = paneId;
 
-            collectionViewModel.size = links.length;
             collectionViewModel.pluralName = "Objects";
             collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
+
+            const page = listRep.pagination().page;
+            const pageSize = listRep.pagination().pageSize;
+            const numPages = listRep.pagination().numPages;
+            const totalCount = listRep.pagination().totalCount;
+            const count = links.length;
+
+            collectionViewModel.size = count;
+
+            collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`
+
+            collectionViewModel.pageNext = () => {
+                urlManager.setListPaging(paneId, page + 1, pageSize);
+            };
+
+            collectionViewModel.pagePrevious = () => {
+                urlManager.setListPaging(paneId, page - 1, pageSize);
+            };
+
+            collectionViewModel.pageLast = () => {
+                urlManager.setListPaging(paneId, numPages, pageSize);
+            };
+
+            collectionViewModel.pageNextDisabled = () => page >= numPages;
+            collectionViewModel.pagePreviousDisabled = () => page <= numPages;
+
+
+
+
 
             return collectionViewModel;
         }
