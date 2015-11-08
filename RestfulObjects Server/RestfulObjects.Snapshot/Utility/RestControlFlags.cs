@@ -32,7 +32,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public const string SearchTermReserved = ReservedPrefix + "searchTerm";
         // custom extensions 
         public const string PageReserved = ReservedPrefix + "page";
-        public const string PageSizeReserved = ReservedPrefix + "page-size";
+        public const string PageSizeReserved = ReservedPrefix + "pageSize";
 
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};

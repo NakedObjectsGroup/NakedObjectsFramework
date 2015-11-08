@@ -95,6 +95,15 @@ namespace RestfulObjects.Mvc.Model {
             var voFlag = jObject[RestControlFlags.ValidateOnlyReserved] as JValue;
             return voFlag != null && (bool) voFlag.Value;
         }
+        private static int GetPageValue(JObject jObject) {
+            var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
+            return pageValue == null ? 0 : (int)pageValue.Value;
+        }
+
+        private static int GetPageSizeValue(JObject jObject) {
+            var pageSizeValue = jObject[RestControlFlags.PageSizeReserved] as JValue;
+            return pageSizeValue == null ? 0 : (int)pageSizeValue.Value;
+        }
 
         private static string GetDomainModelValue(JObject m) {
             var domainModel = m[RestControlFlags.DomainModelReserved] as JValue;
@@ -146,6 +155,8 @@ namespace RestfulObjects.Mvc.Model {
                     arg.ValidateOnly = GetValidateOnlyFlag(jObject);
                     arg.DomainModel = GetDomainModelValue(jObject);
                     arg.SearchTerm = GetSearchTerm(jObject);
+                    arg.Page = GetPageValue(jObject);
+                    arg.PageSize = GetPageSizeValue(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);

@@ -1019,7 +1019,9 @@ namespace RestfulObjects.Mvc {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
                 Values = valuesAndFlags.Item1,
                 ValidateOnly = valuesAndFlags.Item2.ValidateOnly,
-                SearchTerm = arguments.SearchTerm
+                SearchTerm = arguments.SearchTerm,
+                Page = arguments.Page,
+                PageSize = arguments.PageSize
             }, valuesAndFlags.Item2);
         }
 

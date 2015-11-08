@@ -13,6 +13,10 @@ namespace RestfulObjects.Mvc.Model {
         public virtual bool IsMalformed { get; set; }
         public string SearchTerm { get; set; }
 
+        public int Page { get; set; }
+
+        public int PageSize { get; set; }
+
         public virtual bool HasValue {
             get { return false; }
         }

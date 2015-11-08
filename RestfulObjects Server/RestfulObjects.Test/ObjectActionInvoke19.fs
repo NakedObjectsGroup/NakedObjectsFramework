@@ -1716,6 +1716,80 @@ let GetInvokeActionReturnQueryViewModel(api : RestfulObjectsControllerBase) =
     let oid = oType + "/" + ktc "1"
     VerifyGetInvokeActionReturnQueryable "objects" oType oid api.GetInvoke api
 
+let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryable"
+    let ourl = sprintf "%s/%s/%s" refType oType oid
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let parms = new JObject(new JProperty("x-ro-page", 2), new JProperty("x-ro-pageSize", 1))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    let result = f (oType, ktc "1", pid, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let obj1 = 
+        TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+        :: makeLinkPropWithMethodAndTypes "GET" RelValues.Element (sprintf "objects/%s/%s" roType (ktc "1")) RepresentationTypes.Object roType "" true
+    let obj2 = 
+        TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+        :: makeLinkPropWithMethodAndTypes "GET" RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType "" true
+    let links = 
+        TArray
+            ([ TObjectJson
+                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
+                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+                           "" roType true) ])
+    
+    let resultProp = 
+        TProperty(JsonPropertyNames.Value, 
+                  TArray([ TObjectJson(obj1)
+                           TObjectJson(obj2) ]))
+    
+    let pageProp = 
+        TProperty(JsonPropertyNames.Pagination, 
+                  TObjectJson([TProperty("page", TObjectVal(2)) 
+                               TProperty("pageSize", TObjectVal(1)) 
+                               TProperty("numPages", TObjectVal(2)) 
+                               TProperty("totalCount", TObjectVal(2))]))
+
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, links)
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
+          TProperty(JsonPropertyNames.Result, 
+                    TObjectJson([ pageProp
+                                  resultProp                         
+                                  TProperty
+                                      (JsonPropertyNames.Links, 
+                                       
+                                       TArray
+                                           ([ TObjectJson
+                                                  (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    Assert.IsNull(result.Headers.ETag)
+    compareObject expected parsedResult
+
+let GetInvokeActionReturnQueryObjectWithPaging(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oid = oType + "/" + ktc "1"
+    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oid api.GetInvoke api
+
+let GetInvokeActionReturnQueryServiceWithPaging(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oid = oType
+    VerifyGetInvokeActionReturnQueryableWithPaging "services" oType oid (wrap api.GetInvokeOnService) api
+
+let GetInvokeActionReturnQueryViewModelWithPaging(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oid = oType + "/" + ktc "1"
+    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oid api.GetInvoke api
+
+
 let VerifyGetInvokeActionReturnQueryableValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionReturnsQueryable"
     let ourl = sprintf "%s/%s/%s" refType oType oid

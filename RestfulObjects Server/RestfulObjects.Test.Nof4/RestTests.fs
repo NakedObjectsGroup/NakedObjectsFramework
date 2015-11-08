@@ -1668,6 +1668,18 @@ type Nof4Tests() =
         member x.GetInvokeActionReturnQueryViewModel() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModel x.api
         
         [<Test>]
+        member x.GetInvokeActionReturnQueryObjectWithPaging() = ObjectActionInvoke19.GetInvokeActionReturnQueryObjectWithPaging x.api
+        
+        [<Test>]
+        member x.GetInvokeActionReturnQueryServiceWithPaging() = ObjectActionInvoke19.GetInvokeActionReturnQueryServiceWithPaging x.api
+        
+        [<Test>]
+        member x.GetInvokeActionReturnQueryViewModelWithPaging() = ObjectActionInvoke19.GetInvokeActionReturnQueryViewModelWithPaging x.api
+        
+
+
+
+        [<Test>]
         member x.GetInvokeActionReturnQueryObjectValidateOnly() = ObjectActionInvoke19.GetInvokeActionReturnQueryObjectValidateOnly x.api
         
         [<Test>]
