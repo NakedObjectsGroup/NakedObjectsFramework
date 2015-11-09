@@ -85,14 +85,20 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
+        private static int DefaultPageSize(int pageSize) {
+            return pageSize == 0 ? ConfiguredPageSize : pageSize;
+        }
+
+        private static int DefaultPage(int page) {
+            return page == 0 ? 1 : page;
+        }
+
         private static int GetPageSize(object value) {
-            var i = GetInt(value);
-            return i == 0 ? ConfiguredPageSize : i;
+            return DefaultPageSize(GetInt(value));
         }
 
         private static int GetPage(object value) {
-            var i = GetInt(value);
-            return i == 0 ? 1 : i;
+            return DefaultPage(GetInt(value));
         }
 
         private static RestControlFlags GetFlags(Func<string, object> getValue) {
@@ -129,8 +135,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,
-                PageSize = pageSize,
-                Page = page
+                PageSize = DefaultPageSize(pageSize),
+                Page = DefaultPage(page)
             };
 
             return controlFlags;

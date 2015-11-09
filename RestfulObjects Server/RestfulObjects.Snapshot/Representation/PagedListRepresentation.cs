@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -18,9 +19,8 @@ namespace RestfulObjects.Snapshot.Representations {
     public class PagedListRepresentation : ListRepresentation {
 
         private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
-            var pageSize = flags.PageSize == 0 ? 20 : flags.PageSize;
-            var page = flags.Page == 0 ? 1 : flags.Page;
-            return objectContext.Target.Page(page, pageSize);
+         
+            return objectContext.Target.Page(flags.Page, flags.PageSize);
         }
 
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
@@ -32,14 +32,15 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Pagination)]
         public MapRepresentation Pagination { get; set; }
 
+      
         // custom extension for pagination 
         private void SetPagination(IObjectFacade list, RestControlFlags flags) {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
-            var pageSize = flags.PageSize == 0 ? 20 : flags.PageSize;
-            var page = flags.Page == 0 ? 1 : flags.Page;
-            var numPages = totalCount/pageSize;
+            var pageSize = flags.PageSize ;
+            var page = flags.Page;
+            var numPages = (int)Math.Round(totalCount / (decimal)pageSize + 0.5m);
             numPages = numPages == 0 ? 1 : numPages;
 
             var exts = new Dictionary<string, object> {
@@ -50,7 +51,6 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             Pagination = RestUtils.CreateMap(exts);
-
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
