@@ -239,8 +239,14 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         const rawEmptyList = {
             value: [],
-            links: [rawSelfLink]
-        };
+            links: [rawSelfLink],
+            pagination: {
+                page: 1,
+                pageSize: 20,
+                totalCount: 0,
+                numPages: 1
+            }
+    };
 
         const rawCollection = {
             size: 2,
@@ -255,7 +261,13 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
         const rawList = {
             value: [rawLink1, rawLink2],
-            links: [rawSelfLink]
+            links: [rawSelfLink],
+            pagination: {
+                page: 1,
+                pageSize: 20,
+                totalCount: 2,
+                numPages: 1
+            }
         };
 
 
