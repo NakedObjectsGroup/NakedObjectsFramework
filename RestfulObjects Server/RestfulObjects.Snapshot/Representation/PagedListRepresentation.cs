@@ -18,7 +18,9 @@ namespace RestfulObjects.Snapshot.Representations {
     public class PagedListRepresentation : ListRepresentation {
 
         private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
-            return objectContext.Target.Page(flags.Page, flags.PageSize);
+            var pageSize = flags.PageSize == 0 ? 20 : flags.PageSize;
+            var page = flags.Page == 0 ? 1 : flags.Page;
+            return objectContext.Target.Page(page, pageSize);
         }
 
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
@@ -35,9 +37,10 @@ namespace RestfulObjects.Snapshot.Representations {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
-            var pageSize = flags.PageSize;
-            var page = flags.Page;
-            var numPages = totalCount/pageSize + 1;
+            var pageSize = flags.PageSize == 0 ? 20 : flags.PageSize;
+            var page = flags.Page == 0 ? 1 : flags.Page;
+            var numPages = totalCount/pageSize;
+            numPages = numPages == 0 ? 1 : numPages;
 
             var exts = new Dictionary<string, object> {
                 {"page", page},

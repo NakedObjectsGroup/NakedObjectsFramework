@@ -115,7 +115,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return GetFlags(s => null);
         }
 
-        public static RestControlFlags FlagsFromArguments(bool validateOnly, string domainModel = null) {
+        public static RestControlFlags FlagsFromArguments(bool validateOnly, int page, int pageSize, string domainModel = null) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -129,8 +129,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,
-                PageSize = ConfiguredPageSize,
-                Page = 1
+                PageSize = pageSize,
+                Page = page
             };
 
             return controlFlags;

@@ -1743,8 +1743,7 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
     
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
-                  TArray([ TObjectJson(obj1)
-                           TObjectJson(obj2) ]))
+                  TArray([ TObjectJson(obj2) ]))
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
