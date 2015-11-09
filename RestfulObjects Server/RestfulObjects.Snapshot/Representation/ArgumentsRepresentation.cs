@@ -59,7 +59,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (format == Format.Full) {
                 var tempProperties = new List<OptionalProperty>();
 
-                if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
+                if (contextFacade != null &&  !string.IsNullOrEmpty(contextFacade.Reason)) {
                     tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
                 }
 
@@ -76,9 +76,10 @@ namespace RestfulObjects.Snapshot.Representations {
                     tempProperties.Add(links);
                 }
 
-                if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
+                if (contextFacade != null && !string.IsNullOrEmpty(contextFacade.Reason)) {
                     tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
                 }
+
 
                 var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues.ToArray()));
                 tempProperties.Add(members);
