@@ -21,15 +21,21 @@ namespace NakedObjects.Web.UnitTests.Selenium
     /// </summary>
     public abstract class DialogTests : AWTest
     {
+
+        //This test is a hangover from when the button was named 'Get'
+        //for query-only actions, and 'Do' for others.  This has since
+        //been reverted to OK for both.
         [TestMethod]
-        public virtual void OKButtonCalledGetOnAQueryActionDoOnOthers()
+        public virtual void OKButtonNaming()
         {
             Url(OrdersMenuUrl);
+            //Query only action
             OpenActionDialog("Orders By Value");
-            Assert.AreEqual("Get", OKButton().GetAttribute("value"));
+            Assert.AreEqual("OK", OKButton().GetAttribute("value"));
             GeminiUrl("home?menu1=SalesRepository");
+            //Other action
             OpenActionDialog("Create New Sales Person");
-            Assert.AreEqual("Do", OKButton().GetAttribute("value"));
+            Assert.AreEqual("OK", OKButton().GetAttribute("value"));
         }
 
 
