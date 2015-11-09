@@ -202,9 +202,13 @@ namespace RestfulObjects.Mvc.Model {
             try {
                 string voFlag = collection[RestControlFlags.ValidateOnlyReserved];
                 string domainModel = collection[RestControlFlags.DomainModelReserved];
+                string page = collection[RestControlFlags.PageReserved];
+                string pageSize = collection[RestControlFlags.PageSizeReserved];
 
                 args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
                 args.DomainModel = domainModel;
+                args.Page = page != null ? int.Parse(page) : 0;
+                args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);

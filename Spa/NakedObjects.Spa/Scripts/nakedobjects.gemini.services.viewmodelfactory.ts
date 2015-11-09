@@ -446,24 +446,16 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`
 
-            collectionViewModel.pageNext = () => {
-                urlManager.setListPaging(paneId, page + 1, pageSize);
-            };
-
-            collectionViewModel.pagePrevious = () => {
-                urlManager.setListPaging(paneId, page - 1, pageSize);
-            };
-
-            collectionViewModel.pageLast = () => {
-                urlManager.setListPaging(paneId, numPages, pageSize);
-            };
-
-            collectionViewModel.pageNextDisabled = () => page >= numPages;
-            collectionViewModel.pagePreviousDisabled = () => page <= numPages;
+            collectionViewModel.pageNext = () => urlManager.setListPaging(paneId, page + 1, pageSize);
+            collectionViewModel.pagePrevious = () => urlManager.setListPaging(paneId, page - 1, pageSize);
+            collectionViewModel.pageFirst = () => urlManager.setListPaging(paneId, 1, pageSize);
+            collectionViewModel.pageLast = () => urlManager.setListPaging(paneId, numPages, pageSize);
 
 
-
-
+            collectionViewModel.pageFirstDisabled = () => page === 1 || numPages === 1;
+            collectionViewModel.pageLastDisabled = () => page === numPages || numPages === 1;
+            collectionViewModel.pageNextDisabled = () => page >= numPages || numPages === 1;
+            collectionViewModel.pagePreviousDisabled = () => page <= numPages || numPages === 1;
 
             return collectionViewModel;
         }
