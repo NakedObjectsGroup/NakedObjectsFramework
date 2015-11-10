@@ -444,18 +444,22 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.size = count;
 
-            collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`
+            collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`;
 
-            collectionViewModel.pageNext = () => urlManager.setListPaging(paneId, page + 1, pageSize);
-            collectionViewModel.pagePrevious = () => urlManager.setListPaging(paneId, page - 1, pageSize);
-            collectionViewModel.pageFirst = () => urlManager.setListPaging(paneId, 1, pageSize);
-            collectionViewModel.pageLast = () => urlManager.setListPaging(paneId, numPages, pageSize);
+            const setPage = <(page : number) => void>   _.partial(urlManager.setListPaging, paneId, pageSize);
 
+            collectionViewModel.pageNext = () => setPage(page + 1);
+            collectionViewModel.pagePrevious = () => setPage(page - 1);
+            collectionViewModel.pageFirst = () => setPage(1);
+            collectionViewModel.pageLast = () => setPage(numPages);
 
-            collectionViewModel.pageFirstDisabled = () => page === 1 || numPages === 1;
-            collectionViewModel.pageLastDisabled = () => page === numPages || numPages === 1;
-            collectionViewModel.pageNextDisabled = () => page >= numPages || numPages === 1;
-            collectionViewModel.pagePreviousDisabled = () => page <= numPages || numPages === 1;
+            const earlierDisabled = () => page === 1 || numPages === 1;
+            const laterDisabled = () => page === numPages || numPages === 1;
+
+            collectionViewModel.pageFirstDisabled = earlierDisabled;
+            collectionViewModel.pageLastDisabled = laterDisabled;
+            collectionViewModel.pageNextDisabled = laterDisabled;
+            collectionViewModel.pagePreviousDisabled = earlierDisabled;
 
             return collectionViewModel;
         }
