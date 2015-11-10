@@ -33,6 +33,7 @@ module NakedObjects {
         hateoasUrl: string;
         method: string;
         url: any;
+        urlParms : _.Dictionary<string>;
     }
 
     export interface IExtensions {
@@ -317,13 +318,8 @@ module NakedObjects {
             return new ErrorMap(map, statusCode, warnings);
         }
 
-        // improve this to be more robust
-        addUrlParms(parms: _.Dictionary<string>) {
-            this.suffix = _.reduce(parms, (result: string, n: string, key: string) =>
-               (result === "" ? "?" : result + "&") + key + "=" + n, "");
-        }
+        urlParms : _.Dictionary<string>;
     }
-
 
     export class ErrorMap extends HateoasModelBase {
 
@@ -591,6 +587,10 @@ module NakedObjects {
         // helper
         setParameter(name: string, value: Value) {
             value.set(this.attributes, name);
+        }
+
+        setUrlParameter(name: string, value : string) {
+            this.attributes[name] = value;
         }
     }
 

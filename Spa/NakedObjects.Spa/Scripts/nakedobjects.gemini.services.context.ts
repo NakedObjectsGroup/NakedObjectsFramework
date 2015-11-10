@@ -39,7 +39,6 @@ module NakedObjects.Angular.Gemini {
 
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
         setLastActionFriendlyName: (fn : string, paneId : number) => void;
-        setList(paneId : number, listRepresentation: ListRepresentation);
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
@@ -55,7 +54,6 @@ module NakedObjects.Angular.Gemini {
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
-        const currentCollections:  ListRepresentation[] = []; // per pane 
         const lastActionFriendlyName: string[] = [];
 
         function getAppPath() {
@@ -206,25 +204,14 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setList(paneId, resultList);
                 return $q.when(resultList);
             } else {
                 return $q.reject("expect list");
             }
         }
 
-        context.setList = (paneId : number, list: ListRepresentation) => {
-            currentCollections[paneId] = list;
-        }
 
         const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>) => {
-            const currentCollection = currentCollections[paneId];
-
-            if (currentCollection) {
-                // use once 
-                currentCollections[paneId] = null;
-                return $q.when(currentCollection);
-            }
 
             return resultPromise().then(result => handleResult(paneId, result));
         };
@@ -317,7 +304,6 @@ module NakedObjects.Angular.Gemini {
 
             else if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setList(paneId, resultList);
                 context.setLastActionFriendlyName(action.extensions().friendlyName, paneId);
                 urlManager.setList(action, paneId, dvm);
             } else if (dvm) {
