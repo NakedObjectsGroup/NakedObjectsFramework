@@ -4,7 +4,7 @@
 // tested 
 module NakedObjects.Angular.Gemini {
 
-    app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager : IUrlManager) => {
+    app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();
         handlers.handleHome($scope, routeData.pane1);
     });
@@ -48,7 +48,7 @@ module NakedObjects.Angular.Gemini {
 
     //Cicero
     app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory) => {
-        const routeData = urlManager.getRouteData();        
+        const routeData = urlManager.getRouteData();
         const pane = routeData.pane1;
 
         if (pane.objectId) {
@@ -60,7 +60,7 @@ module NakedObjects.Angular.Gemini {
             context.getObject(pane.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
-                const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
+                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
                     const cvm = viewModelFactory.ciceroViewModel(ovm);
                     $scope.cicero = cvm;
 

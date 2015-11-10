@@ -36,7 +36,20 @@ module NakedObjects.Angular.Gemini {
         setParameterValue: (dialogId: string, p: ParameterViewModel, paneId: number, reload?: boolean) => void;
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
 
-        currentpane() : number;
+        currentpane(): number;
+
+        //The following functions are intended for use in Cicero. The function is evaluated for
+        //a 'single' representation, or the first of two 'split' representations.
+        isHome(): boolean;
+        isObject(): boolean;
+        isList(): boolean;
+        isMenuOpen(): boolean
+        isActionOpen(): boolean;
+        isCollectionOpen(): boolean;
+        isTable(): boolean;
+        isEdit(): boolean;
+
+
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
