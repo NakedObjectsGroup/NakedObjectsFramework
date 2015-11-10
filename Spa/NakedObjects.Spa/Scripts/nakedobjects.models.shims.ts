@@ -47,6 +47,8 @@ module NakedObjects {
         }
         onError(map: Object, statusCode: string, warnings: string) { }
         preFetch() { }
+
+        urlParms : _.Dictionary<string>;
     }
 
     export class ArgumentMap extends HateoasModelBaseShim {

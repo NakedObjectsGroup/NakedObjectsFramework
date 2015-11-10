@@ -19,18 +19,33 @@ module NakedObjects.Angular {
         function getUrl(model: IHateoasModel): string {
 
             let url = model.url();
+            const urlParmString = _.reduce(model.urlParms || {},
+                (result: string, n: string, key: string) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+            let parmString = "";
 
             if (model.method === "GET" || model.method === "DELETE") {
                 const asJson = _.clone((<any>model).attributes);
 
                 if (_.toArray(asJson).length > 0) {
                     const map = JSON.stringify(asJson);
-                    const encodedMap = encodeURI(map);
-                    url += `?${encodedMap}`;
+                    parmString = encodeURI(map);
                 }
             }
+            let ps: string;
 
-            return url;
+            if (urlParmString !== "" && parmString === "") {
+                ps = `?${urlParmString}`;
+            }
+            else if (urlParmString === "" && parmString !== "") {
+                ps = `?${parmString}`;
+            }
+            else if (urlParmString !== "" && parmString !== "") {
+                ps = `?${urlParmString}&${parmString}`;
+            } else {
+                ps = "";
+            }
+
+            return url + ps;
         }
 
         function getData(model: IHateoasModel): Object {

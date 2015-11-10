@@ -535,6 +535,8 @@ module NakedObjects {
         linkByRel(rel: string) {
             return this.getLinkByRel(new Rel(rel));
         }
+
+        urlParms : _.Dictionary<string>;
     }
 
 
@@ -590,7 +592,8 @@ module NakedObjects {
         }
 
         setUrlParameter(name: string, value : string) {
-            this.attributes[name] = value;
+            this.urlParms = this.urlParms || {};
+            this.urlParms[name] = value;
         }
     }
 
