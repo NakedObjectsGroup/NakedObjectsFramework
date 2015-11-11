@@ -448,7 +448,7 @@ module NakedObjects.Angular.Gemini {
              
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
-                const draggableVm = <IDraggableViewModel>  $("div.footer div.currentcopy .reference").data(draggableVmKey);
+                const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
 
                 if (draggableVm) {
                     droppableScope.$apply(() => droppableVm.drop(draggableVm));
