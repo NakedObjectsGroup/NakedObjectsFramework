@@ -34,7 +34,9 @@ module NakedObjects.Angular.Gemini{
         var commandFactory = <ICommandFactory>this;
         
   
-
+        commandFactory.executeCommand = (command: string) => {
+            //todo
+        };
     });
 
 }
