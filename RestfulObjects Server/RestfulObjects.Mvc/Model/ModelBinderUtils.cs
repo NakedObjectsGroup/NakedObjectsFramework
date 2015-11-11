@@ -97,12 +97,12 @@ namespace RestfulObjects.Mvc.Model {
         }
         private static int GetPageValue(JObject jObject) {
             var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
-            return pageValue == null ? 0 : (int)pageValue.Value;
+            return pageValue == null ? 0 : Convert.ToInt32(pageValue.Value);
         }
 
         private static int GetPageSizeValue(JObject jObject) {
             var pageSizeValue = jObject[RestControlFlags.PageSizeReserved] as JValue;
-            return pageSizeValue == null ? 0 : (int)pageSizeValue.Value;
+            return pageSizeValue == null ? 0 : Convert.ToInt32(pageSizeValue.Value);
         }
 
         private static string GetDomainModelValue(JObject m) {
