@@ -279,6 +279,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
+                search.page1 = 1;
+                search.pageSize1 = 20;
                 location.path("/gemini/home");
                 location.search(preSearch);
             
@@ -301,6 +303,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.menu1 = "mid";
                 search.action1 = "12";
+                search.page1 = 1;
+                search.pageSize1 = 20;
                 location.path("/gemini/home");
                 location.search(preSearch);
 
@@ -323,6 +327,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
+                search.page1 = 1;
+                search.pageSize1 = 20;
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
@@ -345,6 +351,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.menu1 = "mid";
                 search.action1 = "12";
+                search.page1 = 1;
+                search.pageSize1 = 20;
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
@@ -379,6 +387,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu1");
                 search.object1 = "dt-id";
                 search.action1 = "11";
+                search.page1 = 1;
+                search.pageSize1 = 20;
                 search.parm1_pid1 = "%22val1%22";
                 search.parm1_pid2 = "%22val2%22";
 
@@ -406,6 +416,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
+                search.page2 = 1;
+                search.pageSize2 = 20;
                 location.path("/gemini/home");
                 location.search(preSearch);
 
@@ -428,6 +440,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.menu2 = "mid";
                 search.action2 = "22";
+                search.page2 = 1;
+                search.pageSize2 = 20;
                 location.path("/gemini/home");
                 location.search(preSearch);
 
@@ -450,6 +464,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
+                search.page2 = 1;
+                search.pageSize2 = 20;
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
@@ -472,6 +488,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.menu2 = "mid";
                 search.action2 = "22";
+                search.page2 = 1;
+                search.pageSize2 = 20;
                 location.path("/gemini/home/home");
                 location.search(preSearch);
 
@@ -506,6 +524,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
                 search = _.omit(preSearch, "menu2");
                 search.object2 = "dt-id";
                 search.action2 = "21";
+                search.page2 = 1;
+                search.pageSize2 = 20;
                 search.parm2_pid1 = "%22val1%22";
                 search.parm2_pid2 = "%22val2%22";
 

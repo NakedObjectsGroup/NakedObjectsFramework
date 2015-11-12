@@ -40,6 +40,8 @@ module.exports = function(config) {
       'Scripts/nakedobjects.gemini.services.focusmanager.js',
       'Scripts/nakedobjects.gemini.services.navigation.browser.js',
       'Scripts/nakedobjects.gemini.services.clickhandler.js',
+      'Scripts/nakedobjects.cicero.commands.js',
+      'Scripts/nakedobjects.cicero.commandFactory.js',
       'Tests/specs/nakedobjects.gemini.controllers.test.js',
       'Tests/specs/nakedobjects.gemini.services.context.test.js',
       'Tests/specs/nakedobjects.gemini.services.handlers.test.js',
