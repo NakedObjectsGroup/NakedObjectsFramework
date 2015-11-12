@@ -39,7 +39,7 @@ module NakedObjects.Angular.Gemini {
         currentpane(): number;
         getUrlState: (paneId: number) => { paneType: string;search: Object };
 
-        //The following functions are intended for use in Cicero. The function is evaluated for
+        //The following functions are intended for use in Cicero. Each function is evaluated for
         //a 'single' representation, or the first of two 'split' representations.
         isHome(): boolean;
         isObject(): boolean;
@@ -482,6 +482,16 @@ module NakedObjects.Angular.Gemini {
                 $location.path(newPath).search(search);
             }
         } 
+
+        //todo: All these functions need to be written, not just return true!
+        helper.isHome = () => { return true; }
+        helper.isObject = () => { return true; }
+        helper.isList = () => { return true; }
+        helper.isMenuOpen = () => { return true; }
+        helper.isActionOpen = () => { return true; }
+        helper.isCollectionOpen = () => { return true; }
+        helper.isTable = () => { return true; }
+        helper.isEdit = () => { return true; }
     });
 
 }

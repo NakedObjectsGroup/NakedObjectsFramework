@@ -47,32 +47,37 @@ module NakedObjects.Angular.Gemini {
     });
 
     //Cicero
-    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory) => {
-        const routeData = urlManager.getRouteData();
-        const pane = routeData.pane1;
+    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory) => {
+        const cvm = context.setCiceroVMIfNecessary(commandFactory);
+        $scope.cicero = cvm;
 
-        if (pane.objectId) {
-            const [dt, ...id] = pane.objectId.split("-");
+        
+        
+         //const routeData = urlManager.getRouteData();
+        //const pane = routeData.pane1;
 
-            // only pass previous values if editing 
-            const previousValues: _.Dictionary<Value> = pane.edit ? pane.props : {};
+        //if (pane.objectId) {
+        //    const [dt, ...id] = pane.objectId.split("-");
 
-            context.getObject(pane.paneId, dt, id).
-                then((object: DomainObjectRepresentation) => {
+        //    // only pass previous values if editing 
+        //    const previousValues: _.Dictionary<Value> = pane.edit ? pane.props : {};
 
-                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
-                    const cvm = viewModelFactory.ciceroViewModel(ovm);
-                    $scope.cicero = cvm;
+        //    context.getObject(pane.paneId, dt, id).
+        //        then((object: DomainObjectRepresentation) => {
 
-                    // cache
-                    //cacheRecentlyViewed(object);
+        //            const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
+        //            const cvm = viewModelFactory.ciceroViewModel(ovm);
+        //            $scope.cicero = cvm;
 
-                }).catch(error => {
-                    //setError(error);
-                });
-        } else { //home
-            const cvm = viewModelFactory.ciceroViewModel(null);
-            $scope.cicero = cvm;
-        }
+        //            // cache
+        //            //cacheRecentlyViewed(object);
+
+        //        }).catch(error => {
+        //            //setError(error);
+        //        });
+        //} else { //home
+        //    const cvm = viewModelFactory.ciceroViewModel(null);
+        //    $scope.cicero = cvm;
+        //}
     });
 }

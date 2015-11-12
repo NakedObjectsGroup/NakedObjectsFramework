@@ -10,9 +10,9 @@ module NakedObjects.Angular.Gemini{
         parseInput(command: string): void;
 
         //Command may be abbreviated
-        getHelpTextForCommand(command: string): string;
+        getHelpTextForCommand(input: string): string;
 
-        //Returns all command words that may be invoked in the current context
+        //Returns all commands (as words) that may be invoked in the current context
         allCommandsForCurrentContext(): string[];
     }
 
@@ -32,14 +32,19 @@ module NakedObjects.Angular.Gemini{
         var commandFactory = <ICommandFactory>this;
         
         commandFactory.parseInput = (input: string) => {
-            input = input.toLowerCase();
-            const command: Command = getCommand(input);
-            command.checkIsAvailableInCurrentContext();
-            const paramString =  input.split(" ")[1];
-            command.execute(paramString);
+            try {
+                input = input.toLowerCase();
+                const command: Command = getCommand(input);
+                command.checkIsAvailableInCurrentContext();
+                const paramString = input.split(" ")[1];
+                command.execute(paramString);
+            }
+            catch (Error) {
+                context.getCiceroVM().output = Error.message;
+            }
         };
 
-        function cachedCvm(): CiceroViewModel { return context.getCiceroVM(); }
+        function cachedCvm(): CiceroViewModel { return context.setCiceroVMIfNecessary(commandFactory); }
 
         const commands = {
             "ac": new Action(urlManager, $location, cachedCvm()),
@@ -68,6 +73,9 @@ module NakedObjects.Angular.Gemini{
             "ta": new Table(urlManager, $location, cachedCvm()),
         }
 
+        //todo: implement this on the ICommandFactory interface so it can be
+        //called from in Commands (i.e. in Help). It will also be necessary to pass 'this' into
+        //the command constructor.
         function getCommand(input: string): Command {
             const abbr = input.substr(0, 2);
             const command = commands[abbr];

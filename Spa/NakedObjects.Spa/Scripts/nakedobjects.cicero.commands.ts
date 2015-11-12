@@ -17,6 +17,10 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
+        public getHelpText(): string {
+            return this.helpText;
+        }
+
         protected abstract isAvailableInCurrentContext(): boolean;
 
         constructor(private urlManager: IUrlManager,
@@ -77,11 +81,15 @@ module NakedObjects.Angular.Gemini {
         //If argument does not parse correctly, message will be passed to UI
         //and command aborted.
         protected argumentAsString(args: string, argNo: number, optional: boolean = false): string {
-            const arg = args.split(",")[argNo - 1].trim();
-            if (!optional && arg == null || arg == "") {
-                throw new Error("Required argument number "+argNo+" is missing");
+            if (args == null) return null;
+            if (!optional && args.split(",").length < argNo) {
+                throw new Error("Too few arguments provided");
             }
-            return arg
+            var arg = args.split(",")[argNo - 1].trim();
+            if (!optional && (arg == null || arg == "")) {
+                throw new Error("Required argument number "+argNo+" is empty");
+            }
+            return arg;
         }
 
         //argNo starts from 1.
@@ -372,9 +380,9 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             var arg = this.argumentAsString(args, 1);
             if (arg = null) {
-                //todo
+                //todo;
             } else {
-                //todo
+                //todo;
             }
             this.setOutput("OK Command invoked"); //temporary!
         };
