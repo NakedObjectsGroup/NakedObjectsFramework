@@ -101,7 +101,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.representationloader.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.transformstrategy.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.commands.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.app.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.controllers.ts" />
@@ -114,6 +114,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.focusmanager.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.urlmanager.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.commandFactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
