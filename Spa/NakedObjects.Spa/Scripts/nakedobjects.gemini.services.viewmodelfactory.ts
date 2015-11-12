@@ -629,18 +629,5 @@ module NakedObjects.Angular.Gemini{
 
             return tvm;
         }; 
-        
-        //Cicero
-        viewModelFactory.ciceroViewModel = (wrapped: any) => {
-            const vm = new CiceroViewModel();
-            vm.wrapped = wrapped;
-            vm.processCommand = (input: string) => { 
-                const abbr = input.toLowerCase().substr(0, 2);
-                //todo - pre-emptive test if command is applicable in current context
-                let command = commandFactory.executeCommand(abbr);
-            };
-            return vm;
-        };
     });
-
 }

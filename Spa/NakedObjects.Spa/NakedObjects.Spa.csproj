@@ -114,7 +114,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.navigation.simple.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.focusmanager.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.urlmanager.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.commandFactory.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.cicero.commandfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />

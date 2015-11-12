@@ -30,7 +30,11 @@ module NakedObjects.Angular.Gemini {
 
         setError: (object: ErrorRepresentation) => void;
     
-        isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
+        isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
+
+        getCiceroVM(): CiceroViewModel;
+
+        setCiceroVMIfNecessary(cf: ICommandFactory);
     }
 
     interface IContextInternal extends IContext {
@@ -46,7 +50,10 @@ module NakedObjects.Angular.Gemini {
         setPreviousUrl: (url: string) => void;
     }
 
-    app.service("context", function ($q: ng.IQService, repLoader: IRepLoader, urlManager : IUrlManager, $cacheFactory: ng.ICacheFactoryService) {
+    app.service("context", function ($q: ng.IQService,
+        repLoader: IRepLoader,
+        urlManager: IUrlManager,
+        $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
 
         // cached values
@@ -459,6 +466,21 @@ module NakedObjects.Angular.Gemini {
                 });            
         }
 
+        let cachedCvm: CiceroViewModel = null;
+
+        context.setCiceroVMIfNecessary = (cf: ICommandFactory) => {
+            if (cachedCvm == null) {
+                cachedCvm = new CiceroViewModel();
+                cachedCvm.parseInput = (input: string) => {
+                    cf.parseInput(input);
+                };
+            }
+            return cachedCvm;
+        };
+
+        context.getCiceroVM = () => {
+            return cachedCvm;
+        };
     });
 
 }
