@@ -28,6 +28,7 @@ module NakedObjects.Angular.Gemini{
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
+        $timeout : ng.ITimeoutService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
         $cacheFactory: ng.ICacheFactoryService,
@@ -447,8 +448,11 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`;
 
-            const setPage =
-                (newPage: number) => recreate(newPage);
+            const setPage =  (newPage: number) => {
+                //urlManager.setListPaging(paneId, 20, newPage);
+
+                $timeout(() =>   recreate(newPage));
+            }
 
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page);
             collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page);

@@ -118,11 +118,13 @@ module NakedObjects.Angular.Gemini {
             }
 
             const pageOrRecreate = (newPage: number) => {
-                recreate(newPage, routeData.pageSize).then((list: ListRepresentation) => {
+                recreate(newPage, 20).then((list: ListRepresentation) => {
+                    
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId, pageOrRecreate);
                     ////$scope.title = context.getCachedList(routeData.paneId).actionName;
-                    focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
+                    focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());       
+                    urlManager.setListPaging(routeData.paneId, newPage, routeData.pageSize);           
                 }).catch(error => {
                     setError(error);
                 });

@@ -16,7 +16,7 @@ module NakedObjects.Angular.Gemini {
         getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>, page? : number, pageSize? : number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
 
-        getLastActionFriendlyName: (paneId: number) => string;
+        getActionFriendlyName: (action : ActionMember) => ng.IPromise<string>;
         getError: () => ErrorRepresentation;
         getPreviousUrl: () => string;
 
@@ -208,6 +208,13 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
+
+                //urlManager.setList(action, paneId, dvm);
+                const url = urlManager.getUrlState(paneId);
+                const urlAsString = JSON.stringify(url);
+
+                currentLists[paneId] = {};
+                currentLists[paneId][urlAsString] = { actionName: "todo", list: resultList };
 
 
                 return $q.when(resultList);
