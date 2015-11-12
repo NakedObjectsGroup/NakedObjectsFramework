@@ -37,6 +37,7 @@ module NakedObjects.Angular.Gemini {
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
 
         currentpane() : number;
+        getUrlState: (paneId: number) => { paneType: string;search: Object };
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -383,6 +384,10 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.pushUrlState = (paneId: number) => {
+            capturedPanes[paneId] = helper.getUrlState(paneId);
+        }
+
+        helper.getUrlState = (paneId: number) => {
             currentPaneId = paneId;
 
             const path = $location.path();
@@ -391,7 +396,7 @@ module NakedObjects.Angular.Gemini {
             const paneType = segments[paneId + 1] || home;
             const paneSearch = capturePane(paneId);
 
-            capturedPanes[paneId] = { paneType: paneType, search: paneSearch };
+            return { paneType: paneType, search: paneSearch };
         }
 
         helper.popUrlState = (paneId: number) => {

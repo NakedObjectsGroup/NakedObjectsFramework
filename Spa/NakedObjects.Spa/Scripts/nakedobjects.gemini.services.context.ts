@@ -6,6 +6,8 @@ module NakedObjects.Angular.Gemini {
 
     export interface IContext {
         
+        getCachedList: (paneId : number) => {actionName: string, list :  ListRepresentation}; 
+
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
@@ -38,7 +40,7 @@ module NakedObjects.Angular.Gemini {
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
 
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
-        setLastActionFriendlyName: (fn : string, paneId : number) => void;
+       
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
@@ -54,7 +56,9 @@ module NakedObjects.Angular.Gemini {
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
-        const lastActionFriendlyName: string[] = [];
+     
+        const currentLists: _.Dictionary<{ actionName: string, list: ListRepresentation }>[] = []; // per pane 
+
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
@@ -204,6 +208,8 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
+
+
                 return $q.when(resultList);
             } else {
                 return $q.reject("expect list");
@@ -212,26 +218,20 @@ module NakedObjects.Angular.Gemini {
 
 
         const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>) => {
-
             return resultPromise().then(result => handleResult(paneId, result));
         };
-
-        function cacheActionNameAndInvoke(paneId : number, action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) {
-            lastActionFriendlyName[paneId] = action.extensions().friendlyName;
-            return repLoader.invoke(action, parms, urlParms);
-        }
 
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page? : number, pageSize? : number) => {
 
             const urlParms: _.Dictionary<string> =
                 (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
 
-            const promise = () => context.getMenu(menuId).then(menu => cacheActionNameAndInvoke(paneId, menu.actionMember(actionId), parms, urlParms));
+            const promise = () => context.getMenu(menuId).then(menu => repLoader.invoke(menu.actionMember(actionId), parms, urlParms));
             return getList(paneId, promise);
         };
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
-            const promise = () => context.getObjectByOid(paneId, objectId).then(object => cacheActionNameAndInvoke(paneId, object.actionMember(actionId), parms, {}));
+            const promise = () => context.getObjectByOid(paneId, objectId).then(object => repLoader.invoke(object.actionMember(actionId), parms, {}));
             return getList(paneId, promise);
         };
 
@@ -248,10 +248,6 @@ module NakedObjects.Angular.Gemini {
         context.getPreviousUrl = () => previousUrl;
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
-
-        context.getLastActionFriendlyName = (paneId: number) => lastActionFriendlyName[paneId] || "";
-
-        context.setLastActionFriendlyName = (fn: string, paneId: number) => lastActionFriendlyName[paneId] = fn;
        
         const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
             $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
@@ -304,12 +300,26 @@ module NakedObjects.Angular.Gemini {
 
             else if (result.resultType() === "list") {
                 const resultList = result.result().list();
-                context.setLastActionFriendlyName(action.extensions().friendlyName, paneId);
+               
                 urlManager.setList(action, paneId, dvm);
+                const url = urlManager.getUrlState(paneId);
+                const urlAsString = JSON.stringify(url);
+
+                currentLists[paneId] = {};
+                currentLists[paneId][urlAsString] = { actionName: action.extensions().friendlyName, list: resultList };
             } else if (dvm) {
                 urlManager.closeDialog(dvm.onPaneId);
             }
         };
+
+        context.getCachedList = (paneId : number) =>
+        {
+            const url = urlManager.getUrlState(paneId);
+            const urlAsString = JSON.stringify(url);
+            const lvm = currentLists[paneId] && currentLists[paneId][urlAsString];
+            currentLists[paneId] = null;
+            return lvm;
+        }
 
         context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
             if (error instanceof ErrorMap) {
@@ -340,19 +350,7 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        function reloadObjectTargetIfNonQuery(action: ActionMember) {
-            const parent = action.parent;
-            const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
-
-            if (actionIsNotQueryOnly && parent instanceof DomainObjectRepresentation) {
-                // reload as Put/Post on target.
-
-
-
-            }
-        }
-
-
+     
         context.invokeAction = (action: ActionMember, paneId : number, ovm? : DomainObjectViewModel, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];

@@ -79,7 +79,7 @@ module NakedObjects.Angular {
     export const objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
     export const transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
 
-
+    export const ListPlaceholderTemplate = getSvrPath() + "Content/partials/ListPlaceholder.html";
     export const ListTemplate = getSvrPath() + "Content/partials/List.html";
     export const ListAsTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
 

@@ -110,18 +110,34 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            var promise = routeData.objectId ? context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms) :
-                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms, routeData.page, routeData.pageSize);
+            const listAndName = context.getCachedList(routeData.paneId);
 
-            promise.
-                then((list: ListRepresentation) => {
+            const recreate = (page: number, pageSize: number) => {
+                return routeData.objectId ? context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms) :
+                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms, page, pageSize);
+            }
+
+            const pageOrRecreate = (newPage: number) => {
+                recreate(newPage, routeData.pageSize).then((list: ListRepresentation) => {
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId);
-                    $scope.title = context.getLastActionFriendlyName(routeData.paneId);
+                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId, pageOrRecreate);
+                    ////$scope.title = context.getCachedList(routeData.paneId).actionName;
                     focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
                 }).catch(error => {
                     setError(error);
                 });
+            }
+
+            if (listAndName) {
+                $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
+                $scope.collection = viewModelFactory.collectionViewModel($scope, listAndName.list, routeData.state, routeData.paneId, pageOrRecreate);
+                $scope.title = listAndName.actionName;
+                focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
+            } else {
+                $scope.listTemplate = ListPlaceholderTemplate;
+
+                ($scope as any).recreate = () => pageOrRecreate(routeData.page);
+            }
         };
 
         handlers.handleError = ($scope: INakedObjectsScope) => {

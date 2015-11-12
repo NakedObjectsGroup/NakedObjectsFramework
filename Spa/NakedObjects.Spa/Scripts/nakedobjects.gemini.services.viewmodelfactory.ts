@@ -14,8 +14,8 @@ module NakedObjects.Angular.Gemini{
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
         dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm? : DomainObjectViewModel): DialogViewModel;
 
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId : number): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number, recreate : (page : number) => void) : CollectionViewModel;
 
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number): PropertyViewModel;
@@ -427,7 +427,7 @@ module NakedObjects.Angular.Gemini{
             return collectionViewModel;
         }
        
-        function createFromList($scope : ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId : number) {
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number) => void) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
 
@@ -446,10 +446,11 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`;
 
-            const setPage = <(page : number) => void>   _.partial(urlManager.setListPaging, paneId, pageSize);
+            const setPage =
+                (newPage: number) => recreate(newPage);
 
-            collectionViewModel.pageNext = () => setPage(page + 1);
-            collectionViewModel.pagePrevious = () => setPage(page - 1);
+            collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page);
+            collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page);
             collectionViewModel.pageFirst = () => setPage(1);
             collectionViewModel.pageLast = () => setPage(numPages);
 
@@ -465,7 +466,7 @@ module NakedObjects.Angular.Gemini{
         }
 
       
-        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId : number) => {
+        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
             let setState: (state: CollectionViewState) => void;
 
@@ -475,7 +476,7 @@ module NakedObjects.Angular.Gemini{
             }
 
             if (collection instanceof ListRepresentation) {
-                collectionVm = createFromList($scope, collection, state, paneId);
+                collectionVm = createFromList($scope, collection, state, paneId, recreate);
                 setState = <(state: CollectionViewState) => void> _.partial(urlManager.setListState, paneId);
             }
 
@@ -546,7 +547,7 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId, objectViewModel));
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId, (page : number) => {}));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
