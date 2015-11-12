@@ -30,7 +30,9 @@ module NakedObjects.Angular.Gemini {
 
         setError: (object: ErrorRepresentation) => void;
     
-        isSubTypeOf(toCheckType : string, againstType : string): ng.IPromise<boolean>;
+        isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
+
+        getCiceroVM(): CiceroViewModel;
     }
 
     interface IContextInternal extends IContext {
@@ -452,6 +454,14 @@ module NakedObjects.Angular.Gemini {
                 });            
         }
 
+        let cachedCvm: CiceroViewModel = null;
+
+        context.getCiceroVM = () => {
+            if (cachedCvm == null) {
+                cachedCvm = new CiceroViewModel();
+            }
+            return cachedCvm;
+        };
     });
 
 }

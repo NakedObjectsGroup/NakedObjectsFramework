@@ -330,11 +330,10 @@ module NakedObjects.Angular.Gemini {
         singlePane: (right?: boolean) => void;
     }
 
-    //Cicero
     export class CiceroViewModel {
         wrapped: any; //TODO: probably not needed
         output: string;
-        command: string;
-        processCommand: (input: string) => void;
+        input: string;
+        parseInput: (input: string) => void;
     }
 }

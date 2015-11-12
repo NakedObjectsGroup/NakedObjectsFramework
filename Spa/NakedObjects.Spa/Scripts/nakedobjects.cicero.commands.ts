@@ -2,45 +2,31 @@
 
 module NakedObjects.Angular.Gemini {
 
-    //TODO: Make class and appropriate members abstract
-    export class Command {
+    export abstract class Command {
 
-        //TODO: make abstract
         protected fullCommand: string;
         protected helpText: string;
-        protected minArgumnents: number;
-        protected maxArgumnents: number;
+        protected minArguments: number;
+        protected maxArguments: number;
 
-        //todo: abstract
-        execute(): void {
-            //1. Check that first word is a sub-string of command, else call invalid command
-            //2. Parse params & give appropriate error messages
-            //3. Switch based on context info (new methods on Url Manager)
-            //4. If appropriate, set up new Url
-            //5. Set up output message including (or not) rendering of new context
+        abstract execute(args: string): void;
+
+        public checkIsAvailableInCurrentContext(): void {
+            if (!this.isAvailableInCurrentContext()) {
+                throw new Error("The command: "+this.fullCommand+" is not available in the current context");
+            }
         }
 
-        //To be overridden by each sub-class that has restricted availability
-        isAvailableInCurrentContext(): boolean {
-            return true; //todo: temp
-        }
-
-        //Not abstract
-        protected arguments: string[];
+        protected abstract isAvailableInCurrentContext(): boolean;
 
         constructor(private urlManager: IUrlManager,
             protected nglocation: ng.ILocationService,
-            protected vm: CiceroViewModel,
-            protected input: string) {
-
-            this.checkFirstWordIsSubstringOfCommand();
-            this.checkNumberOfArgumentsAndExtract();
-            this.execute();
+            protected vm: CiceroViewModel) {
         }
         
         //Helper methods follow
-        protected clearCommand(): void {
-            this.vm.command = "";
+        protected clearInput(): void {
+            this.vm.input = "";
         }
 
         protected setOutput(text: string): void {
@@ -66,26 +52,46 @@ module NakedObjects.Angular.Gemini {
             return "";
         }
 
-        private checkFirstWordIsSubstringOfCommand() {
-            //TODO: Implement
+        public checkFirstWordIsSubstring(firstWord: string): void {
+            if (this.fullCommand.indexOf(firstWord) != 0) {
+                if (firstWord.indexOf(this.fullCommand) == 0) {
+                    throw new Error("The command " + this.fullCommand + " must be followed by a space");
+                } else {
+                    throw new Error("No such command: " + firstWord);
+                }
+            }
         }
 
-        private checkNumberOfArgumentsAndExtract(): void {
-
+        private checkNumberOfArguments(argString: string): void {
+            const args = argString.split(",");
+            if (args.length < this.minArguments) {
+                throw new Error("At least " + this.minArguments + " arguments required");
+            } else {
+                if (args.length > this.maxArguments) {
+                    throw new Error("No more than " + this.maxArguments + " arguments allowed");
+                }
+            }
         }
 
         //argNo starts from 1.
         //If argument does not parse correctly, message will be passed to UI
         //and command aborted.
-        protected argumentAsString(argNo: number, optional: boolean = false): string {
-            //todo
-            return null;
+        protected argumentAsString(args: string, argNo: number, optional: boolean = false): string {
+            const arg = args.split(",")[argNo - 1].trim();
+            if (!optional && arg == null || arg == "") {
+                throw new Error("Required argument number "+argNo+" is missing");
+            }
+            return arg
         }
 
         //argNo starts from 1.
-        protected argumentAsNumber(argNo: number, optional: boolean = false): number {
-            //todo
-            return null;
+        protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
+            const arg  = this.argumentAsString(args, argNo, optional);
+            const number = parseInt(arg);
+            if (number == NaN) {
+                throw new Error("Argument number " + argNo + " must be a number");
+            }
+            return number;
         }
 
         protected getContextDescription(): string {
@@ -126,14 +132,6 @@ module NakedObjects.Angular.Gemini {
         protected setObjectEdit(): void {
             this.urlManager.setObjectEdit(true, 1);
         }
-
-        protected commandNotAvailable(): void {
-            this.vm.output = this.fullCommand + " command is not available in the current context.";
-        }
-
-        protected invalidArgument(message: string): void {
-            //todo
-        }
     }
 
     export class Action extends Command {
@@ -146,7 +144,11 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 1;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
             this.setOutput("Action command invoked"); //todo: temporary
         };
 
@@ -158,7 +160,11 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
             this.setOutput("Back command invoked"); //todo: temporary
         };
     }
@@ -174,7 +180,7 @@ module NakedObjects.Angular.Gemini {
             return this.isActionOpen() || this.isEdit();
         }
 
-        execute(): void {
+        execute(args: string): void {
             if (this.isEdit()) {
                 this.setOutput("Edit cancelled"); //todo: temporary
             }
@@ -191,7 +197,11 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
                 this.setOutput("Clipboard command invoked"); //todo: temporary
         };
     }
@@ -211,13 +221,13 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isList();
         }
 
-        execute(): void {
+        execute(args: string): void {
             if (this.isObject()) {
                 if (this.isCollectionOpen()) {
-                    const item = this.argumentAsNumber(1);
+                    const item = this.argumentAsNumber(args, 1);
                     this.setOutput("Copy item "+item);
                 } else {
-                    const arg = this.argumentAsString(1, true);
+                    const arg = this.argumentAsString(args, 1, true);
                     if (arg == null) {
                         this.setOutput("Copy object");
                     } else {
@@ -226,7 +236,7 @@ module NakedObjects.Angular.Gemini {
                 }
             }
             if (this.isList()) {
-                const item = this.argumentAsNumber(1);
+                const item = this.argumentAsNumber(args, 1);
                 this.setOutput("Copy item " + item);
             }
         };
@@ -245,8 +255,8 @@ module NakedObjects.Angular.Gemini {
             return this.isObject();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             this.setOutput("Property command invoked with argument: " + match); //todo: temporary
         };
     }
@@ -262,7 +272,7 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() && !this.isEdit();
         }
 
-        execute(): void {
+        execute(args: string): void {
             this.setObjectEdit();
             this.setOutput("Editing Object"); //todo: temporary
         };
@@ -281,8 +291,8 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit() || this.isActionOpen();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             if (this.isEdit()) {
                 this.setOutput("Enter command invoked on property: " + match); //todo: temporary
             }
@@ -299,7 +309,10 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+        execute(args: string): void {
             this.setOutput("Forward command invoked"); //todo: temporary
         };
     }
@@ -311,7 +324,10 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+        execute(args: string): void {
             this.newPath("/gemini/home");
         };
     }
@@ -329,13 +345,13 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isList();
         }
 
-        execute(): void {
+        execute(args: string): void {
             if (this.isObject()) {
-                const prop = this.argumentAsString(1);
+                const prop = this.argumentAsString(args, 1);
                 this.setOutput("Go to property"+prop+" invoked"); //todo: temporary
             }
             if (this.isList()) {
-                const item = this.argumentAsNumber(1);
+                const item = this.argumentAsNumber(args, 1);
                 this.setOutput("Go to list item" + item + " invoked"); //todo: temporary
             }
         };
@@ -349,8 +365,12 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 1;
 
-        execute(): void {
-            var arg = this.argumentAsString(1);
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
+            var arg = this.argumentAsString(args, 1);
             if (arg = null) {
                 //todo
             } else {
@@ -367,9 +387,13 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        execute(): void {
+        protected isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
             this.newPath("/cicero/home");
-            this.clearCommand();
+            this.clearInput();
             this.setOutput("home");
         };
     }
@@ -389,13 +413,13 @@ module NakedObjects.Angular.Gemini {
             return this.isCollectionOpen() || this.isList();
         }
 
-        execute(): void {
-            const startNo = this.argumentAsNumber(1, true);
-            const endNo = this.argumentAsNumber(2, true);
-            const pageNo = this.argumentAsNumber(3, true);
+        execute(args: string): void {
+            const startNo = this.argumentAsNumber(args, 1, true);
+            const endNo = this.argumentAsNumber(args, 2, true);
+            const pageNo = this.argumentAsNumber(args, 3, true);
             if (this.isCollectionOpen()) {
                 if (pageNo != null) {
-                    this.invalidArgument("Item may not have a third argument (page number) in the context of an object collection");
+                    throw new Error("Item may not have a third argument (page number) in the context of an object collection");
                 }
                 this.setOutput("Item command invoked on Collection, from " + startNo + " to " + endNo); //todo: temporary
 
@@ -420,8 +444,8 @@ module NakedObjects.Angular.Gemini {
             return this.isHome();
         }
 
-        execute(): void {
-                const menu = this.argumentAsString(1);
+        execute(args: string): void {
+                const menu = this.argumentAsString(args, 1);
                 this.setOutput("Menu " + menu + " invoked"); //todo: temporary
         };
     }
@@ -437,14 +461,8 @@ module NakedObjects.Angular.Gemini {
             return this.isActionOpen();
         }
 
-        execute(): void {
-            if (!this.isActionOpen) {
-                this.commandNotAvailable();
-            } else {
-                //todo
-                //Attempt to invoke.
-                //If successful 
-            }
+        execute(args: string): void {
+            this.setOutput("OK command invoked.");
         };
     }
     export class Open extends Command {
@@ -461,8 +479,8 @@ module NakedObjects.Angular.Gemini {
             return this.isObject();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             this.setOutput("Open command invoked with argument: " + match); //todo: temporary
         };
 
@@ -481,8 +499,8 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit() || this.isActionOpen();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             if (this.isEdit()) {
                 this.setOutput("Paste command invoked on property: " + match); //todo: temporary
             }
@@ -506,8 +524,8 @@ module NakedObjects.Angular.Gemini {
             return this.isObject();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             this.setOutput("Property command invoked with argument: "+match); //todo: temporary
         };
 
@@ -524,7 +542,7 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isList();
         }
 
-        execute(): void {
+        execute(args: string): void {
             this.setOutput("Reload command invoked");
         };
     }
@@ -541,7 +559,7 @@ module NakedObjects.Angular.Gemini {
             return this.isCollectionOpen();
         }
 
-        execute(): void {
+        execute(args: string): void {
             this.setOutput("Object command invoked");
         };
     }
@@ -557,7 +575,7 @@ module NakedObjects.Angular.Gemini {
         isAvailableInCurrentContext(): boolean {
             return this.isEdit();
         }
-        execute(): void {
+        execute(args: string): void {
                 this.setOutput("Object saved"); //todo: temporary
         };
     }
@@ -576,9 +594,9 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit() || this.isActionOpen();
         }
 
-        execute(): void {
-            const name = this.argumentAsString(1);
-            const option = this.argumentAsString(2, true);
+        execute(args: string): void {
+            const name = this.argumentAsString(args, 1);
+            const option = this.argumentAsString(args, 2, true);
             if (this.isEdit()) {
                 this.setOutput("Select command invoked on property: " + name +" for option"+option); //todo: temporary
             }
@@ -600,11 +618,12 @@ module NakedObjects.Angular.Gemini {
             return this.isCollectionOpen() || this.isList();
         }
 
-        execute(): void {
-            const match = this.argumentAsString(1);
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 1);
             this.setOutput("Open command invoked with argument: " + match); //todo: temporary
         };
 
     }
     //todo: quit (or logoff)
+
 }
