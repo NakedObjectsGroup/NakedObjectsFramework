@@ -9,8 +9,8 @@ module NakedObjects.Angular.Gemini{
 
         parseInput(command: string): void;
 
-        //Returns all commands (as words) that may be invoked in the current context
-        allCommandsForCurrentContext(): string[];
+        //Returns all commands (as separated words) that may be invoked in the current context
+        allCommandsForCurrentContext(): string;
 
         getCommand(commandWord: string): Command;
     }
@@ -82,6 +82,17 @@ module NakedObjects.Angular.Gemini{
             }
             command.checkMatch(commandWord);
             return command;
+        }
+
+        commandFactory.allCommandsForCurrentContext = () => {
+            var result = "Commands available in current context: ";
+            for (var key in commands) {
+                var c = commands[key];
+                if (c.isAvailableInCurrentContext()) {
+                    result = result + c.fullCommand + " ";
+                }
+            }
+            return result;
         }
     });
 

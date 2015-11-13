@@ -555,7 +555,6 @@ input[type=submit] {
     font-family: Courier New, Courier, monospace;
     font-weight: bold;
     border: none;
-    height: 100%;
     margin: 20px;
 }
 

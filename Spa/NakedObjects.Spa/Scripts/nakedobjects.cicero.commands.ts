@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        protected abstract isAvailableInCurrentContext(): boolean;
+        public abstract isAvailableInCurrentContext(): boolean;
         
         //Helper methods follow
         protected clearInput(): void {
@@ -104,9 +104,6 @@ module NakedObjects.Angular.Gemini {
             return null;
         }
 
-        protected takesNoArguments: string =  this.fullCommand + " command does not require or accept any arguments.";
-
-
         //Context helpers (delegate to Url Manager) 
         protected isHome(): boolean {
             return this.urlManager.isHome();
@@ -149,7 +146,7 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 1;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
 
@@ -165,7 +162,7 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
 
@@ -177,7 +174,7 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "cancel";
         public helpText = "Leave the current activity (action, or object edit), incomplete." +
-            this.takesNoArguments;
+            ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -198,11 +195,11 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "clipboard";
         public helpText = "Reminder of the object reference currently held in the clipboard, if any." +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
 
@@ -269,7 +266,7 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "edit";
         public helpText = "Put an object into Edit mode." +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -314,7 +311,7 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
         execute(args: string): void {
@@ -325,11 +322,11 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "gemini";
         public helpText = "Switch to the Gemini (graphical) user interface displaying the same context. " +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
         execute(args: string): void {
@@ -370,17 +367,17 @@ module NakedObjects.Angular.Gemini {
         protected minArguments = 0;
         protected maxArguments = 1;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
 
         execute(args: string): void {
             var arg = this.argumentAsString(args, 1);
             if (arg == null) {
-                this.setOutput("TODO - list of commands in this context"); 
+                this.setOutput(this.commandFactory.allCommandsForCurrentContext()); 
             } else {
                 const c = this.commandFactory.getCommand(arg);
-                this.setOutput(c.fullCommand+" command. "+c.helpText);
+                this.setOutput(c.fullCommand+" command: "+c.helpText);
             }
         };
     }
@@ -388,11 +385,11 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "home";
         public helpText = "Return to Home location, where main menus may be accessed. " +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
-        protected isAvailableInCurrentContext(): boolean {
+        public isAvailableInCurrentContext(): boolean {
             return true;
         }
 
@@ -458,7 +455,7 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "ok";
         public helpText = "Invokes an action, assuming that any necessary parameters have already been set up. " +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -519,9 +516,9 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "property";
         public helpText = "Display the name and value of a property or properties on an object being viewed or edited. " +
-        "May take one argument: the name of a property, or name-match, for multiple properties." +
-        "If the partial name matches more than one property, a list of matching properties is returned. " +
-        "If no argument is provided, a full list of properties is returned";
+        "One optional argument: the partial property name. " +
+        "If this matches more than one property, a list of matches is returned. " +
+        "If no argument is provided, the full list of properties is returned";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -539,7 +536,7 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "reload";
         public helpText = "In the context of an object or a list, reloads the data from the server" +
-        "to ensure it is up to date." + this.takesNoArguments;
+        "to ensure it is up to date." + ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -556,7 +553,7 @@ module NakedObjects.Angular.Gemini {
         public fullCommand = "root";
         public helpText = "From within a collection context, the root command returns" +
         " to the 'root' object that owns the collection." +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -573,7 +570,7 @@ module NakedObjects.Angular.Gemini {
         public fullCommand = "save";
         public helpText = "Saves the updated properties on an object that is being edited, and returns " +
         "from edit mode to a normal view of that object" +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -615,7 +612,7 @@ module NakedObjects.Angular.Gemini {
         public fullCommand = "table";
         public helpText = "In the context of a list or an opened object collection, the table command" +
         "switches to table mode. Items then accessed via the item command, will be presented as table rows" +
-        this.takesNoArguments;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
