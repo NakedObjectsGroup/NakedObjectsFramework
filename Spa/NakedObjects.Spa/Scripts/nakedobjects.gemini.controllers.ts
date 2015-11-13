@@ -50,6 +50,7 @@ module NakedObjects.Angular.Gemini {
     app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory) => {
         const cvm = context.setCiceroVMIfNecessary(commandFactory);
         $scope.cicero = cvm;
+        cvm.output = "Welcome to Cicero";
 
         
         

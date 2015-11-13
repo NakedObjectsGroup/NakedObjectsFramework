@@ -4,8 +4,14 @@ module NakedObjects.Angular.Gemini {
 
     export abstract class Command {
 
-        protected fullCommand: string;
-        protected helpText: string;
+        constructor(private urlManager: IUrlManager,
+            protected nglocation: ng.ILocationService,
+            protected vm: CiceroViewModel,
+            protected commandFactory: ICommandFactory) {
+        }
+
+        public fullCommand: string;
+        public helpText: string;
         protected minArguments: number;
         protected maxArguments: number;
 
@@ -17,16 +23,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        public getHelpText(): string {
-            return this.helpText;
-        }
-
         protected abstract isAvailableInCurrentContext(): boolean;
-
-        constructor(private urlManager: IUrlManager,
-            protected nglocation: ng.ILocationService,
-            protected vm: CiceroViewModel) {
-        }
         
         //Helper methods follow
         protected clearInput(): void {
@@ -56,24 +53,24 @@ module NakedObjects.Angular.Gemini {
             return "";
         }
 
-        public checkFirstWordIsSubstring(firstWord: string): void {
-            if (this.fullCommand.indexOf(firstWord) != 0) {
-                if (firstWord.indexOf(this.fullCommand) == 0) {
+        public checkMatch(matchText: string): void {
+            if (this.fullCommand.indexOf(matchText) != 0) {
+                if (matchText.indexOf(this.fullCommand) == 0) {
                     throw new Error("The command " + this.fullCommand + " must be followed by a space");
                 } else {
-                    throw new Error("No such command: " + firstWord);
+                    throw new Error("No such command: " + matchText);
                 }
             }
         }
 
-        private checkNumberOfArguments(argString: string): void {
+        public checkNumberOfArguments(argString: string): void {
+            if (argString == null) {
+                if (this.minArguments == 0) return;
+                throw new Error("No arguments provided.");
+            }
             const args = argString.split(",");
-            if (args.length < this.minArguments) {
-                throw new Error("At least " + this.minArguments + " arguments required");
-            } else {
-                if (args.length > this.maxArguments) {
-                    throw new Error("No more than " + this.maxArguments + " arguments allowed");
-                }
+            if (args.length < this.minArguments || args.length > this.maxArguments) {
+                throw new Error("Wrong number of arguments provided.");
             }
         }
 
@@ -379,12 +376,12 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             var arg = this.argumentAsString(args, 1);
-            if (arg = null) {
-                //todo;
+            if (arg == null) {
+                this.setOutput("TODO - list of commands in this context"); 
             } else {
-                //todo;
+                const c = this.commandFactory.getCommand(arg);
+                this.setOutput(c.fullCommand+" command. "+c.helpText);
             }
-            this.setOutput("OK Command invoked"); //temporary!
         };
     }
     export class Home extends Command {
@@ -439,7 +436,7 @@ module NakedObjects.Angular.Gemini {
     }
     export class Menu extends Command {
 
-        public fullCommand = "meny";
+        public fullCommand = "menu";
         public helpText = "From the Home context, Menu opens a named main menu. This " +
         "command normally takes one argument: the name, or partial name, of the menu. " +
         "If the partial name matches more than one menu, a list of matches will be returned " +
