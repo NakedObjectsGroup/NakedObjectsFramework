@@ -259,7 +259,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 1);
-            this.setOutput("Property command invoked with argument: " + match); //todo: temporary
+            this.setOutput("Description command invoked with argument: " + match); //todo: temporary
         };
     }
     export class Edit extends Command {
@@ -377,7 +377,8 @@ module NakedObjects.Angular.Gemini {
                 this.setOutput(this.commandFactory.allCommandsForCurrentContext()); 
             } else {
                 const c = this.commandFactory.getCommand(arg);
-                this.setOutput(c.fullCommand+" command: "+c.helpText);
+                this.setOutput(c.fullCommand + " command: " + c.helpText);
+                this.clearInput();
             }
         };
     }
