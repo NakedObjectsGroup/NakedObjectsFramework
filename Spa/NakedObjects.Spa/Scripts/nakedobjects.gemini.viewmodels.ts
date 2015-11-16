@@ -207,6 +207,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
+        disabled(): boolean { return false; }
     } 
 
     export class DialogViewModel extends MessageViewModel {

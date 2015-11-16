@@ -96,6 +96,10 @@
         font-size: 16pt;
     }
 
+    .action[disabled="disabled"] {
+        color: grey;
+    }
+
 /*Fix to make menus/actions/reference properties clickable*/
     .clickable-area
     {
@@ -232,6 +236,10 @@
         outline-width: 1px;
         outline-color: white;
     }
+
+   .action[disabled="disabled"]:hover {
+       outline: none;
+   }
 
       .title:focus
      {

@@ -243,8 +243,13 @@ module NakedObjects.Angular.Gemini{
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
-            actionViewModel.description = actionRep.extensions().description;
             actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
+            actionViewModel.disabled = () => { return !!actionRep.disabledReason(); } 
+            if (actionViewModel.disabled()) {
+                actionViewModel.description = actionRep.disabledReason();
+            } else {
+                actionViewModel.description = actionRep.extensions().description
+            }
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams ?
@@ -446,7 +451,7 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.size = count;
 
-            collectionViewModel.description = () => `Page ${page} of ${numPages} viewing ${count} of ${totalCount}`;
+            collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
 
             const setPage =  (newPage: number) => {
                 //urlManager.setListPaging(paneId, 20, newPage);
