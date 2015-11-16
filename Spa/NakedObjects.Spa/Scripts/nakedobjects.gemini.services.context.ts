@@ -33,7 +33,6 @@ module NakedObjects.Angular.Gemini {
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
         getCiceroVM(): CiceroViewModel;
-
         setCiceroVMIfNecessary(cf: ICommandFactory);
 
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;

@@ -331,7 +331,6 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CiceroViewModel {
-        wrapped: any; //TODO: probably not needed
         output: string;
         input: string;
         parseInput: (input: string) => void;
