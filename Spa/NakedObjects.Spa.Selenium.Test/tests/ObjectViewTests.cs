@@ -156,13 +156,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.SalesOrderHeader-43893&actions1=open");
             //First the control test
-            var a = GetObjectAction("Add New Sales Reason");
-            Assert.IsNull(a.GetAttribute("disabled"));
+            GetObjectAction("Add New Sales Reason").AssertIsEnabled();
 
             //Then the real test
-             a = GetObjectAction("Add New Detail");
-            Assert.IsNotNull(a.GetAttribute("disabled"));
-            Assert.AreEqual("Can only add to 'In Process' order", a.GetAttribute("title"));
+            GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
         }
         #endregion
     }

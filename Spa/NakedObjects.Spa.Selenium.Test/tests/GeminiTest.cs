@@ -413,10 +413,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             
         }
 
-        protected IWebElement AssertHasFocus(IWebElement el)
+        protected void AssertHasFocus(IWebElement el)
         {
             Assert.AreEqual(el, br.SwitchTo().ActiveElement());
-            return el;
         }
 
         protected void Reload(Pane pane = Pane.Single)
@@ -470,5 +469,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.SwitchTo().ActiveElement();
         }
         #endregion
+    }
+
+    public static class ExtensionMethods
+    {
+
+        public static IWebElement AssertIsDisabled(this IWebElement a, string reason = null)
+        {
+            Assert.IsNotNull(a.GetAttribute("disabled"));
+            if (reason != null)
+            {
+                Assert.AreEqual(reason, a.GetAttribute("title"));
+            }
+            return a;
+        }
+
+        public static IWebElement AssertIsEnabled(this IWebElement a)
+        {
+            Assert.IsNull(a.GetAttribute("disabled"));
+            return a;
+        }
     }
 }

@@ -84,6 +84,46 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
+
+        [TestMethod]
+        public virtual void Paging()
+        {
+            GeminiUrl("list?menu1=OrderRepository&action1=HighestValueOrders");
+            Reload();
+
+            //Test content of collection
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
+                    == "Page 1 of 1574; viewing 20 of 31465 items");
+            GetButton("First").AssertIsDisabled();
+            GetButton("Previous").AssertIsDisabled();
+            var next = GetButton("Next").AssertIsEnabled();
+            GetButton("Last").AssertIsEnabled();
+            //Go to next page
+            Click(next);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
+                    == "Page 2 of 1574; viewing 20 of 31465 items");
+            GetButton("First").AssertIsEnabled();
+            GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsEnabled();
+            var last = GetButton("Last").AssertIsEnabled();
+            Click(last);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
+                == "Page 1574 of 1574; viewing 5 of 31465 items");
+            GetButton("First").AssertIsEnabled();
+            var prev = GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsDisabled();
+            GetButton("Last").AssertIsDisabled();
+            Click(prev);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
+                == "Page 1573 of 1574; viewing 20 of 31465 items");
+            var first = GetButton("First").AssertIsEnabled();
+            GetButton("Previous").AssertIsEnabled();
+            GetButton("Next").AssertIsEnabled();
+            GetButton("Last").AssertIsEnabled();
+            Click(first);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
+        == "Page 1 of 1574; viewing 20 of 31465 items");
+        }
     }
 
     #region browsers specific subclasses
