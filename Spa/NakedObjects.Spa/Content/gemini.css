@@ -476,10 +476,6 @@ th, td {
     content: "\e08f";
 }
 
-.icon-edit:before {
-    content: "\e002";
-}
-
 .icon-help:before {
     content: "\e085";
 }
@@ -517,7 +513,11 @@ th, td {
 }
 
 .icon-full:before {
-    content: "\e011";
+   content: "\e08e";
+}
+
+.icon-recent:before {
+   content: "\e011"
 }
 
 .icon-speech:before {

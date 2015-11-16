@@ -28,7 +28,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected const string ProductServiceUrl = GeminiBaseUrl + "home?menu1=ProductRepository";
         protected const string SalesServiceUrl = GeminiBaseUrl + "home?menu1=SalesRepository";
 
-        protected const int MainMenusCount = 11; //TODO: Should be 10 as Empty menu should not show
+        protected const int MainMenusCount = 10; //'Empty' menu should not show
 
         protected const int CustomerServiceActions = 9;
         protected const int OrderServiceActions = 6;

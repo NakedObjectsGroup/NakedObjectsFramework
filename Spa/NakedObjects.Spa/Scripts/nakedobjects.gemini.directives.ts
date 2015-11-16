@@ -262,20 +262,6 @@ module NakedObjects.Angular.Gemini {
         };
     });
 
-    // because we're using blur to save dialog parms and click event is after blur so we can lose clicks. 
-    // use mousedown as it happens before blur and look for left click.  
-    app.directive("geminiClick", $parse => (scope, element, attrs) => {
-        const fn = $parse(attrs.geminiClick);
-        element.bind("mousedown", event => {
-            if (event.button === 0) {
-                scope.$apply(() => {
-                    event.preventDefault();
-                    fn(scope, { $event: event });
-                });
-            }
-        });
-    });
-
     //The 'right-click' functionality is also triggered by shift-enter
     app.directive("geminiRightclick", $parse => (scope, element, attrs) => {
         const fn = $parse(attrs.geminiRightclick);
