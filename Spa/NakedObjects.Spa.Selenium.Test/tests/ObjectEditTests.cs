@@ -20,6 +20,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
 
+            //test focus
+            var field1 = WaitForCss(".property:nth-child(1) input");
+            AssertHasFocus(field1);
+
             // set price and days to mfctr
             TypeIntoField("#listprice",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
             TypeIntoField("#daystomanufacture",Keys.Backspace + "1");

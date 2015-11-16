@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.AreEqual("20 Item(s)", WaitForCss(".collection .summary .details").Text);
+            Assert.AreEqual("Page 1 of 1574; viewing 20 of 31465 items", WaitForCss(".collection .summary .details").Text);
             WaitForCss(".icon-table");
             WaitUntilElementDoesNotExist(".icon-list");
             WaitUntilElementDoesNotExist(".icon-summary");
@@ -40,6 +40,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
+            
             var iconList = WaitForCss(".icon-list");
             WaitUntilElementDoesNotExist(".icon-table");
             WaitUntilElementDoesNotExist(".icon-summary");
@@ -78,15 +79,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
-
-            // select item
             wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr")).Count > 1);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
-        
-        //TODO: Collection contributed Actions
     }
 
     #region browsers specific subclasses

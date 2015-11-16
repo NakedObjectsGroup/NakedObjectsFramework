@@ -332,9 +332,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsFalse(title.StartsWith("Editing"));
         }
 
-        protected IWebElement GetButton(string text) {
-            wait.Until(d => br.FindElements(By.CssSelector(".header .action")).Any(e => e.Text == text));
-            return br.FindElements(By.CssSelector(".header .action")).Single(e => e.Text == text);
+        protected IWebElement GetButton(string text, Pane pane = Pane.Single) {
+            string selector = CssSelectorFor(pane) + ".header .action";
+            wait.Until(d => br.FindElements(By.CssSelector(selector)).Any(e => e.Text == text));
+            return br.FindElements(By.CssSelector(selector)).Single(e => e.Text == text);
         }
 
         protected IWebElement EditButton() {
@@ -410,6 +411,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                     }
                 });
             
+        }
+
+        protected IWebElement AssertHasFocus(IWebElement el)
+        {
+            Assert.AreEqual(el, br.SwitchTo().ActiveElement());
+            return el;
+        }
+
+        protected void Reload(Pane pane = Pane.Single)
+        {
+            Click(GetButton("Reload", pane));
         }
         
         #endregion

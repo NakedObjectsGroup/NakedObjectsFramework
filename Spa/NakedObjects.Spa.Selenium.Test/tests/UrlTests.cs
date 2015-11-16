@@ -122,6 +122,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             GeminiUrl( "list?menu1=OrderRepository&action1=HighestValueOrders");
+            //todo: test that title is correct
+            Reload(Pane.Single);
             wait.Until(d => d.FindElement(By.CssSelector(".list")));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
         }
@@ -150,6 +152,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "home/list?&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Home, "Home");
+            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
 
@@ -174,6 +177,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl( "object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List,  "Highest Value Orders");
         }
 
@@ -181,6 +185,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitListHome()
         {
             GeminiUrl( "list/home?menu1=OrderRepository&action1=HighestValueOrders");
+            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
@@ -189,6 +194,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitListObject()
         {
             GeminiUrl( "list/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
+            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
@@ -197,8 +203,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void SplitListList()
         {
             GeminiUrl( "list/list?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
-
+            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Current Special Offers");
         }
         #endregion

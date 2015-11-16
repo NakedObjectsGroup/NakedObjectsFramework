@@ -13,7 +13,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
-    public abstract class HomeTests : AWTest {
+    public abstract class HomeTests : AWTest
+    {
 
         [TestMethod]
         public void WaitForSingleHome()
@@ -32,11 +33,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Purchase Orders", menus[8].Text);
             Assert.AreEqual("Work Orders", menus[9].Text);
             AssertFooterExists();
+
+            AssertHasFocus(menus[0]);
         }
 
         #region Clicking on menus and opening/closing dialogs
         [TestMethod]
-        public virtual void ClickOnVariousMenus() {
+        public virtual void ClickOnVariousMenus()
+        {
             GoToMenuFromHomePage("Customers");
             var actions = WaitForCss(".actions .action", CustomerServiceActions);
 
@@ -50,12 +54,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Customer Dashboard", actions[7].Text);
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
 
+            AssertHasFocus(actions[0]);
+
             GoToMenuFromHomePage("Sales");
             actions = WaitForCss(".actions .action", 4); ;
             Assert.AreEqual("Create New Sales Person", actions[0].Text);
             Assert.AreEqual("Find Sales Person By Name", actions[1].Text);
             Assert.AreEqual("List Accounts For Sales Person", actions[2].Text);
             Assert.AreEqual("Random Sales Person", actions[3].Text);
+
+            AssertHasFocus(actions[0]);
         }
 
         [TestMethod]
@@ -77,6 +85,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Url(CustomersMenuUrl);
             Click(GetObjectAction("Random Store"));
             WaitForView(Pane.Single, PaneType.Object);
+
+            var title = WaitForCss(".header .title");
+            AssertHasFocus(title);
         }
 
         [TestMethod]
@@ -87,6 +98,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             WaitForCss(".reference", 20);
+
+            var first = WaitForCssNo(".reference", 0);
+            AssertHasFocus(first);
         }
 
         [TestMethod]
@@ -116,13 +130,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            TypeIntoField("#accountnumber","00022262");
+
+            //Check focus
+            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            AssertHasFocus(field1);
+
+            TypeIntoField(".parameter:nth-child(1) input", Keys.ArrowRight+Keys.ArrowRight+"00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
         #endregion
     }
-
     #region browsers specific subclasses 
 
     //    [TestClass, Ignore]

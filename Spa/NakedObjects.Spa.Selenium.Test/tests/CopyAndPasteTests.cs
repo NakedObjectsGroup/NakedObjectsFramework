@@ -49,7 +49,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CopyListItemIntoClipboard()
         {
             GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&menu2=PersonRepository&action2=ValidCountries");
+            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
+            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Valid Countries");
 
             //Copy item from list, left pane
