@@ -68,7 +68,19 @@ namespace NakedObjects.Core.Container {
         }
 
         private static object[] ServicesMatchingType( object[] services, Type type) {
-            return services.Where(s => type.IsInstanceOfType(s)).ToArray();
+            var matches = new List<object>();
+
+            // Changed to loop from LINQ as optimization. Do not change back to lambda !
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var service in services) {
+                if (type.IsInstanceOfType(service)) {
+                    matches.Add(service);
+                }
+            }
+
+            return matches.ToArray();
+
+            //return services.Where(s => type.IsInstanceOfType(s)).ToArray();
         }
 
         private static void InjectContainer(object target, object container, string[] name) {
