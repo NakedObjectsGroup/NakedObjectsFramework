@@ -137,15 +137,15 @@ module NakedObjects.Angular.Gemini {
                     setError(error);
                 });
             }
+            getFriendlyName().then((name: string) => $scope.title = name);
 
             if (cachedList) {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                 $scope.collection = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
-                getFriendlyName().then((name: string) => $scope.title = name);
                 focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
-
+                // todo use a viewmodel
                 ($scope as any).recreate = () => pageOrRecreate(routeData.page);
             }
         };
