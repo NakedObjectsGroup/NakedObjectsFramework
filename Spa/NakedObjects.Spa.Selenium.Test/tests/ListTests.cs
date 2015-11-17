@@ -124,6 +124,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
         == "Page 1 of 1574; viewing 20 of 31465 items");
         }
+
+        [TestMethod]
+        public virtual void GoingBackToListViewRequiresReload()
+        {
+            Url(SpecialOffersMenuUrl);
+            Click(GetObjectAction("Current Special Offers"));
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
+            var row = WaitForCss(".reference");
+            Click(row);
+            WaitForView(Pane.Single, PaneType.Object, "No Discount");
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+            WaitForView(Pane.Single, PaneType.List);
+            GetButton("Reload");  //i.e. test this exists
+            WaitUntilElementDoesNotExist(".collection .summary .details");
+            Reload();
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+
+        }
     }
 
     #region browsers specific subclasses
