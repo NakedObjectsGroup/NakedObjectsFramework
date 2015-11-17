@@ -14,7 +14,7 @@ module NakedObjects.Angular.Gemini {
         getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;    
         getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>, page? : number, pageSize? : number) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page? : number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionFriendlyName: (action : ActionMember) => ng.IPromise<string>;
         getError: () => ErrorRepresentation;
@@ -242,18 +242,20 @@ module NakedObjects.Angular.Gemini {
 
         context.getActionFriendlyNameFromObject = (paneId: number, objectId: string, actionId: string) =>
             context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions().friendlyName));
-       
-        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page? : number, pageSize? : number) => {
 
-            const urlParms: _.Dictionary<string> =
-                (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
+        function getPagingParms(page: number, pageSize: number): _.Dictionary<string> {
+            return (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
+        }
 
+        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
+            const urlParms = getPagingParms(page, pageSize);
             const promise = () => context.getMenu(menuId).then(menu => repLoader.invoke(menu.actionMember(actionId), parms, urlParms));
             return getList(paneId, promise);
         };
 
-        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>) => {
-            const promise = () => context.getObjectByOid(paneId, objectId).then(object => repLoader.invoke(object.actionMember(actionId), parms, {}));
+        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
+            const urlParms = getPagingParms(page, pageSize);
+            const promise = () => context.getObjectByOid(paneId, objectId).then(object => repLoader.invoke(object.actionMember(actionId), parms, urlParms));
             return getList(paneId, promise);
         };
 

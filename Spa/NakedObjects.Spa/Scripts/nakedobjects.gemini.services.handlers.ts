@@ -114,7 +114,8 @@ module NakedObjects.Angular.Gemini {
             const cachedList = context.getCachedList(routeData.paneId);
 
             const recreate = (page: number, pageSize: number) => {
-                return routeData.objectId ? context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms) :
+                return routeData.objectId ?
+                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms, page, pageSize) :
                     context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms, page, pageSize);
             }
 
@@ -124,6 +125,7 @@ module NakedObjects.Angular.Gemini {
 
 
             const pageOrRecreate = (newPage: number) => {
+                // todo make pagesize not hard coded 
                 recreate(newPage, 20).then((list: ListRepresentation) => {
                     
                     $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;

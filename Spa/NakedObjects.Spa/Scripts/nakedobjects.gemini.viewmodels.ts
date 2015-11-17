@@ -230,20 +230,18 @@ module NakedObjects.Angular.Gemini {
     
     export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
 
-        target: string;       
-        isEditable: boolean;    
+        target: string;
+        isEditable: boolean;
         attachment: AttachmentViewModel;
-        draggableType : string;
+        draggableType: string;
         doClick(right?: boolean): void { }
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
-    } 
-
-    export class CollectionPlaceholderViewModel
-    {
-        description : () => string;
-        reload : () => void;
     }
 
+    export class CollectionPlaceholderViewModel {
+        description: () => string;
+        reload: () => void;
+    }
 
     export class CollectionViewModel {
         title: string;
