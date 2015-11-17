@@ -145,8 +145,7 @@ module NakedObjects.Angular.Gemini {
                 focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
-                // todo use a viewmodel
-                ($scope as any).recreate = () => pageOrRecreate(routeData.page);
+                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page));
             }
         };
 

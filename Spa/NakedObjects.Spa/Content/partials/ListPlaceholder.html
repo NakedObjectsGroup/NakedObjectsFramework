@@ -3,8 +3,13 @@
         <div class="title">
             {{title}}
         </div>
-        <div class="action clickable-area" tabindex="0" ng-click="recreate()">
+        <div class="action clickable-area" tabindex="0" ng-click="collectionPlaceholder.reload()">
             Reload
+        </div>
+    </div>
+    <div class="collection">
+        <div class="summary">
+            <div class="details">{{collectionPlaceholder.description()}}</div>
         </div>
     </div>
 </div>

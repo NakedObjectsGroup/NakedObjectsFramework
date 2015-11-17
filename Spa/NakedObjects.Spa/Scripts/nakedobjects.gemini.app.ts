@@ -29,6 +29,8 @@ module NakedObjects.Angular {
         errorTemplate: string;
         listTemplate: string;
         collection: Angular.Gemini.CollectionViewModel;
+        collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
+
         title: string;
         toolBar: ToolBarViewModel;
         objectTemplate: string;

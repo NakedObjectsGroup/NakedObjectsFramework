@@ -17,6 +17,8 @@ module NakedObjects.Angular.Gemini{
         collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number) => void): CollectionViewModel;
         collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number, recreate : (page : number) => void) : CollectionViewModel;
 
+        collectionPlaceholderViewModel(page: number, reload: () => void) : CollectionPlaceholderViewModel;
+
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number): PropertyViewModel;
 
@@ -499,6 +501,13 @@ module NakedObjects.Angular.Gemini{
             return collectionVm;
         };
 
+        viewModelFactory.collectionPlaceholderViewModel = (page : number, reload : () => void) => {
+            const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
+
+            collectionPlaceholderViewModel.description = () => `Page ${page}`;
+            collectionPlaceholderViewModel.reload = reload;
+            return collectionPlaceholderViewModel;
+        }
      
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             const servicesViewModel = new ServicesViewModel();

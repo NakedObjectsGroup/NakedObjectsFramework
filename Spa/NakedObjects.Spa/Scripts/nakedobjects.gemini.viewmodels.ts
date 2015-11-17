@@ -238,6 +238,13 @@ module NakedObjects.Angular.Gemini {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
     } 
 
+    export class CollectionPlaceholderViewModel
+    {
+        description : () => string;
+        reload : () => void;
+    }
+
+
     export class CollectionViewModel {
         title: string;
         size: number;
