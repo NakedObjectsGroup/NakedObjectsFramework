@@ -88,7 +88,7 @@ module NakedObjects.Angular.Gemini {
                                 const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel(am, routeData.paneId)) };
                                 $scope.object = actions;
 
-                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstAction;
+                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstSubAction;
 
                                 if (routeData.dialogId) {
                                     $scope.dialogTemplate = dialogTemplate;
@@ -148,6 +148,7 @@ module NakedObjects.Angular.Gemini {
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page));
+                focusManager.focusOn(FocusTarget.FirstAction, urlManager.currentpane());       
             }
         };
 
@@ -205,7 +206,7 @@ module NakedObjects.Angular.Gemini {
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId, ovm);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
-                        focusTarget = FocusTarget.FirstAction;
+                        focusTarget = FocusTarget.FirstSubAction;
                     } else if (routeData.edit || ovm.isTransient) {
                         focusTarget = FocusTarget.FirstProperty;
                     } else {

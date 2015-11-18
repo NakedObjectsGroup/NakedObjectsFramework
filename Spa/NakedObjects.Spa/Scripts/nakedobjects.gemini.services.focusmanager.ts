@@ -7,6 +7,7 @@ module NakedObjects.Angular.Gemini {
 
     export enum FocusTarget {
         FirstMenu, 
+        FirstSubAction, 
         FirstAction, 
         ObjectTitle, 
         Dialog,

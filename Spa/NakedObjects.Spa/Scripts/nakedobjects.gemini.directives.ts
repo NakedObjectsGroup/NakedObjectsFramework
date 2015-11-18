@@ -350,8 +350,11 @@ module NakedObjects.Angular.Gemini {
                     case FocusTarget.FirstMenu:
                         focusElement = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`).first();
                         break;
-                    case FocusTarget.FirstAction:
+                    case FocusTarget.FirstSubAction:
                         focusElement = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`).first();
+                        break;
+                    case FocusTarget.FirstAction:
+                        focusElement = $(elem).find(`#pane${paneId}.split div.action, div.single div.action`).first();
                         break;
                     case FocusTarget.ObjectTitle:
                         focusElement = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`).first();

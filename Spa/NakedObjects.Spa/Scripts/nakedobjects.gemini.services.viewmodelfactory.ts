@@ -77,7 +77,7 @@ module NakedObjects.Angular.Gemini{
             linkViewModel.doClick = () => {
                 // because may be clicking on menu already open so want to reset focus             
                 urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
-                focusManager.focusOn(FocusTarget.FirstAction, paneId);
+                focusManager.focusOn(FocusTarget.FirstSubAction, paneId);
             };
             initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
