@@ -14,8 +14,8 @@ module NakedObjects.Angular.Gemini{
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
         dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm? : DomainObjectViewModel): DialogViewModel;
 
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number) => void): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId : number, recreate : (page : number) => void) : CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newState? : CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newState?: CollectionViewState) => void) : CollectionViewModel;
 
         collectionPlaceholderViewModel(page: number, reload: () => void) : CollectionPlaceholderViewModel;
 
@@ -433,10 +433,15 @@ module NakedObjects.Angular.Gemini{
                 collectionViewModel.template = collectionSummaryTemplate;
             }
 
+            const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setCollectionMemberState, paneId, collectionRep);
+            collectionViewModel.doSummary = () => setState(CollectionViewState.Summary); 
+            collectionViewModel.doList = () => setState(CollectionViewState.List);
+            collectionViewModel.doTable = () => setState(CollectionViewState.Table); 
+
             return collectionViewModel;
         }
        
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number) => void) {
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newState : CollectionViewState) => void) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
 
@@ -455,10 +460,9 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
 
-            const setPage =  (newPage: number) => {
-                //urlManager.setListPaging(paneId, 20, newPage);
-
-                $timeout(() =>   recreate(newPage));
+            const setPage =  (newPage: number, newState? : CollectionViewState) => {
+                // todo do we need timeout ?
+                $timeout(() =>   recreate(newPage, newState));
             }
 
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page);
@@ -474,28 +478,26 @@ module NakedObjects.Angular.Gemini{
             collectionViewModel.pageNextDisabled = laterDisabled;
             collectionViewModel.pagePreviousDisabled = earlierDisabled;
 
+            const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setListState, paneId);
+        
+            collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
+            collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
+            collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
+
+
             return collectionViewModel;
         }
 
       
         viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
-            let setState: (state: CollectionViewState) => void;
 
             if (collection instanceof CollectionMember) {
                 collectionVm = create($scope, collection, state, paneId);
-                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setCollectionMemberState, paneId, collection);
             }
 
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList($scope, collection, state, paneId, recreate);
-                setState = <(state: CollectionViewState) => void> _.partial(urlManager.setListState, paneId);
-            }
-
-            if (collectionVm) {
-                collectionVm.doSummary = () => setState(CollectionViewState.Summary);
-                collectionVm.doList = () => setState(CollectionViewState.List);
-                collectionVm.doTable = () => setState(CollectionViewState.Table);            
             }
 
             return collectionVm;

@@ -124,12 +124,14 @@ module NakedObjects.Angular.Gemini {
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
 
 
-            const pageOrRecreate = (newPage: number) => {
+            const pageOrRecreate = (newPage: number, newState? : CollectionViewState) => {
                 // todo make pagesize not hard coded 
                 recreate(newPage, 20).then((list: ListRepresentation) => {
+
+                    const state = newState || routeData.state;
                     
-                    $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, routeData.state, routeData.paneId, pageOrRecreate);
+                    $scope.listTemplate = state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
+                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
 
                     getFriendlyName().then((name: string) => $scope.title = name);
                 
