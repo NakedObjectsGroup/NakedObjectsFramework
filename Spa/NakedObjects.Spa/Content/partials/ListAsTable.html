@@ -6,6 +6,18 @@
         <div class="menu clickable-area" tabindex="0" ng-click="object.toggleActionMenu()">
             Actions
         </div>
+        <div class="action clickable-area" tabindex="0" ng-click="collection.pageFirst()" ng-disabled="collection.pageFirstDisabled()">
+            First
+        </div>
+        <div class="action clickable-area" tabindex="0" ng-click="collection.pagePrevious()" ng-disabled="collection.pagePreviousDisabled()">
+            Previous
+        </div>
+        <div class="action clickable-area" tabindex="0" ng-click="collection.pageNext()" ng-disabled="collection.pageNextDisabled()">
+            Next
+        </div>
+        <div class="action clickable-area" tabindex="0" ng-click="collection.pageLast()" ng-disabled="collection.pageLastDisabled()">
+            Last
+        </div>
         <div class="messages"></div>
     </div>
     <div class="collection">
