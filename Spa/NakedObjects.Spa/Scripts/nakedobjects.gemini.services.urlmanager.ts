@@ -37,20 +37,19 @@ module NakedObjects.Angular.Gemini {
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
 
         currentpane(): number;
-        getUrlState: (paneId: number) => { paneType: string;search: Object };
+        getUrlState: (paneId: number) => { paneType: string; search: Object };
+        getListCacheIndex: (paneId: number, newPage: number, newPageSize: number) => string;
 
         //The following functions are intended for use in Cicero. Each function is evaluated for
         //a 'single' representation, or the first of two 'split' representations.
         isHome(): boolean;
         isObject(): boolean;
         isList(): boolean;
-        isMenuOpen(): boolean
+        isMenuOpen(): boolean;
         isActionOpen(): boolean;
         isCollectionOpen(): boolean;
         isTable(): boolean;
         isEdit(): boolean;
-
-
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -138,7 +137,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function searchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, edit, action, parm, actions];
+            const raw = [menu, dialog, object, collection, edit, action, parm, actions, page, pageSize];
             const ids = _.map(raw, s => s + paneId);
             return _.filter(_.keys(search), k => _.any(ids, id => k.indexOf(id) === 0));
         }
@@ -414,6 +413,26 @@ module NakedObjects.Angular.Gemini {
             const paneSearch = capturePane(paneId);
 
             return { paneType: paneType, search: paneSearch };
+        }
+
+        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number) => {
+            const search = $location.search();
+       
+            const s1 = search[`${menu}${paneId}`] || "";
+            const s2 = search[`${object}${paneId}`] || "";
+            const s3 = search[`${action}${paneId}`] || "";
+
+            const parmkeys = _.filter(search as _.Dictionary<string>, (v, k) => k.indexOf(parm + paneId) === 0);
+            const parms = _.pick(search, parmkeys) as _.Dictionary<string>;
+
+            const s4 = _.reduce(parms, (r, n, k) => r + (k + "=" + n + "-"), "");
+
+            const s5 = newPage.toString();
+            const s6 = newPageSize.toString();
+
+            const ss = [s1, s2, s3, s4, s5, s6] as string[];
+
+            return _.reduce(ss, (r, n) => r + "-" + n, "");
         }
 
         helper.popUrlState = (paneId: number) => {

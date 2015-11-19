@@ -6,7 +6,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IContext {
         
-        getCachedList: (paneId : number) => ListRepresentation; 
+        getCachedList: (paneId : number, page : number, pageSize : number) => ListRepresentation; 
 
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
@@ -47,7 +47,7 @@ module NakedObjects.Angular.Gemini {
 
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
        
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, page : number, pageSize : number,   dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
         
@@ -214,19 +214,14 @@ module NakedObjects.Angular.Gemini {
             return context.getObject(paneId, dt, id);
         };
 
-        const handleResult = (paneId : number, result: ActionResultRepresentation) => {
+        const handleResult = (paneId : number, result: ActionResultRepresentation, page : number, pageSize : number) => {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
 
-                const url = urlManager.getUrlState(paneId);
-                // todo this is ugly - ignore collection state 
-                url.search = _.omit(url.search, `collection${paneId}`);
-
-                const urlAsString = JSON.stringify(url);
-
-                currentLists[paneId] = {};
-                currentLists[paneId][urlAsString] = resultList;
+                const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+                currentLists[paneId] = currentLists[paneId] || {};
+                currentLists[paneId][index] = resultList;
 
                 return $q.when(resultList);
             } else {
@@ -235,8 +230,8 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>) => {
-            return resultPromise().then(result => handleResult(paneId, result));
+        const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>, page : number, pageSize : number) => {
+            return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };
 
         context.getActionFriendlyNameFromMenu = (menuId: string, actionId: string) =>
@@ -252,13 +247,13 @@ module NakedObjects.Angular.Gemini {
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
             const promise = () => context.getMenu(menuId).then(menu => repLoader.invoke(menu.actionMember(actionId), parms, urlParms));
-            return getList(paneId, promise);
+            return getList(paneId, promise, page, pageSize);
         };
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
             const promise = () => context.getObjectByOid(paneId, objectId).then(object => repLoader.invoke(object.actionMember(actionId), parms, urlParms));
-            return getList(paneId, promise);
+            return getList(paneId, promise, page, pageSize);
         };
 
         context.setObject = (paneId : number, co) => currentObjects[paneId] = co;
@@ -291,7 +286,7 @@ module NakedObjects.Angular.Gemini {
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
             doPrompt(promptRep, id, null, () => promptRep.setArguments(args));
       
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId : number, dvm?: DialogViewModel) => {
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId : number, page : number, pageSize : number , dvm?: DialogViewModel) => {
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
                     dvm.message = "no result found";
@@ -328,26 +323,24 @@ module NakedObjects.Angular.Gemini {
                 const resultList = result.result().list();
                
                 urlManager.setList(action, paneId, dvm);
-                const url = urlManager.getUrlState(paneId);
-                const urlAsString = JSON.stringify(url);
+    
+                const index = urlManager.getListCacheIndex(paneId, page, pageSize);
 
-                currentLists[paneId] = {};
-                currentLists[paneId][urlAsString] =  resultList ;
+                currentLists[paneId] = currentLists[paneId] || {};
+                currentLists[paneId][index] =  resultList ;
             } else if (dvm) {
                 urlManager.closeDialog(dvm.onPaneId);
             }
         };
 
-        context.getCachedList = (paneId : number) =>
-        {
-            const url = urlManager.getUrlState(paneId);
-            // todo this is ugly - ignore collection state 
-            url.search = _.omit(url.search, `collection${paneId}`);
+        function getCachedListFromPane(paneId: number, index : string) {     
+            currentLists[paneId] = currentLists[paneId] || {};
+            return currentLists[paneId] && currentLists[paneId][index];
+        }
 
-            const urlAsString = JSON.stringify(url);
-            const lvm = currentLists[paneId] && currentLists[paneId][urlAsString];
-            currentLists[paneId] = null;
-            return lvm;
+        context.getCachedList = (paneId: number, page: number, pageSize: number) => {
+            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+            return getCachedListFromPane(paneId, index) || getCachedListFromPane(paneId === 1 ? 2 : 1, index);
         }
 
         context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
@@ -395,7 +388,8 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
-                    context.setResult(action, result, paneId, dvm);
+                    // todo hard coded page size 
+                    context.setResult(action, result, paneId, 1, 20, dvm);
                     
                     if (ovm) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";

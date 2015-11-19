@@ -111,7 +111,7 @@ module NakedObjects.Angular.Gemini {
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
             // todo remove name - unused
-            const cachedList = context.getCachedList(routeData.paneId);
+            const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
             const recreate = (page: number, pageSize: number) => {
                 return routeData.objectId ?

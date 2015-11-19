@@ -5,7 +5,7 @@
         href: string;
         type?: string;
         method?: string;
-        title? :string;
+        title?: string;
     }
 
     export interface IExtensions {
@@ -42,7 +42,7 @@
         email: string,
         roles: string[];
     }
-    
+
     export interface IDomainServicesRepresentation {
         links: ILink[],
         extensions: IExtensions,
@@ -66,14 +66,14 @@
     }
 
     export interface IValue {
-        value: string |  number | boolean | ILink;
-        invalidReason? : string;
+        value: string | number | boolean | ILink;
+        invalidReason?: string;
     }
 
     export interface IObjectOfType {
-        members : {[index : string] : IValue};
+        members: { [index: string]: IValue };
     }
-  
+
     export interface IErrorRepresentation {
         links: ILink[];
         extensions: IExtensions;
@@ -97,16 +97,23 @@
         value: string | number | boolean;
     }
 
-    export interface IPropertyMember {
-        memberType :string;
+    export interface IMember {
+        links: ILink[];
+        extensions: IExtensions;
+        memberType: string;
+        disabledReason?: string;
     }
 
-    export interface ICollectionMember {
-        memberType: string;
+    export interface IPropertyMember extends IMember {
+        value?: string | number | boolean | ILink;
     }
 
-    export interface IActionMember {
-        memberType: string;
+    export interface ICollectionMember extends IMember {
+        value?: ILink[];
+        size?: number;
+    }
+
+    export interface IActionMember extends IMember {
     }
 
     export interface IDomainObjectRepresentation {
@@ -114,11 +121,9 @@
         extensions: IExtensions;
         domainType: string;
         instanceId: string;
-        serviceId : string;
+        serviceId: string;
         title: string;
-        members: { [index : string] : IPropertyMember | ICollectionMember | IActionMember };
-    
-
+        members: { [index: string]: IMember };
     }
 
 }
