@@ -219,8 +219,10 @@ module NakedObjects.Angular.Gemini {
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
 
-                //urlManager.setList(action, paneId, dvm);
                 const url = urlManager.getUrlState(paneId);
+                // todo this is ugly - ignore collection state 
+                url.search = _.omit(url.search, `collection${paneId}`);
+
                 const urlAsString = JSON.stringify(url);
 
                 currentLists[paneId] = {};
@@ -339,6 +341,9 @@ module NakedObjects.Angular.Gemini {
         context.getCachedList = (paneId : number) =>
         {
             const url = urlManager.getUrlState(paneId);
+            // todo this is ugly - ignore collection state 
+            url.search = _.omit(url.search, `collection${paneId}`);
+
             const urlAsString = JSON.stringify(url);
             const lvm = currentLists[paneId] && currentLists[paneId][urlAsString];
             currentLists[paneId] = null;

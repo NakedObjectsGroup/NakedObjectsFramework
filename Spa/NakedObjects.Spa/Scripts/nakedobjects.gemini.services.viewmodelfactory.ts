@@ -460,15 +460,16 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
 
-            const setPage =  (newPage: number, newState? : CollectionViewState) => {
+            const setPage =  (newPage: number, newState : CollectionViewState) => {
                 // todo do we need timeout ?
                 $timeout(() =>   recreate(newPage, newState));
             }
 
-            collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page);
-            collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page);
-            collectionViewModel.pageFirst = () => setPage(1);
-            collectionViewModel.pageLast = () => setPage(numPages);
+            collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
+            collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page, state);
+            collectionViewModel.pageFirst = () => setPage(1, state);
+            collectionViewModel.pageLast = () =>
+                setPage(numPages, state);
 
             const earlierDisabled = () => page === 1 || numPages === 1;
             const laterDisabled = () => page === numPages || numPages === 1;

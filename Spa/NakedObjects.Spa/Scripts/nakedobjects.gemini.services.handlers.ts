@@ -136,7 +136,7 @@ module NakedObjects.Angular.Gemini {
                     getFriendlyName().then((name: string) => $scope.title = name);
                 
                     focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());       
-                    urlManager.setListPaging(routeData.paneId, newPage, routeData.pageSize);           
+                    urlManager.setListPaging(routeData.paneId, newPage, routeData.pageSize, state);           
                 }).catch(error => {
                     setError(error);
                 });

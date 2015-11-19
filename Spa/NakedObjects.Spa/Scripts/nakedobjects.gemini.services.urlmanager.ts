@@ -22,7 +22,7 @@ module NakedObjects.Angular.Gemini {
 
         setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
         setListState(paneId: number, state: CollectionViewState): void;
-        setListPaging(paneId: number, newPage: number, newPageSize: number): void;
+        setListPaging(paneId: number, newPage: number, newPageSize: number, state : CollectionViewState): void;
 
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
@@ -362,12 +362,13 @@ module NakedObjects.Angular.Gemini {
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };
 
-        helper.setListPaging = (paneId: number, newPage: number, newPageSize: number) => {
+        helper.setListPaging = (paneId: number, newPage: number, newPageSize: number, state : CollectionViewState) => {
             currentPaneId = paneId;
             const search = $location.search();
 
             search[`${page}${paneId}`] = newPage;
             search[`${pageSize}${paneId}`] = newPageSize;
+            search[`${collection}${paneId}`] = CollectionViewState[state];
 
             $location.search(search);
         };
