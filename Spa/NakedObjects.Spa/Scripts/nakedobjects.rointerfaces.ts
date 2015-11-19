@@ -98,14 +98,15 @@
     }
 
     export interface IPropertyMember {
-        memberType : "property";
+        memberType :string;
     }
 
     export interface ICollectionMember {
-        memberType: "collection";
+        memberType: string;
     }
 
     export interface IActionMember {
+        memberType: string;
     }
 
     export interface IDomainObjectRepresentation {
@@ -115,7 +116,7 @@
         instanceId: string;
         serviceId : string;
         title: string;
-        members: { [index : string] : IPropertyMember | ICollectionMember | IActionMember;
+        members: { [index : string] : IPropertyMember | ICollectionMember | IActionMember };
     
 
     }
