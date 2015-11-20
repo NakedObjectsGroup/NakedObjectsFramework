@@ -189,7 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(newValue, valueNow.Text);
        }
 
-        [TestMethod, Ignore] //Pending bug fix: Stef
+        [TestMethod]
         public void PotentActionDoesReloadAutomatically()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
