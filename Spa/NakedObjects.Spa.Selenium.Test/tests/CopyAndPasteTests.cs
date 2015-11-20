@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Copy embedded reference from left pane
             WaitForCss("#pane1 .header .title").Click();
-            var target = Tab(4);
+            var target = Tab(5);
             Assert.AreEqual("Mountain-500", target.Text);
             CopyToClipboard(target);
 
@@ -48,22 +48,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void CopyListItemIntoClipboard()
         {
-            GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&menu2=PersonRepository&action2=ValidCountries");
+            GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&menu2=PersonRepository&action2=ValidCountries&page2=1&pageSize2=20");
             Reload(Pane.Left);
-            WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
-            Reload(Pane.Right);
-            WaitForView(Pane.Right, PaneType.List, "Valid Countries");
-
-            //Copy item from list, left pane
-            WaitForCss("#pane1 .header .title").Click();
-            var item = Tab(3);
+            var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
             Assert.AreEqual("No Discount", item.Text);
             CopyToClipboard(item);
 
             //Copy item from list, right pane
-            //TODO: Very strange: when try to start with title of pane2, active element not selected, so use Actions!
-            WaitForCss("#pane2 .header .menu").Click();
-            item = Tab(4);
+            Reload(Pane.Right);
+             item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[3]);
             Assert.AreEqual("Australia", item.Text);
             CopyToClipboard(item);
 

@@ -120,7 +120,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ListZeroParameterAction()
         {
-            WaitForView(Pane.Single, PaneType.Home, "Home");
             GeminiUrl( "list?menu1=OrderRepository&action1=HighestValueOrders");
             //todo: test that title is correct
             Reload(Pane.Single);

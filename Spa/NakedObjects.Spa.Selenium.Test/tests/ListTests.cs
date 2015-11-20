@@ -59,15 +59,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void NavigateToItemFromListView()
         {
-            Url(OrdersMenuUrl);
-            Click(GetObjectAction("Highest Value Orders"));
-            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
-
-            // select item
-            var row = wait.Until( dr => dr.FindElement(By.CssSelector("table .reference")));
-            Assert.AreEqual("SO51131", row.Text);
+            Url(SpecialOffersMenuUrl);
+            Click(GetObjectAction("Current Special Offers"));
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
+            var row = WaitForCss(".reference");
             Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "SO51131");
+            WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
         [TestMethod]
@@ -88,60 +85,41 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Paging()
         {
-            GeminiUrl("list?menu1=OrderRepository&action1=HighestValueOrders");
+            GeminiUrl("list?prop1_Status=%25225%2522&prop1_BillingAddress=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.Address%252F1088%2522%252C%2522title%2522%253A%252299040%2520California%2520Avenue%2520...%2522%257D&prop1_PurchaseOrderNumber=%2522PO16298169856%2522&prop1_ShippingAddress=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.Address%252F1088%2522%252C%2522title%2522%253A%252299040%2520California%2520Avenue%2520...%2522%257D&prop1_ShipMethod=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ShipMethod%252F5%2522%252C%2522title%2522%253A%2522CARGO%2520TRANSPORT%25205%2522%257D&prop1_AccountNumber=%252210-4020-000599%2522&prop1_CurrencyRate=null&prop1_CreditCard=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.CreditCard%252F4830%2522%252C%2522title%2522%253A%2522**********0062%2522%257D&prop1_Comment=%2522%2522&prop1_SalesPerson=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesPerson%252F281%2522%252C%2522title%2522%253A%2522Shu%2520Ito%2522%257D&prop1_SalesTerritory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesTerritory%252F4%2522%252C%2522title%2522%253A%2522Southwest%2522%257D&menu1=CustomerRepository&action1=FindIndividualCustomerByName&page1=1&pageSize1=20&parm1_firstName=%2522%2522&parm1_lastName=%2522a%2522");
             Reload();
 
             //Test content of collection
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                    == "Page 1 of 1574; viewing 20 of 31465 items");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 1 of 45"));
             GetButton("First").AssertIsDisabled();
             GetButton("Previous").AssertIsDisabled();
             var next = GetButton("Next").AssertIsEnabled();
             GetButton("Last").AssertIsEnabled();
             //Go to next page
             Click(next);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                    == "Page 2 of 1574; viewing 20 of 31465 items");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                 .Text.StartsWith("Page 2 of 45"));
             GetButton("First").AssertIsEnabled();
             GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsEnabled();
             var last = GetButton("Last").AssertIsEnabled();
             Click(last);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1574 of 1574; viewing 5 of 31465 items");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                    .Text.StartsWith("Page 45 of 45"));
             GetButton("First").AssertIsEnabled();
             var prev = GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsDisabled();
             GetButton("Last").AssertIsDisabled();
             Click(prev);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1573 of 1574; viewing 20 of 31465 items");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                .Text.StartsWith("Page 44 of 45"));
             var first = GetButton("First").AssertIsEnabled();
             GetButton("Previous").AssertIsEnabled();
             GetButton("Next").AssertIsEnabled();
             GetButton("Last").AssertIsEnabled();
             Click(first);
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-        == "Page 1 of 1574; viewing 20 of 31465 items");
-        }
-
-        [TestMethod]
-        public virtual void GoingBackToListViewRequiresReload()
-        {
-            Url(SpecialOffersMenuUrl);
-            Click(GetObjectAction("Current Special Offers"));
-            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
-            var row = WaitForCss(".reference");
-            Click(row);
-            WaitForView(Pane.Single, PaneType.Object, "No Discount");
-            Click(br.FindElement(By.CssSelector(".icon-back")));
-            WaitForView(Pane.Single, PaneType.List);
-            GetButton("Reload");  //i.e. test this exists
-            WaitUntilElementDoesNotExist(".collection .summary .details");
-            Reload();
-            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
-
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
+                 .Text.StartsWith("Page 1 of 45"));
         }
     }
 
