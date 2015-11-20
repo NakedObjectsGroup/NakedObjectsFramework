@@ -67,8 +67,7 @@ module NakedObjects.Angular.Gemini {
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
      
-        const currentLists: _.Dictionary<ListRepresentation>[] = []; // per pane 
-
+        let currentLists: _.Dictionary<ListRepresentation>[] = []; // cache last 'listCacheSize' lists
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
@@ -214,15 +213,24 @@ module NakedObjects.Angular.Gemini {
             return context.getObject(paneId, dt, id);
         };
 
+        function cacheList(list: ListRepresentation, index: string) {
+            if (currentLists.length >= listCacheSize) {
+                const firstIndex = (currentLists.length - listCacheSize) + 1;
+                currentLists = currentLists.slice(firstIndex);
+            }
+
+            const entry: _.Dictionary<ListRepresentation> = {};
+            entry[index] = list;
+            currentLists.push(entry);
+        }
+
+
         const handleResult = (paneId : number, result: ActionResultRepresentation, page : number, pageSize : number) => {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
-
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-                currentLists[paneId] = currentLists[paneId] || {};
-                currentLists[paneId][index] = resultList;
-
+                cacheList(resultList, index);
                 return $q.when(resultList);
             } else {
                 return $q.reject("expect list");
@@ -325,22 +333,16 @@ module NakedObjects.Angular.Gemini {
                 urlManager.setList(action, paneId, dvm);
     
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-
-                currentLists[paneId] = currentLists[paneId] || {};
-                currentLists[paneId][index] =  resultList ;
+                cacheList(resultList, index);
             } else if (dvm) {
                 urlManager.closeDialog(dvm.onPaneId);
             }
         };
 
-        function getCachedListFromPane(paneId: number, index : string) {     
-            currentLists[paneId] = currentLists[paneId] || {};
-            return currentLists[paneId] && currentLists[paneId][index];
-        }
-
-        context.getCachedList = (paneId: number, page: number, pageSize: number) => {
+        context.getCachedList = (paneId : number, page: number, pageSize: number) => {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-            return getCachedListFromPane(paneId, index) || getCachedListFromPane(paneId === 1 ? 2 : 1, index);
+            const e = _.find(currentLists, entry => entry[index]);
+            return e ? e[index] : null;
         }
 
         context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {

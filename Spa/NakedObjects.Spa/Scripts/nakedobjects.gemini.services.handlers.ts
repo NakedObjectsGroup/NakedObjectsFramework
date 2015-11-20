@@ -110,7 +110,6 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            // todo remove name - unused
             const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
             const recreate = (page: number, pageSize: number) => {
@@ -122,7 +121,6 @@ module NakedObjects.Angular.Gemini {
             const getFriendlyName = routeData.objectId ?
                 () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
-
 
             const pageOrRecreate = (newPage: number, newState? : CollectionViewState) => {
                 // todo make pagesize not hard coded 
@@ -141,6 +139,7 @@ module NakedObjects.Angular.Gemini {
                     setError(error);
                 });
             }
+
             getFriendlyName().then((name: string) => $scope.title = name);
 
             if (cachedList) {

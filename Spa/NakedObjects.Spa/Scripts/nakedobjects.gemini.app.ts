@@ -2,6 +2,12 @@
 /// <reference path="typings/angularjs/angular-route.d.ts" />
 
 module NakedObjects.Angular {
+
+    // consts to control app 
+    
+    export const defaultPageSize = 20; // can be overriden by server 
+    export const listCacheSize = 5;
+
     import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
   
     export const app = angular.module("app", ["ngRoute"]);
