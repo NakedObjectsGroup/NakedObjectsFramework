@@ -440,6 +440,14 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             return WaitForCss(".footer .icon-full");
         }
+
+        protected void GoBack(int clicks = 1)
+        {
+            for (int i = 1; i <= clicks; i++)
+            {
+                Click(br.FindElement(By.CssSelector(".icon-back")));
+            }
+        }
         #endregion
 
         #region Keyboard navigation 

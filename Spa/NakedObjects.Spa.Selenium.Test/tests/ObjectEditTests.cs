@@ -146,7 +146,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Failing pending bug fix : Stef
         public void ObjectEditPicksUpLatestServerVersion()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");

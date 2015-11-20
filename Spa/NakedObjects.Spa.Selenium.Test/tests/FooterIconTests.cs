@@ -31,6 +31,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-forward")));
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
         }
+
+
     }
 
     #region browsers specific subclasses 

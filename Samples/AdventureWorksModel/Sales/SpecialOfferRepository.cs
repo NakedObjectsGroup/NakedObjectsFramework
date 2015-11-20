@@ -29,6 +29,11 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        public IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty()
+        {
+            return CurrentSpecialOffers().Where(s => s.MinQty <= 1);
+        }
+
         [FinderAction]
         [MemberOrder(3)]
         public SpecialOffer CreateNewSpecialOffer() {

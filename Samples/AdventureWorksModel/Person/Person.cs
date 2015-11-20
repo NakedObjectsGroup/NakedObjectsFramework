@@ -292,7 +292,7 @@ namespace AdventureWorksModel {
         }
 
         [QueryOnly] //This action is deliberately marked QueryOnly even
-        //though it is not  -  for testing purposes. Don't change it!
+        //though it is not. Don't change it!
         public void UpdateSuffix(string newSuffix)
         {
             Suffix = newSuffix;
