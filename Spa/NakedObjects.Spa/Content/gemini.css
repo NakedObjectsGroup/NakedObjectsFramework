@@ -219,9 +219,24 @@
     }
 
 /*Hover & Focus*/
+   .dialog input[type='text']
+   {
+       padding-left: 4px;
+   }
+   .dialog input[type='text']:hover, .dialog input[type='text']:focus
+ {
+        border: solid;
+        border-width: 1px;
+        padding: 2px;
+        padding-left: 5px;
+        border-color: black;
+    }
 
-   .dialog input:not([type='checkbox']):focus, 
-   .dialog input:not([type='checkbox']):hover
+
+   .dialog input[type='button']:focus, 
+   .dialog input[type='button']:hover,
+      .dialog input[type='submit']:focus, 
+   .dialog input[type='submit']:hover
  {
         outline: solid;
         outline-width: 1px;
