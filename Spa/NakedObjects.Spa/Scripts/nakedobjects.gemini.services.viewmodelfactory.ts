@@ -14,8 +14,8 @@ module NakedObjects.Angular.Gemini{
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
         dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm? : DomainObjectViewModel): DialogViewModel;
 
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newState? : CollectionViewState) => void): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newState?: CollectionViewState) => void) : CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize : number,  newState? : CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void) : CollectionViewModel;
 
         collectionPlaceholderViewModel(page: number, reload: () => void) : CollectionPlaceholderViewModel;
 
@@ -441,7 +441,7 @@ module NakedObjects.Angular.Gemini{
             return collectionViewModel;
         }
        
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newState : CollectionViewState) => void) {
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState : CollectionViewState) => void) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value().models;
 
@@ -462,7 +462,7 @@ module NakedObjects.Angular.Gemini{
 
             const setPage =  (newPage: number, newState : CollectionViewState) => {
                 // todo do we need timeout ?
-                $timeout(() =>   recreate(newPage, newState));
+                $timeout(() =>   recreate(newPage, pageSize, newState));
             }
 
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
