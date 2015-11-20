@@ -555,6 +555,7 @@ module NakedObjects.Angular.Gemini{
             objectViewModel.isTransient = !!objectRep.persistLink();
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
             objectViewModel.domainType = objectRep.domainType();
+            objectViewModel.instanceId = objectRep.instanceId();
             objectViewModel.draggableType = objectViewModel.domainType;
 
             objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
@@ -611,11 +612,15 @@ module NakedObjects.Angular.Gemini{
                 urlManager.setObjectEdit(true, paneId);
             }
 
-            objectViewModel.doReload = () =>
+            objectViewModel.doReload = (refreshScope?: boolean) =>
                 context.reloadObject(paneId, objectRep).
-                    then((updatedObject: DomainObjectRepresentation) =>
-                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId));
-                
+                then((updatedObject: DomainObjectRepresentation) => {
+                    setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);
+                    if (refreshScope) {
+                        $scope.object = objectViewModel;
+                    }
+                });
+
         };
 
 

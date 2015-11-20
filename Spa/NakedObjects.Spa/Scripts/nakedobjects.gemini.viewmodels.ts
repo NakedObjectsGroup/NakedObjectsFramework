@@ -302,6 +302,7 @@ module NakedObjects.Angular.Gemini {
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel{
         title: string;
         domainType: string; 
+        instanceId: string;
         properties: PropertyViewModel[];
         collections: CollectionViewModel[];
         actions: ActionViewModel[];
@@ -314,7 +315,7 @@ module NakedObjects.Angular.Gemini {
 
         doEdit(): void { }
         doEditCancel(): void { }
-        doReload(): void { }
+        doReload(refreshScope? : boolean): void { }
 
         hideEdit(): boolean {
             return  this.isTransient ||  _.all(this.properties, p => !p.isEditable);
@@ -325,6 +326,7 @@ module NakedObjects.Angular.Gemini {
         value: Object;
         reference: string;
         choice : ChoiceViewModel;
+       
     }
 
     export class ToolBarViewModel {

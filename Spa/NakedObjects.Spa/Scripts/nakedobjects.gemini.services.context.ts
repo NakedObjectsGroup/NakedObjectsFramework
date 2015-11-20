@@ -59,6 +59,8 @@ module NakedObjects.Angular.Gemini {
         $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
 
+        let dirtyObjects: _.Dictionary<boolean> = {};
+
         // cached values
        
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
@@ -87,16 +89,21 @@ module NakedObjects.Angular.Gemini {
         // exposed for test mocking
         context.getDomainObject = (paneId : number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
 
-            if (isSameObject(currentObjects[paneId], type, id)) {
+            // todo make this cleaner 
+            const key = type + "-" + id;
+            const isDirty = dirtyObjects[key];
+
+            if (!isDirty && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
             }
 
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
 
-            return repLoader.populate<DomainObjectRepresentation>(object).
+            return repLoader.populate<DomainObjectRepresentation>(object, isDirty).
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
+                    dirtyObjects = _.omit(dirtyObjects, key) as _.Dictionary<boolean>;
                     return $q.when(obj);
                 });
         };
@@ -104,6 +111,8 @@ module NakedObjects.Angular.Gemini {
         context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => {
 
             const reloadedObject = new DomainObjectRepresentation();
+
+            // todo should be in view model
             reloadedObject.hateoasUrl = getAppPath() + "/objects/" + object.domainType() + "/" + object.instanceId();
 
             return repLoader.populate<DomainObjectRepresentation>(reloadedObject, true).
@@ -388,17 +397,19 @@ module NakedObjects.Angular.Gemini {
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
+          
+
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
-  
-                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
-                    
+
                     if (ovm) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
                         if (actionIsNotQueryOnly) {
-                            ovm.doReload();
+                            dirtyObjects[ovm.domainType + "-" + ovm.instanceId] = true;
                         }
                     }
+
+                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, parameters, dvm);
