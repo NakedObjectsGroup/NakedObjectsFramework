@@ -390,8 +390,8 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
-                    // todo hard coded page size 
-                    context.setResult(action, result, paneId, 1, 20, dvm);
+  
+                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                     
                     if (ovm) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";

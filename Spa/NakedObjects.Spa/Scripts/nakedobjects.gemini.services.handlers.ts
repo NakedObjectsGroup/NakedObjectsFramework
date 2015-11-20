@@ -122,9 +122,8 @@ module NakedObjects.Angular.Gemini {
                 () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
 
-            const pageOrRecreate = (newPage: number, newState? : CollectionViewState) => {
-                // todo make pagesize not hard coded 
-                recreate(newPage, 20).then((list: ListRepresentation) => {
+            const pageOrRecreate = (newPage: number, newPageSize, newState? : CollectionViewState) => {
+                recreate(newPage, newPageSize).then((list: ListRepresentation) => {
 
                     const state = newState || routeData.state;
                     
@@ -134,7 +133,7 @@ module NakedObjects.Angular.Gemini {
                     getFriendlyName().then((name: string) => $scope.title = name);
                 
                     focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());       
-                    urlManager.setListPaging(routeData.paneId, newPage, routeData.pageSize, state);           
+                    urlManager.setListPaging(routeData.paneId, newPage, newPageSize, state);           
                 }).catch(error => {
                     setError(error);
                 });
@@ -148,7 +147,7 @@ module NakedObjects.Angular.Gemini {
                 focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
-                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page));
+                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
                 focusManager.focusOn(FocusTarget.FirstAction, urlManager.currentpane());       
             }
         };

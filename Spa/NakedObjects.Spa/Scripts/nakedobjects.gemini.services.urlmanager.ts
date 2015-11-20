@@ -270,7 +270,7 @@ module NakedObjects.Angular.Gemini {
             search[action + paneId] = aid;
 
             search[`${page}${paneId}`] = 1;
-            search[`${pageSize}${paneId}`] = 20;
+            search[`${pageSize}${paneId}`] = defaultPageSize;
 
             if (dvm) {
                 _.each(dvm.parameters, p => setParameter(paneId, search, p));
