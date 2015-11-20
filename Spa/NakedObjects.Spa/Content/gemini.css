@@ -171,7 +171,9 @@
     }
 
     select {
-        width: 240px; /*Allow space for drop-down arrow in IE*/
+        width: 245px; 
+        margin-left: 1px;
+        height: 20px;
     }
 
     .name, .value, .property .reference {
@@ -195,24 +197,25 @@
     .value.droppable {
         border: solid;
         border-width: 1px;
-        width: 225px;
+        width: 245px;
         height: 20px;
     }
 
-    .property .value.droppable {
-        border-color: white;
-    }
+    /*.property .value.droppable {
+        border-color: red;
+    }*/
 
    .parameter .value.droppable {
         border-color: black;
     }
 
-    .value.droppable.candrop {
+    .value.droppable.dropping.candrop {
         border-color: lawngreen;
+        background-color: white;
     }
 
     .value.droppable.dropping {
-        background-color: white;
+        border-color: red;
     }
 
 /*Hover & Focus*/
