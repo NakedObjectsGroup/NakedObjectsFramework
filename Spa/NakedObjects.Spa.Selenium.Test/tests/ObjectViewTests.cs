@@ -162,6 +162,46 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
         }
         #endregion
+
+        [TestMethod] 
+        public void QueryOnlyActionDoesNotReloadAutomatically()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
+            var original = WaitForCss(".property:nth-child(6) .value").Text;   
+            var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
+            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            var newValue = DateTime.Now.Millisecond.ToString();
+            TypeIntoField(".parameter:nth-child(1) input", newValue );
+            Click(OKButton()); //This will have updated server, but not client-cached object
+            //Go and do something else, so screen changes, then back again
+            GeminiUrl("");
+            WaitForView(Pane.Single, PaneType.Home);
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+            WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
+            var valueNow = WaitForCss(".property:nth-child(6) .value");
+            Assert.AreEqual(original, valueNow.Text);
+            Reload();
+            GeminiUrl("");
+            WaitForView(Pane.Single, PaneType.Home);
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+            valueNow = WaitForCss(".property:nth-child(6) .value");
+            Assert.AreEqual(newValue, valueNow.Text);
+       }
+
+        [TestMethod, Ignore] //Pending bug fix: Stef
+        public void PotentActionDoesReloadAutomatically()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
+            var original = WaitForCss(".property:nth-child(3) .value").Text;
+            var dialog = OpenActionDialog("Update Middle Name"); //This is deliberately wrongly marked up as QueryOnly
+            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            var newValue = DateTime.Now.Millisecond.ToString();
+            TypeIntoField(".parameter:nth-child(1) input", newValue);
+            Click(OKButton()); 
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
+        }
     }
 
     #region browsers specific subclasses

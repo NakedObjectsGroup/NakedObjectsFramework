@@ -145,6 +145,28 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
         }
+
+        [TestMethod]
+        public void ObjectEditPicksUpLatestServerVersion()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
+            var original = WaitForCss(".property:nth-child(6) .value").Text;
+            var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
+            var field1 = WaitForCss(".parameter:nth-child(1) input");
+            var newValue = DateTime.Now.Millisecond.ToString();
+            TypeIntoField(".parameter:nth-child(1) input", newValue);
+            Click(OKButton()); //This will have updated server, but not client-cached object
+            WaitUntilElementDoesNotExist(".dialog");
+            EditObject();
+            //Then ensure that view has updated
+            GeminiUrl("");
+            WaitForView(Pane.Single, PaneType.Home);
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+
+            var valueNow = WaitForCss(".property:nth-child(6) .value").Text;
+            Assert.AreEqual(newValue, valueNow);
+        }
     }
 
     #region browsers specific subclasses

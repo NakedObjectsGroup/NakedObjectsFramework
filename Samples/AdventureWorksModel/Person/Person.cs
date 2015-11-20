@@ -283,5 +283,20 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        #region Actions for test purposes only
+
+        public void UpdateMiddleName(string newName)
+        {
+            MiddleName = newName;
+        }
+
+        [QueryOnly] //This action is deliberately marked QueryOnly even
+        //though it is not  -  for testing purposes. Don't change it!
+        public void UpdateSuffix(string newSuffix)
+        {
+            Suffix = newSuffix;
+        }
+        #endregion
     }
 }
