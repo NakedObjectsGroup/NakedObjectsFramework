@@ -266,6 +266,8 @@ module NakedObjects.Angular.Gemini {
         pageNextDisabled(): boolean { return false; }
         pageLastDisabled(): boolean { return false; }
 
+        reload: () => void;
+
         description(): string { return this.size.toString()}
 
         template: string;

@@ -468,8 +468,7 @@ module NakedObjects.Angular.Gemini{
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
             collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page, state);
             collectionViewModel.pageFirst = () => setPage(1, state);
-            collectionViewModel.pageLast = () =>
-                setPage(numPages, state);
+            collectionViewModel.pageLast = () => setPage(numPages, state);
 
             const earlierDisabled = () => page === 1 || numPages === 1;
             const laterDisabled = () => page === numPages || numPages === 1;
@@ -480,11 +479,12 @@ module NakedObjects.Angular.Gemini{
             collectionViewModel.pagePreviousDisabled = earlierDisabled;
 
             const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setListState, paneId);
-        
+
             collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
             collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
             collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
 
+            collectionViewModel.reload = () => setPage(page, state);
 
             return collectionViewModel;
         }
