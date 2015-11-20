@@ -427,8 +427,8 @@ module NakedObjects.Angular.Gemini {
 
             const s4 = _.reduce(parms, (r, n, k) => r + (k + "=" + n + "-"), "");
 
-            const s5 = newPage.toString();
-            const s6 = newPageSize.toString();
+            const s5 = `${newPage}`;
+            const s6 = `${newPageSize}`;
 
             const ss = [s1, s2, s3, s4, s5, s6] as string[];
 
