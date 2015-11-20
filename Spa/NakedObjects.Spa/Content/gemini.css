@@ -227,6 +227,7 @@
 
    .menu:hover, .menu:focus, 
    .reference:hover, .reference:focus,
+   tbody tr:hover, tr:focus,
    .clickable-row:hover,  .clickable-row:focus,
    div.hover, div.focus,
     .action:hover, .action:focus, 

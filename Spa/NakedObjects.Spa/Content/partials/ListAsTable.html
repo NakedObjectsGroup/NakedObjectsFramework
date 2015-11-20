@@ -48,7 +48,7 @@
                                 <div ng-switch-default class="clickable-area">{{property.value}}</div>
                             </div>
                             <div ng-switch-when="boolean" class="clickable-area">
-                                <input type="checkbox" onclick=" return false " ng-checked="property.value" />
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
                             </div>
                             <div ng-switch-default class="clickable-area">
                                 {{property.value}}
