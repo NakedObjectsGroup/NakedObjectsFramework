@@ -1,5 +1,7 @@
 ﻿module NakedObjects.RoInterfaces {
 
+    
+
     export interface ILink {
         rel?: string;
         href: string;
@@ -29,14 +31,17 @@
         // ReSharper restore InconsistentNaming
     }
 
-    export interface IHomePageRepresentation {
+    export interface IResourceRepresentation {
         links: ILink[],
         extensions: IExtensions;
     }
 
-    export interface IUserRepresentation {
-        links: ILink[],
-        extensions: IExtensions;
+
+    export interface IHomePageRepresentation extends IResourceRepresentation{
+ 
+    }
+
+    export interface IUserRepresentation extends IResourceRepresentation {
         userName: string,
         friendlyName: string,
         email: string,
@@ -125,5 +130,57 @@
         title: string;
         members: { [index: string]: IMember };
     }
+
+    export interface IActionInvokeRepresentation {
+        links: ILink[];
+        extensions: IExtensions;
+        resultType: string;
+        result?: IDomainObjectRepresentation | ListRepresentation | IScalarValueRepresentation;
+    }
+
+    export interface IDomainTypeRepresentation {
+        links: ILink[];
+        extensions: IExtensions;
+        name: string;
+        domainType: string;
+        friendlyName: string;
+        pluralName: string;
+        description: string;
+        isService: string;
+        typeActions: string;
+        members: { [index: string]: ILink };
+    }
+
+    export interface IDomainTypePropertyDescriptionRepresentation {
+        links: ILink[];
+        extensions: IExtensions;
+        id: string;
+        friendlyName: string;
+        pluralName: string;
+        description: string;
+        optional: boolean;
+        maxlength: number;
+        pattern: string;
+        memberOrder: string;
+        format : string;
+        isService: string;
+        typeActions: string;
+    }
+
+    export interface IDomainTypeCollectionDescriptionRepresentation {
+        links: ILink[];
+        extensions: IExtensions;
+        id: string;
+        friendlyName: string;
+        pluralForm: string;
+        description: string;
+        optional: boolean;
+        maxlength: number;
+        pattern: string;
+        memberOrder: string;
+        format: string;
+        typeActions: string;
+    }
+
 
 }

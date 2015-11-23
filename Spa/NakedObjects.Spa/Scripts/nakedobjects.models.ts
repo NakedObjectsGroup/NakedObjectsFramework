@@ -33,7 +33,8 @@ module NakedObjects {
         hateoasUrl: string;
         method: string;
         url: any;
-        urlParms : _.Dictionary<string>;
+        urlParms: _.Dictionary<string>;
+        populate(wrapped : RoInterfaces.IResourceRepresentation);
     }
 
     export interface IExtensions {
@@ -116,7 +117,7 @@ module NakedObjects {
             this.uniqueValue = splitPostFix[0];
 
             if (splitPostFix.length > 1) {
-                this.parms = _.map(splitPostFix.slice(1), (s) => new RelParm(s));
+                this.parms = _.map(splitPostFix.slice(1), s => new RelParm(s));
             }
         }
     }
@@ -314,6 +315,10 @@ module NakedObjects {
             super(object);
         }
 
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            super.populate(wrapped);
+        }
+
         onError(map: Object, statusCode: string, warnings: string) {
             return new ErrorMap(map, statusCode, warnings);
         }
@@ -508,6 +513,10 @@ module NakedObjects {
             };
         }
 
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            super.populate(wrapped);
+        }
+
         hateoasUrl: string;
         method: string;
 
@@ -542,9 +551,13 @@ module NakedObjects {
 
     // REPRESENTATIONS
 
-    export class ResourceRepresentation extends HateoasModelBase {
+    export abstract class ResourceRepresentation extends HateoasModelBase {
         constructor(object? : any) {
             super(object);
+        }
+
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            super.populate(wrapped);
         }
 
         private lazyLinks: Links;
@@ -1611,6 +1624,10 @@ module NakedObjects {
         constructor() {
             super();
             this.hateoasUrl = appPath;
+        }
+
+        populate(wrapped: RoInterfaces.IHomePageRepresentation) {
+            super.populate(wrapped);
         }
 
         // links 

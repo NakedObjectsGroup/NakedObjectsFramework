@@ -11,7 +11,7 @@ module NakedObjects.Angular {
     }
 
     // TODO investigate using transformations to transform results 
-    app.service("repLoader", function ($http, $q, $rootScope) {
+    app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService) {
 
         const repLoader = this; 
         repLoader.loadingCount = 0; 
@@ -53,8 +53,6 @@ module NakedObjects.Angular {
             const response = expected || model;
             const useCache = !ignoreCache;
 
-            const delay = $q.defer();
-
             const config = {
                 url: getUrl(model),
                 method: model.method,
@@ -63,31 +61,34 @@ module NakedObjects.Angular {
             };
 
             $rootScope.$broadcast("ajax-change", ++this.loadingCount); 
-            $http(config).
-                success(function (data, status, headers, config) {
-                    (<any>response).attributes = data; // TODO make typed 
-                    delay.resolve(response);
-                    $rootScope.$broadcast("ajax-change", --this.loadingCount); 
-                }).
-                error(function (data, status, headers, config) {
 
-                    if (status === 500) {
-                        var error = new ErrorRepresentation(data);
-                        delay.reject(error);
+            return $http(config).
+                then(function (promiseCallback : ng.IHttpPromiseCallbackArg<{}>) {
+                    //(<any>response).attributes = promiseCallback.data; // TODO make typed 
+
+                    response.populate(promiseCallback.data as RoInterfaces.IResourceRepresentation);
+                    $rootScope.$broadcast("ajax-change", --this.loadingCount);
+                    return $q.when(response);
+                }).
+                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<{}>) {
+
+                    let reason: ErrorRepresentation | ErrorMap | string; 
+
+                    if (promiseCallback.status === 500) {
+                        reason = new ErrorRepresentation(promiseCallback.data);          
                     }
-                    else if (status === 400 || status === 422) {
-                        var errorMap = new ErrorMap(data, status, headers().warning);
-                        delay.reject(errorMap);
+                    else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
+                        reason = new ErrorMap(promiseCallback.data, status, promiseCallback.headers("warning"));
                     }
                     else {
-                        delay.reject(headers().warning);
+                        reason = promiseCallback.headers("warning");
                     }
-                    $rootScope.$broadcast("ajax-change", --this.loadingCount); 
+                    $rootScope.$broadcast("ajax-change", --this.loadingCount);
+                    return $q.reject(reason);
                 });
-
-            return delay.promise;
         };
 
+       
 
         repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
             const invoke = action.getInvoke(); 
