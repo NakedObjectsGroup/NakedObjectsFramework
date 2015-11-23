@@ -51,10 +51,8 @@
       <PackagesConfig>$(NuGetToolsPath)\packages.config</PackagesConfig>
       <PackagesDir>$(SolutionDir)packages</PackagesDir>
       <SolutionRestoreCommand>"$(Nuget)" install "$(PackagesConfig)" -o "$(InstalledPackagesPath)"</SolutionRestoreCommand>
-      <NugetRestoreCommand>"$(Nuget)" install "nunit.runners" -o "$(InstalledPackagesPath)"  -version "2.6.4" "</NugetRestoreCommand>
     </PropertyGroup>
     <Exec Command="$(SolutionRestoreCommand)" Condition="Exists('$(PackagesConfig)')"/>
-    <Exec Command="$(NugetRestoreCommand)"/>
   </Target>
   
   <Target Name="ZipTemplates" DependsOnTargets="RestoreSolutionPackages">
