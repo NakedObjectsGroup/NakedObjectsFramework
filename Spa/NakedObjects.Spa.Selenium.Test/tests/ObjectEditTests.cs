@@ -146,9 +146,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
         }
 
-        [TestMethod, Ignore] //Failing pending bug fix : Stef
+        [TestMethod] 
         public void ObjectEditPicksUpLatestServerVersion()
         {
+
             GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
             WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
             var original = WaitForCss(".property:nth-child(6) .value").Text;
@@ -158,14 +159,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             TypeIntoField(".parameter:nth-child(1) input", newValue);
             Click(OKButton()); //This will have updated server, but not client-cached object
             WaitUntilElementDoesNotExist(".dialog");
-            EditObject();
-            //Then ensure that view has updated
-            GeminiUrl("");
-            WaitForView(Pane.Single, PaneType.Home);
-            Click(br.FindElement(By.CssSelector(".icon-back")));
-
-            var valueNow = WaitForCss(".property:nth-child(6) .value").Text;
-            Assert.AreEqual(newValue, valueNow);
+            //Check view has not updated because it was a queryonly action
+            Assert.AreEqual(original, WaitForCss(".property:nth-child(6) .value").Text);
+            EditObject(); //This will update object from server
+            Click(GetCancelEditButton()); //but can't read the value, so go back to view
+            Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
+            Assert.AreEqual(GeminiBaseUrl+"", br.Url);
+            //wait.Until(dr => dr.Url == "object?object1=AdventureWorksModel.Person-8410&actions1=open");
         }
     }
 

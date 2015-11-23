@@ -93,6 +93,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             target.SendKeys(Keys.Control + "v");
             wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == copying);
         }
+
+        [TestMethod]
+        public void DroppableReferenceFieldWithoutAutoComplete()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-121");
+            GetReferenceProperty("Order Placed By", "Sheela Word");
+            EditObject();
+            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(".property"))
+        .Where(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+        we.FindElement(By.CssSelector(".value.droppable")).Text == "Sheela Word").Single()
+);
+        }
     }
 
     #region browsers specific subclasses
