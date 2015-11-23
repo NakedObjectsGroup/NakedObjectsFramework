@@ -11,7 +11,7 @@
     <Nuget>..\.nuget\nuget.exe</Nuget>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
     <CommunityTasks>.build\MSBuild.Community.Tasks.dll</CommunityTasks>
-    <NUnitVer>3.0.0</NUnitVer>
+    <NUnitVer>2.6.4</NUnitVer>
   </PropertyGroup>
 
   <Import Project="$(CommunityTargets)"/>
