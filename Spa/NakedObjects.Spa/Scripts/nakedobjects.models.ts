@@ -18,6 +18,8 @@
 /// <reference path="nakedobjects.config.ts" />
 
 module NakedObjects {
+    import IExtensions = NakedObjects.RoInterfaces.IExtensions;
+    import ILink = NakedObjects.RoInterfaces.ILink;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -35,27 +37,6 @@ module NakedObjects {
         url: any;
         urlParms: _.Dictionary<string>;
         populate(wrapped : RoInterfaces.IResourceRepresentation);
-    }
-
-    export interface IExtensions {
-        friendlyName: string;
-        description: string;
-        returnType: string;
-        optional: boolean;
-        hasParams: boolean;
-        elementType: string;
-        domainType: string;
-        pluralName: string;
-        format: string;
-        memberOrder: number;
-        isService: boolean;
-        minLength: number;
-        // custom extensions with "x-ro-nof-" prefix 
-        // ReSharper disable InconsistentNaming
-        "x-ro-nof-choices": Object;
-        "x-ro-nof-menuPath": string;
-        "x-ro-nof-mask" : string;
-        // ReSharper restore InconsistentNaming
     }
 
     export interface IOptionalCapabilities {
@@ -528,24 +509,18 @@ module NakedObjects {
             return response.value;
         }
 
-        static wrapLinks(links: any): Links {
+        static wrapLinks(links: ILink[]): Links {
             const ll = new Links();       
             ll.add(links || []);          
             return ll;
         }
 
         // returns first link of rel
-        private getLinkByRel(rel: Rel): Link {
-            return _.find(this.models, (i: Link) => {
-                return i.rel().uniqueValue === rel.uniqueValue;
-            });
-        }
+        private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
 
-        linkByRel(rel: string) {
-            return this.getLinkByRel(new Rel(rel));
-        }
+        linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
 
-        urlParms : _.Dictionary<string>;
+        urlParms: _.Dictionary<string>;
     }
 
 
@@ -556,19 +531,22 @@ module NakedObjects {
             super(object);
         }
 
+        protected resource : RoInterfaces.IResourceRepresentation;
+
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            this.resource = wrapped; 
             super.populate(wrapped);
         }
 
         private lazyLinks: Links;
 
         links(): Links {
-            this.lazyLinks = this.lazyLinks || Links.wrapLinks(this.get("links"));
+            this.lazyLinks = this.lazyLinks || Links.wrapLinks(this.resource.links);
             return this.lazyLinks;
         }
 
         extensions(): IExtensions {
-            return this.get("extensions");
+            return this.resource.extensions;
         }
     }
 
@@ -1626,9 +1604,7 @@ module NakedObjects {
             this.hateoasUrl = appPath;
         }
 
-        populate(wrapped: RoInterfaces.IHomePageRepresentation) {
-            super.populate(wrapped);
-        }
+        homePage : RoInterfaces.IHomePageRepresentation = this.resource;
 
         // links 
         serviceLink(): Link {
