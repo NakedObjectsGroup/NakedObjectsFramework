@@ -157,7 +157,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.getHome = () => {
-            // for moment don't bother caching only called on startup and for whatever resaon cacahe doesn't work. 
+            // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
             // once version cached no longer called.  
             return repLoader.populate<HomePageRepresentation>(new HomePageRepresentation());
         };

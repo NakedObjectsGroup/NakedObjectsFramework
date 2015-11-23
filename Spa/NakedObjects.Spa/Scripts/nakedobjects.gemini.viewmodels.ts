@@ -315,7 +315,8 @@ module NakedObjects.Angular.Gemini {
 
         doEdit(): void { }
         doEditCancel(): void { }
-        doReload(refreshScope? : boolean): void { }
+        doReload(refreshScope?: boolean): void { }
+        editComplete(): void { };
 
         hideEdit(): boolean {
             return  this.isTransient ||  _.all(this.properties, p => !p.isEditable);
@@ -326,7 +327,7 @@ module NakedObjects.Angular.Gemini {
         value: Object;
         reference: string;
         choice : ChoiceViewModel;
-        editComplete: () => void;
+
     }
 
     export class ToolBarViewModel {

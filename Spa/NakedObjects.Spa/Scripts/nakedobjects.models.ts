@@ -18,6 +18,8 @@
 /// <reference path="nakedobjects.config.ts" />
 
 module NakedObjects {
+    import IExtensions = NakedObjects.RoInterfaces.IExtensions;
+    import ILink = NakedObjects.RoInterfaces.ILink;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -33,28 +35,8 @@ module NakedObjects {
         hateoasUrl: string;
         method: string;
         url: any;
-        urlParms : _.Dictionary<string>;
-    }
-
-    export interface IExtensions {
-        friendlyName: string;
-        description: string;
-        returnType: string;
-        optional: boolean;
-        hasParams: boolean;
-        elementType: string;
-        domainType: string;
-        pluralName: string;
-        format: string;
-        memberOrder: number;
-        isService: boolean;
-        minLength: number;
-        // custom extensions with "x-ro-nof-" prefix 
-        // ReSharper disable InconsistentNaming
-        "x-ro-nof-choices": Object;
-        "x-ro-nof-menuPath": string;
-        "x-ro-nof-mask" : string;
-        // ReSharper restore InconsistentNaming
+        urlParms: _.Dictionary<string>;
+        populate(wrapped : RoInterfaces.IResourceRepresentation);
     }
 
     export interface IOptionalCapabilities {
@@ -116,7 +98,7 @@ module NakedObjects {
             this.uniqueValue = splitPostFix[0];
 
             if (splitPostFix.length > 1) {
-                this.parms = _.map(splitPostFix.slice(1), (s) => new RelParm(s));
+                this.parms = _.map(splitPostFix.slice(1), s => new RelParm(s));
             }
         }
     }
@@ -314,6 +296,10 @@ module NakedObjects {
             super(object);
         }
 
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            super.populate(wrapped);
+        }
+
         onError(map: Object, statusCode: string, warnings: string) {
             return new ErrorMap(map, statusCode, warnings);
         }
@@ -508,6 +494,10 @@ module NakedObjects {
             };
         }
 
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            super.populate(wrapped);
+        }
+
         hateoasUrl: string;
         method: string;
 
@@ -519,43 +509,44 @@ module NakedObjects {
             return response.value;
         }
 
-        static wrapLinks(links: any): Links {
+        static wrapLinks(links: ILink[]): Links {
             const ll = new Links();       
             ll.add(links || []);          
             return ll;
         }
 
         // returns first link of rel
-        private getLinkByRel(rel: Rel): Link {
-            return _.find(this.models, (i: Link) => {
-                return i.rel().uniqueValue === rel.uniqueValue;
-            });
-        }
+        private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
 
-        linkByRel(rel: string) {
-            return this.getLinkByRel(new Rel(rel));
-        }
+        linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
 
-        urlParms : _.Dictionary<string>;
+        urlParms: _.Dictionary<string>;
     }
 
 
     // REPRESENTATIONS
 
-    export class ResourceRepresentation extends HateoasModelBase {
+    export abstract class ResourceRepresentation extends HateoasModelBase {
         constructor(object? : any) {
             super(object);
+        }
+
+        protected resource : RoInterfaces.IResourceRepresentation;
+
+        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+            this.resource = wrapped; 
+            super.populate(wrapped);
         }
 
         private lazyLinks: Links;
 
         links(): Links {
-            this.lazyLinks = this.lazyLinks || Links.wrapLinks(this.get("links"));
+            this.lazyLinks = this.lazyLinks || Links.wrapLinks(this.resource.links);
             return this.lazyLinks;
         }
 
         extensions(): IExtensions {
-            return this.get("extensions");
+            return this.resource.extensions;
         }
     }
 
@@ -1612,6 +1603,8 @@ module NakedObjects {
             super();
             this.hateoasUrl = appPath;
         }
+
+        homePage : RoInterfaces.IHomePageRepresentation = this.resource;
 
         // links 
         serviceLink(): Link {

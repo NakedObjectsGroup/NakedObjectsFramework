@@ -29,23 +29,23 @@
         // ReSharper restore InconsistentNaming
     }
 
-    export interface IHomePageRepresentation {
+    export interface IResourceRepresentation {
         links: ILink[],
         extensions: IExtensions;
     }
 
-    export interface IUserRepresentation {
-        links: ILink[],
-        extensions: IExtensions;
+    export interface IHomePageRepresentation extends IResourceRepresentation {
+
+    }
+
+    export interface IUserRepresentation extends IResourceRepresentation {
         userName: string,
         friendlyName: string,
         email: string,
         roles: string[];
     }
 
-    export interface IDomainServicesRepresentation {
-        links: ILink[],
-        extensions: IExtensions,
+    export interface IDomainServicesRepresentation extends IResourceRepresentation {
         value: ILink[];
     }
 
@@ -57,9 +57,7 @@
         validateOnly: string;
     }
 
-    export interface IVersionRepresentation {
-        links: ILink[],
-        extensions: IExtensions;
+    export interface IVersionRepresentation extends IResourceRepresentation {
         specVersion: string;
         implVersion: string;
         optionalCapabilities: IOptionalCapabilities;
@@ -74,9 +72,7 @@
         members: { [index: string]: IValue };
     }
 
-    export interface IErrorRepresentation {
-        links: ILink[];
-        extensions: IExtensions;
+    export interface IErrorRepresentation extends IResourceRepresentation {
         message: string;
         stackTrace: string[];
         causedBy: {
@@ -85,21 +81,15 @@
         };
     }
 
-    export interface IListRepresentation {
-        links: ILink[];
-        extensions: IExtensions;
+    export interface IListRepresentation extends IResourceRepresentation {
         value: ILink[];
     }
 
-    export interface IScalarValueRepresentation {
-        links: ILink[];
-        extensions: IExtensions;
+    export interface IScalarValueRepresentation extends IResourceRepresentation {
         value: string | number | boolean;
     }
 
-    export interface IMember {
-        links: ILink[];
-        extensions: IExtensions;
+    export interface IMember extends IResourceRepresentation {
         memberType: string;
         disabledReason?: string;
     }
@@ -116,9 +106,7 @@
     export interface IActionMember extends IMember {
     }
 
-    export interface IDomainObjectRepresentation {
-        links: ILink[];
-        extensions: IExtensions;
+    export interface IDomainObjectRepresentation extends IResourceRepresentation {
         domainType: string;
         instanceId: string;
         serviceId: string;
@@ -126,4 +114,46 @@
         members: { [index: string]: IMember };
     }
 
+    export interface IActionInvokeRepresentation extends IResourceRepresentation {
+        resultType: string;
+        result?: IDomainObjectRepresentation | ListRepresentation | IScalarValueRepresentation;
+    }
+
+    export interface IDomainTypeRepresentation extends IResourceRepresentation {
+        name: string;
+        domainType: string;
+        friendlyName: string;
+        pluralName: string;
+        description: string;
+        isService: string;
+        typeActions: string;
+        members: { [index: string]: ILink };
+    }
+
+    export interface IDomainTypePropertyDescriptionRepresentation extends IResourceRepresentation {
+        id: string;
+        friendlyName: string;
+        pluralName: string;
+        description: string;
+        optional: boolean;
+        maxlength: number;
+        pattern: string;
+        memberOrder: string;
+        format: string;
+        isService: string;
+        typeActions: string;
+    }
+
+    export interface IDomainTypeCollectionDescriptionRepresentation extends IResourceRepresentation {
+        id: string;
+        friendlyName: string;
+        pluralForm: string;
+        description: string;
+        optional: boolean;
+        maxlength: number;
+        pattern: string;
+        memberOrder: string;
+        format: string;
+        typeActions: string;
+    }
 }

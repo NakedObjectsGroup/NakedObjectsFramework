@@ -23,6 +23,11 @@ module NakedObjects {
         constructor(object? : any) {
             this.attributes = object;
         }
+
+        populate(wrapped: any) {
+            this.attributes = wrapped;
+        }
+
         url(): string {
             return "";
         }
@@ -61,6 +66,10 @@ module NakedObjects {
 
     export class CollectionShim {
         constructor(object? : any) { }
+
+        populate(wrapped: any) {
+        
+        }
 
         url(): any { }
         models: any[];
