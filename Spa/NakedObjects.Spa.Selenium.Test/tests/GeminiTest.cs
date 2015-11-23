@@ -468,6 +468,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return WaitForCss(cssSelector);
         }
 
+        protected IWebElement PasteIntoReferenceField(string cssSelector)
+        {
+            var target = WaitForCss(cssSelector);
+            var copying = WaitForCss(".footer .currentcopy .reference").Text;
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == copying);
+            return WaitForCss(cssSelector);
+        }
+
         protected IWebElement Tab(int numberIfTabs = 1)
         {
             for (int i = 1; i <= numberIfTabs; i++)

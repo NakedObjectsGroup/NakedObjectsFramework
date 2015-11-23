@@ -15,7 +15,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     public abstract class CopyAndPasteTests : AWTest
     {
-
         [TestMethod]
         public virtual void CopyTitleOrPropertyIntoClipboard()
         {
@@ -63,9 +62,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         [TestMethod]
-        public virtual void PasteIntoEditableReferenceField()
+        public virtual void PasteIntoReferenceField()
         {
-            GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true&prop1_Name=%2522Touring%2520Services%2522&prop1_SalesPerson=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesPerson%252F279%2522%252C%2522title%2522%253A%2522Tsvi%2520Reiter%2522%257D");
+            GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Employee-161");
+            WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
+            Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Kirk Koenigsbauer", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            PasteIntoReferenceField("#pane1 .property:nth-child(4) .value.droppable");
+        }
+
+        [TestMethod]
+        public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu()
+        {
+            GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
             Assert.AreEqual("Tsvi Reiter", WaitForCss("#pane1 input#salesperson").GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
@@ -73,12 +85,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             title.Click();
             CopyToClipboard(title);
             PasteIntoInputField("#pane1 input#salesperson");
+            //Now check that Auto-complete is working
+            WaitForCss("#pane1 input#salesperson").Clear();
+            TypeIntoField("#pane1 input#salesperson", "Ito");
+            wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
+            Click(WaitForCss(".ui-menu-item"));
+            wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 input#salesperson")).GetAttribute("value") == "Shu Ito");
         }
 
-        [TestMethod, Ignore] //Test not working yet!
+        [TestMethod] 
         public virtual void PasteIntoDialog()
         {
-            GeminiUrl("home/object?prop1_Name=%2522Touring%2520Services%2522&prop1_SalesPerson=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.SalesPerson%252F279%2522%252C%2522title%2522%253A%2522Tsvi%2520Reiter%2522%257D&menu1=SalesRepository&dialog1=CreateNewSalesPerson&parm1_employee=null&object2=AdventureWorksModel.Employee-206");
+            GeminiUrl("home/object?menu1=SalesRepository&dialog1=CreateNewSalesPerson&object2=AdventureWorksModel.Employee-206");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Stuart Munson", title.Text);
             title.Click();
@@ -87,11 +105,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var target = WaitForCss(selector);
             Assert.AreEqual("", target.Text);
 
-            //TODO: factor out
-            var copying = WaitForCss(".footer .currentcopy .reference").Text;
-            target.Click();
-            target.SendKeys(Keys.Control + "v");
-            wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == copying);
+            PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
 
         [TestMethod]
@@ -104,6 +118,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
         .Where(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
         we.FindElement(By.CssSelector(".value.droppable")).Text == "Sheela Word").Single()
 );
+        }
+
+        [TestMethod]
+        public virtual void CannotPasteWrongTypeIntoReferenceField()
+        {
+            GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Product-771");
+            WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
+            var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
+            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text);
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Mountain-100 Silver, 38", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+
+            var target = WaitForCss(fieldCss);
+            var copying = WaitForCss(".footer .currentcopy .reference").Text;
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text); //i.e. no change
+        }
+
+        [TestMethod]
+        public virtual void CanClearADroppableReferenceField()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-561&edit1=true");
+            WaitForView(Pane.Single, PaneType.Object, "Editing - 15/09/2007 00:00:00");
+            var fieldCss = ".property:nth-child(4) .value.droppable";
+            var field = WaitForCss(fieldCss);
+            Assert.AreEqual("Ben Miller", field.Text);
+            field.SendKeys(Keys.Delete);
+            Assert.AreEqual("", WaitForCss(fieldCss).Text);
+
         }
     }
 
