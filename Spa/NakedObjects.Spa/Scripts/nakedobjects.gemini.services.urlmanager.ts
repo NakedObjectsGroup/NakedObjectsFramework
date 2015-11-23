@@ -136,14 +136,23 @@ module NakedObjects.Angular.Gemini {
             return $location.path().split("/").length <= 3;
         }
 
-        function searchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, edit, action, parm, actions, page, pageSize];
+        function searchKeysForPane(search: any, paneId: number, raw : string[]) {
             const ids = _.map(raw, s => s + paneId);
             return _.filter(_.keys(search), k => _.any(ids, id => k.indexOf(id) === 0));
         }
 
+        function allSearchKeysForPane(search: any, paneId: number) {
+            const raw = [menu, dialog, object, collection, edit, action, parm, prop, actions, page, pageSize];
+            return searchKeysForPane(search, paneId, raw);
+        }
+
         function clearPane(search: any, paneId: number) {
-            const toClear = searchKeysForPane(search, paneId);
+            const toClear = allSearchKeysForPane(search, paneId);
+            return _.omit(search, toClear);
+        }
+
+        function clearSearchKeys(search: any, paneId: number, keys : string[]) {
+            const toClear = searchKeysForPane(search, paneId, keys);
             return _.omit(search, toClear);
         }
 
@@ -185,7 +194,7 @@ module NakedObjects.Angular.Gemini {
 
         function capturePane(paneId: number) {
             const search = $location.search();
-            const toCapture = searchKeysForPane(search, paneId);
+            const toCapture = allSearchKeysForPane(search, paneId);
 
             return _.pick(search, toCapture);
         }
@@ -302,7 +311,8 @@ module NakedObjects.Angular.Gemini {
             const oid = toOid(obj.domainType(), obj.instanceId());
 
             // only add parm if matching object (to catch case when swapping panes) 
-            if (search[`${object}${paneId}`] === oid) {
+            // and only add to edit url
+            if (search[`${object}${paneId}`] === oid && search[`${edit}${paneId}`] === "true" ) {
 
                 search[`${prop}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
 
@@ -374,8 +384,14 @@ module NakedObjects.Angular.Gemini {
 
         helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
             currentPaneId = paneId;
+            let search = $location.search();
 
-            setSearch(edit + paneId, editFlag.toString(), false);
+            if (!editFlag) {
+                search = clearSearchKeys(search, paneId, [prop]);
+            }
+            search[`${edit}${paneId}`] = editFlag.toString();
+
+            $location.search(search);
         };
 
         helper.setError = () => {

@@ -326,7 +326,7 @@ module NakedObjects.Angular.Gemini {
         value: Object;
         reference: string;
         choice : ChoiceViewModel;
-       
+        editComplete: () => void;
     }
 
     export class ToolBarViewModel {

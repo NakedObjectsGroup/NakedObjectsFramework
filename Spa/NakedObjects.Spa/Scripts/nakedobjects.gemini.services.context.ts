@@ -388,6 +388,8 @@ module NakedObjects.Angular.Gemini {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];
 
+
+            // todo can we trust this ? maybe dvm has been replaced cf ovm problem
             if (dvm) {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
@@ -402,6 +404,7 @@ module NakedObjects.Angular.Gemini {
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
 
+                    // todo change this to use action parent.  
                     if (ovm) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
                         if (actionIsNotQueryOnly) {
@@ -424,6 +427,7 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(update, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
+                    ovm.editComplete();
 
                     // This is a kludge because updated object has no self link.
                     const rawLinks = (<any>object).get("links");

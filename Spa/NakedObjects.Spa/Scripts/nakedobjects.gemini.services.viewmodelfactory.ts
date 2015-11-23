@@ -594,22 +594,36 @@ module NakedObjects.Angular.Gemini{
                 const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
                 const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
-                const returnFunc = objectViewModel.isTransient ? () => urlManager.popUrlState(paneId) : () => urlManager.setObjectEdit(false, paneId);
+                const cancelHandler = objectViewModel.isTransient ?
+                    () => urlManager.popUrlState(paneId) :
+                    () => urlManager.setObjectEdit(false, paneId);
 
-                objectViewModel.doEditCancel = () => {
+
+                objectViewModel.editComplete = () => {
                     deregisterLocationWatch();
                     deregisterSearchWatch();
-                    returnFunc();
                 };
 
-                const savehandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = viewObject => savehandler(objectRep, objectViewModel, viewObject);
+                objectViewModel.doEditCancel = () => {
+                    objectViewModel.editComplete();
+                    cancelHandler();
+                };
+
+                const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
+                objectViewModel.doSave = viewObject =>
+                    saveHandler(objectRep, objectViewModel, viewObject);
+
             }
 
 
-            objectViewModel.doEdit = () => {
-                urlManager.pushUrlState(paneId);
-                urlManager.setObjectEdit(true, paneId);
+            objectViewModel.doEdit = () => {           
+                context.reloadObject(paneId, objectRep).
+                    then((updatedObject: DomainObjectRepresentation) => {
+                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);                  
+                        $scope.object = objectViewModel;                   
+                        urlManager.pushUrlState(paneId);
+                        urlManager.setObjectEdit(true, paneId);
+                    });
             }
 
             objectViewModel.doReload = (refreshScope?: boolean) =>
