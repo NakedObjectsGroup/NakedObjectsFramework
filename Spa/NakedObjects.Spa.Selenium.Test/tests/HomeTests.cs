@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
     /// <summary>
@@ -100,6 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForCss(".reference", 20);
 
             var first = WaitForCssNo(".reference", 0);
+            Thread.Sleep(1000);
             AssertHasFocus(first);
         }
 
@@ -132,10 +133,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             OpenActionDialog("Find Customer By Account Number");
 
             //Check focus
-            var field1 = WaitForCss(".parameter:nth-child(1) input");
-            AssertHasFocus(field1);
+            var fieldCss = ".parameter:nth-child(1) input";
+           AssertHasFocus(WaitForCss(fieldCss));
 
-            TypeIntoField(".parameter:nth-child(1) input", Keys.ArrowRight+Keys.ArrowRight+"00022262");
+            TypeIntoField(fieldCss, Keys.ArrowRight+Keys.ArrowRight+"00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }

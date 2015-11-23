@@ -13,9 +13,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class KeyboardNavigationTests : AWTest {
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore] //Doesn't work with Firefox
         public void SelectFooterIconsWithAccessKeys()
         {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
             WaitForCss(".header .title").Click();
             var element = br.SwitchTo().ActiveElement();
             element.SendKeys(Keys.Alt + "h");
@@ -23,12 +25,35 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Home (Alt-h)", element.GetAttribute("title"));
         }
 
+        [TestMethod]
+        public void EnterEquivalentToLeftClick()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
+            var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
+            reference.SendKeys(Keys.Enter);
+            WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
+        }
+
+        [TestMethod] 
+        public virtual void ShiftEnterEquivalentToRightClick()
+        {
+            Url(CustomersMenuUrl);
+            WaitForView(Pane.Single, PaneType.Home, "Home");
+            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            OpenActionDialog("Find Customer By Account Number");
+            WaitForCss(".value  input").SendKeys(Keys.ArrowRight + Keys.ArrowRight + "00022262");
+            OKButton().SendKeys(Keys.Shift + Keys.Enter);
+            WaitForView(Pane.Left, PaneType.Home, "Home");
+            WaitForView(Pane.Right, PaneType.Object, "Marcus Collins, AW00022262");
+        }
+
 
     }
 
     #region browsers specific subclasses 
 
-        [TestClass]
+       // [TestClass, Ignore]
     public class KeyboardNavigationTestsIe : KeyboardNavigationTests
     {
         [ClassInitialize]
@@ -49,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   //[TestClass]
+   [TestClass]
     public class KeyboardNavigationTestsFirefox : KeyboardNavigationTests
     {
         [ClassInitialize]

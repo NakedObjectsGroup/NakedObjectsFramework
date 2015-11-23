@@ -178,6 +178,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("");
             WaitForView(Pane.Single, PaneType.Home);
             Click(br.FindElement(By.CssSelector(".icon-back")));
+            Thread.Sleep(1000);
             WaitForView(Pane.Single, PaneType.Object, "Olivia Long");
             var valueNow = WaitForCss(".property:nth-child(6) .value");
             Assert.AreEqual(original, valueNow.Text);
