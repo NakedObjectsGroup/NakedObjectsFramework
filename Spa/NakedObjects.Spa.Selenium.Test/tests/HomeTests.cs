@@ -100,7 +100,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForCss(".reference", 20);
 
             var first = WaitForCssNo(".reference", 0);
-            Thread.Sleep(1000);
             AssertHasFocus(first);
         }
 
