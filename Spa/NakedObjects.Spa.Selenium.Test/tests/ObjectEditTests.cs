@@ -25,8 +25,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             AssertHasFocus(field1);
 
             // set price and days to mfctr
-            TypeIntoField("#listprice",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
-            TypeIntoField("#daystomanufacture",Keys.Backspace + "1");
+            TypeIntoField(".listprice",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
+            TypeIntoField(".daystomanufacture",Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -45,11 +45,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dateStr = date.ToString("d MMM yyyy");
 
             for (int i = 0; i < 12; i++) {
-                TypeIntoField("#sellstartdate", Keys.Backspace);
+                TypeIntoField(".sellstartdate", Keys.Backspace);
             }
 
-            TypeIntoField("#sellstartdate", dateStr + Keys.Tab);
-            TypeIntoField("#daystomanufacture", Keys.Backspace + "1");
+            TypeIntoField(".sellstartdate", dateStr + Keys.Tab);
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -65,9 +65,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product line 
 
-            SelectDropDownOnField("#productline", "S");
+            SelectDropDownOnField(".productline", "S");
 
-            TypeIntoField("#daystomanufacture", Keys.Backspace + "1");
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -84,16 +84,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // this makes tests really fragile
             //Assert.AreEqual("Accessories", selected.SelectedOption.Text);
 
-            //Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
-            //Assert.AreEqual(13, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
+            //Assert.AreEqual(4, br.FindElements(By.CssSelector(".productcategory  select option")).Count);
+            //Assert.AreEqual(13, br.FindElements(By.CssSelector(".productsubcategory  select option")).Count);
 
-            SelectDropDownOnField("#productcategory", "Clothing");
+            SelectDropDownOnField(".productcategory", "Clothing");
 
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 9);
+            wait.Until(d => d.FindElements(By.CssSelector("select.productsubcategory option")).Count == 9);
 
-            SelectDropDownOnField("#productsubcategory", "Caps");
+            SelectDropDownOnField(".productsubcategory", "Caps");
 
-            TypeIntoField("#daystomanufacture", Keys.Backspace + "1");
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
 
             SaveObject();
 
@@ -106,21 +106,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product category and sub category
 
-            var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory")));
+            var slctd = new SelectElement(br.FindElement(By.CssSelector("select.productcategory")));
 
             Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
 
-            Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory option")).Count);
+            Assert.AreEqual(5, br.FindElements(By.CssSelector("select.productcategory option")).Count);
 
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 9);
+            wait.Until(d => d.FindElements(By.CssSelector("select.productsubcategory option")).Count == 9);
 
-            Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory option")).Count);
+            Assert.AreEqual(9, br.FindElements(By.CssSelector("select.productsubcategory option")).Count);
 
-            SelectDropDownOnField("#productcategory","Bikes");
+            SelectDropDownOnField(".productcategory","Bikes");
 
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 4);
+            wait.Until(d => d.FindElements(By.CssSelector("select.productsubcategory option")).Count == 4);
 
-            SelectDropDownOnField("#productsubcategory","Mountain Bikes");
+            SelectDropDownOnField(".productsubcategory","Mountain Bikes");
 
             SaveObject();
 
@@ -132,12 +132,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // set values back
             EditObject();
 
-            SelectDropDownOnField("#productcategory", "Accessories");
+            SelectDropDownOnField(".productcategory", "Accessories");
 
-            var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory")));
+            var slpsc = new SelectElement(br.FindElement(By.CssSelector("select.productsubcategory")));
             wait.Until(d => slpsc.Options.Count == 13);
 
-            SelectDropDownOnField("#productsubcategory", "Bottles and Cages");
+            SelectDropDownOnField(".productsubcategory", "Bottles and Cages");
             SaveObject();
 
             properties = br.FindElements(By.CssSelector(".property"));
@@ -164,8 +164,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EditObject(); //This will update object from server
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
-            Assert.AreEqual(GeminiBaseUrl+"", br.Url);
-            //wait.Until(dr => dr.Url == "object?object1=AdventureWorksModel.Person-8410&actions1=open");
         }
     }
 

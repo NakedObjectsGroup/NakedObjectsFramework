@@ -256,9 +256,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 case Pane.Single:
                     return ".single ";
                 case Pane.Left:
-                    return "#pane1 ";
+                    return ".split.pane1 ";
                 case Pane.Right:
-                    return "#pane2 ";
+                    return ".split.pane2 ";
                 default:
                     throw new NotImplementedException();
             }

@@ -23,23 +23,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Right, PaneType.Object, "Selected Distributors, AW00000652");
 
             //Copy title from left pane
-            var title = WaitForCss("#pane1 .header .title");
+            var title = WaitForCss(".pane1 .header .title");
             title.Click();
             CopyToClipboard(title);
 
             //Copy title right pane
-            title = WaitForCss("#pane2 .header .title");
+            title = WaitForCss(".pane2 .header .title");
             title.Click();
             CopyToClipboard(title);
 
             //Copy embedded reference from left pane
-            WaitForCss("#pane1 .header .title").Click();
+            WaitForCss(".pane1 .header .title").Click();
             var target = Tab(5);
             Assert.AreEqual("Mountain-500", target.Text);
             CopyToClipboard(target);
 
             //Copy embedded reference from right pane
-            WaitForCss("#pane2 .header .title").Click();
+            WaitForCss(".pane2 .header .title").Click();
             target = Tab(3);
             Assert.AreEqual("Southeast", target.Text);
             CopyToClipboard(target);
@@ -49,13 +49,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&menu2=PersonRepository&action2=ValidCountries&page2=1&pageSize2=20");
             Reload(Pane.Left);
-            var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
+            var item = wait.Until(dr => dr.FindElements(By.CssSelector(".pane1 td"))[1]);
             Assert.AreEqual("No Discount", item.Text);
             CopyToClipboard(item);
 
             //Copy item from list, right pane
             Reload(Pane.Right);
-             item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[3]);
+             item = wait.Until(dr => dr.FindElements(By.CssSelector(".pane2 td"))[3]);
             Assert.AreEqual("Australia", item.Text);
             CopyToClipboard(item);
 
@@ -66,12 +66,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Employee-161");
             WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
-            Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
-            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Annette Hill", WaitForCss(".pane1 .property:nth-child(4) .value.droppable").Text);
+            var title = WaitForCss(".pane2 .header .title");
             Assert.AreEqual("Kirk Koenigsbauer", title.Text);
             title.Click();
             CopyToClipboard(title);
-            PasteIntoReferenceField("#pane1 .property:nth-child(4) .value.droppable");
+            PasteIntoReferenceField(".pane1 .property:nth-child(4) .value.droppable");
         }
 
         [TestMethod]
@@ -79,33 +79,33 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
-            Assert.AreEqual("Tsvi Reiter", WaitForCss("#pane1 input#salesperson").GetAttribute("value"));
-            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Tsvi Reiter", WaitForCss(".pane1 input.salesperson").GetAttribute("value"));
+            var title = WaitForCss(".pane2 .header .title");
             Assert.AreEqual("Tete Mensa-Annan", title.Text);
             title.Click();
             CopyToClipboard(title);
-            PasteIntoInputField("#pane1 input#salesperson");
+            PasteIntoInputField(".pane1 input.salesperson");
             //Now check that Auto-complete is working
-            WaitForCss("#pane1 input#salesperson").Clear();
-            TypeIntoField("#pane1 input#salesperson", "Ito");
+            WaitForCss(".pane1 input.salesperson").Clear();
+            TypeIntoField(".pane1 input.salesperson", "Ito");
             wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
             Click(WaitForCss(".ui-menu-item"));
-            wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 input#salesperson")).GetAttribute("value") == "Shu Ito");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".pane1 input.salesperson")).GetAttribute("value") == "Shu Ito");
         }
 
         [TestMethod] 
         public virtual void PasteIntoDialog()
         {
             GeminiUrl("home/object?menu1=SalesRepository&dialog1=CreateNewSalesPerson&object2=AdventureWorksModel.Employee-206");
-            var title = WaitForCss("#pane2 .header .title");
+            var title = WaitForCss(".pane2 .header .title");
             Assert.AreEqual("Stuart Munson", title.Text);
             title.Click();
             CopyToClipboard(title);
-            string selector = "#pane1 .parameter .value";
+            string selector = ".pane1 .parameter .value";
             var target = WaitForCss(selector);
             Assert.AreEqual("", target.Text);
 
-            PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+            PasteIntoReferenceField(".pane1 .parameter .value.droppable");
         }
 
         [TestMethod]
@@ -125,9 +125,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Product-771");
             WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
-            var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
+            var fieldCss = ".pane1 .property:nth-child(4) .value.droppable";
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text);
-            var title = WaitForCss("#pane2 .header .title");
+            var title = WaitForCss(".pane2 .header .title");
             Assert.AreEqual("Mountain-100 Silver, 38", title.Text);
             title.Click();
             CopyToClipboard(title);
