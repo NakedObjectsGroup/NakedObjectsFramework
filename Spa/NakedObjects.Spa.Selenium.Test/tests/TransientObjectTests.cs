@@ -19,12 +19,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
+            SelectDropDownOnField(FieldType.Property, "Card Type", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField(".cardnumber", number);
-            SelectDropDownOnField(".expmonth","12");
-            SelectDropDownOnField(".expyear","2020");
+            TypeIntoField(FieldType.Property, "Card Number", number);
+            SelectDropDownOnField(FieldType.Property, "Exp Month", "12");
+            SelectDropDownOnField(FieldType.Property, "Exp Year", "2020");
             Click(SaveButton()); 
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
@@ -34,12 +34,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
+            SelectDropDownOnField(FieldType.Property, "Card Type", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField(".cardnumber", number);
-            SelectDropDownOnField(".expmonth", "12");
-            SelectDropDownOnField(".expyear", "2020");
+            TypeIntoField(FieldType.Property, "Card Number", number);
+            SelectDropDownOnField(FieldType.Property, "Exp Month", "12");
+            SelectDropDownOnField(FieldType.Property, "Exp Year", "2020");
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
@@ -53,8 +53,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
-            SelectDropDownOnField(".expyear", "2020");
+            SelectDropDownOnField(FieldType.Property, "Card Type", "Vista");
+            SelectDropDownOnField(FieldType.Property, "Exp Year", "2020");
             Click(SaveButton());
             wait.Until(dr => dr.FindElement(
                 By.CssSelector("input.cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
@@ -88,10 +88,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
-            TypeIntoField(".cardnumber", "1111222233334444");
-            SelectDropDownOnField(".expmonth", "1");
-            SelectDropDownOnField(".expyear", "2008");
+            SelectDropDownOnField(FieldType.Property, "Card Type", "Vista");
+            TypeIntoField(FieldType.Property, "Card Number", "1111222233334444");
+            SelectDropDownOnField(FieldType.Property, "Exp Month", "1");
+            SelectDropDownOnField(FieldType.Property, "Exp Year", "2008");
             Click(SaveButton());
             //TODO: Test that dave has failed and message is shown
 

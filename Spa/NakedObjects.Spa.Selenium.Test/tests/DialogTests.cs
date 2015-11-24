@@ -44,7 +44,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
-            SelectDropDownOnField(".ordering", "Ascending");
+            SelectDropDownOnField(FieldType.Parameter, "Ordering", "Ascending");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
@@ -65,7 +65,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(OrdersMenuUrl);
             GetObjectActions(OrderServiceActions);
             OpenActionDialog("Orders By Value");
-            SelectDropDownOnField(".ordering", "Ascending");
+            SelectDropDownOnField(FieldType.Parameter, "Ordering", "Ascending");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
@@ -87,8 +87,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             OpenActionDialog("Search For Orders");
-            TypeIntoField(".fromdate","1 Jan 2003");
-            TypeIntoField(".todate", "1 Dec 2003" + Keys.Escape);
+            TypeIntoField(FieldType.Parameter, "From Date","1 Jan 2003");
+            TypeIntoField(FieldType.Parameter, "To Date", "1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
@@ -100,7 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
-            SelectDropDownOnField(".subcategory","Forks");
+            SelectDropDownOnField(FieldType.Parameter, "Sub Category","Forks");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
@@ -164,8 +164,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            SelectDropDownOnField(".productline","R");
-            SelectDropDownOnField(".productclass","L");
+            SelectDropDownOnField(FieldType.Parameter, "Product Line","R");
+            SelectDropDownOnField(FieldType.Parameter, "Product Class","L");
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
@@ -307,7 +307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("input.lastname")).GetAttribute("placeholder") == "* ");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector("input.lastname")).GetAttribute("placeholder") == "REQUIRED * ");
-            TypeIntoField("input.lastname", "a");
+            TypeIntoField(FieldType.Parameter, "Last Name", "a");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
@@ -332,7 +332,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
-            SelectDropDownOnField(".reason", "Price");
+            SelectDropDownOnField(FieldType.Parameter, "Reason", "Price");
             Click(OKButton()); 
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
@@ -343,9 +343,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
-            TypeIntoField(".qtyreceived","100");
-            TypeIntoField(".qtyrejected","50");
-            TypeIntoField(".qtyintostock","49");
+            TypeIntoField(FieldType.Parameter, "Qty Received","100");
+            TypeIntoField(FieldType.Parameter, "Qty Rejected", "50");
+            TypeIntoField(FieldType.Parameter, "Qty Into Stock", "49");
             Click(OKButton());
             //TODO: Test for co-validation message of '"Qty Into Stock + Qty Rejected must add up to Qty Received"'
         }

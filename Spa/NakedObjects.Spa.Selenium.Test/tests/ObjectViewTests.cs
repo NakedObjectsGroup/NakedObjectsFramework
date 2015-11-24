@@ -172,7 +172,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
-            TypeIntoField(".parameter:nth-child(1) input", newValue );
+            TypeIntoField(FieldType.Parameter, "New Suffix", newValue );
             Click(OKButton()); //This will have updated server, but not client-cached object
             //Go and do something else, so screen changes, then back again
             GeminiUrl("");
@@ -199,7 +199,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dialog = OpenActionDialog("Update Middle Name"); //This is deliberately wrongly marked up as QueryOnly
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
-            TypeIntoField(".parameter:nth-child(1) input", newValue);
+            TypeIntoField(FieldType.Parameter, "New Name", newValue);
             Click(OKButton()); 
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
         }
