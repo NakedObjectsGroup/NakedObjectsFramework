@@ -118,7 +118,6 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.viewmodelfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.models.shims.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\jasmine-html.js" />

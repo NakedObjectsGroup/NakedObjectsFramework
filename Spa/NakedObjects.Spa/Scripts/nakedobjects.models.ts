@@ -55,6 +55,39 @@ module NakedObjects {
     }
 
 
+
+    export class ArgumentMap {
+
+        attributes: any;
+
+        constructor(map: Object, parent: any, public id: string) {
+            this.attributes = map;
+        }
+
+        populate(wrapped: any) {
+            this.attributes = wrapped;
+        }
+
+        get(attributeName: string): any {
+            return this.attributes[attributeName];
+        }
+        set(attributeName?: any, value?: any, options?: any) {
+            this.attributes[attributeName] = value;
+        }
+
+        hateoasUrl: string = "";
+        method: string = "GET";
+        suffix: string = "";
+        url(): string {
+            return (this.hateoasUrl || "") + this.suffix;
+        }
+        preFetch() { }
+
+        urlParms: _.Dictionary<string>;
+        onChange() { }
+        onError(map: Object, statusCode: string, warnings: string) { }
+    }
+
     export class RelParm {
 
         name: string;
@@ -501,12 +534,29 @@ module NakedObjects {
     }
 
     // helper - collection of Links 
-    export class Links extends CollectionShim implements IHateoasModel {
+    export class Links implements IHateoasModel {
+
+       
+
+
+        url(): any { }
+       
+
+        add(models: any, options?: any) {
+            this.models = this.models || [];
+
+            for (var i = 0; i < models.length; i++) {
+                var m = new this.model(models[i]);
+                this.models.push(m);
+            }
+        }
+
+
+
 
         // cannot use constructor to initialise as model property is not yet set and so will 
         // not create members of correct type 
         constructor() {
-            super();
 
             this.url = () => {
                 return this.hateoasUrl;
@@ -514,7 +564,7 @@ module NakedObjects {
         }
 
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
-            super.populate(wrapped);
+            //super.populate(wrapped);
         }
 
         hateoasUrl: string;
@@ -1679,12 +1729,29 @@ module NakedObjects {
     }
 
     // matches the Link representation 2.7
-    export class Link extends ModelShim {
+    export class Link  {
+
+        attributes: any;
+
+        populate(wrapped: any) {
+            this.attributes = wrapped;
+        }
+
+        url(): string {
+            return "";
+        }
+        get(attributeName: string): any {
+            return this.attributes[attributeName];
+        }
+        set(attributeName?: any, value?: any, options?: any) {
+            this.attributes[attributeName] = value;
+        }
+
 
         wrapped : any;
 
         constructor(object?) {
-            super(object);
+            this.attributes = object;
             this.wrapped = object;
         }
 
