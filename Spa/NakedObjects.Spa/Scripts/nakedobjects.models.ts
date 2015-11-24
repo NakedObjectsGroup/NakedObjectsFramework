@@ -291,13 +291,32 @@ module NakedObjects {
     }
 
     // base class for all representations that can be directly loaded from the server 
-    export class HateoasModelBase extends HateoasModelBaseShim implements IHateoasModel {
-        constructor(object? : any) {
-            super(object);
+    export class HateoasModelBase implements IHateoasModel {
+
+        attributes: any;
+
+        constructor(object?: any) {
+            this.attributes = object;
         }
 
+        get(attributeName: string): any {
+            return this.attributes[attributeName];
+        }
+        set(attributeName?: any, value?: any, options?: any) {
+            this.attributes[attributeName] = value;
+        }
+
+
+        hateoasUrl: string = "";
+        method: string = "GET";
+        suffix: string = "";
+        url(): string {
+            return (this.hateoasUrl || "") + this.suffix;
+        }
+        preFetch() { }
+
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
-            super.populate(wrapped);
+            this.attributes = wrapped;
         }
 
         onError(map: Object, statusCode: string, warnings: string) {
