@@ -39,27 +39,36 @@ module NakedObjects {
         }
     }
 
-    // base class for all representations that can be directly loaded from the server 
-    export class HateoasModelBaseShim extends ModelShim {
-        constructor(object? : any) {
-            super(object);
+    
+
+    export class ArgumentMap  {
+
+        attributes: any;
+
+        constructor(map: Object, parent: any, public id: string) {
+            this.attributes = map;
         }
+
+        populate(wrapped: any) {
+            this.attributes = wrapped;
+        }
+    
+        get(attributeName: string): any {
+            return this.attributes[attributeName];
+        }
+        set(attributeName?: any, value?: any, options?: any) {
+            this.attributes[attributeName] = value;
+        }
+        
         hateoasUrl: string = "";
         method: string = "GET";
         suffix: string = "";
         url(): string {
-            return (this.hateoasUrl || super.url()) + this.suffix;
+            return (this.hateoasUrl || "") + this.suffix;
         }
-        onError(map: Object, statusCode: string, warnings: string) { }
         preFetch() { }
 
-        urlParms : _.Dictionary<string>;
-    }
-
-    export class ArgumentMap extends HateoasModelBaseShim {
-        constructor(map: Object, parent: any, public id: string) {
-            super(map);
-        }
+        urlParms: _.Dictionary<string>;
         onChange() { }
         onError(map: Object, statusCode: string, warnings: string) { }
     }
