@@ -158,8 +158,8 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
     describe("setObject", () => {
 
         let location: ng.ILocationService;
-        const obj1 = new NakedObjects.DomainObjectRepresentation({});
-        const obj2 = new NakedObjects.DomainObjectRepresentation({});
+        const obj1 = new NakedObjects.DomainObjectRepresentation();
+        const obj2 = new NakedObjects.DomainObjectRepresentation();
         const preSearch: any = { menu1: "menu1", menu2: "menu2" };
 
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {

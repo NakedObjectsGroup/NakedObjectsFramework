@@ -16,7 +16,11 @@ describe("nakedobjects.gemini.services.handlers", () => {
         beforeEach(inject(($rootScope, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
             $scope = $rootScope.$new();
 
-            spyOn(context, "getError").and.returnValue(new NakedObjects.ErrorRepresentation({ message: "", stacktrace: [] }));
+            const rawError = { message: "", stacktrace: [] , links : [], extensions : {} };
+            const er = new NakedObjects.ErrorRepresentation();
+            er.populate(rawError);
+
+            spyOn(context, "getError").and.returnValue(er);
 
             handlers.handleError($scope);
         }));
@@ -48,7 +52,9 @@ describe("nakedobjects.gemini.services.handlers", () => {
         describe("if validation ok", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
-                testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "selectable" } };
+                const opts: NakedObjects.RoInterfaces.IOptionalCapabilities = { domainModel: "selectable", blobsClobs: "", deleteObjects: "", protoPersistentObjects : "" , validateOnly : ""};
+                const version: NakedObjects.RoInterfaces.IVersionRepresentation = { links: [], extensions: {}, specVersion: "1.1", optionalCapabilities: opts, implVersion: "" };
+                testVersion.attributes = version;
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
@@ -65,7 +71,11 @@ describe("nakedobjects.gemini.services.handlers", () => {
         describe("if validation fails version", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
-                testVersion.attributes = { specVersion: "1.0", optionalCapabilities: { domainModel: "selectable" } };
+                const opts: NakedObjects.RoInterfaces.IOptionalCapabilities = { domainModel: "selectable", blobsClobs: "", deleteObjects: "", protoPersistentObjects: "", validateOnly: "" };
+
+                const version = { specVersion: "1.0", optionalCapabilities: opts , links : [], extensions : {} };
+
+                testVersion.attributes = version;
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
@@ -80,7 +90,11 @@ describe("nakedobjects.gemini.services.handlers", () => {
         describe("if validation fails domain model", () => {
             const testVersion = new NakedObjects.VersionRepresentation();
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
-                testVersion.attributes = { specVersion: "1.1", optionalCapabilities: { domainModel: "formal" } };
+                const opts: NakedObjects.RoInterfaces.IOptionalCapabilities = { domainModel: "formal", blobsClobs: "", deleteObjects: "", protoPersistentObjects: "", validateOnly: "" };
+
+                const version = { specVersion: "1.1", optionalCapabilities: opts, links: [], extensions: {} };
+
+                testVersion.attributes = version;
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);

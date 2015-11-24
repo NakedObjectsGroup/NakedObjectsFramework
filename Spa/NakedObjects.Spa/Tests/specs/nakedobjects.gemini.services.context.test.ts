@@ -4,6 +4,10 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
 
+function emptyResource(): NakedObjects.RoInterfaces.IResourceRepresentation {
+    return { links: [], extensions: {} };
+}
+
 describe("nakedObjects.gemini.services.context ", () => {
 
     beforeEach(angular.mock.module("app"));
@@ -402,7 +406,7 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testMenu = new NakedObjects.MenuRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result({}, "list");
+        const testResult = new NakedObjects.Result(emptyResource(), "list");
 
         let timeout: ng.ITimeoutService;
         let getMenu: jasmine.Spy;
@@ -474,7 +478,7 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testObject = new NakedObjects.DomainObjectRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result({}, "list");
+        const testResult = new NakedObjects.Result(emptyResource(), "list");
 
         let timeout: ng.ITimeoutService;
         let getObjectByOid: jasmine.Spy;
@@ -626,7 +630,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         const testAction = new NakedObjects.ActionMember(null, null, null);
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result({}, "");
+        const testResult = new NakedObjects.Result(emptyResource(), "");
         const testObject = new NakedObjects.DomainObjectRepresentation();
         const testList = new NakedObjects.ListRepresentation();
 
@@ -742,7 +746,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             testPvm.description = "description";
 
             beforeEach(inject(($q: ng.IQService, repLoader) => {
-                const errorMap = new NakedObjects.ErrorMap({}, "", "");
+                const errorMap = new NakedObjects.ErrorMap(emptyResource(), "", "");
                 populate = spyOn(repLoader, "populate");
                 populate.and.returnValue($q.reject(errorMap));
                 spyOn(errorMap, "valuesMap").and.returnValue({"test" : {value : new NakedObjects.Value(""), invalidReason : "Mandatory" } });
@@ -791,7 +795,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     describe("updateObject", () => {
 
-        const testObject = new NakedObjects.DomainObjectRepresentation({});
+        const testObject = new NakedObjects.DomainObjectRepresentation();
        
         const testUpdatedObject = new NakedObjects.DomainObjectRepresentation();
         const testOvm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
@@ -837,7 +841,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     describe("saveObject", () => {
 
-        const testObject = new NakedObjects.DomainObjectRepresentation({});
+        const testObject = new NakedObjects.DomainObjectRepresentation();
         
         const testUpdatedObject = new NakedObjects.DomainObjectRepresentation();
         const testOvm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
@@ -903,7 +907,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
     describe("isSubTypeOf", () => {
 
-        const testObject = new NakedObjects.DomainObjectRepresentation({});
+        const testObject = new NakedObjects.DomainObjectRepresentation();
         const testPersist = <NakedObjects.PersistMap>{};
         const testUpdatedObject = new NakedObjects.DomainTypeActionInvokeRepresentation();
         const testResult = new NakedObjects.ActionResultRepresentation();

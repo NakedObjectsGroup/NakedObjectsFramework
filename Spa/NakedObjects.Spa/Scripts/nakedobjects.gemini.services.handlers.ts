@@ -19,7 +19,7 @@ module NakedObjects.Angular.Gemini {
         const handlers = <IHandlers>this;
 
         function setVersionError(error) {
-            const errorRep = new ErrorRepresentation({ message: error });
+            const errorRep = ErrorRepresentation.create(error);
             context.setError(errorRep);
             urlManager.setError();
         }
@@ -31,10 +31,10 @@ module NakedObjects.Angular.Gemini {
                 context.setError(error);
             } else if (error instanceof ErrorMap) {
                 const em = <ErrorMap>error;
-                const errorRep = new ErrorRepresentation({ message: `unexpected error map: ${em.warningMessage}` });
+                const errorRep = ErrorRepresentation.create(`unexpected error map: ${em.warningMessage}`);
                 context.setError(errorRep);
             } else {
-                const errorRep = new ErrorRepresentation({ message: `unexpected error: ${error.toString()}` });
+                const errorRep = ErrorRepresentation.create(`unexpected error: ${error.toString()}`);
                 context.setError(errorRep);
             }
 

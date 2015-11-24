@@ -14,12 +14,12 @@
 // following links to other resources.
 
 /// <reference path="typings/lodash/lodash.d.ts" />
-/// <reference path="nakedobjects.models.shims.ts" />
 /// <reference path="nakedobjects.config.ts" />
 
 module NakedObjects {
     import IExtensions = NakedObjects.RoInterfaces.IExtensions;
     import ILink = NakedObjects.RoInterfaces.ILink;
+    import Details = NakedObjects.RoInterfaces.IErrorDetails;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -28,6 +28,11 @@ module NakedObjects {
     function isListType(typeName: string) {
         return typeName === "list";
     }
+
+    function emptyResource() : RoInterfaces.IResourceRepresentation {
+        return { links: [], extensions: {} };
+    }
+
 
     // interfaces 
 
@@ -278,18 +283,22 @@ module NakedObjects {
 
     // helper class for results 
     export class Result {
-        constructor(public wrapped : any, private resultType: string) { }
+        constructor(public wrapped : RoInterfaces.IResourceRepresentation, private resultType: string) { }
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
-                return new DomainObjectRepresentation(this.wrapped);
+                const dor = new DomainObjectRepresentation();
+                dor.populate(this.wrapped);
+                return dor;
             }
             return null;
         }
 
         list(): ListRepresentation {
             if (!this.isNull() && this.resultType === "list") {
-                return new ListRepresentation(this.wrapped);
+                const lr = new ListRepresentation();
+                lr.populate(this.wrapped);
+                return lr;
             }
             return null;
         }
@@ -324,17 +333,14 @@ module NakedObjects {
     }
 
     // base class for all representations that can be directly loaded from the server 
-    export class HateoasModelBase implements IHateoasModel {
+    export abstract class HateoasModelBase implements IHateoasModel {
 
-        attributes: any;
-
-        constructor(object?: any) {
-            this.attributes = object;
-        }
+        attributes: RoInterfaces.IResourceRepresentation;
 
         get(attributeName: string): any {
             return this.attributes[attributeName];
         }
+
         set(attributeName?: any, value?: any, options?: any) {
             this.attributes[attributeName] = value;
         }
@@ -352,28 +358,28 @@ module NakedObjects {
             this.attributes = wrapped;
         }
 
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
-
         urlParms : _.Dictionary<string>;
     }
 
     export class ErrorMap extends HateoasModelBase {
 
-        constructor(map: Object, public statusCode: string, public warningMessage: string) {
-            super(map);
+        constructor(map: RoInterfaces.IResourceRepresentation, public statusCode: string, public warningMessage: string) {
+            super();
+            this.populate(map);
         }
 
         valuesMap(): IErrorValueMap {
             const vs: IErrorValueMap = {}; // distinguish between value map and persist map 
-            const map = this.attributes.members ? this.attributes.members : this.attributes;
+
+            // todo fix the types here !
+            const temp = this.attributes as any;
+            const map = temp.members ? temp.members : temp;
             for (let v in map) {
 
                 if (map[v].hasOwnProperty("value")) {
                     const ev: IErrorValue = {
                         value: new Value(map[v].value),
-                        invalidReason: map[v].invalidReason
+                        invalidReason: map[v].invalidReason as string
                     };
                     vs[v] = ev;
                 }
@@ -405,10 +411,6 @@ module NakedObjects {
             this.domainObject.setFromUpdateMap(this);
         }
 
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
-
         properties(): IValueMap {
             return <IValueMap>_.mapValues(this.attributes, (v : any) => new Value(v.value));
         }
@@ -431,10 +433,6 @@ module NakedObjects {
             this.collectionResource.setFromMap(this);
         }
 
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
-
         setValue(value: Value) {
             value.set(this.attributes);
         }
@@ -454,11 +452,6 @@ module NakedObjects {
             // associated property
             this.propertyResource.setFromModifyMap(this);
         }
-
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
-
 
         setValue(value: Value) {
             value.set(this.attributes);
@@ -480,33 +473,10 @@ module NakedObjects {
             this.propertyResource.setFromModifyMap(this);
         }
 
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
-
         setValue(value: Value) {
             value.set(this.attributes);
         }
     }
-
-    //export class DomainTypeActionMap extends ArgumentMap implements IHateoasModel {
-    //    constructor(private actionInvoke: DomainTypeActionInvokeRepresentation, id: string, map: Object) {
-    //        super(map, actionInvoke, id);
-
-    //        //actionInvoke.modifyLink().copyToHateoasModel(this);
-
-    //        //this.setValue(propertyResource.value());
-    //        actionInvoke.selfLink().copyToHateoasModel(this);
-    //    }
-
-    //    onError(map: Object, statusCode: string, warnings: string) {
-    //        return new ErrorMap(map, statusCode, warnings);
-    //    }
-
-    //    setValue(value: Value) {
-    //        value.set(this.attributes);
-    //    }
-    //}
 
 
     export class ClearMap extends ArgumentMap implements IHateoasModel {
@@ -516,9 +486,6 @@ module NakedObjects {
             propertyResource.clearLink().copyToHateoasModel(this);
         }
 
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
-        }
     }
 
     export class ClearMapv11 extends ArgumentMap implements IHateoasModel {
@@ -526,10 +493,6 @@ module NakedObjects {
             super({}, propertyResource, id);
 
             propertyResource.clearLink().copyToHateoasModel(this);
-        }
-
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
         }
     }
 
@@ -596,10 +559,7 @@ module NakedObjects {
     // REPRESENTATIONS
 
     export abstract class ResourceRepresentation extends HateoasModelBase {
-        constructor(object? : any) {
-            super(object);
-        }
-
+       
         protected resource : RoInterfaces.IResourceRepresentation;
 
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
@@ -623,8 +583,8 @@ module NakedObjects {
 
     export class ActionResultRepresentation extends ResourceRepresentation {
 
-        constructor(object? : any) {
-            super(object);
+        constructor() {
+            super();
         }
 
         // links 
@@ -809,7 +769,7 @@ module NakedObjects {
         }
 
         reset() {
-            this.attributes = {};
+            this.attributes = emptyResource();
         }
 
         setSearchTerm(term: string) {
@@ -1223,8 +1183,8 @@ module NakedObjects {
 
     export class DomainObjectRepresentation extends ResourceRepresentation {
 
-        constructor(object?) {
-            super(object);
+        constructor() {
+            super();
             this.url = this.getUrl;
         }
 
@@ -1367,8 +1327,8 @@ module NakedObjects {
 
     export class MenuRepresentation extends ResourceRepresentation {
 
-        constructor(object?) {
-            super(object);
+        constructor() {
+            super();
             this.url = this.getUrl;
         }
 
@@ -1459,8 +1419,8 @@ module NakedObjects {
     // matches List Representation 11.0
     export class ListRepresentation extends ResourceRepresentation implements IListOrCollection {
 
-        constructor(object?) {
-            super(object);
+        constructor() {
+            super();
         }
 
         // links
@@ -1483,11 +1443,30 @@ module NakedObjects {
         }
     }
 
+    export interface ErrorDetails {
+        message() : string;
+        stacktrace() : string[];
+    }
+
     // matches the error representation 10.0 
-    export class ErrorRepresentation extends ResourceRepresentation {
-        constructor(object?) {
-            super(object);
+    export class  ErrorRepresentation extends ResourceRepresentation implements ErrorDetails {
+        constructor() {
+            super();
         }
+
+        static create(message: string, stacktrace?: string[], causedBy?: ErrorDetails) {
+            const rawError = {
+                links: [], 
+                extensions: {}, 
+                message: message, 
+                stacktrace: stacktrace, 
+                causedBy : causedBy
+            }
+            const error = new ErrorRepresentation();
+            error.populate(rawError);
+            return error;
+        }
+
 
         // scalar properties 
         message(): string {
@@ -1498,9 +1477,12 @@ module NakedObjects {
             return this.get("stackTrace");
         }
 
-        causedBy(): ErrorRepresentation {
-            const cb = this.get("causedBy");
-            return cb ? new ErrorRepresentation(cb) : null;
+        causedBy(): ErrorDetails {
+            const cb = this.get("causedBy") as Details;
+            return cb ? {
+                message: () => cb.message,
+                stacktrace: () => cb.stackTrace
+            } : null;
         }
     }
 
@@ -1514,10 +1496,6 @@ module NakedObjects {
 
         onChange() {
             this.domainObject.setFromPersistMap(this);
-        }
-
-        onError(map: Object, statusCode: string, warnings: string) {
-            return new ErrorMap(map, statusCode, warnings);
         }
 
         setMember(name: string, value: Value) {
