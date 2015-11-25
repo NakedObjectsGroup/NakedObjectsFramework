@@ -608,6 +608,8 @@ module NakedObjects {
 
         // helper
         setParameter(name: string, value: Value) {
+            // todo investigate and fix better
+            this.attributes = (this.attributes ? this.attributes : {}) as any;
             value.set(this.attributes, name);
         }
 
