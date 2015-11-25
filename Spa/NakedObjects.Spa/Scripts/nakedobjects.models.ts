@@ -19,7 +19,7 @@
 module NakedObjects {
     import IExtensions = NakedObjects.RoInterfaces.IExtensions;
     import ILink = NakedObjects.RoInterfaces.ILink;
-    import Details = NakedObjects.RoInterfaces.IErrorDetails;
+    import IErrorDetailsRepresentation = NakedObjects.RoInterfaces.IErrorDetailsRepresentation;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -501,7 +501,6 @@ module NakedObjects {
             }
         }
 
-
         model = Link;
 
         models: Link[];
@@ -520,8 +519,7 @@ module NakedObjects {
         private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
 
         linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
-
-        //urlParms: _.Dictionary<string>;
+    
     }
 
 
@@ -1385,9 +1383,7 @@ module NakedObjects {
     // matches List Representation 11.0
     export class ListRepresentation extends ResourceRepresentation implements IListOrCollection {
 
-        constructor() {
-            super();
-        }
+        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
 
         // links
         selfLink(): Link {
@@ -1401,26 +1397,25 @@ module NakedObjects {
 
         // list of links to services 
         value(): Links {
-            return Links.wrapLinks(this.get("value"));
+            return Links.wrapLinks(this.wrapped().value);
         }
 
         pagination(): IPagination {
-            return this.get("pagination");
+            return this.wrapped().pagination;
         }
     }
 
-    export interface ErrorDetails {
+    export interface IErrorDetails {
         message() : string;
         stacktrace() : string[];
     }
 
     // matches the error representation 10.0 
-    export class  ErrorRepresentation extends ResourceRepresentation implements ErrorDetails {
-        constructor() {
-            super();
-        }
+    export class  ErrorRepresentation extends ResourceRepresentation implements IErrorDetails {
+   
+        wrapped = () => this.resource as RoInterfaces.IErrorRepresentation;
 
-        static create(message: string, stacktrace?: string[], causedBy?: ErrorDetails) {
+        static create(message: string, stacktrace?: string[], causedBy?: IErrorDetails) {
             const rawError = {
                 links: [], 
                 extensions: {}, 
@@ -1436,19 +1431,19 @@ module NakedObjects {
 
         // scalar properties 
         message(): string {
-            return this.get("message");
+            return this.wrapped().message;
         }
 
         stacktrace(): string[] {
-            return this.get("stackTrace");
+            return this.wrapped().stackTrace;
         }
 
-        causedBy(): ErrorDetails {
-            const cb = this.get("causedBy") as Details;
+        causedBy(): IErrorDetails {
+            const cb = this.wrapped().causedBy;
             return cb ? {
                 message: () => cb.message,
                 stacktrace: () => cb.stackTrace
-            } : null;
+            } : undefined;
         }
     }
 
@@ -1460,10 +1455,6 @@ module NakedObjects {
             domainObject.persistLink().copyToHateoasModel(this);
         }
 
-        onChange() {
-            this.domainObject.setFromPersistMap(this);
-        }
-
         setMember(name: string, value: Value) {
             value.set(this.attributes["members"], name);
         }
@@ -1471,9 +1462,8 @@ module NakedObjects {
 
     // matches the version representation 8.0 
     export class VersionRepresentation extends ResourceRepresentation {
-        constructor() {
-            super();
-        }
+
+        wrapped = () => this.resource as RoInterfaces.IVersionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -1495,20 +1485,22 @@ module NakedObjects {
 
         // scalar properties 
         specVersion(): string {
-            return this.get("specVersion");
+            return this.wrapped().specVersion;
         }
 
         implVersion(): string {
-            return this.get("implVersion");
+            return this.wrapped().implVersion;
         }
 
         optionalCapabilities(): IOptionalCapabilities {
-            return this.get("optionalCapabilities");
+            return this.wrapped().optionalCapabilities;
         }
     }
 
     // matches Domain Services Representation 7.0
     export class DomainServicesRepresentation extends ListRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
 
         // links
         upLink(): Link {
@@ -1533,6 +1525,8 @@ module NakedObjects {
     // custom
     export class MenusRepresentation extends ListRepresentation {
 
+        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
+
         // links
         upLink(): Link {
             return this.links().linkByRel("up");
@@ -1556,6 +1550,8 @@ module NakedObjects {
     // matches the user representation 6.0
     export class UserRepresentation extends ResourceRepresentation {
 
+        wrapped = () => this.resource as RoInterfaces.IUserRepresentation;
+
         // links 
         selfLink(): Link {
             return this.links().linkByRel("self");
@@ -1576,20 +1572,22 @@ module NakedObjects {
 
         // scalar properties 
         userName(): string {
-            return this.get("userName");
+            return this.wrapped().userName;
         }
         friendlyName(): string {
-            return this.get("friendlyName");
+            return this.wrapped().friendlyName;
         }
         email(): string {
-            return this.get("email");
+            return this.wrapped().email;
         }
         roles(): string[] {
-            return this.get("roles");
+            return this.wrapped().roles;
         }
     }
 
     export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
         selfLink(): Link {
             return this.links().linkByRel("self");
@@ -1601,11 +1599,11 @@ module NakedObjects {
         }
 
         id(): string {
-            return this.get("id");
+            return this.wrapped().id;
         }
 
         value(): boolean {
-            return this.get("value");
+            return this.wrapped().value;
         }
     }
 
@@ -1617,7 +1615,7 @@ module NakedObjects {
             this.hateoasUrl = appPath;
         }
 
-        homePage : RoInterfaces.IHomePageRepresentation = this.resource;
+        wrapped = () => this.resource as RoInterfaces.IHomePageRepresentation;
 
         // links 
         serviceLink(): Link {

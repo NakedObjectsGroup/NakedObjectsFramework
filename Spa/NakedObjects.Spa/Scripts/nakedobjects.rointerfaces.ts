@@ -74,17 +74,19 @@
         members: { [index: string]: IValue };
     }
 
-    export interface IErrorDetails {
+    export interface IErrorDetailsRepresentation {
         message: string;
-        stackTrace: string[];
+        stackTrace?: string[];
     }
 
-    export interface IErrorRepresentation extends IResourceRepresentation, IErrorDetails {
-        causedBy?: IErrorDetails;
+    export interface IErrorRepresentation extends IResourceRepresentation, IErrorDetailsRepresentation {
+        causedBy?: IErrorDetailsRepresentation;
     }
 
     export interface IListRepresentation extends IResourceRepresentation {
         value: ILink[];
+        // todo custom
+        pagination? : IPagination;
     }
 
     export interface IScalarValueRepresentation extends IResourceRepresentation {
@@ -157,5 +159,10 @@
         memberOrder: string;
         format: string;
         typeActions: string;
+    }
+
+    export interface IDomainTypeActionInvokeRepresentation extends IResourceRepresentation {
+        id: string;
+        value: boolean;    
     }
 }
