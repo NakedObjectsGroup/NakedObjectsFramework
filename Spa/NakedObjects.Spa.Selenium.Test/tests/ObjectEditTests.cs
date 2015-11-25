@@ -164,8 +164,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EditObject(); //This will update object from server
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
-            Assert.AreEqual(GeminiBaseUrl+"", br.Url);
-            //wait.Until(dr => dr.Url == "object?object1=AdventureWorksModel.Person-8410&actions1=open");
         }
     }
 
