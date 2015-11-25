@@ -20,6 +20,7 @@ module NakedObjects {
     import IExtensions = NakedObjects.RoInterfaces.IExtensions;
     import ILink = NakedObjects.RoInterfaces.ILink;
     import IErrorDetailsRepresentation = NakedObjects.RoInterfaces.IErrorDetailsRepresentation;
+    import IMenuRepresentation = NakedObjects.RoInterfaces.IMenuRepresentation;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -32,7 +33,6 @@ module NakedObjects {
     function emptyResource() : RoInterfaces.IResourceRepresentation {
         return { links: [], extensions: {} };
     }
-
 
     // interfaces 
 
@@ -300,7 +300,7 @@ module NakedObjects {
 
         scalar(): ScalarValueRepresentation {
             if (!this.isNull() && this.resultType === "scalar") {
-                return new ScalarValueRepresentation(this.wrapped);
+                return new ScalarValueRepresentation(this.wrapped as RoInterfaces.IScalarValueRepresentation);
             }
             return null;
         }
@@ -316,14 +316,14 @@ module NakedObjects {
 
     // base class for nested representations 
     export class NestedRepresentation {
-        constructor(public wrapped : any) { }
+        constructor(public resource : RoInterfaces.IResourceRepresentation) { }
 
         links(): Links {
-            return Links.wrapLinks(this.wrapped.links);
+            return Links.wrapLinks(this.resource.links);
         }
 
         extensions(): IExtensions {
-            return this.wrapped.extensions;
+            return this.resource.extensions;
         }
     }
 
@@ -590,6 +590,9 @@ module NakedObjects {
 
     // matches 18.2.1
     export class Parameter extends NestedRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IParameterRepresentation;
+
         // fix parent type
         constructor(wrapped : any, public parent: any, private id : string) {
             super(wrapped);
@@ -607,8 +610,8 @@ module NakedObjects {
                 return  <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
             }
 
-            if (this.wrapped.choices) {
-                const values = _.map(this.wrapped.choices, (item : any) => new Value(item));
+            if (this.wrapped().choices) {
+                const values = _.map(this.wrapped().choices, (item : any) => new Value(item));
                 return _.object<IValueMap>(_.map(values, (v : any) => [v.toString(), v]));
             }
             return null;
@@ -623,7 +626,7 @@ module NakedObjects {
         }
 
         default(): Value {
-            return new Value(this.wrapped.default);
+            return new Value(this.wrapped().default);
         }
 
         // helper
@@ -926,6 +929,9 @@ module NakedObjects {
 
     // base class for 14.4.1/2/3
     export class Member extends NestedRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IMember;
+
         constructor(wrapped, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
         }
@@ -935,7 +941,7 @@ module NakedObjects {
         }
 
         memberType(): string {
-            return this.wrapped.memberType;
+            return this.wrapped().memberType;
         }
 
         detailsLink(): Link {
@@ -943,7 +949,7 @@ module NakedObjects {
         }
 
         disabledReason(): string {
-            return this.wrapped.disabledReason;
+            return this.wrapped().disabledReason;
         }
 
         isScalar(): boolean {
@@ -970,6 +976,9 @@ module NakedObjects {
 
     // matches 14.4.1
     export class PropertyMember extends Member {
+
+        wrapped = () => this.resource as RoInterfaces.IPropertyMember;
+
         constructor(wrapped, parent, private id : string) {
             super(wrapped, parent);
         }
@@ -1020,7 +1029,7 @@ module NakedObjects {
 
 
         value(): Value {
-            return new Value(this.wrapped.value);
+            return new Value(this.wrapped().value);
         }
 
         update(newValue): void {
@@ -1040,7 +1049,7 @@ module NakedObjects {
         }
 
         hasChoices(): boolean {
-            return this.wrapped.hasChoices;
+            return this.wrapped().hasChoices;
         }
 
         hasPrompt(): boolean {
@@ -1053,7 +1062,7 @@ module NakedObjects {
             if (this.extensions()["x-ro-nof-choices"]) {
                 return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
             }
-            const ch = this.wrapped.choices;
+            const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
                 return _.object<IValueMap>(_.map(values, (v) => [v.toString(), v]));
@@ -1065,6 +1074,9 @@ module NakedObjects {
 
     // matches 14.4.2 
     export class CollectionMember extends Member {
+
+        wrapped = () => this.resource as RoInterfaces.ICollectionMember;
+
         constructor(wrapped, parent, private id : string) {
             super(wrapped, parent);
         }
@@ -1074,11 +1086,11 @@ module NakedObjects {
         }
 
         value(): Links {
-            return Links.wrapLinks(this.wrapped.value);
+            return Links.wrapLinks(this.wrapped().value);
         }
 
         size(): number {
-            return this.wrapped.size;
+            return this.wrapped().size;
         }
 
         getDetails(): CollectionRepresentation {
@@ -1088,6 +1100,9 @@ module NakedObjects {
 
     // matches 14.4.3 
     export class ActionMember extends Member {
+
+        wrapped = () => this.resource as RoInterfaces.IActionMember;
+
         constructor(wrapped, parent, private id : string) {
             super(wrapped, parent);
         }
@@ -1119,7 +1134,7 @@ module NakedObjects {
         private initParameterMap(): void {
 
             if (!this.parameterMap) {
-                const parameters = this.wrapped.parameters;
+                const parameters = this.wrapped().parameters;
                 this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id));
             }
         }
@@ -1130,7 +1145,7 @@ module NakedObjects {
         }
 
         disabledReason(): string {
-            return this.wrapped.disabledReason;
+            return this.wrapped().disabledReason;
         }
     }
 
@@ -1294,6 +1309,9 @@ module NakedObjects {
 
     export class MenuRepresentation extends ResourceRepresentation {
 
+
+        wrapped = () => this.resource as IMenuRepresentation;
+
         constructor() {
             super();
             this.url = this.getUrl;
@@ -1340,7 +1358,6 @@ module NakedObjects {
             return this.memberMap;
         }
 
-
         actionMembers(): IActionMemberMap {
             this.initMemberMaps();
             return this.actionMemberMap;
@@ -1350,11 +1367,9 @@ module NakedObjects {
             return this.members()[id];
         }
 
-
         actionMember(id: string): ActionMember {
             return this.actionMembers()[id];
         }
-
 
         selfLink(): Link {
             return this.links().linkByRel("self");
@@ -1371,12 +1386,15 @@ module NakedObjects {
 
     // matches scalar representation 12.0 
     export class ScalarValueRepresentation extends NestedRepresentation {
-        constructor(wrapped) {
+
+        wrapped = () => this.resource as RoInterfaces.IScalarValueRepresentation;
+
+        constructor(wrapped : RoInterfaces.IResourceRepresentation) {
             super(wrapped);
         }
 
         value(): Value {
-            return new Value(this.wrapped.value);
+            return new Value(this.wrapped().value);
         }
     }
 
@@ -1673,8 +1691,7 @@ module NakedObjects {
     // matches the Link representation 2.7
     export class Link  {
 
-        constructor(public wrapped : RoInterfaces.ILink) {     
-        }
+        constructor(public wrapped : RoInterfaces.ILink) { }
 
         href(): string {
             return this.wrapped.href;

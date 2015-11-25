@@ -100,6 +100,8 @@
 
     export interface IPropertyMember extends IMember {
         value?: string | number | boolean | ILink;
+        choices: (IScalarValueRepresentation | ILink)[];
+        hasChoices : boolean;
     }
 
     export interface ICollectionMember extends IMember {
@@ -108,6 +110,7 @@
     }
 
     export interface IActionMember extends IMember {
+        parameters: { [index: string]: IParameterRepresentation };
     }
 
     export interface IDomainObjectRepresentation extends IResourceRepresentation {
@@ -118,9 +121,18 @@
         members: { [index: string]: IMember };
     }
 
+    export interface IMenuRepresentation extends IResourceRepresentation {
+        members: { [index: string]: IActionMember };
+    }
+
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
         resultType: string;
         result?: IDomainObjectRepresentation | ListRepresentation | IScalarValueRepresentation;
+    }
+
+    export interface IParameterRepresentation extends IResourceRepresentation {
+        choices?: (IScalarValueRepresentation | ILink)[];
+        default?: IScalarValueRepresentation | ILink;
     }
 
     export interface IDomainTypeRepresentation extends IResourceRepresentation {
