@@ -19,12 +19,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
+            SelectDropDownOnField("#cardtype", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField(".cardnumber", number);
-            SelectDropDownOnField(".expmonth","12");
-            SelectDropDownOnField(".expyear","2020");
+            TypeIntoField("#cardnumber", number);
+            SelectDropDownOnField("#expmonth","12");
+            SelectDropDownOnField("#expyear","2020");
             Click(SaveButton()); 
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
@@ -34,12 +34,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
+            SelectDropDownOnField("#cardtype", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField(".cardnumber", number);
-            SelectDropDownOnField(".expmonth", "12");
-            SelectDropDownOnField(".expyear", "2020");
+            TypeIntoField("#cardnumber", number);
+            SelectDropDownOnField("#expmonth", "12");
+            SelectDropDownOnField("#expyear", "2020");
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
@@ -53,13 +53,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
-            SelectDropDownOnField(".expyear", "2020");
+            SelectDropDownOnField("#cardtype", "Vista");
+            SelectDropDownOnField("#expyear", "2020");
             Click(SaveButton());
             wait.Until(dr => dr.FindElement(
-                By.CssSelector("input.cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
+                By.CssSelector("input#cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
             wait.Until(dr => dr.FindElement(
-                By.CssSelector("select.expmonth option[selected='selected']")).Text =="REQUIRED *");
+                By.CssSelector("select#expmonth option[selected='selected']")).Text =="REQUIRED *");
 
         }
 
@@ -68,7 +68,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            var name = WaitForCss("input.cardnumber");
+            var name = WaitForCss("input#cardnumber");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
 
@@ -88,10 +88,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField(".cardtype", "Vista");
-            TypeIntoField(".cardnumber", "1111222233334444");
-            SelectDropDownOnField(".expmonth", "1");
-            SelectDropDownOnField(".expyear", "2008");
+            SelectDropDownOnField("#cardtype", "Vista");
+            TypeIntoField("#cardnumber", "1111222233334444");
+            SelectDropDownOnField("#expmonth", "1");
+            SelectDropDownOnField("#expyear", "2008");
             Click(SaveButton());
             //TODO: Test that dave has failed and message is shown
 

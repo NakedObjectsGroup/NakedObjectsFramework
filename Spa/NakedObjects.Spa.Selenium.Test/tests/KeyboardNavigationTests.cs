@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
-        [TestMethod, Ignore] //Pending bug fix - opens object in both panes
+        [TestMethod] 
         public virtual void ShiftEnterEquivalentToRightClick()
         {
             Url(CustomersMenuUrl);

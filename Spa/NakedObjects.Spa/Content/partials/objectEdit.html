@@ -35,15 +35,15 @@
                                     {{property.value}}
                                 </div>
 
-                                <input class="{{property.status}} {{property.argId}}" placeholder='{{property.description}}' ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
+                                <input id="{{property.argId}}" class="{{property.status}}" placeholder='{{property.description}}' ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
 
                             </div>
 
-                            <select class="{{property.status}} {{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
+                            <select id="{{property.argId}}" class="{{property.status}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
 
                         </div>
 
-                        <select class="{{property.status}} {{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled>{{property.description}}</option></select>
+                        <select id="{{property.argId}}" class="{{property.status}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled>{{property.description}}</option></select>
                     </div>
                 </div>
                 <div ng-switch-when="scalar" ng-switch="property.isEditable">
@@ -57,7 +57,7 @@
                         </div>
 
                         <div ng-switch-when="boolean">
-                            <input class="{{property.argId}}" type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
+                            <input id="{{property.argId}}" type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
                         </div>
 
                         <div ng-switch-default>
@@ -73,26 +73,26 @@
 
                                 <div ng-switch-when="string" ng-switch="property.format">
                                     <div ng-switch-when="date-time">
-                                        <input class="value {{property.status}} {{property.argId}}" type='text' placeholder='{{property.description}}' ng-model="$parent.property.value" gemini-datepicker />
+                                        <input id="{{property.argId}}" class="value {{property.status}}" type='text' placeholder='{{property.description}}' ng-model="$parent.property.value" gemini-datepicker />
                                     </div>
                                     <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                                    <input class="{{property.status}} {{property.argId}}" ng-switch-default type='text' placeholder='{{property.description}}' ng-model="property.value" />
+                                    <input id="{{property.argId}}" class="{{property.status}}" ng-switch-default type='text' placeholder='{{property.description}}' ng-model="property.value" />
                                 </div>
 
                                 <div ng-switch-when="boolean">
-                                    <input class="{{property.status}} {{property.argId}}" type="checkbox" ng-model="property.value" />
+                                    <input id="{{property.argId}}" class="{{property.status}}" type="checkbox" ng-model="property.value" />
                                 </div>
 
                                 <div ng-switch-default>
-                                    <input class="value {{property.status}} {{property.argId}}" type='text' placeholder='{{property.description}}' ng-model="property.value" />
+                                    <input id="{{property.argId}}" class="value {{property.status}}" type='text' placeholder='{{property.description}}' ng-model="property.value" />
                                 </div>
 
                             </div>
 
-                            <select class="{{property.status}} {{property.argId}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
+                            <select id="{{property.argId}}" class="{{property.status}}" ng-switch-when="true" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{property.description}}</option></select>
 
                         </div>
-                        <select class="{{property.status}} {{property.argId}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled selected>{{property.description}}</option></select>
+                        <select id="{{property.argId}}" class="{{property.status}}" ng-switch-when="true" ng-model="property.choice" ng-options="c as c.name for c in property.choices"><option value="" disabled selected>{{property.description}}</option></select>
                     </div>
                 </div>
                 <div class="validation">{{property.message}}</div>
