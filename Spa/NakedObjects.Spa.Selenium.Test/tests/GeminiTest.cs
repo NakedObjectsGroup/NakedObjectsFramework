@@ -157,42 +157,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return WaitForCss(cssSelector, number + 1)[number];
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="paramNo">Starts from 0</param>
-        /// <param name="input"></param>
-        /// <param name="pane"></param>
-        protected virtual void TypeIntoField(FieldType fieldType, string fieldName, string text, Pane pane = Pane.Single)
+        protected virtual void TypeIntoField(string cssFieldId, string characters)
         {
-            var field = GetFieldElement(fieldType, fieldName, pane);
-            var input = field.FindElement(By.CssSelector(".value input"));
-            input.SendKeys(text);
+            WaitForCss(cssFieldId).SendKeys(characters);
         }
 
-        protected virtual void SelectDropDownOnField(FieldType fieldType, string fieldName, string option, Pane pane = Pane.Single)
+        protected virtual void SelectDropDownOnField(string cssFieldId, string characters)
         {
-            GetSelectElement(fieldType, fieldName, pane).SelectByText(option);
+            var selected = new SelectElement(WaitForCss(cssFieldId));
+            selected.SelectByText(characters);
         }
 
-        protected virtual void SelectDropDownOnField(FieldType fieldType, string fieldName, int optionNo, Pane pane = Pane.Single)
+        protected virtual void SelectDropDownOnField(string cssFieldId, int index)
         {
-            GetSelectElement(fieldType, fieldName, pane).SelectByIndex(optionNo);
-        }
-
-
-        private SelectElement GetSelectElement(FieldType fieldType, string fieldName, Pane pane = Pane.Single)
-        {
-            var field = GetFieldElement(fieldType, fieldName, pane);
-            var fieldSelect = field.FindElement(By.CssSelector("select"));
-            return new SelectElement(fieldSelect);
-        }
-
-        private IWebElement GetFieldElement(FieldType fieldType, string fieldName, Pane pane = Pane.Single)
-        {
-            var css = CssSelectorFor(pane) + "  " + CssSelectorFor(fieldType);
-            return wait.Until(dr => dr.FindElements(By.CssSelector(css))
-                .Where(n => n.FindElement(By.CssSelector(".name")).Text.StartsWith(fieldName)).First());
+            var selected = new SelectElement(WaitForCss(cssFieldId));
+            selected.SelectByIndex(index);
         }
 
         protected virtual void GoToMenuFromHomePage(string menuName) {
@@ -280,19 +259,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                     return ".split.pane1 ";
                 case Pane.Right:
                     return ".split.pane2 ";
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        protected string CssSelectorFor(FieldType  fieldType)
-        {
-            switch (fieldType)
-            {
-                case FieldType.Property:
-                    return ".property";
-                case FieldType.Parameter:
-                    return ".parameter";
                 default:
                     throw new NotImplementedException();
             }
@@ -541,10 +507,5 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNull(a.GetAttribute("disabled"));
             return a;
         }
-    }
-
-    public enum FieldType
-    {
-        Property, Parameter
     }
 }

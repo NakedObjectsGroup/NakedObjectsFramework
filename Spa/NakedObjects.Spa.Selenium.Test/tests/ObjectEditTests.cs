@@ -25,8 +25,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             AssertHasFocus(field1);
 
             // set price and days to mfctr
-            TypeIntoField(FieldType.Property, "List Price",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
-            TypeIntoField(FieldType.Property, "Days To Manufacture",Keys.Backspace + "1");
+            TypeIntoField(".listprice",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
+            TypeIntoField(".daystomanufacture",Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -45,11 +45,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dateStr = date.ToString("d MMM yyyy");
 
             for (int i = 0; i < 12; i++) {
-                TypeIntoField(FieldType.Property, "Sell Start Date", Keys.Backspace);
+                TypeIntoField(".sellstartdate", Keys.Backspace);
             }
 
-            TypeIntoField(FieldType.Property, "Sell Start Date", dateStr + Keys.Tab);
-            TypeIntoField(FieldType.Property, "Days To Manufacture", Keys.Backspace + "1");
+            TypeIntoField(".sellstartdate", dateStr + Keys.Tab);
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -65,9 +65,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             // set product line 
 
-            SelectDropDownOnField(FieldType.Property, ".productline", "S");
+            SelectDropDownOnField(".productline", "S");
 
-            TypeIntoField(FieldType.Property, "Days To Manufacture", Keys.Backspace + "1");
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -79,14 +79,21 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectEditChangeConditionalChoices() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
-            SelectDropDownOnField(FieldType.Property, "Product Category", "Clothing");
+            // set product category and sub category
 
-            Assert.Fail("Not implemented");
+            // this makes tests really fragile
+            //Assert.AreEqual("Accessories", selected.SelectedOption.Text);
+
+            //Assert.AreEqual(4, br.FindElements(By.CssSelector(".productcategory  select option")).Count);
+            //Assert.AreEqual(13, br.FindElements(By.CssSelector(".productsubcategory  select option")).Count);
+
+            SelectDropDownOnField(".productcategory", "Clothing");
+
             wait.Until(d => d.FindElements(By.CssSelector("select.productsubcategory option")).Count == 9);
 
-            SelectDropDownOnField(FieldType.Property, "Product Subcategory", "Caps");
+            SelectDropDownOnField(".productsubcategory", "Caps");
 
-            TypeIntoField(FieldType.Property, "Days To Manufacture", Keys.Backspace + "1");
+            TypeIntoField(".daystomanufacture", Keys.Backspace + "1");
 
             SaveObject();
 
@@ -109,11 +116,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual(9, br.FindElements(By.CssSelector("select.productsubcategory option")).Count);
 
-            SelectDropDownOnField(FieldType.Property, "Product Category","Bikes");
+            SelectDropDownOnField(".productcategory","Bikes");
 
             wait.Until(d => d.FindElements(By.CssSelector("select.productsubcategory option")).Count == 4);
 
-            SelectDropDownOnField(FieldType.Property, "Product Subcategory","Mountain Bikes");
+            SelectDropDownOnField(".productsubcategory","Mountain Bikes");
 
             SaveObject();
 
@@ -125,12 +132,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // set values back
             EditObject();
 
-            SelectDropDownOnField(FieldType.Property, "Product Category", "Accessories");
-            Assert.Fail("Not Implemented");
+            SelectDropDownOnField(".productcategory", "Accessories");
+
             var slpsc = new SelectElement(br.FindElement(By.CssSelector("select.productsubcategory")));
             wait.Until(d => slpsc.Options.Count == 13);
 
-            SelectDropDownOnField(FieldType.Property, "Product Subcategory", "Bottles and Cages");
+            SelectDropDownOnField(".productsubcategory", "Bottles and Cages");
             SaveObject();
 
             properties = br.FindElements(By.CssSelector(".property"));
@@ -149,7 +156,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
-            TypeIntoField(FieldType.Parameter, "New Suffix", newValue);
+            TypeIntoField(".parameter:nth-child(1) input", newValue);
             Click(OKButton()); //This will have updated server, but not client-cached object
             WaitUntilElementDoesNotExist(".dialog");
             //Check view has not updated because it was a queryonly action

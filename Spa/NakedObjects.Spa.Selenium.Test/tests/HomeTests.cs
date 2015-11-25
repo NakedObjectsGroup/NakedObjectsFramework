@@ -131,7 +131,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
 
-            TypeIntoField(FieldType.Property, "Account Number", Keys.ArrowRight+Keys.ArrowRight+"00022262");
+            //Check focus
+            var fieldCss = ".parameter:nth-child(1) input";
+           AssertHasFocus(WaitForCss(fieldCss));
+
+            TypeIntoField(fieldCss, Keys.ArrowRight+Keys.ArrowRight+"00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }
