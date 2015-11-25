@@ -6,6 +6,8 @@
         type?: string;
         method?: string;
         title?: string;
+        arguments?: Object;
+        extensions?: IExtensions;
     }
 
     export interface IExtensions {

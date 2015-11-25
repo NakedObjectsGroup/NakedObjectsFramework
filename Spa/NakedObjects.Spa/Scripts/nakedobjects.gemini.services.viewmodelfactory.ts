@@ -578,7 +578,9 @@ module NakedObjects.Angular.Gemini{
             const link = objectRep.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients
-                link.set("title", objectViewModel.title);
+                //link.set("title", objectViewModel.title);
+                link.wrapped.title = objectViewModel.title;
+
 
                 const value = new Value(link);
 

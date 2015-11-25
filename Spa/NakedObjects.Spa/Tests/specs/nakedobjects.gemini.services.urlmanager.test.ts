@@ -595,7 +595,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         describe("setItem", () => {
                   
             const preSearch: any = { menu1: "menu1", menu2: "menu2" };
-            const link = new NakedObjects.Link({});
+            const link = new NakedObjects.Link({} as any);
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 location = $location;

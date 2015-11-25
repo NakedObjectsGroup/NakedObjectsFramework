@@ -1699,56 +1699,55 @@ module NakedObjects {
     // matches the Link representation 2.7
     export class Link  {
 
-        attributes: any;
+      
 
-        populate(wrapped: any) {
-            this.attributes = wrapped;
-        }
+        //populate(wrapped: any) {
+        //   // this.attributes = wrapped;
+        //}
 
         url(): string {
             return "";
         }
-        get(attributeName: string): any {
-            return this.attributes[attributeName];
-        }
-        set(attributeName?: any, value?: any, options?: any) {
-            this.attributes[attributeName] = value;
-        }
+        //get(attributeName: string): any {
+        //    return this.attributes[attributeName];
+        //}
+        //set(attributeName?: any, value?: any, options?: any) {
+        //    this.attributes[attributeName] = value;
+        //}
 
 
-        wrapped : any;
+        wrapped: RoInterfaces.ILink;
 
-        constructor(object?) {
-            this.attributes = object;
-            this.wrapped = object;
+        constructor(link : RoInterfaces.ILink) {
+            this.wrapped = link;
         }
 
         href(): string {
-            return this.get("href");
+            return this.wrapped.href;
         }
 
         method(): string {
-            return this.get("method");
+            return this.wrapped.method;
         }
 
         rel(): Rel {
-            return new Rel(this.get("rel"));
+            return new Rel(this.wrapped.rel);
         }
 
         type(): MediaType {
-            return new MediaType(this.get("type"));
+            return new MediaType(this.wrapped.type);
         }
 
         title(): string {
-            return this.get("title");
+            return this.wrapped.title;
         }
 
         arguments(): Object {
-            return this.get("arguments");
+            return this.wrapped.arguments;
         }
 
         extensions(): IExtensions {
-            return this.get("extensions");
+            return this.wrapped.extensions;
         }
 
         copyToHateoasModel(hateoasModel: IHateoasModel): void {
