@@ -6,7 +6,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IDraggableViewModel {
         canDropOn:  (targetType: string) => ng.IPromise<boolean>;
-        value : Object;
+        value : number | string | boolean;
         reference: string;
         choice: ChoiceViewModel;
         color: string;
@@ -74,7 +74,7 @@ module NakedObjects.Angular.Gemini {
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
-        value: Object;
+        value: number | string | boolean;
         reference: string;
         choice: ChoiceViewModel;
         domainType: string;
@@ -95,7 +95,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ValueViewModel extends MessageViewModel {
-        value: Object;    
+        value: number | string | boolean;    
         id: string; 
         argId: string; 
         choices: ChoiceViewModel[];
@@ -324,7 +324,7 @@ module NakedObjects.Angular.Gemini {
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
-        value: Object;
+        value: number | string | boolean;
         reference: string;
         choice : ChoiceViewModel;
 

@@ -100,7 +100,7 @@
 
     export interface IPropertyMember extends IMember {
         value?: string | number | boolean | ILink;
-        choices: (IScalarValueRepresentation | ILink)[];
+        choices?: (string | number | boolean | ILink)[];
         hasChoices : boolean;
     }
 
@@ -133,8 +133,8 @@
     }
 
     export interface IParameterRepresentation extends IResourceRepresentation {
-        choices?: (IScalarValueRepresentation | ILink)[];
-        default?: IScalarValueRepresentation | ILink;
+        choices?: (string | number | boolean | ILink)[];
+        default?: number | string | boolean | ILink;
     }
 
     export interface IDomainTypeRepresentation extends IResourceRepresentation {

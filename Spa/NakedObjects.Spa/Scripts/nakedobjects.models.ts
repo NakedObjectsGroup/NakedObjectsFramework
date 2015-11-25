@@ -169,19 +169,24 @@ module NakedObjects {
         }
     }
 
+    function isILink(object: any): object is RoInterfaces.ILink {
+        return object && object instanceof Object  && "href" in object;
+    }
+
     // helper class for values 
     export class Value {
 
-        private wrapped: any;
+        private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
 
-        constructor(raw: any) {
+       
+        constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean ) {
             // can only be Link, number, boolean, string or null    
 
             if (raw instanceof Array) {
-                this.wrapped = raw;
+                this.wrapped = raw as Array<Link | ILink | number | string | boolean>;
             } else if (raw instanceof Link) {
                 this.wrapped = raw;
-            } else if (raw && raw.href) {
+            } else if (isILink(raw)) {
                 this.wrapped = new Link(raw);
             } else {
                 this.wrapped = raw;
@@ -204,12 +209,12 @@ module NakedObjects {
             return this.isReference() ? <Link>this.wrapped : null;
         }
 
-        scalar(): Object {
-            return this.isReference() ? null : this.wrapped;
+        scalar(): number | string | boolean {
+            return this.isReference() ? null : this.wrapped as number | string | boolean;
         }
 
         list(): Value[] {
-            return this.isList() ? _.map(this.wrapped, i => new Value(i)) : null;
+            return this.isList() ? _.map(this.wrapped as Array<Link | number | string | boolean>, i => new Value(i)) : null;
         }
 
         toString(): string {
@@ -902,10 +907,10 @@ module NakedObjects {
             if (this.extensions()["x-ro-nof-choices"]) {
                 return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
             }
-            const ch = this.get("choices");
+            const ch = this.get("choices") as Array<number | string | boolean | ILink>;
             if (ch) {
-                const values = _.map(ch, (item) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v) => [v.toString(), v]));
+                const values = _.map(ch, item => new Value(item));
+                return _.object<IValueMap>(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
