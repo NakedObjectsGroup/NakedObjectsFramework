@@ -16,6 +16,7 @@ module NakedObjects.Angular {
         const repLoader = this; 
         repLoader.loadingCount = 0; 
 
+        // todo this should be on model ! 
         function getUrl(model: IHateoasModel): string {
             const url = model.url();
             const attrAsJson = _.clone((<any>model).attributes);
@@ -37,6 +38,7 @@ module NakedObjects.Angular {
             return urlParmString !== "" ? url + "?" + urlParmString : url;
         }
 
+         // todo this should be on model too ! 
         function getData(model: IHateoasModel): Object {
 
             let data = {};
@@ -63,19 +65,19 @@ module NakedObjects.Angular {
             $rootScope.$broadcast("ajax-change", ++this.loadingCount); 
 
             return $http(config).
-                then(function (promiseCallback : ng.IHttpPromiseCallbackArg<{}>) {
-                    //(<any>response).attributes = promiseCallback.data; // TODO make typed 
-
-                    response.populate(promiseCallback.data as RoInterfaces.IResourceRepresentation);
+                then(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) {
+                    response.populate(promiseCallback.data);
                     $rootScope.$broadcast("ajax-change", --this.loadingCount);
                     return $q.when(response);
                 }).
-                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<{}>) {
+                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) {
 
                     let reason: ErrorRepresentation | ErrorMap | string; 
 
                     if (promiseCallback.status === 500) {
-                        reason = new ErrorRepresentation(promiseCallback.data);          
+                        const error  = new ErrorRepresentation();  
+                        error.populate(promiseCallback.data);
+                        reason = error;
                     }
                     else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
                         reason = new ErrorMap(promiseCallback.data, status, promiseCallback.headers("warning"));

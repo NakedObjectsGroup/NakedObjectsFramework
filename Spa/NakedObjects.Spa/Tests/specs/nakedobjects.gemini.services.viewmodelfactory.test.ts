@@ -14,15 +14,16 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
     describe("create errorViewModel", () => {
 
         let resultVm: NakedObjects.Angular.Gemini.ErrorViewModel;
-        const rawError = { message: "a message", stackTrace: ["line1", "line2"] };
-        const emptyError = {};
+        const rawError = { message: "a message", stackTrace: ["line1", "line2"], links : [], extensions : {} };
+        const emptyError = emptyResource();
        
 
         describe("from populated rep", () => {
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-              
-                resultVm = viewModelFactory.errorViewModel(new NakedObjects.ErrorRepresentation(rawError));
+                const error = new NakedObjects.ErrorRepresentation();
+                error.populate(rawError);
+                resultVm = viewModelFactory.errorViewModel(error);
             }));
 
             it("creates a error view model", () => {
@@ -36,7 +37,9 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         describe("from empty rep", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                resultVm = viewModelFactory.errorViewModel(new NakedObjects.ErrorRepresentation(emptyError));
+                const error = new NakedObjects.ErrorRepresentation();
+                error.populate(emptyError);
+                resultVm = viewModelFactory.errorViewModel(error);
             }));
 
             it("creates a error view model", () => {
@@ -238,6 +241,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         };
 
         const rawEmptyList = {
+            extensions : {},
             value: [],
             links: [rawSelfLink],
             pagination: {
@@ -260,6 +264,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         };
 
         const rawList = {
+            extensions : {},
             value: [rawLink1, rawLink2],
             links: [rawSelfLink],
             pagination: {
@@ -338,7 +343,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         describe("from empty list rep", () => {
 
             let setListState: jasmine.Spy;
-            const lr = new NakedObjects.ListRepresentation(rawEmptyList);
+            const lr = new NakedObjects.ListRepresentation();
+            lr.populate(rawEmptyList);
             let $scope: ng.IScope;
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
@@ -369,7 +375,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let setCollectionMemberState: jasmine.Spy;
             let itemViewModel: jasmine.Spy;
             let populate: jasmine.Spy;
-            const lr = new NakedObjects.ListRepresentation(rawList);
+            const lr = new NakedObjects.ListRepresentation();
+            lr.populate(rawList);
             let vmf: NakedObjects.Angular.Gemini.IViewModelFactory;
             let $scope: ng.IScope;
 
@@ -403,12 +410,14 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         let resultVm: NakedObjects.Angular.Gemini.ParameterViewModel;
 
         const rawParameter: any = { extensions: { friendlyName: "a parm" }, links: [] };
-        const rawAction = {};
+        const rawAction = emptyResource();                                                                            
 
         describe("from populated rep", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anId"), new NakedObjects.Value("pv"), 1);
+                const ar = new NakedObjects.ActionRepresentation();
+                ar.populate(rawAction);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anId"), new NakedObjects.Value("pv"), 1);
             }));
 
             it("creates a parameter view model", () => {
@@ -441,8 +450,9 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.choices = [1, 2, 3];
                 rawParameter.default = 1;
 
-
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
+                const ar = new NakedObjects.ActionRepresentation();
+                ar.populate(rawAction);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
 
             it("creates a parameter view model with choices", () => {
@@ -473,8 +483,9 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.choices = null;
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
-
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
+                const ar = new NakedObjects.ActionRepresentation();
+                ar.populate(rawAction);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
 
             it("creates a parameter view model with prompt", () => {
@@ -506,8 +517,10 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.default = 1;
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
+                const ar = new NakedObjects.ActionRepresentation();
+                ar.populate(rawAction);
 
-                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, new NakedObjects.ActionRepresentation(rawAction), "anid"), null, 1);
+                resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
 
             it("creates a parameter view model with prompt", () => {
@@ -538,9 +551,10 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
-                let $scope = $rootScope.$new();
-
-                resultVm = viewModelFactory.domainObjectViewModel($scope, new NakedObjects.DomainObjectRepresentation(rawObject), {}, null, false, 1);
+                const $scope = $rootScope.$new();
+                const doRep = new NakedObjects.DomainObjectRepresentation();
+                doRep.populate(rawObject);
+                resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, false, 1);
             }));
 
             it("creates a object view model", () => {
@@ -562,7 +576,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 const rawPersistLink = { rel: "urn:org.restfulobjects:rels/persist", href: "http://objects/AdventureWorksModel.Product" };
                 rawObject.links.pop();
                 rawObject.links.push(rawPersistLink);
-                const doRep = new NakedObjects.DomainObjectRepresentation(rawObject);
+                const doRep = new NakedObjects.DomainObjectRepresentation();
+                doRep.populate(rawObject);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
 
                 resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, false, 1);

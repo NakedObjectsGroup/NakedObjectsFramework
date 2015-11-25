@@ -72,13 +72,13 @@
         members: { [index: string]: IValue };
     }
 
-    export interface IErrorRepresentation extends IResourceRepresentation {
+    export interface IErrorDetails {
         message: string;
         stackTrace: string[];
-        causedBy: {
-            message: string;
-            stackTrace: string[];
-        };
+    }
+
+    export interface IErrorRepresentation extends IResourceRepresentation, IErrorDetails {
+        causedBy?: IErrorDetails;
     }
 
     export interface IListRepresentation extends IResourceRepresentation {

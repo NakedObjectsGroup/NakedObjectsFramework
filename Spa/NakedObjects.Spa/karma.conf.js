@@ -23,7 +23,6 @@ module.exports = function(config) {
       'Scripts/angular-mocks.js',
       'Scripts/nakedobjects.config.js',
       'Scripts/nakedobjects.models.helpers.js',
-      'Scripts/nakedobjects.models.shims.js',
       'Scripts/nakedobjects.models.js',
       'Scripts/nakedobjects.gemini.viewmodels.js',
       'Scripts/nakedobjects.gemini.routedata.js',
