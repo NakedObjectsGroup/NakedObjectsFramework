@@ -16,6 +16,7 @@ module NakedObjects.Angular {
         const repLoader = this; 
         repLoader.loadingCount = 0; 
 
+        // todo this should be on model ! 
         function getUrl(model: IHateoasModel): string {
             const url = model.url();
             const attrAsJson = _.clone((<any>model).attributes);
@@ -37,6 +38,7 @@ module NakedObjects.Angular {
             return urlParmString !== "" ? url + "?" + urlParmString : url;
         }
 
+         // todo this should be on model too ! 
         function getData(model: IHateoasModel): Object {
 
             let data = {};

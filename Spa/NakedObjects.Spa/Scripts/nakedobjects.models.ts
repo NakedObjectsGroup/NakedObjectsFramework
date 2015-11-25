@@ -59,8 +59,6 @@ module NakedObjects {
         totalCount: number;
     }
 
-
-
     export class ArgumentMap {
 
         attributes: any;
@@ -82,15 +80,12 @@ module NakedObjects {
 
         hateoasUrl: string = "";
         method: string = "GET";
-        suffix: string = "";
+      
         url(): string {
-            return (this.hateoasUrl || "") + this.suffix;
+            return this.hateoasUrl;
         }
-        preFetch() { }
 
         urlParms: _.Dictionary<string>;
-        onChange() { }
-        onError(map: Object, statusCode: string, warnings: string) { }
     }
 
     export class RelParm {
@@ -345,15 +340,13 @@ module NakedObjects {
             this.attributes[attributeName] = value;
         }
 
-
         hateoasUrl: string = "";
         method: string = "GET";
-        suffix: string = "";
+  
         url(): string {
-            return (this.hateoasUrl || "") + this.suffix;
+            return this.hateoasUrl;
         }
-        preFetch() { }
-
+    
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
             this.attributes = wrapped;
         }
@@ -1322,9 +1315,7 @@ module NakedObjects {
             this.resetMemberMaps();
         }
 
-        preFetch() {
-            this.memberMap = null; // to ensure everything gets reset
-        }
+      
     }
 
     export class MenuRepresentation extends ResourceRepresentation {
@@ -1400,9 +1391,6 @@ module NakedObjects {
             return <MenuRepresentation> this.selfLink().getTarget();
         }
 
-        preFetch() {
-            this.memberMap = null; // to ensure everything gets reset
-        }
     }
 
 
