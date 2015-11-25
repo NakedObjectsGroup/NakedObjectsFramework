@@ -956,18 +956,18 @@ module NakedObjects {
             return isScalarType(this.extensions().returnType);
         }
 
-        static wrapMember(toWrap, parent, id): Member {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member {
 
             if (toWrap.memberType === "property") {
-                return new PropertyMember(toWrap, parent, id);
+                return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
             }
 
             if (toWrap.memberType === "collection") {
-                return new CollectionMember(toWrap, parent, id);
+                return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
             }
 
             if (toWrap.memberType === "action") {
-                return new ActionMember(toWrap, parent, id);
+                return new ActionMember(toWrap as RoInterfaces.IActionMember, parent, id);
             }
 
             return null;
@@ -979,7 +979,7 @@ module NakedObjects {
 
         wrapped = () => this.resource as RoInterfaces.IPropertyMember;
 
-        constructor(wrapped, parent, private id : string) {
+        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private id : string) {
             super(wrapped, parent);
         }
 
@@ -1077,7 +1077,7 @@ module NakedObjects {
 
         wrapped = () => this.resource as RoInterfaces.ICollectionMember;
 
-        constructor(wrapped, parent, private id : string) {
+        constructor(wrapped : RoInterfaces.ICollectionMember, parent : DomainObjectRepresentation, private id : string) {
             super(wrapped, parent);
         }
 
@@ -1103,7 +1103,7 @@ module NakedObjects {
 
         wrapped = () => this.resource as RoInterfaces.IActionMember;
 
-        constructor(wrapped, parent, private id : string) {
+        constructor(wrapped: RoInterfaces.IActionMember, parent :  DomainObjectRepresentation | MenuRepresentation, private id : string) {
             super(wrapped, parent);
         }
 
@@ -1309,7 +1309,6 @@ module NakedObjects {
 
     export class MenuRepresentation extends ResourceRepresentation {
 
-
         wrapped = () => this.resource as IMenuRepresentation;
 
         constructor() {
@@ -1322,19 +1321,19 @@ module NakedObjects {
         }
 
         title(): string {
-            return this.get("title");
+            return this.wrapped().title;
         }
 
         menuId(): string {
-            return this.get("menuId");
+            return this.wrapped().menuId;
         }
        
         links(): Links {
-            return Links.wrapLinks(this.get("links"));
+            return Links.wrapLinks(this.wrapped().links);
         }
 
         extensions(): IExtensions {
-            return this.get("extensions");
+            return this.wrapped().extensions;
         }
 
         private memberMap: IMemberMap;
@@ -1342,7 +1341,7 @@ module NakedObjects {
         private actionMemberMap: IActionMemberMap;
 
         private resetMemberMaps() {
-            const members = this.get("members");
+            const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
             this.actionMemberMap = <IActionMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "action");
         }

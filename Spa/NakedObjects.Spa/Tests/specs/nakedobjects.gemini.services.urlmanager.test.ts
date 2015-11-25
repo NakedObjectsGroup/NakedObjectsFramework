@@ -257,10 +257,10 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         const obj = new NakedObjects.DomainObjectRepresentation();
         const menu = new NakedObjects.MenuRepresentation();
 
-        const action11 = new NakedObjects.ActionMember({}, obj, "11");
-        const action12 = new NakedObjects.ActionMember({}, menu, "12");
-        const action21 = new NakedObjects.ActionMember({}, obj, "21");
-        const action22 = new NakedObjects.ActionMember({}, menu, "22");
+        const action11 = new NakedObjects.ActionMember({} as any, obj, "11");
+        const action12 = new NakedObjects.ActionMember({} as any, menu, "12");
+        const action21 = new NakedObjects.ActionMember({} as any, obj, "21");
+        const action22 = new NakedObjects.ActionMember({} as any, menu, "22");
 
         beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
             spyOn(obj, "domainType").and.returnValue("dt");
@@ -546,7 +546,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
 
             let location: ng.ILocationService;
             const preSearch: any = { menu1: "menu1", menu2: "menu2" };
-            const property = new NakedObjects.PropertyMember({}, {}, "1");
+            const property = new NakedObjects.PropertyMember({} as any, {} as any, "1");
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 location = $location;
@@ -861,7 +861,7 @@ describe("nakedobjects.gemini.services.urlmanager", () => {
         describe("setCollectionMemberState", () => {
 
             const preSearch: any = { menu1: "menu1", menu2: "menu2" };
-            const collectionMember = new NakedObjects.CollectionMember({}, {}, "aName");
+            const collectionMember = new NakedObjects.CollectionMember({} as any, {} as any, "aName");
 
             beforeEach(inject((urlManager: NakedObjects.Angular.Gemini.IUrlManager, $location) => {
                 location = $location;

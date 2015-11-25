@@ -119,14 +119,16 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 friendlyName: "a title",
                 "x-ro-nof-menuPath": "a path"
             },
-            links: [rawdetailsLink]
+            links: [rawdetailsLink], 
+            parameters: {} as _.Dictionary<NakedObjects.RoInterfaces.IParameterRepresentation>, 
+            memberType : "action"
         };
         const rawActionParms = _.set(_.cloneDeep(rawAction), "extensions.hasParams", true);
 
         describe("from populated rep with no parms", () => {
 
             let invokeAction: jasmine.Spy;
-            const am = new NakedObjects.ActionMember(rawAction, {}, "anid");
+            const am = new NakedObjects.ActionMember(rawAction, {} as any, "anid");
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, context) => {
                 resultVm = viewModelFactory.actionViewModel(am, 1);
@@ -146,7 +148,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let setDialog: jasmine.Spy;
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
-                resultVm = viewModelFactory.actionViewModel(new NakedObjects.ActionMember(rawActionParms, {}, "anid"), 1);
+                resultVm = viewModelFactory.actionViewModel(new NakedObjects.ActionMember(rawActionParms, {} as any, "anid"), 1);
                 setDialog = spyOn(urlManager, "setDialog");
             }));
 
@@ -173,14 +175,16 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         };
         const rawAction = {
             extensions: { friendlyName: "a title" },
-            links: [rawInvokeLink, rawUpLink]
+            links: [rawInvokeLink, rawUpLink],
+            parameters: {} as _.Dictionary<NakedObjects.RoInterfaces.IParameterRepresentation>,
+            memberType: "action"
         };
 
         describe("from simple rep", () => {
 
             let invokeAction: jasmine.Spy;
             let closeDialog: jasmine.Spy;
-            const am = new NakedObjects.ActionMember(rawAction, {}, "anid");
+            const am = new NakedObjects.ActionMember(rawAction, {} as any, "anid");
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, context, urlManager) => {
                 invokeAction = spyOn(context, "invokeAction");
@@ -237,7 +241,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 pluralName: "somethings",
                 elementType: "AdventureWorksModel.Product"
             },
-            links: [rawDetailsLink]
+            links: [rawDetailsLink],
+            memberType : "collection"
         };
 
         const rawEmptyList = {
@@ -260,7 +265,8 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 elementType: "AdventureWorksModel.Product"
             },
             links: [rawDetailsLink],
-            value : [rawLink1, rawLink2]
+            value: [rawLink1, rawLink2],
+            memberType: "collection"
         };
 
         const rawList = {
@@ -279,7 +285,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         describe("from empty collection member rep", () => {
 
             let setCollectionMemberState: jasmine.Spy;
-            const cm = new NakedObjects.CollectionMember(rawEmptyCollection, {}, "");
+            const cm = new NakedObjects.CollectionMember(rawEmptyCollection, {} as any, "");
             let $scope: ng.IScope;
 
             beforeEach(inject(($rootScope, viewModelFactory : NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
@@ -311,7 +317,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let itemViewModel: jasmine.Spy;
             let populate: jasmine.Spy;
 
-            const cm = new NakedObjects.CollectionMember(rawCollection, {}, "");
+            const cm = new NakedObjects.CollectionMember(rawCollection, {} as any, "");
             let vmf: NakedObjects.Angular.Gemini.IViewModelFactory;
             let $scope: ng.IScope;
 

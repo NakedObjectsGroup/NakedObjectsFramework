@@ -402,7 +402,7 @@ describe("nakedObjects.gemini.services.context ", () => {
     describe("getListFromMenu", () => {
 
         const testList = new NakedObjects.ListRepresentation();
-        const testAction = new NakedObjects.ActionMember({}, {}, "");
+        const testAction = new NakedObjects.ActionMember({} as any, {} as any, "");
         const testMenu = new NakedObjects.MenuRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();
@@ -474,7 +474,7 @@ describe("nakedObjects.gemini.services.context ", () => {
     describe("getListFromObject", () => {
 
         const testList = new NakedObjects.ListRepresentation();
-        const testAction = new NakedObjects.ActionMember({}, {}, "");
+        const testAction = new NakedObjects.ActionMember({} as any, {} as any, "");
         const testObject = new NakedObjects.DomainObjectRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();

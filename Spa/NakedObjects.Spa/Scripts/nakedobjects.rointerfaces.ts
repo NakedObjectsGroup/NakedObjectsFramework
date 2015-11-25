@@ -123,6 +123,8 @@
 
     export interface IMenuRepresentation extends IResourceRepresentation {
         members: { [index: string]: IActionMember };
+        title: string;
+        menuId: string;
     }
 
     export interface IActionInvokeRepresentation extends IResourceRepresentation {

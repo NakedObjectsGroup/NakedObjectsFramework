@@ -136,7 +136,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
         describe("handleToolBar when viewing an editable object", () => {
 
             const testObject = new NakedObjects.DomainObjectRepresentation();
-            const testMember = new NakedObjects.PropertyMember({}, testObject, "");
+            const testMember = new NakedObjects.PropertyMember({} as any, testObject, "");
             const testVm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
 
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
@@ -167,7 +167,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
         describe("handleToolBar when viewing a non editable object", () => {
 
             const testObject = new NakedObjects.DomainObjectRepresentation();
-            const testMember = new NakedObjects.PropertyMember({}, testObject, "");
+            const testMember = new NakedObjects.PropertyMember({} as any, testObject, "");
 
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context: NakedObjects.Angular.Gemini.IContext) => {
                 $scope = $rootScope.$new();
