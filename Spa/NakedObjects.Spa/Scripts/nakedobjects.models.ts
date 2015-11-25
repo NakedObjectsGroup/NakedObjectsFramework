@@ -490,13 +490,7 @@ module NakedObjects {
     }
 
     // helper - collection of Links 
-    export class Links implements IHateoasModel {
-
-       
-
-
-        url(): any { }
-       
+    export class Links {
 
         add(models: any, options?: any) {
             this.models = this.models || [];
@@ -507,24 +501,6 @@ module NakedObjects {
             }
         }
 
-
-
-
-        // cannot use constructor to initialise as model property is not yet set and so will 
-        // not create members of correct type 
-        constructor() {
-
-            this.url = () => {
-                return this.hateoasUrl;
-            };
-        }
-
-        populate(wrapped: RoInterfaces.IResourceRepresentation) {
-            //super.populate(wrapped);
-        }
-
-        hateoasUrl: string;
-        method: string;
 
         model = Link;
 
@@ -545,7 +521,7 @@ module NakedObjects {
 
         linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
 
-        urlParms: _.Dictionary<string>;
+        //urlParms: _.Dictionary<string>;
     }
 
 
@@ -1699,27 +1675,7 @@ module NakedObjects {
     // matches the Link representation 2.7
     export class Link  {
 
-      
-
-        //populate(wrapped: any) {
-        //   // this.attributes = wrapped;
-        //}
-
-        url(): string {
-            return "";
-        }
-        //get(attributeName: string): any {
-        //    return this.attributes[attributeName];
-        //}
-        //set(attributeName?: any, value?: any, options?: any) {
-        //    this.attributes[attributeName] = value;
-        //}
-
-
-        wrapped: RoInterfaces.ILink;
-
-        constructor(link : RoInterfaces.ILink) {
-            this.wrapped = link;
+        constructor(public wrapped : RoInterfaces.ILink) {     
         }
 
         href(): string {
@@ -1757,7 +1713,7 @@ module NakedObjects {
 
         private getHateoasTarget(targetType): IHateoasModel {
             const matchingType = this.repTypeToModel[targetType];
-            const target: IHateoasModel = new matchingType({});
+            const target: IHateoasModel = new matchingType();
             return target;
         }
 
