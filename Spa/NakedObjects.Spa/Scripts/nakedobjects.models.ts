@@ -406,13 +406,7 @@ module NakedObjects {
             _.each(this.properties(), (value : Value, key : string) => {
                 this.setProperty(key, value);
             });
-        }
-
-        onChange() {
-            // if the update map changes as a result of server changes (eg title changes) update the 
-            // associated domain object
-            this.domainObject.setFromUpdateMap(this);
-        }
+        }   
 
         properties(): IValueMap {
             return <IValueMap>_.mapValues(this.attributes, (v : any) => new Value(v.value));
@@ -430,12 +424,6 @@ module NakedObjects {
             link.copyToHateoasModel(this);
         }
 
-        onChange() {
-            // if the update map changes as a result of server changes (eg title changes) update the 
-            // associated property
-            this.collectionResource.setFromMap(this);
-        }
-
         setValue(value: Value) {
             value.setValue(this.attributes);
         }
@@ -450,12 +438,6 @@ module NakedObjects {
             this.setValue(propertyResource.value());
         }
 
-        onChange() {
-            // if the update map changes as a result of server changes (eg title changes) update the 
-            // associated property
-            this.propertyResource.setFromModifyMap(this);
-        }
-
         setValue(value: Value) {
             value.setValue(this.attributes);
         }
@@ -468,12 +450,6 @@ module NakedObjects {
             propertyResource.modifyLink().copyToHateoasModel(this);
 
             this.setValue(propertyResource.value());
-        }
-
-        onChange() {
-            // if the update map changes as a result of server changes (eg title changes) update the 
-            // associated property
-            this.propertyResource.setFromModifyMap(this);
         }
 
         setValue(value: Value) {
@@ -510,41 +486,7 @@ module NakedObjects {
     function linkByRel(links: Link[], rel: string) {
         return getLinkByRel(links, new Rel(rel));
     }
-
-
-    //// helper - collection of Links 
-    //export class Links {
-
-    //    add(models: any, options?: any) {
-    //        this.models = this.models || [];
-
-    //        for (var i = 0; i < models.length; i++) {
-    //            var m = new this.model(models[i]);
-    //            this.models.push(m);
-    //        }
-    //    }
-
-    //    model = Link;
-
-    //    models: Link[];
-
-    //    parse(response : any) {
-    //        return response.value;
-    //    }
-
-    //    static wrapLinks(links: ILink[]): Links {
-    //        const ll = new Links();       
-    //        ll.add(links || []);          
-    //        return ll;
-    //    }
-
-    //    // returns first link of rel
-    //    private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
-
-    //    linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
     
-    //}
-
 
     // REPRESENTATIONS
 
