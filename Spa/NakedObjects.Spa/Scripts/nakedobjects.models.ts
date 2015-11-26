@@ -21,6 +21,7 @@ module NakedObjects {
     import ILink = NakedObjects.RoInterfaces.ILink;
     import IErrorDetailsRepresentation = NakedObjects.RoInterfaces.IErrorDetailsRepresentation;
     import IMenuRepresentation = NakedObjects.RoInterfaces.IMenuRepresentation;
+    import IValue = NakedObjects.RoInterfaces.IValue;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -177,8 +178,7 @@ module NakedObjects {
     export class Value {
 
         private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
-
-       
+    
         constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean ) {
             // can only be Link, number, boolean, string or null    
 
@@ -191,6 +191,10 @@ module NakedObjects {
             } else {
                 this.wrapped = raw;
             }
+        }
+
+        isScalar(): boolean {
+            return !this.isReference() && !this.isList();
         }
 
         isReference(): boolean {
@@ -210,7 +214,7 @@ module NakedObjects {
         }
 
         scalar(): number | string | boolean {
-            return this.isReference() ? null : this.wrapped as number | string | boolean;
+            return this.isScalar() ? this.wrapped as number | string | boolean : null;
         }
 
         list(): Value[] {
@@ -224,18 +228,10 @@ module NakedObjects {
 
             if (this.isList()) {
                 const ss = _.map(this.list(), v =>  v.toString());
-                return ss.length === 0 ? "" : _.reduce(ss, (m : string, s: string) => m + "-" + s);
+                return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
             }
 
             return (this.wrapped == null) ? "" : this.wrapped.toString();
-        }
-
-        // todo rethink this - maybe encode value into json and decode directly
-        static fromValueString(valueString: string): Value {
-            if (valueString.indexOf("http") === 0) {
-                return new Value({ href: valueString });
-            }
-            return new Value(valueString);
         }
 
         static fromJsonString(jsonString: string): Value {
@@ -254,17 +250,17 @@ module NakedObjects {
             return JSON.stringify(raw);
         }
 
-        set(target: Object, name?: string) {
-            if (name) {
-                const t = target[name] = {};
-                this.set(t);
+        setValue(target: IValue) {
+            if (this.isReference()) {
+                target.value = { "href": this.link().href() };
             } else {
-                if (this.isReference()) {
-                    target["value"] = { "href": this.link().href() };
-                } else {
-                    target["value"] = this.scalar();
-                }
+                target.value = this.scalar();
             }
+        }
+
+        set(target: _.Dictionary<IValue>, name: string) {
+            const t = target[name] = { "value": null };
+            this.setValue(t);
         }
     }
 
@@ -432,7 +428,7 @@ module NakedObjects {
         }
 
         setValue(value: Value) {
-            value.set(this.attributes);
+            value.setValue(this.attributes);
         }
     }
 
@@ -452,7 +448,7 @@ module NakedObjects {
         }
 
         setValue(value: Value) {
-            value.set(this.attributes);
+            value.setValue(this.attributes);
         }
     }
 
@@ -472,7 +468,7 @@ module NakedObjects {
         }
 
         setValue(value: Value) {
-            value.set(this.attributes);
+            value.setValue(this.attributes);
         }
     }
 
@@ -582,7 +578,7 @@ module NakedObjects {
         setParameter(name: string, value: Value) {
             // todo investigate and fix better
             this.attributes = (this.attributes ? this.attributes : {}) as any;
-            value.set(this.attributes, name);
+            value.set(this.attributes as any, name);
         }
 
         setUrlParameter(name: string, value : string) {
@@ -754,7 +750,7 @@ module NakedObjects {
         }
 
         setArgument(name: string, val: Value) {
-            val.set(this.attributes, name);
+            val.set(this.attributes as any, name);
         }
 
         setArguments(args: IValueMap) {
