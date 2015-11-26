@@ -279,7 +279,7 @@ module NakedObjects {
 
     // helper class for results 
     export class Result {
-        constructor(public wrapped : RoInterfaces.IResourceRepresentation, private resultType: string) { }
+        constructor(public wrapped : RoInterfaces.IDomainObjectRepresentation | RoInterfaces.IListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) { }
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
@@ -515,6 +515,8 @@ module NakedObjects {
 
     export class ActionResultRepresentation extends ResourceRepresentation {
 
+        wrapped = () => this.resource as RoInterfaces.IActionInvokeRepresentation;
+
         constructor() {
             super();
         }
@@ -531,11 +533,11 @@ module NakedObjects {
 
         // properties 
         resultType(): string {
-            return this.get("resultType");
+            return this.wrapped().resultType;
         }
 
         result(): Result {
-            return new Result(this.get("result"), this.resultType());
+            return new Result(this.wrapped().result, this.resultType());
         }
 
         // helper

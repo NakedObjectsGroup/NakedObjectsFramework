@@ -406,7 +406,7 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testMenu = new NakedObjects.MenuRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result(emptyResource(), "list");
+        const testResult = new NakedObjects.Result(emptyResource() as any, "list");
 
         let timeout: ng.ITimeoutService;
         let getMenu: jasmine.Spy;
@@ -478,7 +478,7 @@ describe("nakedObjects.gemini.services.context ", () => {
         const testObject = new NakedObjects.DomainObjectRepresentation();
         let localContext: NakedObjects.Angular.Gemini.IContext;
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result(emptyResource(), "list");
+        const testResult = new NakedObjects.Result(emptyResource() as any, "list");
 
         let timeout: ng.ITimeoutService;
         let getObjectByOid: jasmine.Spy;
@@ -630,7 +630,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         const testAction = new NakedObjects.ActionMember(null, null, null);
         const testActionResult = new NakedObjects.ActionResultRepresentation();
-        const testResult = new NakedObjects.Result(emptyResource(), "");
+        const testResult = new NakedObjects.Result(emptyResource() as any, "");
         const testObject = new NakedObjects.DomainObjectRepresentation();
         const testList = new NakedObjects.ListRepresentation();
 

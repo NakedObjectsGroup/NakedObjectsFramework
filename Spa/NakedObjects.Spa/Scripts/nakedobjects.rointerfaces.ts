@@ -136,7 +136,7 @@
 
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
         resultType: string;
-        result?: IDomainObjectRepresentation | ListRepresentation | IScalarValueRepresentation;
+        result?: IDomainObjectRepresentation | IListRepresentation | IScalarValueRepresentation;
     }
 
     export interface IParameterRepresentation extends IResourceRepresentation {

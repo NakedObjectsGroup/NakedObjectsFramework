@@ -54,7 +54,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
             beforeEach(inject(($q, $timeout, $rootScope, $location, $routeParams, handlers: NakedObjects.Angular.Gemini.IHandlers, context) => {
                 const opts: NakedObjects.RoInterfaces.IOptionalCapabilities = { domainModel: "selectable", blobsClobs: "", deleteObjects: "", protoPersistentObjects : "" , validateOnly : ""};
                 const version: NakedObjects.RoInterfaces.IVersionRepresentation = { links: [], extensions: {}, specVersion: "1.1", optionalCapabilities: opts, implVersion: "" };
-                testVersion.attributes = version;
+                testVersion.populate(version);
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
@@ -75,7 +75,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
                 const version = { specVersion: "1.0", optionalCapabilities: opts , links : [], extensions : {} };
 
-                testVersion.attributes = version;
+                testVersion.populate(version);
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
@@ -94,7 +94,7 @@ describe("nakedobjects.gemini.services.handlers", () => {
 
                 const version = { specVersion: "1.1", optionalCapabilities: opts, links: [], extensions: {} };
 
-                testVersion.attributes = version;
+                testVersion.populate(version);
                 spyOn(context, "getVersion").and.returnValue($q.when(testVersion));
 
                 handlers.handleBackground($scope);
