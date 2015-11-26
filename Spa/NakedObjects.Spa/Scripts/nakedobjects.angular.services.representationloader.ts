@@ -70,17 +70,17 @@ module NakedObjects.Angular {
                     $rootScope.$broadcast("ajax-change", --this.loadingCount);
                     return $q.when(response);
                 }).
-                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) {
+                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) {
 
                     let reason: ErrorRepresentation | ErrorMap | string; 
 
                     if (promiseCallback.status === 500) {
                         const error  = new ErrorRepresentation();  
-                        error.populate(promiseCallback.data);
+                        error.populate(promiseCallback.data as RoInterfaces.IResourceRepresentation);
                         reason = error;
                     }
                     else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
-                        reason = new ErrorMap(promiseCallback.data, status, promiseCallback.headers("warning"));
+                        reason = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, promiseCallback.headers("warning"));
                     }
                     else {
                         reason = promiseCallback.headers("warning");

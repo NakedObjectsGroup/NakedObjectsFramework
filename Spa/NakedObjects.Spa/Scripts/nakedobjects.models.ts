@@ -355,35 +355,41 @@ module NakedObjects {
         urlParms : _.Dictionary<string>;
     }
 
-    export class ErrorMap extends HateoasModelBase {
+    function isIObjectOfType(object: any) : object is RoInterfaces.IObjectOfType {
+        return object && object instanceof Object && "members" in object;
+    }
 
-        constructor(map: RoInterfaces.IResourceRepresentation, public statusCode: string, public warningMessage: string) {
-            super();
-            this.populate(map);
+    function isIValue(object: any): object is RoInterfaces.IValue {
+        return object && object instanceof Object && "value" in object;
+    }
+
+
+    export class ErrorMap {
+
+        wrapped = () => {
+            const temp = this.map;
+            if (isIObjectOfType(temp)) {
+                return temp.members;
+            } else {
+                return temp;
+            }
+        }
+
+        constructor(private map: RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, public statusCode: number, public warningMessage: string) {
+
         }
 
         valuesMap(): IErrorValueMap {
-            const vs: IErrorValueMap = {}; // distinguish between value map and persist map 
 
-            // todo fix the types here !
-            const temp = this.attributes as any;
-            const map = temp.members ? temp.members : temp;
-            for (let v in map) {
-
-                if (map[v].hasOwnProperty("value")) {
-                    const ev: IErrorValue = {
-                        value: new Value(map[v].value),
-                        invalidReason: map[v].invalidReason as string
-                    };
-                    vs[v] = ev;
-                }
-            }
-
-            return vs;
+            const values = _.pick(this.wrapped(), i => isIValue(i)) as _.Dictionary<IValue>;
+            return _.mapValues(values, v => ({
+                value: new Value(v.value),
+                invalidReason: v.invalidReason
+            }));
         }
 
         invalidReason() {
-            return this.get("x-ro-invalid-reason");
+            return this.wrapped()["x-ro-invalidReason"] as string;
         }
     }
 

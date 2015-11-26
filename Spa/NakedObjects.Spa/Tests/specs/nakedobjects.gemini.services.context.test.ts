@@ -746,7 +746,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             testPvm.description = "description";
 
             beforeEach(inject(($q: ng.IQService, repLoader) => {
-                const errorMap = new NakedObjects.ErrorMap(emptyResource(), "", "");
+                const errorMap = new NakedObjects.ErrorMap({}, 0, "");
                 populate = spyOn(repLoader, "populate");
                 populate.and.returnValue($q.reject(errorMap));
                 spyOn(errorMap, "valuesMap").and.returnValue({"test" : {value : new NakedObjects.Value(""), invalidReason : "Mandatory" } });

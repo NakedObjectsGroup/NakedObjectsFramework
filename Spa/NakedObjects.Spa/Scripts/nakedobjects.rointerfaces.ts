@@ -31,7 +31,10 @@
         // ReSharper restore InconsistentNaming
     }
 
-    export interface IResourceRepresentation {
+    export interface IRepresentation {
+    }
+
+    export interface IResourceRepresentation extends IRepresentation {
         links: ILink[],
         extensions: IExtensions;
     }
@@ -70,8 +73,12 @@
         invalidReason?: string;
     }
 
+    export interface IValueMap {
+        [index : string] : IValue | string;
+    }
+
     export interface IObjectOfType {
-        members: { [index: string]: IValue };
+        members: IValueMap;
     }
 
     export interface IErrorDetailsRepresentation {

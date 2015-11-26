@@ -48,7 +48,7 @@ module NakedObjects.Angular.Gemini {
         setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
        
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, page : number, pageSize : number,   dvm?: DialogViewModel);
-        setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
+        setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
         
     }
@@ -354,10 +354,11 @@ module NakedObjects.Angular.Gemini {
             return e ? e[index] : null;
         }
 
-        context.setInvokeUpdateError = (error: any, vms: ValueViewModel[], vm?: MessageViewModel) => {
-            if (error instanceof ErrorMap) {
+        context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel) => {
+            const err = error as ErrorMap | ErrorRepresentation | string;
+            if (err instanceof ErrorMap) {
                 _.each(vms, vmi => {
-                    const errorValue = (<ErrorMap>error).valuesMap()[vmi.id];
+                    const errorValue = err.valuesMap()[vmi.id];
 
                     if (errorValue) {
                         vmi.value = errorValue.value.toValueString();
@@ -369,16 +370,16 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
                 if (vm) {
-                    vm.message = (<ErrorMap>error).invalidReason();
+                    vm.message = err.invalidReason();
                 }
             }
-            else if (error instanceof ErrorRepresentation) {
-                context.setError(error);
+            else if (err instanceof ErrorRepresentation) {
+                context.setError(err);
                 urlManager.setError();
             }
             else {
                 if (vm) {
-                    vm.message = error;
+                    vm.message = err as string;
                 }
             }
         };
