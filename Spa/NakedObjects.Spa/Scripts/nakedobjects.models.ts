@@ -319,8 +319,11 @@ module NakedObjects {
     export class NestedRepresentation {
         constructor(public resource : RoInterfaces.IResourceRepresentation) { }
 
-        links(): Links {
-            return Links.wrapLinks(this.resource.links);
+        private lazyLinks: Link[];
+
+        links(): Link[] {
+            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource.links);
+            return this.lazyLinks;
         }
 
         extensions(): IExtensions {
@@ -496,38 +499,51 @@ module NakedObjects {
         }
     }
 
-    // helper - collection of Links 
-    export class Links {
-
-        add(models: any, options?: any) {
-            this.models = this.models || [];
-
-            for (var i = 0; i < models.length; i++) {
-                var m = new this.model(models[i]);
-                this.models.push(m);
-            }
-        }
-
-        model = Link;
-
-        models: Link[];
-
-        parse(response : any) {
-            return response.value;
-        }
-
-        static wrapLinks(links: ILink[]): Links {
-            const ll = new Links();       
-            ll.add(links || []);          
-            return ll;
-        }
-
-        // returns first link of rel
-        private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
-
-        linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
-    
+    function wrapLinks(links: ILink[]) {
+        return _.map(links, l => new Link(l));
     }
+
+    function getLinkByRel(links: Link[], rel: Rel) {
+        return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
+    }
+
+    function linkByRel(links: Link[], rel: string) {
+        return getLinkByRel(links, new Rel(rel));
+    }
+
+
+    //// helper - collection of Links 
+    //export class Links {
+
+    //    add(models: any, options?: any) {
+    //        this.models = this.models || [];
+
+    //        for (var i = 0; i < models.length; i++) {
+    //            var m = new this.model(models[i]);
+    //            this.models.push(m);
+    //        }
+    //    }
+
+    //    model = Link;
+
+    //    models: Link[];
+
+    //    parse(response : any) {
+    //        return response.value;
+    //    }
+
+    //    static wrapLinks(links: ILink[]): Links {
+    //        const ll = new Links();       
+    //        ll.add(links || []);          
+    //        return ll;
+    //    }
+
+    //    // returns first link of rel
+    //    private getLinkByRel = (rel: Rel) => _.find(this.models, i => i.rel().uniqueValue === rel.uniqueValue);
+
+    //    linkByRel = (rel: string) => this.getLinkByRel(new Rel(rel));
+    
+    //}
 
 
     // REPRESENTATIONS
@@ -541,10 +557,10 @@ module NakedObjects {
             super.populate(wrapped);
         }
 
-        private lazyLinks: Links;
+        private lazyLinks: Link[];
 
-        links(): Links {
-            this.lazyLinks = this.lazyLinks || Links.wrapLinks(this.resource.links);
+        links(): Link[] {
+            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource.links);
             return this.lazyLinks;
         }
 
@@ -563,7 +579,7 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         // link representations 
@@ -625,7 +641,7 @@ module NakedObjects {
         }
 
         promptLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/prompt");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
         }
 
         getPrompts(): PromptRepresentation {
@@ -656,15 +672,15 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         invokeLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/invoke");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/invoke");
         }
 
         // linked representations 
@@ -707,7 +723,7 @@ module NakedObjects {
     }
 
     export interface IListOrCollection {
-        value(): Links;
+        value(): Link[];
     }
 
     // new in 1.1 15.0 in spec 
@@ -716,11 +732,11 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         // linked representations 
@@ -769,19 +785,19 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         addToLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/add-to");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/add-to");
         }
 
         removeFromLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/remove-from");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/remove-from");
         }
 
         // linked representations 
@@ -825,8 +841,11 @@ module NakedObjects {
             return this.get("id");
         }
 
-        value(): Links {
-            return Links.wrapLinks(this.get("value"));
+        private lazyValue: Link[];
+
+        value(): Link[] {
+            this.lazyValue = this.lazyValue || wrapLinks(this.get("value"));
+            return this.lazyValue;
         }
 
         disabledReason(): string {
@@ -839,23 +858,23 @@ module NakedObjects {
 
         // links 
         modifyLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/modify");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/modify");
         }
 
         clearLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/clear");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/clear");
         }
 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         promptLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/prompt");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
         }
 
         private modifyMap() {
@@ -952,7 +971,7 @@ module NakedObjects {
         }
 
         detailsLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/details");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/details");
         }
 
         disabledReason(): string {
@@ -997,11 +1016,11 @@ module NakedObjects {
         }
 
         modifyLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/modify");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/modify");
         }
 
         clearLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/clear");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/clear");
         }
 
         private modifyMap() {
@@ -1044,11 +1063,11 @@ module NakedObjects {
         }
 
         attachmentLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/attachment");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/attachment");
         }
 
         promptLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/prompt");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
         }
 
         getDetails(): PropertyRepresentation {
@@ -1092,8 +1111,11 @@ module NakedObjects {
             return this.id;
         }
 
-        value(): Links {
-            return Links.wrapLinks(this.wrapped().value);
+        private lazyValue: Link[];
+
+        value(): Link[] {
+            this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
+            return this.lazyValue;
         }
 
         size(): number {
@@ -1126,7 +1148,7 @@ module NakedObjects {
 
 
         invokeLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/invoke");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/invoke");
         }
 
 
@@ -1195,17 +1217,10 @@ module NakedObjects {
             return this.get("serviceId");
         }
 
-        links(): Links {
-            return Links.wrapLinks(this.get("links"));
-        }
-
         instanceId(): string {
             return this.get("instanceId");
         }
 
-        extensions(): IExtensions {
-            return this.get("extensions");
-        }
 
         private memberMap: IMemberMap;
         private propertyMemberMap: IPropertyMemberMap;
@@ -1263,15 +1278,15 @@ module NakedObjects {
         }
 
         updateLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/update");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/update");
         }
 
         persistLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/persist");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/persist");
         }
 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         private updateMap() {
@@ -1334,14 +1349,6 @@ module NakedObjects {
         menuId(): string {
             return this.wrapped().menuId;
         }
-       
-        links(): Links {
-            return Links.wrapLinks(this.wrapped().links);
-        }
-
-        extensions(): IExtensions {
-            return this.wrapped().extensions;
-        }
 
         private memberMap: IMemberMap;
       
@@ -1378,7 +1385,7 @@ module NakedObjects {
         }
 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
    
         // linked representations 
@@ -1411,7 +1418,7 @@ module NakedObjects {
 
         // links
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         // linked representations 
@@ -1419,9 +1426,11 @@ module NakedObjects {
             return <ListRepresentation> this.selfLink().getTarget();
         }
 
-        // list of links to services 
-        value(): Links {
-            return Links.wrapLinks(this.wrapped().value);
+        private lazyValue: Link[];
+
+        value(): Link[] {
+            this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
+            return this.lazyValue;
         }
 
         pagination(): IPagination {
@@ -1491,11 +1500,11 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         // linked representations 
@@ -1528,7 +1537,7 @@ module NakedObjects {
 
         // links
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         // linked representations 
@@ -1541,7 +1550,7 @@ module NakedObjects {
         }
 
         getService(serviceType: string): DomainObjectRepresentation {
-            const serviceLink = _.find(this.value().models, model => model.rel().parms[0].value === serviceType);
+            const serviceLink = _.find(this.value(), link => link.rel().parms[0].value === serviceType);
             return <DomainObjectRepresentation> serviceLink.getTarget();
         }
     }
@@ -1553,7 +1562,7 @@ module NakedObjects {
 
         // links
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         // linked representations 
@@ -1566,7 +1575,7 @@ module NakedObjects {
         }
 
         getMenu(menuId : string): MenuRepresentation {
-            const menuLink = _.find(this.value().models, model => model.rel().parms[0].value === menuId);
+            const menuLink = _.find(this.value(), link => link.rel().parms[0].value === menuId);
             return <MenuRepresentation> menuLink.getTarget();
         }
     }
@@ -1578,11 +1587,11 @@ module NakedObjects {
 
         // links 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         upLink(): Link {
-            return this.links().linkByRel("up");
+            return linkByRel(this.links(), "up");
         }
 
         // linked representations 
@@ -1614,7 +1623,7 @@ module NakedObjects {
         wrapped = () => this.resource as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         // linked representations 
@@ -1643,24 +1652,24 @@ module NakedObjects {
 
         // links 
         serviceLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/services");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/services");
         }
 
         userLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/user");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/user");
         }
 
         selfLink(): Link {
-            return this.links().linkByRel("self");
+            return linkByRel(this.links(), "self");
         }
 
         versionLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/version");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/version");
         }
 
         // custom 
         menusLink(): Link {
-            return this.links().linkByRel("urn:org.restfulobjects:rels/menus");
+            return linkByRel(this.links(), "urn:org.restfulobjects:rels/menus");
         }
 
         // linked representations 
