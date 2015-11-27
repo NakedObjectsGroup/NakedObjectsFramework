@@ -576,7 +576,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             }));
 
             it("returns collection representation", () => {
-                expect(testPrompt.attributes["x-ro-searchTerm"].value).toBe("search");
+                expect(testPrompt.wrapped()["x-ro-searchTerm"].value).toBe("search");
                 expect(populate).toHaveBeenCalledWith(testPrompt, true);
                 result.then(hr => expect(hr).toEqual(cvmExpected));
                 timeout.flush();
@@ -617,8 +617,8 @@ describe("nakedObjects.gemini.services.context ", () => {
             }));
 
             it("returns collection representation", () => {
-                expect(testPrompt.attributes["x-ro-searchTerm"]).toBeUndefined();
-                expect(testPrompt.attributes["anarg"].value).toBe("avalue");
+                expect(testPrompt.wrapped()["x-ro-searchTerm"]).toBeUndefined();
+                expect(testPrompt.wrapped()["anarg"].value).toBe("avalue");
                 expect(populate).toHaveBeenCalledWith(testPrompt, true);
                 result.then(hr => expect(hr).toEqual(cvmExpected));
                 timeout.flush();

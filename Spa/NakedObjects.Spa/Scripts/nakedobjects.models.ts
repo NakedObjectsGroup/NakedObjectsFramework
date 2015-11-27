@@ -22,6 +22,7 @@ module NakedObjects {
     import IErrorDetailsRepresentation = NakedObjects.RoInterfaces.IErrorDetailsRepresentation;
     import IMenuRepresentation = NakedObjects.RoInterfaces.IMenuRepresentation;
     import IValue = NakedObjects.RoInterfaces.IValue;
+    import Resource = angular.resource;
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -42,7 +43,8 @@ module NakedObjects {
         method: string;
         url: any;
         urlParms: _.Dictionary<string>;
-        populate(wrapped : RoInterfaces.IResourceRepresentation);
+        populate(wrapped: RoInterfaces.IRepresentation);
+        getBody(): RoInterfaces.IRepresentation;
     }
 
     export interface IOptionalCapabilities {
@@ -60,23 +62,21 @@ module NakedObjects {
         totalCount: number;
     }
 
-    export class ArgumentMap {
+    export abstract class ArgumentMap {
 
-        attributes: any;
-
-        constructor(map: Object, parent: any, public id: string) {
-            this.attributes = map;
+        constructor(public map: RoInterfaces.IValueMap, parent: any, public id: string) {         
         }
 
-        populate(wrapped: any) {
-            this.attributes = wrapped;
+        populate(wrapped: RoInterfaces.IValueMap) {
+            this.map = wrapped;
         }
 
-        get(attributeName: string): any {
-            return this.attributes[attributeName];
-        }
-        set(attributeName?: any, value?: any, options?: any) {
-            this.attributes[attributeName] = value;
+        getBody(): RoInterfaces.IRepresentation {
+            if (this.method === "POST" || this.method === "PUT") {
+                return _.clone(this.map);
+            }
+
+            return {};
         }
 
         hateoasUrl: string = "";
@@ -258,7 +258,7 @@ module NakedObjects {
             }
         }
 
-        set(target: _.Dictionary<IValue>, name: string) {
+        set(target: _.Dictionary<IValue | string>, name: string) {
             const t = target[name] = { "value": null };
             this.setValue(t);
         }
@@ -316,7 +316,7 @@ module NakedObjects {
     }
 
     // base class for nested representations 
-    export class NestedRepresentation {
+    export abstract class NestedRepresentation {
         constructor(public resource : RoInterfaces.IResourceRepresentation) { }
 
         private lazyLinks: Link[];
@@ -324,6 +324,11 @@ module NakedObjects {
         links(): Link[] {
             this.lazyLinks = this.lazyLinks || wrapLinks(this.resource.links);
             return this.lazyLinks;
+        }
+
+        protected update(newResource: RoInterfaces.IResourceRepresentation) {
+            this.resource = newResource;
+            this.lazyLinks = null;
         }
 
         extensions(): IExtensions {
@@ -334,16 +339,6 @@ module NakedObjects {
     // base class for all representations that can be directly loaded from the server 
     export abstract class HateoasModelBase implements IHateoasModel {
 
-        attributes: RoInterfaces.IResourceRepresentation;
-
-        get(attributeName: string): any {
-            return this.attributes[attributeName];
-        }
-
-        set(attributeName?: any, value?: any, options?: any) {
-            this.attributes[attributeName] = value;
-        }
-
         hateoasUrl: string = "";
         method: string = "GET";
   
@@ -351,9 +346,9 @@ module NakedObjects {
             return this.hateoasUrl;
         }
     
-        populate(wrapped: RoInterfaces.IResourceRepresentation) {
-            this.attributes = wrapped;
-        }
+        abstract populate(wrapped: RoInterfaces.IRepresentation);
+
+        abstract getBody() : RoInterfaces.IRepresentation;
 
         urlParms : _.Dictionary<string>;
     }
@@ -398,7 +393,7 @@ module NakedObjects {
 
 
     export class UpdateMap extends ArgumentMap implements IHateoasModel {
-        constructor(private domainObject: DomainObjectRepresentation, map: Object) {
+        constructor(private domainObject: DomainObjectRepresentation, map: RoInterfaces.IValueMap) {
             super(map, domainObject, domainObject.instanceId());
 
             domainObject.updateLink().copyToHateoasModel(this);
@@ -409,51 +404,41 @@ module NakedObjects {
         }   
 
         properties(): IValueMap {
-            return <IValueMap>_.mapValues(this.attributes, (v : any) => new Value(v.value));
+            return <IValueMap>_.mapValues(this.map, (v : any) => new Value(v.value));
         }
 
         setProperty(name: string, value: Value) {
-            value.set(this.attributes, name);
+            value.set(this.map, name);
         }
     }
 
     export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
-        constructor(private collectionResource: CollectionRepresentation, map: Object, add: boolean) {
+        constructor(private collectionResource: CollectionRepresentation, map: RoInterfaces.IValueMap, add: boolean) {
             super(map, collectionResource, collectionResource.instanceId());
             const link = add ? collectionResource.addToLink() : collectionResource.removeFromLink();
             link.copyToHateoasModel(this);
         }
 
-        setValue(value: Value) {
-            value.setValue(this.attributes);
-        }
     }
 
     export class ModifyMap extends ArgumentMap implements IHateoasModel {
-        constructor(private propertyResource: PropertyRepresentation, map: Object) {
+        constructor(private propertyResource: PropertyRepresentation, map: RoInterfaces.IValueMap) {
             super(map, propertyResource, propertyResource.instanceId());
 
             propertyResource.modifyLink().copyToHateoasModel(this);
 
-            this.setValue(propertyResource.value());
+            propertyResource.value().set(this.map, this.id);
         }
 
-        setValue(value: Value) {
-            value.setValue(this.attributes);
-        }
     }
 
     export class ModifyMapv11 extends ArgumentMap implements IHateoasModel {
-        constructor(private propertyResource: PropertyMember, id: string, map: Object) {
+        constructor(private propertyResource: PropertyMember, id: string, map: RoInterfaces.IValueMap) {
             super(map, propertyResource, id);
 
             propertyResource.modifyLink().copyToHateoasModel(this);
 
-            this.setValue(propertyResource.value());
-        }
-
-        setValue(value: Value) {
-            value.setValue(this.attributes);
+            propertyResource.value().set(this.map, this.id);
         }
     }
 
@@ -496,7 +481,7 @@ module NakedObjects {
 
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
             this.resource = wrapped; 
-            super.populate(wrapped);
+            //super.populate(wrapped);
         }
 
         private lazyLinks: Link[];
@@ -509,6 +494,15 @@ module NakedObjects {
         extensions(): IExtensions {
             return this.resource.extensions;
         }
+
+        getBody(): RoInterfaces.IRepresentation {
+            if (this.method === "POST" || this.method === "PUT") {
+                return _.clone(this.resource);
+            }
+
+            return {};
+        }
+
     }
 
     // matches a action invoke resource 19.0 representation 
@@ -543,8 +537,8 @@ module NakedObjects {
         // helper
         setParameter(name: string, value: Value) {
             // todo investigate and fix better
-            this.attributes = (this.attributes ? this.attributes : {}) as any;
-            value.set(this.attributes as any, name);
+            this.resource = (this.resource ? this.resource : {}) as any;
+            value.set(this.resource as any, name);
         }
 
         setUrlParameter(name: string, value : string) {
@@ -561,7 +555,7 @@ module NakedObjects {
         wrapped = () => this.resource as RoInterfaces.IParameterRepresentation;
 
         // fix parent type
-        constructor(wrapped : any, public parent: any, private id : string) {
+        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: any, private id : string) {
             super(wrapped);
         }
 
@@ -614,6 +608,8 @@ module NakedObjects {
 
     export class ActionRepresentation extends ResourceRepresentation {
 
+        wrapped = () => this.resource as RoInterfaces.IActionRepresentation;
+
         // links 
         selfLink(): Link {
             return linkByRel(this.links(), "self");
@@ -643,7 +639,7 @@ module NakedObjects {
         // properties 
 
         actionId(): string {
-            return this.get("id");
+            return this.wrapped().id;
         }
 
         private parameterMap: IParameterMap;
@@ -651,7 +647,7 @@ module NakedObjects {
         private initParameterMap(): void {
 
             if (!this.parameterMap) {
-                const parameters = this.get("parameters");
+                const parameters = this.wrapped().parameters;
                 this.parameterMap = _.mapValues(parameters, (p, id) => new Parameter(p, this, id));
             }
         }
@@ -662,7 +658,7 @@ module NakedObjects {
         }
 
         disabledReason(): string {
-            return this.get("disabledReason");
+            return this.wrapped().disabledReason;
         }
     }
 
@@ -673,6 +669,14 @@ module NakedObjects {
     // new in 1.1 15.0 in spec 
 
     export class PromptRepresentation extends ResourceRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IPromptRepresentation;
+
+        constructor() {
+            super();
+            this.resource = emptyResource() as any;
+        }
+
 
         // links 
         selfLink(): Link {
@@ -695,28 +699,29 @@ module NakedObjects {
         // properties 
 
         instanceId(): string {
-            return this.get("id");
+            return this.wrapped().id;
         }
 
         choices(): IValueMap {
-            const ch = this.get("choices");
+            const ch = this.wrapped().choices;
             if (ch) {
-                const values = _.map(ch, (item : any) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v : Value) => [v.toString(), v]));
+                const values = _.map(ch, item => new Value(item));
+                return _.object<IValueMap>(_.map(values, v  => [v.toString(), v]));
             }
             return null;
         }
 
         reset() {
-            this.attributes = emptyResource();
+            this.resource = emptyResource() as any;
         }
 
         setSearchTerm(term: string) {
-            this.set("x-ro-searchTerm", { "value": term });
+            //this.set("x-ro-searchTerm", { "value": term });
+            this.setArgument("x-ro-searchTerm", new Value(term));
         }
 
         setArgument(name: string, val: Value) {
-            val.set(this.attributes as any, name);
+            val.set(this.resource as any, name);
         }
 
         setArguments(args: IValueMap) {
@@ -726,6 +731,8 @@ module NakedObjects {
 
     // matches a collection representation 17.0 
     export class CollectionRepresentation extends ResourceRepresentation implements IListOrCollection {
+
+        wrapped = () => this.resource as RoInterfaces.ICollectionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -754,11 +761,12 @@ module NakedObjects {
         }
 
         setFromMap(map: AddToRemoveFromMap) {
-            this.set(map.attributes);
+            //this.set(map.attributes);
+            _.assign(this.resource, map.map);
         }
 
         private addToMap() {
-            return this.addToLink().arguments();
+            return this.addToLink().arguments() as RoInterfaces.IValueMap;
         }
 
         getAddToMap(): AddToRemoveFromMap {
@@ -769,7 +777,7 @@ module NakedObjects {
         }
 
         private removeFromMap() {
-            return this.removeFromLink().arguments();
+            return this.removeFromLink().arguments() as RoInterfaces.IValueMap;
         }
 
         getRemoveFromMap(): AddToRemoveFromMap {
@@ -782,23 +790,26 @@ module NakedObjects {
         // properties 
 
         instanceId(): string {
-            return this.get("id");
+            return this.wrapped().id;
         }
 
         private lazyValue: Link[];
 
         value(): Link[] {
-            this.lazyValue = this.lazyValue || wrapLinks(this.get("value"));
+            this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
             return this.lazyValue;
         }
 
         disabledReason(): string {
-            return this.get("disabledReason");
+            return this.wrapped().disabledReason;
         }
     }
 
     // matches a property representation 16.0 
     export class PropertyRepresentation extends ResourceRepresentation {
+
+        wrapped = () => this.resource as RoInterfaces.IPropertyRepresentation;
+
 
         // links 
         modifyLink(): Link {
@@ -822,7 +833,7 @@ module NakedObjects {
         }
 
         private modifyMap() {
-            return this.modifyLink().arguments();
+            return this.modifyLink().arguments() as RoInterfaces.IValueMap;
         }
 
         // linked representations 
@@ -835,7 +846,8 @@ module NakedObjects {
         }
 
         setFromModifyMap(map: ModifyMap) {
-            this.set(map.attributes);
+            //this.set(map.attributes);
+            _.assign(this.resource, map.map);
         }
 
         getModifyMap(): ModifyMap {
@@ -859,11 +871,11 @@ module NakedObjects {
         // properties 
 
         instanceId(): string {
-            return this.get("id");
+            return this.wrapped().id;
         }
 
         value(): Value {
-            return new Value(this.get("value"));
+            return new Value(this.wrapped().value);
         }
 
         choices(): IValueMap {
@@ -872,7 +884,7 @@ module NakedObjects {
             if (this.extensions()["x-ro-nof-choices"]) {
                 return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
             }
-            const ch = this.get("choices") as Array<number | string | boolean | ILink>;
+            const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
                 return _.object<IValueMap>(_.map(values, v => [v.toString(), v]));
@@ -881,7 +893,7 @@ module NakedObjects {
         }
 
         disabledReason(): string {
-            return this.get("disabledReason");
+            return this.wrapped().disabledReason;
         }
 
         // helper 
@@ -902,12 +914,12 @@ module NakedObjects {
 
         wrapped = () => this.resource as RoInterfaces.IMember;
 
-        constructor(wrapped, public parent: DomainObjectRepresentation | MenuRepresentation) {
+        constructor(wrapped: RoInterfaces.IMember, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
         }
 
-        update(newValue) {
-            this.wrapped = newValue;
+        update(newValue: RoInterfaces.IMember) {
+            super.update(newValue);
         }
 
         memberType(): string {
@@ -968,11 +980,11 @@ module NakedObjects {
         }
 
         private modifyMap() {
-            return this.modifyLink().arguments();
+            return this.modifyLink().arguments() as RoInterfaces.IValueMap;
         }
 
         setFromModifyMap(map: ModifyMapv11) {
-            _.forOwn(map.attributes, (v, k) => {
+            _.forOwn(map.map, (v, k) => {
                 this.wrapped[k] = v;
             });
         }
@@ -1002,7 +1014,7 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
-        update(newValue): void {
+        update(newValue: RoInterfaces.IPropertyMember): void {
             super.update(newValue);
         }
 
@@ -1140,6 +1152,8 @@ module NakedObjects {
 
     export class DomainObjectRepresentation extends ResourceRepresentation {
 
+        wrapped = () => this.resource as RoInterfaces.IDomainObjectRepresentation;
+
         constructor() {
             super();
             this.url = this.getUrl;
@@ -1150,21 +1164,20 @@ module NakedObjects {
         }
 
         title(): string {
-            return this.get("title");
+            return this.wrapped().title;
         }
 
         domainType(): string {
-            return this.get("domainType");
+            return this.wrapped().domainType;
         }
 
         serviceId(): string {
-            return this.get("serviceId");
+            return this.wrapped().serviceId;
         }
 
         instanceId(): string {
-            return this.get("instanceId");
+            return this.wrapped().instanceId;
         }
-
 
         private memberMap: IMemberMap;
         private propertyMemberMap: IPropertyMemberMap;
@@ -1172,7 +1185,7 @@ module NakedObjects {
         private actionMemberMap: IActionMemberMap;
 
         private resetMemberMaps() {
-            const members = this.get("members");
+            const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
             this.propertyMemberMap = <IPropertyMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "property");
             this.collectionMemberMap = <ICollectionMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "collection");
@@ -1234,11 +1247,11 @@ module NakedObjects {
         }
 
         private updateMap() {
-            return this.updateLink().arguments();
+            return this.updateLink().arguments() as RoInterfaces.IValueMap;
         }
 
         private persistMap() {
-            return this.persistLink().arguments();
+            return this.persistLink().arguments() as RoInterfaces.IObjectOfType;
         }
 
         // linked representations 
@@ -1254,21 +1267,22 @@ module NakedObjects {
             return new UpdateMap(this, this.updateMap());
         }
 
-        setFromUpdateMap(map: UpdateMap) {
+        //setFromUpdateMap(map: UpdateMap) {
 
-            _.forOwn(this.members(), (m, k) => {
-                m.update(map.attributes.members[k]);
-            });
+        //    _.forOwn(this.members(), (m, k) => {
+        //        m.update(map.map.members[k]);
+        //    });
 
-            // to trigger an update on the domainobject
-            this.set(map.attributes);
-        }
+        //    // to trigger an update on the domainobject
+        //    _.assign(this.resource, map.map);
+        //}
 
-        setFromPersistMap(map: PersistMap) {
-            // to trigger an update on the domainobject
-            this.set(map.attributes);
-            this.resetMemberMaps();
-        }
+        //setFromPersistMap(map: PersistMap) {
+        //    // to trigger an update on the domainobject
+        //    //this.set(map.attributes);
+        //    _.assign(this.resource, map.map);
+        //    this.resetMemberMaps();
+        //}
 
       
     }
@@ -1425,15 +1439,27 @@ module NakedObjects {
     }
 
     // matches Objects of Type Resource 9.0 
-    export class PersistMap extends ArgumentMap implements IHateoasModel {
+    export class PersistMap extends HateoasModelBase implements IHateoasModel {
 
-        constructor(private domainObject: DomainObjectRepresentation, map: Object) {
-            super(map, domainObject, domainObject.instanceId());
+        constructor(private domainObject: DomainObjectRepresentation, private map: RoInterfaces.IObjectOfType) {
+            super();
             domainObject.persistLink().copyToHateoasModel(this);
         }
 
         setMember(name: string, value: Value) {
-            value.set(this.attributes["members"], name);
+            value.set(this.map.members, name);
+        }
+
+        populate(wrapped: NakedObjects.RoInterfaces.IResourceRepresentation) {
+            
+        }
+
+        getBody(): RoInterfaces.IRepresentation {
+            if (this.method === "POST" || this.method === "PUT") {
+                return _.clone(this.map);
+            }
+
+            return {};
         }
     }
 
@@ -1672,7 +1698,7 @@ module NakedObjects {
             return this.wrapped.title;
         }
 
-        arguments(): Object {
+        arguments(): IValue | RoInterfaces.IValueMap | RoInterfaces.IObjectOfType {
             return this.wrapped.arguments;
         }
 

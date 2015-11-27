@@ -6,7 +6,7 @@
         type?: string;
         method?: string;
         title?: string;
-        arguments?: Object;
+        arguments?: IValue | IValueMap;
         extensions?: IExtensions;
     }
 
@@ -144,6 +144,27 @@
         default?: number | string | boolean | ILink;
     }
 
+
+    export interface IActionRepresentation extends IResourceRepresentation {
+        id: string;
+        parameters: { [index: string]: IParameterRepresentation };
+        disabledReason? : string;
+    }
+
+    export interface IPropertyRepresentation extends IResourceRepresentation {
+        id: string;
+        value?: string | number | boolean | ILink;
+        choices?: (string | number | boolean | ILink)[];
+        disabledReason?: string;
+    }
+
+    export interface ICollectionRepresentation extends IResourceRepresentation {
+        id: string;
+        value?: ILink[];
+        disabledReason?: string;
+    }
+
+
     export interface IDomainTypeRepresentation extends IResourceRepresentation {
         name: string;
         domainType: string;
@@ -185,5 +206,10 @@
     export interface IDomainTypeActionInvokeRepresentation extends IResourceRepresentation {
         id: string;
         value: boolean;    
+    }
+
+    export interface IPromptRepresentation extends IResourceRepresentation {
+        id: string;
+        choices? : (string | number | boolean | ILink)[];
     }
 }

@@ -317,8 +317,11 @@ module NakedObjects.Angular.Gemini {
                 if (resultObject.persistLink()) {
                     // transient object
                     const domainType = resultObject.extensions().domainType;
-                    resultObject.set("domainType", domainType);
-                    resultObject.set("instanceId", "0");
+                    resultObject.wrapped().domainType = domainType;
+                    resultObject.wrapped().instanceId = "0";
+
+                    //resultObject.set("domainType", domainType);
+                    //resultObject.set("instanceId", "0");
                     resultObject.hateoasUrl = `/${domainType}/0`;
 
                     context.setObject(paneId, resultObject);
@@ -370,7 +373,7 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
                 if (vm) {
-                    vm.message = err.invalidReason();
+                    vm.message = err.invalidReason() || err.warningMessage;
                 }
             }
             else if (err instanceof ErrorRepresentation) {
@@ -381,6 +384,7 @@ module NakedObjects.Angular.Gemini {
                 if (vm) {
                     vm.message = err as string;
                 }
+                urlManager.setError();
             }
         };
 
@@ -431,8 +435,8 @@ module NakedObjects.Angular.Gemini {
                     ovm.editComplete();
 
                     // This is a kludge because updated object has no self link.
-                    const rawLinks = (<any>object).get("links");
-                    (<any>updatedObject).set("links", rawLinks);
+                    const rawLinks = object.wrapped().links;
+                    updatedObject.wrapped().links = rawLinks;
 
                     // remove pre-changed object from cache
                     $cacheFactory.get("$http").remove(updatedObject.url());

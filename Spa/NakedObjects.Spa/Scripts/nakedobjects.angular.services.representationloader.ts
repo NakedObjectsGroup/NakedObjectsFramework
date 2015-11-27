@@ -59,7 +59,7 @@ module NakedObjects.Angular {
                 url: getUrl(model),
                 method: model.method,
                 cache: useCache,
-                data: getData(model)
+                data: model.getBody()
             };
 
             $rootScope.$broadcast("ajax-change", ++this.loadingCount); 
