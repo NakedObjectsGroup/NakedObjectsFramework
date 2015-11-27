@@ -344,6 +344,11 @@ module NakedObjects.Angular.Gemini {
     export class CiceroViewModel {
         output: string;
         input: string;
+        representationPromise: ng.IPromise<ResourceRepresentation>;
         parseInput: (input: string) => void;
+        previousCommand: () => void;
+        nextCommand: () => void;
+        findRepresentation: (routeData: PaneRouteData) => void;
+        setOutputToSummaryOfRepresentation: () => void;
     }
 }

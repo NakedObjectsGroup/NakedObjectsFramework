@@ -1,4 +1,4 @@
 ﻿<div class="cicero">
-    <div class="output" tabindex="0" aria-live="polite">{{cicero.output}}</div>
-    <input type="text" ng-model="cicero.input" gemini-enter="cicero.parseInput(cicero.input)" />
+    <div class="output" aria-live="assertive">{{cicero.output}}</div>
+    <input type="text" ng-model="cicero.input" gemini-enter="cicero.parseInput(cicero.input)" aria-live="polite"/>
 </div>

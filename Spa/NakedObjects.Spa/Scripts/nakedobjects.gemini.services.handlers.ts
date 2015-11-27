@@ -168,7 +168,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            var [dt, ...id] = routeData.objectId.split("-");
+            const [dt, ...id] = routeData.objectId.split("-");
 
             // to ease transition 
             $scope.objectTemplate = blankTemplate;

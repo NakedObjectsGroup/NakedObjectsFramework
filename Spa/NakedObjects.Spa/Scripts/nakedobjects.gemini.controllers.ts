@@ -49,10 +49,10 @@ module NakedObjects.Angular.Gemini {
     //Cicero
     app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory) => {
         const cvm = context.setCiceroVMIfNecessary(commandFactory);
+        cvm.findRepresentation(urlManager.getRouteData().pane1);
         $scope.cicero = cvm;
-        cvm.output = "Welcome to Cicero";
-
-        
+       // cvm.output = "Welcome to Cicero";
+        cvm.setOutputToSummaryOfRepresentation();
         
          //const routeData = urlManager.getRouteData();
         //const pane = routeData.pane1;

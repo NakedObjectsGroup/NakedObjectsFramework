@@ -33,7 +33,7 @@ module NakedObjects.Angular.Gemini {
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
         getCiceroVM(): CiceroViewModel;
-        setCiceroVMIfNecessary(cf: ICommandFactory);
+        setCiceroVMIfNecessary(cf: ICommandFactory): CiceroViewModel;
 
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
         getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
@@ -492,20 +492,47 @@ module NakedObjects.Angular.Gemini {
                 });            
         }
 
-        let cachedCvm: CiceroViewModel = null;
+        let cvm: CiceroViewModel = null;
 
         context.setCiceroVMIfNecessary = (cf: ICommandFactory) => {
-            if (cachedCvm == null) {
-                cachedCvm = new CiceroViewModel();
-                cachedCvm.parseInput = (input: string) => {
+            if (cvm == null) {
+                cvm = new CiceroViewModel();
+                cvm.parseInput = (input: string) => {
                     cf.parseInput(input);
                 };
+                cvm.previousCommand = () => { }; //TODO
+                cvm.nextCommand = () => { }; //TODO
+                cvm.findRepresentation = (routeData: PaneRouteData) => {
+                    //parse the routedata to then get the representation and put
+                    //it on the cachedCvm.representation
+                    if (routeData.objectId) {
+                        const [domainType, ...id] = routeData.objectId.split("-");
+                        cvm.representationPromise = context.getObject(1, domainType, id);
+                    }
+                    //lots more
+                };
+                cvm.setOutputToSummaryOfRepresentation = () => {
+                    if (!cvm.representationPromise) {
+                        cvm.output = "Welcome to Cicero";
+                    } else {
+                        cvm.representationPromise
+                            .then((resource: ResourceRepresentation) => {
+                                if (resource instanceof DomainObjectRepresentation) {
+                                    cvm.output = "Object" + resource.title();
+                                }
+                                if (resource instanceof ListRepresentation) {
+                                    cvm.output = "List";
+                                }
+                            }
+                       );
+                    }
+                };
             }
-            return cachedCvm;
+            return cvm;
         };
 
         context.getCiceroVM = () => {
-            return cachedCvm;
+            return cvm;
         };
     });
 

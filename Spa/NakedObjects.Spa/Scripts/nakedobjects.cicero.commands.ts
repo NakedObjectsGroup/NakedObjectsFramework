@@ -7,7 +7,8 @@ module NakedObjects.Angular.Gemini {
         constructor(protected urlManager: IUrlManager,
             protected nglocation: ng.ILocationService,
             protected vm: CiceroViewModel,
-            protected commandFactory: ICommandFactory) {
+            protected commandFactory: ICommandFactory,
+            protected context: IContext) {
         }
 
         public fullCommand: string;
@@ -19,7 +20,7 @@ module NakedObjects.Angular.Gemini {
 
         public checkIsAvailableInCurrentContext(): void {
             if (!this.isAvailableInCurrentContext()) {
-                throw new Error("The command: "+this.fullCommand+" is not available in the current context");
+                throw new Error("The command: " + this.fullCommand + " is not available in the current context");
             }
         }
 
@@ -66,21 +67,22 @@ module NakedObjects.Angular.Gemini {
         //argNo starts from 0.
         //If argument does not parse correctly, message will be passed to UI
         //and command aborted.
+        //Always returns argument trimmed and as lower case
         protected argumentAsString(args: string, argNo: number, optional: boolean = false): string {
             if (args == null) return null;
-            if (!optional && args.split(",").length < argNo+1) {
+            if (!optional && args.split(",").length < argNo + 1) {
                 throw new Error("Too few arguments provided");
             }
             var arg = args.split(",")[argNo].trim();
             if (!optional && (arg == null || arg == "")) {
-                throw new Error("Required argument number "+(argNo+1).toString+" is empty");
+                throw new Error("Required argument number " + (argNo + 1).toString + " is empty");
             }
-            return arg;
+            return arg.trim().toLowerCase();
         }
 
         //argNo starts from 0.
         protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
-            const arg  = this.argumentAsString(args, argNo, optional);
+            const arg = this.argumentAsString(args, argNo, optional);
             const number = parseInt(arg);
             if (number == NaN) {
                 throw new Error("Argument number " + +(argNo + 1).toString + + " must be a number");
@@ -137,7 +139,7 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "cancel";
         public helpText = "Leave the current activity (action, or object edit), incomplete." +
-            ". Does not take any arguments";;
+        ". Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -155,7 +157,7 @@ module NakedObjects.Angular.Gemini {
                 this.urlManager.closeDialog(1);
                 this.setOutput("Action cancelled"); //todo: temporary
                 this.clearInput();
-            }         
+            }
         };
     }
     export class Clipboard extends Command {
@@ -171,7 +173,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-                this.setOutput("Clipboard command invoked"); //todo: temporary
+            this.setOutput("Clipboard command invoked"); //todo: temporary
         };
     }
     export class Copy extends Command {
@@ -194,7 +196,7 @@ module NakedObjects.Angular.Gemini {
             if (this.urlManager.isObject()) {
                 if (this.urlManager.isCollectionOpen()) {
                     const item = this.argumentAsNumber(args, 1);
-                    this.setOutput("Copy item "+item);
+                    this.setOutput("Copy item " + item);
                 } else {
                     const arg = this.argumentAsString(args, 1, true);
                     if (arg == null) {
@@ -305,7 +307,7 @@ module NakedObjects.Angular.Gemini {
         public fullCommand = "go";
         public helpText = "Go to an object referenced in a property, or a list." +
         "Go takes one argument.  In the context of an object, that is the name or partial name" +
-        "of the property holding the reference. In the context of a list, it is the "+
+        "of the property holding the reference. In the context of a list, it is the " +
         "number of the item within the list (starting at 1). ";
         protected minArguments = 1;
         protected maxArguments = 1;
@@ -317,7 +319,7 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             if (this.urlManager.isObject()) {
                 const prop = this.argumentAsString(args, 1);
-                this.setOutput("Go to property"+prop+" invoked"); //todo: temporary
+                this.setOutput("Go to property" + prop + " invoked"); //todo: temporary
             }
             if (this.urlManager.isList()) {
                 const item = this.argumentAsNumber(args, 1);
@@ -339,13 +341,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            var arg = this.argumentAsString(args, 1);
+            var arg = this.argumentAsString(args, 0);
             if (arg == null) {
-                this.setOutput(this.commandFactory.allCommandsForCurrentContext()); 
+                this.setOutput(this.commandFactory.allCommandsForCurrentContext());
             } else {
                 const c = this.commandFactory.getCommand(arg);
                 this.setOutput(c.fullCommand + " command: " + c.helpText);
-                this.clearInput();
             }
         };
     }
@@ -394,7 +395,7 @@ module NakedObjects.Angular.Gemini {
                 this.setOutput("Item command invoked on Collection, from " + startNo + " to " + endNo); //todo: temporary
 
             } else {
-                this.setOutput("Item command invoked on List, from "+startNo+" to "+endNo+" page "+pageNo); //todo: temporary
+                this.setOutput("Item command invoked on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
             }
         };
 
@@ -415,8 +416,30 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-                const menu = this.argumentAsString(args, 1);
-                this.setOutput("Menu " + menu + " invoked"); //todo: temporary
+            const menuName = this.argumentAsString(args, 0);
+            if (menuName == null) {
+                //list all menus
+                this.context.getMenus()
+                    .then((menus: MenusRepresentation) => {
+                        const links = menus.value().models;
+                        var s = _.reduce(links, (s, t) => { return s + t.title()+"; "; }, "Menus: ");
+                        this.setOutput(s);
+                    });
+            } else {
+                //Initially assume exact match
+                //this.context.getMenus( 
+                this.context.getMenus() //menu must be Id
+                    .then((menus: MenusRepresentation) => {
+                        const links = menus.value().models;
+                        const menuLink = _.find(links, (t) => { return t.title().toLowerCase() == menuName; }, "Menus: ");
+
+                        const menuId = menuLink.rel().parms[0].value;
+                        this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
+                    }).catch(() => {
+                        this.setOutput(menuName+" does not match any menu.");
+                    }
+                    );
+            }
         };
     }
     export class OK extends Command {
@@ -496,7 +519,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 1);
-            this.setOutput("Property command invoked with argument: "+match); //todo: temporary
+            this.setOutput("Property command invoked with argument: " + match); //todo: temporary
         };
 
     }
@@ -546,14 +569,14 @@ module NakedObjects.Angular.Gemini {
             return this.urlManager.isEdit();
         }
         execute(args: string): void {
-                this.setOutput("Object saved"); //todo: temporary
+            this.setOutput("Object saved"); //todo: temporary
         };
     }
     export class Select extends Command {
         public fullCommand = "select";
         public helpText = "Select an option from a set of choices for a named property on an object that is in edit mode, " +
         "or for a named parameter on an opened action. The select command takes two arguments: the " +
-        "name or partial name of the property or paramater, and the value or partial-match value to be selected."+
+        "name or partial name of the property or paramater, and the value or partial-match value to be selected." +
         "If either of the partial match arguments is ambiguous, the possible matches will be displayed to " +
         "but no selection will be made. If no second argument is provided, the full set of options will be " +
         "returned but none selected.";
@@ -568,7 +591,7 @@ module NakedObjects.Angular.Gemini {
             const name = this.argumentAsString(args, 1);
             const option = this.argumentAsString(args, 2, true);
             if (this.urlManager.isEdit()) {
-                this.setOutput("Select command invoked on property: " + name +" for option"+option); //todo: temporary
+                this.setOutput("Select command invoked on property: " + name + " for option" + option); //todo: temporary
             }
             if (this.urlManager.isActionOpen) {
                 this.setOutput("Select command invoked on parameter: " + name + " for option" + option); //todo: temporary
@@ -591,6 +614,23 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const match = this.argumentAsString(args, 1);
             this.setOutput("Open command invoked with argument: " + match); //todo: temporary
+        };
+
+    }
+    export class Where extends Command {
+
+        public fullCommand = "where";
+        public helpText = "Reminds the user of the current context.  May be invoked just " +
+        "by hitting the Enter (Return) key in the empty Command field.";
+        protected minArguments = 0;
+        protected maxArguments = 0;
+
+        isAvailableInCurrentContext(): boolean {
+            return true;
+        }
+
+        execute(args: string): void {
+            this.setOutput("Where command invoked"); //todo: temporary
         };
 
     }

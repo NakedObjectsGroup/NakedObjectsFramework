@@ -524,7 +524,11 @@ module NakedObjects.Angular.Gemini {
 
         //todo: All these functions need to be written, not just return true!
         helper.isHome = () => {
-            return $location.search()["home"]; //todo: not currently checking that this is left or single pane
+            //TODO extract GetMode()? for re-use within Cicero
+            const path = $location.path();
+            const segments = path.split("/");
+            const mode = segments[2]; //1 is ?/Cicero/Home
+            return mode == "home";
         }
         helper.isObject = () => {
             return $location.search()["object1"];  //todo: confirm this is correct? what if list is from an object action?
