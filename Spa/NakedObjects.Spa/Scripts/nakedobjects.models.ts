@@ -45,6 +45,7 @@ module NakedObjects {
         urlParms: _.Dictionary<string>;
         populate(wrapped: RoInterfaces.IRepresentation);
         getBody(): RoInterfaces.IRepresentation;
+        getUrl() : string;
     }
 
     export interface IOptionalCapabilities {
@@ -77,6 +78,27 @@ module NakedObjects {
             }
 
             return {};
+        }
+
+        getUrl() {
+            const url = this.url();
+            const attrAsJson = _.clone(this.map);
+
+            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
+
+                const urlParmsAsJson = _.clone(this.urlParms);
+                const asJson = _.merge(attrAsJson, urlParmsAsJson);
+                if (_.keys(asJson).length > 0) {
+                    const map = JSON.stringify(asJson);
+                    const parmString = encodeURI(map);
+                    return url + "?" + parmString;
+                }
+                return url;
+            }
+
+            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+
+            return urlParmString !== "" ? url + "?" + urlParmString : url;
         }
 
         hateoasUrl: string = "";
@@ -348,7 +370,9 @@ module NakedObjects {
     
         abstract populate(wrapped: RoInterfaces.IRepresentation);
 
-        abstract getBody() : RoInterfaces.IRepresentation;
+        abstract getBody(): RoInterfaces.IRepresentation;
+
+        abstract getUrl(): string;
 
         urlParms : _.Dictionary<string>;
     }
@@ -495,6 +519,8 @@ module NakedObjects {
             return this.resource.extensions;
         }
 
+        // todo DRY this !
+
         getBody(): RoInterfaces.IRepresentation {
             if (this.method === "POST" || this.method === "PUT") {
                 return _.clone(this.resource);
@@ -503,6 +529,28 @@ module NakedObjects {
             return {};
         }
 
+        // todo DRY this !
+
+        getUrl() {
+            const url = this.url();
+            const attrAsJson = _.clone(this.resource);
+
+            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
+
+                const urlParmsAsJson = _.clone(this.urlParms);
+                const asJson = _.merge(attrAsJson, urlParmsAsJson);
+                if (_.keys(asJson).length > 0) {
+                    const map = JSON.stringify(asJson);
+                    const parmString = encodeURI(map);
+                    return url + "?" + parmString;
+                }
+                return url;
+            }
+
+            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+
+            return urlParmString !== "" ? url + "?" + urlParmString : url;
+        }
     }
 
     // matches a action invoke resource 19.0 representation 
@@ -1460,6 +1508,27 @@ module NakedObjects {
             }
 
             return {};
+        }
+
+        getUrl() {
+            const url = this.url();
+            const attrAsJson = _.clone(this.map);
+
+            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
+
+                const urlParmsAsJson = _.clone(this.urlParms);
+                const asJson = _.merge(attrAsJson, urlParmsAsJson);
+                if (_.keys(asJson).length > 0) {
+                    const map = JSON.stringify(asJson);
+                    const parmString = encodeURI(map);
+                    return url + "?" + parmString;
+                }
+                return url;
+            }
+
+            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+
+            return urlParmString !== "" ? url + "?" + urlParmString : url;
         }
     }
 

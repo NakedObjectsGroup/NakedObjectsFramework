@@ -17,38 +17,26 @@ module NakedObjects.Angular {
         repLoader.loadingCount = 0; 
 
         // todo this should be on model ! 
-        function getUrl(model: IHateoasModel): string {
-            const url = model.url();
-            const attrAsJson = _.clone((<any>model).attributes);
+        //function getUrl(model: IHateoasModel): string {
+        //    const url = model.url();
+        //    const attrAsJson = _.clone(model.wrapped());
 
-            if (_.keys(attrAsJson).length > 0 && (model.method === "GET" || model.method === "DELETE")) {
+        //    if (_.keys(attrAsJson).length > 0 && (model.method === "GET" || model.method === "DELETE")) {
                 
-                const urlParmsAsJson = _.clone(model.urlParms);
-                const asJson = _.merge(attrAsJson, urlParmsAsJson);
-                if (_.keys(asJson).length > 0) {
-                    const map = JSON.stringify(asJson);
-                    const parmString = encodeURI(map);
-                    return url + "?" + parmString;
-                }
-                return url;
-            }
+        //        const urlParmsAsJson = _.clone(model.urlParms);
+        //        const asJson = _.merge(attrAsJson, urlParmsAsJson);
+        //        if (_.keys(asJson).length > 0) {
+        //            const map = JSON.stringify(asJson);
+        //            const parmString = encodeURI(map);
+        //            return url + "?" + parmString;
+        //        }
+        //        return url;
+        //    }
 
-            const urlParmString = _.reduce(model.urlParms || {},  (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+        //    const urlParmString = _.reduce(model.urlParms || {},  (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
                   
-            return urlParmString !== "" ? url + "?" + urlParmString : url;
-        }
-
-         // todo this should be on model too ! 
-        function getData(model: IHateoasModel): Object {
-
-            let data = {};
-
-            if (model.method === "POST" || model.method === "PUT") {
-                data = _.clone((<any>model).attributes);
-            }
-
-            return data;
-        }
+        //    return urlParmString !== "" ? url + "?" + urlParmString : url;
+        //}
 
         repLoader.populate = <T>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
 
@@ -56,7 +44,7 @@ module NakedObjects.Angular {
             const useCache = !ignoreCache;
 
             const config = {
-                url: getUrl(model),
+                url: model.getUrl(),
                 method: model.method,
                 cache: useCache,
                 data: model.getBody()

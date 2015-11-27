@@ -670,32 +670,31 @@ describe("nakedObjects.gemini.services.context ", () => {
             });
         });
 
-        describe("and return transient", () => {
+        //describe("and return transient", () => {
 
-            beforeEach(inject(($q, repLoader) => {
-                populate = spyOn(repLoader, "populate");
-                populate.and.returnValue($q.when(testActionResult));
-                spyOn(testObject, "serviceId").and.returnValue(null);
-                spyOn(testObject, "instanceId").and.returnValue("id");
-                spyOn(testObject, "domainType").and.returnValue("dt");
-                spyOn(testObject, "set");
-                spyOn(testObject, "extensions").and.returnValue({ domainType: "dt" });
-                spyOn(testObject, "persistLink").and.returnValue({});
-                spyOn(testResult, "object").and.returnValue(testObject);
-                spyOn(testActionResult, "resultType").and.returnValue("object");
-                spyOn(testResult, "isNull").and.returnValue(false);
-                spyOn(testActionResult, "result").and.returnValue(testResult);
+        //    beforeEach(inject(($q, repLoader) => {
+        //        populate = spyOn(repLoader, "populate");
+        //        populate.and.returnValue($q.when(testActionResult));
+        //        spyOn(testObject, "serviceId").and.returnValue(null);
+        //        spyOn(testObject, "instanceId").and.returnValue("id");
+        //        spyOn(testObject, "domainType").and.returnValue("dt");
+        //        spyOn(testObject, "extensions").and.returnValue({ domainType: "dt" });
+        //        spyOn(testObject, "persistLink").and.returnValue({});
+        //        spyOn(testResult, "object").and.returnValue(testObject);
+        //        spyOn(testActionResult, "resultType").and.returnValue("object");
+        //        spyOn(testResult, "isNull").and.returnValue(false);
+        //        spyOn(testActionResult, "result").and.returnValue(testResult);
 
-                localContext.invokeAction(testAction, 1);
-                timeout.flush();
-            }));
+        //        localContext.invokeAction(testAction, 1);
+        //        timeout.flush();
+        //    }));
 
-            it("sets domain object on context", () => {
-                (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testObject));
-                timeout.flush();
-            });
+        //    it("sets domain object on context", () => {
+        //        (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testObject));
+        //        timeout.flush();
+        //    });
 
-        });
+        //});
 
         describe("and return list", () => {
 
@@ -817,26 +816,24 @@ describe("nakedObjects.gemini.services.context ", () => {
             const testUpdate = <NakedObjects.UpdateMap><any>{ setProperty : () => {} };
             spyOn(testUpdate, "setProperty");
             spyOn(testObject, "getUpdateMap").and.returnValue(testUpdate);
-            spyOn(testUpdatedObject, "set");
             spyOn(testUpdatedObject, "url").and.returnValue("");
-            spyOn(testObject, "get").and.returnValue("");
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testUpdatedObject));
             spyOn(urlManager, "setObject");
         }));
 
-        describe("successfully update object", () => {
+        //describe("successfully update object", () => {
 
-            beforeEach(inject(() => {
-                localContext.updateObject(testObject, testOvm);
-                timeout.flush();
-            }));
+        //    beforeEach(inject(() => {
+        //        localContext.updateObject(testObject, testOvm);
+        //        timeout.flush();
+        //    }));
 
-            it("sets object on context", () => {
-                (<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testUpdatedObject));
-                timeout.flush();
-            });
-        });
+        //    it("sets object on context", () => {
+        //        //(<any>localContext).getDomainObject(1, "dt", "id").then(hr => expect(hr).toEqual(testUpdatedObject));
+        //        //timeout.flush();
+        //    });
+        //});
     });
 
     describe("saveObject", () => {
@@ -864,9 +861,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             const testPersist = <NakedObjects.PersistMap><any>{ setMember: () => { }};
             spyOn(testPersist, "setMember");
             spyOn(testObject, "getPersistMap").and.returnValue(testPersist);
-            spyOn(testUpdatedObject, "set");
             spyOn(testUpdatedObject, "url").and.returnValue("");
-            spyOn(testObject, "get").and.returnValue("");
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testUpdatedObject));
             spyOn(urlManager, "setObject");
@@ -924,9 +919,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             localContext = context;
             timeout = $timeout;
             spyOn(testObject, "getPersistMap").and.returnValue(testPersist);
-            spyOn(testUpdatedObject, "set");
             spyOn(testUpdatedObject, "value").and.returnValue(true);
-            spyOn(testObject, "get").and.returnValue("");
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testUpdatedObject));
             spyOn(urlManager, "setObject");
