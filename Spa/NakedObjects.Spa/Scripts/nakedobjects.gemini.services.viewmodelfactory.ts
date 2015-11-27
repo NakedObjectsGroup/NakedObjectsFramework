@@ -167,7 +167,7 @@ module NakedObjects.Angular.Gemini{
 
                 if (parmViewModel.hasConditionalChoices) {
                     parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
-                    parmViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                    parmViewModel.arguments = _.object<IValueMap>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
 
@@ -356,7 +356,7 @@ module NakedObjects.Angular.Gemini{
 
                 if (propertyViewModel.hasConditionalChoices) {
                     propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
-                    propertyViewModel.arguments = _.object<IValueMap>(_.map(<_.Dictionary<Object>>propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
+                    propertyViewModel.arguments = _.object<IValueMap>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
                 }
             }
 
@@ -411,7 +411,7 @@ module NakedObjects.Angular.Gemini{
 
         function create($scope: ng.IScope, collectionRep: CollectionMember, state: CollectionViewState, paneId : number) {
             const collectionViewModel = new CollectionViewModel();
-            const links = collectionRep.value().models;
+            const links = collectionRep.value();
 
             collectionViewModel.onPaneId = paneId;
 
@@ -443,7 +443,7 @@ module NakedObjects.Angular.Gemini{
        
         function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState : CollectionViewState) => void) {
             const collectionViewModel = new CollectionViewModel();
-            const links = listRep.value().models;
+            const links = listRep.value();
 
             collectionViewModel.onPaneId = paneId;
 
@@ -516,8 +516,8 @@ module NakedObjects.Angular.Gemini{
             const servicesViewModel = new ServicesViewModel();
 
             // filter out contributed action services 
-            const links = _.filter(servicesRep.value().models, m => {
-                var sid = m.rel().parms[0].value;
+            const links = _.filter(servicesRep.value(), m => {
+                const sid = m.rel().parms[0].value;
                 return sid.indexOf("ContributedActions") === -1; 
             });
             
@@ -532,7 +532,7 @@ module NakedObjects.Angular.Gemini{
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value().models, link =>  viewModelFactory.linkViewModel(link, paneId));
+            menusViewModel.items = _.map(menusRep.value(), link =>  viewModelFactory.linkViewModel(link, paneId));
             return menusViewModel;
         };
 

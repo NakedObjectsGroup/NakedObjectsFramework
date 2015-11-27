@@ -119,8 +119,11 @@ module NakedObjects.Angular.Gemini {
 
                 }
                 else if (this.urlManager.isObject()) {
-                    //TODO: Change getCurrentObject to getObjectFromUrl(paneNo) for safety (cos current object might not be that!)
-                    const obj = this.context.getCurrentObject(1);
+                    const obj = this.context.getObjectSpecifiedInUrl(1);
+                    var actions = _.map(obj.actionMembers(), action => action);
+                    //TODO: Get friendly name rather than Id, via extensions?
+                    var s = _.reduce(actions, (s, t) => { return s + t.actionId() + "; "; }, "Actions: ");
+                    this.setOutput(s);
                 }
                 else if (this.urlManager.isList()) { //For collection-contributed actions
 
@@ -431,14 +434,14 @@ module NakedObjects.Angular.Gemini {
                 //list all menus
                 this.context.getMenus()
                     .then((menus: MenusRepresentation) => {
-                        const links = menus.value().models;
+                        const links = menus.value();
                         var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, "Menus: ");
                         this.setOutput(s);
                     });
             } else {
                 this.context.getMenus()
                     .then((menus: MenusRepresentation) => {
-                        const links = menus.value().models;
+                        const links = menus.value();
                         const matchingLinks = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(menuName) > -1; });
                         switch (matchingLinks.length) {
                             case 0:

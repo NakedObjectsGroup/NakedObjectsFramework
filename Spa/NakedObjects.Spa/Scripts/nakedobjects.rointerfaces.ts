@@ -6,7 +6,7 @@
         type?: string;
         method?: string;
         title?: string;
-        arguments?: Object;
+        arguments?: IValue | IValueMap;
         extensions?: IExtensions;
     }
 
@@ -31,7 +31,10 @@
         // ReSharper restore InconsistentNaming
     }
 
-    export interface IResourceRepresentation {
+    export interface IRepresentation {
+    }
+
+    export interface IResourceRepresentation extends IRepresentation {
         links: ILink[],
         extensions: IExtensions;
     }
@@ -70,8 +73,12 @@
         invalidReason?: string;
     }
 
+    export interface IValueMap {
+        [index : string] : IValue | string;
+    }
+
     export interface IObjectOfType {
-        members: { [index: string]: IValue };
+        members: IValueMap;
     }
 
     export interface IErrorDetailsRepresentation {
@@ -129,13 +136,34 @@
 
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
         resultType: string;
-        result?: IDomainObjectRepresentation | ListRepresentation | IScalarValueRepresentation;
+        result?: IDomainObjectRepresentation | IListRepresentation | IScalarValueRepresentation;
     }
 
     export interface IParameterRepresentation extends IResourceRepresentation {
         choices?: (string | number | boolean | ILink)[];
         default?: number | string | boolean | ILink;
     }
+
+
+    export interface IActionRepresentation extends IResourceRepresentation {
+        id: string;
+        parameters: { [index: string]: IParameterRepresentation };
+        disabledReason? : string;
+    }
+
+    export interface IPropertyRepresentation extends IResourceRepresentation {
+        id: string;
+        value?: string | number | boolean | ILink;
+        choices?: (string | number | boolean | ILink)[];
+        disabledReason?: string;
+    }
+
+    export interface ICollectionRepresentation extends IResourceRepresentation {
+        id: string;
+        value?: ILink[];
+        disabledReason?: string;
+    }
+
 
     export interface IDomainTypeRepresentation extends IResourceRepresentation {
         name: string;
@@ -178,5 +206,10 @@
     export interface IDomainTypeActionInvokeRepresentation extends IResourceRepresentation {
         id: string;
         value: boolean;    
+    }
+
+    export interface IPromptRepresentation extends IResourceRepresentation {
+        id: string;
+        choices? : (string | number | boolean | ILink)[];
     }
 }
