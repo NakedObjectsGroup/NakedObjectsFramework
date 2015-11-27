@@ -49,36 +49,7 @@ module NakedObjects.Angular.Gemini {
     //Cicero
     app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory) => {
         const cvm = context.setCiceroVMIfNecessary(commandFactory);
-        cvm.findRepresentation(urlManager.getRouteData().pane1);
         $scope.cicero = cvm;
-       // cvm.output = "Welcome to Cicero";
-        cvm.setOutputToSummaryOfRepresentation();
-        
-         //const routeData = urlManager.getRouteData();
-        //const pane = routeData.pane1;
-
-        //if (pane.objectId) {
-        //    const [dt, ...id] = pane.objectId.split("-");
-
-        //    // only pass previous values if editing 
-        //    const previousValues: _.Dictionary<Value> = pane.edit ? pane.props : {};
-
-        //    context.getObject(pane.paneId, dt, id).
-        //        then((object: DomainObjectRepresentation) => {
-
-        //            const ovm = viewModelFactory.domainObjectViewModel($scope, object, pane.collections, previousValues, pane.edit, pane.paneId);
-        //            const cvm = viewModelFactory.ciceroViewModel(ovm);
-        //            $scope.cicero = cvm;
-
-        //            // cache
-        //            //cacheRecentlyViewed(object);
-
-        //        }).catch(error => {
-        //            //setError(error);
-        //        });
-        //} else { //home
-        //    const cvm = viewModelFactory.ciceroViewModel(null);
-        //    $scope.cicero = cvm;
-        //}
+        cvm.setOutputToSummaryOfRepresentation(urlManager.getRouteData().pane1);
     });
 }

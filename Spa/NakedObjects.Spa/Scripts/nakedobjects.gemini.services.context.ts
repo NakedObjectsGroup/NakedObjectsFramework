@@ -5,31 +5,32 @@
 module NakedObjects.Angular.Gemini {
 
     export interface IContext {
-        
-        getCachedList: (paneId : number, page : number, pageSize : number) => ListRepresentation; 
+
+        getCachedList: (paneId: number, page: number, pageSize: number) => ListRepresentation;
 
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId : number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
-        getObjectByOid: (paneId: number, objectId : string) => ng.IPromise<DomainObjectRepresentation>;    
-        getListFromMenu: (paneId : number, menuId: string, actionId: string, parms : _.Dictionary<Value>, page? : number, pageSize? : number) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page? : number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getObject: (paneId: number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
+        getCurrentObject: (paneId: number) => DomainObjectRepresentation;
+        getObjectByOid: (paneId: number, objectId: string) => ng.IPromise<DomainObjectRepresentation>;
+        getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
-        getActionFriendlyName: (action : ActionMember) => ng.IPromise<string>;
+        getActionFriendlyName: (action: ActionMember) => ng.IPromise<string>;
         getError: () => ErrorRepresentation;
         getPreviousUrl: () => string;
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
-      
-        invokeAction(action: ActionMember, paneId : number, ovm? : DomainObjectViewModel, dvm?: DialogViewModel);
+
+        invokeAction(action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
-        reloadObject: (paneId : number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
+        reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
         setError: (object: ErrorRepresentation) => void;
-    
+
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
         getCiceroVM(): CiceroViewModel;
@@ -41,16 +42,16 @@ module NakedObjects.Angular.Gemini {
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
-        getDomainObject: (paneId : number, type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId: number, type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
 
-        setObject: (paneId : number, object: DomainObjectRepresentation) => void;          
-       
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId : number, page : number, pageSize : number,   dvm?: DialogViewModel);
+        setObject: (paneId: number, object: DomainObjectRepresentation) => void;
+
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel);
         setInvokeUpdateError(error: any, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
-        
+
     }
 
     app.service("context", function ($q: ng.IQService,
@@ -68,7 +69,7 @@ module NakedObjects.Angular.Gemini {
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
-     
+
         let currentLists: _.Dictionary<ListRepresentation>[] = []; // cache last 'listCacheSize' lists
 
         function getAppPath() {
@@ -87,7 +88,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         // exposed for test mocking
-        context.getDomainObject = (paneId : number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
+        context.getDomainObject = (paneId: number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
 
             // todo make this cleaner 
             const key = type + "-" + id;
@@ -122,7 +123,7 @@ module NakedObjects.Angular.Gemini {
                 });
         }
 
-        context.getService = (paneId : number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
+        context.getService = (paneId: number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
             if (isSameObject(currentObjects[paneId], serviceType)) {
                 return $q.when(currentObjects[paneId]);
@@ -217,7 +218,11 @@ module NakedObjects.Angular.Gemini {
             return oid ? context.getDomainObject(paneId, type, oid) : context.getService(paneId, type);
         };
 
-        context.getObjectByOid = (paneId : number, objectId: string) => {
+        context.getCurrentObject = (paneId: number) => {
+            return currentObjects[paneId];
+        };
+
+        context.getObjectByOid = (paneId: number, objectId: string) => {
             const [dt, ...id] = objectId.split("-");
             return context.getObject(paneId, dt, id);
         };
@@ -234,7 +239,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        const handleResult = (paneId : number, result: ActionResultRepresentation, page : number, pageSize : number) => {
+        const handleResult = (paneId: number, result: ActionResultRepresentation, page: number, pageSize: number) => {
 
             if (result.resultType() === "list") {
                 const resultList = result.result().list();
@@ -247,7 +252,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        const getList = (paneId: number, resultPromise : () => ng.IPromise<ActionResultRepresentation>, page : number, pageSize : number) => {
+        const getList = (paneId: number, resultPromise: () => ng.IPromise<ActionResultRepresentation>, page: number, pageSize: number) => {
             return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };
 
@@ -273,20 +278,20 @@ module NakedObjects.Angular.Gemini {
             return getList(paneId, promise, page, pageSize);
         };
 
-        context.setObject = (paneId : number, co) => currentObjects[paneId] = co;
-          
+        context.setObject = (paneId: number, co) => currentObjects[paneId] = co;
+
         let currentError: ErrorRepresentation = null;
 
         context.getError = () => currentError;
 
         context.setError = (e: ErrorRepresentation) => currentError = e;
-       
+
         let previousUrl: string = null;
 
         context.getPreviousUrl = () => previousUrl;
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
-       
+
         const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
             $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
@@ -302,8 +307,8 @@ module NakedObjects.Angular.Gemini {
 
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
             doPrompt(promptRep, id, null, () => promptRep.setArguments(args));
-      
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId : number, page : number, pageSize : number , dvm?: DialogViewModel) => {
+
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel) => {
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
                     dvm.message = "no result found";
@@ -311,8 +316,8 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
 
-            const resultObject = result.result().object(); 
-          
+            const resultObject = result.result().object();
+
             if (result.resultType() === "object") {
                 if (resultObject.persistLink()) {
                     // transient object
@@ -338,9 +343,9 @@ module NakedObjects.Angular.Gemini {
 
             else if (result.resultType() === "list") {
                 const resultList = result.result().list();
-               
+
                 urlManager.setList(action, paneId, dvm);
-    
+
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
             } else if (dvm) {
@@ -348,7 +353,7 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        context.getCachedList = (paneId : number, page: number, pageSize: number) => {
+        context.getCachedList = (paneId: number, page: number, pageSize: number) => {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             const e = _.find(currentLists, entry => entry[index]);
             return e ? e[index] : null;
@@ -365,7 +370,7 @@ module NakedObjects.Angular.Gemini {
                             vmi.description = `REQUIRED ${vmi.description}`;
                         } else {
                             vmi.message = errorValue.invalidReason;
-                        }                    
+                        }
                     }
                 });
                 if (vm) {
@@ -383,8 +388,8 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-     
-        context.invokeAction = (action: ActionMember, paneId : number, ovm? : DomainObjectViewModel, dvm?: DialogViewModel) => {
+
+        context.invokeAction = (action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
             let parameters: ParameterViewModel[] = [];
 
@@ -399,7 +404,7 @@ module NakedObjects.Angular.Gemini {
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
-          
+
 
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
@@ -437,8 +442,8 @@ module NakedObjects.Angular.Gemini {
                     $cacheFactory.get("$http").remove(updatedObject.url());
 
                     context.setObject(ovm.onPaneId, updatedObject);
-                  
-                    urlManager.setObject(updatedObject, ovm.onPaneId);             
+
+                    urlManager.setObject(updatedObject, ovm.onPaneId);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
@@ -453,13 +458,13 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(ovm.onPaneId, updatedObject);   
-                
+                    context.setObject(ovm.onPaneId, updatedObject);
+
                     if (viewObject) {
                         urlManager.setObject(updatedObject, ovm.onPaneId);
                     } else {
                         urlManager.popUrlState(ovm.onPaneId);
-                    }             
+                    }
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, properties, ovm);
@@ -467,7 +472,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         const subTypeCache: _.Dictionary<_.Dictionary<boolean>> = {};
-       
+
         context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
 
             if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
@@ -489,7 +494,7 @@ module NakedObjects.Angular.Gemini {
                 }).
                 catch((error: any) => {
                     return false;
-                });            
+                });
         }
 
         let cvm: CiceroViewModel = null;
@@ -502,29 +507,24 @@ module NakedObjects.Angular.Gemini {
                 };
                 cvm.previousCommand = () => { }; //TODO
                 cvm.nextCommand = () => { }; //TODO
-                cvm.findRepresentation = (routeData: PaneRouteData) => {
-                    //parse the routedata to then get the representation and put
-                    //it on the cachedCvm.representation
+                cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
                     if (routeData.objectId) {
                         const [domainType, ...id] = routeData.objectId.split("-");
-                        cvm.representationPromise = context.getObject(1, domainType, id);
+                        context.getObject(1, domainType, id)
+                            .then((resource: DomainObjectRepresentation) => {
+                                const type = _.last(resource.domainType().split("."));
+                                cvm.output = type+": " + resource.title();
+                            });
                     }
-                    //lots more
-                };
-                cvm.setOutputToSummaryOfRepresentation = () => {
-                    if (!cvm.representationPromise) {
-                        cvm.output = "Welcome to Cicero";
-                    } else {
-                        cvm.representationPromise
-                            .then((resource: ResourceRepresentation) => {
-                                if (resource instanceof DomainObjectRepresentation) {
-                                    cvm.output = "Object" + resource.title();
-                                }
-                                if (resource instanceof ListRepresentation) {
-                                    cvm.output = "List";
-                                }
-                            }
-                       );
+                    //TODO: tests for other top-level & secondary representations
+                    else if (routeData.menuId) {
+                        context.getMenu(routeData.menuId)
+                            .then((menu: MenuRepresentation) => {
+                                cvm.output = menu.title()+ " menu";
+                            });
+                    }
+                    else {
+                        cvm.output = "home";
                     }
                 };
             }

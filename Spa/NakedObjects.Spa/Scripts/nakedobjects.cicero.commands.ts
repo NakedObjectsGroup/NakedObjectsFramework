@@ -112,11 +112,21 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 1);
-            if (this.urlManager.isObject) {
-                //get object from context
+            if (name) {
+
+            } else {
+                if (this.urlManager.isMenuOpen()) {
+
+                }
+                else if (this.urlManager.isObject()) {
+                    //TODO: Change getCurrentObject to getObjectFromUrl(paneNo) for safety (cos current object might not be that!)
+                    const obj = this.context.getCurrentObject(1);
+                }
+                else if (this.urlManager.isList()) { //For collection-contributed actions
+
+                }
 
             }
-            this.setOutput("Action command invoked"); //todo: temporary
         };
 
     }
@@ -422,23 +432,27 @@ module NakedObjects.Angular.Gemini {
                 this.context.getMenus()
                     .then((menus: MenusRepresentation) => {
                         const links = menus.value().models;
-                        var s = _.reduce(links, (s, t) => { return s + t.title()+"; "; }, "Menus: ");
+                        var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, "Menus: ");
                         this.setOutput(s);
                     });
             } else {
-                //Initially assume exact match
-                //this.context.getMenus( 
-                this.context.getMenus() //menu must be Id
+                this.context.getMenus()
                     .then((menus: MenusRepresentation) => {
                         const links = menus.value().models;
-                        const menuLink = _.find(links, (t) => { return t.title().toLowerCase() == menuName; }, "Menus: ");
-
-                        const menuId = menuLink.rel().parms[0].value;
-                        this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
-                    }).catch(() => {
-                        this.setOutput(menuName+" does not match any menu.");
-                    }
-                    );
+                        const matchingLinks = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(menuName) > -1; });
+                        switch (matchingLinks.length) {
+                            case 0:
+                                this.setOutput(menuName + " does not match any menu.");
+                                break;
+                            case 1:
+                                const menuId = matchingLinks[0].rel().parms[0].value;
+                                this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
+                                break;
+                            default:
+                                var s = _.reduce(matchingLinks, (s, t) => { return s + t.title() + "; "; }, "");
+                                this.setOutput(menuName + " matches multiple menus: " + s); //TODO could add list of matches
+                        }
+                    });
             }
         };
     }
