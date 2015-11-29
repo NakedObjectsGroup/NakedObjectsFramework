@@ -114,15 +114,15 @@ module NakedObjects.Angular.Gemini {
             const name = this.argumentAsString(args, 1);
             if (name) {
 
-            } else {
+            } else { //return all available actions
                 if (this.urlManager.isMenuOpen()) {
-
+                    
+                    //this.context.getMenuSpecifiedInUrl
                 }
                 else if (this.urlManager.isObject()) {
-                    const obj = this.context.getObjectSpecifiedInUrl(1);
+                    const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper on urlManager instead?
                     var actions = _.map(obj.actionMembers(), action => action);
-                    //TODO: Get friendly name rather than Id, via extensions?
-                    var s = _.reduce(actions, (s, t) => { return s + t.actionId() + "; "; }, "Actions: ");
+                    var s = _.reduce(actions, (s, t) => { return s + t.extensions().friendlyName + "; "; }, "Actions: ");
                     this.setOutput(s);
                 }
                 else if (this.urlManager.isList()) { //For collection-contributed actions
