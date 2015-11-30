@@ -2,10 +2,23 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects.Angular.Gemini {
+   
+
+    interface ISelectObj {
+        request?: string;
+        args?: IValueMap;
+        date? : string;
+    }
 
     interface ISelectScope extends ng.IScope {
-        select: any;
+        select: (obj : ISelectObj) => ng.IPromise<ChoiceViewModel[]>;
     }
+
+    interface IPropertyOrParameterScope extends INakedObjectsScope {
+        property?: ValueViewModel;
+        parameter?: ValueViewModel;
+    }
+
 
     // based on code in AngularJs, Green and Seshadri, O'Reilly
     app.directive("geminiDatepicker", ($filter : ng.IFilterService, $timeout : ng.ITimeoutService): ng.IDirective => {
@@ -79,8 +92,8 @@ module NakedObjects.Angular.Gemini {
                 if (!ngModel) return;
 
                 const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
-                const parent = <any>scope.$parent;
-                const viewModel = <ValueViewModel> (parent.parameter || parent.property);
+                const parent = scope.$parent as IPropertyOrParameterScope;
+                const viewModel = parent.parameter || parent.property;
 
                 function render(initialChoice?: ChoiceViewModel) {
                     const cvm = ngModel.$modelValue || initialChoice;
@@ -108,7 +121,7 @@ module NakedObjects.Angular.Gemini {
                 optionsObj.source = (request, response) => {
                     scope.$apply(() =>
                         scope.select({ request: request.term }).
-                        then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => { return { "label": cvm.name, "value": cvm }; }))).
+                        then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
                         catch(() => response([])));
                 };
 
@@ -150,8 +163,8 @@ module NakedObjects.Angular.Gemini {
             link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
-                const parent = <any>scope.$parent;
-                const viewModel = <ValueViewModel> (parent.parameter || parent.property);
+                const parent = scope.$parent as IPropertyOrParameterScope;
+                const viewModel = parent.parameter || parent.property;
                 const pArgs = viewModel.arguments;
                 let currentOptions: ChoiceViewModel[] = [];
 
