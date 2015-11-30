@@ -69,7 +69,7 @@
     }
 
     export interface IValue {
-        value: string | number | boolean | ILink;
+        value: string | number | boolean | ILink | (string | number | boolean | ILink)[]  ;
         invalidReason?: string;
     }
 

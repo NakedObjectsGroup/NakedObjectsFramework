@@ -288,18 +288,18 @@ module NakedObjects.Angular.Gemini {
         const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
             $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
-        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: () => void) => {
-            promptRep.reset();
-            setupPrompt();
+        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map : PromptMap) => void) => {
+            const map = promptRep.getPromptMap();
+            setupPrompt(map);
             const createcvm = <(p: PromptRepresentation) => angular.IPromise<Gemini.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, searchTerm));
-            return repLoader.populate(promptRep, true).then(createcvm);
+            return repLoader.populate(map, true, promptRep).then(createcvm);
         };
 
         context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string) =>
-            doPrompt(promptRep, id, searchTerm, () => promptRep.setSearchTerm(searchTerm));
+            doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm));
 
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
-            doPrompt(promptRep, id, null, () => promptRep.setArguments(args));
+            doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel) => {
             if (result.result().isNull() && result.resultType() !== "void") {
@@ -401,7 +401,6 @@ module NakedObjects.Angular.Gemini {
                 // todo do we still need to do this ? Test
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
-
 
 
             repLoader.populate(invoke, true).

@@ -173,7 +173,7 @@ module NakedObjects.Angular.Gemini {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.object = <any>{ color: color.toColorFromType(dt) }; 
+            $scope.object = { color: color.toColorFromType(dt) }; 
             
             // only pass previous values if editing 
             const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};

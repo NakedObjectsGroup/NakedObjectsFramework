@@ -275,6 +275,9 @@ module NakedObjects {
         setValue(target: IValue) {
             if (this.isReference()) {
                 target.value = { "href": this.link().href() };
+            }
+            else if (this.isList()) {
+                target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());
             } else {
                 target.value = this.scalar();
             }
@@ -631,7 +634,9 @@ module NakedObjects {
         }
 
         getPrompts(): PromptRepresentation {
-            return <PromptRepresentation> this.promptLink().getTarget();
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            pr.getPromptMap = () => new PromptMap(this.getPrompts(), this.promptLink().arguments() as RoInterfaces.IValueMap);
+            return pr;
         }
 
         default(): Value {
@@ -716,6 +721,29 @@ module NakedObjects {
 
     // new in 1.1 15.0 in spec 
 
+    export class PromptMap extends ArgumentMap implements IHateoasModel {
+        constructor(private prompt: PromptRepresentation, map: RoInterfaces.IValueMap) {
+            super(map, prompt, prompt.instanceId());
+
+            // todo must be better way
+            this.hateoasUrl = prompt.hateoasUrl;
+        } 
+
+        setSearchTerm(term: string) {
+            //this.set("x-ro-searchTerm", { "value": term });
+            this.setArgument("x-ro-searchTerm", new Value(term));
+        }
+
+        setArgument(name: string, val: Value) {
+            val.set(this.map, name);
+        }
+
+        setArguments(args: IValueMap) {
+            _.each(args, (arg, key) => this.setArgument(key, arg));
+        }
+    }
+
+
     export class PromptRepresentation extends ResourceRepresentation {
 
         wrapped = () => this.resource as RoInterfaces.IPromptRepresentation;
@@ -725,6 +753,10 @@ module NakedObjects {
             this.resource = emptyResource() as any;
         }
 
+        getPromptMap(): PromptMap {
+            // needs to be initialised 
+            return null;
+        }
 
         // links 
         selfLink(): Link {
@@ -757,23 +789,6 @@ module NakedObjects {
                 return _.object<IValueMap>(_.map(values, v  => [v.toString(), v]));
             }
             return null;
-        }
-
-        reset() {
-            this.resource = emptyResource() as any;
-        }
-
-        setSearchTerm(term: string) {
-            //this.set("x-ro-searchTerm", { "value": term });
-            this.setArgument("x-ro-searchTerm", new Value(term));
-        }
-
-        setArgument(name: string, val: Value) {
-            val.set(this.resource as any, name);
-        }
-
-        setArguments(args: IValueMap) {
-            _.each(args, (arg, key) => this.setArgument(key, arg));
         }
     }
 
