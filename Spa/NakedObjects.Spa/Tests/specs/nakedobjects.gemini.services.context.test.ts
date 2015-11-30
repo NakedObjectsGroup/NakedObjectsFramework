@@ -568,6 +568,11 @@ describe("nakedObjects.gemini.services.context ", () => {
             const cvm1 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("1"), "id", "test1", "search");
             const cvm2 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("2"), "id", "test2", "search");
 
+            const map = {};
+            const map1 = new NakedObjects.PromptMap(testPrompt, map as any)
+
+            testPrompt.getPromptMap = () => map1;
+
             const cvmExpected = [cvm1, cvm2];
 
             beforeEach(inject(() => {
@@ -576,8 +581,8 @@ describe("nakedObjects.gemini.services.context ", () => {
             }));
 
             it("returns collection representation", () => {
-                expect(testPrompt.wrapped()["x-ro-searchTerm"].value).toBe("search");
-                expect(populate).toHaveBeenCalledWith(testPrompt, true);
+                expect(map["x-ro-searchTerm"].value).toBe("search");
+                expect(populate).toHaveBeenCalledWith(map1, true, testPrompt);
                 result.then(hr => expect(hr).toEqual(cvmExpected));
                 timeout.flush();
             });
@@ -609,6 +614,11 @@ describe("nakedObjects.gemini.services.context ", () => {
             const cvm1 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("1"), "id", "test1", null);
             const cvm2 = NakedObjects.Angular.Gemini.ChoiceViewModel.create(new NakedObjects.Value("2"), "id", "test2", null);
 
+            const map = {};
+            const map1 = new NakedObjects.PromptMap(testPrompt, map as any);
+
+            testPrompt.getPromptMap = () => map1;        
+
             const cvmExpected = [cvm1, cvm2];
 
             beforeEach(inject(() => {
@@ -617,9 +627,9 @@ describe("nakedObjects.gemini.services.context ", () => {
             }));
 
             it("returns collection representation", () => {
-                expect(testPrompt.wrapped()["x-ro-searchTerm"]).toBeUndefined();
-                expect(testPrompt.wrapped()["anarg"].value).toBe("avalue");
-                expect(populate).toHaveBeenCalledWith(testPrompt, true);
+                expect(map["x-ro-searchTerm"]).toBeUndefined();
+                expect(map["anarg"].value).toBe("avalue");
+                expect(populate).toHaveBeenCalledWith(map1, true, testPrompt);
                 result.then(hr => expect(hr).toEqual(cvmExpected));
                 timeout.flush();
             });

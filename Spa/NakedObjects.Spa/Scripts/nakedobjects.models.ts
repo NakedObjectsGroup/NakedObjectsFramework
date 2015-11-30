@@ -730,7 +730,6 @@ module NakedObjects {
         } 
 
         setSearchTerm(term: string) {
-            //this.set("x-ro-searchTerm", { "value": term });
             this.setArgument("x-ro-searchTerm", new Value(term));
         }
 
