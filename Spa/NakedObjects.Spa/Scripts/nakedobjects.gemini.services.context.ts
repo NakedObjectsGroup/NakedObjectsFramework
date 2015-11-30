@@ -370,8 +370,13 @@ module NakedObjects.Angular.Gemini {
                         }
                     }
                 });
+
+                const msg = err.invalidReason() || err.warningMessage;
                 if (vm) {
-                    vm.message = err.invalidReason() || err.warningMessage;
+                    vm.message = msg;
+                }
+                else {
+                    context.setError(ErrorRepresentation.create(msg));
                 }
             }
             else if (err instanceof ErrorRepresentation) {
@@ -381,6 +386,8 @@ module NakedObjects.Angular.Gemini {
             else {
                 if (vm) {
                     vm.message = err as string;
+                } else {
+                    context.setError(ErrorRepresentation.create(err as string));
                 }
                 urlManager.setError();
             }
