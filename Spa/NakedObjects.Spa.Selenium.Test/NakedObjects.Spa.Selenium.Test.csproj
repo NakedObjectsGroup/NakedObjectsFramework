@@ -62,8 +62,11 @@
   <ItemGroup>
     <Compile Include="helpers\SafeWebDriverWait.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tests\CiceroMenu.cs" />
+    <Compile Include="tests\CiceroHome.cs" />
     <Compile Include="tests\GeminiTest.cs" />
     <Compile Include="tests\CopyAndPasteTests.cs" />
+    <Compile Include="tests\CiceroHelp.cs" />
     <Compile Include="tests\KeyboardNavigationTests.cs" />
     <Compile Include="tests\TransientObjectTests.cs" />
     <Compile Include="tests\SplitPaneTests.cs" />

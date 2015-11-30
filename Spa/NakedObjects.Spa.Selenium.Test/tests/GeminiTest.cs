@@ -487,6 +487,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return br.SwitchTo().ActiveElement();
         }
         #endregion
+        #region Cicero helper methods
+        protected void CiceroUrl(string url)
+        {
+            br.Navigate().GoToUrl(TestConfig.BaseUrl + "#/cicero/" + url);
+        }
+
+        protected void WaitForOutput(string output)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text == output);
+        }
+
+        protected void EnterCommand(string command)
+        {
+            TypeIntoField("input", Keys.ArrowDown); //To clear field
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).Text == "");
+            TypeIntoField("input", command + Keys.Enter);
+        }
+        #endregion
+
     }
 
     public static class ExtensionMethods
@@ -507,5 +526,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsNull(a.GetAttribute("disabled"));
             return a;
         }
+
+    
     }
 }

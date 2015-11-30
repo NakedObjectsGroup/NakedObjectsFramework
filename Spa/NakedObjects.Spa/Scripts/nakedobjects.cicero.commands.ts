@@ -44,12 +44,8 @@ module NakedObjects.Angular.Gemini {
         }
 
         public checkMatch(matchText: string): void {
-            if (this.fullCommand.indexOf(matchText) != 0) {
-                if (matchText.indexOf(this.fullCommand) == 0) {
-                    throw new Error("The command " + this.fullCommand + " must be followed by a space");
-                } else {
+            if (this.fullCommand.indexOf(matchText) != 0) {             
                     throw new Error("No such command: " + matchText);
-                }
             }
         }
 
@@ -224,8 +220,8 @@ module NakedObjects.Angular.Gemini {
     export class Clipboard extends Command {
 
         public fullCommand = "clipboard";
-        public helpText = "Reminder of the object reference currently held in the clipboard, if any." +
-        ". Does not take any arguments";;
+        public helpText = "Reminder of the object reference currently held in the clipboard, if any. " +
+        "Does not take any arguments";;
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -403,11 +399,11 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             var arg = this.argumentAsString(args, 0);
-            if (arg == null) {
-                this.setOutput(this.commandFactory.allCommandsForCurrentContext());
-            } else {
+            if (arg) {
                 const c = this.commandFactory.getCommand(arg);
                 this.setOutput(c.fullCommand + " command: " + c.helpText);
+            } else {
+                this.setOutput(this.commandFactory.allCommandsForCurrentContext());
             }
         };
     }
