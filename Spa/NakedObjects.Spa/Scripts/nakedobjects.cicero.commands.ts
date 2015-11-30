@@ -111,27 +111,33 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const name = this.argumentAsString(args, 1);
-            if (name) {
-
-            } else { //return all available actions
-                if (this.urlManager.isMenuOpen()) {
-                    
-                    //this.context.getMenuSpecifiedInUrl
-                }
-                else if (this.urlManager.isObject()) {
-                    const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper on urlManager instead?
-                    var actions = _.map(obj.actionMembers(), action => action);
-                    var s = _.reduce(actions, (s, t) => { return s + t.extensions().friendlyName + "; "; }, "Actions: ");
-                    this.setOutput(s);
-                }
-                else if (this.urlManager.isList()) { //For collection-contributed actions
-
-                }
-
+            const name = this.argumentAsString(args, 0);
+            var actions: ActionMember[];
+            if (this.urlManager.isObject()) {
+                const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper on urlManager instead? Should be promise?
+                actions = _.map(obj.actionMembers(), action => action);
             }
-        };
-
+            //TODO: handle other valid context types (home, list)
+            if (name) {
+                actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) > -1);
+            }
+            switch (actions.length) {
+                case 0:
+                    this.setOutput(name + " does not match any actions");
+                    break;
+                case 1:
+                    const actionId = actions[0].actionId();
+                    this.urlManager.setDialog(actionId, 1);  //1 = pane 1
+                    break;
+                default:
+                    var label = "Actions";
+                    if (name) {
+                        label = label + " matching " + name;
+                    }
+                    var s = _.reduce(actions, (s, t) => { return s + t.extensions().friendlyName + "; "; }, label + ": ");
+                    this.setOutput(s);
+            }
+        }
     }
     export class Back extends Command {
 
@@ -240,7 +246,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
+            const match = this.argumentAsString(args, 0);
             this.setOutput("Description command invoked with argument: " + match); //todo: temporary
         };
     }
@@ -276,7 +282,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
+            const match = this.argumentAsString(args, 0);
             if (this.urlManager.isEdit()) {
                 this.setOutput("Enter command invoked on property: " + match); //todo: temporary
             }
@@ -331,7 +337,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             if (this.urlManager.isObject()) {
-                const prop = this.argumentAsString(args, 1);
+                const prop = this.argumentAsString(args, 0);
                 this.setOutput("Go to property" + prop + " invoked"); //todo: temporary
             }
             if (this.urlManager.isList()) {
@@ -430,34 +436,30 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const menuName = this.argumentAsString(args, 0);
-            if (menuName == null) {
-                //list all menus
-                this.context.getMenus()
-                    .then((menus: MenusRepresentation) => {
-                        const links = menus.value();
-                        var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, "Menus: ");
-                        this.setOutput(s);
-                    });
-            } else {
-                this.context.getMenus()
-                    .then((menus: MenusRepresentation) => {
-                        const links = menus.value();
-                        const matchingLinks = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(menuName) > -1; });
-                        switch (matchingLinks.length) {
-                            case 0:
-                                this.setOutput(menuName + " does not match any menu.");
-                                break;
-                            case 1:
-                                const menuId = matchingLinks[0].rel().parms[0].value;
-                                this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
-                                break;
-                            default:
-                                var s = _.reduce(matchingLinks, (s, t) => { return s + t.title() + "; "; }, "");
-                                this.setOutput(menuName + " matches multiple menus: " + s); //TODO could add list of matches
-                        }
-                    });
-            }
-        };
+            this.context.getMenus()
+                .then((menus: MenusRepresentation) => {
+                    var links = menus.value();
+                    if (menuName) {
+                        links = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(menuName) > -1; });
+                    }
+                    switch (links.length) {
+                        case 0:
+                            this.setOutput(menuName + " does not match any menu");
+                            break;
+                        case 1:
+                            const menuId = links[0].rel().parms[0].value;
+                            this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
+                            break;
+                        default:
+                            var label = "Menus";
+                            if (menuName) {
+                                label = label + " matching " + menuName;
+                            }
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");
+                            this.setOutput(s);
+                    }
+                });
+        }
     }
     export class OK extends Command {
 
@@ -490,7 +492,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
+            const match = this.argumentAsString(args, 0);
             this.setOutput("Open command invoked with argument: " + match); //todo: temporary
         };
 
@@ -510,7 +512,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
+            const match = this.argumentAsString(args, 0);
             if (this.urlManager.isEdit()) {
                 this.setOutput("Paste command invoked on property: " + match); //todo: temporary
             }
@@ -535,8 +537,25 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
-            this.setOutput("Property command invoked with argument: " + match); //todo: temporary
+            const name = this.argumentAsString(args, 0);
+            const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper (to get Oid) on urlManager instead?
+            var props = _.map(obj.propertyMembers(), prop => prop);
+            if (name) {
+                var props = _.filter(props, (p) => { return p.extensions().friendlyName.toLowerCase().indexOf(name) > -1 });
+            }
+            //TODO render empty properties as e.g. 'empty'?
+            var s: string = "";
+            switch (props.length) {
+                case 0:
+                    s = name + " does not match any properties";
+                    break;
+                case 1:
+                    s = "Property: " + props[0].extensions().friendlyName + ": " + props[0].value();
+                    break;
+                default:
+                    s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName + ": " + t.value() + "; "; }, "Properties: ");
+            }
+            this.setOutput(s);
         };
 
     }
@@ -605,7 +624,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const name = this.argumentAsString(args, 1);
+            const name = this.argumentAsString(args, 0);
             const option = this.argumentAsString(args, 2, true);
             if (this.urlManager.isEdit()) {
                 this.setOutput("Select command invoked on property: " + name + " for option" + option); //todo: temporary
@@ -629,7 +648,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 1);
+            const match = this.argumentAsString(args, 0);
             this.setOutput("Open command invoked with argument: " + match); //todo: temporary
         };
 
