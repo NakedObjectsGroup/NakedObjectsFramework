@@ -166,8 +166,8 @@ module NakedObjects.Angular.Gemini{
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
-                    parmViewModel.arguments = _.object<IValueMap>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                    parmViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
+                    parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
 
@@ -355,8 +355,8 @@ module NakedObjects.Angular.Gemini{
                 } 
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = <(args: IValueMap) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
-                    propertyViewModel.arguments = _.object<IValueMap>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
+                    propertyViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
+                    propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
                 }
             }
 

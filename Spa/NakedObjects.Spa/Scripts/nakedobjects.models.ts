@@ -21,8 +21,6 @@ module NakedObjects {
     import ILink = RoInterfaces.ILink;
     import IMenuRepresentation = RoInterfaces.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
-    import Representation = NakedObjects.RoInterfaces.IRepresentation;
-    import Resource = angular.resource;
 
     // helper functions 
 
@@ -97,7 +95,6 @@ module NakedObjects {
 
     
     }
-
 
     export abstract class ArgumentMap extends HateosModel {
 
@@ -190,7 +187,7 @@ module NakedObjects {
         }
     }
 
-   
+  
     // helper class for values 
     export class Value {
 
@@ -284,17 +281,8 @@ module NakedObjects {
         }
     }
 
-    export interface IValueMap {
-        [index: string]: Value;
-    }
-
-    export interface IErrorValue {
-        value: Value;
-        invalidReason: string;
-    }
-
-    export interface IErrorValueMap {
-        [index: string]: IErrorValue;
+    export class ErrorValue {
+        constructor(public value : Value, public invalidReason : string) { }
     }
 
     // helper class for results 
@@ -384,13 +372,10 @@ module NakedObjects {
 
         }
 
-        valuesMap(): IErrorValueMap {
+        valuesMap(): _.Dictionary<ErrorValue> {
 
             const values = _.pick(this.wrapped(), i => isIValue(i)) as _.Dictionary<IValue>;
-            return _.mapValues(values, v => ({
-                value: new Value(v.value),
-                invalidReason: v.invalidReason
-            }));
+            return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
         }
 
         invalidReason() {
@@ -410,8 +395,8 @@ module NakedObjects {
             });
         }   
 
-        properties(): IValueMap {
-            return <IValueMap>_.mapValues(this.map, (v : any) => new Value(v.value));
+        properties(): _.Dictionary<Value> {
+            return _.mapValues(this.map, (v : any) => new Value(v.value));
         }
 
         setProperty(name: string, value: Value) {
@@ -577,16 +562,16 @@ module NakedObjects {
         }
 
         // properties 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return  <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
             }
 
             if (this.wrapped().choices) {
                 const values = _.map(this.wrapped().choices, (item : any) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v : any) => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, (v : any) => [v.toString(), v]));
             }
             return null;
         }
@@ -702,7 +687,7 @@ module NakedObjects {
             val.set(this.map, name);
         }
 
-        setArguments(args: IValueMap) {
+        setArguments(args: _.Dictionary<Value>) {
             _.each(args, (arg, key) => this.setArgument(key, arg));
         }
     }
@@ -746,11 +731,11 @@ module NakedObjects {
             return this.wrapped().id;
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<IValueMap>(_.map(values, v  => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, v  => [v.toString(), v]));
             }
             return null;
         }
@@ -905,16 +890,16 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<IValueMap>(_.map(values, v => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
@@ -1065,16 +1050,16 @@ module NakedObjects {
             return !!this.promptLink();
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v) => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, (v) => [v.toString(), v]));
             }
             return null;
         }

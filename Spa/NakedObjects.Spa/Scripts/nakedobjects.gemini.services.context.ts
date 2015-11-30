@@ -21,7 +21,7 @@ module NakedObjects.Angular.Gemini {
         getPreviousUrl: () => string;
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
-        conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
         invokeAction(action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
@@ -298,7 +298,7 @@ module NakedObjects.Angular.Gemini {
         context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string) =>
             doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm));
 
-        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
+        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel) => {
