@@ -54,6 +54,13 @@
         value: ILink[];
     }
 
+    export interface IPagination {
+        page: number;
+        pageSize: number;
+        numPages: number;
+        totalCount: number;
+    }
+
     export interface IOptionalCapabilities {
         blobsClobs: string;
         deleteObjects: string;

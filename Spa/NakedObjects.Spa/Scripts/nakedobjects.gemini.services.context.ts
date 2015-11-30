@@ -389,6 +389,7 @@ module NakedObjects.Angular.Gemini {
 
         context.invokeAction = (action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
+            const invokeMap = invoke.getInvokeMap();
             let parameters: ParameterViewModel[] = [];
 
 
@@ -396,14 +397,14 @@ module NakedObjects.Angular.Gemini {
             if (dvm) {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
-                _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
+                _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
 
                 // todo do we still need to do this ? Test
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
 
-            repLoader.populate(invoke, true).
+            repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
 
                     // todo change this to use action parent.  
@@ -436,7 +437,7 @@ module NakedObjects.Angular.Gemini {
                     updatedObject.wrapped().links = rawLinks;
 
                     // remove pre-changed object from cache
-                    $cacheFactory.get("$http").remove(updatedObject.url());
+                    $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
 
                     context.setObject(ovm.onPaneId, updatedObject);
 
