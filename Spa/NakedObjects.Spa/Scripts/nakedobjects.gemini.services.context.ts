@@ -12,7 +12,6 @@ module NakedObjects.Angular.Gemini {
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (paneId: number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
-        getObjectSpecifiedInUrl: (paneId: number) => DomainObjectRepresentation;
         getObjectByOid: (paneId: number, objectId: string) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
@@ -214,12 +213,6 @@ module NakedObjects.Angular.Gemini {
         context.getObject = (paneId: number, type: string, id?: string[]) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
             return oid ? context.getDomainObject(paneId, type, oid) : context.getService(paneId, type);
-        };
-
-        context.getObjectSpecifiedInUrl = (paneId: number) => {
-            //TODO: This is not reliable -  the current objects may have been set differently by other code.
-            //Instead, get the Oid via the Url manager and then get that object explicitly.
-            return currentObjects[paneId];
         };
 
         context.getObjectByOid = (paneId: number, objectId: string) => {
@@ -518,8 +511,14 @@ module NakedObjects.Angular.Gemini {
                         context.getObject(1, domainType, id)
                             .then((resource: DomainObjectRepresentation) => {
                                 const type = _.last(resource.domainType().split("."));
-                                cvm.output = type+": " + resource.title();
+                                cvm.output = type+": " + resource.title()+". ";
                             });
+                        if (routeData.dialogId) {
+                            context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
+                                .then((actionName: string) => {
+                                    cvm.output = cvm.output + "Action: " + actionName;
+                                });
+                        }
                     }
                     //TODO: tests for other top-level & secondary representations
                     else if (routeData.menuId) {

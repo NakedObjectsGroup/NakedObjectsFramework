@@ -107,17 +107,24 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 1;
 
         public isAvailableInCurrentContext(): boolean {
-            return !this.urlManager.isActionOpen() && !this.urlManager.isEdit();
+            return !this.urlManager.isDialog() && !this.urlManager.isEdit();
         }
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
             var actions: ActionMember[];
             if (this.urlManager.isObject()) {
-                const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper on urlManager instead? Should be promise?
-                actions = _.map(obj.actionMembers(), action => action);
+                const oid = this.urlManager.getRouteData().pane1.objectId;
+                this.context.getObjectByOid(1, oid)
+                    .then((obj: DomainObjectRepresentation) => {
+                        actions = _.map(obj.actionMembers(), action => action);
+                        this.processActions(name, actions);
+                    });
             }
             //TODO: handle other valid context types (home, list)
+        }
+
+        private processActions(name: string, actions: ActionMember[]) {
             if (name) {
                 actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) > -1);
             }
@@ -151,7 +158,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Back command invoked"); //todo: temporary
+            this.setOutput("Back command is not yet implemented"); //todo: temporary
         };
     }
     export class Cancel extends Command {
@@ -163,7 +170,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isActionOpen() || this.urlManager.isEdit();
+            return this.urlManager.isDialog() || this.urlManager.isEdit();
         }
 
         execute(args: string): void {
@@ -172,7 +179,7 @@ module NakedObjects.Angular.Gemini {
                 this.setOutput("Edit cancelled"); //todo: temporary
                 this.clearInput();
             }
-            if (this.urlManager.isActionOpen()) {
+            if (this.urlManager.isDialog()) {
                 this.urlManager.closeDialog(1);
                 this.setOutput("Action cancelled"); //todo: temporary
                 this.clearInput();
@@ -192,7 +199,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Clipboard command invoked"); //todo: temporary
+            this.setOutput("Clipboard command is not yet implemented"); //todo: temporary
         };
     }
     export class Copy extends Command {
@@ -213,7 +220,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             if (this.urlManager.isObject()) {
-                if (this.urlManager.isCollectionOpen()) {
+                if (this.urlManager.isCollection()) {
                     const item = this.argumentAsNumber(args, 1);
                     this.setOutput("Copy item " + item);
                 } else {
@@ -247,7 +254,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Description command invoked with argument: " + match); //todo: temporary
+            this.setOutput("Description command is not yet implemented with argument: " + match); //todo: temporary
         };
     }
     export class Edit extends Command {
@@ -278,16 +285,16 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isEdit() || this.urlManager.isActionOpen();
+            return this.urlManager.isEdit() || this.urlManager.isDialog();
         }
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
             if (this.urlManager.isEdit()) {
-                this.setOutput("Enter command invoked on property: " + match); //todo: temporary
+                this.setOutput("Enter command is not yet implemented on property: " + match); //todo: temporary
             }
-            if (this.urlManager.isActionOpen) {
-                this.setOutput("Enter command invoked on parameter: " + match); //todo: temporary
+            if (this.urlManager.isDialog) {
+                this.setOutput("Enter command is not yet implemented on parameter: " + match); //todo: temporary
             }
         };
 
@@ -303,7 +310,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
-            this.setOutput("Forward command invoked"); //todo: temporary
+            this.setOutput("Forward command is not yet implemented"); //todo: temporary
         };
     }
     export class Gemini extends Command {
@@ -400,21 +407,21 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 3;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isCollectionOpen() || this.urlManager.isList();
+            return this.urlManager.isCollection() || this.urlManager.isList();
         }
 
         execute(args: string): void {
             const startNo = this.argumentAsNumber(args, 1, true);
             const endNo = this.argumentAsNumber(args, 2, true);
             const pageNo = this.argumentAsNumber(args, 3, true);
-            if (this.urlManager.isCollectionOpen()) {
+            if (this.urlManager.isCollection()) {
                 if (pageNo != null) {
                     throw new Error("Item may not have a third argument (page number) in the context of an object collection");
                 }
-                this.setOutput("Item command invoked on Collection, from " + startNo + " to " + endNo); //todo: temporary
+                this.setOutput("Item command is not yet implemented on Collection, from " + startNo + " to " + endNo); //todo: temporary
 
             } else {
-                this.setOutput("Item command invoked on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
+                this.setOutput("Item command is not yet implemented on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
             }
         };
 
@@ -470,11 +477,18 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isActionOpen();
+            return this.urlManager.isDialog();
         }
 
         execute(args: string): void {
-            this.setOutput("OK command invoked.");
+            //TODO: Need to factor out more helper functions from common code in execute methods
+            const dialogId = this.urlManager.getRouteData().pane1.dialogId;
+            const oid = this.urlManager.getRouteData().pane1.objectId;
+            this.context.getObjectByOid(1, oid)
+                .then((obj: DomainObjectRepresentation) => {
+                    const action = obj.actionMember(dialogId);
+                    this.context.invokeAction(action, 1);
+                });
         };
     }
     export class Open extends Command {
@@ -493,7 +507,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Open command invoked with argument: " + match); //todo: temporary
+            this.setOutput("Open command is not yet implemented with argument: " + match); //todo: temporary
         };
 
     }
@@ -508,16 +522,16 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isEdit() || this.urlManager.isActionOpen();
+            return this.urlManager.isEdit() || this.urlManager.isDialog();
         }
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
             if (this.urlManager.isEdit()) {
-                this.setOutput("Paste command invoked on property: " + match); //todo: temporary
+                this.setOutput("Paste command is not yet implemented on property: " + match); //todo: temporary
             }
-            if (this.urlManager.isActionOpen) {
-                this.setOutput("Paste command invoked on parameter: " + match); //todo: temporary
+            if (this.urlManager.isDialog) {
+                this.setOutput("Paste command is not yet implemented on parameter: " + match); //todo: temporary
             }
         };
 
@@ -538,26 +552,28 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
-            const obj = this.context.getObjectSpecifiedInUrl(1); //TODO: Stef  - helper (to get Oid) on urlManager instead?
-            var props = _.map(obj.propertyMembers(), prop => prop);
-            if (name) {
-                var props = _.filter(props, (p) => { return p.extensions().friendlyName.toLowerCase().indexOf(name) > -1 });
-            }
-            //TODO render empty properties as e.g. 'empty'?
-            var s: string = "";
-            switch (props.length) {
-                case 0:
-                    s = name + " does not match any properties";
-                    break;
-                case 1:
-                    s = "Property: " + props[0].extensions().friendlyName + ": " + props[0].value();
-                    break;
-                default:
-                    s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName + ": " + t.value() + "; "; }, "Properties: ");
-            }
-            this.setOutput(s);
+            const oid = this.urlManager.getRouteData().pane1.objectId;
+            const obj = this.context.getObjectByOid(1, oid)
+                .then((obj: DomainObjectRepresentation) => {
+                    var props = _.map(obj.propertyMembers(), prop => prop);
+                    if (name) {
+                        var props = _.filter(props, (p) => { return p.extensions().friendlyName.toLowerCase().indexOf(name) > -1 });
+                    }
+                    //TODO render empty properties as e.g. 'empty'?
+                    var s: string = "";
+                    switch (props.length) {
+                        case 0:
+                            s = name + " does not match any properties";
+                            break;
+                        case 1:
+                            s = "Property: " + props[0].extensions().friendlyName + ": " + props[0].value();
+                            break;
+                        default:
+                            s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName + ": " + t.value() + "; "; }, "Properties: ");
+                    }
+                    this.setOutput(s);
+                });
         };
-
     }
     export class Reload extends Command {
 
@@ -572,7 +588,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Reload command invoked");
+            this.setOutput("Reload command is not yet implemented");
         };
     }
     export class Root extends Command {
@@ -585,11 +601,11 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isCollectionOpen();
+            return this.urlManager.isCollection();
         }
 
         execute(args: string): void {
-            this.setOutput("Object command invoked");
+            this.setOutput("Object command is not yet implemented");
         };
     }
     export class Save extends Command {
@@ -620,17 +636,17 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isEdit() || this.urlManager.isActionOpen();
+            return this.urlManager.isEdit() || this.urlManager.isDialog();
         }
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
             const option = this.argumentAsString(args, 2, true);
             if (this.urlManager.isEdit()) {
-                this.setOutput("Select command invoked on property: " + name + " for option" + option); //todo: temporary
+                this.setOutput("Select command is not yet implemented on property: " + name + " for option" + option); //todo: temporary
             }
-            if (this.urlManager.isActionOpen) {
-                this.setOutput("Select command invoked on parameter: " + name + " for option" + option); //todo: temporary
+            if (this.urlManager.isDialog) {
+                this.setOutput("Select command is not yet implemented on parameter: " + name + " for option" + option); //todo: temporary
             }
         };
 
@@ -644,12 +660,12 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.urlManager.isCollectionOpen() || this.urlManager.isList();
+            return this.urlManager.isCollection() || this.urlManager.isList();
         }
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Open command invoked with argument: " + match); //todo: temporary
+            this.setOutput("Open command is not yet implemented with argument: " + match); //todo: temporary
         };
 
     }
@@ -666,7 +682,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Where command invoked"); //todo: temporary
+            this.setOutput("Where command is not yet implemented"); //todo: temporary
         };
 
     }
