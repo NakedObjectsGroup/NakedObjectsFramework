@@ -109,7 +109,7 @@ module NakedObjects.Angular.Gemini {
         returnType: string;
         title: string;
         format: string;
-        arguments: IValueMap; 
+        arguments: _.Dictionary<Value>; 
         mask: string;
         isMultipleChoices: boolean; 
         minLength: number;
@@ -124,7 +124,7 @@ module NakedObjects.Angular.Gemini {
             return null;
         }
 
-        conditionalChoices(args: IValueMap): ng.IPromise<ChoiceViewModel[]> {
+        conditionalChoices(args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]> {
             return null;
         }
 

@@ -21,7 +21,7 @@ module NakedObjects.Angular.Gemini {
         getPreviousUrl: () => string;
 
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
-        conditionalChoices(promptRep: PromptRepresentation, id: string, args: IValueMap): ng.IPromise<ChoiceViewModel[]>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
         invokeAction(action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
@@ -298,7 +298,7 @@ module NakedObjects.Angular.Gemini {
         context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string) =>
             doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm));
 
-        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: IValueMap) =>
+        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel) => {
@@ -370,8 +370,13 @@ module NakedObjects.Angular.Gemini {
                         }
                     }
                 });
+
+                const msg = err.invalidReason() || err.warningMessage;
                 if (vm) {
-                    vm.message = err.invalidReason() || err.warningMessage;
+                    vm.message = msg;
+                }
+                else {
+                    context.setError(ErrorRepresentation.create(msg));
                 }
             }
             else if (err instanceof ErrorRepresentation) {
@@ -381,6 +386,8 @@ module NakedObjects.Angular.Gemini {
             else {
                 if (vm) {
                     vm.message = err as string;
+                } else {
+                    context.setError(ErrorRepresentation.create(err as string));
                 }
                 urlManager.setError();
             }
@@ -389,6 +396,7 @@ module NakedObjects.Angular.Gemini {
 
         context.invokeAction = (action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel) => {
             const invoke = action.getInvoke();
+            const invokeMap = invoke.getInvokeMap();
             let parameters: ParameterViewModel[] = [];
 
 
@@ -396,14 +404,14 @@ module NakedObjects.Angular.Gemini {
             if (dvm) {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
-                _.each(parameters, parm => invoke.setParameter(parm.id, parm.getValue()));
+                _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
 
                 // todo do we still need to do this ? Test
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
 
-            repLoader.populate(invoke, true).
+            repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
 
                     // todo change this to use action parent.  
@@ -436,7 +444,7 @@ module NakedObjects.Angular.Gemini {
                     updatedObject.wrapped().links = rawLinks;
 
                     // remove pre-changed object from cache
-                    $cacheFactory.get("$http").remove(updatedObject.url());
+                    $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
 
                     context.setObject(ovm.onPaneId, updatedObject);
 

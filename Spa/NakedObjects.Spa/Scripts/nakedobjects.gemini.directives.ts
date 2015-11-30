@@ -6,7 +6,7 @@ module NakedObjects.Angular.Gemini {
 
     interface ISelectObj {
         request?: string;
-        args?: IValueMap;
+        args?: _.Dictionary<Value>;
         date? : string;
     }
 
@@ -173,7 +173,7 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 function populateArguments() {
-                    const nArgs = <IValueMap>{};
+                    const nArgs = <_.Dictionary<Value>>{};
 
                     const dialog = parent.dialog;
                     const object = parent.object;

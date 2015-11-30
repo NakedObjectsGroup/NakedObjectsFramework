@@ -25,7 +25,7 @@
         minLength?: number;
         // custom extensions with "x-ro-nof-" prefix 
         // ReSharper disable InconsistentNaming
-        "x-ro-nof-choices"?: Object;
+        "x-ro-nof-choices"?: { [index: string]: (string | number | boolean | ILink)[];}
         "x-ro-nof-menuPath"?: string;
         "x-ro-nof-mask"?: string;
         // ReSharper restore InconsistentNaming
@@ -52,6 +52,13 @@
 
     export interface IDomainServicesRepresentation extends IResourceRepresentation {
         value: ILink[];
+    }
+
+    export interface IPagination {
+        page: number;
+        pageSize: number;
+        numPages: number;
+        totalCount: number;
     }
 
     export interface IOptionalCapabilities {

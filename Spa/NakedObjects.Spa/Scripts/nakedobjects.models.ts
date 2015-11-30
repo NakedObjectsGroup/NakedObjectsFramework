@@ -17,12 +17,12 @@
 /// <reference path="nakedobjects.config.ts" />
 
 module NakedObjects {
-    import IExtensions = NakedObjects.RoInterfaces.IExtensions;
-    import ILink = NakedObjects.RoInterfaces.ILink;
-    import IErrorDetailsRepresentation = NakedObjects.RoInterfaces.IErrorDetailsRepresentation;
-    import IMenuRepresentation = NakedObjects.RoInterfaces.IMenuRepresentation;
-    import IValue = NakedObjects.RoInterfaces.IValue;
-    import Resource = angular.resource;
+    import IExtensions = RoInterfaces.IExtensions;
+    import ILink = RoInterfaces.ILink;
+    import IMenuRepresentation = RoInterfaces.IMenuRepresentation;
+    import IValue = RoInterfaces.IValue;
+
+    // helper functions 
 
     function isScalarType(typeName: string) {
         return typeName === "string" || typeName === "number" || typeName === "boolean" || typeName === "integer";
@@ -36,53 +36,45 @@ module NakedObjects {
         return { links: [], extensions: {} };
     }
 
+    function isILink(object: any): object is RoInterfaces.ILink {
+        return object && object instanceof Object && "href" in object;
+    }
+
     // interfaces 
 
     export interface IHateoasModel {
         hateoasUrl: string;
         method: string;
-        url: any;
         urlParms: _.Dictionary<string>;
         populate(wrapped: RoInterfaces.IRepresentation);
         getBody(): RoInterfaces.IRepresentation;
         getUrl() : string;
     }
 
-    export interface IOptionalCapabilities {
-        blobsClobs: string;
-        deleteObjects: string;
-        domainModel: string;
-        protoPersistentObjects: string;
-        validateOnly: string;
-    }
+    export abstract class HateosModel implements IHateoasModel {
 
-    export interface IPagination {
-        page: number;
-        pageSize: number;
-        numPages: number;
-        totalCount: number;
-    }
+        hateoasUrl: string = "";
+        method: string = "GET";
+        urlParms: _.Dictionary<string>;
 
-    export abstract class ArgumentMap {
-
-        constructor(public map: RoInterfaces.IValueMap, parent: any, public id: string) {         
+        constructor(protected model?: RoInterfaces.IRepresentation) {
         }
 
-        populate(wrapped: RoInterfaces.IValueMap) {
-            this.map = wrapped;
+        populate(model: RoInterfaces.IRepresentation) {
+            this.model = model;
         }
 
         getBody(): RoInterfaces.IRepresentation {
             if (this.method === "POST" || this.method === "PUT") {
-                return _.clone(this.map);
+                return _.clone(this.model);
             }
 
             return {};
         }
 
         getUrl() {
-            const url = this.url();
-            const attrAsJson = _.clone(this.map);
+            const url = this.hateoasUrl;
+            const attrAsJson = _.clone(this.model);
 
             if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
 
@@ -101,14 +93,18 @@ module NakedObjects {
             return urlParmString !== "" ? url + "?" + urlParmString : url;
         }
 
-        hateoasUrl: string = "";
-        method: string = "GET";
-      
-        url(): string {
-            return this.hateoasUrl;
+    
+    }
+
+    export abstract class ArgumentMap extends HateosModel {
+
+        constructor(public map: RoInterfaces.IValueMap, parent: any, public id: string) {
+            super(map);
         }
 
-        urlParms: _.Dictionary<string>;
+        populate(wrapped: RoInterfaces.IValueMap) {
+           super.populate(wrapped);
+        }
     }
 
     export class RelParm {
@@ -126,7 +122,6 @@ module NakedObjects {
             [, this.name, this.value] = result;
         }
     }
-
 
     // rel helper class 
     export class Rel {
@@ -192,10 +187,7 @@ module NakedObjects {
         }
     }
 
-    function isILink(object: any): object is RoInterfaces.ILink {
-        return object && object instanceof Object  && "href" in object;
-    }
-
+  
     // helper class for values 
     export class Value {
 
@@ -289,17 +281,8 @@ module NakedObjects {
         }
     }
 
-    export interface IValueMap {
-        [index: string]: Value;
-    }
-
-    export interface IErrorValue {
-        value: Value;
-        invalidReason: string;
-    }
-
-    export interface IErrorValueMap {
-        [index: string]: IErrorValue;
+    export class ErrorValue {
+        constructor(public value : Value, public invalidReason : string) { }
     }
 
     // helper class for results 
@@ -342,43 +325,28 @@ module NakedObjects {
 
     // base class for nested representations 
     export abstract class NestedRepresentation {
-        constructor(public resource : RoInterfaces.IResourceRepresentation) { }
+
+        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
+
+        constructor(private model : RoInterfaces.IResourceRepresentation) { }
 
         private lazyLinks: Link[];
 
         links(): Link[] {
-            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource.links);
+            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
             return this.lazyLinks;
         }
 
         protected update(newResource: RoInterfaces.IResourceRepresentation) {
-            this.resource = newResource;
+            this.model = newResource;
             this.lazyLinks = null;
         }
 
         extensions(): IExtensions {
-            return this.resource.extensions;
+            return this.resource().extensions;
         }
     }
 
-    // base class for all representations that can be directly loaded from the server 
-    export abstract class HateoasModelBase implements IHateoasModel {
-
-        hateoasUrl: string = "";
-        method: string = "GET";
-  
-        url(): string {
-            return this.hateoasUrl;
-        }
-    
-        abstract populate(wrapped: RoInterfaces.IRepresentation);
-
-        abstract getBody(): RoInterfaces.IRepresentation;
-
-        abstract getUrl(): string;
-
-        urlParms : _.Dictionary<string>;
-    }
 
     function isIObjectOfType(object: any) : object is RoInterfaces.IObjectOfType {
         return object && object instanceof Object && "members" in object;
@@ -404,13 +372,10 @@ module NakedObjects {
 
         }
 
-        valuesMap(): IErrorValueMap {
+        valuesMap(): _.Dictionary<ErrorValue> {
 
             const values = _.pick(this.wrapped(), i => isIValue(i)) as _.Dictionary<IValue>;
-            return _.mapValues(values, v => ({
-                value: new Value(v.value),
-                invalidReason: v.invalidReason
-            }));
+            return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
         }
 
         invalidReason() {
@@ -430,8 +395,8 @@ module NakedObjects {
             });
         }   
 
-        properties(): IValueMap {
-            return <IValueMap>_.mapValues(this.map, (v : any) => new Value(v.value));
+        properties(): _.Dictionary<Value> {
+            return _.mapValues(this.map, (v : any) => new Value(v.value));
         }
 
         setProperty(name: string, value: Value) {
@@ -498,72 +463,66 @@ module NakedObjects {
     function linkByRel(links: Link[], rel: string) {
         return getLinkByRel(links, new Rel(rel));
     }
-    
+
+    function linkByNamespacedRel(links: Link[], rel: string) {
+        return getLinkByRel(links, new Rel(`urn:org.restfulobjects:rels/${rel}`));
+    }
+
 
     // REPRESENTATIONS
 
-    export abstract class ResourceRepresentation extends HateoasModelBase {
+    export abstract class ResourceRepresentation extends HateosModel {
        
-        protected resource : RoInterfaces.IResourceRepresentation;
+        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
 
         populate(wrapped: RoInterfaces.IResourceRepresentation) {
-            this.resource = wrapped; 
-            //super.populate(wrapped);
+            super.populate(wrapped);
         }
 
         private lazyLinks: Link[];
 
         links(): Link[] {
-            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource.links);
+            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
             return this.lazyLinks;
         }
 
         extensions(): IExtensions {
-            return this.resource.extensions;
-        }
-
-        // todo DRY this !
-
-        getBody(): RoInterfaces.IRepresentation {
-            if (this.method === "POST" || this.method === "PUT") {
-                return _.clone(this.resource);
-            }
-
-            return {};
-        }
-
-        // todo DRY this !
-
-        getUrl() {
-            const url = this.url();
-            const attrAsJson = _.clone(this.resource);
-
-            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
-
-                const urlParmsAsJson = _.clone(this.urlParms);
-                const asJson = _.merge(attrAsJson, urlParmsAsJson);
-                if (_.keys(asJson).length > 0) {
-                    const map = JSON.stringify(asJson);
-                    const parmString = encodeURI(map);
-                    return url + "?" + parmString;
-                }
-                return url;
-            }
-
-            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
-
-            return urlParmString !== "" ? url + "?" + urlParmString : url;
-        }
+            return this.resource().extensions;
+        }   
     }
 
     // matches a action invoke resource 19.0 representation 
 
+    export class InvokeMap extends ArgumentMap implements IHateoasModel {
+        constructor(private invoke: ActionResultRepresentation, map: RoInterfaces.IValueMap) {
+            super(map, prompt, "");
+
+            // todo must be better way
+            this.hateoasUrl = invoke.hateoasUrl;
+        }
+
+        setParameter(name: string, value: Value) {
+            value.set(this.map, name);
+        }
+
+        setUrlParameter(name: string, value: string) {
+            this.urlParms = this.urlParms || {};
+            this.urlParms[name] = value;
+        }
+    }
+
+
     export class ActionResultRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IActionInvokeRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IActionInvokeRepresentation;
 
         constructor() {
             super();
+        }
+
+        getInvokeMap(): InvokeMap {
+            // needs to be initialised 
+            return null;
         }
 
         // links 
@@ -584,18 +543,6 @@ module NakedObjects {
         result(): Result {
             return new Result(this.wrapped().result, this.resultType());
         }
-
-        // helper
-        setParameter(name: string, value: Value) {
-            // todo investigate and fix better
-            this.resource = (this.resource ? this.resource : {}) as any;
-            value.set(this.resource as any, name);
-        }
-
-        setUrlParameter(name: string, value : string) {
-            this.urlParms = this.urlParms || {};
-            this.urlParms[name] = value;
-        }
     }
 
     // matches an action representation 18.0 
@@ -603,7 +550,7 @@ module NakedObjects {
     // matches 18.2.1
     export class Parameter extends NestedRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IParameterRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
         // fix parent type
         constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: any, private id : string) {
@@ -615,27 +562,27 @@ module NakedObjects {
         }
 
         // properties 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return  <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
             }
 
             if (this.wrapped().choices) {
                 const values = _.map(this.wrapped().choices, (item : any) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v : any) => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, (v : any) => [v.toString(), v]));
             }
             return null;
         }
 
         promptLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
+            return linkByNamespacedRel(this.links(), "prompt");
         }
 
         getPrompts(): PromptRepresentation {
             const pr = <PromptRepresentation>this.promptLink().getTarget();
-            pr.getPromptMap = () => new PromptMap(this.getPrompts(), this.promptLink().arguments() as RoInterfaces.IValueMap);
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
             return pr;
         }
 
@@ -661,7 +608,7 @@ module NakedObjects {
 
     export class ActionRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IActionRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -673,7 +620,7 @@ module NakedObjects {
         }
 
         invokeLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/invoke");
+            return linkByNamespacedRel(this.links(), "invoke");
         }
 
         // linked representations 
@@ -686,7 +633,10 @@ module NakedObjects {
         }
 
         getInvoke(): ActionResultRepresentation {
-            return <ActionResultRepresentation> this.invokeLink().getTarget();
+         
+            const ar =<ActionResultRepresentation>this.invokeLink().getTarget();
+            ar.getInvokeMap = () => new InvokeMap(ar, this.invokeLink().arguments() as RoInterfaces.IValueMap);
+            return ar;
         }
 
         // properties 
@@ -730,7 +680,6 @@ module NakedObjects {
         } 
 
         setSearchTerm(term: string) {
-            //this.set("x-ro-searchTerm", { "value": term });
             this.setArgument("x-ro-searchTerm", new Value(term));
         }
 
@@ -738,7 +687,7 @@ module NakedObjects {
             val.set(this.map, name);
         }
 
-        setArguments(args: IValueMap) {
+        setArguments(args: _.Dictionary<Value>) {
             _.each(args, (arg, key) => this.setArgument(key, arg));
         }
     }
@@ -746,7 +695,7 @@ module NakedObjects {
 
     export class PromptRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IPromptRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IPromptRepresentation;
 
         constructor() {
             super();
@@ -782,11 +731,11 @@ module NakedObjects {
             return this.wrapped().id;
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<IValueMap>(_.map(values, v  => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, v  => [v.toString(), v]));
             }
             return null;
         }
@@ -795,7 +744,7 @@ module NakedObjects {
     // matches a collection representation 17.0 
     export class CollectionRepresentation extends ResourceRepresentation implements IListOrCollection {
 
-        wrapped = () => this.resource as RoInterfaces.ICollectionRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.ICollectionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -807,11 +756,11 @@ module NakedObjects {
         }
 
         addToLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/add-to");
+            return linkByNamespacedRel(this.links(), "add-to");
         }
 
         removeFromLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/remove-from");
+            return linkByNamespacedRel(this.links(), "remove-from");
         }
 
         // linked representations 
@@ -825,7 +774,7 @@ module NakedObjects {
 
         setFromMap(map: AddToRemoveFromMap) {
             //this.set(map.attributes);
-            _.assign(this.resource, map.map);
+            _.assign(this.resource(), map.map);
         }
 
         private addToMap() {
@@ -871,16 +820,16 @@ module NakedObjects {
     // matches a property representation 16.0 
     export class PropertyRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IPropertyRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IPropertyRepresentation;
 
 
         // links 
         modifyLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/modify");
+            return linkByNamespacedRel(this.links(), "modify");
         }
 
         clearLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/clear");
+            return linkByNamespacedRel(this.links(), "clear");
         }
 
         selfLink(): Link {
@@ -892,7 +841,7 @@ module NakedObjects {
         }
 
         promptLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
+            return linkByNamespacedRel(this.links(), "prompt");
         }
 
         private modifyMap() {
@@ -910,7 +859,7 @@ module NakedObjects {
 
         setFromModifyMap(map: ModifyMap) {
             //this.set(map.attributes);
-            _.assign(this.resource, map.map);
+            _.assign(this.resource(), map.map);
         }
 
         getModifyMap(): ModifyMap {
@@ -941,16 +890,16 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<IValueMap>(_.map(values, v => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
@@ -975,7 +924,7 @@ module NakedObjects {
     // base class for 14.4.1/2/3
     export class Member extends NestedRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IMember;
+        wrapped = () => this.resource() as RoInterfaces.IMember;
 
         constructor(wrapped: RoInterfaces.IMember, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
@@ -990,7 +939,7 @@ module NakedObjects {
         }
 
         detailsLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/details");
+            return linkByNamespacedRel(this.links(), "details");
         }
 
         disabledReason(): string {
@@ -1022,7 +971,7 @@ module NakedObjects {
     // matches 14.4.1
     export class PropertyMember extends Member {
 
-        wrapped = () => this.resource as RoInterfaces.IPropertyMember;
+        wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
         constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private id : string) {
             super(wrapped, parent);
@@ -1035,11 +984,11 @@ module NakedObjects {
         }
 
         modifyLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/modify");
+            return linkByNamespacedRel(this.links(), "modify");
         }
 
         clearLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/clear");
+            return linkByNamespacedRel(this.links(), "clear");
         }
 
         private modifyMap() {
@@ -1082,11 +1031,11 @@ module NakedObjects {
         }
 
         attachmentLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/attachment");
+            return linkByNamespacedRel(this.links(), "attachment");
         }
 
         promptLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/prompt");
+            return linkByNamespacedRel(this.links(), "prompt");
         }
 
         getDetails(): PropertyRepresentation {
@@ -1101,16 +1050,16 @@ module NakedObjects {
             return !!this.promptLink();
         }
 
-        choices(): IValueMap {
+        choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <IValueMap> _.mapValues(this.extensions()["x-ro-nof-choices"], (v) => new Value(v));
+                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                return _.object<IValueMap>(_.map(values, (v) => [v.toString(), v]));
+                return _.object<_.Dictionary<Value>>(_.map(values, (v) => [v.toString(), v]));
             }
             return null;
         }
@@ -1120,7 +1069,7 @@ module NakedObjects {
     // matches 14.4.2 
     export class CollectionMember extends Member {
 
-        wrapped = () => this.resource as RoInterfaces.ICollectionMember;
+        wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
         constructor(wrapped : RoInterfaces.ICollectionMember, parent : DomainObjectRepresentation, private id : string) {
             super(wrapped, parent);
@@ -1149,7 +1098,7 @@ module NakedObjects {
     // matches 14.4.3 
     export class ActionMember extends Member {
 
-        wrapped = () => this.resource as RoInterfaces.IActionMember;
+        wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
         constructor(wrapped: RoInterfaces.IActionMember, parent :  DomainObjectRepresentation | MenuRepresentation, private id : string) {
             super(wrapped, parent);
@@ -1167,12 +1116,14 @@ module NakedObjects {
 
 
         invokeLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/invoke");
+            return linkByNamespacedRel(this.links(), "invoke");
         }
 
 
         getInvoke(): ActionResultRepresentation {
-            return <ActionResultRepresentation> this.invokeLink().getTarget();
+            const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
+            ar.getInvokeMap = () => new InvokeMap(ar, this.invokeLink().arguments() as RoInterfaces.IValueMap);
+            return ar;
         }
 
         // properties 
@@ -1215,15 +1166,10 @@ module NakedObjects {
 
     export class DomainObjectRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IDomainObjectRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IDomainObjectRepresentation;
 
         constructor() {
             super();
-            this.url = this.getUrl;
-        }
-
-        getUrl(): string {
-            return this.hateoasUrl || this.selfLink().href();
         }
 
         title(): string {
@@ -1298,11 +1244,11 @@ module NakedObjects {
         }
 
         updateLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/update");
+            return linkByNamespacedRel(this.links(), "update");
         }
 
         persistLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/persist");
+            return linkByNamespacedRel(this.links(), "persist");
         }
 
         selfLink(): Link {
@@ -1329,38 +1275,14 @@ module NakedObjects {
         getUpdateMap(): UpdateMap {
             return new UpdateMap(this, this.updateMap());
         }
-
-        //setFromUpdateMap(map: UpdateMap) {
-
-        //    _.forOwn(this.members(), (m, k) => {
-        //        m.update(map.map.members[k]);
-        //    });
-
-        //    // to trigger an update on the domainobject
-        //    _.assign(this.resource, map.map);
-        //}
-
-        //setFromPersistMap(map: PersistMap) {
-        //    // to trigger an update on the domainobject
-        //    //this.set(map.attributes);
-        //    _.assign(this.resource, map.map);
-        //    this.resetMemberMaps();
-        //}
-
-      
     }
 
     export class MenuRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as IMenuRepresentation;
+        wrapped = () => this.resource() as IMenuRepresentation;
 
         constructor() {
             super();
-            this.url = this.getUrl;
-        }
-
-        getUrl(): string {
-            return this.hateoasUrl || this.selfLink().href();
         }
 
         title(): string {
@@ -1421,7 +1343,7 @@ module NakedObjects {
     // matches scalar representation 12.0 
     export class ScalarValueRepresentation extends NestedRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IScalarValueRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IScalarValueRepresentation;
 
         constructor(wrapped : RoInterfaces.IResourceRepresentation) {
             super(wrapped);
@@ -1435,7 +1357,7 @@ module NakedObjects {
     // matches List Representation 11.0
     export class ListRepresentation extends ResourceRepresentation implements IListOrCollection {
 
-        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
 
         // links
         selfLink(): Link {
@@ -1454,7 +1376,7 @@ module NakedObjects {
             return this.lazyValue;
         }
 
-        pagination(): IPagination {
+        pagination(): RoInterfaces.IPagination {
             return this.wrapped().pagination;
         }
     }
@@ -1467,7 +1389,7 @@ module NakedObjects {
     // matches the error representation 10.0 
     export class  ErrorRepresentation extends ResourceRepresentation implements IErrorDetails {
    
-        wrapped = () => this.resource as RoInterfaces.IErrorRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IErrorRepresentation;
 
         static create(message: string, stacktrace?: string[], causedBy?: IErrorDetails) {
             const rawError = {
@@ -1502,55 +1424,22 @@ module NakedObjects {
     }
 
     // matches Objects of Type Resource 9.0 
-    export class PersistMap extends HateoasModelBase implements IHateoasModel {
+    export class PersistMap extends HateosModel implements IHateoasModel {
 
         constructor(private domainObject: DomainObjectRepresentation, private map: RoInterfaces.IObjectOfType) {
-            super();
+            super(map);
             domainObject.persistLink().copyToHateoasModel(this);
         }
 
         setMember(name: string, value: Value) {
             value.set(this.map.members, name);
-        }
-
-        populate(wrapped: NakedObjects.RoInterfaces.IResourceRepresentation) {
-            
-        }
-
-        getBody(): RoInterfaces.IRepresentation {
-            if (this.method === "POST" || this.method === "PUT") {
-                return _.clone(this.map);
-            }
-
-            return {};
-        }
-
-        getUrl() {
-            const url = this.url();
-            const attrAsJson = _.clone(this.map);
-
-            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
-
-                const urlParmsAsJson = _.clone(this.urlParms);
-                const asJson = _.merge(attrAsJson, urlParmsAsJson);
-                if (_.keys(asJson).length > 0) {
-                    const map = JSON.stringify(asJson);
-                    const parmString = encodeURI(map);
-                    return url + "?" + parmString;
-                }
-                return url;
-            }
-
-            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
-
-            return urlParmString !== "" ? url + "?" + urlParmString : url;
-        }
+        }      
     }
 
     // matches the version representation 8.0 
     export class VersionRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IVersionRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IVersionRepresentation;
 
         // links 
         selfLink(): Link {
@@ -1579,7 +1468,7 @@ module NakedObjects {
             return this.wrapped().implVersion;
         }
 
-        optionalCapabilities(): IOptionalCapabilities {
+        optionalCapabilities(): RoInterfaces.IOptionalCapabilities {
             return this.wrapped().optionalCapabilities;
         }
     }
@@ -1587,7 +1476,7 @@ module NakedObjects {
     // matches Domain Services Representation 7.0
     export class DomainServicesRepresentation extends ListRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
 
         // links
         upLink(): Link {
@@ -1612,7 +1501,7 @@ module NakedObjects {
     // custom
     export class MenusRepresentation extends ListRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
 
         // links
         upLink(): Link {
@@ -1637,7 +1526,7 @@ module NakedObjects {
     // matches the user representation 6.0
     export class UserRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IUserRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IUserRepresentation;
 
         // links 
         selfLink(): Link {
@@ -1674,7 +1563,7 @@ module NakedObjects {
 
     export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation {
 
-        wrapped = () => this.resource as RoInterfaces.IDomainTypeActionInvokeRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
         selfLink(): Link {
             return linkByRel(this.links(), "self");
@@ -1702,15 +1591,15 @@ module NakedObjects {
             this.hateoasUrl = appPath;
         }
 
-        wrapped = () => this.resource as RoInterfaces.IHomePageRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.IHomePageRepresentation;
 
         // links 
         serviceLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/services");
+            return linkByNamespacedRel(this.links(), "services");
         }
 
         userLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/user");
+            return linkByNamespacedRel(this.links(), "user");
         }
 
         selfLink(): Link {
@@ -1718,12 +1607,12 @@ module NakedObjects {
         }
 
         versionLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/version");
+            return linkByNamespacedRel(this.links(), "version");
         }
 
         // custom 
         menusLink(): Link {
-            return linkByRel(this.links(), "urn:org.restfulobjects:rels/menus");
+            return linkByNamespacedRel(this.links(), "menus");
         }
 
         // linked representations 
