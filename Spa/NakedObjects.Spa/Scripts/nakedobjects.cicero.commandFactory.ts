@@ -41,7 +41,11 @@ module NakedObjects.Angular.Gemini{
                 }
                 const command: Command = commandFactory.getCommand(firstWord);
                 command.checkIsAvailableInCurrentContext();
-                const argString = input.split(" ")[1];
+                var argString: string = null;
+                const index = input.indexOf(" ");
+                if (index >= 0 ) {
+                    argString = input.substr(index + 1);
+                }
                 command.checkNumberOfArguments(argString);
                 command.execute(argString);
             }

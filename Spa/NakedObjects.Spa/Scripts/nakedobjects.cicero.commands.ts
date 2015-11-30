@@ -112,19 +112,25 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
-            var actions: ActionMember[];
             if (this.urlManager.isObject()) {
                 const oid = this.urlManager.getRouteData().pane1.objectId;
                 this.context.getObjectByOid(1, oid)
                     .then((obj: DomainObjectRepresentation) => {
-                        actions = _.map(obj.actionMembers(), action => action);
-                        this.processActions(name, actions);
+                        this.processActions(name, obj.actionMembers());
                     });
             }
-            //TODO: handle other valid context types (home, list)
+            else if (this.urlManager.isMenu()) {
+                const menuId = this.urlManager.getRouteData().pane1.menuId;
+                this.context.getMenu(menuId)
+                    .then((menu: MenuRepresentation) => {
+                        this.processActions(name, menu.actionMembers());
+                    });
+            }
+            //TODO: handle list
         }
 
-        private processActions(name: string, actions: ActionMember[]) {
+        private processActions(name: string, actionsMap: IActionMemberMap) {
+            var actions = _.map(actionsMap, action => action);
             if (name) {
                 actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) > -1);
             }
@@ -483,12 +489,21 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             //TODO: Need to factor out more helper functions from common code in execute methods
             const dialogId = this.urlManager.getRouteData().pane1.dialogId;
-            const oid = this.urlManager.getRouteData().pane1.objectId;
-            this.context.getObjectByOid(1, oid)
-                .then((obj: DomainObjectRepresentation) => {
-                    const action = obj.actionMember(dialogId);
-                    this.context.invokeAction(action, 1);
-                });
+            if (this.urlManager.isObject()) {
+                const oid = this.urlManager.getRouteData().pane1.objectId;
+                this.context.getObjectByOid(1, oid)
+                    .then((obj: DomainObjectRepresentation) => {
+                        const action = obj.actionMember(dialogId);
+                        this.context.invokeAction(action, 1);
+                    });
+            } else if (this.urlManager.isMenu()) {
+                const menuId = this.urlManager.getRouteData().pane1.menuId;
+                this.context.getMenu(menuId)
+                    .then((menu: MenuRepresentation) => {
+                        const action = menu.actionMember(dialogId);
+                        this.context.invokeAction(action, 1);
+                    });
+            } //TODO: List actions
         };
     }
     export class Open extends Command {
@@ -686,6 +701,4 @@ module NakedObjects.Angular.Gemini {
         };
 
     }
-    //todo: quit (or logoff)
-
 }

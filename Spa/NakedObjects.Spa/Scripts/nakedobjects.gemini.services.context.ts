@@ -513,6 +513,7 @@ module NakedObjects.Angular.Gemini {
                                 const type = _.last(resource.domainType().split("."));
                                 cvm.output = type+": " + resource.title()+". ";
                             });
+                        //TODO: factor out common functions 9see below
                         if (routeData.dialogId) {
                             context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
                                 .then((actionName: string) => {
@@ -520,12 +521,17 @@ module NakedObjects.Angular.Gemini {
                                 });
                         }
                     }
-                    //TODO: tests for other top-level & secondary representations
                     else if (routeData.menuId) {
                         context.getMenu(routeData.menuId)
                             .then((menu: MenuRepresentation) => {
-                                cvm.output = menu.title()+ " menu";
+                                cvm.output = menu.title() + " menu" + ". ";
                             });
+                        if (routeData.dialogId) {
+                            context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.dialogId)
+                                .then((actionName: string) => {
+                                    cvm.output = cvm.output + "Action: " + actionName;
+                                });
+                        }
                     }
                     else {
                         cvm.output = "home";
