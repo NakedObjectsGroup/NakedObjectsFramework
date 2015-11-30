@@ -540,4 +540,24 @@ module NakedObjects.Angular.Gemini {
             }
         };
     });
+
+    app.directive("ciceroDown", () => (scope, element, attrs) => {
+        element.bind("keydown keypress", event => {
+            const enterKeyCode = 40;
+            if (event.which === enterKeyCode) {
+                scope.$apply(() => scope.$eval(attrs.ciceroDown));
+                event.preventDefault();
+            }
+        });
+    });
+
+    app.directive("ciceroUp", () => (scope, element, attrs) => {
+        element.bind("keydown keypress", event => {
+            const enterKeyCode = 38;
+            if (event.which === enterKeyCode) {
+                scope.$apply(() => scope.$eval(attrs.ciceroDown));
+                event.preventDefault();
+            }
+        });
+    });
 }

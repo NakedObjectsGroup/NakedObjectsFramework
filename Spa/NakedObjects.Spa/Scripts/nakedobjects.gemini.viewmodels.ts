@@ -347,7 +347,6 @@ module NakedObjects.Angular.Gemini {
         parseInput: (input: string) => void;
         previousCommand: () => void;
         nextCommand: () => void;
-        //TODO: Could offer option to append or replace?
         setOutputToSummaryOfRepresentation: (routeData: PaneRouteData) => void;
     }
 }

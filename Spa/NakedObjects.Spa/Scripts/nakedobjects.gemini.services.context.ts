@@ -503,7 +503,10 @@ module NakedObjects.Angular.Gemini {
                     cf.parseInput(input);
                 };
                 cvm.previousCommand = () => { }; //TODO
-                cvm.nextCommand = () => { }; //TODO
+                cvm.nextCommand = () => {
+                    //TODO: Initiate spike -  always clears input
+                    cvm.input = null;
+                }; 
                 cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
                     if (routeData.objectId) {
                         const [domainType, ...id] = routeData.objectId.split("-");

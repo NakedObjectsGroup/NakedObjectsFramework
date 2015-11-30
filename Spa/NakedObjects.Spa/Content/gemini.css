@@ -582,7 +582,11 @@ input[type=submit] {
     font-family: Courier New, Courier, monospace;
     font-weight: bold;
     border: none;
+
+}
+.cicero {
     margin: 20px;
+    width: 100%;
 }
 
 
