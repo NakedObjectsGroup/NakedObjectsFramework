@@ -16,11 +16,11 @@
     html, #main, body, .background, .single, .split {
         margin: 0px;
         height: 100%; /*fill the vertical space*/
+        background-color: black;
     }
 
     .background {
         overflow-y: auto;
-        background-color: black;
     }
 
     .single, .split {
@@ -383,11 +383,11 @@ th, td {
 }
 
 .bg-color-darkBlue { /*Temporary fix*/
-    background-color: #1d1d1d;
+    background-color: #000000;
 }
 
 .fg-color-darkBlue { /*Temporary fix*/
-    color: #1d1d1d;
+    color: #000000;
 }
 
 .bg-color-green {
