@@ -47,9 +47,10 @@ module NakedObjects.Angular.Gemini {
     });
 
     //Cicero
-    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory) => {
+    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = context.setCiceroVMIfNecessary(commandFactory);
         $scope.cicero = cvm;
         cvm.setOutputToSummaryOfRepresentation(urlManager.getRouteData().pane1);
+        focusManager.focusOn(FocusTarget.FirstInput, 1);
     });
 }

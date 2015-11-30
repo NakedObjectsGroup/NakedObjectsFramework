@@ -388,6 +388,9 @@ module NakedObjects.Angular.Gemini {
                     case FocusTarget.FirstTableItem:
                         focusElement = $(elem).find(`#pane${paneId}.split div.collection tbody tr, div.single div.collection tbody tr`).first();
                         break;
+                    case FocusTarget.FirstInput:
+                        focusElement = $(elem).find("input").first();
+                        break;
                 }
 
                 if (focusElement) {

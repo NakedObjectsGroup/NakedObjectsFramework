@@ -13,7 +13,8 @@ module NakedObjects.Angular.Gemini {
         Dialog,
         FirstListItem, 
         FirstProperty,
-        FirstTableItem
+        FirstTableItem,
+        FirstInput
     }
 
     export const geminiFocusEvent = "geminiFocuson";
