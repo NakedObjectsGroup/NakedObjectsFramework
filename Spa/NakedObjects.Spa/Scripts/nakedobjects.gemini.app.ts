@@ -28,7 +28,7 @@ module NakedObjects.Angular {
         homeTemplate: string;
         actionsTemplate: string;
         // todo this is ugly - fix 
-        object: { actions: Angular.Gemini.ActionViewModel[] };
+        object: Angular.Gemini.DomainObjectViewModel | { actions: Angular.Gemini.ActionViewModel[] } | { color: string };
         dialogTemplate: string;
         dialog: Angular.Gemini.DialogViewModel;
         error: Angular.Gemini.ErrorViewModel;

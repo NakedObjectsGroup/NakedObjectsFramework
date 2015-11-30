@@ -96,7 +96,7 @@ module NakedObjects.Angular.Gemini {
                 const viewModel = parent.parameter || parent.property;
 
                 function render(initialChoice?: ChoiceViewModel) {
-                    const cvm = ngModel.$modelValue || initialChoice;
+                    const cvm = ngModel.$modelValue as ChoiceViewModel || initialChoice;
 
                     if (cvm) {
                         ngModel.$parsers.push(() => cvm);
@@ -168,12 +168,17 @@ module NakedObjects.Angular.Gemini {
                 const pArgs = viewModel.arguments;
                 let currentOptions: ChoiceViewModel[] = [];
 
+                function isDomainObjectViewModel(object : any) : object is DomainObjectViewModel {
+                    return object && "properties" in object;
+                }
+
                 function populateArguments() {
                     const nArgs = <IValueMap>{};
 
-                    const dialog = <DialogViewModel> parent.dialog;
-                    const object = <DomainObjectViewModel> parent.object;
+                    const dialog = parent.dialog;
+                    const object = parent.object;
 
+                    // todo replace with _.mapValue 
                     if (dialog) {
                         _.forEach(pArgs, (v, n) => {
                             const parm = _.find(dialog.parameters, p => p.id === n);
@@ -182,8 +187,7 @@ module NakedObjects.Angular.Gemini {
                         });
                     }
 
-                    // todo had to add object.properties check to get this working again - find out why
-                    if (object && object.properties) {
+                    if (isDomainObjectViewModel(object)) {
                         _.forEach(pArgs, (v, n) => {
                             const property = _.find(object.properties, p => p.argId === n);
                             const newValue = property.getValue();

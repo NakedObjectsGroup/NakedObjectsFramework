@@ -275,6 +275,9 @@ module NakedObjects {
         setValue(target: IValue) {
             if (this.isReference()) {
                 target.value = { "href": this.link().href() };
+            }
+            else if (this.isList()) {
+                target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());
             } else {
                 target.value = this.scalar();
             }

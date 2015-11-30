@@ -410,7 +410,6 @@ module NakedObjects.Angular.Gemini {
             }
 
 
-
             repLoader.populate(invoke, true).
                 then((result: ActionResultRepresentation) => {
 
