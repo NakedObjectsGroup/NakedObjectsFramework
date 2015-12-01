@@ -27,7 +27,7 @@ module NakedObjects.Angular.Gemini {
         public abstract isAvailableInCurrentContext(): boolean;
         
         //Helper methods follow
-        protected clearInput(): void {
+        public clearInput(): void {
             this.vm.input = "";
         }
 
@@ -424,7 +424,6 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             this.urlManager.setHome(1);
-            this.clearInput();
             this.setOutput("home");
         };
     }

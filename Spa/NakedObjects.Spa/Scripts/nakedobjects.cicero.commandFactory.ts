@@ -47,6 +47,7 @@ module NakedObjects.Angular.Gemini{
                     argString = input.substr(index + 1);
                 }
                 command.checkNumberOfArguments(argString);
+                command.clearInput();
                 command.execute(argString);
             }
             catch (Error) {
