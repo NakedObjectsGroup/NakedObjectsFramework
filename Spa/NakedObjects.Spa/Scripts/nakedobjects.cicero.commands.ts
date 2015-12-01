@@ -8,7 +8,8 @@ module NakedObjects.Angular.Gemini {
             protected nglocation: ng.ILocationService,
             protected vm: CiceroViewModel,
             protected commandFactory: ICommandFactory,
-            protected context: IContext) {
+            protected context: IContext,
+            protected navigation: INavigation) {
         }
 
         public fullCommand: string;
@@ -189,7 +190,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Back command is not yet implemented"); //todo: temporary
+            this.navigation.back();
         };
     }
     export class Cancel extends Command {
@@ -344,7 +345,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
-            this.setOutput("Forward command is not yet implemented"); //todo: temporary
+            this.navigation.forward();
         };
     }
     export class Gemini extends Command {
@@ -724,7 +725,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Where command is not yet implemented"); //todo: temporary
+            this.vm.setOutputToSummaryOfRepresentation(this.urlManager.getRouteData().pane1);
         };
 
     }

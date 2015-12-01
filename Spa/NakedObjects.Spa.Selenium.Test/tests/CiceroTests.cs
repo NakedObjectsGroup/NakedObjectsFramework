@@ -9,7 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Threading;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Web.UnitTests.Selenium
+{
 
     public abstract class CiceroTests : AWTest
     {
@@ -52,6 +53,27 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("home");
             EnterCommand("ac");
             WaitForOutput("The command: action is not available in the current context");
+        }
+        [TestMethod]
+        public void BackAndForward() //Tested together for simplicity
+        {
+            CiceroUrl("home");
+            WaitForOutput("home");
+            EnterCommand("menu cus");
+            WaitForOutput("Customers menu.");
+            EnterCommand("action acc");
+            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
+            EnterCommand("back");
+            WaitForOutput("Customers menu.");
+            EnterCommand("Ba");
+            WaitForOutput("home");
+            EnterCommand("forward");
+            WaitForOutput("Customers menu.");
+            EnterCommand("fO  ");
+            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
+            //Can't go forward beyond most recent
+            EnterCommand("forward");
+            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
         }
         [TestMethod]
         public void Cancel()
@@ -226,7 +248,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("Customer: Handy Bike Services, AW00029688. Action: Last Order");
             EnterCommand("ok");
             WaitForOutput("SalesOrderHeader: SO69562.");
-                
+
             //Invalid contexts
             CiceroUrl("home");
             WaitForOutput("home");
@@ -239,25 +261,51 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
         }
+        [TestMethod]
+            public void Where()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-358");
+            WaitForOutput("Product: HL Grip Tape.");
+            //Do something to change the output
+            EnterCommand("help");
+            WaitForOutput("Commands available in current context: back; clipboard; forward; gemini; help; home; menu; where;"); 
+
+            EnterCommand("where");
+            WaitForOutput("Product: HL Grip Tape.");
+
+            //Empty command == where
+            EnterCommand("help");
+            WaitForOutput("Commands available in current context: back; clipboard; forward; gemini; help; home; menu; where;");
+            TypeIntoField("input", Keys.Enter);
+            WaitForOutput("Product: HL Grip Tape.");
+
+            //No arguments
+            EnterCommand("where x");
+            WaitForOutput("Wrong number of arguments provided.");
+        }
     }
     #region browsers specific subclasses 
 
     //    [TestClass, Ignore]
-    public class CiceroTestsIe : CiceroTests {
+    public class CiceroTestsIe : CiceroTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
@@ -266,45 +314,52 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
-   // [TestClass, Ignore]
+    // [TestClass, Ignore]
     public class CiceroTestsChrome : CiceroTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element) {
+        protected override void ScrollTo(IWebElement element)
+        {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
