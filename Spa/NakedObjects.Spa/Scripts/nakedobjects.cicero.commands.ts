@@ -102,7 +102,7 @@ module NakedObjects.Angular.Gemini {
             return !!this.pane1RouteData().objectId;
         }
         protected isList(): boolean {
-            return false; //TODO
+            return false;  //TODO
         }
         protected isMenu(): boolean {
             return !!this.pane1RouteData().menuId;
@@ -114,10 +114,10 @@ module NakedObjects.Angular.Gemini {
             return false; //TODO
         }
         protected isTable(): boolean {
-            return false; //TODO
+            throw false; //TODO
         }
         protected isEdit(): boolean {
-            return false; //TODO
+            return this.pane1RouteData().edit;
         }
     }
 
@@ -207,13 +207,9 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             if (this.isEdit()) {
                 this.urlManager.setObjectEdit(false, 1);
-                this.setOutput("Edit cancelled"); //todo: temporary
-                this.clearInput();
             }
             if (this.isDialog()) {
                 this.urlManager.closeDialog(1);
-                this.setOutput("Action cancelled"); //todo: temporary
-                this.clearInput();
             }
         };
     }
@@ -302,7 +298,6 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             this.urlManager.setObjectEdit(true, 1);
-            this.setOutput("Editing Object"); //todo: temporary
         };
     }
     export class Enter extends Command {
@@ -312,20 +307,28 @@ module NakedObjects.Angular.Gemini {
         "or into a named parameter on an opened action. The enter command takes one argument: the " +
         "name or partial name of the property or paramater. If the partial name is ambigious the " +
         "list of matching properties or parameters will be returned but no value will have been entered.";
-        protected minArguments = 1;
-        protected maxArguments = 1;
+        protected minArguments = 2;
+        protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
             return this.isEdit() || this.isDialog();
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
+            const fieldId = this.argumentAsString(args, 0);
+            //TODO: must first test that field is a match
+            const text = this.argumentAsString(args, 1);
             if (this.isEdit()) {
-                this.setOutput("Enter command is not yet implemented on property: " + match); //todo: temporary
+                this.setOutput("Enter command is not yet implemented for properties"); //todo: temporary
             }
             if (this.isDialog) {
-                this.setOutput("Enter command is not yet implemented on parameter: " + match); //todo: temporary
+                this.setOutput("Enter command is not yet implemented for parameters");
+                const dialogId = this.urlManager.getRouteData().pane1.dialogId;
+                //TODO: would prefer not to create the view model ?
+                //var pvm = new ParameterViewModel();
+                //pvm.value = text;
+                //pvm.id = fieldId;  
+                //this.urlManager.setParameterValue(dialogId, pvm, 1);
             }
         };
 

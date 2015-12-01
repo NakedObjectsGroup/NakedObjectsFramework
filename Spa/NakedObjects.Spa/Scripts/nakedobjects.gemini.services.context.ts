@@ -516,30 +516,34 @@ module NakedObjects.Angular.Gemini {
                     cvm.input = null;
                 }; 
                 cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
+                    cvm.output = "";
+                    //TODO: factor out common functions see below
                     if (routeData.objectId) {
                         const [domainType, ...id] = routeData.objectId.split("-");
                         context.getObject(1, domainType, id)
                             .then((resource: DomainObjectRepresentation) => {
                                 const type = _.last(resource.domainType().split("."));
-                                cvm.output = type+": " + resource.title()+". ";
+                                if (routeData.edit) {
+                                    cvm.output += "Editing ";
+                                }
+                                cvm.output += type+": " + resource.title()+". ";
                             });
-                        //TODO: factor out common functions 9see below
                         if (routeData.dialogId) {
                             context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
                                 .then((actionName: string) => {
-                                    cvm.output = cvm.output + "Action: " + actionName;
+                                    cvm.output += "Action: " + actionName;
                                 });
                         }
                     }
                     else if (routeData.menuId) {
                         context.getMenu(routeData.menuId)
                             .then((menu: MenuRepresentation) => {
-                                cvm.output = menu.title() + " menu" + ". ";
+                                cvm.output += menu.title() + " menu" + ". ";
                             });
                         if (routeData.dialogId) {
                             context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.dialogId)
                                 .then((actionName: string) => {
-                                    cvm.output = cvm.output + "Action: " + actionName;
+                                    cvm.output += "Action: " + actionName;
                                 });
                         }
                     }

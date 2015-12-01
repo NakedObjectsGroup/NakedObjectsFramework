@@ -54,6 +54,78 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("The command: action is not available in the current context");
         }
         [TestMethod]
+        public void Cancel()
+        {
+            //Menu dialog
+            CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
+            WaitForOutput("Products menu. Action: Find Product By Name");
+            EnterCommand("cancel");
+            WaitForOutput("Products menu.");
+            //Test on a zero param action
+            CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
+            WaitForOutput("Products menu. Action: Random Product");
+            EnterCommand("cancel");
+            WaitForOutput("Products menu.");
+            //Try with argument
+            CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
+            WaitForOutput("Products menu. Action: Find Product By Name");
+            EnterCommand("cancel x");
+            WaitForOutput("Wrong number of arguments provided.");
+
+            //Object dialog
+            CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
+            WaitForOutput("Product: HL Grip Tape. Action: Best Special Offer");
+            EnterCommand("cancel");
+            WaitForOutput("Product: HL Grip Tape.");
+            //Zero param
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action: Last Order");
+            EnterCommand("Ca");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+
+            //Cancel of Edits
+            CiceroUrl("object?object1=AdventureWorksModel.Product-358&edit1=true");
+            WaitForOutput("Editing Product: HL Grip Tape.");
+            EnterCommand("cancel");
+            WaitForOutput("Product: HL Grip Tape.");
+
+            //Invalid contexts
+            CiceroUrl("home");
+            WaitForOutput("home");
+            EnterCommand("cancel");
+            WaitForOutput("The command: cancel is not available in the current context");
+            CiceroUrl("home?menu1=ProductRepository");
+            WaitForOutput("Products menu.");
+            EnterCommand("cancel");
+            WaitForOutput("The command: cancel is not available in the current context");
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            EnterCommand("cancel");
+            WaitForOutput("The command: cancel is not available in the current context");
+        }
+        [TestMethod]
+        public void Edit()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            EnterCommand("edit");
+            WaitForOutput("Editing Customer: Handy Bike Services, AW00029688.");
+            //No arguments
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            EnterCommand("edit x");
+            WaitForOutput("Wrong number of arguments provided.");
+            //Invalid contexts
+            CiceroUrl("object?object1=AdventureWorksModel.Product-358&edit1=true");
+            WaitForOutput("Editing Product: HL Grip Tape.");
+            EnterCommand("edit");
+            WaitForOutput("The command: edit is not available in the current context");
+            CiceroUrl("home");
+            WaitForOutput("home");
+            EnterCommand("edit");
+            WaitForOutput("The command: edit is not available in the current context");
+        }
+        [TestMethod]
         public void Help()
         {
             //Help from home
