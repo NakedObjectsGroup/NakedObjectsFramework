@@ -143,11 +143,11 @@ module NakedObjects {
         }
     }
 
-    export abstract class NestedRepresentation {
+    export abstract class NestedRepresentation<T extends RoInterfaces.IResourceRepresentation> {
 
-        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
+        protected resource = () => this.model as T;
 
-        constructor(private model: RoInterfaces.IResourceRepresentation) { }
+        constructor(private model: T) { }
 
         private lazyLinks: Link[];
 
@@ -156,7 +156,7 @@ module NakedObjects {
             return this.lazyLinks;
         }
 
-        protected update(newResource: RoInterfaces.IResourceRepresentation) {
+        protected update(newResource: T) {
             this.model = newResource;
             this.lazyLinks = null;
         }
@@ -348,7 +348,7 @@ module NakedObjects {
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
                 const dor = new DomainObjectRepresentation();
-                dor.populate(this.wrapped);
+                dor.populate(this.wrapped as RoInterfaces.IDomainObjectRepresentation);
                 return dor;
             }
             return null;
@@ -357,7 +357,7 @@ module NakedObjects {
         list(): ListRepresentation {
             if (!this.isNull() && this.resultType === "list") {
                 const lr = new ListRepresentation();
-                lr.populate(this.wrapped);
+                lr.populate(this.wrapped as RoInterfaces.IListRepresentation);
                 return lr;
             }
             return null;
@@ -453,11 +453,11 @@ module NakedObjects {
    
     // REPRESENTATIONS
 
-    export abstract class ResourceRepresentation extends HateosModel {
-       
-        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
+    export abstract class ResourceRepresentation<T extends RoInterfaces.IResourceRepresentation> extends HateosModel {
 
-        populate(wrapped: RoInterfaces.IResourceRepresentation) {
+        protected resource = () => this.model as T;
+
+        populate(wrapped: T) {
             super.populate(wrapped);
         }
 
@@ -470,7 +470,7 @@ module NakedObjects {
 
         extensions(): IExtensions {
             return this.resource().extensions;
-        }   
+        }
     }
 
     // matches a action invoke resource 19.0 representation 
@@ -493,7 +493,7 @@ module NakedObjects {
         }
     }
 
-    export class ActionResultRepresentation extends ResourceRepresentation {
+    export class ActionResultRepresentation extends ResourceRepresentation<RoInterfaces.IActionInvokeRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionInvokeRepresentation;
 
@@ -529,7 +529,7 @@ module NakedObjects {
     // matches an action representation 18.0 
 
     // matches 18.2.1
-    export class Parameter extends NestedRepresentation {
+    export class Parameter extends NestedRepresentation<RoInterfaces.IParameterRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
@@ -583,7 +583,7 @@ module NakedObjects {
 
     }
 
-    export class ActionRepresentation extends ResourceRepresentation {
+    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
@@ -642,10 +642,6 @@ module NakedObjects {
         }
     }
 
-    export interface IListOrCollection {
-        value(): Link[];
-    }
-
     // new in 1.1 15.0 in spec 
 
     export class PromptMap extends ArgumentMap implements IHateoasModel {
@@ -669,8 +665,7 @@ module NakedObjects {
         }
     }
 
-
-    export class PromptRepresentation extends ResourceRepresentation {
+    export class PromptRepresentation extends ResourceRepresentation<RoInterfaces.IPromptRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IPromptRepresentation;
 
@@ -718,7 +713,7 @@ module NakedObjects {
     }
 
     // matches a collection representation 17.0 
-    export class CollectionRepresentation extends ResourceRepresentation implements IListOrCollection {
+    export class CollectionRepresentation extends ResourceRepresentation<RoInterfaces.ICollectionRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionRepresentation;
 
@@ -794,7 +789,7 @@ module NakedObjects {
     }
 
     // matches a property representation 16.0 
-    export class PropertyRepresentation extends ResourceRepresentation {
+    export class PropertyRepresentation extends ResourceRepresentation<RoInterfaces.IPropertyRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyRepresentation;
 
@@ -894,15 +889,14 @@ module NakedObjects {
         }
     }
 
-
     // matches a domain object representation 14.0 
 
     // base class for 14.4.1/2/3
-    export class Member extends NestedRepresentation {
+    export class Member<T extends RoInterfaces.IMember> extends NestedRepresentation<RoInterfaces.IMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IMember;
 
-        constructor(wrapped: RoInterfaces.IMember, public parent: DomainObjectRepresentation | MenuRepresentation) {
+        constructor(wrapped: T, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
         }
 
@@ -926,11 +920,11 @@ module NakedObjects {
             return isScalarType(this.extensions().returnType);
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
-            }
+            } 
 
             if (toWrap.memberType === "collection") {
                 return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
@@ -945,7 +939,7 @@ module NakedObjects {
     }
 
     // matches 14.4.1
-    export class PropertyMember extends Member {
+    export class PropertyMember extends Member<RoInterfaces.IPropertyMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
@@ -999,9 +993,6 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
-        update(newValue: RoInterfaces.IPropertyMember): void {
-            super.update(newValue);
-        }
 
         attachmentLink(): Link {
             return linkByNamespacedRel(this.links(), "attachment");
@@ -1040,7 +1031,7 @@ module NakedObjects {
     }
 
     // matches 14.4.2 
-    export class CollectionMember extends Member {
+    export class CollectionMember extends Member<RoInterfaces.ICollectionMember> {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
@@ -1069,7 +1060,7 @@ module NakedObjects {
     }
 
     // matches 14.4.3 
-    export class ActionMember extends Member {
+    export class ActionMember extends Member<RoInterfaces.IActionMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
@@ -1121,8 +1112,7 @@ module NakedObjects {
         }
     }
 
-
-    export class DomainObjectRepresentation extends ResourceRepresentation {
+    export class DomainObjectRepresentation extends ResourceRepresentation<RoInterfaces.IDomainObjectRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IDomainObjectRepresentation;
 
@@ -1146,7 +1136,7 @@ module NakedObjects {
             return this.wrapped().instanceId;
         }
 
-        private memberMap: _.Dictionary<Member>;
+        private memberMap: _.Dictionary<Member<RoInterfaces.IMember>>;
         private propertyMemberMap: _.Dictionary<PropertyMember>;
         private collectionMemberMap: _.Dictionary<CollectionMember>;
         private actionMemberMap: _.Dictionary<ActionMember>;
@@ -1165,7 +1155,7 @@ module NakedObjects {
             }
         }
 
-        members(): _.Dictionary<Member> {
+        members(): _.Dictionary<Member<RoInterfaces.IMember>> {
             this.initMemberMaps();
             return this.memberMap;
         }
@@ -1185,7 +1175,7 @@ module NakedObjects {
             return this.actionMemberMap;
         }
 
-        member(id: string): Member {
+        member(id: string): Member<RoInterfaces.IMember> {
             return this.members()[id];
         }
 
@@ -1235,7 +1225,7 @@ module NakedObjects {
         }
     }
 
-    export class MenuRepresentation extends ResourceRepresentation {
+    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.IMenuRepresentation> {
 
         wrapped = () => this.resource() as IMenuRepresentation;
 
@@ -1251,7 +1241,7 @@ module NakedObjects {
             return this.wrapped().menuId;
         }
 
-        private memberMap: _.Dictionary<Member>;
+        private memberMap: _.Dictionary<Member<RoInterfaces.IMember>>;
       
         private actionMemberMap: _.Dictionary<ActionMember>;
 
@@ -1267,7 +1257,7 @@ module NakedObjects {
             }
         }
 
-        members(): _.Dictionary<Member> {
+        members(): _.Dictionary<Member<RoInterfaces.IMember>> {
             this.initMemberMaps();
             return this.memberMap;
         }
@@ -1277,7 +1267,7 @@ module NakedObjects {
             return this.actionMemberMap;
         }
 
-        member(id: string): Member {
+        member(id: string): Member<RoInterfaces.IMember> {
             return this.members()[id];
         }
 
@@ -1296,14 +1286,12 @@ module NakedObjects {
 
     }
 
-
-
     // matches scalar representation 12.0 
-    export class ScalarValueRepresentation extends NestedRepresentation {
+    export class ScalarValueRepresentation extends NestedRepresentation<RoInterfaces.IScalarValueRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IScalarValueRepresentation;
 
-        constructor(wrapped : RoInterfaces.IResourceRepresentation) {
+        constructor(wrapped: RoInterfaces.IScalarValueRepresentation) {
             super(wrapped);
         }
 
@@ -1313,7 +1301,7 @@ module NakedObjects {
     }
 
     // matches List Representation 11.0
-    export class ListRepresentation extends ResourceRepresentation implements IListOrCollection {
+    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.IListRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
 
@@ -1345,18 +1333,18 @@ module NakedObjects {
     }
 
     // matches the error representation 10.0 
-    export class  ErrorRepresentation extends ResourceRepresentation implements IErrorDetails {
+    export class ErrorRepresentation extends ResourceRepresentation<RoInterfaces.IErrorRepresentation> implements IErrorDetails {
    
         wrapped = () => this.resource() as RoInterfaces.IErrorRepresentation;
 
-        static create(message: string, stacktrace?: string[], causedBy?: IErrorDetails) {
+        static create(message: string, stacktrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
             const rawError = {
-                links: [], 
-                extensions: {}, 
-                message: message, 
-                stacktrace: stacktrace, 
-                causedBy : causedBy
-            }
+                links: [],
+                extensions: {},
+                message: message,
+                stacktrace: stacktrace,
+                causedBy: causedBy
+            };
             const error = new ErrorRepresentation();
             error.populate(rawError);
             return error;
@@ -1395,7 +1383,7 @@ module NakedObjects {
     }
 
     // matches the version representation 8.0 
-    export class VersionRepresentation extends ResourceRepresentation {
+    export class VersionRepresentation extends ResourceRepresentation<RoInterfaces.IVersionRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IVersionRepresentation;
 
@@ -1482,7 +1470,7 @@ module NakedObjects {
     }
 
     // matches the user representation 6.0
-    export class UserRepresentation extends ResourceRepresentation {
+    export class UserRepresentation extends ResourceRepresentation<RoInterfaces.IUserRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IUserRepresentation;
 
@@ -1519,7 +1507,7 @@ module NakedObjects {
         }
     }
 
-    export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation {
+    export class DomainTypeActionInvokeRepresentation extends ResourceRepresentation<RoInterfaces.IDomainTypeActionInvokeRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
@@ -1542,7 +1530,7 @@ module NakedObjects {
     }
 
     // matches the home page representation  5.0 
-    export class HomePageRepresentation extends ResourceRepresentation {
+    export class HomePageRepresentation extends ResourceRepresentation<RoInterfaces.IHomePageRepresentation> {
 
         constructor() {
             super();

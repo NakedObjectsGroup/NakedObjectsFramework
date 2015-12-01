@@ -64,7 +64,7 @@ module NakedObjects.Angular {
 
                     if (promiseCallback.status === 500) {
                         const error  = new ErrorRepresentation();  
-                        error.populate(promiseCallback.data as RoInterfaces.IResourceRepresentation);
+                        error.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
                         reason = error;
                     }
                     else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
