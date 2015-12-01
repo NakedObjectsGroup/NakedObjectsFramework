@@ -498,6 +498,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text == output);
         }
 
+        protected void WaitForOutputStartingWith(string output)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text.StartsWith(output));
+        }
+
         protected void EnterCommand(string command)
         {
             TypeIntoField("input", Keys.ArrowDown); //To clear field

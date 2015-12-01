@@ -132,7 +132,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 1;
 
         public isAvailableInCurrentContext(): boolean {
-            return !this.isDialog() && !this.isEdit();
+            return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
         }
 
         execute(args: string): void {
