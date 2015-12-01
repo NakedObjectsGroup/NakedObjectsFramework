@@ -698,8 +698,7 @@ module NakedObjects {
         wrapped = () => this.resource() as RoInterfaces.IPromptRepresentation;
 
         constructor() {
-            super();
-            this.resource = emptyResource() as any;
+            super(emptyResource());
         }
 
         getPromptMap(): PromptMap {
