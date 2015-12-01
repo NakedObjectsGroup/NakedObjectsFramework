@@ -143,11 +143,11 @@ module NakedObjects {
         }
     }
 
-    export abstract class NestedRepresentation {
+    export abstract class NestedRepresentation<T extends RoInterfaces.IResourceRepresentation> {
 
-        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
+        protected resource = () => this.model as T;
 
-        constructor(private model: RoInterfaces.IResourceRepresentation) { }
+        constructor(private model: T) { }
 
         private lazyLinks: Link[];
 
@@ -156,7 +156,7 @@ module NakedObjects {
             return this.lazyLinks;
         }
 
-        protected update(newResource: RoInterfaces.IResourceRepresentation) {
+        protected update(newResource: T) {
             this.model = newResource;
             this.lazyLinks = null;
         }
@@ -529,7 +529,7 @@ module NakedObjects {
     // matches an action representation 18.0 
 
     // matches 18.2.1
-    export class Parameter extends NestedRepresentation {
+    export class Parameter extends NestedRepresentation<RoInterfaces.IParameterRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
@@ -892,7 +892,7 @@ module NakedObjects {
     // matches a domain object representation 14.0 
 
     // base class for 14.4.1/2/3
-    export class Member extends NestedRepresentation {
+    export class Member extends NestedRepresentation<RoInterfaces.IMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IMember;
 
@@ -1290,11 +1290,11 @@ module NakedObjects {
     }
 
     // matches scalar representation 12.0 
-    export class ScalarValueRepresentation extends NestedRepresentation {
+    export class ScalarValueRepresentation extends NestedRepresentation<RoInterfaces.IScalarValueRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IScalarValueRepresentation;
 
-        constructor(wrapped : RoInterfaces.IResourceRepresentation) {
+        constructor(wrapped: RoInterfaces.IScalarValueRepresentation) {
             super(wrapped);
         }
 
