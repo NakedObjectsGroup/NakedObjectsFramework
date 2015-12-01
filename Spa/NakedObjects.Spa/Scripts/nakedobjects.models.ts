@@ -21,6 +21,8 @@ module NakedObjects {
     import ILink = RoInterfaces.ILink;
     import IMenuRepresentation = RoInterfaces.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
+    import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
+
 
     // helper functions 
 
@@ -32,12 +34,44 @@ module NakedObjects {
         return typeName === "list";
     }
 
-    function emptyResource() : RoInterfaces.IResourceRepresentation {
+    function emptyResource() : IResourceRepresentation {
         return { links: [], extensions: {} };
     }
 
     function isILink(object: any): object is RoInterfaces.ILink {
         return object && object instanceof Object && "href" in object;
+    }
+
+    function isIObjectOfType(object: any): object is RoInterfaces.IObjectOfType {
+        return object && object instanceof Object && "members" in object;
+    }
+
+    function isIValue(object: any): object is RoInterfaces.IValue {
+        return object && object instanceof Object && "value" in object;
+    }
+
+    function getId(prop: PropertyRepresentation | PropertyMember) {
+        if (prop instanceof PropertyRepresentation) {
+            return prop.instanceId();
+        } else {
+            return (prop as PropertyMember).propertyId();
+        }
+    }
+
+    function wrapLinks(links: ILink[]) {
+        return _.map(links, l => new Link(l));
+    }
+
+    function getLinkByRel(links: Link[], rel: Rel) {
+        return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
+    }
+
+    function linkByRel(links: Link[], rel: string) {
+        return getLinkByRel(links, new Rel(rel));
+    }
+
+    function linkByNamespacedRel(links: Link[], rel: string) {
+        return getLinkByRel(links, new Rel(`urn:org.restfulobjects:rels/${rel}`));
     }
 
     // interfaces 
@@ -50,6 +84,8 @@ module NakedObjects {
         getBody(): RoInterfaces.IRepresentation;
         getUrl() : string;
     }
+
+    // abstract classes 
 
     export abstract class HateosModel implements IHateoasModel {
 
@@ -98,7 +134,7 @@ module NakedObjects {
 
     export abstract class ArgumentMap extends HateosModel {
 
-        constructor(public map: RoInterfaces.IValueMap, parent: any, public id: string) {
+        constructor(public map: RoInterfaces.IValueMap, public id: string) {
             super(map);
         }
 
@@ -106,6 +142,31 @@ module NakedObjects {
            super.populate(wrapped);
         }
     }
+
+    export abstract class NestedRepresentation {
+
+        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
+
+        constructor(private model: RoInterfaces.IResourceRepresentation) { }
+
+        private lazyLinks: Link[];
+
+        links(): Link[] {
+            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
+            return this.lazyLinks;
+        }
+
+        protected update(newResource: RoInterfaces.IResourceRepresentation) {
+            this.model = newResource;
+            this.lazyLinks = null;
+        }
+
+        extensions(): IExtensions {
+            return this.resource().extensions;
+        }
+    }
+
+    // classes
 
     export class RelParm {
 
@@ -123,7 +184,6 @@ module NakedObjects {
         }
     }
 
-    // rel helper class 
     export class Rel {
 
         ns: string = "";
@@ -154,7 +214,6 @@ module NakedObjects {
         }
     }
 
-    // Media type helper class 
     export class MediaType {
 
         applicationType: string;
@@ -186,9 +245,7 @@ module NakedObjects {
             }
         }
     }
-
-  
-    // helper class for values 
+ 
     export class Value {
 
         private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
@@ -285,7 +342,6 @@ module NakedObjects {
         constructor(public value : Value, public invalidReason : string) { }
     }
 
-    // helper class for results 
     export class Result {
         constructor(public wrapped : RoInterfaces.IDomainObjectRepresentation | RoInterfaces.IListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) { }
 
@@ -323,40 +379,6 @@ module NakedObjects {
         }
     }
 
-    // base class for nested representations 
-    export abstract class NestedRepresentation {
-
-        protected resource = () => this.model as RoInterfaces.IResourceRepresentation;
-
-        constructor(private model : RoInterfaces.IResourceRepresentation) { }
-
-        private lazyLinks: Link[];
-
-        links(): Link[] {
-            this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
-            return this.lazyLinks;
-        }
-
-        protected update(newResource: RoInterfaces.IResourceRepresentation) {
-            this.model = newResource;
-            this.lazyLinks = null;
-        }
-
-        extensions(): IExtensions {
-            return this.resource().extensions;
-        }
-    }
-
-
-    function isIObjectOfType(object: any) : object is RoInterfaces.IObjectOfType {
-        return object && object instanceof Object && "members" in object;
-    }
-
-    function isIValue(object: any): object is RoInterfaces.IValue {
-        return object && object instanceof Object && "value" in object;
-    }
-
-
     export class ErrorMap {
 
         wrapped = () => {
@@ -383,10 +405,9 @@ module NakedObjects {
         }
     }
 
-
     export class UpdateMap extends ArgumentMap implements IHateoasModel {
         constructor(private domainObject: DomainObjectRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, domainObject, domainObject.instanceId());
+            super(map, domainObject.instanceId());
 
             domainObject.updateLink().copyToHateoasModel(this);
 
@@ -406,7 +427,7 @@ module NakedObjects {
 
     export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
         constructor(private collectionResource: CollectionRepresentation, map: RoInterfaces.IValueMap, add: boolean) {
-            super(map, collectionResource, collectionResource.instanceId());
+            super(map, collectionResource.instanceId());
             const link = add ? collectionResource.addToLink() : collectionResource.removeFromLink();
             link.copyToHateoasModel(this);
         }
@@ -414,61 +435,22 @@ module NakedObjects {
     }
 
     export class ModifyMap extends ArgumentMap implements IHateoasModel {
-        constructor(private propertyResource: PropertyRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, propertyResource, propertyResource.instanceId());
-
+        constructor(private propertyResource: PropertyRepresentation | PropertyMember, map: RoInterfaces.IValueMap) {
+            super(map, getId(propertyResource));
             propertyResource.modifyLink().copyToHateoasModel(this);
-
             propertyResource.value().set(this.map, this.id);
-        }
-
+        }      
     }
-
-    export class ModifyMapv11 extends ArgumentMap implements IHateoasModel {
-        constructor(private propertyResource: PropertyMember, id: string, map: RoInterfaces.IValueMap) {
-            super(map, propertyResource, id);
-
-            propertyResource.modifyLink().copyToHateoasModel(this);
-
-            propertyResource.value().set(this.map, this.id);
-        }
-    }
-
 
     export class ClearMap extends ArgumentMap implements IHateoasModel {
-        constructor(propertyResource: PropertyRepresentation) {
-            super({}, propertyResource, propertyResource.instanceId());
-
-            propertyResource.clearLink().copyToHateoasModel(this);
-        }
-
-    }
-
-    export class ClearMapv11 extends ArgumentMap implements IHateoasModel {
-        constructor(propertyResource: PropertyMember, id: string) {
-            super({}, propertyResource, id);
+        constructor(propertyResource: PropertyRepresentation | PropertyMember) {
+            super({}, getId(propertyResource));
 
             propertyResource.clearLink().copyToHateoasModel(this);
         }
     }
 
-    function wrapLinks(links: ILink[]) {
-        return _.map(links, l => new Link(l));
-    }
-
-    function getLinkByRel(links: Link[], rel: Rel) {
-        return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
-    }
-
-    function linkByRel(links: Link[], rel: string) {
-        return getLinkByRel(links, new Rel(rel));
-    }
-
-    function linkByNamespacedRel(links: Link[], rel: string) {
-        return getLinkByRel(links, new Rel(`urn:org.restfulobjects:rels/${rel}`));
-    }
-
-
+   
     // REPRESENTATIONS
 
     export abstract class ResourceRepresentation extends HateosModel {
@@ -495,7 +477,7 @@ module NakedObjects {
 
     export class InvokeMap extends ArgumentMap implements IHateoasModel {
         constructor(private invoke: ActionResultRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, prompt, "");
+            super(map, "");
 
             // todo must be better way
             this.hateoasUrl = invoke.hateoasUrl;
@@ -510,7 +492,6 @@ module NakedObjects {
             this.urlParms[name] = value;
         }
     }
-
 
     export class ActionResultRepresentation extends ResourceRepresentation {
 
@@ -566,12 +547,12 @@ module NakedObjects {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], (v : any) => new Value(v));
+                return _.mapValues(this.extensions()["x-ro-nof-choices"], v  => new Value(v));
             }
 
             if (this.wrapped().choices) {
-                const values = _.map(this.wrapped().choices, (item : any) => new Value(item));
-                return _.object<_.Dictionary<Value>>(_.map(values, (v : any) => [v.toString(), v]));
+                const values = _.map(this.wrapped().choices, item => new Value(item));
+                return _.object(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
@@ -600,10 +581,6 @@ module NakedObjects {
             return !!this.promptLink();
         }
 
-    }
-
-    export interface IParameterMap {
-        [index: string]: Parameter;
     }
 
     export class ActionRepresentation extends ResourceRepresentation {
@@ -645,7 +622,7 @@ module NakedObjects {
             return this.wrapped().id;
         }
 
-        private parameterMap: IParameterMap;
+        private parameterMap: _.Dictionary<Parameter>;
 
         private initParameterMap(): void {
 
@@ -655,7 +632,7 @@ module NakedObjects {
             }
         }
 
-        parameters(): IParameterMap {
+        parameters(): _.Dictionary<Parameter> {
             this.initParameterMap();
             return this.parameterMap;
         }
@@ -673,7 +650,7 @@ module NakedObjects {
 
     export class PromptMap extends ArgumentMap implements IHateoasModel {
         constructor(private prompt: PromptRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, prompt, prompt.instanceId());
+            super(map, prompt.instanceId());
 
             // todo must be better way
             this.hateoasUrl = prompt.hateoasUrl;
@@ -893,12 +870,12 @@ module NakedObjects {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
+                return  _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<_.Dictionary<Value>>(_.map(values, v => [v.toString(), v]));
+                return _.object(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
@@ -994,22 +971,22 @@ module NakedObjects {
             return this.modifyLink().arguments() as RoInterfaces.IValueMap;
         }
 
-        setFromModifyMap(map: ModifyMapv11) {
+        setFromModifyMap(map: ModifyMap) {
             _.forOwn(map.map, (v, k) => {
                 this.wrapped[k] = v;
             });
         }
 
-        getModifyMap(id: string): ModifyMapv11 {
+        getModifyMap(id: string): ModifyMap {
             if (this.modifyLink()) {
-                return new ModifyMapv11(this, id, this.modifyMap());
+                return new ModifyMap(this, this.modifyMap());
             }
             return null;
         }
 
-        getClearMap(id: string): ClearMapv11 {
+        getClearMap(id: string): ClearMap {
             if (this.clearLink()) {
-                return new ClearMapv11(this, id);
+                return new ClearMap(this);
             }
             return null;
         }
@@ -1017,10 +994,7 @@ module NakedObjects {
         getPrompts(): PromptRepresentation {
             return <PromptRepresentation> this.promptLink().getTarget();
         }
-
-        //
-
-
+        
         value(): Value {
             return new Value(this.wrapped().value);
         }
@@ -1053,12 +1027,12 @@ module NakedObjects {
 
             // use custom choices extension by preference 
             if (this.extensions()["x-ro-nof-choices"]) {
-                return <_.Dictionary<Value>> _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
+                return  _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                return _.object<_.Dictionary<Value>>(_.map(values, (v) => [v.toString(), v]));
+                return _.object(_.map(values, v => [v.toString(), v]));
             }
             return null;
         }
@@ -1127,7 +1101,7 @@ module NakedObjects {
 
         // properties 
 
-        private parameterMap: IParameterMap;
+        private parameterMap: _.Dictionary<Parameter>;
 
         private initParameterMap(): void {
 
@@ -1137,7 +1111,7 @@ module NakedObjects {
             }
         }
 
-        parameters(): IParameterMap {
+        parameters(): _.Dictionary<Parameter> {
             this.initParameterMap();
             return this.parameterMap;
         }
@@ -1147,21 +1121,6 @@ module NakedObjects {
         }
     }
 
-    export interface IMemberMap {
-        [index: string]: Member;
-    }
-
-    export interface IPropertyMemberMap {
-        [index: string]: PropertyMember;
-    }
-
-    export interface ICollectionMemberMap {
-        [index: string]: CollectionMember;
-    }
-
-    export interface IActionMemberMap {
-        [index: string]: ActionMember;
-    }
 
     export class DomainObjectRepresentation extends ResourceRepresentation {
 
@@ -1187,17 +1146,17 @@ module NakedObjects {
             return this.wrapped().instanceId;
         }
 
-        private memberMap: IMemberMap;
-        private propertyMemberMap: IPropertyMemberMap;
-        private collectionMemberMap: ICollectionMemberMap;
-        private actionMemberMap: IActionMemberMap;
+        private memberMap: _.Dictionary<Member>;
+        private propertyMemberMap: _.Dictionary<PropertyMember>;
+        private collectionMemberMap: _.Dictionary<CollectionMember>;
+        private actionMemberMap: _.Dictionary<ActionMember>;
 
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.propertyMemberMap = <IPropertyMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "property");
-            this.collectionMemberMap = <ICollectionMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "collection");
-            this.actionMemberMap = <IActionMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "action");
+            this.propertyMemberMap =  _.pick(this.memberMap, m => m.memberType() === "property") as _.Dictionary<PropertyMember>;
+            this.collectionMemberMap = _.pick(this.memberMap, m => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
+            this.actionMemberMap = _.pick(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {
@@ -1206,22 +1165,22 @@ module NakedObjects {
             }
         }
 
-        members(): IMemberMap {
+        members(): _.Dictionary<Member> {
             this.initMemberMaps();
             return this.memberMap;
         }
 
-        propertyMembers(): IPropertyMemberMap {
+        propertyMembers(): _.Dictionary<PropertyMember> {
             this.initMemberMaps();
             return this.propertyMemberMap;
         }
 
-        collectionMembers(): ICollectionMemberMap {
+        collectionMembers(): _.Dictionary<CollectionMember> {
             this.initMemberMaps();
             return this.collectionMemberMap;
         }
 
-        actionMembers(): IActionMemberMap {
+        actionMembers(): _.Dictionary<ActionMember> {
             this.initMemberMaps();
             return this.actionMemberMap;
         }
@@ -1292,14 +1251,14 @@ module NakedObjects {
             return this.wrapped().menuId;
         }
 
-        private memberMap: IMemberMap;
+        private memberMap: _.Dictionary<Member>;
       
-        private actionMemberMap: IActionMemberMap;
+        private actionMemberMap: _.Dictionary<ActionMember>;
 
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.actionMemberMap = <IActionMemberMap> _.pick(this.memberMap, (m: Member) => m.memberType() === "action");
+            this.actionMemberMap = _.pick(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {
@@ -1308,12 +1267,12 @@ module NakedObjects {
             }
         }
 
-        members(): IMemberMap {
+        members(): _.Dictionary<Member> {
             this.initMemberMaps();
             return this.memberMap;
         }
 
-        actionMembers(): IActionMemberMap {
+        actionMembers(): _.Dictionary<ActionMember> {
             this.initMemberMaps();
             return this.actionMemberMap;
         }
@@ -1684,8 +1643,8 @@ module NakedObjects {
         }
 
         private getHateoasTarget(targetType): IHateoasModel {
-            const matchingType = this.repTypeToModel[targetType];
-            const target: IHateoasModel = new matchingType();
+            const MatchingType = this.repTypeToModel[targetType];
+            const target: IHateoasModel = new MatchingType();
             return target;
         }
 

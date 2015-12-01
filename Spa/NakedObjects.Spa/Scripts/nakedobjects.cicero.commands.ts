@@ -154,7 +154,7 @@ module NakedObjects.Angular.Gemini {
             //TODO: handle list
         }
 
-        private processActions(name: string, actionsMap: IActionMemberMap) {
+        private processActions(name: string, actionsMap: _.Dictionary<ActionMember>) {
             var actions = _.map(actionsMap, action => action);
             if (name) {
                 actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) > -1);
