@@ -38,7 +38,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
                 const error = new NakedObjects.ErrorRepresentation();
-                error.populate(emptyError);
+                error.populate(emptyError as any);
                 resultVm = viewModelFactory.errorViewModel(error);
             }));
 
@@ -422,7 +422,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             beforeEach(inject((viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
                 const ar = new NakedObjects.ActionRepresentation();
-                ar.populate(rawAction);
+                ar.populate(rawAction as any);
                 resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anId"), new NakedObjects.Value("pv"), 1);
             }));
 
@@ -457,7 +457,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.default = 1;
 
                 const ar = new NakedObjects.ActionRepresentation();
-                ar.populate(rawAction);
+                ar.populate(rawAction as any);
                 resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
 
@@ -490,7 +490,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.default = 1;
                 rawParameter.links.push(rawPromptLink);
                 const ar = new NakedObjects.ActionRepresentation();
-                ar.populate(rawAction);
+                ar.populate(rawAction as any);
                 resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
 
@@ -524,7 +524,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawParameter.links.pop();
                 rawParameter.links.push(rawPromptLink);
                 const ar = new NakedObjects.ActionRepresentation();
-                ar.populate(rawAction);
+                ar.populate(rawAction as any);
 
                 resultVm = viewModelFactory.parameterViewModel(new NakedObjects.Parameter(rawParameter, ar, "anid"), null, 1);
             }));
@@ -559,7 +559,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory) => {
                 const $scope = $rootScope.$new();
                 const doRep = new NakedObjects.DomainObjectRepresentation();
-                doRep.populate(rawObject);
+                doRep.populate(rawObject as any);
                 resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, false, 1);
             }));
 
@@ -583,7 +583,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 rawObject.links.pop();
                 rawObject.links.push(rawPersistLink);
                 const doRep = new NakedObjects.DomainObjectRepresentation();
-                doRep.populate(rawObject);
+                doRep.populate(rawObject as any);
                 doRep.hateoasUrl = "http://objects/AdventureWorksModel.Product";
 
                 resultVm = viewModelFactory.domainObjectViewModel($scope, doRep, {}, null, false, 1);
