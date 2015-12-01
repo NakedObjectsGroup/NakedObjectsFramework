@@ -892,11 +892,11 @@ module NakedObjects {
     // matches a domain object representation 14.0 
 
     // base class for 14.4.1/2/3
-    export class Member extends NestedRepresentation<RoInterfaces.IMember> {
+    export class Member<T extends RoInterfaces.IMember> extends NestedRepresentation<RoInterfaces.IMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IMember;
 
-        constructor(wrapped: RoInterfaces.IMember, public parent: DomainObjectRepresentation | MenuRepresentation) {
+        constructor(wrapped: T, public parent: DomainObjectRepresentation | MenuRepresentation) {
             super(wrapped);
         }
 
@@ -920,11 +920,11 @@ module NakedObjects {
             return isScalarType(this.extensions().returnType);
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
-            }
+            } 
 
             if (toWrap.memberType === "collection") {
                 return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
@@ -939,7 +939,7 @@ module NakedObjects {
     }
 
     // matches 14.4.1
-    export class PropertyMember extends Member {
+    export class PropertyMember extends Member<RoInterfaces.IPropertyMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
@@ -993,9 +993,6 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
-        update(newValue: RoInterfaces.IPropertyMember): void {
-            super.update(newValue);
-        }
 
         attachmentLink(): Link {
             return linkByNamespacedRel(this.links(), "attachment");
@@ -1034,7 +1031,7 @@ module NakedObjects {
     }
 
     // matches 14.4.2 
-    export class CollectionMember extends Member {
+    export class CollectionMember extends Member<RoInterfaces.ICollectionMember> {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
@@ -1063,7 +1060,7 @@ module NakedObjects {
     }
 
     // matches 14.4.3 
-    export class ActionMember extends Member {
+    export class ActionMember extends Member<RoInterfaces.IActionMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
@@ -1139,7 +1136,7 @@ module NakedObjects {
             return this.wrapped().instanceId;
         }
 
-        private memberMap: _.Dictionary<Member>;
+        private memberMap: _.Dictionary<Member<RoInterfaces.IMember>>;
         private propertyMemberMap: _.Dictionary<PropertyMember>;
         private collectionMemberMap: _.Dictionary<CollectionMember>;
         private actionMemberMap: _.Dictionary<ActionMember>;
@@ -1158,7 +1155,7 @@ module NakedObjects {
             }
         }
 
-        members(): _.Dictionary<Member> {
+        members(): _.Dictionary<Member<RoInterfaces.IMember>> {
             this.initMemberMaps();
             return this.memberMap;
         }
@@ -1178,7 +1175,7 @@ module NakedObjects {
             return this.actionMemberMap;
         }
 
-        member(id: string): Member {
+        member(id: string): Member<RoInterfaces.IMember> {
             return this.members()[id];
         }
 
@@ -1244,7 +1241,7 @@ module NakedObjects {
             return this.wrapped().menuId;
         }
 
-        private memberMap: _.Dictionary<Member>;
+        private memberMap: _.Dictionary<Member<RoInterfaces.IMember>>;
       
         private actionMemberMap: _.Dictionary<ActionMember>;
 
@@ -1260,7 +1257,7 @@ module NakedObjects {
             }
         }
 
-        members(): _.Dictionary<Member> {
+        members(): _.Dictionary<Member<RoInterfaces.IMember>> {
             this.initMemberMaps();
             return this.memberMap;
         }
@@ -1270,7 +1267,7 @@ module NakedObjects {
             return this.actionMemberMap;
         }
 
-        member(id: string): Member {
+        member(id: string): Member<RoInterfaces.IMember> {
             return this.members()[id];
         }
 
