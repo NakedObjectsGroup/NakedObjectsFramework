@@ -61,7 +61,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForOutput("home");
             EnterCommand("help");
             WaitForOutput("Commands available in current context: " +
-                "action; back; clipboard; forward; gemini; help; home; menu; where;");
+                "back; clipboard; forward; gemini; help; home; menu; where;");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
