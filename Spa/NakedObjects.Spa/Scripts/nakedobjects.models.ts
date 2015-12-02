@@ -1330,7 +1330,7 @@ module NakedObjects {
 
     export interface IErrorDetails {
         message() : string;
-        stacktrace() : string[];
+        stackTrace() : string[];
     }
 
     // matches the error representation 10.0 
@@ -1338,12 +1338,12 @@ module NakedObjects {
    
         wrapped = () => this.resource() as RoInterfaces.IErrorRepresentation;
 
-        static create(message: string, stacktrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
+        static create(message: string, stackTrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
             const rawError = {
                 links: [],
                 extensions: {},
                 message: message,
-                stacktrace: stacktrace,
+                stackTrace: stackTrace,
                 causedBy: causedBy
             };
             const error = new ErrorRepresentation();
@@ -1357,7 +1357,7 @@ module NakedObjects {
             return this.wrapped().message;
         }
 
-        stacktrace(): string[] {
+        stackTrace(): string[] {
             return this.wrapped().stackTrace;
         }
 
@@ -1365,7 +1365,7 @@ module NakedObjects {
             const cb = this.wrapped().causedBy;
             return cb ? {
                 message: () => cb.message,
-                stacktrace: () => cb.stackTrace
+                stackTrace: () => cb.stackTrace
             } : undefined;
         }
     }
@@ -1606,7 +1606,7 @@ module NakedObjects {
         constructor(public wrapped : RoInterfaces.ILink) { }
 
         href(): string {
-            return this.wrapped.href;
+            return decodeURIComponent(this.wrapped.href);
         }
 
         method(): string {

@@ -49,7 +49,7 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
-            const stackTrace = errorRep.stacktrace();
+            const stackTrace = errorRep.stackTrace();
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
             return errorViewModel;
         };

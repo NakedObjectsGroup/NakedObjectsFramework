@@ -1,5 +1,4 @@
 ﻿module NakedObjects.RoInterfaces.Custom {
-
  
     export interface IExtensions extends RoInterfaces.IExtensions {
         // ReSharper disable InconsistentNaming
@@ -16,12 +15,10 @@
         totalCount: number;
     }
 
-  
     export interface IListRepresentation extends RoInterfaces.IListRepresentation {
         pagination? : IPagination;
     }
 
-  
     export interface IMenuRepresentation extends IResourceRepresentation {
         members: { [index: string]: IActionMember };
         title: string;

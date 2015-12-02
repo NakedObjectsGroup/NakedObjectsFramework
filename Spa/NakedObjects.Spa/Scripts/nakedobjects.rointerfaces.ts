@@ -48,8 +48,6 @@
         value: ILink[];
     }
 
-   
-
     export interface IOptionalCapabilities {
         blobsClobs: string;
         deleteObjects: string;
@@ -65,7 +63,7 @@
     }
 
     export interface IValue {
-        value: string | number | boolean | ILink | (string | number | boolean | ILink)[]  ;
+        value: string | number | boolean | ILink | (string | number | boolean | ILink)[];
         invalidReason?: string;
     }
 
