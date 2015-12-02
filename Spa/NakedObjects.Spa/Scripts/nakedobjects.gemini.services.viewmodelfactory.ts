@@ -347,7 +347,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.hasConditionalChoices =  !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
             if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-                var promptRep: PromptRepresentation = propertyRep.getPrompts();
+                const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {         
                     propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);

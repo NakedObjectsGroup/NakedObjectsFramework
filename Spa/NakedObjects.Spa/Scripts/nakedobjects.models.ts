@@ -676,7 +676,7 @@ module NakedObjects {
 
         getPromptMap(): PromptMap {
             // needs to be initialised 
-            return null;
+            throw "Prompt map function must be initialized";
         }
 
         // links 
@@ -849,7 +849,9 @@ module NakedObjects {
         }
 
         getPrompts(): PromptRepresentation {
-            return <PromptRepresentation> this.promptLink().getTarget();
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
+            return pr;
         }
 
         // properties 
@@ -987,7 +989,9 @@ module NakedObjects {
         }
 
         getPrompts(): PromptRepresentation {
-            return <PromptRepresentation> this.promptLink().getTarget();
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
+            return pr;
         }
         
         value(): Value {
