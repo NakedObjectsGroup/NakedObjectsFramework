@@ -20,7 +20,7 @@
 module NakedObjects {
     import IExtensions = RoInterfaces.IExtensions;
     import ILink = RoInterfaces.ILink;
-    import IMenuRepresentation = RoInterfaces.IMenuRepresentation;
+    import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
 
@@ -1226,7 +1226,7 @@ module NakedObjects {
         }
     }
 
-    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.IMenuRepresentation> {
+    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IMenuRepresentation> {
 
         wrapped = () => this.resource() as IMenuRepresentation;
 
@@ -1302,9 +1302,9 @@ module NakedObjects {
     }
 
     // matches List Representation 11.0
-    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.IListRepresentation> {
+    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IListRepresentation> {
 
-        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.Custom.IListRepresentation;
 
         // links
         selfLink(): Link {
@@ -1323,7 +1323,7 @@ module NakedObjects {
             return this.lazyValue;
         }
 
-        pagination(): RoInterfaces.IPagination {
+        pagination(): RoInterfaces.Custom.IPagination {
             return this.wrapped().pagination;
         }
     }
