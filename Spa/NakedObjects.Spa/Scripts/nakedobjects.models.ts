@@ -15,6 +15,7 @@
 
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.config.ts" />
+/// <reference path="nakedobjects.rointerfaces.ts" />
 
 module NakedObjects {
     import IExtensions = RoInterfaces.IExtensions;

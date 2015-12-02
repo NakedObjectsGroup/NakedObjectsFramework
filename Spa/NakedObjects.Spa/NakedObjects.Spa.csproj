@@ -127,6 +127,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.custom.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
