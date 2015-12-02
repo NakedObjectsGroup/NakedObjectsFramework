@@ -33,11 +33,11 @@ module NakedObjects.Angular.Gemini{
         commandFactory.parseInput = (input: string) => {
             try {
                 var firstWord : string;
-                if (input == "") {
-                    input = firstWord = "wh"; //Special case '[Enter]' = 'where'
-                } else {
+                if (input) {
                     input = input.toLowerCase();
                     firstWord = input.split(" ")[0];
+                } else {
+                    input = firstWord = "wh"; //Special case '[Enter]' = 'where'
                 }
                 const command: Command = commandFactory.getCommand(firstWord);
                 command.checkIsAvailableInCurrentContext();

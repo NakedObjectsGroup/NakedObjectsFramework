@@ -508,13 +508,9 @@ module NakedObjects.Angular.Gemini {
             if (cvm == null) {
                 cvm = new CiceroViewModel();
                 cvm.parseInput = (input: string) => {
+                    cvm.previousInput = input;
                     cf.parseInput(input);
                 };
-                cvm.previousCommand = () => { }; //TODO
-                cvm.nextCommand = () => {
-                    //TODO: Initiate spike -  always clears input
-                    cvm.input = null;
-                }; 
                 cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
                     cvm.output = "";
                     //TODO: factor out common functions see below

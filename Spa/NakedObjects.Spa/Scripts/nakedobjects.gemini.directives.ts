@@ -555,7 +555,7 @@ module NakedObjects.Angular.Gemini {
         element.bind("keydown keypress", event => {
             const enterKeyCode = 38;
             if (event.which === enterKeyCode) {
-                scope.$apply(() => scope.$eval(attrs.ciceroDown));
+                scope.$apply(() => scope.$eval(attrs.ciceroUp));
                 event.preventDefault();
             }
         });

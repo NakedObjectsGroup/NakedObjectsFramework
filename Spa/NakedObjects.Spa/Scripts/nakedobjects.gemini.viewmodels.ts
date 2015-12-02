@@ -345,8 +345,13 @@ module NakedObjects.Angular.Gemini {
         output: string;
         input: string;
         parseInput: (input: string) => void;
-        previousCommand: () => void;
-        nextCommand: () => void;
+        private previousInput: string;
+        selectPreviousInput(): void {
+            this.input = this.previousInput;
+        }
+        clearInput(): void {
+            this.input = null;
+        }
         setOutputToSummaryOfRepresentation: (routeData: PaneRouteData) => void;
     }
 }
