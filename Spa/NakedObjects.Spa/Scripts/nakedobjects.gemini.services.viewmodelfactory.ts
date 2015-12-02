@@ -256,7 +256,7 @@ module NakedObjects.Angular.Gemini{
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams ?
                 (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
-                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right), ovm);
+                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
 
             return actionViewModel;
         };
@@ -270,7 +270,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
             dialogViewModel.onPaneId = paneId;
 
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), ovm, dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right));
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
@@ -283,6 +283,7 @@ module NakedObjects.Angular.Gemini{
                 urlManager.closeDialog(paneId);
             };
 
+            context.setCurrentDialog(paneId, dialogViewModel);
             return dialogViewModel;
         };
 

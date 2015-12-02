@@ -76,6 +76,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
+            context.clearCurrentDialog(routeData.paneId);
             context.getMenus().
                 then((menus: MenusRepresentation) => {
                     $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
@@ -139,6 +140,7 @@ module NakedObjects.Angular.Gemini {
                 });
             }
 
+            context.clearCurrentDialog(routeData.paneId);
             getFriendlyName().then((name: string) => $scope.title = name);
 
             if (cachedList) {
@@ -153,7 +155,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         handlers.handleError = ($scope: INakedObjectsScope) => {
-            var error = context.getError();
+            const  error = context.getError();
             if (error) {
                 const evm = viewModelFactory.errorViewModel(error);
                 $scope.error = evm;
@@ -178,6 +180,7 @@ module NakedObjects.Angular.Gemini {
             // only pass previous values if editing 
             const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
+            context.clearCurrentDialog(routeData.paneId);
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 

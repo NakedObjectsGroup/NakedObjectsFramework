@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
-        invokeAction(action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel);
+        invokeAction(action: ActionMember, paneId: number);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
@@ -37,6 +37,11 @@ module NakedObjects.Angular.Gemini {
 
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
         getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
+
+        getCurrentDialog(paneId : number): DialogViewModel;
+        setCurrentDialog(paneId: number, dialogViewModel: DialogViewModel); 
+        clearCurrentDialog(paneId : number);
+
     }
 
     interface IContextInternal extends IContext {
@@ -45,7 +50,7 @@ module NakedObjects.Angular.Gemini {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number);
         setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
 
@@ -61,11 +66,13 @@ module NakedObjects.Angular.Gemini {
 
         // cached values
        
+        const currentDialogs: DialogViewModel[] = [,null,null]; // per pane 
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
         const currentMenuList: _.Dictionary<MenuRepresentation> = {};
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
+
 
         let currentLists: _.Dictionary<ListRepresentation>[] = []; // cache last 'listCacheSize' lists
 
@@ -301,7 +308,10 @@ module NakedObjects.Angular.Gemini {
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm?: DialogViewModel) => {
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
+
+            const dvm = context.getCurrentDialog(paneId);
+
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
                     dvm.message = "no result found";
@@ -357,6 +367,7 @@ module NakedObjects.Angular.Gemini {
 
         context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel) => {
             const err = error as ErrorMap | ErrorRepresentation | string;
+            let showWarning = true; // only show warning message if we have nothing else  
             if (err instanceof ErrorMap) {
                 _.each(vms, vmi => {
                     const errorValue = err.valuesMap()[vmi.id];
@@ -368,10 +379,11 @@ module NakedObjects.Angular.Gemini {
                         } else {
                             vmi.message = errorValue.invalidReason;
                         }
+                        showWarning = false;
                     }
                 });
 
-                const msg = err.invalidReason() || err.warningMessage;
+                const msg = err.invalidReason() || (showWarning ? err.warningMessage : "");
                 if (vm) {
                     vm.message = msg;
                 }
@@ -396,13 +408,12 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        context.invokeAction = (action: ActionMember, paneId: number, ovm?: DomainObjectViewModel, dvm?: DialogViewModel) => {
+        context.invokeAction = (action: ActionMember, paneId: number) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
+            let dvm = context.getCurrentDialog(paneId);
             let parameters: ParameterViewModel[] = [];
 
-
-            // todo can we trust this ? maybe dvm has been replaced cf ovm problem
             if (dvm) {
                 dvm.clearMessages();
                 parameters = dvm.parameters;
@@ -415,18 +426,19 @@ module NakedObjects.Angular.Gemini {
 
             repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
-
-                    // todo change this to use action parent.  
-                    if (ovm) {
+                    const parent = action.parent;
+                    if (parent instanceof DomainObjectRepresentation) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
                         if (actionIsNotQueryOnly) {
-                            dirtyObjects[ovm.domainType + "-" + ovm.instanceId] = true;
+                            // todo move formatting into rep
+                            dirtyObjects[parent.domainType + "-" + parent.instanceId] = true;
                         }
                     }
 
-                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
+                    context.setResult(action, result, paneId, 1, defaultPageSize);
                 }).
                 catch((error: any) => {
+                    dvm = context.getCurrentDialog(paneId);
                     context.setInvokeUpdateError(error, parameters, dvm);
                 });
         };
@@ -557,6 +569,18 @@ module NakedObjects.Angular.Gemini {
         context.getCiceroVM = () => {
             return cvm;
         };
+
+        context.getCurrentDialog = (paneId : number) => {
+            return currentDialogs[paneId];
+        }
+
+        context.setCurrentDialog = (paneId: number, dialogViewModel: DialogViewModel) => {
+            currentDialogs[paneId] = dialogViewModel;
+        }
+
+        context.clearCurrentDialog = (paneId: number) => {
+            currentDialogs[paneId] = null;
+        }
     });
 
 }
