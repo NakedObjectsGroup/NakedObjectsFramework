@@ -351,7 +351,7 @@ module NakedObjects.Angular.Gemini {
         output: string;
         input: string;
         parseInput: (input: string) => void;
-        private previousInput: string;
+        previousInput: string;
         selectPreviousInput(): void {
             this.input = this.previousInput;
         }
