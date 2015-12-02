@@ -482,6 +482,7 @@ module NakedObjects {
 
             // todo must be better way
             this.hateoasUrl = invoke.hateoasUrl;
+            this.method = invoke.method;
         }
 
         setParameter(name: string, value: Value) {
@@ -651,6 +652,7 @@ module NakedObjects {
 
             // todo must be better way
             this.hateoasUrl = prompt.hateoasUrl;
+            this.method = prompt.method;
         } 
 
         setSearchTerm(term: string) {

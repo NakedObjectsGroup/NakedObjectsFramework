@@ -377,6 +377,7 @@ module NakedObjects.Angular.Gemini {
                 }
                 else {
                     context.setError(ErrorRepresentation.create(msg));
+                    urlManager.setError();
                 }
             }
             else if (err instanceof ErrorRepresentation) {
@@ -388,8 +389,9 @@ module NakedObjects.Angular.Gemini {
                     vm.message = err as string;
                 } else {
                     context.setError(ErrorRepresentation.create(err as string));
+                    urlManager.setError();
                 }
-                urlManager.setError();
+               
             }
         };
 
