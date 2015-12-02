@@ -49,7 +49,7 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
-            const stackTrace = errorRep.stacktrace();
+            const stackTrace = errorRep.stackTrace();
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
             return errorViewModel;
         };
@@ -256,21 +256,28 @@ module NakedObjects.Angular.Gemini{
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams ?
                 (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
-                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right), ovm);
+                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
 
             return actionViewModel;
         };
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
+
+            const currentDvm = context.getCurrentDialog(paneId);
+            if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
+                return currentDvm;
+            }
+
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
+            dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
             dialogViewModel.onPaneId = paneId;
 
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), ovm, dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right));
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
@@ -283,11 +290,14 @@ module NakedObjects.Angular.Gemini{
                 urlManager.closeDialog(paneId);
             };
 
+            context.setCurrentDialog(paneId, dialogViewModel);
             return dialogViewModel;
         };
 
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number) => {
             const propertyViewModel = new PropertyViewModel();
+           
 
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.optional = propertyRep.extensions().optional;
@@ -347,7 +357,7 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.hasConditionalChoices =  !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
             if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-                var promptRep: PromptRepresentation = propertyRep.getPrompts();
+                const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {         
                     propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);

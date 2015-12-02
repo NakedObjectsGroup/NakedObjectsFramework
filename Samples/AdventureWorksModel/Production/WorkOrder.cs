@@ -174,5 +174,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public string Validate(DateTime startDate, DateTime endDate) {
+            return startDate > endDate ? "StartDate must be before EndDate" : null;
+        }
     }
 }

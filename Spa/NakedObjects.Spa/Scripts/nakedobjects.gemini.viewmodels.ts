@@ -217,6 +217,8 @@ module NakedObjects.Angular.Gemini {
         isQueryOnly: boolean;
         onPaneId: number;
 
+        action : ActionMember;
+
         parameters: ParameterViewModel[];
 
         doClose: () => void;
@@ -225,6 +227,10 @@ module NakedObjects.Angular.Gemini {
         clearMessages() {
             this.message = "";
             _.each(this.parameters, parm => parm.clearMessage());
+        }
+
+        isSame(paneId : number, otherAction : ActionMember ) {
+            return this.onPaneId === paneId && this.action.invokeLink().href() === otherAction.invokeLink().href();
         }
     } 
     

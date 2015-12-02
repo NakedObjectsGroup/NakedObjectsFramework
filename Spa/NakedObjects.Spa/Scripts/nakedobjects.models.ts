@@ -15,11 +15,12 @@
 
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.config.ts" />
+/// <reference path="nakedobjects.rointerfaces.ts" />
 
 module NakedObjects {
     import IExtensions = RoInterfaces.IExtensions;
     import ILink = RoInterfaces.ILink;
-    import IMenuRepresentation = RoInterfaces.IMenuRepresentation;
+    import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
 
@@ -481,6 +482,7 @@ module NakedObjects {
 
             // todo must be better way
             this.hateoasUrl = invoke.hateoasUrl;
+            this.method = invoke.method;
         }
 
         setParameter(name: string, value: Value) {
@@ -650,6 +652,7 @@ module NakedObjects {
 
             // todo must be better way
             this.hateoasUrl = prompt.hateoasUrl;
+            this.method = prompt.method;
         } 
 
         setSearchTerm(term: string) {
@@ -675,7 +678,7 @@ module NakedObjects {
 
         getPromptMap(): PromptMap {
             // needs to be initialised 
-            return null;
+            throw "Prompt map function must be initialized";
         }
 
         // links 
@@ -848,7 +851,9 @@ module NakedObjects {
         }
 
         getPrompts(): PromptRepresentation {
-            return <PromptRepresentation> this.promptLink().getTarget();
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
+            return pr;
         }
 
         // properties 
@@ -986,7 +991,9 @@ module NakedObjects {
         }
 
         getPrompts(): PromptRepresentation {
-            return <PromptRepresentation> this.promptLink().getTarget();
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
+            return pr;
         }
         
         value(): Value {
@@ -1225,7 +1232,7 @@ module NakedObjects {
         }
     }
 
-    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.IMenuRepresentation> {
+    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IMenuRepresentation> {
 
         wrapped = () => this.resource() as IMenuRepresentation;
 
@@ -1301,9 +1308,9 @@ module NakedObjects {
     }
 
     // matches List Representation 11.0
-    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.IListRepresentation> {
+    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IListRepresentation> {
 
-        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.Custom.IListRepresentation;
 
         // links
         selfLink(): Link {
@@ -1322,14 +1329,14 @@ module NakedObjects {
             return this.lazyValue;
         }
 
-        pagination(): RoInterfaces.IPagination {
+        pagination(): RoInterfaces.Custom.IPagination {
             return this.wrapped().pagination;
         }
     }
 
     export interface IErrorDetails {
         message() : string;
-        stacktrace() : string[];
+        stackTrace() : string[];
     }
 
     // matches the error representation 10.0 
@@ -1337,12 +1344,12 @@ module NakedObjects {
    
         wrapped = () => this.resource() as RoInterfaces.IErrorRepresentation;
 
-        static create(message: string, stacktrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
+        static create(message: string, stackTrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
             const rawError = {
                 links: [],
                 extensions: {},
                 message: message,
-                stacktrace: stacktrace,
+                stackTrace: stackTrace,
                 causedBy: causedBy
             };
             const error = new ErrorRepresentation();
@@ -1356,7 +1363,7 @@ module NakedObjects {
             return this.wrapped().message;
         }
 
-        stacktrace(): string[] {
+        stackTrace(): string[] {
             return this.wrapped().stackTrace;
         }
 
@@ -1364,7 +1371,7 @@ module NakedObjects {
             const cb = this.wrapped().causedBy;
             return cb ? {
                 message: () => cb.message,
-                stacktrace: () => cb.stackTrace
+                stackTrace: () => cb.stackTrace
             } : undefined;
         }
     }
@@ -1511,6 +1518,13 @@ module NakedObjects {
 
         wrapped = () => this.resource() as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
+        constructor(againstType : string, toCheckType : string) {
+            super();
+            this.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke`;
+            this.urlParms = {};
+            this.urlParms["supertype"] = toCheckType;
+        }
+
         selfLink(): Link {
             return linkByRel(this.links(), "self");
         }
@@ -1598,7 +1612,7 @@ module NakedObjects {
         constructor(public wrapped : RoInterfaces.ILink) { }
 
         href(): string {
-            return this.wrapped.href;
+            return decodeURIComponent(this.wrapped.href);
         }
 
         method(): string {

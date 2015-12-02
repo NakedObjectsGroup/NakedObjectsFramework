@@ -23,12 +23,6 @@
         memberOrder?: number;
         isService?: boolean;
         minLength?: number;
-        // custom extensions with "x-ro-nof-" prefix 
-        // ReSharper disable InconsistentNaming
-        "x-ro-nof-choices"?: { [index: string]: (string | number | boolean | ILink)[];}
-        "x-ro-nof-menuPath"?: string;
-        "x-ro-nof-mask"?: string;
-        // ReSharper restore InconsistentNaming
     }
 
     export interface IRepresentation {
@@ -54,13 +48,6 @@
         value: ILink[];
     }
 
-    export interface IPagination {
-        page: number;
-        pageSize: number;
-        numPages: number;
-        totalCount: number;
-    }
-
     export interface IOptionalCapabilities {
         blobsClobs: string;
         deleteObjects: string;
@@ -76,7 +63,7 @@
     }
 
     export interface IValue {
-        value: string | number | boolean | ILink | (string | number | boolean | ILink)[]  ;
+        value: string | number | boolean | ILink | (string | number | boolean | ILink)[];
         invalidReason?: string;
     }
 
@@ -99,8 +86,6 @@
 
     export interface IListRepresentation extends IResourceRepresentation {
         value: ILink[];
-        // todo custom
-        pagination? : IPagination;
     }
 
     export interface IScalarValueRepresentation extends IResourceRepresentation {
@@ -135,12 +120,6 @@
         members: { [index: string]: IMember };
     }
 
-    export interface IMenuRepresentation extends IResourceRepresentation {
-        members: { [index: string]: IActionMember };
-        title: string;
-        menuId: string;
-    }
-
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
         resultType: string;
         result?: IDomainObjectRepresentation | IListRepresentation | IScalarValueRepresentation;
@@ -150,7 +129,6 @@
         choices?: (string | number | boolean | ILink)[];
         default?: number | string | boolean | ILink;
     }
-
 
     export interface IActionRepresentation extends IResourceRepresentation {
         id: string;
@@ -170,7 +148,6 @@
         value?: ILink[];
         disabledReason?: string;
     }
-
 
     export interface IDomainTypeRepresentation extends IResourceRepresentation {
         name: string;

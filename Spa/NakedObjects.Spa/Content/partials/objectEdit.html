@@ -25,8 +25,8 @@
                         {{property.value}}
                     </div>
 
-                    <div ng-switch-when="true" class='input-control text' ng-switch="property.hasChoices" >
-                        <input type='hidden' value='{{property.reference}}' ng-model="property.reference" />
+                    <div ng-switch-when="true" class="input-control text" ng-switch="property.hasChoices" >
+                        <input type="hidden" value="{{property.reference}}" ng-model="property.reference" />
 
                         <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
 
@@ -36,7 +36,7 @@
                                     {{property.value}}
                                 </div>
 
-                                <input id="{{property.argId}}" class="{{property.status}}" placeholder='{{property.description}}' ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
+                                <input id="{{property.argId}}" class="{{property.status}}" placeholder="{{property.description}}" ng-switch-when="true" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop/>
 
                             </div>
 
@@ -52,9 +52,9 @@
                     <div ng-switch-when="false" ng-switch="property.returnType">
 
                         <div ng-switch-when="string" ng-switch="property.format">
-                            <div ng-switch-when="date-time" class='value'>{{property.value }}</div>
-                            <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                            <div ng-switch-default class='value'>{{property.value}}</div>
+                            <div ng-switch-when="date-time" class="value">{{property.value }}</div>
+                            <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" gemini-attachment></div>
+                            <div ng-switch-default class="value">{{property.value}}</div>
                         </div>
 
                         <div ng-switch-when="boolean">
@@ -62,11 +62,11 @@
                         </div>
 
                         <div ng-switch-default>
-                            <div class='value'>{{property.value}}</div>
+                            <div class="value">{{property.value}}</div>
                         </div>
                     </div>
 
-                    <div ng-switch-when="true" class='input-control text' ng-switch="property.hasChoices">
+                    <div ng-switch-when="true" class="input-control text" ng-switch="property.hasChoices">
 
                         <div ng-switch-when="false" ng-switch="property.hasConditionalChoices">
 
@@ -74,10 +74,10 @@
 
                                 <div ng-switch-when="string" ng-switch="property.format">
                                     <div ng-switch-when="date-time">
-                                        <input id="{{property.argId}}" class="value {{property.status}}" type='date' placeholder='{{property.description}}' ng-model="$parent.property.value" gemini-datepicker />
+                                        <input id="{{property.argId}}" class="value {{property.status}}"  placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-datepicker />
                                     </div>
-                                    <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                                    <input id="{{property.argId}}" class="{{property.status}}" ng-switch-default type='text' placeholder='{{property.description}}' ng-model="property.value" />
+                                    <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" gemini-attachment></div>
+                                    <input id="{{property.argId}}" class="{{property.status}}" ng-switch-default type="text" placeholder="{{property.description}}" ng-model="property.value" />
                                 </div>
 
                                 <div ng-switch-when="boolean">
@@ -85,7 +85,7 @@
                                 </div>
 
                                 <div ng-switch-default>
-                                    <input id="{{property.argId}}" class="value {{property.status}}" type='text' placeholder='{{property.description}}' ng-model="property.value" />
+                                    <input id="{{property.argId}}" class="value {{property.status}}" type="text" placeholder="{{property.description}}" ng-model="property.value" />
                                 </div>
 
                             </div>

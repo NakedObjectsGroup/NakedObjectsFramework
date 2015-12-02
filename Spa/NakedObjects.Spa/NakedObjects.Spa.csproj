@@ -116,6 +116,7 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.urlmanager.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.cicero.commandfactory.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.services.viewmodelfactory.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.gemini.exceptionhandler.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.gemini.viewmodels.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.helpers.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.models.ts" />
@@ -127,6 +128,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.custom.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.rointerfaces.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
