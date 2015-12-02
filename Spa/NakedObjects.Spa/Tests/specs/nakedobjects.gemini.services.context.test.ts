@@ -748,6 +748,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
             const testDvm = new NakedObjects.Angular.Gemini.DialogViewModel();
             const testPvm = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const testInvokeMap = new NakedObjects.InvokeMap({} as any, {} as any );
             testDvm.parameters = [testPvm];
             testPvm.id = "test";
             testPvm.value = "";
@@ -760,7 +761,7 @@ describe("nakedObjects.gemini.services.context ", () => {
                 populate.and.returnValue($q.reject(errorMap));
                 spyOn(errorMap, "valuesMap").and.returnValue({"test" : {value : new NakedObjects.Value(""), invalidReason : "Mandatory" } });
                 spyOn(errorMap, "invalidReason").and.returnValue("errormessage");
-                spyOn(testActionResult, "setParameter");
+                spyOn(testActionResult, "getInvokeMap").and.returnValue(testInvokeMap);
                 spyOn(testActionResult, "resultType").and.returnValue("object");
                 spyOn(testResult, "isNull").and.returnValue(true);
                 spyOn(testActionResult, "result").and.returnValue(testResult);
@@ -779,6 +780,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
             const testDvm = new NakedObjects.Angular.Gemini.DialogViewModel();
             const testPvm = new NakedObjects.Angular.Gemini.ParameterViewModel();
+            const testInvokeMap = new NakedObjects.InvokeMap({} as any, {} as any);
             testDvm.parameters = [testPvm];
             testPvm.id = "test";
             testPvm.value = "";
@@ -787,7 +789,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             beforeEach(inject(($q, repLoader) => {
                 populate = spyOn(repLoader, "populate");
                 populate.and.returnValue($q.when(testActionResult));
-                spyOn(testActionResult, "setParameter");
+                spyOn(testActionResult, "getInvokeMap").and.returnValue(testInvokeMap);
                 spyOn(testActionResult, "resultType").and.returnValue("object");
                 spyOn(testResult, "isNull").and.returnValue(true);
                 spyOn(testActionResult, "result").and.returnValue(testResult);
@@ -871,7 +873,7 @@ describe("nakedObjects.gemini.services.context ", () => {
             const testPersist = <NakedObjects.PersistMap><any>{ setMember: () => { }};
             spyOn(testPersist, "setMember");
             spyOn(testObject, "getPersistMap").and.returnValue(testPersist);
-            spyOn(testUpdatedObject, "url").and.returnValue("");
+            spyOn(testUpdatedObject, "getUrl").and.returnValue("");
             populate = spyOn(repLoader, "populate");
             populate.and.returnValue($q.when(testUpdatedObject));
             spyOn(urlManager, "setObject");
@@ -914,7 +916,7 @@ describe("nakedObjects.gemini.services.context ", () => {
 
         const testObject = new NakedObjects.DomainObjectRepresentation();
         const testPersist = <NakedObjects.PersistMap>{};
-        const testUpdatedObject = new NakedObjects.DomainTypeActionInvokeRepresentation();
+        const testUpdatedObject = new NakedObjects.DomainTypeActionInvokeRepresentation("", "");
         const testResult = new NakedObjects.ActionResultRepresentation();
         const testOvm = new NakedObjects.Angular.Gemini.DomainObjectViewModel();
         testOvm.properties = [];

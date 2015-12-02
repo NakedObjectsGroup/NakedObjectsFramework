@@ -484,10 +484,7 @@ module NakedObjects.Angular.Gemini {
                 return $q.when(subTypeCache[toCheckType][againstType]);
             }
 
-            const isSubTypeOf = new DomainTypeActionInvokeRepresentation();
-
-            // todo should be in model ?
-            isSubTypeOf.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke?supertype=${toCheckType}`;
+            const isSubTypeOf = new DomainTypeActionInvokeRepresentation(againstType, toCheckType);
 
             return repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {

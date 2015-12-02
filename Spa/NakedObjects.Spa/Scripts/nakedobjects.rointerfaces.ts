@@ -151,7 +151,6 @@
         disabledReason?: string;
     }
 
-
     export interface IDomainTypeRepresentation extends IResourceRepresentation {
         name: string;
         domainType: string;
