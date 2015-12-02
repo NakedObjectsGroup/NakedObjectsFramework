@@ -374,12 +374,17 @@ module NakedObjects.Angular.Gemini {
 
                     if (errorValue) {
                         vmi.value = errorValue.value.toValueString();
-                        if (errorValue.invalidReason === "Mandatory") {
-                            vmi.description = `REQUIRED ${vmi.description}`;
-                        } else {
-                            vmi.message = errorValue.invalidReason;
+
+                        const reason = errorValue.invalidReason;
+                        if (reason) {
+                            if (reason === "Mandatory") {
+                                const r = "REQUIRED";
+                                vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                            } else {
+                                vmi.message = reason;
+                            }
+                            showWarning = false;
                         }
-                        showWarning = false;
                     }
                 });
 
@@ -422,7 +427,6 @@ module NakedObjects.Angular.Gemini {
                 // todo do we still need to do this ? Test
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
-
 
             repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {

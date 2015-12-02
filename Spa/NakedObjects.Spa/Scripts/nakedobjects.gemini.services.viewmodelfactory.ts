@@ -262,8 +262,15 @@ module NakedObjects.Angular.Gemini{
         };
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
+
+            const currentDvm = context.getCurrentDialog(paneId);
+            if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
+                return currentDvm;
+            }
+
             const dialogViewModel = new DialogViewModel();
             const parameters = actionMember.parameters();
+            dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName;
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
@@ -287,8 +294,10 @@ module NakedObjects.Angular.Gemini{
             return dialogViewModel;
         };
 
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number) => {
             const propertyViewModel = new PropertyViewModel();
+           
 
             propertyViewModel.title = propertyRep.extensions().friendlyName;
             propertyViewModel.optional = propertyRep.extensions().optional;

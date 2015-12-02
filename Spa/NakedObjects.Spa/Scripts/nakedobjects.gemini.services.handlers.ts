@@ -180,7 +180,6 @@ module NakedObjects.Angular.Gemini {
             // only pass previous values if editing 
             const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
-            context.clearCurrentDialog(routeData.paneId);
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
@@ -209,16 +208,20 @@ module NakedObjects.Angular.Gemini {
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId, ovm);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
+                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.FirstSubAction;
                     } else if (routeData.edit || ovm.isTransient) {
+                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.FirstProperty;
                     } else {
+                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.ObjectTitle;
                     }
 
                     focusManager.focusOn(focusTarget, urlManager.currentpane());
 
                 }).catch(error => {
+                    context.clearCurrentDialog(routeData.paneId);
                     setError(error);
                 });
 
