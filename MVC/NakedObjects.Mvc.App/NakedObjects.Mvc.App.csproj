@@ -202,11 +202,11 @@
     </Reference>
     <Reference Include="RestfulObjects.Mvc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0\lib\net452\RestfulObjects.Mvc.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.1\lib\net452\RestfulObjects.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="RestfulObjects.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.0\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
+      <HintPath>..\..\packages\RestfulObjects.Mvc.7.0.1\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>

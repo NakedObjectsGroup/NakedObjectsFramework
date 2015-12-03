@@ -36,8 +36,9 @@ namespace RestfulObjects.Mvc {
             DefaultPageSize = 20;
         }
 
-        protected RestfulObjectsControllerBase(INakedObjectsSurface surface) {
+        protected RestfulObjectsControllerBase(INakedObjectsSurface surface, IOidStrategy oidStrategy) {
             Surface = surface;
+            OidStrategy = oidStrategy;
         }
 
         public static bool IsReadOnly { get; set; }
@@ -62,6 +63,7 @@ namespace RestfulObjects.Mvc {
         }
 
         protected INakedObjectsSurface Surface { get; set; }
+        public IOidStrategy OidStrategy { get; set; }
 
         private static string PrefixRoute(string segment, string prefix) {
             return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
@@ -470,7 +472,7 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetDomainTypes(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetDomainTypes().OrderBy(s => s.DomainTypeName()).ToArray(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(Surface.GetDomainTypes().OrderBy(s => s.DomainTypeName(OidStrategy)).ToArray(), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetDomainType(string typeName, ReservedArguments arguments) {
@@ -741,7 +743,7 @@ namespace RestfulObjects.Mvc {
             if (arguments.IsMalformed) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
-            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, arguments.DomainModel);
+            return RestControlFlags.FlagsFromArguments(OidStrategy, arguments.ValidateOnly, arguments.DomainModel);
         }
 
 
@@ -888,7 +890,7 @@ namespace RestfulObjects.Mvc {
 
         private HttpResponseMessage ErrorMsg(Exception e) {
             Logger.InfoFormat("ErrorMsg - NakedObjectsSurfaceException Msg: {0}", e.Message);
-            return ConfigureMsg(new RestSnapshot(e, Request).Populate());
+            return ConfigureMsg(new RestSnapshot(e, Request, OidStrategy).Populate());
         }
 
         private HttpResponseMessage ConfigureMsg(RestSnapshot snapshot) {

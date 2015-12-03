@@ -18,7 +18,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionTypeRepresentation : Representation {
         protected ActionTypeRepresentation(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext, RestControlFlags flags) : base(flags) {
-            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, actionTypeContext));
+            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, actionTypeContext, flags.OidStrategy));
             SetScalars(actionTypeContext);
             SetLinks(req, actionTypeContext);
             SetParameters(req, actionTypeContext);
@@ -55,7 +55,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
+            Extensions = MapRepresentation.Create(Flags.OidStrategy);
         }
 
         private void SetScalars(ActionTypeContextSurface actionTypeContext) {
@@ -72,20 +72,20 @@ namespace RestfulObjects.Snapshot.Representations {
                     Action = actionTypeContext.ActionContext.Action,
                     OwningSpecification = actionTypeContext.OwningSpecification,
                     Parameter = p.Parameter
-                })), Flags));
+                }, Flags.OidStrategy)), Flags));
             Parameters = parms.ToArray();
         }
 
         private void SetLinks(HttpRequestMessage req, ActionTypeContextSurface actionTypeContext) {
-            var domainTypeUri = new UriMtHelper(req, actionTypeContext);
+            var domainTypeUri = new UriMtHelper(req, actionTypeContext, Flags.OidStrategy);
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(SelfRelType, Flags),
                 LinkRepresentation.Create(new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags),
-                LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ReturnType)), Flags)
+                LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ReturnType, Flags.OidStrategy)), Flags)
             };
 
             if (actionTypeContext.ActionContext.Action.ReturnType.IsCollection()) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ElementType)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, actionTypeContext.ActionContext.Action.ElementType, Flags.OidStrategy)), Flags));
             }
 
             Links = tempLinks.ToArray();

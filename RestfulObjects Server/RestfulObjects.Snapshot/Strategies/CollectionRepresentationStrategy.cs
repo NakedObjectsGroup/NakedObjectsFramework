@@ -35,7 +35,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: propertyContext.Property.ExtensionData(),
                 returnType: collection.Specification,
-                elementType: propertyContext.ElementSpecification);
+                elementType: propertyContext.ElementSpecification,
+                oidStrategy: Flags.OidStrategy);
         }
 
         public LinkRepresentation[] GetValue() {
@@ -43,7 +44,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateValueLink(INakedObjectSurface no) {
-            return LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, no)), Flags,
+            return LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, no, Flags.OidStrategy)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 

@@ -51,8 +51,8 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             if (parameter.IsAutoCompleteEnabled) {
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))));
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, parameter.AutoCompleteMinLength())));
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.MinLength, parameter.AutoCompleteMinLength())));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
@@ -60,11 +60,11 @@ namespace RestfulObjects.Snapshot.Representations {
             else {
                 Tuple<string, INakedObjectSpecificationSurface>[] parms = parameter.GetChoicesParameters();
                 OptionalProperty[] args = parms.Select(tuple => RestUtils.CreateArgumentProperty(req, tuple, Flags)).ToArray();
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, args));
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, parameterContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, parameterContext, Flags.OidStrategy)), Flags, opts.ToArray());
         }
 
         private void SetLinks(HttpRequestMessage req, INakedObjectSurface nakedObject, INakedObjectActionParameterSurface parameter) {
@@ -77,7 +77,7 @@ namespace RestfulObjects.Snapshot.Representations {
                     OwningSpecification = nakedObject.Specification,
                     Parameter = parameter
                 };
-                LinkRepresentation describedBy = LinkRepresentation.Create(new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, parameterTypeContextSurface)), Flags);
+                LinkRepresentation describedBy = LinkRepresentation.Create(new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, parameterTypeContextSurface, Flags.OidStrategy)), Flags);
                 tempLinks.Add(describedBy);
             }
 
@@ -96,7 +96,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(req, tuple.Item1, parameter, flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
-                MapRepresentation map = MapRepresentation.Create(op);
+                MapRepresentation map = MapRepresentation.Create(Flags.OidStrategy, op);
                 custom = custom ?? new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomChoices] = map;
             }
@@ -121,10 +121,11 @@ namespace RestfulObjects.Snapshot.Representations {
                     memberOrder: null,
                     customExtensions: custom,
                     returnType: parameter.Specification,
-                    elementType: parameter.ElementType);
+                    elementType: parameter.ElementType,
+                    oidStrategy: Flags.OidStrategy);
             }
             else {
-                Extensions = MapRepresentation.Create();
+                Extensions = MapRepresentation.Create(Flags.OidStrategy);
             }
         }
 
@@ -135,7 +136,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static LinkRepresentation CreateDefaultLink(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {
-            return LinkRepresentation.Create(new DefaultRelType(parameter, new UriMtHelper(req, defaultNakedObject)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return LinkRepresentation.Create(new DefaultRelType(parameter, new UriMtHelper(req, defaultNakedObject, flags.OidStrategy)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         private static object CreateDefaultLinks(HttpRequestMessage req, INakedObjectActionParameterSurface parameter, INakedObjectSurface defaultNakedObject, string title, RestControlFlags flags) {

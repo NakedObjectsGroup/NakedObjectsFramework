@@ -48,7 +48,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         public static UserRepresentation Create(HttpRequestMessage req, IPrincipal user, RestControlFlags flags) {

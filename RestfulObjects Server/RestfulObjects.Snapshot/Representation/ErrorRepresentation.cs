@@ -9,18 +9,19 @@ using System;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     public class ErrorRepresentation : Representation {
-        public ErrorRepresentation(Exception e) : base(RestControlFlags.DefaultFlags()) {
+        public ErrorRepresentation(Exception e, IOidStrategy oidStrategy) : base(RestControlFlags.DefaultFlags(oidStrategy)) {
             Exception exception = GetInnermostException(e);
             Message = exception.Message;
             StackTrace = exception.StackTrace.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
             Links = new LinkRepresentation[] {};
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(oidStrategy);
         }
 
         [DataMember(Name = JsonPropertyNames.Message)]
@@ -46,8 +47,8 @@ namespace RestfulObjects.Snapshot.Representations {
             return GetInnermostException(e.InnerException);
         }
 
-        public static Representation Create(Exception exception) {
-            return new ErrorRepresentation(exception);
+        public static Representation Create(Exception exception, IOidStrategy oidStrategy) {
+            return new ErrorRepresentation(exception, oidStrategy);
         }
     }
 }

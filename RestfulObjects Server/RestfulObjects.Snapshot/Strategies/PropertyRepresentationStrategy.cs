@@ -33,8 +33,8 @@ namespace RestfulObjects.Snapshot.Strategies {
             var opts = new List<OptionalProperty>();
 
             if (propertyContext.Property.IsAutoCompleteEnabled) {
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))));
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength())));
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(Flags.OidStrategy,  new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength())));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
@@ -42,11 +42,11 @@ namespace RestfulObjects.Snapshot.Strategies {
             else {
                 Tuple<string, INakedObjectSpecificationSurface>[] parms = propertyContext.Property.GetChoicesParameters();
                 OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(req, pnt, Flags)).ToArray();
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, args));
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(new PromptRelType(new UriMtHelper(req, propertyContext, Flags.OidStrategy)), Flags, opts.ToArray());
         }
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
@@ -60,12 +60,12 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateClearLink() {
-            return LinkRepresentation.Create(new MemberRelType(RelValues.Clear, new UriMtHelper(req, propertyContext)) {Method = RelMethod.Delete}, Flags);
+            return LinkRepresentation.Create(new MemberRelType(RelValues.Clear, new UriMtHelper(req, propertyContext, Flags.OidStrategy)) { Method = RelMethod.Delete }, Flags);
         }
 
         private LinkRepresentation CreateModifyLink() {
-            return LinkRepresentation.Create(new MemberRelType(RelValues.Modify, new UriMtHelper(req, propertyContext)) {Method = RelMethod.Put}, Flags,
-                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
+            return LinkRepresentation.Create(new MemberRelType(RelValues.Modify, new UriMtHelper(req, propertyContext, Flags.OidStrategy)) { Method = RelMethod.Put }, Flags,
+                new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))));
         }
 
 
@@ -89,7 +89,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
-                MapRepresentation map = MapRepresentation.Create(op);
+                MapRepresentation map = MapRepresentation.Create(Flags.OidStrategy, op);
 
                 custom = custom ?? new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomChoices] = map;
@@ -124,7 +124,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 memberOrder: propertyContext.Property.MemberOrder(),
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
-                elementType: propertyContext.ElementSpecification );
+                elementType: propertyContext.ElementSpecification,
+                oidStrategy: Flags.OidStrategy);
         }
 
         public bool GetHasChoices() {

@@ -18,7 +18,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class DomainTypeRepresentation : Representation {
         protected DomainTypeRepresentation(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) : base(flags) {
-            var helper = new UriMtHelper(req, spec);
+            var helper = new UriMtHelper(req, spec, flags.OidStrategy);
             SelfRelType = new DomainTypeRelType(RelValues.Self, helper);
             SetScalars(spec);
             SetLinks(helper);
@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetScalars(INakedObjectSpecificationSurface spec) {
             Name = spec.FullName();
-            DomainType = spec.DomainTypeName();
+            DomainType = spec.DomainTypeName(Flags.OidStrategy);
             FriendlyName = spec.SingularName();
             PluralName = spec.PluralName();
             Description = spec.Description();
@@ -81,12 +81,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetTypeActions(INakedObjectSpecificationSurface spec, HttpRequestMessage req) {
             TypeActions = new[] {
-                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSubtypeOf), Flags,
+                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec, Flags.OidStrategy), WellKnownIds.IsSubtypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
-                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec), WellKnownIds.IsSupertypeOf), Flags,
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Href, null, typeof (object))))))),
+                LinkRepresentation.Create(new TypeActionRelType(new UriMtHelper(req, spec, Flags.OidStrategy), WellKnownIds.IsSupertypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Href, null, typeof (object)))))))
             };
         }
 
@@ -95,15 +95,15 @@ namespace RestfulObjects.Snapshot.Representations {
             INakedObjectAssociationSurface[] collections = spec.Properties.Where(p => p.IsCollection()).ToArray();
             INakedObjectActionSurface[] actions = spec.GetActionLeafNodes();
 
-            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Property, new UriMtHelper(req, new PropertyTypeContextSurface {Property = p, OwningSpecification = spec})), Flags));
-            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Collection, new UriMtHelper(req, new PropertyTypeContextSurface {Property = c, OwningSpecification = spec})), Flags));
-            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Action, new UriMtHelper(req, new ActionTypeContextSurface {ActionContext = new ActionContextSurface {Action = a}, OwningSpecification = spec})), Flags));
+            IEnumerable<LinkRepresentation> propertyMembers = properties.Select(p => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Property, new UriMtHelper(req, new PropertyTypeContextSurface { Property = p, OwningSpecification = spec }, Flags.OidStrategy)), Flags));
+            IEnumerable<LinkRepresentation> collectionMembers = collections.Select(c => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Collection, new UriMtHelper(req, new PropertyTypeContextSurface { Property = c, OwningSpecification = spec }, Flags.OidStrategy)), Flags));
+            IEnumerable<LinkRepresentation> actionMembers = actions.Select(a => LinkRepresentation.Create(new TypeMemberRelType(RelValues.Action, new UriMtHelper(req, new ActionTypeContextSurface { ActionContext = new ActionContextSurface { Action = a }, OwningSpecification = spec }, Flags.OidStrategy)), Flags));
 
             Members = propertyMembers.Union(collectionMembers).Union(actionMembers).ToArray();
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         public static DomainTypeRepresentation Create(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RestControlFlags flags) {

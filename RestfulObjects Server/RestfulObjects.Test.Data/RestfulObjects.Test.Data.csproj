@@ -131,8 +131,8 @@
       <HintPath>..\..\packages\NakedObjects.Surface.7.0.0\lib\net451\NakedObjects.Surface.dll</HintPath>
     </Reference>
     <Reference Include="NakedObjects.Surface.Nof4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NakedObjects.Surface.Nof4.7.0.0\lib\net451\NakedObjects.Surface.Nof4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

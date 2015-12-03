@@ -18,7 +18,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ObjectRepresentation : Representation {
         protected ObjectRepresentation(HttpRequestMessage req, ObjectContextSurface objectContext, RestControlFlags flags) : base(flags) {
-            var objectUri = new UriMtHelper(req, objectContext.Target);
+            var objectUri = new UriMtHelper(req, objectContext.Target, flags.OidStrategy);
             SetScalars(objectContext);
             SelfRelType = objectContext.Specification.IsService() ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
             SetLinksAndMembers(req, objectContext);
@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, objectContext.Specification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, objectContext.Specification, Flags.OidStrategy)), Flags));
             }
 
             // temp disable icons 
@@ -75,23 +75,23 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (!objectContext.Target.IsTransient() && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline()).Select(p => p.Id).ToArray();
-                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
+                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(new ObjectRelType(RelValues.Update, new UriMtHelper(req, objectContext.Target)) {Method = RelMethod.Put}, Flags,
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
+                LinkRepresentation modifyLink = LinkRepresentation.Create(new ObjectRelType(RelValues.Update, new UriMtHelper(req, objectContext.Target, Flags.OidStrategy)) { Method = RelMethod.Put }, Flags,
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, props)));
 
                 tempLinks.Add(modifyLink);
             }
 
             if (objectContext.Target.IsTransient()) {
                 KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection() && !p.IsInline()).ToDictionary(p => p.Id, p => GetPropertyValue(req, p, objectContext.Target, Flags, true)).ToArray();
-                OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
+                OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
-                var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
+                var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(Flags.OidStrategy, props));
                 var args = new List<OptionalProperty> {argMembers};
 
-                LinkRepresentation persistLink = LinkRepresentation.Create(new ObjectsRelType(RelValues.Persist, new UriMtHelper(req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
+                LinkRepresentation persistLink = LinkRepresentation.Create(new ObjectsRelType(RelValues.Persist, new UriMtHelper(req, objectContext.Target.Specification, Flags.OidStrategy)) { Method = RelMethod.Post }, Flags,
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(Flags.OidStrategy, args.ToArray())));
 
                 tempLinks.Add(persistLink);
             }
@@ -104,7 +104,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             IEnumerable<InlineMemberAbstractRepresentation> allMembers = properties.Union(actions);
 
-            Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
+            Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m), Flags.OidStrategy);
         }
 
         private IDictionary<string, object> GetCustomExtensions(INakedObjectSurface nakedObject) {
@@ -116,7 +116,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 Extensions = RestUtils.GetExtensions(friendlyname: nakedObject.Specification.SingularName(),
                     description: nakedObject.Specification.Description(),
                     pluralName: nakedObject.Specification.PluralName(),
-                    domainType: nakedObject.Specification.DomainTypeName(),
+                    domainType: nakedObject.Specification.DomainTypeName(Flags.OidStrategy),
                     isService: nakedObject.Specification.IsService(),
                     hasParams: null,
                     optional: null,
@@ -125,10 +125,11 @@ namespace RestfulObjects.Snapshot.Representations {
                     memberOrder: null,
                     customExtensions: GetCustomExtensions(nakedObject),
                     returnType: null,
-                    elementType: null);
+                    elementType: null,
+                    oidStrategy: Flags.OidStrategy);
             }
             else {
-                Extensions = MapRepresentation.Create();
+                Extensions = MapRepresentation.Create(Flags.OidStrategy);
             }
         }
 
@@ -146,7 +147,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            LinkObjectId oid = OidStrategyHolder.OidStrategy.GetOid(objectContext.Target);
+            LinkObjectId oid = flags.OidStrategy.GetOid(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService()) {

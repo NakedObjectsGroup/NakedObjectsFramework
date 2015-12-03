@@ -17,7 +17,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         public RestControlFlags Flags { get; private set; }
 
         public MapRepresentation GetExtensions() {
-            return Flags.SimpleDomainModel ? GetExtensionsForSimple() : MapRepresentation.Create();
+            return Flags.SimpleDomainModel ? GetExtensionsForSimple() : MapRepresentation.Create(Flags.OidStrategy);
         }
 
         protected abstract MapRepresentation GetExtensionsForSimple();

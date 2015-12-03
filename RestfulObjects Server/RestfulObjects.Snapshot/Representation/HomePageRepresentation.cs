@@ -36,7 +36,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         private void SetLinks(HttpRequestMessage req) {

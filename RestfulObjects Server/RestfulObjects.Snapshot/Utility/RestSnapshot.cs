@@ -207,13 +207,13 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(Exception exception, HttpRequestMessage req)
+        public RestSnapshot(Exception exception, HttpRequestMessage req, IOidStrategy oidStrategy)
             : this(req, true) {
             logger.DebugFormat("RestSnapshot:Exception");
 
             populator = () => {
                 MapToHttpError(exception);
-                MapToRepresentation(exception, req);
+                MapToRepresentation(exception, req, oidStrategy);
                 MapToWarningHeader(exception);
                 SetHeaders();
             };
@@ -365,15 +365,15 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        private void MapToRepresentation(Exception e, HttpRequestMessage req) {
+        private void MapToRepresentation(Exception e, HttpRequestMessage req, IOidStrategy oidStrategy) {
             if (e is WithContextNOSException) {
                 ArgumentsRepresentation.Format format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
-                RestControlFlags flags = e is BadPersistArgumentsException ? ((BadPersistArgumentsException) e).Flags : RestControlFlags.DefaultFlags();
+                RestControlFlags flags = e is BadPersistArgumentsException ? ((BadPersistArgumentsException) e).Flags : RestControlFlags.DefaultFlags(oidStrategy);
 
                 var contextNosException = e as WithContextNOSException;
 
                 if (contextNosException.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable)) {
-                    representation = NullRepresentation.Create();
+                    representation = NullRepresentation.Create(oidStrategy);
                 }
                 else if (contextNosException.ContextSurface != null) {
                     representation = ArgumentsRepresentation.Create(req, contextNosException.ContextSurface, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
@@ -382,7 +382,7 @@ namespace RestfulObjects.Snapshot.Utility {
                     representation = ArgumentsRepresentation.Create(req, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
                 }
                 else {
-                    representation = NullRepresentation.Create();
+                    representation = NullRepresentation.Create(oidStrategy);
                 }
             }
             else if (e is ResourceNotFoundNOSException ||
@@ -390,10 +390,10 @@ namespace RestfulObjects.Snapshot.Utility {
                      e is PreconditionFailedNOSException ||
                      e is PreconditionHeaderMissingNOSException ||
                      e is NoContentNOSException) {
-                representation = NullRepresentation.Create();
+                         representation = NullRepresentation.Create(oidStrategy);
             }
             else {
-                representation = ErrorRepresentation.Create(e);
+                representation = ErrorRepresentation.Create(e, oidStrategy);
             }
         }
 

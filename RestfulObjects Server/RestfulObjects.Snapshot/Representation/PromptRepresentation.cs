@@ -22,8 +22,8 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(listContext, propertyContext, req);
-            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
-            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target)));
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, propertyContext, flags.OidStrategy));
+            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target, flags.OidStrategy)));
             SetExtensions();
             SetHeader(listContext.IsListOfServices);
         }
@@ -32,8 +32,8 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(flags) {
             SetScalars(parmContext.Id);
             SetChoices(listContext, parmContext, req);
-            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, parmContext));
-            var helper = new UriMtHelper(req, parmContext.Target);
+            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(req, parmContext, flags.OidStrategy));
+            var helper = new UriMtHelper(req, parmContext.Target, flags.OidStrategy);
             ObjectRelType parentRelType = parmContext.Target.Specification.IsService() ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             SetLinks(req, listContext.ElementType, parentRelType);
             SetExtensions();
@@ -65,7 +65,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         private void SetLinks(HttpRequestMessage req, INakedObjectSpecificationSurface spec, RelType parentRelType) {
@@ -75,7 +75,7 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, spec)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, spec, Flags.OidStrategy)), Flags));
             }
 
             Links = tempLinks.ToArray();
@@ -87,7 +87,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private LinkRepresentation CreateObjectLink(HttpRequestMessage req, INakedObjectSurface no) {
-            var helper = new UriMtHelper(req, no);
+            var helper = new UriMtHelper(req, no, Flags.OidStrategy);
             var rt = new ObjectRelType(RelValues.Element, helper);
 
             return LinkRepresentation.Create(rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));

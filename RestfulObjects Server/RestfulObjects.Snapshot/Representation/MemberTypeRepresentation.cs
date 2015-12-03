@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public abstract class MemberTypeRepresentation : Representation {
         protected MemberTypeRepresentation(HttpRequestMessage req, PropertyTypeContextSurface propertyContext, RestControlFlags flags) : base(flags) {
             SetScalars(propertyContext);
-            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
+            SelfRelType = new TypeMemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext, flags.OidStrategy));
             SetExtensions();
             SetHeader();
         }
@@ -55,11 +55,11 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
+            Extensions = MapRepresentation.Create(Flags.OidStrategy);
         }
 
         protected IList<LinkRepresentation> CreateLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
-            var domainTypeUri = new UriMtHelper(req, propertyContext);
+            var domainTypeUri = new UriMtHelper(req, propertyContext, Flags.OidStrategy);
             return new List<LinkRepresentation> {
                 LinkRepresentation.Create(SelfRelType, Flags),
                 LinkRepresentation.Create(new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags)
@@ -72,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return CollectionTypeRepresentation.Create(req, propertyContext, flags);
             }
 
-            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString(propertyContext.Property.Specification);
+            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString(propertyContext.Property.Specification, flags.OidStrategy);
 
             if (typeAndFormat.Item1 == PredefinedType.String.ToRoString()) {
                 var exts = new Dictionary<string, object>();

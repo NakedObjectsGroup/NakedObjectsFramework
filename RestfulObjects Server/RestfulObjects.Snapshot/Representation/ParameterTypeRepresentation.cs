@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class ParameterTypeRepresentation : Representation {
         protected ParameterTypeRepresentation(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext, RestControlFlags flags) : base(flags) {
             SetScalars(parameterTypeContext);
-            SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(req, parameterTypeContext));
+            SelfRelType = new ParamTypeRelType(RelValues.Self, new UriMtHelper(req, parameterTypeContext, flags.OidStrategy));
             SetLinks(req, parameterTypeContext);
             SetExtensions();
             SetHeader();
@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
+            Extensions = MapRepresentation.Create(Flags.OidStrategy);
         }
 
         private void SetScalars(ParameterTypeContextSurface parameterTypeContext) {
@@ -67,12 +67,12 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ParameterTypeContextSurface parameterTypeContext) {
-            var domainTypeUri = new UriMtHelper(req, parameterTypeContext);
+            var domainTypeUri = new UriMtHelper(req, parameterTypeContext, Flags.OidStrategy);
 
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(SelfRelType, Flags),
                 LinkRepresentation.Create(new TypeMemberRelType(RelValues.Up, domainTypeUri), Flags),
-                LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, parameterTypeContext.Parameter.Specification)), Flags)
+                LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, parameterTypeContext.Parameter.Specification, Flags.OidStrategy)), Flags)
             };
 
             Links = tempLinks.ToArray();

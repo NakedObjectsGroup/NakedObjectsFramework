@@ -7,15 +7,16 @@
 
 using System.Linq;
 using System.Net.Http.Headers;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     public class MapRepresentation : Representation {
         private MediaTypeHeaderValue mediaType;
-        public MapRepresentation() : base(RestControlFlags.DefaultFlags()) {}
+        public MapRepresentation(IOidStrategy oidStrategy) : base(RestControlFlags.DefaultFlags(oidStrategy)) {}
 
-        public static MapRepresentation Create(params OptionalProperty[] properties) {
-            return properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] {}, properties) : new MapRepresentation();
+        public static MapRepresentation Create(IOidStrategy oidStrategy, params OptionalProperty[] properties) {
+            return properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] { oidStrategy }, properties) : new MapRepresentation(oidStrategy);
         }
 
         public void SetContentType(MediaTypeHeaderValue mt) {

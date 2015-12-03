@@ -214,7 +214,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static void CreateConstructor<T>(TypeBuilder typeBuilder) {
-            ConstructorInfo parentCtor = (typeof (T)).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic).SingleOrDefault();
+            ConstructorInfo parentCtor = (typeof (T)).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).SingleOrDefault();
 
             if (parentCtor != null) {
                 ParameterInfo[] parentCtorParms = parentCtor.GetParameters();
@@ -263,10 +263,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (valueOnly) {
-                return RefValueRepresentation.Create(new ValueRelType(property, new UriMtHelper(req, valueNakedObject)), flags);
+                return RefValueRepresentation.Create(new ValueRelType(property, new UriMtHelper(req, valueNakedObject, flags.OidStrategy)), flags);
             }
 
-            var helper = new UriMtHelper(req, property.IsInline() ? target : valueNakedObject);
+            var helper = new UriMtHelper(req, property.IsInline() ? target : valueNakedObject, flags.OidStrategy);
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {

@@ -32,7 +32,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextSurface propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
-            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property.Specification)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property.Specification, Flags.OidStrategy)), Flags));
             Links = tempLinks.ToArray();
         }
 

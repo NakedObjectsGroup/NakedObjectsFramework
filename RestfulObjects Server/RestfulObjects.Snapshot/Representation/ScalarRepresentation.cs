@@ -38,13 +38,13 @@ namespace RestfulObjects.Snapshot.Representations {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, objectContext.Specification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, objectContext.Specification, Flags.OidStrategy)), Flags));
             }
             Links = tempLinks.ToArray();
         }
 
         private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
+            Extensions = MapRepresentation.Create(Flags.OidStrategy);
         }
 
         public static ScalarRepresentation Create(ObjectContextSurface objectContext, HttpRequestMessage req, RestControlFlags flags) {

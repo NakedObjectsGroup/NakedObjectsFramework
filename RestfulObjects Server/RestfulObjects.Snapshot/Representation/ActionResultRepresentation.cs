@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionResultRepresentation : Representation {
         protected ActionResultRepresentation(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) : base(flags) {
-            SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(req, actionResult.ActionContext));
+            SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(req, actionResult.ActionContext, flags.OidStrategy));
             SetResultType(actionResult);
             SetLinks(req, actionResult);
             SetExtensions();
@@ -40,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         private void SetLinks(HttpRequestMessage req, ActionResultContextSurface actionResult) {
@@ -68,29 +68,29 @@ namespace RestfulObjects.Snapshot.Representations {
                 if (visibleParamContext.Specification.IsParseable()) {
                     object proposedObj = visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object;
                     object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
-                    value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
+                    value = MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection()) {
                     if (visibleParamContext.ElementSpecification.IsParseable()) {
                         var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedNakedObject == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedNakedObject.Object)).Cast<object>();
                         var valueObjs = proposedCollection.Select(RestUtils.ObjectToPredefinedType).ToArray();
-                        value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
+                        value = MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }
                     else {
                         var refNos = visibleParamContext.ProposedNakedObject.ToEnumerable().Select(no => no).ToArray();
-                        var refs = refNos.Select(no => RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, no)), Flags)).ToArray();
+                        var refs = refNos.Select(no => RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, no, Flags.OidStrategy)), Flags)).ToArray();
 
-                        value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, refs));
+                        value = MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, refs));
                     }
                 }
                 else {
-                    var valueRef = RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, visibleParamContext.ProposedNakedObject)), Flags);
-                    value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueRef));
+                    var valueRef = RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, visibleParamContext.ProposedNakedObject, Flags.OidStrategy)), Flags);
+                    value = MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, valueRef));
                 }
 
                 optionalProperties.Add(new OptionalProperty(visibleParamContext.Id, value));
             }
-            return MapRepresentation.Create(optionalProperties.ToArray());
+            return MapRepresentation.Create(Flags.OidStrategy, optionalProperties.ToArray());
         }
 
         public static ActionResultRepresentation Create(HttpRequestMessage req, ActionResultContextSurface actionResult, RestControlFlags flags) {

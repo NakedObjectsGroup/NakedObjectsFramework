@@ -25,6 +25,8 @@ namespace RestfulObjects.Snapshot.Representations {
 
         #endregion
 
+        public ArgumentsRepresentation(IOidStrategy oidStrategy) : base(oidStrategy) {}
+
         private static MapRepresentation GetMap(HttpRequestMessage req, ContextSurface context, RestControlFlags flags) {
             MapRepresentation value;
 
@@ -34,20 +36,20 @@ namespace RestfulObjects.Snapshot.Representations {
                 context.ProposedValue == null ||
                 context.ProposedNakedObject == null ||
                 context.ProposedNakedObject.Specification.IsParseable()) {
-                value = CreateMap(context, context.ProposedValue);
+                value = CreateMap(context, context.ProposedValue, flags.OidStrategy);
             }
             else {
-                value = CreateMap(context, RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, context.ProposedNakedObject)), flags));
+                value = CreateMap(context, RefValueRepresentation.Create(new ObjectRelType(RelValues.Self, new UriMtHelper(req, context.ProposedNakedObject, flags.OidStrategy)), flags), flags.OidStrategy);
             }
             return value;
         }
 
-        private static MapRepresentation CreateMap(ContextSurface context, object obj) {
+        private static MapRepresentation CreateMap(ContextSurface context, object obj, IOidStrategy oidStrategy) {
             var opts = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Value, obj)};
             if (!string.IsNullOrEmpty(context.Reason)) {
                 opts.Add(new OptionalProperty(JsonPropertyNames.InvalidReason, context.Reason));
             }
-            return Create(opts.ToArray());
+            return Create(oidStrategy, opts.ToArray());
         }
 
         public static MapRepresentation Create(HttpRequestMessage req, ContextSurface context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
@@ -61,7 +63,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 if (!string.IsNullOrEmpty(objectContextSurface.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContextSurface.Reason));
                 }
-                mapRepresentation = Create(optionalProperties.ToArray());
+                mapRepresentation = Create(flags.OidStrategy, optionalProperties.ToArray());
             }
             else if (actionResultContextSurface != null) {
                 List<OptionalProperty> optionalProperties = actionResultContextSurface.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(req, c, flags))).ToList();
@@ -69,7 +71,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 if (!string.IsNullOrEmpty(actionResultContextSurface.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContextSurface.Reason));
                 }
-                mapRepresentation = Create(optionalProperties.ToArray());
+                mapRepresentation = Create(flags.OidStrategy, optionalProperties.ToArray());
             }
             else {
                 mapRepresentation = GetMap(req, context, flags);
@@ -91,24 +93,24 @@ namespace RestfulObjects.Snapshot.Representations {
                 var tempProperties = new List<OptionalProperty>();
 
                 if (flags.SimpleDomainModel) {
-                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName());
+                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(flags.OidStrategy));
                     tempProperties.Add(dt);
                 }
 
                 if (flags.FormalDomainModel) {
                     var links = new OptionalProperty(JsonPropertyNames.Links, new[] {
-                        Create(new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
-                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(req, target.Specification).GetDomainTypeUri()))
+                        Create(flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
+                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(req, target.Specification, flags.OidStrategy).GetDomainTypeUri()))
                     });
                     tempProperties.Add(links);
                 }
 
-                var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues));
+                var members = new OptionalProperty(JsonPropertyNames.Members, Create(flags.OidStrategy, memberValues));
                 tempProperties.Add(members);
-                mapRepresentation = Create(tempProperties.ToArray());
+                mapRepresentation = Create(flags.OidStrategy, tempProperties.ToArray());
             }
             else {
-                mapRepresentation = Create(memberValues);
+                mapRepresentation = Create(flags.OidStrategy, memberValues);
             }
 
             mapRepresentation.SetContentType(mt);

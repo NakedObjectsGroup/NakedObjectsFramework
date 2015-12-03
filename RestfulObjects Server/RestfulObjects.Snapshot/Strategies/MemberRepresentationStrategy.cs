@@ -25,8 +25,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         protected MemberRepresentationStrategy(HttpRequestMessage req, PropertyContextSurface propertyContext, RestControlFlags flags) : base(flags) {
             this.req = req;
             this.propertyContext = propertyContext;
-            objectUri = new UriMtHelper(req, propertyContext);
-            self = new MemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
+            objectUri = new UriMtHelper(req, propertyContext, flags.OidStrategy);
+            self = new MemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext, flags.OidStrategy));
         }
 
         public INakedObjectSurface GetTarget() {
@@ -46,12 +46,12 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(new TypeMemberRelType(RelValues.DescribedBy, new UriMtHelper(req, new PropertyTypeContextSurface {
                 Property = propertyContext.Property,
                 OwningSpecification = propertyContext.Target.Specification
-            })), Flags);
+            }, Flags.OidStrategy)), Flags);
         }
 
         private LinkRepresentation CreateAttachmentLink() {
             string title = GetAttachmentFileName(propertyContext);
-            return LinkRepresentation.Create(new AttachmentRelType(new UriMtHelper(req, propertyContext)), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return LinkRepresentation.Create(new AttachmentRelType(new UriMtHelper(req, propertyContext, Flags.OidStrategy)), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         private LinkRepresentation CreateSelfLink() {
@@ -95,16 +95,16 @@ namespace RestfulObjects.Snapshot.Strategies {
                 opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(req, propertyContext, Flags)));
             }
 
-            return LinkRepresentation.Create(new MemberRelType(new UriMtHelper(req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(new MemberRelType(new UriMtHelper(req, propertyContext, Flags.OidStrategy)), Flags, opts.ToArray());
         }
 
         private LinkRepresentation CreateCollectionValueLink() {
-            return LinkRepresentation.Create(new CollectionValueRelType(new UriMtHelper(req, propertyContext)), Flags);
+            return LinkRepresentation.Create(new CollectionValueRelType(new UriMtHelper(req, propertyContext, Flags.OidStrategy)), Flags);
         }
 
 
         public RelType GetSelf() {
-            return new MemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
+            return new MemberRelType(RelValues.Self, new UriMtHelper(req, propertyContext, Flags.OidStrategy));
         }
 
         public RestControlFlags GetFlags() {

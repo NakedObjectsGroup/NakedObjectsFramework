@@ -20,8 +20,8 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(flags) {
             SetScalars(propertyContext);
             SetValue(propertyContext, req, flags);
-            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(req, propertyContext));
-            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target)));
+            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(req, propertyContext, flags.OidStrategy));
+            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(req, propertyContext.Target, flags.OidStrategy)));
             SetExtensions();
             SetHeader(propertyContext.Target);
         }
@@ -40,7 +40,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetValue(PropertyContextSurface propertyContext, HttpRequestMessage req, RestControlFlags flags) {
             IEnumerable<INakedObjectSurface> collectionItems = propertyContext.Property.GetNakedObject(propertyContext.Target).ToEnumerable();
-            Value = collectionItems.Select(i => LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
+            Value = collectionItems.Select(i => LinkRepresentation.Create(new ValueRelType(propertyContext.Property, new UriMtHelper(req, i, flags.OidStrategy)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 
         private void SetScalars(PropertyContextSurface propertyContext) {
@@ -48,7 +48,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         private void SetLinks(HttpRequestMessage req, PropertyContextSurface propertyContext, RelType parentRelType) {
@@ -58,8 +58,8 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property)), Flags));
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(req, propertyContext.Property, Flags.OidStrategy)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(req, propertyContext.Property.ElementSpecification, Flags.OidStrategy)), Flags));
             }
 
             Links = tempLinks.ToArray();

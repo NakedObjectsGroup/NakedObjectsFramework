@@ -50,7 +50,8 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       int? memberOrder,
                                                       IDictionary<string, object> customExtensions,
                                                       INakedObjectSpecificationSurface returnType,
-                                                      INakedObjectSpecificationSurface elementType) {
+                                                      INakedObjectSpecificationSurface elementType,
+                                                      IOidStrategy oidStrategy) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -81,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
 
             if (returnType != null && !returnType.IsVoid()) {
-                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType);
+                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy);
                 exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
 
                 // blob and clobs are arrays so do this check first so they are not caught be the collection test after. 
@@ -94,7 +95,7 @@ namespace RestfulObjects.Snapshot.Utility {
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
                 else if (returnType.IsCollection()) {
-                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType).Item1);
+                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy).Item1);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName());
                 }
             }
@@ -105,13 +106,13 @@ namespace RestfulObjects.Snapshot.Utility {
                 }
             }
 
-            return CreateMap(exts);
+            return CreateMap(exts, oidStrategy);
         }
 
 
-        public static MapRepresentation CreateMap(Dictionary<string, object> exts) {
+        public static MapRepresentation CreateMap(Dictionary<string, object> exts, IOidStrategy oidStrategy) {
             OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
-            return MapRepresentation.Create(parms);
+            return MapRepresentation.Create(oidStrategy, parms);
         }
 
 
@@ -130,11 +131,11 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static object GetChoiceValue(HttpRequestMessage req, INakedObjectSurface item, INakedObjectAssociationSurface property, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(property, new UriMtHelper(req, item)), flags);
+            return GetChoiceValue(item, new ChoiceRelType(property, new UriMtHelper(req, item, flags.OidStrategy)), flags);
         }
 
         public static object GetChoiceValue(HttpRequestMessage req, INakedObjectSurface item, INakedObjectActionParameterSurface parameter, RestControlFlags flags) {
-            return GetChoiceValue(item, new ChoiceRelType(parameter, new UriMtHelper(req, item)), flags);
+            return GetChoiceValue(item, new ChoiceRelType(parameter, new UriMtHelper(req, item, flags.OidStrategy)), flags);
         }
 
         public static string SafeGetTitle(INakedObjectSurface no) {
@@ -214,9 +215,9 @@ namespace RestfulObjects.Snapshot.Utility {
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(INakedObjectSpecificationSurface spec) {
+        public static string SpecToPredefinedTypeString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
-            return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName();
+            return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName(oidStrategy);
         }
 
         public static bool IsPredefined(INakedObjectSpecificationSurface spec) {
@@ -224,7 +225,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return pdt.HasValue;
         }
 
-        public static Tuple<string, string> SpecToTypeAndFormatString(INakedObjectSpecificationSurface spec) {
+        public static Tuple<string, string> SpecToTypeAndFormatString(INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
             PredefinedType? pdt = SpecToPredefinedType(spec);
 
             if (pdt.HasValue) {
@@ -247,11 +248,11 @@ namespace RestfulObjects.Snapshot.Utility {
                         return new Tuple<string, string>(PredefinedType.String.ToRoString(), pdt.Value.ToRoString());
                 }
             }
-            return new Tuple<string, string>(spec.DomainTypeName(), null);
+            return new Tuple<string, string>(spec.DomainTypeName(oidStrategy), null);
         }
 
-        public static string DomainTypeName(this INakedObjectSpecificationSurface spec) {
-            return OidStrategyHolder.OidStrategy.GetLinkDomainTypeBySpecification(spec);
+        public static string DomainTypeName(this INakedObjectSpecificationSurface spec, IOidStrategy oidStrategy) {
+            return oidStrategy.GetLinkDomainTypeBySpecification(spec);
         }
 
         public static bool IsBlobOrClob(INakedObjectSpecificationSurface spec) {
@@ -277,10 +278,10 @@ namespace RestfulObjects.Snapshot.Utility {
             var tempLinks = new List<LinkRepresentation>();
 
             if (flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, pnt.Item2)), flags));
+                tempLinks.Add(LinkRepresentation.Create(new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(req, pnt.Item2, flags.OidStrategy)), flags));
             }
 
-            return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
+            return new OptionalProperty(pnt.Item1, MapRepresentation.Create(flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
                 new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
         }
     }

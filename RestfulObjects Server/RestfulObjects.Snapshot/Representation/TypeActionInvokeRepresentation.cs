@@ -15,7 +15,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class TypeActionInvokeRepresentation : Representation {
         protected TypeActionInvokeRepresentation(HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) : base(flags) {
-            SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(req, context));
+            SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(req, context, flags.OidStrategy));
             SetScalars(context);
             SetLinks(req, context);
             SetExtensions();
@@ -44,18 +44,18 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
+            Extensions = MapRepresentation.Create(Flags.OidStrategy);
         }
 
         private void SetLinks(HttpRequestMessage req, TypeActionInvokeContext context) {
-            string uri = new DomainTypeRelType(new UriMtHelper(req, context.OtherSpecification)).GetUri().AbsoluteUri;
+            string uri = new DomainTypeRelType(new UriMtHelper(req, context.OtherSpecification, Flags.OidStrategy)).GetUri().AbsoluteUri;
 
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(SelfRelType,
                     Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments,
-                        MapRepresentation.Create(new OptionalProperty(context.ParameterId,
-                            MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Href,
+                        MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(context.ParameterId,
+                            MapRepresentation.Create(Flags.OidStrategy, new OptionalProperty(JsonPropertyNames.Href,
                                 uri))))))
             };
 

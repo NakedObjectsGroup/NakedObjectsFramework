@@ -50,11 +50,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {
             OptionalProperty[] properties = capabilitiesMap.Select(kvp => new OptionalProperty(kvp.Key, kvp.Value)).ToArray();
-            OptionalCapabilities = MapRepresentation.Create(properties);
+            OptionalCapabilities = MapRepresentation.Create(Flags.OidStrategy, properties);
         }
 
         private void SetExtensions() {
-            Extensions = new MapRepresentation();
+            Extensions = new MapRepresentation(Flags.OidStrategy);
         }
 
         private void SetLinks(HomePageRelType homePageRelType) {

@@ -9,12 +9,13 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Runtime.Serialization;
+using NakedObjects.Surface;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class NullRepresentation : Representation {
-        public NullRepresentation() : base(RestControlFlags.DefaultFlags()) {}
+        public NullRepresentation(IOidStrategy oidStrategy) : base(RestControlFlags.DefaultFlags(oidStrategy)) {}
 
         public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
             var msg = new HttpResponseMessage {Content = new StringContent("")};
@@ -23,8 +24,8 @@ namespace RestfulObjects.Snapshot.Representations {
             return msg;
         }
 
-        public static Representation Create() {
-            return new NullRepresentation();
+        public static Representation Create(IOidStrategy oidStrategy) {
+            return new NullRepresentation(oidStrategy);
         }
     }
 }

@@ -52,6 +52,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return false;
         }
 
+        public IOidStrategy OidStrategy { get; set; }
 
         // domain mode logic if selectable 
         // no flag simple = formal = true 
@@ -73,7 +74,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        private static RestControlFlags GetFlags(Func<string, object> getValue) {
+        private static RestControlFlags GetFlags(IOidStrategy oidStrategy, Func<string, object> getValue) {
             var controlFlags = new RestControlFlags {
                 ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),
                 DomainType = GetBool(getValue(DomainTypeReserved)),
@@ -82,17 +83,18 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = GetBool(getValue(FollowLinksReserved)),
                 SortBy = GetBool(getValue(SortByReserved)),
                 BlobsClobs = false,
-                PageSize = ConfiguredPageSize
+                PageSize = ConfiguredPageSize,
+                OidStrategy = oidStrategy
             };
 
             return controlFlags;
         }
 
-        public static RestControlFlags DefaultFlags() {
-            return GetFlags(s => null);
+        public static RestControlFlags DefaultFlags(IOidStrategy oidStrategy) {
+            return GetFlags(oidStrategy, s => null);
         }
 
-        public static RestControlFlags FlagsFromArguments(bool validateOnly, string domainModel = null) {
+        public static RestControlFlags FlagsFromArguments(IOidStrategy oidStrategy,  bool validateOnly, string domainModel = null) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -106,7 +108,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,
-                PageSize = ConfiguredPageSize
+                PageSize = ConfiguredPageSize, 
+                OidStrategy = oidStrategy
             };
 
             return controlFlags;
