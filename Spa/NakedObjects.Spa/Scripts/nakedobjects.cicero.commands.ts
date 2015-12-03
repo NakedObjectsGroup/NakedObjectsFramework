@@ -65,16 +65,20 @@ module NakedObjects.Angular.Gemini {
         //If argument does not parse correctly, message will be passed to UI
         //and command aborted.
         //Always returns argument trimmed and as lower case
-        protected argumentAsString(args: string, argNo: number, optional: boolean = false): string {
-            if (args == null) return null;
-            if (!optional && args.split(",").length < argNo + 1) {
+        protected argumentAsString(argString: string, argNo: number, optional: boolean = false): string {
+            if (!argString) return undefined;
+            if (!optional && argString.split(",").length < argNo + 1) {
                 throw new Error("Too few arguments provided");
             }
-            var arg = args.split(",")[argNo].trim();
-            if (!optional && (arg == null || arg == "")) {
-                throw new Error("Required argument number " + (argNo + 1).toString + " is empty");
+            var args = argString.split(",");
+            if (args.length < argNo + 1) {
+                if (optional) {
+                    return undefined;
+                } else {
+                    throw new Error("Required argument number " + (argNo + 1).toString + " is missing"); 
+                }
             }
-            return arg.trim().toLowerCase();
+            return args[argNo].trim().toLowerCase();  // which may be "" if argString ends in a ','
         }
 
         //argNo starts from 0.
@@ -126,54 +130,73 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "action";
         public helpText = "Open an action from a Main Menu, or object actions menu. " +
-        "Normally takes one argument: the name, or partial name, of the action." +
+        "Normally takes one argument: the name, or partial name, of the action. " +
         "If the partial name matches more than one action, a list of matches is returned," +
         "but none opened. If no argument is provided, a full list of available action names is returned";
         protected minArguments = 0;
-        protected maxArguments = 1;
+        protected maxArguments = 2; //optional sub-menu. TODO: Multiple levels?
 
         public isAvailableInCurrentContext(): boolean {
             return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
         }
 
         execute(args: string): void {
-            const name = this.argumentAsString(args, 0);
+            const a0 = this.argumentAsString(args, 0);
+            const a1 = this.argumentAsString(args, 1, true);
+            const name: string = a1 == undefined ? a0 : a1;
+            const path: string = a1 == undefined ? undefined : a0;
+
             if (this.isObject()) {
                 const oid = this.urlManager.getRouteData().pane1.objectId;
                 this.context.getObjectByOid(1, oid)
                     .then((obj: DomainObjectRepresentation) => {
-                        this.processActions(name, obj.actionMembers());
+                        this.processActions(path, name, obj.actionMembers());
                     });
             }
             else if (this.isMenu()) {
                 const menuId = this.urlManager.getRouteData().pane1.menuId;
                 this.context.getMenu(menuId)
                     .then((menu: MenuRepresentation) => {
-                        this.processActions(name, menu.actionMembers());
+                        this.processActions(path, name, menu.actionMembers());
                     });
             }
             //TODO: handle list
         }
 
-        private processActions(name: string, actionsMap: _.Dictionary<ActionMember>) {
-            var actions = _.map(actionsMap, action => action);
+        private processActions(requiredPath: string, name: string, actionsMap: _.Dictionary<ActionMember>) {
+            var actions = _.map(actionsMap, action => action);            
+            //TODO: actionRep.extensions()["x-ro-nof-menuPath"] to test path
+            if (requiredPath) {
+                actions = _.filter(actions, (action) => {
+                    var actionPath = action.extensions()["x-ro-nof-menuPath"];
+                    if (actionPath) {
+                       return actionPath.toLowerCase().indexOf(requiredPath) >= 0;
+                    }
+                    return false;
+                });
+            }
             if (name) {
-                actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) > -1);
+                actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) >= 0);
             }
             switch (actions.length) {
                 case 0:
-                    this.setOutput(name + " does not match any actions");
+                    this.setOutput(requiredPath+", "+name + " does not match any actions");
                     break;
                 case 1:
                     const actionId = actions[0].actionId();
                     this.urlManager.setDialog(actionId, 1);  //1 = pane 1
                     break;
                 default:
-                    var label = "Actions";
-                    if (name) {
-                        label = label + " matching " + name;
+                    var label;
+                    if (requiredPath || name) {
+                        label = " Matching actions: ";
+                    } else {
+                        label = "Actions: "
                     }
-                    var s = _.reduce(actions, (s, t) => { return s + t.extensions().friendlyName + "; "; }, label + ": ");
+                    var s = _.reduce(actions, (s, t) => {
+                        const menupath = t.extensions()["x-ro-nof-menuPath"] ? t.extensions()["x-ro-nof-menuPath"] +" - ": "";
+                        return s + menupath + t.extensions().friendlyName + "; ";
+                    }, label);
                     this.setOutput(s);
             }
         }
