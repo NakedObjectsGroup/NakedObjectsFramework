@@ -76,7 +76,6 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            context.clearCurrentDialog(routeData.paneId);
             context.getMenus().
                 then((menus: MenusRepresentation) => {
                     $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
@@ -140,7 +139,6 @@ module NakedObjects.Angular.Gemini {
                 });
             }
 
-            context.clearCurrentDialog(routeData.paneId);
             getFriendlyName().then((name: string) => $scope.title = name);
 
             if (cachedList) {
@@ -208,20 +206,16 @@ module NakedObjects.Angular.Gemini {
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId, ovm);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
-                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.FirstSubAction;
                     } else if (routeData.edit || ovm.isTransient) {
-                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.FirstProperty;
                     } else {
-                        context.clearCurrentDialog(routeData.paneId);
                         focusTarget = FocusTarget.ObjectTitle;
                     }
 
                     focusManager.focusOn(focusTarget, urlManager.currentpane());
 
                 }).catch(error => {
-                    context.clearCurrentDialog(routeData.paneId);
                     setError(error);
                 });
 

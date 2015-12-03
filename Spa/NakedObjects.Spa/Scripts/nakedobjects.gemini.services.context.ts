@@ -23,7 +23,7 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
-        invokeAction(action: ActionMember, paneId: number);
+        invokeAction(action: ActionMember, paneId: number, dvm? : DialogViewModel);
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
@@ -38,10 +38,6 @@ module NakedObjects.Angular.Gemini {
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
         getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
 
-        getCurrentDialog(paneId : number): DialogViewModel;
-        setCurrentDialog(paneId: number, dialogViewModel: DialogViewModel); 
-        clearCurrentDialog(paneId : number);
-
     }
 
     interface IContextInternal extends IContext {
@@ -50,7 +46,7 @@ module NakedObjects.Angular.Gemini {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm : DialogViewModel);
         setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel);
         setPreviousUrl: (url: string) => void;
 
@@ -308,9 +304,7 @@ module NakedObjects.Angular.Gemini {
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
-
-            const dvm = context.getCurrentDialog(paneId);
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm? : DialogViewModel) => {
 
             if (result.result().isNull() && result.resultType() !== "void") {
                 if (dvm) {
@@ -413,10 +407,9 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        context.invokeAction = (action: ActionMember, paneId: number) => {
+        context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
-            let dvm = context.getCurrentDialog(paneId);
             let parameters: ParameterViewModel[] = [];
 
             if (dvm) {
@@ -439,10 +432,9 @@ module NakedObjects.Angular.Gemini {
                         }
                     }
 
-                    context.setResult(action, result, paneId, 1, defaultPageSize);
+                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
-                    dvm = context.getCurrentDialog(paneId);
                     context.setInvokeUpdateError(error, parameters, dvm);
                 });
         };
@@ -570,17 +562,6 @@ module NakedObjects.Angular.Gemini {
             return cvm;
         };
 
-        context.getCurrentDialog = (paneId : number) => {
-            return currentDialogs[paneId];
-        }
-
-        context.setCurrentDialog = (paneId: number, dialogViewModel: DialogViewModel) => {
-            currentDialogs[paneId] = dialogViewModel;
-        }
-
-        context.clearCurrentDialog = (paneId: number) => {
-            currentDialogs[paneId] = null;
-        }
     });
 
 }

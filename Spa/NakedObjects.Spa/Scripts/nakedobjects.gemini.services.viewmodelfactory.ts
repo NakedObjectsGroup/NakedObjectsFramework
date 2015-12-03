@@ -261,14 +261,22 @@ module NakedObjects.Angular.Gemini{
             return actionViewModel;
         };
 
-        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
+        const currentDvms: DialogViewModel[] = [];
 
-            const currentDvm = context.getCurrentDialog(paneId);
+        function getDialogViewModel(paneId: number, actionMember: ActionMember) {
+            const currentDvm = currentDvms[paneId];
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
                 return currentDvm;
             }
+            const dvm = new DialogViewModel();
+            currentDvms[paneId] = dvm;
+            return dvm;
+        }
 
-            const dialogViewModel = new DialogViewModel();
+
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
+         
+            const dialogViewModel = getDialogViewModel(paneId, actionMember);
             const parameters = actionMember.parameters();
             dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName;
@@ -277,7 +285,7 @@ module NakedObjects.Angular.Gemini{
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
             dialogViewModel.onPaneId = paneId;
 
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right));
+            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
@@ -290,7 +298,6 @@ module NakedObjects.Angular.Gemini{
                 urlManager.closeDialog(paneId);
             };
 
-            context.setCurrentDialog(paneId, dialogViewModel);
             return dialogViewModel;
         };
 
