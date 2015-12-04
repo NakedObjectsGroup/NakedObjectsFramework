@@ -312,6 +312,9 @@ module NakedObjects.Angular.Gemini {
                 }
                 return;
             }
+            else if (dvm) {
+                dvm.doClose();
+            }
 
             const resultObject = result.result().object();
 
@@ -322,8 +325,6 @@ module NakedObjects.Angular.Gemini {
                     resultObject.wrapped().domainType = domainType;
                     resultObject.wrapped().instanceId = "0";
 
-                    //resultObject.set("domainType", domainType);
-                    //resultObject.set("instanceId", "0");
                     resultObject.hateoasUrl = `/${domainType}/0`;
 
                     context.setObject(paneId, resultObject);
@@ -340,7 +341,6 @@ module NakedObjects.Angular.Gemini {
                     urlManager.setObject(resultObject, paneId);
                 }
             }
-
             else if (result.resultType() === "list") {
                 const resultList = result.result().list();
 
@@ -348,9 +348,7 @@ module NakedObjects.Angular.Gemini {
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
-            } else if (dvm) {
-                urlManager.closeDialog(dvm.onPaneId);
-            }
+            } 
         };
 
         context.getCachedList = (paneId: number, page: number, pageSize: number) => {

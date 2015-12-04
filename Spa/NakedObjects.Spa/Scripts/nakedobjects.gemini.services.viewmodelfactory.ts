@@ -266,17 +266,29 @@ module NakedObjects.Angular.Gemini{
         function getDialogViewModel(paneId: number, actionMember: ActionMember) {
             const currentDvm = currentDvms[paneId];
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
-                return currentDvm;
+                return { dialogViewModel: currentDvm, ret: true };
             }
             const dvm = new DialogViewModel();
             currentDvms[paneId] = dvm;
-            return dvm;
+            return { dialogViewModel: dvm, ret: false };
+        }
+
+        function clearDialog(paneId: number, actionMember: ActionMember) {
+            const currentDvm = currentDvms[paneId];
+            if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
+                currentDvms[paneId] = null;
+            }
         }
 
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
          
-            const dialogViewModel = getDialogViewModel(paneId, actionMember);
+            const {dialogViewModel, ret} = getDialogViewModel(paneId, actionMember);
+
+            if (ret) {
+                return dialogViewModel;
+            }
+
             const parameters = actionMember.parameters();
             dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName;
@@ -296,6 +308,7 @@ module NakedObjects.Angular.Gemini{
                 deregisterLocationWatch();
                 deregisterSearchWatch();
                 urlManager.closeDialog(paneId);
+                clearDialog(paneId, actionMember);
             };
 
             return dialogViewModel;
