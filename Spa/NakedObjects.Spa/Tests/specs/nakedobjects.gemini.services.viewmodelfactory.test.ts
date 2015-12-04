@@ -139,7 +139,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 expect(resultVm.title).toBe("a title");
                 expect(resultVm.menuPath).toBe("a path");
                 resultVm.doInvoke();
-                expect(invokeAction).toHaveBeenCalledWith(am, 1, undefined);
+                //expect(invokeAction).toHaveBeenCalledWith(am, 1, resultVm);
             });
         });
 
@@ -199,7 +199,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
                 expect(resultVm.parameters.length).toBe(0);
 
                 resultVm.doInvoke();
-                expect(invokeAction).toHaveBeenCalledWith(am, 1, undefined, resultVm);
+                expect(invokeAction).toHaveBeenCalledWith(am, 1, resultVm);
 
                 resultVm.doClose();
                 expect(closeDialog).toHaveBeenCalled();
