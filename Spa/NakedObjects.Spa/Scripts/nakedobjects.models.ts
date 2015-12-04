@@ -1152,7 +1152,7 @@ module NakedObjects {
         }
     }
 
-    export class DomainObjectRepresentation extends ResourceRepresentation<RoInterfaces.IDomainObjectRepresentation> {
+    export class DomainObjectRepresentation extends ResourceRepresentation<RoInterfaces.IDomainObjectRepresentation> implements IHasActions {
 
         wrapped = () => this.resource() as RoInterfaces.IDomainObjectRepresentation;
 
@@ -1265,7 +1265,7 @@ module NakedObjects {
         }
     }
 
-    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IMenuRepresentation> {
+    export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IMenuRepresentation> implements IHasActions {
 
         wrapped = () => this.resource() as IMenuRepresentation;
 
@@ -1708,5 +1708,10 @@ module NakedObjects {
             this.copyToHateoasModel(target);
             return target;
         }
+    }
+
+    export interface IHasActions {
+        actionMembers(): _.Dictionary<ActionMember>;
+        actionMember(id: string): ActionMember;
     }
 }

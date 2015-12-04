@@ -426,8 +426,10 @@ module NakedObjects.Angular.Gemini {
             var arg = this.argumentAsString(args, 0);
             if (arg) {
                 const c = this.commandFactory.getCommand(arg);
+                this.clearInput();
                 this.setOutput(c.fullCommand + " command: " + c.helpText);
             } else {
+                this.clearInput();
                 this.setOutput(this.commandFactory.allCommandsForCurrentContext());
             }
         };
@@ -446,7 +448,6 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             this.urlManager.setHome(1);
-            this.setOutput("home");
         };
     }
     export class Item extends Command {
@@ -506,6 +507,7 @@ module NakedObjects.Angular.Gemini {
                     }
                     switch (links.length) {
                         case 0:
+                            this.clearInput();
                             this.setOutput(menuName + " does not match any menu");
                             break;
                         case 1:
@@ -517,7 +519,8 @@ module NakedObjects.Angular.Gemini {
                             if (menuName) {
                                 label = label + " matching " + menuName;
                             }
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");                           
+                            this.clearInput();
                             this.setOutput(s);
                     }
                 });

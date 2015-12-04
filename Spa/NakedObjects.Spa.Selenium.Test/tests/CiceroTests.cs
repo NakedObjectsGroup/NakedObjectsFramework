@@ -25,7 +25,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Actions: Find Product By Name; Find Product By Number; List Products By Sub Category; List Products By Sub Categories; Find By Product Line And Class; Find By Product Lines And Classes; Find Product; Find Products By Category; New Product; Random Product; Find Product By Key; Stock Report;");
             //Filtered list
             EnterCommand("act cateGory  ");
-            WaitForOutput("Actions matching category: List Products By Sub Category; Find Products By Category;");
+            WaitForOutput("Matching actions: List Products By Sub Category; Find Products By Category;");
             //No match
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
@@ -33,21 +33,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Wrong number of arguments provided.");
             //single match
             EnterCommand("act rand");
-            WaitForOutput("Products menu. Action: Random Product");
-
+            WaitForOutput("Products menu. Action dialog: Random Product.");
             //Test from object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
             WaitForOutput("Product: HL Grip Tape.");
             EnterCommand("Action");
             WaitForOutput("Actions: Add Or Change Photo; Best Special Offer; Associate Special Offer With Product; Open Purchase Orders For Product; Create New Work Order; Work Orders;");
             EnterCommand("act ord");
-            WaitForOutput("Actions matching ord: Open Purchase Orders For Product; Create New Work Order; Work Orders;");
+            WaitForOutput("Matching actions: Open Purchase Orders For Product; Create New Work Order; Work Orders;");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             EnterCommand("act foo, bar  ");
             WaitForOutput("Wrong number of arguments provided.");
             EnterCommand("ac best");
-            WaitForOutput("Product: HL Grip Tape. Action: Best Special Offer");
+            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
             //Not available in current context
             CiceroUrl("home");
             WaitForOutput("home");
@@ -61,8 +60,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("home");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
-            EnterCommand("action acc");
-            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
+            EnterCommand("action random store");
+            WaitForOutput("Customers menu. Action dialog: Random Store.");
             EnterCommand("back");
             WaitForOutput("Customers menu.");
             EnterCommand("Ba");
@@ -70,10 +69,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("forward");
             WaitForOutput("Customers menu.");
             EnterCommand("fO  ");
-            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
+            WaitForOutput("Customers menu. Action dialog: Random Store.");
             //Can't go forward beyond most recent
             EnterCommand("forward");
-            WaitForOutput("Customers menu. Action: Find Customer By Account Number");
+            WaitForOutput("Customers menu. Action dialog: Random Store.");
 
             //No arguments
             EnterCommand("back x");
@@ -86,28 +85,28 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Menu dialog
             CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
-            WaitForOutput("Products menu. Action: Find Product By Name");
+            WaitForOutput("Products menu. Action dialog: Find Product By Name. Search String");
             EnterCommand("cancel");
             WaitForOutput("Products menu.");
             //Test on a zero param action
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action: Random Product");
+            WaitForOutput("Products menu. Action dialog: Random Product.");
             EnterCommand("cancel");
             WaitForOutput("Products menu.");
             //Try with argument
-            CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
-            WaitForOutput("Products menu. Action: Find Product By Name");
+            CiceroUrl("home?menu1=EmployeeRepository&dialog1=RandomEmployee");
+            WaitForOutput("Employees menu. Action dialog: Random Employee.");
             EnterCommand("cancel x");
             WaitForOutput("Wrong number of arguments provided.");
 
             //Object dialog
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
-            WaitForOutput("Product: HL Grip Tape. Action: Best Special Offer");
+            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
             EnterCommand("cancel");
             WaitForOutput("Product: HL Grip Tape.");
             //Zero param
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action: Last Order");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
             EnterCommand("Ca");
             WaitForOutput("Customer: Handy Bike Services, AW00029688.");
 
@@ -240,18 +239,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Open a zero-param action on main menu
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action: Random Product");
+            WaitForOutput("Products menu. Action dialog: Random Product.");
             EnterCommand("ok");
             WaitForOutputStartingWith("Product: ");
             // No arguments
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action: Random Product");
+            WaitForOutput("Products menu. Action dialog: Random Product.");
             EnterCommand("ok x");
             WaitForOutput("Wrong number of arguments provided.");
 
             //Object action
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action: Last Order");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
             EnterCommand("ok");
             WaitForOutput("SalesOrderHeader: SO69562.");
 
@@ -264,8 +263,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu.");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
-
-
         }
         [TestMethod, Ignore]
         public void Property()

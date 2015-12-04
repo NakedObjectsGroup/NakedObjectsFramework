@@ -3,43 +3,43 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular.Gemini{
+module NakedObjects.Angular.Gemini {
 
     export interface IViewModelFactory {
-        toolBarViewModel($scope) : ToolBarViewModel;
+        toolBarViewModel($scope): ToolBarViewModel;
 
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        linkViewModel(linkRep: Link, paneId : number): LinkViewModel;
-        itemViewModel(linkRep: Link, paneId : number): ItemViewModel;     
+        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
+        itemViewModel(linkRep: Link, paneId: number): ItemViewModel;
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
-        dialogViewModel($scope : ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm? : DomainObjectViewModel): DialogViewModel;
+        dialogViewModel($scope: ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel): DialogViewModel;
 
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize : number,  newState? : CollectionViewState) => void): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void) : CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
 
-        collectionPlaceholderViewModel(page: number, reload: () => void) : CollectionPlaceholderViewModel;
+        collectionPlaceholderViewModel(page: number, reload: () => void): CollectionPlaceholderViewModel;
 
-        parameterViewModel(parmRep: Parameter, previousValue: Value, paneId : number): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number): PropertyViewModel;
+        parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
 
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
-        menusViewModel(menusRep: MenusRepresentation, paneId : number): MenusViewModel;
-        serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
-        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>, editing : boolean, paneId : number): DomainObjectViewModel;
+        menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
+        serviceViewModel(serviceRep: DomainObjectRepresentation, paneId: number): ServiceViewModel;
+        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms: _.Dictionary<Value>, editing: boolean, paneId: number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
         getCiceroVM(): CiceroViewModel;
         setCiceroVMIfNecessary(): CiceroViewModel;
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
-        $timeout : ng.ITimeoutService,
+        $timeout: ng.ITimeoutService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
         $cacheFactory: ng.ICacheFactoryService,
         repLoader: IRepLoader,
         color: IColor,
         context: IContext,
-        mask: IMask,    
+        mask: IMask,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
         navigation: INavigation,
@@ -47,7 +47,7 @@ module NakedObjects.Angular.Gemini{
         commandFactory: ICommandFactory) {
 
         var viewModelFactory = <IViewModelFactory>this;
-        
+
         viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
             errorViewModel.message = errorRep.message() || "An Error occurred";
@@ -74,7 +74,7 @@ module NakedObjects.Angular.Gemini{
         }
 
 
-        viewModelFactory.linkViewModel = (linkRep: Link, paneId : number) => {
+        viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
             const linkViewModel = new LinkViewModel();
             linkViewModel.doClick = () => {
                 // because may be clicking on menu already open so want to reset focus             
@@ -84,16 +84,16 @@ module NakedObjects.Angular.Gemini{
             initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
         };
-   
-        viewModelFactory.itemViewModel = (linkRep: Link, paneId : number) => {
+
+        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number) => {
             const itemViewModel = new ItemViewModel();
-            itemViewModel.doClick = (right?: boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));  
+            itemViewModel.doClick = (right?: boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));
             initLinkViewModel(itemViewModel, linkRep);
-            
+
             return itemViewModel;
         };
-       
-        function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice : ChoiceViewModel, id : string, currentValue : Value) {
+
+        function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice: ChoiceViewModel, id: string, currentValue: Value) {
             valueViewModel.hasAutoAutoComplete = true;
 
             const cache = $cacheFactory.get("recentlyViewed");
@@ -102,18 +102,18 @@ module NakedObjects.Angular.Gemini{
 
             // make sure current value is cached so can be recovered ! 
 
-            const { returnType: key, reference : subKey } = valueViewModel;
-            const dict = <any> cache.get(key) || {}; // todo fix type !
-            dict[subKey] = { value: currentValue, name : currentValue.toString() };
+            const { returnType: key, reference: subKey } = valueViewModel;
+            const dict = <any>cache.get(key) || {}; // todo fix type !
+            dict[subKey] = { value: currentValue, name: currentValue.toString() };
             cache.put(key, dict);
 
             // bind in autoautocomplete into prompt 
 
             valueViewModel.prompt = (st: string) => {
                 const defer = $q.defer<ChoiceViewModel[]>();
-                const filtered = _.filter(dict, (i: { value: Value, name : string }) =>
+                const filtered = _.filter(dict, (i: { value: Value, name: string }) =>
                     i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
-                const ccs = _.map(filtered, (i: { value: Value, name : string }) => ChoiceViewModel.create(i.value, id, i.name));
+                const ccs = _.map(filtered, (i: { value: Value, name: string }) => ChoiceViewModel.create(i.value, id, i.name));
 
                 defer.resolve(ccs);
 
@@ -121,8 +121,8 @@ module NakedObjects.Angular.Gemini{
             };
         }
 
-         // tested
-        viewModelFactory.parameterViewModel = (parmRep: Parameter,  previousValue: Value, paneId : number) => {
+        // tested
+        viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             var parmViewModel = new ParameterViewModel();
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
@@ -150,10 +150,10 @@ module NakedObjects.Angular.Gemini{
                             parmViewModel.setNewValue(newValue);
                         }
                     }
-                );
-            }; 
+                    );
+            };
 
-            parmViewModel.choices = _.map(parmRep.choices(), (v, n) =>  ChoiceViewModel.create(v, parmRep.parameterId(), n));
+            parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
             parmViewModel.hasChoices = parmViewModel.choices.length > 0;
             parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
             parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
@@ -163,19 +163,19 @@ module NakedObjects.Angular.Gemini{
 
                 const promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, parmViewModel.id);
+                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.prompt, promptRep, parmViewModel.id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
+                    parmViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.conditionalChoices, promptRep, parmViewModel.id);
                     parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
 
             if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
-                
-                function setCurrentChoices(vals : Value) {
+
+                function setCurrentChoices(vals: Value) {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
@@ -195,15 +195,15 @@ module NakedObjects.Angular.Gemini{
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
                     }
                 }
-        
+
                 if (previousValue || parmViewModel.dflt) {
-                    const toSet = previousValue || parmRep.default();                    
+                    const toSet = previousValue || parmRep.default();
                     if (parmViewModel.isMultipleChoices) {
                         setCurrentChoices(toSet);
                     } else {
                         setCurrentChoice(toSet);
                     }
-                }             
+                }
             } else {
                 if (parmRep.extensions().returnType() === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
@@ -223,20 +223,20 @@ module NakedObjects.Angular.Gemini{
 
             if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
 
-                let currentChoice : ChoiceViewModel = null;
+                let currentChoice: ChoiceViewModel = null;
 
                 if (previousValue) {
                     currentChoice = ChoiceViewModel.create(previousValue, parmViewModel.id, previousValue.link() ? previousValue.link().title() : null);
                 }
                 else if (parmViewModel.dflt) {
                     let dflt = parmRep.default();
-                    currentChoice =  ChoiceViewModel.create(dflt, parmViewModel.id,  dflt.link().title());
+                    currentChoice = ChoiceViewModel.create(dflt, parmViewModel.id, dflt.link().title());
                 }
- 
-                const currentValue = new Value( currentChoice ?  { href: currentChoice.value, title : currentChoice.name } : "");
-              
+
+                const currentValue = new Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
+
                 addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
-            } 
+            }
 
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
 
@@ -245,10 +245,10 @@ module NakedObjects.Angular.Gemini{
 
         viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel) => {
             var actionViewModel = new ActionViewModel();
-            
+
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
-            actionViewModel.disabled = () => { return !!actionRep.disabledReason(); } 
+            actionViewModel.disabled = () => { return !!actionRep.disabledReason(); }
             if (actionViewModel.disabled()) {
                 actionViewModel.description = actionRep.disabledReason();
             } else {
@@ -284,7 +284,7 @@ module NakedObjects.Angular.Gemini{
 
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
-         
+
             const {dialogViewModel, ret} = getDialogViewModel(paneId, actionMember);
 
             if (ret) {
@@ -317,13 +317,13 @@ module NakedObjects.Angular.Gemini{
         };
 
 
-        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId : number) => {
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number) => {
             const propertyViewModel = new PropertyViewModel();
-           
+
 
             propertyViewModel.title = propertyRep.extensions().friendlyName();
             propertyViewModel.optional = propertyRep.extensions().optional();
-           
+
             const required = propertyViewModel.optional ? "" : "* ";
 
             propertyViewModel.description = required + propertyRep.extensions().description();
@@ -342,12 +342,12 @@ module NakedObjects.Angular.Gemini{
             propertyViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, propertyViewModel.returnType).
                     then((canDrop: boolean) => {
-                            if (canDrop) {
-                                propertyViewModel.setNewValue(newValue);
-                            }
+                        if (canDrop) {
+                            propertyViewModel.setNewValue(newValue);
                         }
+                    }
                     );
-            }; 
+            };
 
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
             if (propertyRep.attachmentLink() != null) {
@@ -376,19 +376,19 @@ module NakedObjects.Angular.Gemini{
 
             propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
             propertyViewModel.hasPrompt = !!propertyRep.promptLink() && !!propertyRep.promptLink().arguments()["x-ro-searchTerm"];
-            propertyViewModel.hasConditionalChoices =  !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
+            propertyViewModel.hasConditionalChoices = !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
             if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
-                if (propertyViewModel.hasPrompt) {         
-                    propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
+                if (propertyViewModel.hasPrompt) {
+                    propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.prompt, promptRep, id);
                     propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-                } 
+                }
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.conditionalChoices, promptRep, id);
-                    propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));        
+                    propertyViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.conditionalChoices, promptRep, id);
+                    propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
 
@@ -401,7 +401,7 @@ module NakedObjects.Angular.Gemini{
                 } else {
                     propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
                 }
-            } 
+            }
 
             if (propertyRep.isScalar()) {
                 const remoteMask = propertyRep.extensions().mask();
@@ -413,13 +413,13 @@ module NakedObjects.Angular.Gemini{
 
             // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
             if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);            
-            } 
+                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);
+            }
 
             return propertyViewModel;
         };
-        
-        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[],  populateItems: boolean) {
+
+        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean) {
 
             if (populateItems) {
                 return _.map(links, link => {
@@ -441,7 +441,7 @@ module NakedObjects.Angular.Gemini{
             }
         }
 
-        function create($scope: ng.IScope, collectionRep: CollectionMember, state: CollectionViewState, paneId : number) {
+        function create($scope: ng.IScope, collectionRep: CollectionMember, state: CollectionViewState, paneId: number) {
             const collectionViewModel = new CollectionViewModel();
             const links = collectionRep.value();
 
@@ -455,25 +455,25 @@ module NakedObjects.Angular.Gemini{
             collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
 
             switch (state) {
-            case CollectionViewState.List:
-                collectionViewModel.template = collectionListTemplate;
-                break;
-            case CollectionViewState.Table:
-                collectionViewModel.template = collectionTableTemplate;
-                break;
-            default: 
-                collectionViewModel.template = collectionSummaryTemplate;
+                case CollectionViewState.List:
+                    collectionViewModel.template = collectionListTemplate;
+                    break;
+                case CollectionViewState.Table:
+                    collectionViewModel.template = collectionTableTemplate;
+                    break;
+                default:
+                    collectionViewModel.template = collectionSummaryTemplate;
             }
 
             const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setCollectionMemberState, paneId, collectionRep);
-            collectionViewModel.doSummary = () => setState(CollectionViewState.Summary); 
+            collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
             collectionViewModel.doList = () => setState(CollectionViewState.List);
-            collectionViewModel.doTable = () => setState(CollectionViewState.Table); 
+            collectionViewModel.doTable = () => setState(CollectionViewState.Table);
 
             return collectionViewModel;
         }
-       
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState : CollectionViewState) => void) {
+
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value();
 
@@ -492,9 +492,9 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
 
-            const setPage =  (newPage: number, newState : CollectionViewState) => {
+            const setPage = (newPage: number, newState: CollectionViewState) => {
                 // todo do we need timeout ?
-                $timeout(() =>   recreate(newPage, pageSize, newState));
+                $timeout(() => recreate(newPage, pageSize, newState));
             }
 
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
@@ -521,7 +521,7 @@ module NakedObjects.Angular.Gemini{
             return collectionViewModel;
         }
 
-      
+
         viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
 
@@ -536,53 +536,53 @@ module NakedObjects.Angular.Gemini{
             return collectionVm;
         };
 
-        viewModelFactory.collectionPlaceholderViewModel = (page : number, reload : () => void) => {
+        viewModelFactory.collectionPlaceholderViewModel = (page: number, reload: () => void) => {
             const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
 
             collectionPlaceholderViewModel.description = () => `Page ${page}`;
             collectionPlaceholderViewModel.reload = reload;
             return collectionPlaceholderViewModel;
         }
-     
+
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             const servicesViewModel = new ServicesViewModel();
 
             // filter out contributed action services 
             const links = _.filter(servicesRep.value(), m => {
                 const sid = m.rel().parms[0].value;
-                return sid.indexOf("ContributedActions") === -1; 
+                return sid.indexOf("ContributedActions") === -1;
             });
-            
+
             servicesViewModel.title = "Services";
             servicesViewModel.color = "bg-color-darkBlue";
             servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, 1));
             return servicesViewModel;
         };
 
-        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation, paneId : number) => {
+        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation, paneId: number) => {
             var menusViewModel = new MenusViewModel();
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value(), link =>  viewModelFactory.linkViewModel(link, paneId));
+            menusViewModel.items = _.map(menusRep.value(), link => viewModelFactory.linkViewModel(link, paneId));
             return menusViewModel;
         };
 
-      
-        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, paneId : number) => {
+
+        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, paneId: number) => {
             var serviceViewModel = new ServiceViewModel();
             var actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action =>  viewModelFactory.actionViewModel(action, paneId));
-            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());          
+            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
+            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
         };
   
         // seperate function so we can reuse in reload
-        function setupDomainObjectViewModel (objectViewModel : DomainObjectViewModel,  $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId: number) {
-           
+        function setupDomainObjectViewModel(objectViewModel: DomainObjectViewModel, $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId: number) {
+
             objectViewModel.onPaneId = paneId;
             objectViewModel.isTransient = !!objectRep.persistLink();
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
@@ -596,13 +596,13 @@ module NakedObjects.Angular.Gemini{
             const collections = objectRep.collectionMembers();
             const actions = objectRep.actionMembers();
 
-            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName()}` : objectRep.title();
+            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName() }` : objectRep.title();
 
             objectViewModel.message = "";
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId, objectViewModel));
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId, (page : number) => {}));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId, (page: number) => { }));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
@@ -650,11 +650,11 @@ module NakedObjects.Angular.Gemini{
             }
 
 
-            objectViewModel.doEdit = () => {           
+            objectViewModel.doEdit = () => {
                 context.reloadObject(paneId, objectRep).
                     then((updatedObject: DomainObjectRepresentation) => {
-                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);                  
-                        $scope.object = objectViewModel;                   
+                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);
+                        $scope.object = objectViewModel;
                         urlManager.pushUrlState(paneId);
                         urlManager.setObjectEdit(true, paneId);
                     });
@@ -662,17 +662,17 @@ module NakedObjects.Angular.Gemini{
 
             objectViewModel.doReload = (refreshScope?: boolean) =>
                 context.reloadObject(paneId, objectRep).
-                then((updatedObject: DomainObjectRepresentation) => {
-                    setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);
-                    if (refreshScope) {
-                        $scope.object = objectViewModel;
-                    }
-                });
+                    then((updatedObject: DomainObjectRepresentation) => {
+                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, collectionStates, props, editing, paneId);
+                        if (refreshScope) {
+                            $scope.object = objectViewModel;
+                        }
+                    });
 
         };
 
 
-        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
+        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId: number): DomainObjectViewModel => {
             const objectViewModel = new DomainObjectViewModel();
             setupDomainObjectViewModel(objectViewModel, $scope, objectRep, collectionStates, props, editing, paneId);
             return objectViewModel;
@@ -698,7 +698,7 @@ module NakedObjects.Angular.Gemini{
             tvm.footerTemplate = footerTemplate;
 
             return tvm;
-        }; 
+        };
 
         let cvm: CiceroViewModel = null;
 
@@ -710,40 +710,37 @@ module NakedObjects.Angular.Gemini{
                     commandFactory.parseInput(input, cvm);
                 };
                 cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
-                    cvm.output = "";
-                    //TODO: factor out common functions see below
+                    
                     if (routeData.objectId) {
                         const [domainType, ...id] = routeData.objectId.split("-");
-                        context.getObject(1, domainType, id)
-                            .then((resource: DomainObjectRepresentation) => {
-                                const type = _.last(resource.domainType().split("."));
+                        context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                            .then((obj: DomainObjectRepresentation) => {
+                                let output = ""; //TODO: use builder
+                                const type = _.last(obj.domainType().split("."));
                                 if (routeData.edit) {
-                                    cvm.output += "Editing ";
+                                    output += "Editing ";
                                 }
-                                cvm.output += type + ": " + resource.title() + ". ";
+                                output += type + ": " + obj.title() + ". ";
+                                output += renderActionDialogIfOpen(obj, routeData, urlManager);
+                                cvm.clearInput(); 
+                                cvm.output = output;
                             });
-                        if (routeData.dialogId) {
-                            context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
-                                .then((actionName: string) => {
-                                    cvm.output += "Action: " + actionName;
-                                });
-                        }
                     }
                     else if (routeData.menuId) {
                         context.getMenu(routeData.menuId)
                             .then((menu: MenuRepresentation) => {
-                                cvm.output += menu.title() + " menu" + ". ";
+                                let output = ""; //TODO: use builder
+                                output += menu.title() + " menu" + ". ";
+                                output += renderActionDialogIfOpen(menu, routeData, urlManager);
+                                cvm.clearInput(); 
+                                cvm.output = output;
                             });
-                        if (routeData.dialogId) {
-                            context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.dialogId)
-                                .then((actionName: string) => {
-                                    cvm.output += "Action: " + actionName;
-                                });
-                        }
                     }
                     else {
+                        cvm.clearInput(); 
                         cvm.output = "home";
-                    }
+                    }  
+                                  
                 };
             }
             return cvm;
@@ -753,4 +750,22 @@ module NakedObjects.Angular.Gemini{
             return cvm;
         };
     });
+
+    function renderActionDialogIfOpen(
+        context: IHasActions,
+        routeData: PaneRouteData,
+        urlManager: IUrlManager): string {
+        let output = "";
+        if (routeData.dialogId) {
+            const actionMember = context.actionMember(routeData.dialogId);
+            const actionName = actionMember.extensions().friendlyName();
+            output += "Action dialog: " + actionName + ". ";
+            _.forEach(actionMember.parameters(), (param: Parameter) => {
+                output += param.extensions().friendlyName();
+                
+                //TODO: get param value (from UrlManager)
+            });
+        }
+        return output;
+    }
 }
