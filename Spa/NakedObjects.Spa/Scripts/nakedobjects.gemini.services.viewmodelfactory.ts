@@ -136,7 +136,7 @@ module NakedObjects.Angular.Gemini{
             parmViewModel.argId = parmViewModel.id.toLowerCase();
             parmViewModel.reference = "";
 
-            parmViewModel.mask = parmRep.extensions()["x-ro-nof-mask"];
+            parmViewModel.mask = parmRep.extensions().x_ro_nof_mask;
             parmViewModel.title = parmRep.extensions().friendlyName;
             parmViewModel.returnType = parmRep.extensions().returnType;
             parmViewModel.format = parmRep.extensions().format;
@@ -210,7 +210,7 @@ module NakedObjects.Angular.Gemini{
                 }
             }
 
-            var remoteMask = parmRep.extensions()["x-ro-nof-mask"];
+            var remoteMask = parmRep.extensions().x_ro_nof_mask;
 
             if (remoteMask && parmRep.isScalar()) {
                 const localFilter = mask.toLocalFilter(remoteMask);
@@ -245,7 +245,7 @@ module NakedObjects.Angular.Gemini{
             var actionViewModel = new ActionViewModel();
             
             actionViewModel.title = actionRep.extensions().friendlyName;
-            actionViewModel.menuPath = actionRep.extensions()["x-ro-nof-menuPath"] || "";
+            actionViewModel.menuPath = actionRep.extensions().x_ro_nof_menuPath || "";
             actionViewModel.disabled = () => { return !!actionRep.disabledReason(); } 
             if (actionViewModel.disabled()) {
                 actionViewModel.description = actionRep.disabledReason();
@@ -389,7 +389,7 @@ module NakedObjects.Angular.Gemini{
             } 
 
             if (propertyRep.isScalar()) {
-                const remoteMask = propertyRep.extensions()["x-ro-nof-mask"];
+                const remoteMask = propertyRep.extensions().x_ro_nof_mask;
                 const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
                 if (localFilter) {
                     propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);

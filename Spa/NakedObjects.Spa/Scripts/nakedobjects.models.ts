@@ -18,7 +18,7 @@
 /// <reference path="nakedobjects.rointerfaces.ts" />
 
 module NakedObjects {
-    import IExtensions = RoInterfaces.IExtensions;
+    import ICustomExtensions = RoInterfaces.Custom.ICustomExtensions;
     import ILink = RoInterfaces.ILink;
     import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
@@ -162,8 +162,8 @@ module NakedObjects {
             this.lazyLinks = null;
         }
 
-        extensions(): IExtensions {
-            return this.resource().extensions;
+        extensions(): ICustomExtensions {
+            return this.resource().extensions as ICustomExtensions;
         }
     }
 
@@ -469,8 +469,8 @@ module NakedObjects {
             return this.lazyLinks;
         }
 
-        extensions(): IExtensions {
-            return this.resource().extensions;
+        extensions(): ICustomExtensions {
+            return this.resource().extensions as ICustomExtensions;
         }
     }
 
@@ -546,10 +546,10 @@ module NakedObjects {
 
         // properties 
         choices(): _.Dictionary<Value> {
-
+            const customExtensions = this.extensions() as NakedObjects.RoInterfaces.Custom.ICustomExtensions;
             // use custom choices extension by preference 
-            if (this.extensions()["x-ro-nof-choices"]) {
-                return _.mapValues(this.extensions()["x-ro-nof-choices"], v  => new Value(v));
+            if (customExtensions.x_ro_nof_choices) {
+                return _.mapValues(customExtensions.x_ro_nof_choices, v  => new Value(v));
             }
 
             if (this.wrapped().choices) {
@@ -869,8 +869,8 @@ module NakedObjects {
         choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
-            if (this.extensions()["x-ro-nof-choices"]) {
-                return  _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
+            if (this.extensions().x_ro_nof_choices) {
+                return _.mapValues(this.extensions().x_ro_nof_choices, v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
@@ -1024,8 +1024,8 @@ module NakedObjects {
         choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
-            if (this.extensions()["x-ro-nof-choices"]) {
-                return  _.mapValues(this.extensions()["x-ro-nof-choices"], v => new Value(v));
+            if (this.extensions().x_ro_nof_choices) {
+                return _.mapValues(this.extensions().x_ro_nof_choices, v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
@@ -1308,9 +1308,9 @@ module NakedObjects {
     }
 
     // matches List Representation 11.0
-    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IListRepresentation> {
+    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation> {
 
-        wrapped = () => this.resource() as RoInterfaces.Custom.IListRepresentation;
+        wrapped = () => this.resource() as RoInterfaces.Custom.ICustomListRepresentation;
 
         // links
         selfLink(): Link {
@@ -1635,8 +1635,8 @@ module NakedObjects {
             return this.wrapped.arguments;
         }
 
-        extensions(): IExtensions {
-            return this.wrapped.extensions;
+        extensions(): ICustomExtensions {
+            return this.wrapped.extensions as ICustomExtensions;
         }
 
         copyToHateoasModel(hateoasModel: IHateoasModel): void {

@@ -1,11 +1,9 @@
 ﻿module NakedObjects.RoInterfaces.Custom {
  
-    export interface IExtensions extends RoInterfaces.IExtensions {
-        // ReSharper disable InconsistentNaming
-        "x-ro-nof-choices"?: { [index: string]: (string | number | boolean | ILink)[];}
-        "x-ro-nof-menuPath"?: string;
-        "x-ro-nof-mask"?: string;
-        // ReSharper restore InconsistentNaming
+    export interface ICustomExtensions extends RoInterfaces.IExtensions {
+        x_ro_nof_choices?: { [index: string]: (string | number | boolean | ILink)[];}
+        x_ro_nof_menuPath?: string;
+        x_ro_nof_mask?: string;
     }  
 
     export interface IPagination {
@@ -15,7 +13,7 @@
         totalCount: number;
     }
 
-    export interface IListRepresentation extends RoInterfaces.IListRepresentation {
+    export interface ICustomListRepresentation extends RoInterfaces.IListRepresentation {
         pagination? : IPagination;
     }
 

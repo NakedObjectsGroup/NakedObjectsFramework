@@ -164,7 +164,7 @@ module NakedObjects.Angular.Gemini {
             if (match) {
                 const clauses = match.split(" ");
                 actions = _.filter(actions, (action) => {
-                    const path = action.extensions()["x-ro-nof-menuPath"];
+                    const path = action.extensions().x_ro_nof_menuPath;
                     const name = action.extensions().friendlyName.toLowerCase();
                     return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
                         (!!path && path.toLowerCase().indexOf(clause) >= 0));
@@ -187,7 +187,7 @@ module NakedObjects.Angular.Gemini {
                         label = "Actions: "
                     }
                     var s = _.reduce(actions, (s, t) => {
-                        const menupath = t.extensions()["x-ro-nof-menuPath"] ? t.extensions()["x-ro-nof-menuPath"] + " - " : "";
+                        const menupath = t.extensions().x_ro_nof_menuPath ? t.extensions()["x-ro-nof-menuPath"] + " - " : "";
                         return s + menupath + t.extensions().friendlyName + "; ";
                     }, label);
                     this.setOutput(s);
