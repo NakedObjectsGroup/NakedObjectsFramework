@@ -15,7 +15,7 @@ using RestfulObjects.Mvc.Model;
 
 namespace RestfulObjects.Test.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(INakedObjectsSurface surface) : base(surface) {}
+        public RestfulObjectsController(INakedObjectsSurface surface, IOidStrategy oidStrategy) : base(surface, oidStrategy) {}
 
         [HttpGet]
         public override HttpResponseMessage GetHome([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
