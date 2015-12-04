@@ -63,6 +63,10 @@ module NakedObjects {
         return _.map(links, l => new Link(l));
     }
 
+    function wrapExtensions(links: ILink[]) {
+        return _.map(links, l => new Link(l));
+    }
+
     function getLinkByRel(links: Link[], rel: Rel) {
         return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
     }
@@ -162,8 +166,11 @@ module NakedObjects {
             this.lazyLinks = null;
         }
 
-        extensions(): ICustomExtensions {
-            return this.resource().extensions as ICustomExtensions;
+        private lazyExtensions: Extensions;
+
+        extensions(): Extensions {
+            this.lazyExtensions = this.lazyExtensions || new Extensions(this.model.extensions);
+            return this.lazyExtensions;
         }
     }
 
@@ -468,11 +475,37 @@ module NakedObjects {
             this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
             return this.lazyLinks;
         }
+        private lazyExtensions: Extensions;
 
-        extensions(): ICustomExtensions {
-            return this.resource().extensions as ICustomExtensions;
+        extensions(): Extensions {
+            this.lazyExtensions = this.lazyExtensions || new Extensions(this.resource().extensions);
+            return this.lazyExtensions;
         }
     }
+
+    export class Extensions {
+
+        constructor(private wrapped: ICustomExtensions) {
+        }
+        //Standard RO:
+        friendlyName(): string{return this.wrapped.friendlyName; }
+        description(): string { return this.wrapped.description  ;}
+        returnType(): string { return this.wrapped.returnType  ;}
+        optional(): boolean { return this.wrapped.optional  ;}
+        hasParams(): boolean { return this.wrapped.hasParams  ;}
+        elementType(): string { return this.wrapped.elementType  ;}
+        domainType(): string { return this.wrapped.domainType  ;}
+        pluralName(): string { return this.wrapped.pluralName  ;}
+        format(): string { return this.wrapped.format  ;}
+        memberOrder(): number { return this.wrapped.memberOrder  ;}
+        isService(): boolean { return this.wrapped.isService  ;}
+        minLength(): number { return this.wrapped.minLength; }
+        //Nof custom:
+        choices(): { [index: string]: (string | number | boolean | ILink)[]; } { return this.wrapped["x-ro-nof-choices"]  ; }
+        menuPath(): string { return this.wrapped["x-ro-nof-menuPath"]  ;}
+        mask(): string { return this.wrapped["x-ro-nof-mask"];}
+
+    } 
 
     // matches a action invoke resource 19.0 representation 
 
@@ -546,10 +579,10 @@ module NakedObjects {
 
         // properties 
         choices(): _.Dictionary<Value> {
-            const customExtensions = this.extensions() as NakedObjects.RoInterfaces.Custom.ICustomExtensions;
+            const customExtensions = this.extensions();
             // use custom choices extension by preference 
-            if (customExtensions.x_ro_nof_choices) {
-                return _.mapValues(customExtensions.x_ro_nof_choices, v  => new Value(v));
+            if (customExtensions.choices()) {
+                return _.mapValues(customExtensions.choices(), v  => new Value(v));
             }
 
             if (this.wrapped().choices) {
@@ -575,8 +608,8 @@ module NakedObjects {
 
         // helper
         isScalar(): boolean {
-            return isScalarType(this.extensions().returnType) ||
-                   (isListType(this.extensions().returnType) && isScalarType(this.extensions().elementType));
+            return isScalarType(this.extensions().returnType()) ||
+                   (isListType(this.extensions().returnType()) && isScalarType(this.extensions().elementType()));
         }
 
         hasPrompt(): boolean {
@@ -869,8 +902,8 @@ module NakedObjects {
         choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
-            if (this.extensions().x_ro_nof_choices) {
-                return _.mapValues(this.extensions().x_ro_nof_choices, v => new Value(v));
+            if (this.extensions().choices()) {
+                return _.mapValues(this.extensions().choices(), v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
@@ -886,7 +919,7 @@ module NakedObjects {
 
         // helper 
         isScalar(): boolean {
-            return isScalarType(this.extensions().returnType);
+            return isScalarType(this.extensions().returnType());
         }
 
         hasPrompt(): boolean {
@@ -922,7 +955,7 @@ module NakedObjects {
         }
 
         isScalar(): boolean {
-            return isScalarType(this.extensions().returnType);
+            return isScalarType(this.extensions().returnType());
         }
 
         static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member<RoInterfaces.IMember> {
@@ -1024,8 +1057,8 @@ module NakedObjects {
         choices(): _.Dictionary<Value> {
 
             // use custom choices extension by preference 
-            if (this.extensions().x_ro_nof_choices) {
-                return _.mapValues(this.extensions().x_ro_nof_choices, v => new Value(v));
+            if (this.extensions().choices()) {
+                return _.mapValues(this.extensions().choices(), v => new Value(v));
             }
             const ch = this.wrapped().choices;
             if (ch) {
@@ -1635,8 +1668,11 @@ module NakedObjects {
             return this.wrapped.arguments;
         }
 
-        extensions(): ICustomExtensions {
-            return this.wrapped.extensions as ICustomExtensions;
+        private lazyExtensions: Extensions;
+
+        extensions(): Extensions {
+            this.lazyExtensions = this.lazyExtensions ||new Extensions(this.wrapped.extensions);
+            return this.lazyExtensions;
         }
 
         copyToHateoasModel(hateoasModel: IHateoasModel): void {

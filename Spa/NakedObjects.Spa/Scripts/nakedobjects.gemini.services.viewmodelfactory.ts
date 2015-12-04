@@ -127,21 +127,21 @@ module NakedObjects.Angular.Gemini{
 
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
-            parmViewModel.optional = parmRep.extensions().optional;
+            parmViewModel.optional = parmRep.extensions().optional();
             var required = "";
             if (!parmViewModel.optional) {
                 required = "* ";
             }
-            parmViewModel.description = required + parmRep.extensions().description;
+            parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
             parmViewModel.argId = parmViewModel.id.toLowerCase();
             parmViewModel.reference = "";
 
-            parmViewModel.mask = parmRep.extensions().x_ro_nof_mask;
-            parmViewModel.title = parmRep.extensions().friendlyName;
-            parmViewModel.returnType = parmRep.extensions().returnType;
-            parmViewModel.format = parmRep.extensions().format;
+            parmViewModel.mask = parmRep.extensions().mask();
+            parmViewModel.title = parmRep.extensions().friendlyName();
+            parmViewModel.returnType = parmRep.extensions().returnType();
+            parmViewModel.format = parmRep.extensions().format();
 
             parmViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
@@ -157,14 +157,14 @@ module NakedObjects.Angular.Gemini{
             parmViewModel.hasChoices = parmViewModel.choices.length > 0;
             parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
             parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
-            parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType === "list";
+            parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType() === "list";
 
             if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
 
                 const promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
                     parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, parmViewModel.id);
-                    parmViewModel.minLength = parmRep.promptLink().extensions().minLength;
+                    parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
@@ -205,14 +205,14 @@ module NakedObjects.Angular.Gemini{
                     }
                 }             
             } else {
-                if (parmRep.extensions().returnType === "boolean") {
+                if (parmRep.extensions().returnType() === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
             }
 
-            var remoteMask = parmRep.extensions().x_ro_nof_mask;
+            var remoteMask = parmRep.extensions().mask();
 
             if (remoteMask && parmRep.isScalar()) {
                 const localFilter = mask.toLocalFilter(remoteMask);
@@ -246,17 +246,17 @@ module NakedObjects.Angular.Gemini{
         viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel) => {
             var actionViewModel = new ActionViewModel();
             
-            actionViewModel.title = actionRep.extensions().friendlyName;
-            actionViewModel.menuPath = actionRep.extensions().x_ro_nof_menuPath || "";
+            actionViewModel.title = actionRep.extensions().friendlyName();
+            actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => { return !!actionRep.disabledReason(); } 
             if (actionViewModel.disabled()) {
                 actionViewModel.description = actionRep.disabledReason();
             } else {
-                actionViewModel.description = actionRep.extensions().description
+                actionViewModel.description = actionRep.extensions().description()
             }
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
-            actionViewModel.doInvoke = actionRep.extensions().hasParams ?
+            actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
                 (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
                 (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
 
@@ -293,7 +293,7 @@ module NakedObjects.Angular.Gemini{
 
             const parameters = actionMember.parameters();
             dialogViewModel.action = actionMember;
-            dialogViewModel.title = actionMember.extensions().friendlyName;
+            dialogViewModel.title = actionMember.extensions().friendlyName();
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
@@ -321,19 +321,19 @@ module NakedObjects.Angular.Gemini{
             const propertyViewModel = new PropertyViewModel();
            
 
-            propertyViewModel.title = propertyRep.extensions().friendlyName;
-            propertyViewModel.optional = propertyRep.extensions().optional;
+            propertyViewModel.title = propertyRep.extensions().friendlyName();
+            propertyViewModel.optional = propertyRep.extensions().optional();
            
             const required = propertyViewModel.optional ? "" : "* ";
 
-            propertyViewModel.description = required + propertyRep.extensions().description;
+            propertyViewModel.description = required + propertyRep.extensions().description();
 
             const value = previousValue || propertyRep.value();
 
             propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
-            propertyViewModel.returnType = propertyRep.extensions().returnType;
-            propertyViewModel.format = propertyRep.extensions().format;
+            propertyViewModel.returnType = propertyRep.extensions().returnType();
+            propertyViewModel.format = propertyRep.extensions().format();
             propertyViewModel.reference = propertyRep.isScalar() || value.isNull() ? "" : value.link().href();
             propertyViewModel.draggableType = propertyViewModel.returnType;
 
@@ -357,7 +357,7 @@ module NakedObjects.Angular.Gemini{
             }
 
             // only set color if has value 
-            propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType) : "";
+            propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType()) : "";
 
             propertyViewModel.id = id;
             propertyViewModel.argId = id.toLowerCase();
@@ -383,7 +383,7 @@ module NakedObjects.Angular.Gemini{
 
                 if (propertyViewModel.hasPrompt) {         
                     propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>> _.partial(context.prompt, promptRep, id);
-                    propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength;
+                    propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
                 } 
 
                 if (propertyViewModel.hasConditionalChoices) {
@@ -404,8 +404,8 @@ module NakedObjects.Angular.Gemini{
             } 
 
             if (propertyRep.isScalar()) {
-                const remoteMask = propertyRep.extensions().x_ro_nof_mask;
-                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format);
+                const remoteMask = propertyRep.extensions().mask();
+                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
                 if (localFilter) {
                     propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                 }
@@ -447,10 +447,10 @@ module NakedObjects.Angular.Gemini{
 
             collectionViewModel.onPaneId = paneId;
 
-            collectionViewModel.title = collectionRep.extensions().friendlyName;
+            collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.size = links.length;
-            collectionViewModel.pluralName = collectionRep.extensions().pluralName;
-            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType);
+            collectionViewModel.pluralName = collectionRep.extensions().pluralName();
+            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType());
 
             collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
 
@@ -596,7 +596,7 @@ module NakedObjects.Angular.Gemini{
             const collections = objectRep.collectionMembers();
             const actions = objectRep.actionMembers();
 
-            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName}` : objectRep.title();
+            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName()}` : objectRep.title();
 
             objectViewModel.message = "";
 

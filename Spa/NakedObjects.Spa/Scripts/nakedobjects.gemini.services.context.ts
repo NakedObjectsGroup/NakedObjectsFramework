@@ -249,10 +249,10 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.getActionFriendlyNameFromMenu = (menuId: string, actionId: string) =>
-            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions().friendlyName));
+            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions().friendlyName()));
 
         context.getActionFriendlyNameFromObject = (paneId: number, objectId: string, actionId: string) =>
-            context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions().friendlyName));
+            context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions().friendlyName()));
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<string> {
             return (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
@@ -317,7 +317,7 @@ module NakedObjects.Angular.Gemini {
             if (result.resultType() === "object") {
                 if (resultObject.persistLink()) {
                     // transient object
-                    const domainType = resultObject.extensions().domainType;
+                    const domainType = resultObject.extensions().domainType();
                     resultObject.wrapped().domainType = domainType;
                     resultObject.wrapped().instanceId = "0";
 
