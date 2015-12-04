@@ -45,8 +45,8 @@ module NakedObjects.Angular.Gemini {
         }
 
         public checkMatch(matchText: string): void {
-            if (this.fullCommand.indexOf(matchText) != 0) {             
-                    throw new Error("No such command: " + matchText);
+            if (this.fullCommand.indexOf(matchText) != 0) {
+                throw new Error("No such command: " + matchText);
             }
         }
 
@@ -75,7 +75,7 @@ module NakedObjects.Angular.Gemini {
                 if (optional) {
                     return undefined;
                 } else {
-                    throw new Error("Required argument number " + (argNo + 1).toString + " is missing"); 
+                    throw new Error("Required argument number " + (argNo + 1).toString + " is missing");
                 }
             }
             return args[argNo].trim().toLowerCase();  // which may be "" if argString ends in a ','
@@ -130,57 +130,50 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "action";
         public helpText = "Open an action from a Main Menu, or object actions menu. " +
-        "Normally takes one argument: the name, or partial name, of the action. " +
+        "May one argument: the name, or partial name, of the action. " +
         "If the partial name matches more than one action, a list of matches is returned," +
         "but none opened. If no argument is provided, a full list of available action names is returned";
         protected minArguments = 0;
-        protected maxArguments = 2; //optional sub-menu. TODO: Multiple levels?
+        protected maxArguments = 1;
 
         public isAvailableInCurrentContext(): boolean {
             return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
         }
 
         execute(args: string): void {
-            const a0 = this.argumentAsString(args, 0);
-            const a1 = this.argumentAsString(args, 1, true);
-            const name: string = a1 == undefined ? a0 : a1;
-            const path: string = a1 == undefined ? undefined : a0;
-
+            const match = this.argumentAsString(args, 0);
             if (this.isObject()) {
                 const oid = this.urlManager.getRouteData().pane1.objectId;
                 this.context.getObjectByOid(1, oid)
                     .then((obj: DomainObjectRepresentation) => {
-                        this.processActions(path, name, obj.actionMembers());
+                        this.processActions(match, obj.actionMembers());
                     });
             }
             else if (this.isMenu()) {
                 const menuId = this.urlManager.getRouteData().pane1.menuId;
                 this.context.getMenu(menuId)
                     .then((menu: MenuRepresentation) => {
-                        this.processActions(path, name, menu.actionMembers());
+                        this.processActions(match, menu.actionMembers());
                     });
             }
             //TODO: handle list
         }
 
-        private processActions(requiredPath: string, name: string, actionsMap: _.Dictionary<ActionMember>) {
-            var actions = _.map(actionsMap, action => action);            
-            //TODO: actionRep.extensions()["x-ro-nof-menuPath"] to test path
-            if (requiredPath) {
+        private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
+            var actions = _.map(actionsMap, action => action);
+            if (match) {
+                const clauses = match.split(" ");
                 actions = _.filter(actions, (action) => {
-                    var actionPath = action.extensions()["x-ro-nof-menuPath"];
-                    if (actionPath) {
-                       return actionPath.toLowerCase().indexOf(requiredPath) >= 0;
-                    }
-                    return false;
+                    const path = action.extensions()["x-ro-nof-menuPath"];
+                    const name = action.extensions().friendlyName.toLowerCase();
+                    return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
+                        (!!path && path.toLowerCase().indexOf(clause) >= 0));
                 });
             }
-            if (name) {
-                actions = _.filter(actions, (action) => action.extensions().friendlyName.toLowerCase().indexOf(name) >= 0);
-            }
+
             switch (actions.length) {
                 case 0:
-                    this.setOutput(requiredPath+", "+name + " does not match any actions");
+                    this.setOutput(match + " does not match any actions");
                     break;
                 case 1:
                     const actionId = actions[0].actionId();
@@ -188,13 +181,13 @@ module NakedObjects.Angular.Gemini {
                     break;
                 default:
                     var label;
-                    if (requiredPath || name) {
+                    if (match) {
                         label = " Matching actions: ";
                     } else {
                         label = "Actions: "
                     }
                     var s = _.reduce(actions, (s, t) => {
-                        const menupath = t.extensions()["x-ro-nof-menuPath"] ? t.extensions()["x-ro-nof-menuPath"] +" - ": "";
+                        const menupath = t.extensions()["x-ro-nof-menuPath"] ? t.extensions()["x-ro-nof-menuPath"] + " - " : "";
                         return s + menupath + t.extensions().friendlyName + "; ";
                     }, label);
                     this.setOutput(s);
