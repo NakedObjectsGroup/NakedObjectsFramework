@@ -7,7 +7,7 @@ module NakedObjects.Angular.Gemini{
 
     export interface ICommandFactory {
 
-        parseInput(command: string): void;
+        parseInput(command: string, cvm: CiceroViewModel): void;
 
         //Returns all commands (as separated words) that may be invoked in the current context
         allCommandsForCurrentContext(): string;
@@ -29,8 +29,42 @@ module NakedObjects.Angular.Gemini{
         clickHandler: IClickHandler) {
 
         var commandFactory = <ICommandFactory>this;
+
+        let commandsInitialised = false;
+
+        const commands: _.Dictionary<Command> = {
+            "ac": new Action(urlManager, $location, commandFactory, context, navigation),
+            "ba": new Back(urlManager, $location, commandFactory, context, navigation),
+            "ca": new Cancel(urlManager, $location, commandFactory, context, navigation),
+            "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation),
+            "co": new Copy(urlManager, $location, commandFactory, context, navigation),
+            "de": new Description(urlManager, $location, commandFactory, context, navigation),
+            "ed": new Edit(urlManager, $location, commandFactory, context, navigation),
+            "en": new Enter(urlManager, $location, commandFactory, context, navigation),
+            "fo": new Forward(urlManager, $location, commandFactory, context, navigation),
+            "ge": new Gemini(urlManager, $location, commandFactory, context, navigation),
+            "go": new Go(urlManager, $location, commandFactory, context, navigation),
+            "he": new Help(urlManager, $location, commandFactory, context, navigation),
+            "ho": new Home(urlManager, $location, commandFactory, context, navigation),
+            "it": new Item(urlManager, $location, commandFactory, context, navigation),
+            "me": new Menu(urlManager, $location, commandFactory, context, navigation),
+            "ok": new OK(urlManager, $location, commandFactory, context, navigation),
+            "op": new Open(urlManager, $location, commandFactory, context, navigation),
+            "pa": new Paste(urlManager, $location, commandFactory, context, navigation),
+            "pr": new Property(urlManager, $location, commandFactory, context, navigation),
+            "re": new Reload(urlManager, $location, commandFactory, context, navigation),
+            "ro": new Root(urlManager, $location, commandFactory, context, navigation),
+            "sa": new Save(urlManager, $location, commandFactory, context, navigation),
+            "se": new Select(urlManager, $location, commandFactory, context, navigation),
+            "ta": new Table(urlManager, $location, commandFactory, context, navigation),
+            "wh": new Where(urlManager, $location, commandFactory, context, navigation)
+        }
         
-        commandFactory.parseInput = (input: string) => {
+        commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
+            if (!commandsInitialised) {
+                _.forEach(commands, command => command.initialiseWithViewModel(cvm));
+                commandsInitialised = true;
+            }
             try {
                 var firstWord : string;
                 if (input) {
@@ -51,43 +85,13 @@ module NakedObjects.Angular.Gemini{
                 command.execute(argString);
             }
             catch (Error) {
-                context.getCiceroVM().output = Error.message;
+                cvm.output = Error.message;
             }
         };
 
-        function cachedCvm(): CiceroViewModel { return context.setCiceroVMIfNecessary(commandFactory); }
-
-        const commands = {
-            "ac": new Action(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ba": new Back(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ca": new Cancel(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "cl": new Clipboard(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "co": new Copy(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "de": new Description(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ed": new Edit(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "en": new Enter(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "fo": new Forward(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ge": new Gemini(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "go": new Go(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "he": new Help(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ho": new Home(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "it": new Item(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "me": new Menu(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ok": new OK(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "op": new Open(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "pa": new Paste(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "pr": new Property(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "re": new Reload(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ro": new Root(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "sa": new Save(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "se": new Select(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "ta": new Table(urlManager, $location, cachedCvm(), commandFactory, context, navigation),
-            "wh": new Where(urlManager, $location, cachedCvm(), commandFactory, context, navigation)
-        }
-
         commandFactory.getCommand = (commandWord: string) => {
             const abbr = commandWord.substr(0, 2);
-            const command = commands[abbr];
+            const command: Command = commands[abbr];
             if (command == null) {
                 throw new Error("No command begins with "+abbr);
             }

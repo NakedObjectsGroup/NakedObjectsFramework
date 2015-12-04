@@ -27,6 +27,8 @@ module NakedObjects.Angular.Gemini{
         serviceViewModel(serviceRep: DomainObjectRepresentation, paneId : number): ServiceViewModel;
         domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, parms : _.Dictionary<Value>, editing : boolean, paneId : number): DomainObjectViewModel;
         ciceroViewModel(wrapped: any): CiceroViewModel;
+        getCiceroVM(): CiceroViewModel;
+        setCiceroVMIfNecessary(): CiceroViewModel;
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
@@ -697,5 +699,58 @@ module NakedObjects.Angular.Gemini{
 
             return tvm;
         }; 
+
+        let cvm: CiceroViewModel = null;
+
+        viewModelFactory.setCiceroVMIfNecessary = () => {
+            if (cvm == null) {
+                cvm = new CiceroViewModel();
+                cvm.parseInput = (input: string) => {
+                    cvm.previousInput = input;
+                    commandFactory.parseInput(input, cvm);
+                };
+                cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
+                    cvm.output = "";
+                    //TODO: factor out common functions see below
+                    if (routeData.objectId) {
+                        const [domainType, ...id] = routeData.objectId.split("-");
+                        context.getObject(1, domainType, id)
+                            .then((resource: DomainObjectRepresentation) => {
+                                const type = _.last(resource.domainType().split("."));
+                                if (routeData.edit) {
+                                    cvm.output += "Editing ";
+                                }
+                                cvm.output += type + ": " + resource.title() + ". ";
+                            });
+                        if (routeData.dialogId) {
+                            context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
+                                .then((actionName: string) => {
+                                    cvm.output += "Action: " + actionName;
+                                });
+                        }
+                    }
+                    else if (routeData.menuId) {
+                        context.getMenu(routeData.menuId)
+                            .then((menu: MenuRepresentation) => {
+                                cvm.output += menu.title() + " menu" + ". ";
+                            });
+                        if (routeData.dialogId) {
+                            context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.dialogId)
+                                .then((actionName: string) => {
+                                    cvm.output += "Action: " + actionName;
+                                });
+                        }
+                    }
+                    else {
+                        cvm.output = "home";
+                    }
+                };
+            }
+            return cvm;
+        };
+
+        viewModelFactory.getCiceroVM = () => {
+            return cvm;
+        };
     });
 }

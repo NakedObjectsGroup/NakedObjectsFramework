@@ -6,7 +6,6 @@ module NakedObjects.Angular.Gemini {
 
         constructor(protected urlManager: IUrlManager,
             protected nglocation: ng.ILocationService,
-            protected vm: CiceroViewModel,
             protected commandFactory: ICommandFactory,
             protected context: IContext,
             protected navigation: INavigation) {
@@ -16,6 +15,12 @@ module NakedObjects.Angular.Gemini {
         public helpText: string;
         protected minArguments: number;
         protected maxArguments: number;
+        protected vm: CiceroViewModel;
+
+        //Must be called after construction and before execute is called
+        initialiseWithViewModel(cvm: CiceroViewModel) {
+            this.vm = cvm;
+        }
 
         abstract execute(args: string): void;
 

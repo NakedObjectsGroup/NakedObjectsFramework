@@ -32,12 +32,8 @@ module NakedObjects.Angular.Gemini {
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
-        getCiceroVM(): CiceroViewModel;
-        setCiceroVMIfNecessary(cf: ICommandFactory): CiceroViewModel;
-
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
         getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
-
     }
 
     interface IContextInternal extends IContext {
@@ -506,60 +502,6 @@ module NakedObjects.Angular.Gemini {
                     return false;
                 });
         }
-
-        let cvm: CiceroViewModel = null;
-
-        context.setCiceroVMIfNecessary = (cf: ICommandFactory) => {
-            if (cvm == null) {
-                cvm = new CiceroViewModel();
-                cvm.parseInput = (input: string) => {
-                    cvm.previousInput = input;
-                    cf.parseInput(input);
-                };
-                cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
-                    cvm.output = "";
-                    //TODO: factor out common functions see below
-                    if (routeData.objectId) {
-                        const [domainType, ...id] = routeData.objectId.split("-");
-                        context.getObject(1, domainType, id)
-                            .then((resource: DomainObjectRepresentation) => {
-                                const type = _.last(resource.domainType().split("."));
-                                if (routeData.edit) {
-                                    cvm.output += "Editing ";
-                                }
-                                cvm.output += type+": " + resource.title()+". ";
-                            });
-                        if (routeData.dialogId) {
-                            context.getActionFriendlyNameFromObject(1, routeData.objectId, routeData.dialogId)
-                                .then((actionName: string) => {
-                                    cvm.output += "Action: " + actionName;
-                                });
-                        }
-                    }
-                    else if (routeData.menuId) {
-                        context.getMenu(routeData.menuId)
-                            .then((menu: MenuRepresentation) => {
-                                cvm.output += menu.title() + " menu" + ". ";
-                            });
-                        if (routeData.dialogId) {
-                            context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.dialogId)
-                                .then((actionName: string) => {
-                                    cvm.output += "Action: " + actionName;
-                                });
-                        }
-                    }
-                    else {
-                        cvm.output = "home";
-                    }
-                };
-            }
-            return cvm;
-        };
-
-        context.getCiceroVM = () => {
-            return cvm;
-        };
-
     });
 
 }
