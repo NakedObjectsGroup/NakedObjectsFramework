@@ -58,7 +58,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
         }
 
-        [TestMethod, Ignore] //The dependent selector is not changing in the demo
+        [TestMethod]
         public virtual void ObjectEditChangeChoices() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
@@ -80,13 +80,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
             // set product category and sub category
-
-            // this makes tests really fragile
-            //Assert.AreEqual("Accessories", selected.SelectedOption.Text);
-
-            //Assert.AreEqual(4, br.FindElements(By.CssSelector("#productcategory  select option")).Count);
-            //Assert.AreEqual(13, br.FindElements(By.CssSelector("#productsubcategory  select option")).Count);
-
             SelectDropDownOnField("#productcategory", "Clothing");
 
             wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory option")).Count == 9);

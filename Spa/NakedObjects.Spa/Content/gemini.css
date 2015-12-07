@@ -176,6 +176,10 @@
         height: 20px;
     }
 
+    select[multiple] {
+        height: inherit;
+    }
+
     .name, .value, .property .reference {
         float: left;
     }
