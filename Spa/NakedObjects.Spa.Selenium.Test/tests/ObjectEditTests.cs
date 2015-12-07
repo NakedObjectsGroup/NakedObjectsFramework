@@ -158,6 +158,25 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetCancelEditButton()); //but can't read the value, so go back to view
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
+
+        [TestMethod]
+        public void CoValidationOnSavingChanges()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-43134&edit1=true");
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Touring-2000 Blue, 46 17/09/2007");
+            var deleteDate = Repeat(Keys.Backspace, 11);
+            TypeIntoField("input#startdate", deleteDate +"17 Oct 2007");
+            TypeIntoField("input#enddate", deleteDate + "15 Oct 2007");
+            Click(SaveButton());
+            // wait.Until(dr => dr.FindElement(By.CssSelector(".header .messages")).Text == "StartDate must be before EndDate");
+            WaitForMessage("StartDate must be before EndDate");
+        }
+
+        protected void WaitForMessage(string message, Pane pane = Pane.Single)
+        {
+            string p = CssSelectorFor(pane);
+            wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
+        }
     }
 
     #region browsers specific subclasses

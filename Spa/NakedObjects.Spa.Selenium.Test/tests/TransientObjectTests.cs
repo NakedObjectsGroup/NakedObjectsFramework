@@ -83,7 +83,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
 
-        [TestMethod] //cross-field validation not working
+        [TestMethod, Ignore] //cross-field validation not displaying correct message on saving transient
         public void MultiFieldValidation()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -93,8 +93,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectDropDownOnField("#expmonth", "1");
             SelectDropDownOnField("#expyear", "2008");
             Click(SaveButton());
-            //TODO: Test that dave has failed and message is shown
-
+            WaitForMessage("Expiry date must be in the future");
         }
     }
 

@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -157,9 +158,28 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return WaitForCss(cssSelector, number + 1)[number];
         }
 
+        protected void WaitForMessage(string message, Pane pane = Pane.Single)
+        {
+            string p = CssSelectorFor(pane);
+            wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
+        }
+
         protected virtual void TypeIntoField(string cssFieldId, string characters)
         {
             WaitForCss(cssFieldId).SendKeys(characters);
+        }
+
+        /// <summary>
+        /// Returns a string of n backspace keys for typing into a field
+        /// </summary>
+        protected string Repeat(string keys, int n)
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < n; i++)
+            {
+                sb.Append(keys);
+            }
+            return sb.ToString();
         }
 
         protected virtual void SelectDropDownOnField(string cssFieldId, string characters)
