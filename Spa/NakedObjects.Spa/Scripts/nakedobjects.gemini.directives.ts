@@ -349,7 +349,7 @@ module NakedObjects.Angular.Gemini {
     app.directive("geminiEnter", () => (scope, element, attrs) => {
         element.bind("keydown keypress", event => {
             const enterKeyCode = 13;
-            if (event.which === enterKeyCode) {
+            if (event.which === enterKeyCode && !event.shiftKey) {
                 scope.$apply(() => scope.$eval(attrs.geminiEnter));
                 event.preventDefault();
             }
