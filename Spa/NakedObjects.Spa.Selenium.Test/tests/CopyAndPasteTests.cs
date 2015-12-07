@@ -179,7 +179,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class CopyAndPasteTestsFirefox : CopyAndPasteTests
     {
         [ClassInitialize]
