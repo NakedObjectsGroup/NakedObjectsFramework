@@ -423,7 +423,7 @@ module NakedObjects.Angular.Gemini {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
                         if (actionIsNotQueryOnly) {
                             // todo move formatting into rep
-                            dirtyObjects[parent.domainType + "-" + parent.instanceId] = true;
+                            dirtyObjects[parent.domainType() + "-" + parent.instanceId()] = true;
                         }
                     }
 
