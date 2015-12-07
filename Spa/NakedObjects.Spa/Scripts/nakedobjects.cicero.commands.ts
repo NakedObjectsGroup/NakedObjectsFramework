@@ -169,8 +169,8 @@ module NakedObjects.Angular.Gemini {
             if (match) {
                 const clauses = match.split(" ");
                 actions = _.filter(actions, (action) => {
-                    const path = action.extensions().x_ro_nof_menuPath;
-                    const name = action.extensions().friendlyName.toLowerCase();
+                    const path = action.extensions().menuPath();
+                    const name = action.extensions().friendlyName().toLowerCase();
                     return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
                         (!!path && path.toLowerCase().indexOf(clause) >= 0));
                 });
@@ -192,8 +192,8 @@ module NakedObjects.Angular.Gemini {
                         label = "Actions: "
                     }
                     var s = _.reduce(actions, (s, t) => {
-                        const menupath = t.extensions().x_ro_nof_menuPath ? t.extensions()["x-ro-nof-menuPath"] + " - " : "";
-                        return s + menupath + t.extensions().friendlyName + "; ";
+                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
+                        return s + menupath + t.extensions().friendlyName() + "; ";
                     }, label);
                     this.setOutput(s);
             }
@@ -426,8 +426,10 @@ module NakedObjects.Angular.Gemini {
             var arg = this.argumentAsString(args, 0);
             if (arg) {
                 const c = this.commandFactory.getCommand(arg);
+                this.clearInput();
                 this.setOutput(c.fullCommand + " command: " + c.helpText);
             } else {
+                this.clearInput();
                 this.setOutput(this.commandFactory.allCommandsForCurrentContext());
             }
         };
@@ -446,7 +448,6 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             this.urlManager.setHome(1);
-            this.setOutput("home");
         };
     }
     export class Item extends Command {
@@ -506,6 +507,7 @@ module NakedObjects.Angular.Gemini {
                     }
                     switch (links.length) {
                         case 0:
+                            this.clearInput();
                             this.setOutput(menuName + " does not match any menu");
                             break;
                         case 1:
@@ -517,7 +519,8 @@ module NakedObjects.Angular.Gemini {
                             if (menuName) {
                                 label = label + " matching " + menuName;
                             }
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");                           
+                            this.clearInput();
                             this.setOutput(s);
                     }
                 });
@@ -621,7 +624,7 @@ module NakedObjects.Angular.Gemini {
                 .then((obj: DomainObjectRepresentation) => {
                     var props = _.map(obj.propertyMembers(), prop => prop);
                     if (name) {
-                        var props = _.filter(props, (p) => { return p.extensions().friendlyName.toLowerCase().indexOf(name) > -1 });
+                        var props = _.filter(props, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
                     }
                     //TODO render empty properties as e.g. 'empty'?
                     var s: string = "";
@@ -630,10 +633,10 @@ module NakedObjects.Angular.Gemini {
                             s = name + " does not match any properties";
                             break;
                         case 1:
-                            s = "Property: " + props[0].extensions().friendlyName + ": " + props[0].value();
+                            s = "Property: " + props[0].extensions().friendlyName() + ": " + props[0].value();
                             break;
                         default:
-                            s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName + ": " + t.value() + "; "; }, "Properties: ");
+                            s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName() + ": " + t.value() + "; "; }, "Properties: ");
                     }
                     this.setOutput(s);
                 });
