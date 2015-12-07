@@ -353,6 +353,20 @@ module NakedObjects.Angular.Gemini {
             return e ? e[index] : null;
         }
 
+        function setErrorRep(errorRep: ErrorRepresentation) {
+            context.setError(errorRep);
+            urlManager.setError();
+        }
+
+        function setError(msg: string, vm?: MessageViewModel) {
+            if (vm) {
+                vm.message = msg;
+            }
+            else {
+                setErrorRep(ErrorRepresentation.create(msg));
+            }
+        }
+
         context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel) => {
             const err = error as ErrorMap | ErrorRepresentation | string;
             let showWarning = true; // only show warning message if we have nothing else  
@@ -377,26 +391,13 @@ module NakedObjects.Angular.Gemini {
                 });
 
                 const msg = err.invalidReason() || (showWarning ? err.warningMessage : "");
-                if (vm) {
-                    vm.message = msg;
-                }
-                else {
-                    context.setError(ErrorRepresentation.create(msg));
-                    urlManager.setError();
-                }
+                setError(msg, vm);
             }
             else if (err instanceof ErrorRepresentation) {
-                context.setError(err);
-                urlManager.setError();
+                setErrorRep(err);
             }
             else {
-                if (vm) {
-                    vm.message = err as string;
-                } else {
-                    context.setError(ErrorRepresentation.create(err as string));
-                    urlManager.setError();
-                }
-               
+                setError(err as string, vm);
             }
         };
 
