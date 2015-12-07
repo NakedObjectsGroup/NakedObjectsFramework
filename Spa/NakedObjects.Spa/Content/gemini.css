@@ -96,7 +96,7 @@
         font-size: 16pt;
     }
 
-    .action[disabled="disabled"] {
+    .action[disabled="disabled"], .menu[disabled="disabled"] {
         color: grey;
     }
 
@@ -260,7 +260,8 @@
         outline-color: white;
     }
 
-   .action[disabled="disabled"]:hover {
+   .action[disabled="disabled"]:hover,
+   .menu[disabled="disabled"]:hover {
        outline: none;
    }
 

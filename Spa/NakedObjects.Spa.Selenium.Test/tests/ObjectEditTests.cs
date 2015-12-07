@@ -168,14 +168,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             TypeIntoField("input#startdate", deleteDate +"17 Oct 2007");
             TypeIntoField("input#enddate", deleteDate + "15 Oct 2007");
             Click(SaveButton());
-            // wait.Until(dr => dr.FindElement(By.CssSelector(".header .messages")).Text == "StartDate must be before EndDate");
             WaitForMessage("StartDate must be before EndDate");
-        }
-
-        protected void WaitForMessage(string message, Pane pane = Pane.Single)
-        {
-            string p = CssSelectorFor(pane);
-            wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
         }
     }
 

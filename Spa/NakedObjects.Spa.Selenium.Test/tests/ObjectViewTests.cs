@@ -161,7 +161,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Then the real test
             GetObjectAction("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
         }
+
+
+        [TestMethod]
+        public void ActionsMenuDisabledOnObjectWithNoActions()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Address-21467");
+            WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
+            var actions =wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
+            Assert.AreEqual("true", actions.GetAttribute("disabled"));
+        }
         #endregion
+
+
 
         [TestMethod] 
         public void QueryOnlyActionDoesNotReloadAutomatically()
