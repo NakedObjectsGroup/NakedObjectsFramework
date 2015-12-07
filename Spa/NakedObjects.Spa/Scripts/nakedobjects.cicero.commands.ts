@@ -368,6 +368,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
+            this.clearInput();  //To catch case where can't go any further forward and hence url does not change.
             this.navigation.forward();
         };
     }
