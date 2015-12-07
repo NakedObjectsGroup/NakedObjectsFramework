@@ -505,9 +505,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void EnterCommand(string command)
         {
-            TypeIntoField("input", Keys.ArrowDown); //To clear field
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).Text == "");
-            TypeIntoField("input", command + Keys.Enter);
+            TypeIntoField("input", command);
+            Thread.Sleep(300); //To make it easier to see that the command has been entered
+            TypeIntoField("input",  Keys.Enter);
         }
         #endregion
 

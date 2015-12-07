@@ -269,14 +269,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //TBD
         }
-        [TestMethod, Ignore]
+        [TestMethod]
         public void Where()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
             WaitForOutput("Product: HL Grip Tape.");
             //Do something to change the output
             EnterCommand("help"); //?? not working !!
-            WaitForOutput("Commands available in current context: back; clipboard; forward; gemini; help; home; menu; where;"); 
+            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; home; open; property; reload; where;"); 
 
             EnterCommand("where");
             WaitForOutput("Product: HL Grip Tape.");

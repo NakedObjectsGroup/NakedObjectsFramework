@@ -178,6 +178,7 @@ module NakedObjects.Angular.Gemini {
 
             switch (actions.length) {
                 case 0:
+                    this.clearInput();
                     this.setOutput(match + " does not match any actions");
                     break;
                 case 1:
@@ -195,6 +196,7 @@ module NakedObjects.Angular.Gemini {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + "; ";
                     }, label);
+                    this.clearInput();
                     this.setOutput(s);
             }
         }
@@ -429,8 +431,9 @@ module NakedObjects.Angular.Gemini {
                 this.clearInput();
                 this.setOutput(c.fullCommand + " command: " + c.helpText);
             } else {
+                const commands = this.commandFactory.allCommandsForCurrentContext();
                 this.clearInput();
-                this.setOutput(this.commandFactory.allCommandsForCurrentContext());
+                this.setOutput(commands);
             }
         };
     }
