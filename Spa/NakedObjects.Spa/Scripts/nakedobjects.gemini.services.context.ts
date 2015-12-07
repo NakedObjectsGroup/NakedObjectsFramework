@@ -48,13 +48,34 @@ module NakedObjects.Angular.Gemini {
 
     }
 
+    class DirtyCache {
+        private dirtyObjects: _.Dictionary<boolean> = {};
+
+        private getKey(type: string, id: string) {
+            return type + "-" + id;
+        }
+
+        setDirty(objectRepresentation: DomainObjectRepresentation) {
+            const key = this.getKey(objectRepresentation.domainType(), objectRepresentation.instanceId());
+            this.dirtyObjects[key] = true;
+        }
+
+        getDirty(type: string, id: string) {
+            const key = this.getKey(type, id);
+            return this.dirtyObjects[key];
+        }
+
+        clearDirty(type: string, id: string) {
+            const key = this.getKey(type, id);
+            this.dirtyObjects = _.omit(this.dirtyObjects, key) as _.Dictionary<boolean>;
+        }
+    }
+
     app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
         $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
-
-        let dirtyObjects: _.Dictionary<boolean> = {};
 
         // cached values
        
@@ -65,6 +86,7 @@ module NakedObjects.Angular.Gemini {
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
 
+        const dirtyCache = new DirtyCache();
 
         let currentLists: _.Dictionary<ListRepresentation>[] = []; // cache last 'listCacheSize' lists
 
@@ -86,9 +108,7 @@ module NakedObjects.Angular.Gemini {
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
 
-            // todo make this cleaner 
-            const key = type + "-" + id;
-            const isDirty = dirtyObjects[key];
+            const isDirty = dirtyCache.getDirty(type, id);
 
             if (!isDirty && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
@@ -100,7 +120,7 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate<DomainObjectRepresentation>(object, isDirty).
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
-                    dirtyObjects = _.omit(dirtyObjects, key) as _.Dictionary<boolean>;
+                    dirtyCache.clearDirty(type, id);
                     return $q.when(obj);
                 });
         };
@@ -402,6 +422,9 @@ module NakedObjects.Angular.Gemini {
         };
 
 
+
+
+
         context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
@@ -422,8 +445,7 @@ module NakedObjects.Angular.Gemini {
                     if (parent instanceof DomainObjectRepresentation) {
                         const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
                         if (actionIsNotQueryOnly) {
-                            // todo move formatting into rep
-                            dirtyObjects[parent.domainType() + "-" + parent.instanceId()] = true;
+                            dirtyCache.setDirty(parent);
                         }
                     }
 
