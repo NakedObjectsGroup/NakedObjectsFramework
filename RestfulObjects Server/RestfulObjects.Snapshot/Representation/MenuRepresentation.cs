@@ -101,12 +101,28 @@ namespace RestfulObjects.Snapshot.Representations {
             return new Tuple<string, ActionContextFacade>[] {};
         }
 
+        private class Eq : IEqualityComparer<InlineActionRepresentation> {
+            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) {
+                return x.Id == y.Id;
+            }
+
+            public int GetHashCode(InlineActionRepresentation obj) {
+                return obj.Id.GetHashCode();
+            }
+        }
+
 
 
         private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
             var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i));
 
+            
             InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
+
+            var eq = new Eq();
+            // todo fix distinct
+            actions = actions.Distinct(eq).ToArray();
+
 
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
