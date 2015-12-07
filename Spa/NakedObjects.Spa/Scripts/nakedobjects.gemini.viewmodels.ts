@@ -332,8 +332,15 @@ module NakedObjects.Angular.Gemini {
 
         value: number | string | boolean;
         reference: string;
-        choice : ChoiceViewModel;
+        choice: ChoiceViewModel;
 
+        domainObject : DomainObjectRepresentation;
+        isInEdit : boolean = false;
+
+        isSameEditView(paneId: number, otherObject: DomainObjectRepresentation, editing : boolean) {
+            const bothEditing = this.isInEdit && editing;
+            return bothEditing && this.onPaneId === paneId && this.domainObject.selfLink().href() === otherObject.selfLink().href();
+        }
     }
 
     export class ToolBarViewModel {

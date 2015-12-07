@@ -275,13 +275,25 @@ module NakedObjects.Angular.Gemini{
             return { dialogViewModel: dvm, ret: false };
         }
 
+
+        const currentOvms: DomainObjectViewModel[] = [];
+
+        function getObjectViewModel(paneId: number, obj: DomainObjectRepresentation, editing : boolean) {
+            const currentOvm = currentOvms[paneId];
+            if (editing && currentOvm && currentOvm.isSameEditView(paneId, obj, editing)) {
+                return { objectViewModel: currentOvm, ret: true };
+            }
+            const ovm = new DomainObjectViewModel();
+            currentOvms[paneId] = ovm;
+            return { objectViewModel: ovm, ret: false };
+        }
+
         function clearDialog(paneId: number, actionMember: ActionMember) {
             const currentDvm = currentDvms[paneId];
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
                 currentDvms[paneId] = null;
             }
         }
-
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
          
@@ -582,7 +594,8 @@ module NakedObjects.Angular.Gemini{
   
         // seperate function so we can reuse in reload
         function setupDomainObjectViewModel (objectViewModel : DomainObjectViewModel,  $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId: number) {
-           
+
+            objectViewModel.domainObject = objectRep;
             objectViewModel.onPaneId = paneId;
             objectViewModel.isTransient = !!objectRep.persistLink();
             objectViewModel.color = color.toColorFromType(objectRep.domainType());
@@ -644,11 +657,9 @@ module NakedObjects.Angular.Gemini{
                 };
 
                 const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = viewObject =>
-                    saveHandler(objectRep, objectViewModel, viewObject);
-
+                objectViewModel.doSave = viewObject => saveHandler(objectRep, objectViewModel, viewObject);
+                objectViewModel.isInEdit = true;
             }
-
 
             objectViewModel.doEdit = () => {           
                 context.reloadObject(paneId, objectRep).
@@ -673,7 +684,11 @@ module NakedObjects.Angular.Gemini{
 
 
         viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, collectionStates: _.Dictionary<CollectionViewState>, props: _.Dictionary<Value>, editing: boolean, paneId : number): DomainObjectViewModel => {
-            const objectViewModel = new DomainObjectViewModel();
+            const {objectViewModel, ret} = getObjectViewModel(paneId, objectRep, editing);
+            if (ret) {
+                return objectViewModel;
+            }
+
             setupDomainObjectViewModel(objectViewModel, $scope, objectRep, collectionStates, props, editing, paneId);
             return objectViewModel;
         };
