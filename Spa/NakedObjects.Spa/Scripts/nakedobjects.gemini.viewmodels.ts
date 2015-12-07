@@ -277,6 +277,13 @@ module NakedObjects.Angular.Gemini {
         description(): string { return this.size.toString()}
 
         template: string;
+
+        disableActions(): boolean {
+            // to do collection actions not yet implemented 
+            return true;
+        }
+
+        toggleActionMenu(): void { }
     } 
 
     export class ServicesViewModel {
@@ -326,6 +333,10 @@ module NakedObjects.Angular.Gemini {
 
         hideEdit(): boolean {
             return  this.isTransient ||  _.all(this.properties, p => !p.isEditable);
+        }
+
+        disableActions(): boolean {
+            return !this.actions || this.actions.length === 0;
         }
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;

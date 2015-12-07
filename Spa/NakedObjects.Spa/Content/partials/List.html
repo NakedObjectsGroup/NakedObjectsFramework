@@ -4,7 +4,7 @@
         <div class="title">
             {{title}}
         </div>
-        <div class="menu clickable-area" tabindex="0" ng-click="object.toggleActionMenu()">
+        <div class="menu clickable-area" tabindex="0" ng-click="collection.toggleActionMenu()" ng-disabled="collection.disableActions()">
             Actions
         </div>
         <div class="action clickable-area" tabindex="0" ng-click="collection.reload()">
