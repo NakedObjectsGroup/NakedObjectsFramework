@@ -283,7 +283,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Empty command == where
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: back; clipboard; forward; gemini; help; home; menu; where;");
+            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; home; open; property; reload; where;");
             TypeIntoField("input", Keys.Enter);
             WaitForOutput("Product: HL Grip Tape.");
 

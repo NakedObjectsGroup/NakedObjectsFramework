@@ -56,7 +56,7 @@
    </div>
    <div class="validation">{{parameter.message}}</div>
   </div>
-  {{dialog.message}}
+  <div class="co-validation">{{dialog.message}}</div>
  </div>
  <input class="ok" tabindex="0" type="submit" value="OK" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
  <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doClose()" ng-click="dialog.doClose()" value="Cancel" />

@@ -77,7 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            WaitForCss(".value input").SendKeys("00000042");
+            WaitForCss(".value input").SendKeys(Keys.ArrowRight+Keys.ArrowRight +"00000042");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
         }
@@ -128,17 +128,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
-
-            WaitForCss(".value  select").SendKeys("Handlebars");
-            IKeyboard kb = ((IHasInputDevices)br).Keyboard;
+            WaitForCss(".value  select").SendKeys("Road Bikes");
+                IKeyboard kb = ((IHasInputDevices)br).Keyboard;
 
             kb.PressKey(Keys.Control);
-            br.FindElement(By.CssSelector(".value  select option[label='Brakes']")).Click();
+            br.FindElement(By.CssSelector(".value  select option[label='Touring Bikes']")).Click();
             kb.ReleaseKey(Keys.Control);
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
-            AssertTopItemInListIs("Front Brakes");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
+            AssertTopItemInListIs("Road-150 Red, 44");
         }
 
         [TestMethod]
@@ -287,11 +287,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             for (int i = 0; i < 15; i++)
             {
-                acElem.SendKeys(Keys.Backspace);
+                acElem.SendKeys(Keys.Delete);
             }
             acElem.SendKeys("BB");
-            var item = wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")));
-            Assert.AreEqual("BB Ball Bearing", item.Text);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "BB Ball Bearing");
+            var item = br.FindElement(By.CssSelector(".ui-menu-item"));
             Click(item);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
@@ -312,7 +312,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
 
-        [TestMethod, Ignore] //RWP: Issue with needing 2 clicks on OK
+        [TestMethod]
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
@@ -322,12 +322,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Quantity must be > 0", validation.Text);
+            qty = WaitForCss("input#quantity");
             qty.SendKeys(Keys.Backspace+"1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
-        [TestMethod, Ignore] //RWP: Issue with needing 2 clicks on OK
+        [TestMethod]
         public virtual void ValidateSingleRefParamFromChoices()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
@@ -339,7 +340,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
@@ -347,7 +348,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TypeIntoField("#qtyrejected","50");
             TypeIntoField("#qtyintostock","49");
             Click(OKButton());
-            //TODO: Test for co-validation message of '"Qty Into Stock + Qty Rejected must add up to Qty Received"'
+            wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
+                "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
 
         #endregion

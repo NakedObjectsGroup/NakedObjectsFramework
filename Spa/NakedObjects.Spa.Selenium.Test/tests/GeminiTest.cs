@@ -353,8 +353,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected IWebElement GetCancelEditButton()
         {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 2);
-            var cancel = br.FindElements(By.CssSelector(".header .action"))[1];
+            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 3);
+            var cancel = br.FindElements(By.CssSelector(".header .action"))[2];
             Assert.AreEqual("Cancel", cancel.Text);
             return cancel;
         }

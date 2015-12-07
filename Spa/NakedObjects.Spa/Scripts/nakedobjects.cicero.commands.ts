@@ -427,9 +427,14 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             var arg = this.argumentAsString(args, 0);
             if (arg) {
-                const c = this.commandFactory.getCommand(arg);
-                this.clearInput();
-                this.setOutput(c.fullCommand + " command: " + c.helpText);
+                try {
+                    const c = this.commandFactory.getCommand(arg);
+                    this.clearInput();
+                    this.setOutput(c.fullCommand + " command: " + c.helpText);
+                } catch (Error) {
+                        this.clearInput();
+                        this.setOutput(Error.message);
+                }
             } else {
                 const commands = this.commandFactory.allCommandsForCurrentContext();
                 this.clearInput();

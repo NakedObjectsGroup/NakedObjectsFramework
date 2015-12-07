@@ -85,6 +85,7 @@ module NakedObjects.Angular.Gemini{
             }
             catch (Error) {
                 cvm.output = Error.message;
+                cvm.input = "";
             }
         };
 

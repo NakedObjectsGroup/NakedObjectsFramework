@@ -73,7 +73,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        [Ignore] // SEC 28/10/15 - failing in build
+       // [Ignore] // SEC 28/10/15 - failing in build
         public void CancelTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -83,7 +83,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
 
-        [TestMethod, Ignore] //cross-field validation not working
+        [TestMethod] //cross-field validation not working
         public void MultiFieldValidation()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
