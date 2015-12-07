@@ -117,7 +117,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
         const rawAction = {
             extensions: {
                 friendlyName: "a title",
-                x_ro_nof_menuPath: "a path"
+                "x-ro-nof-menuPath": "a path"
             },
             links: [rawdetailsLink], 
             parameters: {} as _.Dictionary<NakedObjects.RoInterfaces.IParameterRepresentation>, 
