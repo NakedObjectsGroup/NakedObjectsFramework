@@ -264,10 +264,31 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
         }
-        [TestMethod, Ignore]
+        [TestMethod]
         public void Property()
         {
-            //TBD
+            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
+            WaitForOutput("Product: Road-450 Red, 52.");
+            EnterCommand("property num");
+            WaitForOutput("Property: Product Number: BK-R68R-52");
+            EnterCommand("pr cat");
+            WaitForOutput("Properties: Product Category: Bikes; Product Subcategory: Road Bikes;");
+            //No argument
+            EnterCommand("pr ");
+            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: ;");
+
+            //No match
+            EnterCommand("pr x");
+            WaitForOutput("x does not match any properties");
+
+            //Too many arguments
+            EnterCommand("pr num,cat");
+            WaitForOutput("Wrong number of arguments provided.");
+
+            //Invalid context
+            CiceroUrl("home");
+            EnterCommand("prop");
+            WaitForOutput("The command: property is not available in the current context");
         }
         [TestMethod]
         public void Where()
@@ -291,10 +312,29 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("where x");
             WaitForOutput("Wrong number of arguments provided.");
         }
+
+        [TestMethod]
+        public void UpAndDownArrow()
+        {
+            CiceroUrl("home");
+            WaitForOutput("home");
+            EnterCommand("help");
+            WaitForOutputStartingWith("Commands available");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+            TypeIntoField("input", Keys.ArrowUp);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
+            TypeIntoField("input", " gem"+Keys.Enter);
+            WaitForOutputStartingWith("gemini command");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+            TypeIntoField("input", Keys.ArrowUp);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
+            TypeIntoField("input", Keys.ArrowDown);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+        }
     }
     #region browsers specific subclasses 
 
-    //    [TestClass, Ignore]
+       // [TestClass, Ignore]
     public class CiceroTestsIe : CiceroTests
     {
         [ClassInitialize]
@@ -318,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

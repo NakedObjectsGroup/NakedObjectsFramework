@@ -31,13 +31,14 @@ module NakedObjects.Angular.Gemini {
         }
 
         public abstract isAvailableInCurrentContext(): boolean;
-        
-        //Helper methods follow
-        public clearInput(): void {
+
+        protected clearInput(): void {
             this.vm.input = "";
         }
-
-        protected setOutput(text: string): void {
+        
+        //Helper methods follow
+        protected clearInputAndSetOutputTo(text: string): void {
+            this.clearInput();
             this.vm.output = text;
         }
 
@@ -178,8 +179,7 @@ module NakedObjects.Angular.Gemini {
 
             switch (actions.length) {
                 case 0:
-                    this.clearInput();
-                    this.setOutput(match + " does not match any actions");
+                    this.clearInputAndSetOutputTo(match + " does not match any actions");
                     break;
                 case 1:
                     const actionId = actions[0].actionId();
@@ -196,8 +196,7 @@ module NakedObjects.Angular.Gemini {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + "; ";
                     }, label);
-                    this.clearInput();
-                    this.setOutput(s);
+                    this.clearInputAndSetOutputTo(s);
             }
         }
     }
@@ -250,7 +249,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Clipboard command is not yet implemented"); //todo: temporary
+            this.clearInputAndSetOutputTo("Clipboard command is not yet implemented"); //todo: temporary
         };
     }
     export class Copy extends Command {
@@ -273,19 +272,19 @@ module NakedObjects.Angular.Gemini {
             if (this.isObject()) {
                 if (this.isCollection()) {
                     const item = this.argumentAsNumber(args, 1);
-                    this.setOutput("Copy item " + item);
+                    this.clearInputAndSetOutputTo("Copy item " + item);
                 } else {
                     const arg = this.argumentAsString(args, 1, true);
                     if (arg == null) {
-                        this.setOutput("Copy object");
+                        this.clearInputAndSetOutputTo("Copy object");
                     } else {
-                        this.setOutput("Copy property" + arg);
+                        this.clearInputAndSetOutputTo("Copy property" + arg);
                     }
                 }
             }
             if (this.isList()) {
                 const item = this.argumentAsNumber(args, 1);
-                this.setOutput("Copy item " + item);
+                this.clearInputAndSetOutputTo("Copy item " + item);
             }
         };
     }
@@ -305,7 +304,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Description command is not yet implemented with argument: " + match); //todo: temporary
+            this.clearInputAndSetOutputTo("Description command is not yet implemented with argument: " + match); //todo: temporary
         };
     }
     export class Edit extends Command {
@@ -343,10 +342,10 @@ module NakedObjects.Angular.Gemini {
             //TODO: must first test that field is a match
             const text = this.argumentAsString(args, 1);
             if (this.isEdit()) {
-                this.setOutput("Enter command is not yet implemented for properties"); //todo: temporary
+                this.clearInputAndSetOutputTo("Enter command is not yet implemented for properties"); //todo: temporary
             }
             if (this.isDialog) {
-                this.setOutput("Enter command is not yet implemented for parameters");
+                this.clearInputAndSetOutputTo("Enter command is not yet implemented for parameters");
                 const dialogId = this.urlManager.getRouteData().pane1.dialogId;
                 //TODO: would prefer not to create the view model ?
                 //var pvm = new ParameterViewModel();
@@ -404,11 +403,11 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             if (this.isObject()) {
                 const prop = this.argumentAsString(args, 0);
-                this.setOutput("Go to property" + prop + " invoked"); //todo: temporary
+                this.clearInputAndSetOutputTo("Go to property" + prop + " invoked"); //todo: temporary
             }
             if (this.isList()) {
                 const item = this.argumentAsNumber(args, 1);
-                this.setOutput("Go to list item" + item + " invoked"); //todo: temporary
+                this.clearInputAndSetOutputTo("Go to list item" + item + " invoked"); //todo: temporary
             }
         };
     }
@@ -430,16 +429,13 @@ module NakedObjects.Angular.Gemini {
             if (arg) {
                 try {
                     const c = this.commandFactory.getCommand(arg);
-                    this.clearInput();
-                    this.setOutput(c.fullCommand + " command: " + c.helpText);
+                    this.clearInputAndSetOutputTo(c.fullCommand + " command: " + c.helpText);
                 } catch (Error) {
-                        this.clearInput();
-                        this.setOutput(Error.message);
+                        this.clearInputAndSetOutputTo(Error.message);
                 }
             } else {
                 const commands = this.commandFactory.allCommandsForCurrentContext();
-                this.clearInput();
-                this.setOutput(commands);
+                this.clearInputAndSetOutputTo(commands);
             }
         };
     }
@@ -483,10 +479,10 @@ module NakedObjects.Angular.Gemini {
                 if (pageNo != null) {
                     throw new Error("Item may not have a third argument (page number) in the context of an object collection");
                 }
-                this.setOutput("Item command is not yet implemented on Collection, from " + startNo + " to " + endNo); //todo: temporary
+                this.clearInputAndSetOutputTo("Item command is not yet implemented on Collection, from " + startNo + " to " + endNo); //todo: temporary
 
             } else {
-                this.setOutput("Item command is not yet implemented on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
+                this.clearInputAndSetOutputTo("Item command is not yet implemented on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
             }
         };
 
@@ -516,8 +512,7 @@ module NakedObjects.Angular.Gemini {
                     }
                     switch (links.length) {
                         case 0:
-                            this.clearInput();
-                            this.setOutput(menuName + " does not match any menu");
+                            this.clearInputAndSetOutputTo(menuName + " does not match any menu");
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
@@ -529,8 +524,7 @@ module NakedObjects.Angular.Gemini {
                                 label = label + " matching " + menuName;
                             }
                             var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");                           
-                            this.clearInput();
-                            this.setOutput(s);
+                            this.clearInputAndSetOutputTo(s);
                     }
                 });
         }
@@ -583,7 +577,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Open command is not yet implemented with argument: " + match); //todo: temporary
+            this.clearInputAndSetOutputTo("Open command is not yet implemented with argument: " + match); //todo: temporary
         };
 
     }
@@ -604,10 +598,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
             if (this.isEdit()) {
-                this.setOutput("Paste command is not yet implemented on property: " + match); //todo: temporary
+                this.clearInputAndSetOutputTo("Paste command is not yet implemented on property: " + match); //todo: temporary
             }
             if (this.isDialog) {
-                this.setOutput("Paste command is not yet implemented on parameter: " + match); //todo: temporary
+                this.clearInputAndSetOutputTo("Paste command is not yet implemented on parameter: " + match); //todo: temporary
             }
         };
 
@@ -647,7 +641,7 @@ module NakedObjects.Angular.Gemini {
                         default:
                             s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName() + ": " + t.value() + "; "; }, "Properties: ");
                     }
-                    this.setOutput(s);
+                    this.clearInputAndSetOutputTo(s);
                 });
         };
     }
@@ -664,7 +658,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Reload command is not yet implemented");
+            this.clearInputAndSetOutputTo("Reload command is not yet implemented");
         };
     }
     export class Root extends Command {
@@ -681,7 +675,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.setOutput("Object command is not yet implemented");
+            this.clearInputAndSetOutputTo("Object command is not yet implemented");
         };
     }
     export class Save extends Command {
@@ -697,7 +691,7 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit();
         }
         execute(args: string): void {
-            this.setOutput("Object saved"); //todo: temporary
+            this.clearInputAndSetOutputTo("Object saved"); //todo: temporary
         };
     }
     export class Select extends Command {
@@ -719,10 +713,10 @@ module NakedObjects.Angular.Gemini {
             const name = this.argumentAsString(args, 0);
             const option = this.argumentAsString(args, 2, true);
             if (this.isEdit()) {
-                this.setOutput("Select command is not yet implemented on property: " + name + " for option" + option); //todo: temporary
+                this.clearInputAndSetOutputTo("Select command is not yet implemented on property: " + name + " for option" + option); //todo: temporary
             }
             if (this.isDialog) {
-                this.setOutput("Select command is not yet implemented on parameter: " + name + " for option" + option); //todo: temporary
+                this.clearInputAndSetOutputTo("Select command is not yet implemented on parameter: " + name + " for option" + option); //todo: temporary
             }
         };
 
@@ -741,7 +735,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.setOutput("Open command is not yet implemented with argument: " + match); //todo: temporary
+            this.clearInputAndSetOutputTo("Open command is not yet implemented with argument: " + match); //todo: temporary
         };
 
     }
