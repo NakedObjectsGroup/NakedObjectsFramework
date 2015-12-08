@@ -753,7 +753,7 @@ module NakedObjects.Angular.Gemini {
                     }
                     else {
                         cvm.clearInput(); 
-                        cvm.output = "home";
+                        cvm.output = "Welcome to Cicero";
                     }  
                                   
                 };

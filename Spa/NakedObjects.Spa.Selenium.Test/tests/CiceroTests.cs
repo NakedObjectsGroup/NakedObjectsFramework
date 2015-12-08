@@ -22,10 +22,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu.");
             //First, without paramsd
             EnterCommand("Action");
-            WaitForOutput("Actions: Find Product By Name; Find Product By Number; List Products By Sub Category; List Products By Sub Categories; Find By Product Line And Class; Find By Product Lines And Classes; Find Product; Find Products By Category; New Product; Random Product; Find Product By Key; Stock Report;");
+            WaitForOutput("Actions: Find Product By Name, Find Product By Number, List Products By Sub Category, List Products By Sub Categories, Find By Product Line And Class, Find By Product Lines And Classes, Find Product, Find Products By Category, New Product, Random Product, Find Product By Key, Stock Report,");
             //Filtered list
             EnterCommand("act cateGory  ");
-            WaitForOutput("Matching actions: List Products By Sub Category; Find Products By Category;");
+            WaitForOutput("Matching actions: List Products By Sub Category, Find Products By Category,");
             //No match
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
@@ -38,9 +38,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
             WaitForOutput("Product: HL Grip Tape.");
             EnterCommand("Action");
-            WaitForOutput("Actions: Add Or Change Photo; Best Special Offer; Associate Special Offer With Product; Open Purchase Orders For Product; Create New Work Order; Work Orders;");
+            WaitForOutput("Actions: Add Or Change Photo, Best Special Offer, Associate Special Offer With Product, Open Purchase Orders For Product, Create New Work Order, Work Orders,");
             EnterCommand("act ord");
-            WaitForOutput("Matching actions: Open Purchase Orders For Product; Create New Work Order; Work Orders;");
+            WaitForOutput("Matching actions: Open Purchase Orders For Product, Create New Work Order, Work Orders,");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             EnterCommand("act foo, bar  ");
@@ -49,19 +49,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
             //Not available in current context
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("ac");
             WaitForOutput("The command: action is not available in the current context");
             //multi clause search
             CiceroUrl("home?menu1=CustomerRepository");
             WaitForOutput("Customers menu.");
             EnterCommand("ac name find by");
-            WaitForOutput("Matching actions: Stores - Find Store By Name; Individuals - Find Individual Customer By Name;");
+            WaitForOutput("Matching actions: Stores - Find Store By Name, Individuals - Find Individual Customer By Name,");
             //Matches includes sub-menu
             EnterCommand("ac stores");
-            WaitForOutput("Matching actions: Stores - Find Store By Name; Stores - Create New Store Customer; Stores - Random Store;");
+            WaitForOutput("Matching actions: Stores - Find Store By Name, Stores - Create New Store Customer, Stores - Random Store,");
             EnterCommand("ac ores d");
-            WaitForOutput("Matching actions: Stores - Find Store By Name; Stores - Random Store;");
+            WaitForOutput("Matching actions: Stores - Find Store By Name, Stores - Random Store,");
             EnterCommand("ac ores ran");
             WaitForOutput("Customers menu. Action dialog: Random Store.");
             CiceroUrl("home?menu1=CustomerRepository");
@@ -73,7 +73,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void BackAndForward() //Tested together for simplicity
         {
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
             EnterCommand("action random store");
@@ -81,7 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("back");
             WaitForOutput("Customers menu.");
             EnterCommand("Ba");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("forward");
             WaitForOutput("Customers menu.");
             EnterCommand("fO  ");
@@ -134,7 +134,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid contexts
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository");
@@ -164,7 +164,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
@@ -173,16 +173,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Help from home
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("help");
             WaitForOutput("Commands available in current context: " +
-                "back; clipboard; forward; gemini; help; menu; where;");
+                "back, clipboard, forward, gemini, help, menu, where,");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; field; forward; gemini; go; help; menu; open; reload; where;");
+            WaitForOutput("Commands available in current context: action, back, clipboard, copy, description, edit, field, forward, gemini, go, help, menu, open, reload, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
@@ -204,9 +204,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void Menu()
         {   //No argument
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("Menu");
-            WaitForOutput("Menus: Customers; Orders; Products; Employees; Sales; Special Offers; Contacts; Vendors; Purchase Orders; Work Orders;");
+            WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
             //Now with arguments
             EnterCommand("Menu Customers");
             WaitForOutput("Customers menu.");
@@ -215,7 +215,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Menu off");
             WaitForOutput("Special Offers menu.");
             EnterCommand("Menu ord");
-            WaitForOutput("Matching menus: Orders; Purchase Orders; Work Orders;");
+            WaitForOutput("Matching menus: Orders, Purchase Orders, Work Orders,");
             EnterCommand("Menu foo");
             WaitForOutput("foo does not match any menu");
             EnterCommand("Menu cust prod");
@@ -226,7 +226,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             EnterCommand("Menu");
-            WaitForOutput("Menus: Customers; Orders; Products; Employees; Sales; Special Offers; Contacts; Vendors; Purchase Orders; Work Orders;");
+            WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
         }
         [TestMethod]
         public void OK()
@@ -250,7 +250,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid contexts
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository");
@@ -264,12 +264,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
             WaitForOutput("Product: Road-450 Red, 52.");
             EnterCommand("field num");
-            WaitForOutput("Field: Product Number: BK-R68R-52;");
+            WaitForOutput("Field: Product Number: BK-R68R-52,");
             EnterCommand("fi cat");
-            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes; Product Subcategory: ProductSubcategory Road Bikes;");
+            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes, Product Subcategory: ProductSubcategory Road Bikes,");
             //No argument
             EnterCommand("fi ");
-            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty; Product Model: ProductModel Road-450; List Price: 1457.99;");
+            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: ProductModel Road-450, List Price: 1457.99,");
 
             //No match
             EnterCommand("fi x");
@@ -310,7 +310,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void UpAndDownArrow()
         {
             CiceroUrl("home");
-            WaitForOutput("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("help");
             WaitForOutputStartingWith("Commands available");
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");

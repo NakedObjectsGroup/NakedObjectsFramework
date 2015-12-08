@@ -189,7 +189,7 @@ module NakedObjects.Angular.Gemini {
                     let label = match ? " Matching actions: " : "Actions: ";
                     var s = _.reduce(actions, (s, t) => {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + "; ";
+                        return s + menupath + t.extensions().friendlyName() + ", ";
                     }, label);
                     this.clearInputAndSetOutputTo(s);
             }
@@ -351,6 +351,60 @@ module NakedObjects.Angular.Gemini {
         };
 
     }
+    export class Field extends Command {
+
+        public fullCommand = "field";
+        public helpText = "Display the name and value of a field or fields. " +
+        "One optional argument: the partial field name. " +
+        "If this matches more than one field, a list of matches is returned. " +
+        "If no argument is provided, the full list of fields is returned";
+        protected minArguments = 0;
+        protected maxArguments = 1;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isObject();
+        }
+
+        execute(args: string): void {
+            const name = this.argumentAsString(args, 0);
+            const oid = this.urlManager.getRouteData().pane1.objectId;
+            const obj = this.context.getObjectByOid(1, oid)
+                .then((obj: DomainObjectRepresentation) => {
+                    var fields = _.map(obj.propertyMembers(), prop => prop);
+                    if (name) {
+                        var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
+                    }
+                    var s: string = "";
+                    switch (fields.length) {
+                        case 0:
+                            s = name + " does not match any fields";
+                            break;
+                        case 1:
+                            s = "Field: " + this.renderProp(fields[0]);
+                            break;
+                        default:
+                            var label = name ? "Matching fields: " : "Fields: ";
+                            s = _.reduce(fields, (s, t) => {
+                                return s + this.renderProp(t);
+                            }, label);
+                    }
+                    this.clearInputAndSetOutputTo(s);
+                });
+        };
+
+        private renderProp(pm: PropertyMember): string {
+            const name = pm.extensions().friendlyName();
+            let value: string = pm.value().toString();
+            if (value) {
+                let type = _.last(pm.extensions().returnType().split("."));
+                if (type == 'string' || type == 'number' || type == 'date') type = "";
+                value = type + " " + value;
+            } else {
+                value = "empty";
+            }
+            return name + ": " + value + ", ";
+        }
+    }
     export class Forward extends Command {
 
         public fullCommand = "forward";
@@ -499,7 +553,7 @@ module NakedObjects.Angular.Gemini {
                             break;
                         default:
                             var label = name? "Matching menus: ": "Menus: ";
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label);                           
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + ", "; }, label);                           
                             this.clearInputAndSetOutputTo(s);
                     }
                 });
@@ -581,60 +635,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-    }
-    export class Field extends Command {
-
-        public fullCommand = "field";
-        public helpText = "Display the name and value of a field or fields. " +
-        "One optional argument: the partial field name. " +
-        "If this matches more than one field, a list of matches is returned. " +
-        "If no argument is provided, the full list of fields is returned";
-        protected minArguments = 0;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isObject();
-        }
-
-        execute(args: string): void {
-            const name = this.argumentAsString(args, 0);
-            const oid = this.urlManager.getRouteData().pane1.objectId;
-            const obj = this.context.getObjectByOid(1, oid)
-                .then((obj: DomainObjectRepresentation) => {
-                    var fields = _.map(obj.propertyMembers(), prop => prop);
-                    if (name) {
-                        var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
-                    }
-                    var s: string = "";
-                    switch (fields.length) {
-                        case 0:
-                            s = name + " does not match any fields";
-                            break;
-                        case 1:
-                            s = "Field: " + this.renderProp(fields[0]);
-                            break;
-                        default:
-                            var label = name ? "Matching fields: " : "Fields: ";
-                            s = _.reduce(fields, (s, t) => {
-                                return s + this.renderProp(t);
-                            }, label);
-                    }
-                    this.clearInputAndSetOutputTo(s);
-                });
-        };
-
-        private renderProp(pm: PropertyMember): string {
-            const name = pm.extensions().friendlyName();
-            let value: string = pm.value().toString();
-            if (value) {
-                let type = _.last(pm.extensions().returnType().split("."));
-                if (type == 'string' || type == 'number' || type == 'date') type = "";
-                value = type + " " + value;
-            } else {
-                value = "empty";
-            }
-            return name + ": " + value + "; ";
-        }
     }
     export class Reload extends Command {
 

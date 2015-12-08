@@ -103,7 +103,7 @@ module NakedObjects.Angular.Gemini{
             for (var key in commands) {
                 var c = commands[key];
                 if (c.isAvailableInCurrentContext()) {
-                    result = result + c.fullCommand + "; ";
+                    result = result + c.fullCommand + ", ";
                 }
             }
             return result;
