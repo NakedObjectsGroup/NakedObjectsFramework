@@ -639,7 +639,15 @@ module NakedObjects.Angular.Gemini {
                             s = "Property: " + props[0].extensions().friendlyName() + ": " + props[0].value();
                             break;
                         default:
-                            s = _.reduce(props, (s, t) => { return s + t.extensions().friendlyName() + ": " + t.value() + "; "; }, "Properties: ");
+                            let label = "Properties";
+                            if (name) label += " matching " + name;
+                            label += ": ";
+                            s = _.reduce(props, (s, t) => {
+                                const name = t.extensions().friendlyName();
+                                let value: string = t.value().toString();
+                                if (!value) { value = "empty"; }
+                                return s + name + ": " + value + "; ";
+                            }, label);
                     }
                     this.clearInputAndSetOutputTo(s);
                 });

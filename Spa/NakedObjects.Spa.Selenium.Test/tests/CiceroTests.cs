@@ -272,10 +272,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("property num");
             WaitForOutput("Property: Product Number: BK-R68R-52");
             EnterCommand("pr cat");
-            WaitForOutput("Properties: Product Category: Bikes; Product Subcategory: Road Bikes;");
+            WaitForOutput("Properties matching cat: Product Category: Bikes; Product Subcategory: Road Bikes;");
             //No argument
             EnterCommand("pr ");
-            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: ;");
+            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty;");
 
             //No match
             EnterCommand("pr x");
