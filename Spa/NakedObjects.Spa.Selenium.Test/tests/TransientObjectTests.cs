@@ -60,7 +60,35 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 By.CssSelector("input#cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
             wait.Until(dr => dr.FindElement(
                 By.CssSelector("select#expmonth option[selected='selected']")).Text =="REQUIRED *");
+            WaitForMessage("Please complete REQUIRED fields.");
+        }
 
+        [TestMethod]
+        public void IndividualFieldValidation()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
+            Click(GetObjectAction("Create New Credit Card"));
+            SelectDropDownOnField("#cardtype", "Vista");
+            TypeIntoField("input#cardnumber", "123");
+            SelectDropDownOnField("#expmonth", "1");
+            SelectDropDownOnField("#expyear", "2020");
+            Click(SaveButton());
+            wait.Until(dr => dr.FindElements(
+                By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
+            WaitForMessage("See field validation message(s).");
+        }
+
+        [TestMethod, Ignore] //cross-field validation not displaying correct message on saving transient
+        public void MultiFieldValidation()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
+            Click(GetObjectAction("Create New Credit Card"));
+            SelectDropDownOnField("#cardtype", "Vista");
+            TypeIntoField("#cardnumber", "1111222233334444");
+            SelectDropDownOnField("#expmonth", "1");
+            SelectDropDownOnField("#expyear", "2008");
+            Click(SaveButton());
+            WaitForMessage("Expiry date must be in the future");
         }
 
         [TestMethod]
@@ -81,19 +109,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetObjectAction("Create New Credit Card"));
             Click(GetCancelEditButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
-        }
-
-        [TestMethod, Ignore] //cross-field validation not displaying correct message on saving transient
-        public void MultiFieldValidation()
-        {
-            GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
-            Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
-            TypeIntoField("#cardnumber", "1111222233334444");
-            SelectDropDownOnField("#expmonth", "1");
-            SelectDropDownOnField("#expyear", "2008");
-            Click(SaveButton());
-            WaitForMessage("Expiry date must be in the future");
         }
     }
 

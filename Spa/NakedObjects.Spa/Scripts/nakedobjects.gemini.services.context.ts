@@ -389,7 +389,8 @@ module NakedObjects.Angular.Gemini {
 
         context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel) => {
             const err = error as ErrorMap | ErrorRepresentation | string;
-            let showWarning = true; // only show warning message if we have nothing else  
+            let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+            let fieldValidationErrors = false; 
             if (err instanceof ErrorMap) {
                 _.each(vms, vmi => {
                     const errorValue = err.valuesMap()[vmi.id];
@@ -401,16 +402,21 @@ module NakedObjects.Angular.Gemini {
                         if (reason) {
                             if (reason === "Mandatory") {
                                 const r = "REQUIRED";
+                                requiredFieldsMissing = true;
                                 vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
                             } else {
                                 vmi.message = reason;
+                                fieldValidationErrors = true;
                             }
-                            showWarning = false;
                         }
                     }
                 });
 
-                const msg = err.invalidReason() || (showWarning ? err.warningMessage : "");
+                let msg = "";
+                if (err.invalidReason()) msg += err.invalidReason();
+                if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
+                if (fieldValidationErrors) msg += "See field validation message(s). ";
+                if (!msg)   msg = err.warningMessage;
                 setError(msg, vm);
             }
             else if (err instanceof ErrorRepresentation) {

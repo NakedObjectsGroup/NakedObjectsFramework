@@ -370,8 +370,11 @@ th, td {
 
 
 .messages {
-    font-size: 12pt;
+    font-size: 16pt;
+    background-color: white;
     color: red;
+    float: left;
+    margin-top: 5px;
 }
 
 /* Colours */
