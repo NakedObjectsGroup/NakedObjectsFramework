@@ -582,13 +582,13 @@ module NakedObjects.Angular.Gemini {
         };
 
     }
-    export class Property extends Command {
+    export class Field extends Command {
 
-        public fullCommand = "property";
-        public helpText = "Display the name and value of a property or properties on an object being viewed or edited. " +
-        "One optional argument: the partial property name. " +
-        "If this matches more than one property, a list of matches is returned. " +
-        "If no argument is provided, the full list of properties is returned";
+        public fullCommand = "field";
+        public helpText = "Display the name and value of a field or fields. " +
+        "One optional argument: the partial field name. " +
+        "If this matches more than one field, a list of matches is returned. " +
+        "If no argument is provided, the full list of fields is returned";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -601,21 +601,21 @@ module NakedObjects.Angular.Gemini {
             const oid = this.urlManager.getRouteData().pane1.objectId;
             const obj = this.context.getObjectByOid(1, oid)
                 .then((obj: DomainObjectRepresentation) => {
-                    var props = _.map(obj.propertyMembers(), prop => prop);
+                    var fields = _.map(obj.propertyMembers(), prop => prop);
                     if (name) {
-                        var props = _.filter(props, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
+                        var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
                     }
                     var s: string = "";
-                    switch (props.length) {
+                    switch (fields.length) {
                         case 0:
-                            s = name + " does not match any properties";
+                            s = name + " does not match any fields";
                             break;
                         case 1:
-                            s = "Property: " + this.renderProp(props[0]);
+                            s = "Field: " + this.renderProp(fields[0]);
                             break;
                         default:
-                            var label = name ? "Matching properties: " : "Properties: ";
-                            s = _.reduce(props, (s, t) => {
+                            var label = name ? "Matching fields: " : "Fields: ";
+                            s = _.reduce(fields, (s, t) => {
                                 return s + this.renderProp(t);
                             }, label);
                     }
@@ -636,8 +636,6 @@ module NakedObjects.Angular.Gemini {
             return name + ": " + value + "; ";
         }
     }
-
-     
     export class Reload extends Command {
 
         public fullCommand = "reload";

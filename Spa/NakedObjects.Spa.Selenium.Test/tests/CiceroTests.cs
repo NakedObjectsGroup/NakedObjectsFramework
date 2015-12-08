@@ -182,7 +182,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; menu; open; property; reload; where;");
+            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; field; forward; gemini; go; help; menu; open; reload; where;");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
@@ -259,30 +259,30 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("The command: ok is not available in the current context");
         }
         [TestMethod]
-        public void Property()
+        public void Field()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
             WaitForOutput("Product: Road-450 Red, 52.");
-            EnterCommand("property num");
-            WaitForOutput("Property: Product Number: BK-R68R-52;");
-            EnterCommand("pr cat");
-            WaitForOutput("Matching properties: Product Category: ProductCategory Bikes; Product Subcategory: ProductSubcategory Road Bikes;");
+            EnterCommand("field num");
+            WaitForOutput("Field: Product Number: BK-R68R-52;");
+            EnterCommand("fi cat");
+            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes; Product Subcategory: ProductSubcategory Road Bikes;");
             //No argument
-            EnterCommand("pr ");
-            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty; Product Model: ProductModel Road-450; List Price: 1457.99;");
+            EnterCommand("fi ");
+            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty; Product Model: ProductModel Road-450; List Price: 1457.99;");
 
             //No match
-            EnterCommand("pr x");
-            WaitForOutput("x does not match any properties");
+            EnterCommand("fi x");
+            WaitForOutput("x does not match any fields");
 
             //Too many arguments
-            EnterCommand("pr num,cat");
+            EnterCommand("fi num,cat");
             WaitForOutput("Wrong number of arguments provided.");
 
             //Invalid context
             CiceroUrl("home");
-            EnterCommand("prop");
-            WaitForOutput("The command: property is not available in the current context");
+            EnterCommand("field");
+            WaitForOutput("The command: field is not available in the current context");
         }
         [TestMethod]
         public void Where()
