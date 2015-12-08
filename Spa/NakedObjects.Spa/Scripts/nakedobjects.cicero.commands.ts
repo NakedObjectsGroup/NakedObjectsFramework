@@ -186,12 +186,7 @@ module NakedObjects.Angular.Gemini {
                     this.urlManager.setDialog(actionId, 1);  //1 = pane 1
                     break;
                 default:
-                    var label;
-                    if (match) {
-                        label = " Matching actions: ";
-                    } else {
-                        label = "Actions: "
-                    }
+                    let label = match ? " Matching actions: " : "Actions: ";
                     var s = _.reduce(actions, (s, t) => {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + "; ";
@@ -487,27 +482,24 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const menuName = this.argumentAsString(args, 0);
+            const name = this.argumentAsString(args, 0);
             this.context.getMenus()
                 .then((menus: MenusRepresentation) => {
                     var links = menus.value();
-                    if (menuName) {
-                        links = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(menuName) > -1; });
+                    if (name) {
+                        links = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
                     }
                     switch (links.length) {
                         case 0:
-                            this.clearInputAndSetOutputTo(menuName + " does not match any menu");
+                            this.clearInputAndSetOutputTo(name + " does not match any menu");
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
                             this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
                             break;
                         default:
-                            var label = "Menus";
-                            if (menuName) {
-                                label = label + " matching " + menuName;
-                            }
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label + ": ");                           
+                            var label = name? "Matching menus: ": "Menus: ";
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + "; "; }, label);                           
                             this.clearInputAndSetOutputTo(s);
                     }
                 });
@@ -623,9 +615,7 @@ module NakedObjects.Angular.Gemini {
                             s = "Property: " + props[0].extensions().friendlyName() + ": " + props[0].value();
                             break;
                         default:
-                            let label = "Properties";
-                            if (name) label += " matching " + name;
-                            label += ": ";
+                            var label = name ? "Matching properties: " : "Properties: ";
                             s = _.reduce(props, (s, t) => {
                                 const name = t.extensions().friendlyName();
                                 let value: string = t.value().toString();

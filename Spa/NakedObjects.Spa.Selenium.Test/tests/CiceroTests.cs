@@ -52,6 +52,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("home");
             EnterCommand("ac");
             WaitForOutput("The command: action is not available in the current context");
+            //multi clause search
+            CiceroUrl("home?menu1=CustomerRepository");
+            WaitForOutput("Customers menu.");
+            EnterCommand("ac name find by");
+            WaitForOutput("Matching actions: Stores - Find Store By Name; Individuals - Find Individual Customer By Name;");
+            //Matches includes sub-menu
+            EnterCommand("ac stores");
+            WaitForOutput("Matching actions: Stores - Find Store By Name; Stores - Create New Store Customer; Stores - Random Store;");
+            EnterCommand("ac ores d");
+            WaitForOutput("Matching actions: Stores - Find Store By Name; Stores - Random Store;");
+            EnterCommand("ac ores ran");
+            WaitForOutput("Customers menu. Action dialog: Random Store.");
+            CiceroUrl("home?menu1=CustomerRepository");
+            WaitForOutput("Customers menu.");
+            EnterCommand("ac ran individuals"); //Order doesn't matter
+            WaitForOutput("Customers menu. Action dialog: Random Individual.");
         }
         [TestMethod]
         public void BackAndForward() //Tested together for simplicity
@@ -199,7 +215,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Menu off");
             WaitForOutput("Special Offers menu.");
             EnterCommand("Menu ord");
-            WaitForOutput("Menus matching ord: Orders; Purchase Orders; Work Orders;");
+            WaitForOutput("Matching menus: Orders; Purchase Orders; Work Orders;");
             EnterCommand("Menu foo");
             WaitForOutput("foo does not match any menu");
             EnterCommand("Menu cust prod");
@@ -250,7 +266,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("property num");
             WaitForOutput("Property: Product Number: BK-R68R-52");
             EnterCommand("pr cat");
-            WaitForOutput("Properties matching cat: Product Category: Bikes; Product Subcategory: Road Bikes;");
+            WaitForOutput("Matching properties: Product Category: Bikes; Product Subcategory: Road Bikes;");
             //No argument
             EnterCommand("pr ");
             WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty;");
