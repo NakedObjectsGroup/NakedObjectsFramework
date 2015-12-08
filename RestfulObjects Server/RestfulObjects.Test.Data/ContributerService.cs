@@ -15,5 +15,13 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimple ANonContributedAction() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
+
+        public virtual void ACollectionContributedActionNoParms([ContributedAction("submenu")]IQueryable<MostSimple> ms) {
+            // do nothing
+        }
+
+        public virtual MostSimple ACollectionContributedActionParm([ContributedAction] IQueryable<MostSimple> ms, int id) {
+            return ms.SingleOrDefault(i => i.Id == id);
+        }
     }
 }

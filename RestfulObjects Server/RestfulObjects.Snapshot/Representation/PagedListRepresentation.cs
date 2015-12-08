@@ -7,7 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -27,12 +29,15 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, Page(objectContext, flags), req, flags, actionContext) {
           
             SetPagination(objectContext.Target, flags);
+            SetActions(oidStrategy, objectContext, req, flags);
         }
 
         [DataMember(Name = JsonPropertyNames.Pagination)]
         public MapRepresentation Pagination { get; set; }
 
-      
+        [DataMember(Name = JsonPropertyNames.Members)]
+        public MapRepresentation Members { get; set; }
+
         // custom extension for pagination 
         private void SetPagination(IObjectFacade list, RestControlFlags flags) {
             Pagination = new MapRepresentation();
@@ -51,6 +56,11 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             Pagination = RestUtils.CreateMap(exts);
+        }
+
+        private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
+            InlineActionRepresentation[] actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
+            Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {

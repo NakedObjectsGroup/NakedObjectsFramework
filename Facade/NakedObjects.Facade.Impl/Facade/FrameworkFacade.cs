@@ -944,6 +944,14 @@ namespace NakedObjects.Facade.Impl {
             var objectSpec = nakedObject.Spec as IObjectSpec;
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
+            if (nakedObject.Spec.IsQueryable) {
+                ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
+                var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.MetamodelManager.Metamodel);
+                var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
+                IActionSpec[] cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
+                actions = actions.Union(cca).ToArray();
+            }          
+
             return new ObjectContext(nakedObject) {
                 VisibleActions = actions.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
                     Action = a.action,
