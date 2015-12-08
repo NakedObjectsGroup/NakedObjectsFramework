@@ -605,28 +605,39 @@ module NakedObjects.Angular.Gemini {
                     if (name) {
                         var props = _.filter(props, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
                     }
-                    //TODO render empty properties as e.g. 'empty'?
                     var s: string = "";
                     switch (props.length) {
                         case 0:
                             s = name + " does not match any properties";
                             break;
                         case 1:
-                            s = "Property: " + props[0].extensions().friendlyName() + ": " + props[0].value();
+                            s = "Property: " + this.renderProp(props[0]);
                             break;
                         default:
                             var label = name ? "Matching properties: " : "Properties: ";
                             s = _.reduce(props, (s, t) => {
-                                const name = t.extensions().friendlyName();
-                                let value: string = t.value().toString();
-                                if (!value) { value = "empty"; }
-                                return s + name + ": " + value + "; ";
+                                return s + this.renderProp(t);
                             }, label);
                     }
                     this.clearInputAndSetOutputTo(s);
                 });
         };
+
+        private renderProp(pm: PropertyMember): string {
+            const name = pm.extensions().friendlyName();
+            let value: string = pm.value().toString();
+            if (value) {
+                let type = _.last(pm.extensions().returnType().split("."));
+                if (type == 'string' || type == 'number' || type == 'date') type = "";
+                value = type + " " + value;
+            } else {
+                value = "empty";
+            }
+            return name + ": " + value + "; ";
+        }
     }
+
+     
     export class Reload extends Command {
 
         public fullCommand = "reload";

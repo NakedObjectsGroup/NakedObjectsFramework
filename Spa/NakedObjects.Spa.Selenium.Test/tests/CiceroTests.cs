@@ -264,12 +264,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
             WaitForOutput("Product: Road-450 Red, 52.");
             EnterCommand("property num");
-            WaitForOutput("Property: Product Number: BK-R68R-52");
+            WaitForOutput("Property: Product Number: BK-R68R-52;");
             EnterCommand("pr cat");
-            WaitForOutput("Matching properties: Product Category: Bikes; Product Subcategory: Road Bikes;");
+            WaitForOutput("Matching properties: Product Category: ProductCategory Bikes; Product Subcategory: ProductSubcategory Road Bikes;");
             //No argument
             EnterCommand("pr ");
-            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty;");
+            WaitForOutputStartingWith("Properties: Name: Road-450 Red, 52; Product Number: BK-R68R-52; Color: Red; Photo: empty; Product Model: ProductModel Road-450; List Price: 1457.99;");
 
             //No match
             EnterCommand("pr x");
