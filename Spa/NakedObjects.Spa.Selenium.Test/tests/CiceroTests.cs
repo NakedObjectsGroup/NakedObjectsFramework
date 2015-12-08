@@ -176,16 +176,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("home");
             EnterCommand("help");
             WaitForOutput("Commands available in current context: " +
-                "back; clipboard; forward; gemini; help; home; menu; where;");
+                "back; clipboard; forward; gemini; help; menu; where;");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; home; open; property; reload; where;");
+            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; menu; open; property; reload; where;");
             //Now with params
             EnterCommand("help me");
-            WaitForOutput("menu command: From the Home context, Menu opens a named main menu. " +
+            WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
                 "This command normally takes one argument: the name, or partial name, " +
                 "of the menu. If the partial name matches more than one menu, a list of " +
                 "matches will be returned but no menu will be opened; if no argument is " +
@@ -195,9 +195,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "in the clipboard, if any. Does not take any arguments");
             EnterCommand("help menux");
             WaitForOutput("No such command: menux");
-            EnterCommand("help home back");
-            WaitForOutput("No such command: home back");
-            EnterCommand("help home, back");
+            EnterCommand("help menu back");
+            WaitForOutput("No such command: menu back");
+            EnterCommand("help menu, back");
             WaitForOutput("Wrong number of arguments provided.");
         }
         [TestMethod]
@@ -290,15 +290,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
             WaitForOutput("Product: HL Grip Tape.");
             //Do something to change the output
-            EnterCommand("help"); //?? not working !!
-            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; home; open; property; reload; where;"); 
-
+            EnterCommand("help"); 
+            WaitForOutputStartingWith("Commands"); 
             EnterCommand("where");
             WaitForOutput("Product: HL Grip Tape.");
 
             //Empty command == where
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action; back; clipboard; copy; description; edit; forward; gemini; go; help; home; open; property; reload; where;");
+            WaitForOutputStartingWith("Commands");
             TypeIntoField("input", Keys.Enter);
             WaitForOutput("Product: HL Grip Tape.");
 
