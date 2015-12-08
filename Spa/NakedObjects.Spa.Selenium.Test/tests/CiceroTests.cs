@@ -185,28 +185,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Wrong number of arguments provided.");
         }
         [TestMethod]
-        public void Home()
-        {
-            //Start from another context
-            CiceroUrl("object?object1=AdventureWorksModel.Product-943");
-            WaitForOutput("Product: LL Mountain Frame - Black, 40.");
-            //Basic test of home
-            EnterCommand("home");
-            WaitForOutput("home");
-            //Check for captialization & spaces
-            CiceroUrl("object?object1=AdventureWorksModel.Product-943");
-            WaitForOutput("Product: LL Mountain Frame - Black, 40.");
-            EnterCommand("  HoMe  ");
-            WaitForOutput("home");
-            //Now with arguments
-            CiceroUrl("object?object1=AdventureWorksModel.Product-943");
-            WaitForOutput("Product: LL Mountain Frame - Black, 40.");
-            EnterCommand("homex");
-            WaitForOutput("No such command: homex");
-            EnterCommand("home x");
-            WaitForOutput("Wrong number of arguments provided.");
-        }
-        [TestMethod]
         public void Menu()
         {   //No argument
             CiceroUrl("home");
@@ -228,11 +206,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("cust prod does not match any menu");
             EnterCommand("Menu cus, ord");
             WaitForOutput("Wrong number of arguments provided.");
-            //Invoked in invalid context
+            //Invoked in another context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             EnterCommand("Menu");
-            WaitForOutput("The command: menu is not available in the current context");
+            WaitForOutput("Menus: Customers; Orders; Products; Employees; Sales; Special Offers; Contacts; Vendors; Purchase Orders; Work Orders;");
         }
         [TestMethod]
         public void OK()

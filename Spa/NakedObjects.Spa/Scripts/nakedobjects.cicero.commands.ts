@@ -439,22 +439,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Home extends Command {
-
-        public fullCommand = "home";
-        public helpText = "Return to Home location, where main menus may be accessed. " +
-        ". Does not take any arguments";;
-        protected minArguments = 0;
-        protected maxArguments = 0;
-
-        public isAvailableInCurrentContext(): boolean {
-            return true;
-        }
-
-        execute(args: string): void {
-            this.urlManager.setHome(1);
-        };
-    }
     export class Item extends Command {
 
         public fullCommand = "item";
@@ -490,7 +474,7 @@ module NakedObjects.Angular.Gemini {
     export class Menu extends Command {
 
         public fullCommand = "menu";
-        public helpText = "From the Home context, Menu opens a named main menu. This " +
+        public helpText = "From any context, Menu opens a named main menu. This " +
         "command normally takes one argument: the name, or partial name, of the menu. " +
         "If the partial name matches more than one menu, a list of matches will be returned " +
         "but no menu will be opened; if no argument is provided a list of all the menus " +
@@ -499,7 +483,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isHome();
+            return true;
         }
 
         execute(args: string): void {

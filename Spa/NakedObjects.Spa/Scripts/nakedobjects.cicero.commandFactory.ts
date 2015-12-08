@@ -45,7 +45,6 @@ module NakedObjects.Angular.Gemini{
             "ge": new Gemini(urlManager, $location, commandFactory, context, navigation),
             "go": new Go(urlManager, $location, commandFactory, context, navigation),
             "he": new Help(urlManager, $location, commandFactory, context, navigation),
-            "ho": new Home(urlManager, $location, commandFactory, context, navigation),
             "it": new Item(urlManager, $location, commandFactory, context, navigation),
             "me": new Menu(urlManager, $location, commandFactory, context, navigation),
             "ok": new OK(urlManager, $location, commandFactory, context, navigation),
