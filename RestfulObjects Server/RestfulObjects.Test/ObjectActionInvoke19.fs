@@ -57,7 +57,7 @@ let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjects
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -115,7 +115,7 @@ let VerifyPostInvokeOverloadedActionReturnObject refType oType oid f (api : Rest
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -173,7 +173,7 @@ let VerifyPostInvokeContributedService refType oType oid f (api : RestfulObjects
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -249,7 +249,7 @@ let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObje
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -308,7 +308,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -373,7 +373,7 @@ let VerifyPostInvokeUserDisabledActionReturnObject refType oType oid f (api : Re
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -433,7 +433,7 @@ let PostInvokeContribActionReturnObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -478,7 +478,7 @@ let PostInvokeContribActionReturnObjectBaseClass(api : RestfulObjectsControllerB
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -525,7 +525,7 @@ let PostInvokeContribActionReturnObjectWithRefParm(api : RestfulObjectsControlle
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -571,7 +571,7 @@ let PostInvokeContribActionReturnObjectWithValueParm(api : RestfulObjectsControl
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -593,7 +593,7 @@ let VerifyPostInvokeActionReturnNullObject refType oType oid f (api : RestfulObj
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -630,7 +630,7 @@ let VerifyPostInvokeActionReturnNullViewModel refType oType oid f (api : Restful
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -660,7 +660,7 @@ let VerifyPostInvokeActionReturnObjectValidateOnly refType oType oid f (api : Re
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -715,7 +715,7 @@ let VerifyPutInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -773,7 +773,7 @@ let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -832,7 +832,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag 
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -869,7 +869,7 @@ let VerifyPutInvokeActionReturnNullObject refType oType oid f (api : RestfulObje
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -899,7 +899,7 @@ let VerifyPutInvokeActionReturnObjectValidateOnly refType oType oid f (api : Res
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PutInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -969,7 +969,7 @@ let VerifyGetInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1042,7 +1042,7 @@ let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1116,7 +1116,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1190,7 +1190,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (a
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1233,7 +1233,7 @@ let VerifyGetInvokeActionReturnNullObject refType oType oid f (api : RestfulObje
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1264,7 +1264,7 @@ let VerifyGetInvokeActionReturnObjectValidateOnly refType oType oid f (api : Res
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1321,7 +1321,7 @@ let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oid f (api : R
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1367,7 +1367,7 @@ let VerifyPostInvokeActionReturnScalar refType oType oid f (api : RestfulObjects
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1414,7 +1414,7 @@ let VerifyPostInvokeActionReturnScalarFormalOnly refType oType oid f (api : Rest
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1460,7 +1460,7 @@ let VerifyPostInvokeActionReturnEmptyScalar refType oType oid f (api : RestfulOb
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1497,7 +1497,7 @@ let VerifyPostInvokeActionReturnNullScalar refType oType oid f (api : RestfulObj
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1527,7 +1527,7 @@ let VerifyPostInvokeActionReturnScalarValidateOnly refType oType oid f (api : Re
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1560,7 +1560,7 @@ let VerifyPostInvokeActionReturnVoid refType oType oid f (api : RestfulObjectsCo
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1597,7 +1597,7 @@ let VerifyPostInvokeActionReturnVoidFormalOnly refType oType oid f (api : Restfu
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1627,7 +1627,7 @@ let VerifyPostInvokeActionReturnVoidValidateOnly refType oType oid f (api : Rest
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1698,7 +1698,7 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1773,7 +1773,7 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1805,7 +1805,7 @@ let VerifyGetInvokeActionReturnQueryableValidateOnly refType oType oid f (api : 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1871,7 +1871,7 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1940,7 +1940,7 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1998,7 +1998,7 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2035,7 +2035,7 @@ let VerifyPostInvokeActionReturnNullCollection refType oType oid f (api : Restfu
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, TObjectVal(null))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2065,7 +2065,7 @@ let VerifyPostInvokeActionReturnCollectionVerifyOnly refType oType oid f (api : 
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionReturnCollectionObjectVerifyOnly(api : RestfulObjectsControllerBase) = 
@@ -2142,7 +2142,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2208,7 +2208,7 @@ let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType o
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2238,7 +2238,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly refType oT
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2319,7 +2319,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2386,7 +2386,7 @@ let VerifyGetInvokeActionWithScalarMissingParmsFormal refType oType oid f (api :
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2419,7 +2419,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormalValidateOnly refType oT
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2489,7 +2489,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2522,7 +2522,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly refT
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2606,7 +2606,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2641,7 +2641,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormalValidateOnly refType
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2712,7 +2712,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2747,7 +2747,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly r
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2815,7 +2815,7 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2845,7 +2845,7 @@ let VerifyPostInvokeActionReturnQueryValidateOnly refType oType oid f (api : Res
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2922,7 +2922,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -2983,7 +2983,7 @@ let VerifyPostInvokeOverloadedAction refType oType oid f (api : RestfulObjectsCo
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3015,7 +3015,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnQueryValidateOnly refType oType o
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3081,7 +3081,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3113,7 +3113,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly refType oT
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3191,7 +3191,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3225,7 +3225,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly refType oTyp
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3291,7 +3291,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3325,7 +3325,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly refType
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3374,7 +3374,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnScalar refType oType oid f (ap
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3408,7 +3408,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly refType oTy
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3445,7 +3445,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnVoid refType oType oid f (api 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3479,7 +3479,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly refType oType
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3538,7 +3538,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oid f (ap
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3572,7 +3572,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oTy
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3631,7 +3631,7 @@ let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3665,7 +3665,7 @@ let VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oTyp
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3745,7 +3745,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3821,7 +3821,7 @@ let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : Restful
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsNull(result.Headers.ETag)
@@ -3856,7 +3856,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oTyp
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3892,7 +3892,7 @@ let VerifyMissingParmsOnGetQuery refType oType oid f (api : RestfulObjectsContro
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -3929,7 +3929,7 @@ let VerifyMissingParmsOnPostCollection refType oType oid f (api : RestfulObjects
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -3959,7 +3959,7 @@ let VerifyMalformedSimpleParmsOnGetQuery refType oType oid f (api : RestfulObjec
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -3990,7 +3990,7 @@ let VerifyMalformedFormalParmsOnGetQuery refType oType oid f (api : RestfulObjec
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4021,7 +4021,7 @@ let VerifyMalformedFormalParmsOnGetCollection refType oType oid f (api : Restful
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4056,7 +4056,7 @@ let VerifyInvalidSimpleParmsOnGetQuery refType oType oid f (api : RestfulObjects
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4094,7 +4094,7 @@ let VerifyInvalidFormalParmsOnGetQuery refType oType oid f (api : RestfulObjects
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4132,7 +4132,7 @@ let VerifyInvalidFormalParmsOnPostCollection refType oType oid f (api : RestfulO
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4159,7 +4159,7 @@ let VerifyDisabledActionInvokeQuery refType oType oid f (api : RestfulObjectsCon
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Always disabled\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4187,7 +4187,7 @@ let VerifyDisabledActionInvokeCollection refType oType oid f (api : RestfulObjec
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4215,7 +4215,7 @@ let VerifyNotFoundActionInvoke refType oType oid f (api : RestfulObjectsControll
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4242,7 +4242,7 @@ let VerifyHiddenActionInvoke refType oType oid f (api : RestfulObjectsController
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4269,7 +4269,7 @@ let VerifyGetActionWithSideEffects refType oType oid f (api : RestfulObjectsCont
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4296,7 +4296,7 @@ let VerifyGetActionWithIdempotent refType oType oid f (api : RestfulObjectsContr
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4323,7 +4323,7 @@ let VerifyPutActionWithQueryOnly refType oType oid f (api : RestfulObjectsContro
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4389,7 +4389,7 @@ let VerifyGetQueryActionWithError refType oType oid f (api : RestfulObjectsContr
                           ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4427,7 +4427,7 @@ let VerifyPostCollectionActionWithError refType oType oid f (api : RestfulObject
                             ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4463,7 +4463,7 @@ let VerifyMissingParmsOnPost refType oType oid f (api : RestfulObjectsController
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -4496,7 +4496,7 @@ let VerifyMalformedFormalParmsOnPostQuery refType oType oid f (api : RestfulObje
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4533,7 +4533,7 @@ let VerifyWrongTypeParmsOnPostQuery refType oType oid f (api : RestfulObjectsCon
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(2))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Not a suitable type; must be a Most Simple")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Not a suitable type; must be a Most Simple\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -4573,7 +4573,7 @@ let VerifyEmptyParmsOnPostQuery refType oType oid f (api : RestfulObjectsControl
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -4614,7 +4614,7 @@ let VerifyInvalidFormalParmsOnPostQuery refType oType oid f (api : RestfulObject
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, refParm) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4643,7 +4643,7 @@ let VerifyDisabledPostActionInvoke refType oType oid f (api : RestfulObjectsCont
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4670,7 +4670,7 @@ let VerifyUserDisabledPostActionInvoke refType oType oid f (api : RestfulObjects
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4697,7 +4697,7 @@ let VerifyNotFoundActionPostInvoke refType oType oid f (api : RestfulObjectsCont
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4724,7 +4724,7 @@ let VerifyHiddenActionPostInvoke refType oType oid f (api : RestfulObjectsContro
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4790,7 +4790,7 @@ let VerifyPostQueryActionWithError refType oType oid f (api : RestfulObjectsCont
                              ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -4828,7 +4828,7 @@ let VerifyPostQueryActionWithValidateFail refType oType oid f (api : RestfulObje
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Fail validation parm1")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Fail validation parm1\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -4866,7 +4866,7 @@ let VerifyPostQueryActionWithCrossValidateFail refType oType oid f (api : Restfu
         [ TProperty("parm1", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(2)) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(1)) ]))
           TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -4894,7 +4894,7 @@ let VerifyGetInvokeActionReturnCollection refType oType oid f (api : RestfulObje
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4921,7 +4921,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple refType oType oid
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4952,7 +4952,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal refType oType oid
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4985,7 +4985,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal refType oType 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5024,7 +5024,7 @@ let VerifyMissingParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulO
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -5062,7 +5062,7 @@ let VerifyMissingParmsOnPostCollectionValidateOnly refType oType oid f (api : Re
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -5092,7 +5092,7 @@ let VerifyMalformedSimpleParmsOnGetQueryValidateOnly refType oType oid f (api : 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5123,7 +5123,7 @@ let VerifyMalformedFormalParmsOnGetQueryValidateOnly refType oType oid f (api : 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5154,7 +5154,7 @@ let VerifyMalformedFormalParmsOnGetCollectionValidateOnly refType oType oid f (a
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5189,7 +5189,7 @@ let VerifyInvalidSimpleParmsOnGetQueryValidateOnly refType oType oid f (api : Re
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -5227,7 +5227,7 @@ let VerifyInvalidFormalParmsOnGetQueryValidateOnly refType oType oid f (api : Re
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -5265,7 +5265,7 @@ let VerifyInvalidFormalParmsOnPostCollectionValidateOnly refType oType oid f (ap
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -5294,7 +5294,7 @@ let VerifyDisabledActionInvokeQueryValidateOnly refType oType oid f (api : Restf
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Always disabled\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5323,7 +5323,7 @@ let VerifyDisabledActionInvokeCollectionValidateOnly refType oType oid f (api : 
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5353,7 +5353,7 @@ let VerifyNotFoundActionInvokeValidateOnly refType oType oid f (api : RestfulObj
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5382,7 +5382,7 @@ let VerifyHiddenActionInvokeValidateOnly refType oType oid f (api : RestfulObjec
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5411,7 +5411,7 @@ let VerifyGetActionWithSideEffectsValidateOnly refType oType oid f (api : Restfu
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5440,7 +5440,7 @@ let VerifyGetActionWithIdempotentValidateOnly refType oType oid f (api : Restful
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5468,7 +5468,7 @@ let VerifyPutActionWithQueryOnlyValidateOnly refType oType oid f (api : RestfulO
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5497,7 +5497,7 @@ let VerifyGetQueryActionWithErrorValidateOnly refType oType oid f (api : Restful
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let GetQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5524,7 +5524,7 @@ let VerifyPostCollectionActionWithErrorValidateOnly refType oType oid f (api : R
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostCollectionActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5560,7 +5560,7 @@ let VerifyMissingParmsOnPostValidateOnly refType oType oid f (api : RestfulObjec
           TProperty("parm2", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -5593,7 +5593,7 @@ let VerifyMalformedFormalParmsOnPostQueryValidateOnly refType oType oid f (api :
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5633,7 +5633,7 @@ let VerifyInvalidFormalParmsOnPostQueryValidateOnly refType oType oid f (api : R
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
           TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, refParm) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -5665,7 +5665,7 @@ let VerifyInvalidUrlOnPostQueryValidateOnly refType oType oid f (api : RestfulOb
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" roType (ktc "10"), result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5695,7 +5695,7 @@ let VerifyDisabledPostActionInvokeValidateOnly refType oType oid f (api : Restfu
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5723,7 +5723,7 @@ let VerifyNotFoundActionPostInvokeValidateOnly refType oType oid f (api : Restfu
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5751,7 +5751,7 @@ let VerifyHiddenActionPostInvokeValidateOnly refType oType oid f (api : RestfulO
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5779,7 +5779,7 @@ let VerifyPostQueryActionWithErrorValidateOnly refType oType oid f (api : Restfu
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PostQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5807,7 +5807,7 @@ let VerifyGetInvokeActionReturnCollectionValidateOnly refType oType oid f (api :
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5836,7 +5836,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly refTy
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5867,7 +5867,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly refTy
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5900,7 +5900,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly re
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5928,7 +5928,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (a
     api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5946,7 +5946,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (ap
     api.Request <- jsonPutMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -5964,7 +5964,7 @@ let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (ap
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode)
+    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode, jsonResult)
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          result.Headers.Warning.ToString())
@@ -5984,7 +5984,7 @@ let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (api
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode)
+    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode, jsonResult)
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          result.Headers.Warning.ToString())

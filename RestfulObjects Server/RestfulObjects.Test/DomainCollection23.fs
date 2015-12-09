@@ -41,7 +41,7 @@ let GetCollectionPropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.CollectionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -71,7 +71,7 @@ let GetSetCollectionPropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.CollectionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -101,7 +101,7 @@ let GetCollectionPropertyTypeWithDescription(api : RestfulObjectsControllerBase)
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.CollectionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -115,7 +115,7 @@ let NotFoundTypeCollectionPropertyType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollectionType(oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -128,7 +128,7 @@ let NotFoundCollectionPropertyType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollectionType(oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain collection NoSuchValue in domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 

@@ -90,7 +90,7 @@ let GetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
                                      
                                       ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -402,7 +402,7 @@ let GetWithActionObjectType(api : RestfulObjectsControllerBase) =
                                      
                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -695,7 +695,7 @@ let GetWithActionServiceType(api : RestfulObjectsControllerBase) =
                                      
                                       ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -800,7 +800,7 @@ let GetWithReferenceObjectType(api : RestfulObjectsControllerBase) =
                                      
                                       ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -908,7 +908,7 @@ let GetWithValueObjectType(api : RestfulObjectsControllerBase) =
                                      
                                      ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -1015,7 +1015,7 @@ let GetWithCollectionObjectType(api : RestfulObjectsControllerBase) =
                                      
                                       ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.DomainType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -1056,7 +1056,7 @@ let NotFoundGetMostSimpleObjectType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetDomainType(oType, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 

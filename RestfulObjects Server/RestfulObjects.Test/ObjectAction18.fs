@@ -50,7 +50,7 @@ let VerifyActionProperty refType oType oid f (api : RestfulObjectsControllerBase
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -125,7 +125,7 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -211,7 +211,7 @@ let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjects
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -264,7 +264,7 @@ let VerifyOverloadedActionProperty refType oType oid f (api : RestfulObjectsCont
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -317,7 +317,7 @@ let VerifyContributedServiceAction refType oType oid f (api : RestfulObjectsCont
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -363,7 +363,7 @@ let VerifyUserDisabledActionProperty refType oType oid f (api : RestfulObjectsCo
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -415,7 +415,7 @@ let VerifyActionPropertyQueryOnly refType oType oid f (api : RestfulObjectsContr
                                   :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -467,7 +467,7 @@ let VerifyActionPropertyIdempotent refType oType oid f (api : RestfulObjectsCont
                                   :: makePutLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -543,7 +543,7 @@ let VerifyActionPropertyWithOptParm refType oType oid f (api : RestfulObjectsCon
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -610,7 +610,7 @@ let VerifyActionPropertyWithOptParmSimpleOnly refType oType oid f (api : Restful
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -676,7 +676,7 @@ let VerifyActionPropertyWithOptParmFormalOnly refType oType oid f (api : Restful
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -731,7 +731,7 @@ let VerifyActionPropertyWithMediaType refType oType oid f (api : RestfulObjectsC
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -786,7 +786,7 @@ let VerifyScalarAction refType oType oid f (api : RestfulObjectsControllerBase) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -843,7 +843,7 @@ let VerifyQueryAction refType oType oid f (api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -899,7 +899,7 @@ let VerifyCollectionAction refType oType oid f (api : RestfulObjectsControllerBa
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -999,7 +999,7 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1098,7 +1098,7 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1179,7 +1179,7 @@ let VerifyCollectionActionWithParmsSimpleOnly refType oType oid f (api : Restful
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1264,7 +1264,7 @@ let VerifyCollectionActionWithParmsFormalOnly refType oType oid f (api : Restful
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1339,7 +1339,7 @@ let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControlle
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1422,7 +1422,7 @@ let VerifyActionWithValueParmWithChoices refType oType oid f (api : RestfulObjec
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1498,7 +1498,7 @@ let VerifyActionWithValueParmWithDefault refType oType oid f (api : RestfulObjec
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1572,7 +1572,7 @@ let VerifyActionWithReferenceParm refType oType oid f (api : RestfulObjectsContr
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1655,7 +1655,7 @@ let VerifyActionWithReferenceParmWithChoices refType oType oid f (api : RestfulO
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1764,7 +1764,7 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
                            :: makeGetLinkProp RelValues.ActionParam dburl1 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1815,7 +1815,7 @@ let VerifyInvokeParmWithAutoComplete refType oType oid f (api : RestfulObjectsCo
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1846,7 +1846,7 @@ let VerifyInvokeParmWithAutoCompleteErrorNoParm refType oType oid f (api : Restf
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, pmid0, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1875,7 +1875,7 @@ let VerifyInvokeParmWithAutoCompleteErrorMalformedParm refType oType oid f (api 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, pmid0, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1904,7 +1904,7 @@ let VerifyInvokeParmWithAutoCompleteErrorUnrecognisedParm refType oType oid f (a
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, pmid0, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1952,7 +1952,7 @@ let VerifyInvokeParmWithConditionalChoices refType oType oid f (api : RestfulObj
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1994,7 +1994,7 @@ let VerifyInvokeParmWithConditionalChoicesErrorMalformedParm refType oType oid f
                       
                       TProperty
                           (JsonPropertyNames.InvalidReason, TObjectVal("Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual
         ("199 RestfulObjects \"Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple\"", result.Headers.Warning.ToString())
@@ -2040,7 +2040,7 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
                     TArray([ TObjectVal(100)
                              TObjectVal(33) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -2063,7 +2063,7 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
                     TArray([ TObjectVal("100")
                              TObjectVal("33") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -2107,7 +2107,7 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (
                     TArray([ TObjectVal(100)
                              TObjectVal(0) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -2186,7 +2186,7 @@ let VerifyActionWithReferenceParmWithDefault refType oType oid f (api : RestfulO
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -2344,7 +2344,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid8)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl8 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -2401,7 +2401,7 @@ let GetContributedActionOnContributee(api : RestfulObjectsControllerBase) =
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2442,7 +2442,7 @@ let GetContributedActionOnContributeeBaseClass(api : RestfulObjectsControllerBas
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2503,7 +2503,7 @@ let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase)
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2567,7 +2567,7 @@ let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBas
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2629,7 +2629,7 @@ let GetContributedActionOnContributer(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -2689,7 +2689,7 @@ let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBas
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -2770,7 +2770,7 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag = null)
@@ -2855,7 +2855,7 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
                       TObjectJson
                           (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
                            :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag = null)
@@ -2871,7 +2871,7 @@ let VerifyInvalidAction refType oType oid f (api : RestfulObjectsControllerBase)
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2899,7 +2899,7 @@ let VerifyNotFoundAction refType oType oid f (api : RestfulObjectsControllerBase
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2926,7 +2926,7 @@ let VerifyUserDisabledAction refType oType oid f (api : RestfulObjectsController
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2953,7 +2953,7 @@ let VerifyHiddenAction refType oType oid f (api : RestfulObjectsControllerBase) 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2983,7 +2983,7 @@ let ActionNotFound(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (purl)
     let result = api.GetAction(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let VerifyNotAcceptableGetActionWrongMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 

@@ -173,7 +173,7 @@ let GetDomainTypes(api : RestfulObjectsControllerBase) =
     let result = api.GetDomainTypes(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.TypeList), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = getExpected()
@@ -188,7 +188,7 @@ let GetDomainTypesWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetDomainTypes(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.TypeList), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = getExpectedMT()
@@ -201,7 +201,7 @@ let GetDomainTypesDomainType(api : RestfulObjectsControllerBase) =
     let result = api.GetDomainTypes(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.TypeList), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = getExpectedDomainType()
@@ -216,7 +216,7 @@ let GetDomainTypesWithMediaTypeDomainType(api : RestfulObjectsControllerBase) =
     let result = api.GetDomainTypes(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.TypeList), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = getExpectedDomainTypeMT()

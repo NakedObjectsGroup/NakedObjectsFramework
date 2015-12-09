@@ -39,7 +39,7 @@ let GetValuePropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.PropertyDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -69,7 +69,7 @@ let GetValueStringPropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.PropertyDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -99,7 +99,7 @@ let GetValueDateTimePropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.PropertyDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -127,7 +127,7 @@ let GetReferencePropertyType(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.PropertyDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -141,7 +141,7 @@ let NotFoundTypePropertyType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetPropertyType(oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -154,7 +154,7 @@ let NotFoundPropertyType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetPropertyType(oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain property NoSuchValue in domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 

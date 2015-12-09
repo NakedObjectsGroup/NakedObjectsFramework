@@ -39,7 +39,7 @@ let VerifyActionTypeNoParmsScalar oType f (api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -75,7 +75,7 @@ let VerifyOverloadedActionTypeNoParmsScalar oType f (api : RestfulObjectsControl
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -111,7 +111,7 @@ let VerifyActionTypeNoParmsVoid oType f (api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -149,7 +149,7 @@ let VerifyActionTypeNoParmsCollection oType f (api : RestfulObjectsControllerBas
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -189,7 +189,7 @@ let VerifyActionTypeParmsScalar oType f (api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -229,7 +229,7 @@ let VerifyActionTypeParmsVoid oType f (api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -271,7 +271,7 @@ let VerifyActionTypeParmsCollection oType f (api : RestfulObjectsControllerBase)
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -308,7 +308,7 @@ let GetActionTypeObjectContributedOnContributee(api : RestfulObjectsControllerBa
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -340,7 +340,7 @@ let GetActionTypeObjectContributedOnContributer(api : RestfulObjectsControllerBa
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ActionDescription "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.DomainType "")
                              TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionDescription), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -354,7 +354,7 @@ let NotFoundTypeActionType(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetActionType(oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -366,7 +366,7 @@ let NotFoundActionType oType f (api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such domain action NoSuchAction in domain type " + oType + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 

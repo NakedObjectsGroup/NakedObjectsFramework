@@ -24,10 +24,11 @@ let Error(api : RestfulObjectsControllerBase) =
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = api.PostInvoke(oType, oid, pid, args)
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
+
     let expected = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))
           TProperty(JsonPropertyNames.StackTrace, 

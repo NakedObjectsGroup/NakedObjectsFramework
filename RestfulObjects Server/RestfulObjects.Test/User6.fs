@@ -31,7 +31,7 @@ let GetUser(api : RestfulObjectsControllerBase) =
     let result = api.GetUser(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.User), result.Content.Headers.ContentType)
     assertUserInfoCache result
     compareObject expected parsedResult
@@ -45,7 +45,7 @@ let GetUserWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetUser(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.User), result.Content.Headers.ContentType)
     assertUserInfoCache result
     compareObject expected parsedResult

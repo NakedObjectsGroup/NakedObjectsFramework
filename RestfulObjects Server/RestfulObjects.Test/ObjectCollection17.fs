@@ -61,7 +61,7 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -111,7 +111,7 @@ let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -158,7 +158,7 @@ let GetCollectionPropertyFormalOnly(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -202,7 +202,7 @@ let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -251,7 +251,7 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -299,7 +299,7 @@ let GetCollectionSetPropertyFormalOnly(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -342,7 +342,7 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -394,7 +394,7 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -444,7 +444,7 @@ let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) =
                       TObjectJson
                           (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oType pid) RepresentationTypes.CollectionDescription 
                                "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -483,7 +483,7 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self vurl RepresentationTypes.CollectionValue "" "" true)
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.ReturnType rturl RepresentationTypes.DomainType "" "" true)
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.ElementType eturl RepresentationTypes.DomainType "" "" true) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -546,7 +546,7 @@ let GetInvalidCollection(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollection(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -560,7 +560,7 @@ let GetNotFoundCollection(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollection(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such collection ANonExistentCollection\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -574,7 +574,7 @@ let GetHiddenValueCollection(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollection(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such collection AHiddenCollection\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -588,7 +588,7 @@ let GetNakedObjectsIgnoredCollection(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollection(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such collection ANakedObjectsIgnoredCollection\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -632,6 +632,6 @@ let GetCollectionAsProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ACollection\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)

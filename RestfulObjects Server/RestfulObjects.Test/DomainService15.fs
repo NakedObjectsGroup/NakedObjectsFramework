@@ -102,7 +102,7 @@ let GetService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     Assert.IsNull(result.Headers.ETag)
@@ -174,7 +174,7 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Contributor Services"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     Assert.IsNull(result.Headers.ETag)
@@ -260,7 +260,7 @@ let GetServiceFormalOnly(api : RestfulObjectsControllerBase) =
                            TObjectJson
                                (makeActionMemberFormal "services" "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollection") [])) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName, "", false), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     Assert.IsNull(result.Headers.ETag)
@@ -352,7 +352,7 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     Assert.IsTrue(result.Headers.ETag = null)
@@ -446,7 +446,7 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Rest Data Repositories"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -1178,7 +1178,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Action Services"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     Assert.IsNull(result.Headers.ETag)
@@ -1191,7 +1191,7 @@ let InvalidGetService(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetService(sName, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1202,7 +1202,7 @@ let NotFoundGetService(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetService(sName, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such service %s: Type not found\"" sName, result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 

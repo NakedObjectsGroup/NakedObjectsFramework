@@ -58,7 +58,7 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expectedBoth parsedResult
@@ -71,7 +71,7 @@ let GetHomePageFormal(api : RestfulObjectsControllerBase) =
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expectedFormal parsedResult
@@ -84,7 +84,7 @@ let GetHomePageSimple(api : RestfulObjectsControllerBase) =
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expectedSimple parsedResult
@@ -98,7 +98,7 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expectedBoth parsedResult
@@ -122,6 +122,6 @@ let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (url)
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)

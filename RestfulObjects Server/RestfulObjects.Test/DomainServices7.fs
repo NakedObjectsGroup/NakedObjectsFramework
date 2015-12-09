@@ -143,7 +143,7 @@ let GetDomainServices(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = fst (fst (getExpected()))
@@ -157,7 +157,7 @@ let GetDomainServicesFormal(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = snd (fst (getExpected()))
@@ -170,7 +170,7 @@ let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = fst (snd (getExpected()))
@@ -184,7 +184,7 @@ let GetDomainServicesFormalWithTTC(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = snd (snd (getExpected()))
@@ -200,7 +200,7 @@ let GetDomainServicesWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = fst (fst (getExpected()))
@@ -215,7 +215,7 @@ let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
     let result = api.GetServices(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     let expected = fst (snd (getExpected()))

@@ -72,7 +72,7 @@ let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -127,7 +127,7 @@ let GetMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -176,7 +176,7 @@ let GetMostSimpleTransientObjectFormalOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", false), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -221,7 +221,7 @@ let PersistMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -249,7 +249,7 @@ let PersistMostSimpleTransientObjectValidateOnly(api : RestfulObjectsControllerB
     api.Request <- jsonPostMsg link (args.First.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -297,7 +297,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -346,7 +346,7 @@ let PersistMostSimpleTransientObjectFormalOnly(api : RestfulObjectsControllerBas
                           (args :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType "" false) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberFormal "objects" "Id" oid (TObjectVal(5)) false)) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType, "", false), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -606,7 +606,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -791,7 +791,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -935,7 +935,7 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Result, resultObject)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -1022,7 +1022,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -1108,7 +1108,7 @@ let PersistWithValueTransientObjectFormalOnly(api : RestfulObjectsControllerBase
                                   TProperty("Id", TObjectJson(makePropertyMemberFormal "objects" "Id" oid (TObjectVal(3)) false)) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType, "", false), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -1278,7 +1278,7 @@ let PersistWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -1412,7 +1412,7 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Collections"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), persistResult.Content.Headers.ContentType)
     Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
@@ -1440,7 +1440,7 @@ let PersistWithValueTransientObjectValidateOnly(api : RestfulObjectsControllerBa
     api.Request <- jsonPostMsg link (args.First.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistWithReferenceTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1465,7 +1465,7 @@ let PersistWithReferenceTransientObjectValidateOnly(api : RestfulObjectsControll
     api.Request <- jsonPostMsg link (args.First.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistWithCollectionTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1490,7 +1490,7 @@ let PersistWithCollectionTransientObjectValidateOnly(api : RestfulObjectsControl
     api.Request <- jsonPostMsg link (args.First.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControllerBase) = 
@@ -1546,7 +1546,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControll
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1603,7 +1603,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api : RestfulObjec
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1662,7 +1662,7 @@ let PersistWithValueTransientObjectValidateOnlyFormalOnlyFail(api : RestfulObjec
                                            TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "domain-types/%s" oType))) ]) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1719,7 +1719,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api : RestfulObjectsCont
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1766,7 +1766,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api : RestfulObjectsCon
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1821,7 +1821,7 @@ let PersistWithValueTransientObjectFail(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1876,7 +1876,7 @@ let PersistWithValueTransientObjectFailInvalid(api : RestfulObjectsControllerBas
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1936,7 +1936,7 @@ let PersistWithReferenceTransientObjectFail(api : RestfulObjectsControllerBase) 
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -1993,7 +1993,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api : RestfulObjectsControlle
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -2038,7 +2038,7 @@ let PersistWithCollectionTransientObjectFail(api : RestfulObjectsControllerBase)
           TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     compareObject expected parsedPersist
 
@@ -2049,7 +2049,7 @@ let PersistMostSimpleTransientObjectMissingArgs(api : RestfulObjectsControllerBa
     api.Request <- jsonPostMsg "http://localhost/objects" ""
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", persistResult.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2064,7 +2064,7 @@ let PersistMostSimpleTransientObjectMissingArgsValidateOnly(api : RestfulObjects
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", persistResult.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2082,7 +2082,7 @@ let PersistMostSimpleTransientObjectMissingMemberArgs(api : RestfulObjectsContro
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", persistResult.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2100,7 +2100,7 @@ let PersistMostSimpleTransientObjectNullDomainType(api : RestfulObjectsControlle
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist(null, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistMostSimpleTransientObjectEmptyDomainType(api : RestfulObjectsControllerBase) = 
@@ -2115,7 +2115,7 @@ let PersistMostSimpleTransientObjectEmptyDomainType(api : RestfulObjectsControll
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist("", pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsControllerBase) = 
@@ -2132,7 +2132,7 @@ let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsCont
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, persistResult.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", persistResult.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2150,7 +2150,7 @@ let PersistUnknownTypeTransientObject(api : RestfulObjectsControllerBase) =
     api.Request <- jsonPostMsg "http://localhost/objects" (props.ToString())
     let persistResult = api.PostPersist(dt, pArgs)
     let jsonResult = readSnapshotToJson persistResult
-    Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode, jsonResult)
     Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" dt, persistResult.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2170,7 +2170,7 @@ let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) =
     let jsonPersist = readSnapshotToJson persistResult
    
     // different stack trace on sercver - just test not empty body 
-    Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual
         ("199 RestfulObjects \"No such domain type " + dt + "\"", 
          persistResult.Headers.Warning.ToString()) //
@@ -2223,7 +2223,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api : RestfulObjectsContr
         TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
         TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode)
+    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Arguments invalid\"", persistResult.Headers.Warning.ToString())
     compareObject expected parsedPersist

@@ -42,7 +42,7 @@ let GetVersion(api : RestfulObjectsControllerBase) =
     let result = api.GetVersion(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Version), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult
@@ -56,7 +56,7 @@ let GetVersionWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetVersion(args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Version), result.Content.Headers.ContentType)
     assertNonExpiringCache result
     compareObject expected parsedResult

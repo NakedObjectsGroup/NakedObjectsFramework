@@ -58,7 +58,7 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -113,7 +113,7 @@ let GetFileAttachmentProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -130,7 +130,7 @@ let GetFileAttachmentValue(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsgAndMediaType mt (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let content = result.Content.ReadAsStringAsync().Result
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, content)
     Assert.AreEqual(mt, result.Content.Headers.ContentType.ToString())
     Assert.AreEqual("attachment; filename=afile", result.Content.Headers.ContentDisposition.ToString())
     assertTransactionalCache result
@@ -196,7 +196,7 @@ let GetImageAttachmentProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -213,7 +213,7 @@ let GetImageAttachmentValue(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsgAndMediaType mt (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let content = result.Content.ReadAsStringAsync().Result
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, content)
     Assert.AreEqual(mt, result.Content.Headers.ContentType.ToString())
     Assert.AreEqual("attachment; filename=animage", result.Content.Headers.ContentDisposition.ToString())
     assertTransactionalCache result
@@ -231,7 +231,7 @@ let GetImageAttachmentValueWithDefault(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsgAndMediaType mt (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let content = result.Content.ReadAsStringAsync().Result
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, content)
     Assert.AreEqual(mt, result.Content.Headers.ContentType.ToString())
     Assert.AreEqual("attachment; filename=animage.gif", result.Content.Headers.ContentDisposition.ToString())
     assertTransactionalCache result
@@ -279,7 +279,7 @@ let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -325,7 +325,7 @@ let GetValuePropertyUserAuth(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -365,7 +365,7 @@ let GetValuePropertyFormalOnly(api : RestfulObjectsControllerBase) =
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -409,7 +409,7 @@ let GetValuePropertySimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -459,7 +459,7 @@ let GetEnumValueProperty(api : RestfulObjectsControllerBase) =
                                             TObjectJson([ TProperty("Value1", TObjectVal(0))
                                                           TProperty("Value2", TObjectVal(1)) ]))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -504,7 +504,7 @@ let GetStringValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("string"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(3))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -520,7 +520,7 @@ let GetBlobValueProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ByteArray\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -534,7 +534,7 @@ let GetClobValueProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property CharArray\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -579,7 +579,7 @@ let GetValuePropertyWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -631,7 +631,7 @@ let GetChoicesValueProperty(api : RestfulObjectsControllerBase) =
                                                           TProperty("2", TObjectVal(2))
                                                           TProperty("3", TObjectVal(3)) ]))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -671,7 +671,7 @@ let GetDisabledValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -711,7 +711,7 @@ let GetUserDisabledValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -755,7 +755,7 @@ let GetUserDisabledValuePropertyAuthorised(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -802,7 +802,7 @@ let GetReferenceProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -854,7 +854,7 @@ let GetAutoCompleteProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -893,7 +893,7 @@ let InvokeAutoComplete(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -911,7 +911,7 @@ let InvokeAutoCompleteErrorNoParm(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" acurl)
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
@@ -928,7 +928,7 @@ let InvokeAutoCompleteErrorMalformedParm(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" acurl)
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
@@ -945,7 +945,7 @@ let InvokeAutoCompleteErrorUnrecognisedParm(api : RestfulObjectsControllerBase) 
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" acurl)
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     //Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
@@ -985,7 +985,7 @@ let InvokeConditionalChoicesReference(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(obj2)
                              TObjectJson(obj3) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1014,7 +1014,7 @@ let InvokeConditionalChoicesReferenceErrorMalformedParm(api : RestfulObjectsCont
                       
                       TProperty
                           (JsonPropertyNames.InvalidReason, TObjectVal("Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual
         ("199 RestfulObjects \"Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple\"", result.Headers.Warning.ToString())
@@ -1044,7 +1044,7 @@ let InvokeConditionalChoicesReferenceErrorNoParm(api : RestfulObjectsControllerB
                              TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
           TProperty(JsonPropertyNames.Choices, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1064,7 +1064,7 @@ let InvokeConditionalChoicesReferenceErrorUnrecognisedParm(api : RestfulObjectsC
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" acurl)
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Unrecognised conditional argument(s)\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1095,7 +1095,7 @@ let InvokeConditionalChoicesValue(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectVal(100)
                              TObjectVal(2) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -1121,7 +1121,7 @@ let InvokeConditionalChoicesValueErrorMalformedParm(api : RestfulObjectsControll
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal("cannot format value fred as Int32")) ]))
           TProperty("astringvalue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2")) ])) ]
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"cannot format value fred as Int32\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -1152,7 +1152,7 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
                     TArray([ TObjectVal(100)
                              TObjectVal(0) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     compareObject expected parsedResult
@@ -1198,7 +1198,7 @@ let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1241,7 +1241,7 @@ let GetDisabledReferenceProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1296,7 +1296,7 @@ let GetChoicesReferenceProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1313,7 +1313,7 @@ let GetInvalidProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1328,7 +1328,7 @@ let GetNotFoundProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentProperty\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1343,7 +1343,7 @@ let GetHiddenValueProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1357,7 +1357,7 @@ let GetUserHiddenValueProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AUserHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1372,7 +1372,7 @@ let GetHiddenReferenceProperty(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1405,7 +1405,7 @@ let GetErrorReferenceProperty(api : RestfulObjectsControllerBase) =
     let result = api.GetProperty(oType, oid, pid, args)
     RestfulObjects.Test.Data.WithGetError.ThrowErrors <- false
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 
@@ -1419,7 +1419,7 @@ let GetPropertyAsCollection(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetCollection(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such collection AValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1465,7 +1465,7 @@ let PutValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1490,7 +1490,7 @@ let PutClobPropertyBadRequest(api : RestfulObjectsControllerBase) =
     let expected = 
         [ TProperty(JsonPropertyNames.Value, TObjectVal("a char array"))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Not a suitable type; must be a Char[]")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"" + "Not a suitable type; must be a Char[]" + "\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -1508,7 +1508,7 @@ let PutBlobPropertyBadRequest(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"" + "Field not editable" + "\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -1555,7 +1555,7 @@ let PutDateTimeValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(4))
                                   TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1610,7 +1610,7 @@ let PutValuePropertyConcurrencySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1658,7 +1658,7 @@ let PutUserDisabledValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1678,7 +1678,7 @@ let PutValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //   Assert.AreEqual(101, (instances<WithValue>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AValue)
@@ -1723,7 +1723,7 @@ let DeleteValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1743,7 +1743,7 @@ let DeleteValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //    Assert.AreEqual(0, (instances<WithValue>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AValue)
@@ -1788,7 +1788,7 @@ let PutNullValuePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1808,7 +1808,7 @@ let PutNullValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) 
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //   Assert.AreEqual(0, (instances<WithValue>() |> Seq.filter (fun i -> i.Id = 1) |> Seq.head).AValue)
@@ -1857,7 +1857,7 @@ let PutReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1879,7 +1879,7 @@ let PutReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) 
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //    Assert.AreSame(instances<MostSimple>() |> Seq.filter (fun i -> i.Id = 2) |> Seq.head, (instances<WithReference>() |> Seq.filter (fun i -> i.Id = 2) |> Seq.head).AReference)
@@ -1924,7 +1924,7 @@ let DeleteReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1944,7 +1944,7 @@ let DeleteReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBas
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //   Assert.AreSame(null, (instances<WithReference>() |> Seq.filter (fun i -> i.Id = 2) |> Seq.head).AReference)
@@ -1989,7 +1989,7 @@ let PutNullReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(mst))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
     assertTransactionalCache result
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2009,7 +2009,7 @@ let PutNullReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBa
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 //     Assert.AreSame(null, (instances<WithReference>() |> Seq.filter (fun i -> i.Id = 2) |> Seq.head).AReference)
@@ -2025,7 +2025,7 @@ let PutWithValuePropertyMissingArgs(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2042,7 +2042,7 @@ let PutWithValuePropertyMalformedArgs(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2065,7 +2065,7 @@ let PutWithValuePropertyInvalidArgsValue(api : RestfulObjectsControllerBase) =
     let expected = 
         [ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -2095,7 +2095,7 @@ let PutWithValuePropertyFailCrossValidation(api : RestfulObjectsControllerBase) 
     let expected = 
         [ TProperty(JsonPropertyNames.Value, TObjectVal(3))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -2122,7 +2122,7 @@ let PutWithReferencePropertyInvalidArgsValue(api : RestfulObjectsControllerBase)
         [ TProperty
               (JsonPropertyNames.Value, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt (ktc "1")))) ]))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -2156,7 +2156,7 @@ let PutWithReferencePropertyFailCrossValidation(api : RestfulObjectsControllerBa
         [ TProperty
               (JsonPropertyNames.Value, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" mst (ktc "2")))) ]))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -2174,7 +2174,7 @@ let PutWithReferencePropertyMalformedArgs(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.First().ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2191,7 +2191,7 @@ let PutWithValuePropertyDisabledValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2207,7 +2207,7 @@ let PutWithValuePropertyUserDisabledValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Not authorized to edit\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2226,7 +2226,7 @@ let PutWithReferencePropertyDisabledValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2243,7 +2243,7 @@ let PutWithValuePropertyInvisibleValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2262,7 +2262,7 @@ let PutWithReferencePropertyInvisibleValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2279,7 +2279,7 @@ let PutWithValuePropertyOnImmutableObject(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2299,7 +2299,7 @@ let PutWithReferencePropertyOnImmutableObject(api : RestfulObjectsControllerBase
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2317,7 +2317,7 @@ let PutWithValuePropertyInvalidArgsName(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2351,7 +2351,7 @@ let PutWithValuePropertyMissingArgsValidateOnly(api : RestfulObjectsControllerBa
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2368,7 +2368,7 @@ let PutWithValuePropertyMalformedArgsValidateOnly(api : RestfulObjectsController
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2391,7 +2391,7 @@ let PutWithValuePropertyInvalidArgsValueValidateOnly(api : RestfulObjectsControl
     let expected = 
         [ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -2421,7 +2421,7 @@ let PutWithValuePropertyFailCrossValidationValidateOnly(api : RestfulObjectsCont
     let expected = 
         [ TProperty(JsonPropertyNames.Value, TObjectVal(3))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
@@ -2452,7 +2452,7 @@ let PutWithReferencePropertyInvalidArgsValueValidateOnly(api : RestfulObjectsCon
                TObjectJson
                    ([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.WithValue") (ktc "1")))) ]))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -2486,7 +2486,7 @@ let PutWithReferencePropertyFailCrossValidationValidateOnly(api : RestfulObjects
         [ TProperty
               (JsonPropertyNames.Value, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" mst (ktc "2")))) ]))
           TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Cross validation failed")) ]
-    Assert.AreEqual(unprocessableEntity, result.StatusCode)
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
     Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.First().ToString())
     compareObject expected parsedResult
@@ -2504,7 +2504,7 @@ let PutWithValuePropertyDisabledValueValidateOnly(api : RestfulObjectsController
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2523,7 +2523,7 @@ let PutWithReferencePropertyDisabledValueValidateOnly(api : RestfulObjectsContro
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2540,7 +2540,7 @@ let PutWithValuePropertyInvisibleValueValidateOnly(api : RestfulObjectsControlle
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2559,7 +2559,7 @@ let PutWithReferencePropertyInvisibleValueValidateOnly(api : RestfulObjectsContr
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2576,7 +2576,7 @@ let PutWithValuePropertyOnImmutableObjectValidateOnly(api : RestfulObjectsContro
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2596,7 +2596,7 @@ let PutWithReferencePropertyOnImmutableObjectValidateOnly(api : RestfulObjectsCo
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2614,7 +2614,7 @@ let PutWithValuePropertyInvalidArgsNameValidateOnly(api : RestfulObjectsControll
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2642,7 +2642,7 @@ let PutWithValuePropertyInternalError(api : RestfulObjectsControllerBase) =
                              TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -2689,7 +2689,7 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     
     // match arrays 3 and 6 deep
@@ -2713,7 +2713,7 @@ let DeleteValuePropertyDisabledValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2729,7 +2729,7 @@ let DeleteReferencePropertyDisabledValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2745,7 +2745,7 @@ let DeleteValuePropertyInvisibleValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2761,7 +2761,7 @@ let DeleteReferencePropertyInvisibleValue(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2777,7 +2777,7 @@ let DeleteValuePropertyOnImmutableObject(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2794,7 +2794,7 @@ let DeleteReferencePropertyOnImmutableObject(api : RestfulObjectsControllerBase)
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2811,7 +2811,7 @@ let DeleteValuePropertyInvalidArgsName(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2845,7 +2845,7 @@ let DeleteValuePropertyDisabledValueValidateOnly(api : RestfulObjectsControllerB
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2863,7 +2863,7 @@ let DeleteReferencePropertyDisabledValueValidateOnly(api : RestfulObjectsControl
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2881,7 +2881,7 @@ let DeleteValuePropertyInvisibleValueValidateOnly(api : RestfulObjectsController
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2899,7 +2899,7 @@ let DeleteReferencePropertyInvisibleValueValidateOnly(api : RestfulObjectsContro
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2917,7 +2917,7 @@ let DeleteValuePropertyOnImmutableObjectValidateOnly(api : RestfulObjectsControl
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2936,7 +2936,7 @@ let DeleteReferencePropertyOnImmutableObjectValidateOnly(api : RestfulObjectsCon
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
     Assert.AreEqual("GET", result.Content.Headers.Allow.First())
     Assert.AreEqual("", jsonResult)
@@ -2955,7 +2955,7 @@ let DeleteValuePropertyInvalidArgsNameValidateOnly(api : RestfulObjectsControlle
     api.Request <- msg
     let result = api.DeleteProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -2982,7 +2982,7 @@ let DeleteValuePropertyInternalError(api : RestfulObjectsControllerBase) =
                              TObjectVal(new errorType(" at  in ")) ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
     compareObject expected parsedResult
 
@@ -3031,7 +3031,7 @@ let DeleteReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
-    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 
     // match arrays 3 , 4 and 6 deep
@@ -3073,7 +3073,7 @@ let PropertyNotFound(api : RestfulObjectsControllerBase) =
     api.Request <- jsonGetMsg (purl)
     let result = api.GetProperty(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
     Assert.AreEqual("", jsonResult)
 
 let PutValuePropertyConcurrencyFail(api : RestfulObjectsControllerBase) = 
@@ -3091,7 +3091,7 @@ let PutValuePropertyConcurrencyFail(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode)
+    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode, jsonResult)
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", result.Headers.Warning.ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -3109,7 +3109,7 @@ let PutValuePropertyMissingIfMatch(api : RestfulObjectsControllerBase) =
     api.Request <- msg
     let result = api.PutProperty(oType, oid, pid, arg)
     let jsonResult = readSnapshotToJson result
-    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode)
+    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode, jsonResult)
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          result.Headers.Warning.ToString())
