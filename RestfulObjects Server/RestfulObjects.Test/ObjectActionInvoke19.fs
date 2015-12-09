@@ -1680,11 +1680,14 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp                         
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -1752,11 +1755,14 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
                                TProperty("numPages", TObjectVal(2)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp                         
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -1840,6 +1846,9 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
                                TProperty("pageSize", TObjectVal(20)) 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
+    
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -1851,6 +1860,7 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp                                  
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -1907,6 +1917,8 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -1917,8 +1929,8 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
-                                  resultProp
-                                  
+                                  membersProp
+                                  resultProp                                  
                                   TProperty
                                       (JsonPropertyNames.Links, 
                                        
@@ -1968,11 +1980,14 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(0))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp
                                   
                                   TProperty
@@ -2103,6 +2118,8 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
                                TProperty("pageSize", TObjectVal(20)) 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
+    
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2114,6 +2131,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp                                  
                                   TProperty
                                       (JsonPropertyNames.Links, 
@@ -2277,6 +2295,8 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2287,6 +2307,7 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp
                                   
                                   TProperty
@@ -2444,6 +2465,8 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2454,6 +2477,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp
                                   
                                   TProperty
@@ -2558,6 +2582,8 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2568,6 +2594,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp
                                   
                                   TProperty
@@ -2660,6 +2687,9 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
                   TArray([ TObjectJson(obj1)
@@ -2670,6 +2700,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
           TProperty(JsonPropertyNames.Result, 
                     TObjectJson([ pageProp
+                                  membersProp
                                   resultProp
                                   
                                   TProperty
@@ -2764,6 +2795,9 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2776,6 +2810,7 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
                                   pageProp
+                                  membersProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -2867,6 +2902,9 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -2879,6 +2917,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
                                   pageProp
+                                  membersProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -3022,6 +3061,9 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -3034,6 +3076,7 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
                                   pageProp
+                                  membersProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -3128,6 +3171,9 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -3140,6 +3186,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
                                   pageProp
+                                  membersProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
@@ -3224,6 +3271,9 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
+    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
+
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.List))
@@ -3236,6 +3286,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
                                                   (makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
                                   TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
                                   pageProp
+                                  membersProp
                                   TProperty(JsonPropertyNames.Value, 
                                             TArray([ TObjectJson(obj1)
                                                      TObjectJson(obj2) ])) ]))
