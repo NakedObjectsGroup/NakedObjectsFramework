@@ -944,21 +944,35 @@ namespace NakedObjects.Facade.Impl {
             var objectSpec = nakedObject.Spec as IObjectSpec;
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
+
+            ActionContext[] ccaContexts = new ActionContext[] {}; 
+
+
             if (nakedObject.Spec.IsQueryable) {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
                 var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 IActionSpec[] cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
-                actions = actions.Union(cca).ToArray();
-            }          
+
+                ccaContexts = cca.Select(a => new ActionContext {
+                    Action = a,
+                    Target = framework.ServicesManager.GetService(a.OnSpec as IServiceSpec),
+                    VisibleParameters = a.Parameters.Select(p => new ParameterContext {
+                        Action = a,
+                        Parameter = p
+                    }).ToArray()
+                }).ToArray();
+            }
+
+            var actionContexts = actions.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
+                Action = a.action,
+                Target = nakedObject,
+                VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
+                OverloadedUniqueId = a.uid
+            });
 
             return new ObjectContext(nakedObject) {
-                VisibleActions = actions.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
-                    Action = a.action,
-                    Target = nakedObject,
-                    VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
-                    OverloadedUniqueId = a.uid
-                }).ToArray(),
+                VisibleActions = actionContexts.Union(ccaContexts).ToArray(),
                 VisibleProperties = properties.Select(p => new PropertyContext {
                     Property = p,
                     Target = nakedObject
