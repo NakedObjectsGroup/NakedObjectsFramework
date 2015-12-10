@@ -131,9 +131,18 @@ module NakedObjects.Angular.Gemini {
                     $scope.collection = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
                     $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
 
+                    let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+
+                    if (routeData.dialogId) {
+                        $scope.dialogTemplate = dialogTemplate;
+                        const action = list.actionMember(routeData.dialogId);
+                        $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                        focusTarget = FocusTarget.Dialog;
+                    } 
+
+
                     getFriendlyName().then((name: string) => $scope.title = name);
-                
-                    const focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                             
                     focusManager.focusOn(focusTarget, urlManager.currentpane());
                     urlManager.setListPaging(routeData.paneId, newPage, newPageSize, state);           
                 }).catch(error => {
@@ -148,7 +157,15 @@ module NakedObjects.Angular.Gemini {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                 $scope.collection = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                const focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+
+                if (routeData.dialogId) {
+                    $scope.dialogTemplate = dialogTemplate;
+                    const action = cachedList.actionMember(routeData.dialogId);
+                    $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                    focusTarget = FocusTarget.Dialog;
+                } 
+
                 focusManager.focusOn(focusTarget, urlManager.currentpane());
 
             } else {

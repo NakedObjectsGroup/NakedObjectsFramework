@@ -24,7 +24,11 @@ module NakedObjects.Angular.Gemini {
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
         invokeAction(action: ActionMember, paneId: number, dvm? : DialogViewModel);
+        invokeActionWithParms(action: ActionMember, paneId: number, parms : _.Dictionary<Value>);
+
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+
+
         saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
@@ -427,6 +431,35 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
+        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, dvm? : DialogViewModel) {
+            repLoader.populate(invokeMap, true, invoke).
+                then((result: ActionResultRepresentation) => {
+                    const parent = action.parent;
+                    if (parent instanceof DomainObjectRepresentation) {
+                        const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
+                        if (actionIsNotQueryOnly) {
+                            dirtyCache.setDirty(parent);
+                        }
+                    }
+
+                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
+                }).
+                catch((error: any) => {
+                    context.setInvokeUpdateError(error, [], dvm);
+                });
+        }
+
+
+        context.invokeActionWithParms = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>) => {
+            const invoke = action.getInvoke();
+            const invokeMap = invoke.getInvokeMap();
+         
+            _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
+
+            invokeActionInternal(invokeMap, invoke, action, paneId);
+        };
+
+
         context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
@@ -441,21 +474,7 @@ module NakedObjects.Angular.Gemini {
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
-            repLoader.populate(invokeMap, true, invoke).
-                then((result: ActionResultRepresentation) => {
-                    const parent = action.parent;
-                    if (parent instanceof DomainObjectRepresentation) {
-                        const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
-                        if (actionIsNotQueryOnly) {
-                            dirtyCache.setDirty(parent);
-                        }
-                    }
-
-                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
-                }).
-                catch((error: any) => {
-                    context.setInvokeUpdateError(error, parameters, dvm);
-                });
+            invokeActionInternal(invokeMap, invoke, action, paneId, dvm);
         };
 
         context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
