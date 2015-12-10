@@ -19,12 +19,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
+            SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField("#cardnumber", number);
-            SelectDropDownOnField("#expmonth","12");
-            SelectDropDownOnField("#expyear","2020");
+            TypeIntoField("#cardnumber1", number);
+            SelectDropDownOnField("#expmonth1","12");
+            SelectDropDownOnField("#expyear1","2020");
             Click(SaveButton()); 
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
@@ -34,12 +34,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
+            SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField("#cardnumber", number);
-            SelectDropDownOnField("#expmonth", "12");
-            SelectDropDownOnField("#expyear", "2020");
+            TypeIntoField("#cardnumber1", number);
+            SelectDropDownOnField("#expmonth1", "12");
+            SelectDropDownOnField("#expyear1", "2020");
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
@@ -53,13 +53,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
-            SelectDropDownOnField("#expyear", "2020");
+            SelectDropDownOnField("#cardtype1", "Vista");
+            SelectDropDownOnField("#expyear1", "2020");
             Click(SaveButton());
             wait.Until(dr => dr.FindElement(
-                By.CssSelector("input#cardnumber")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
+                By.CssSelector("input#cardnumber1")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
             wait.Until(dr => dr.FindElement(
-                By.CssSelector("select#expmonth option[selected='selected']")).Text =="REQUIRED *");
+                By.CssSelector("select#expmonth1 option[selected='selected']")).Text =="REQUIRED *");
             WaitForMessage("Please complete REQUIRED fields.");
         }
 
@@ -68,10 +68,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
-            TypeIntoField("input#cardnumber", "123");
-            SelectDropDownOnField("#expmonth", "1");
-            SelectDropDownOnField("#expyear", "2020");
+            SelectDropDownOnField("#cardtype1", "Vista");
+            TypeIntoField("input#cardnumber1", "123");
+            SelectDropDownOnField("#expmonth1", "1");
+            SelectDropDownOnField("#expyear1", "2020");
             Click(SaveButton());
             wait.Until(dr => dr.FindElements(
                 By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
@@ -83,10 +83,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            SelectDropDownOnField("#cardtype", "Vista");
-            TypeIntoField("#cardnumber", "1111222233334444");
-            SelectDropDownOnField("#expmonth", "1");
-            SelectDropDownOnField("#expyear", "2008");
+            SelectDropDownOnField("#cardtype1", "Vista");
+            TypeIntoField("#cardnumber1", "1111222233334444");
+            SelectDropDownOnField("#expmonth1", "1");
+            SelectDropDownOnField("#expyear1", "2008");
             Click(SaveButton());
             WaitForMessage("Expiry date must be in the future");
         }
@@ -96,7 +96,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
-            var name = WaitForCss("input#cardnumber");
+            var name = WaitForCss("input#cardnumber1");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
 

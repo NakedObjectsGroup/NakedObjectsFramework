@@ -344,39 +344,36 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.IsTrue(title.StartsWith("Editing"));
         }
 
-        protected void SaveObject()
+        protected void SaveObject(Pane pane = Pane.Single)
         {
-            Click(SaveButton());
-            EditButton(); //To wait for save completed
+            Click(SaveButton(pane));
+            EditButton(pane); //To wait for save completed
             var title = br.FindElement(By.CssSelector(".header .title")).Text;
             Assert.IsFalse(title.StartsWith("Editing"));
         }
 
         protected IWebElement GetButton(string text, Pane pane = Pane.Single) {
             string selector = CssSelectorFor(pane) + ".header .action";
-            wait.Until(d => br.FindElements(By.CssSelector(selector)).Any(e => e.Text == text));
-            return br.FindElements(By.CssSelector(selector)).Single(e => e.Text == text);
+            return wait.Until(d => br.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
         }
 
-        protected IWebElement EditButton() {
-            return GetButton("Edit");
+        protected IWebElement EditButton(Pane pane = Pane.Single) {
+            return GetButton("Edit", pane);
         }
 
-        protected IWebElement SaveButton() {
-            return GetButton("Save");
+        protected IWebElement SaveButton(Pane pane = Pane.Single) {
+            return GetButton("Save", pane);
         }
 
-        protected IWebElement SaveAndCloseButton()
+        protected IWebElement SaveAndCloseButton(Pane pane = Pane.Single)
         {
-            return GetButton("Save & Close");
+            return GetButton("Save & Close", pane);
         }
 
-        protected IWebElement GetCancelEditButton()
+        protected IWebElement GetCancelEditButton(Pane pane = Pane.Single)
         {
-            wait.Until(d => d.FindElements(By.CssSelector(".header .action")).Count == 3);
-            var cancel = br.FindElements(By.CssSelector(".header .action"))[2];
-            Assert.AreEqual("Cancel", cancel.Text);
-            return cancel;
+            string p = CssSelectorFor(pane);
+            return wait.Until(d => d.FindElements(By.CssSelector(p+".header .action")).Single(el => el.Text == "Cancel"));
         }
         #endregion
 

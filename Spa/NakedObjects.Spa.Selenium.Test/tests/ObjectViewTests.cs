@@ -198,6 +198,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("");
             WaitForView(Pane.Single, PaneType.Home);
             Click(br.FindElement(By.CssSelector(".icon-back")));
+            Thread.Sleep(1000);
             valueNow = WaitForCss(".property:nth-child(6) .value");
             Assert.AreEqual(newValue, valueNow.Text);
        }
@@ -239,7 +240,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

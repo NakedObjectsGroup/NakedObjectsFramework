@@ -44,7 +44,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
-            SelectDropDownOnField("#ordering", "Ascending");
+            SelectDropDownOnField("#ordering1", "Ascending");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
@@ -65,7 +65,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(OrdersMenuUrl);
             GetObjectActions(OrderServiceActions);
             OpenActionDialog("Orders By Value");
-            SelectDropDownOnField("#ordering", "Ascending");
+            SelectDropDownOnField("#ordering1", "Ascending");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
@@ -87,8 +87,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             OpenActionDialog("Search For Orders");
-            TypeIntoField("#fromdate","1 Jan 2003");
-            TypeIntoField("#todate", "1 Dec 2003" + Keys.Escape);
+            TypeIntoField("#fromdate1","1 Jan 2003");
+            TypeIntoField("#todate1", "1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
@@ -100,7 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
-            SelectDropDownOnField("#subcategory","Forks");
+            SelectDropDownOnField("#subcategory1","Forks");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
@@ -112,7 +112,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            var selected = new SelectElement(WaitForCss("select#subcategories"));
+            var selected = new SelectElement(WaitForCss("select#subcategories1"));
 
             Assert.AreEqual(2, selected.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.ElementAt(0).Text);
@@ -147,8 +147,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            var slctPl = new SelectElement(WaitForCss("select#productline"));
-            var slctPc = new SelectElement(WaitForCss("select#productclass"));
+            var slctPl = new SelectElement(WaitForCss("select#productline1"));
+            var slctPc = new SelectElement(WaitForCss("select#productclass1"));
 
             Assert.AreEqual("M", slctPl.SelectedOption.Text);
             Assert.AreEqual("H", slctPc.SelectedOption.Text);
@@ -164,8 +164,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("Find By Product Line And Class");
 
-            SelectDropDownOnField("#productline","R");
-            SelectDropDownOnField("#productclass","L");
+            SelectDropDownOnField("#productline1","R");
+            SelectDropDownOnField("#productclass1","L");
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
@@ -177,13 +177,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Products By Category");
-            var slctCs = new SelectElement(WaitForCss("select#categories"));
+            var slctCs = new SelectElement(WaitForCss("select#categories1"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(WaitForCss("select#subcategories")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
 
-            var slct = new SelectElement(WaitForCss("select#subcategories"));
+            var slct = new SelectElement(WaitForCss("select#subcategories1"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -201,14 +201,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             OpenActionDialog("Find Products By Category");
 
-            var slctCs = new SelectElement(WaitForCss("select#categories"));
+            var slctCs = new SelectElement(WaitForCss("select#categories1"));
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(WaitForCss("select#subcategories")).AllSelectedOptions.Count == 2);
+            wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
 
 
-            var slct = new SelectElement(WaitForCss("select#subcategories"));
+            var slct = new SelectElement(WaitForCss("select#subcategories1"));
 
             //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
@@ -303,11 +303,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void MandatoryParameterEnforced()
         {
             GeminiUrl("home?menu1=SalesRepository&dialog1=FindSalesPersonByName");
-            wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname")).GetAttribute("placeholder") == "");
-            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname")).GetAttribute("placeholder") == "* ");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
             Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname")).GetAttribute("placeholder") == "REQUIRED * ");
-            TypeIntoField("input#lastname", "a");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "REQUIRED * ");
+            TypeIntoField("input#lastname1", "a");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
@@ -316,13 +316,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
-            var qty = WaitForCss("input#quantity");
+            var qty = WaitForCss("input#quantity1");
             qty.SendKeys("0");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Quantity must be > 0", validation.Text);
-            qty = WaitForCss("input#quantity");
+            qty = WaitForCss("input#quantity1");
             qty.SendKeys(Keys.Backspace+"1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
@@ -333,7 +333,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
-            SelectDropDownOnField("#reason", "Price");
+            SelectDropDownOnField("#reason1", "Price");
             Click(OKButton()); 
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
@@ -344,9 +344,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
-            TypeIntoField("#qtyreceived","100");
-            TypeIntoField("#qtyrejected","50");
-            TypeIntoField("#qtyintostock","49");
+            TypeIntoField("#qtyreceived1","100");
+            TypeIntoField("#qtyrejected1","50");
+            TypeIntoField("#qtyintostock1","49");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
                 "Qty Into Stock + Qty Rejected must add up to Qty Received");
@@ -358,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ParameterDescriptionRenderedAsPlacholder()
         {
             GeminiUrl("home?menu1=CustomerRepository&dialog1=FindStoreByName");
-            var name = WaitForCss("input#name");
+            var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
     }
@@ -388,7 +388,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

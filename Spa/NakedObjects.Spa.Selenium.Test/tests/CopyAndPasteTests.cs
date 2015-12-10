@@ -79,18 +79,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
-            Assert.AreEqual("Tsvi Reiter", WaitForCss("#pane1 input#salesperson").GetAttribute("value"));
+            Assert.AreEqual("Tsvi Reiter", WaitForCss("input#salesperson1").GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Tete Mensa-Annan", title.Text);
             title.Click();
             CopyToClipboard(title);
-            PasteIntoInputField("#pane1 input#salesperson");
+            PasteIntoInputField("input#salesperson1");
             //Now check that Auto-complete is working
-            WaitForCss("#pane1 input#salesperson").Clear();
-            TypeIntoField("#pane1 input#salesperson", "Ito");
+            WaitForCss("input#salesperson1").Clear();
+            TypeIntoField("input#salesperson1", "Ito");
             wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
             Click(WaitForCss(".ui-menu-item"));
-            wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 input#salesperson")).GetAttribute("value") == "Shu Ito");
+            wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
         }
 
         [TestMethod] 
