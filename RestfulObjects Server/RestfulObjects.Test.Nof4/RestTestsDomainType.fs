@@ -538,7 +538,6 @@ type Nof4TestsDomainType() =
         member x.GetService() = DomainService15.GetService x.api
         
         [<Test>]
-        [<Ignore>]
         member x.GetContributorService() = DomainService15.GetContributorService x.api
         
         [<Test>]

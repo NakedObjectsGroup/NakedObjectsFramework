@@ -118,8 +118,8 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     
-    let makeParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
+    let makeCollectionParm  contribName pmid pid fid rt = 
+        let dburl = sprintf "domain-types/%s/actions/%s"  contribName pid
         let pmurl = sprintf "%s/params/%s" dburl pmid
         
         let p = 
@@ -129,31 +129,41 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-        TProperty(pmid, p)
-    
-    let makeValueParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
-                          TProperty(JsonPropertyNames.Extensions, 
-                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-    let p1 = makeParm "ms" "a2" "aa" sName
-    let p2 = makeParm "a3" "a4" "ab" sName
-    let p3 = makeValueParm "parm" "parm1" "ac" sName
+    let makeValueParm  contribName pmid pid fid rt = 
+        let dburl = sprintf "domain-types/%s/actions/%s" contribName pid
+        let pmurl = sprintf "%s/params/%s" dburl pmid
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" mst
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" mst
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" mst
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ANonContributedAction", TObjectJson(makeServiceActionMemberNoParms "ANonContributedAction" sName mst))
+                                                           TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName mst [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName mst [ p2; p3 ]))]))
+
 
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(sName))
@@ -162,11 +172,7 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName)
                              TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" sName) RepresentationTypes.DomainType "") ]))
           
-          TProperty
-              (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("ACollectionContributedActionNoParms", TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" sName mst [p1]))
-                             //TProperty("ACollectionContributedActionParm", TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" sName mst [p2; p3]))
-                             TProperty("ANonContributedAction", TObjectJson(makeServiceActionMemberNoParms "ANonContributedAction" sName mst)) ]))
+          membersProp
 
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(sName))
