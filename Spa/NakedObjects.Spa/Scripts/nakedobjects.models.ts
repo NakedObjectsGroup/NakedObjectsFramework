@@ -1373,6 +1373,10 @@ module NakedObjects {
             this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as _.Dictionary<ActionMember>;
             return this.actionMemberMap;
         }
+
+        actionMember(id: string): ActionMember {
+            return this.actionMembers()[id];
+        }
     }
 
     export interface IErrorDetails {

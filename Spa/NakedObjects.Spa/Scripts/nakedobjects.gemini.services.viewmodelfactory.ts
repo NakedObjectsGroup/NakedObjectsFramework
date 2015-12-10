@@ -59,6 +59,7 @@ module NakedObjects.Angular.Gemini {
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());
+            linkViewModel.link = linkRep;
 
             linkViewModel.domainType = linkRep.type().domainType;
             linkViewModel.draggableType = linkViewModel.domainType;
@@ -511,23 +512,19 @@ module NakedObjects.Angular.Gemini {
             // todo do more elegantly 
 
             _.forEach(collectionViewModel.actions, a => {
-                a.doInvoke = a.actionRep.parameters.length > 1 ?
+                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
                     (right?: boolean) =>
                         urlManager.setDialog(a.actionRep.actionId(), paneId) :
                     (right?: boolean) => {
                         const selected = _.filter(collectionViewModel.items, i => i.selected);
-                        const parmValue =  new Value(_.map(selected, i =>  i.reference));
+                        const parmValue =  new Value(_.map(selected, i => i.link));
                         const parmKey = _.first(_.keys(a.actionRep.parameters()));
-                        const parm = {} as _.Dictionary<Value>;
-                        parm[parmKey] = parmValue;
+            
+                        const parm: _.Dictionary<Value> = _.zipObject([[parmKey, parmValue]]);
 
-                        const dvm = viewModelFactory.dialogViewModel($scope, a.actionRep, parm, paneId);
-
-                        context.invokeAction(a.actionRep, clickHandler.pane(paneId, right), dvm);
+                        context.invokeActionWithParms(a.actionRep, clickHandler.pane(paneId, right), parm);
                     }
             });
-
-
 
 
             collectionViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);

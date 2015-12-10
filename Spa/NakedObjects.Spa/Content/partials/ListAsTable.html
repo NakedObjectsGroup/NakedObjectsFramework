@@ -3,7 +3,7 @@
         <div class="title">
             {{title}}
         </div>
-        <div class="menu clickable-area" tabindex="0" ng-click="collection.toggleActionMenu()"  ng-disabled="collection.disableActions()">
+        <div class="menu clickable-area" tabindex="0" ng-click="collection.toggleActionMenu()" ng-disabled="collection.disableActions()">
             Actions
         </div>
         <div class="action clickable-area" tabindex="0" ng-click="collection.reload()">
@@ -22,42 +22,44 @@
             Last
         </div>
         <div class="messages"></div>
-        <div class="actions" ng-include="actionsTemplate"></div>
+
     </div>
+    <div class="actions" ng-include="actionsTemplate"></div>
     <div class="collection">
+        <div class="dialog" ng-include="dialogTemplate"></div>
         <div class="summary">
             <div class="details">{{collection.description()}}</div>
-            <div class="icon-list clickable-area" ng-click="collection.doList()" ></div>
-        </div>      
+            <div class="icon-list clickable-area" ng-click="collection.doList()"></div>
+        </div>
         <table >
             <thead>
-                <tr>
-                    <th ng-repeat="heading in collection.header" scope="col">
-                        {{heading}}
-                    </th>
-                </tr>
+            <tr>
+                <th ng-repeat="heading in collection.header" scope="col">
+                    {{heading}}
+                </th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
-                    <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
-                        <div ng-switch-when="ref" class="clickable-area">
+            <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
+                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+                    <div ng-switch-when="ref" class="clickable-area">
+                        {{property.value}}
+                    </div>
+                    <div ng-switch-when="scalar" ng-switch="property.returnType">
+                        <div ng-switch-when="string" ng-switch="property.format">
+                            <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
+                            <div ng-switch-default class="clickable-area">{{property.value}}</div>
+                        </div>
+                        <div ng-switch-when="boolean" class="clickable-area">
+                            <input type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled"/>
+                        </div>
+                        <div ng-switch-default class="clickable-area">
                             {{property.value}}
                         </div>
-                        <div ng-switch-when="scalar" ng-switch="property.returnType">
-                            <div ng-switch-when="string" ng-switch="property.format">
-                                <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
-                                <div ng-switch-default class="clickable-area">{{property.value}}</div>
-                            </div>
-                            <div ng-switch-when="boolean" class="clickable-area">
-                                <input type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
-                            </div>
-                            <div ng-switch-default class="clickable-area">
-                                {{property.value}}
-                            </div>
-                        </div>
+                    </div>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

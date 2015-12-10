@@ -78,7 +78,8 @@ module NakedObjects.Angular.Gemini {
         reference: string;
         choice: ChoiceViewModel;
         domainType: string;
-        draggableType : string;
+        draggableType: string;
+        link : Link;
     }
 
     export class ItemViewModel extends LinkViewModel{
