@@ -11,11 +11,9 @@ using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-
-    public abstract class CiceroTests : AWTest
+    public abstract class CiceroTestRoot : AWTest
     {
-        [TestMethod]
-        public void Action()
+        public virtual void Action()
         {
             //Test from home menu
             CiceroUrl("home?menu1=ProductRepository");
@@ -69,11 +67,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ac ran individuals"); //Order doesn't matter
             WaitForOutput("Customers menu. Action dialog: Random Individual.");
         }
-        [TestMethod]
-        public void BackAndForward() //Tested together for simplicity
+        public virtual void BackAndForward() //Tested together for simplicity
         {
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
             EnterCommand("action random store");
@@ -96,8 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("forward y");
             WaitForOutput("Wrong number of arguments provided.");
         }
-        [TestMethod]
-        public void Cancel()
+        public virtual void Cancel()
         {
             //Menu dialog
             CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
@@ -146,9 +141,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
-        [TestMethod]
-        public void Edit()
+        public virtual void Edit()
         {
+            CiceroUrl("home");
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688.");
             EnterCommand("edit");
@@ -168,21 +163,44 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
-        [TestMethod]
-        public void Help()
+        public virtual void Field()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
+            WaitForOutput("Product: Road-450 Red, 52.");
+            EnterCommand("field num");
+            WaitForOutput("Field: Product Number: BK-R68R-52,");
+            EnterCommand("fi cat");
+            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes, Product Subcategory: ProductSubcategory Road Bikes,");
+            //No argument
+            EnterCommand("fi ");
+            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: ProductModel Road-450, List Price: 1457.99,");
+
+            //No match
+            EnterCommand("fi x");
+            WaitForOutput("x does not match any fields");
+
+            //Too many arguments
+            EnterCommand("fi num,cat");
+            WaitForOutput("Wrong number of arguments provided.");
+
+            //Invalid context
+            CiceroUrl("home");
+            EnterCommand("field");
+            WaitForOutput("The command: field is not available in the current context");
+        }
+        public virtual void Help()
         {
             //Help from home
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
             EnterCommand("help");
             WaitForOutput("Commands available in current context: " +
-                "back, clipboard, forward, gemini, help, menu, where,");
+                "back, forward, gemini, help, menu, where,");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, clipboard, copy, description, edit, field, forward, gemini, go, help, menu, open, reload, where,");
+            WaitForOutput("Commands available in current context: action, back, copy, edit, field, forward, gemini, go, help, menu, open, reload, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
@@ -190,9 +208,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "of the menu. If the partial name matches more than one menu, a list of " +
                 "matches will be returned but no menu will be opened; if no argument is " +
                 "provided a list of all the menus will be returned.");
-            EnterCommand("help clipboard");
-            WaitForOutput("clipboard command: Reminder of the object reference currently held " +
-                "in the clipboard, if any. Does not take any arguments");
             EnterCommand("help menux");
             WaitForOutput("No such command: menux");
             EnterCommand("help menu back");
@@ -200,11 +215,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("help menu, back");
             WaitForOutput("Wrong number of arguments provided.");
         }
-        [TestMethod]
-        public void Menu()
+        public virtual void Menu()
         {   //No argument
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
             EnterCommand("Menu");
             WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
             //Now with arguments
@@ -228,9 +241,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Menu");
             WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
         }
-        [TestMethod]
-        public void OK()
+        public virtual void OK()
         {
+            CiceroUrl("home");
             //Open a zero-param action on main menu
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
             WaitForOutput("Products menu. Action dialog: Random Product.");
@@ -258,40 +271,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
         }
-        [TestMethod]
-        public void Field()
+        public virtual void Where()
         {
-            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52.");
-            EnterCommand("field num");
-            WaitForOutput("Field: Product Number: BK-R68R-52,");
-            EnterCommand("fi cat");
-            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes, Product Subcategory: ProductSubcategory Road Bikes,");
-            //No argument
-            EnterCommand("fi ");
-            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: ProductModel Road-450, List Price: 1457.99,");
-
-            //No match
-            EnterCommand("fi x");
-            WaitForOutput("x does not match any fields");
-
-            //Too many arguments
-            EnterCommand("fi num,cat");
-            WaitForOutput("Wrong number of arguments provided.");
-
-            //Invalid context
             CiceroUrl("home");
-            EnterCommand("field");
-            WaitForOutput("The command: field is not available in the current context");
-        }
-        [TestMethod]
-        public void Where()
-        {
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
             WaitForOutput("Product: HL Grip Tape.");
             //Do something to change the output
-            EnterCommand("help"); 
-            WaitForOutputStartingWith("Commands"); 
+            EnterCommand("help");
+            WaitForOutputStartingWith("Commands");
             EnterCommand("where");
             WaitForOutput("Product: HL Grip Tape.");
 
@@ -305,18 +292,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("where x");
             WaitForOutput("Wrong number of arguments provided.");
         }
-
-        [TestMethod]
-        public void UpAndDownArrow()
+        public virtual void UpAndDownArrow()
         {
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
             EnterCommand("help");
             WaitForOutputStartingWith("Commands available");
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
             TypeIntoField("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
-            TypeIntoField("input", " gem"+Keys.Enter);
+            TypeIntoField("input", " gem" + Keys.Enter);
             WaitForOutputStartingWith("gemini command");
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
             TypeIntoField("input", Keys.ArrowUp);
@@ -325,9 +309,31 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         }
     }
-    #region browsers specific subclasses 
+    public abstract class CiceroTests : CiceroTestRoot
+    {
+        [TestMethod]
+        public override void Action() { base.Action(); }
+        [TestMethod]
+        public override void Cancel() { base.Cancel(); }
+        [TestMethod]
+        public override void Edit() { base.Edit(); }
+        [TestMethod]
+        public override void Field() { base.Field(); }
+        [TestMethod]
+        public override void Help() { base.Help(); }
+        [TestMethod]
+        public override void Menu() { base.Menu(); }
+        [TestMethod]
+        public override void OK() { base.OK(); }
+        [TestMethod]
+        public override void Where() { base.Where(); }
+        [TestMethod]
+        public override void UpAndDownArrow() { base.UpAndDownArrow(); }
+    }
 
-       // [TestClass, Ignore]
+    #region Individual tests - browser specific 
+
+    // [TestClass, Ignore]
     public class CiceroTestsIe : CiceroTests
     {
         [ClassInitialize]
@@ -351,7 +357,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -404,5 +410,48 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
+    #endregion
+
+    #region Mega tests
+    public abstract class CiceroMegaTestRoot : CiceroTestRoot
+    {
+
+        [TestMethod]
+        public void CiceroMegaTest()
+        {
+            base.Action();
+            base.BackAndForward();
+            base.Cancel();
+            base.Edit();
+            base.Field();
+            base.Help();
+            base.Menu();
+            base.OK();
+            base.UpAndDownArrow();
+            base.Where();
+        }
+    }
+    [TestClass]
+    public class CiceroMegaTestFirefox : CiceroMegaTestRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }

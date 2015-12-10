@@ -136,9 +136,12 @@ module NakedObjects.Angular.Gemini {
 
         public fullCommand = "action";
         public helpText = "Open an action from a Main Menu, or object actions menu. " +
-        "May one argument: the name, or partial name, of the action. " +
+        "The first (optional) argument is the name, or partial name, of the action. " +
         "If the partial name matches more than one action, a list of matches is returned," +
-        "but none opened. If no argument is provided, a full list of available action names is returned";
+        "but none opened. If no argument is provided, a full list of available action names is returned." +
+        "If the action name matches a single action, then a question-mark may be added as a second "
+        "parameter - which will generate a more detailed description of the Action.";j
+
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -231,22 +234,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Clipboard extends Command {
-
-        public fullCommand = "clipboard";
-        public helpText = "Reminder of the object reference currently held in the clipboard, if any. " +
-        "Does not take any arguments";;
-        protected minArguments = 0;
-        protected maxArguments = 0;
-
-        public isAvailableInCurrentContext(): boolean {
-            return true;
-        }
-
-        execute(args: string): void {
-            this.clearInputAndSetOutputTo("Clipboard command is not yet implemented"); //todo: temporary
-        };
-    }
     export class Copy extends Command {
 
         public fullCommand = "copy";
@@ -283,25 +270,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Description extends Command {
-
-        public fullCommand = "description";
-        public helpText = "Display the name and value of a property or properties on an object being viewed or edited. " +
-        "May take one argument: the name of a property, or name-match, for multiple properties." +
-        "If the partial name matches more than one property, a list of matching properties is returned. " +
-        "If no argument is provided, a full list of properties is returned";
-        protected minArguments = 0;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isObject();
-        }
-
-        execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
-            this.clearInputAndSetOutputTo("Description command is not yet implemented with argument: " + match); //todo: temporary
-        };
-    }
     export class Edit extends Command {
 
         public fullCommand = "edit";
@@ -318,46 +286,17 @@ module NakedObjects.Angular.Gemini {
             this.urlManager.setObjectEdit(true, 1);
         };
     }
-    export class Enter extends Command {
-
-        public fullCommand = "enter";
-        public helpText = "Enter a value into a named property on an object that is in edit mode, " +
-        "or into a named parameter on an opened action. The enter command takes one argument: the " +
-        "name or partial name of the property or paramater. If the partial name is ambigious the " +
-        "list of matching properties or parameters will be returned but no value will have been entered.";
-        protected minArguments = 2;
-        protected maxArguments = 2;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isEdit() || this.isDialog();
-        }
-
-        execute(args: string): void {
-            const fieldId = this.argumentAsString(args, 0);
-            //TODO: must first test that field is a match
-            const text = this.argumentAsString(args, 1);
-            if (this.isEdit()) {
-                this.clearInputAndSetOutputTo("Enter command is not yet implemented for properties"); //todo: temporary
-            }
-            if (this.isDialog) {
-                this.clearInputAndSetOutputTo("Enter command is not yet implemented for parameters");
-                const dialogId = this.urlManager.getRouteData().pane1.dialogId;
-                //TODO: would prefer not to create the view model ?
-                //var pvm = new ParameterViewModel();
-                //pvm.value = text;
-                //pvm.id = fieldId;  
-                //this.urlManager.setParameterValue(dialogId, pvm, 1);
-            }
-        };
-
-    }
     export class Field extends Command {
 
         public fullCommand = "field";
         public helpText = "Display the name and value of a field or fields. " +
-        "One optional argument: the partial field name. " +
+        "The first, optional, argument: the partial field name. " +
         "If this matches more than one field, a list of matches is returned. " +
-        "If no argument is provided, the full list of fields is returned";
+        "If no argument is provided, the full list of fields is returned. "+
+        "The second optional argument applies only to fields in an action dialog, or " +
+        "in an object beign edited, and specifies the value, or selection, to be entered " +
+        "into the field.  If a ? is provided as the second argument, the field will not be "+
+        "updated but further details will be provided about that input field.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -617,7 +556,9 @@ module NakedObjects.Angular.Gemini {
         public helpText = "Pastes the object reference from the clipboard into a named property on an object that is in edit mode, " +
         "or into a named parameter on an opened action. The paste command takes one argument: the " +
         "name or partial name of the property or paramater. If the partial name is ambigious the " +
-        "list of matching properties or parameters will be returned but the reference will not have been pasted.";
+        "list of matching properties or parameters will be returned but the reference will not have been pasted. " +
+        "Paste ? will provide a reminder both of the object currently held in the clipboard without " +
+        "pasting it anywhere.";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -685,38 +626,11 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetOutputTo("Object saved"); //todo: temporary
         };
     }
-    export class Select extends Command {
-        public fullCommand = "select";
-        public helpText = "Select an option from a set of choices for a named property on an object that is in edit mode, " +
-        "or for a named parameter on an opened action. The select command takes two arguments: the " +
-        "name or partial name of the property or paramater, and the value or partial-match value to be selected." +
-        "If either of the partial match arguments is ambiguous, the possible matches will be displayed to " +
-        "but no selection will be made. If no second argument is provided, the full set of options will be " +
-        "returned but none selected.";
-        protected minArguments = 2;
-        protected maxArguments = 2;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isEdit() || this.isDialog();
-        }
-
-        execute(args: string): void {
-            const name = this.argumentAsString(args, 0);
-            const option = this.argumentAsString(args, 2, true);
-            if (this.isEdit()) {
-                this.clearInputAndSetOutputTo("Select command is not yet implemented on property: " + name + " for option" + option); //todo: temporary
-            }
-            if (this.isDialog) {
-                this.clearInputAndSetOutputTo("Select command is not yet implemented on parameter: " + name + " for option" + option); //todo: temporary
-            }
-        };
-
-    }
     export class Table extends Command {
         public fullCommand = "table";
         public helpText = "In the context of a list or an opened object collection, the table command" +
         "switches to table mode. Items then accessed via the item command, will be presented as table rows" +
-        ". Does not take any arguments";;
+        ". Does not take any arguments. Invoking table a second time will return the system to list mode.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -733,8 +647,7 @@ module NakedObjects.Angular.Gemini {
     export class Where extends Command {
 
         public fullCommand = "where";
-        public helpText = "Reminds the user of the current context.  May be invoked just " +
-        "by hitting the Enter (Return) key in the empty Command field.";
+        public helpText = "Reminds the user of the current context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 

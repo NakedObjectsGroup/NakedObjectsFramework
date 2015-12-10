@@ -36,11 +36,8 @@ module NakedObjects.Angular.Gemini{
             "ac": new Action(urlManager, $location, commandFactory, context, navigation),
             "ba": new Back(urlManager, $location, commandFactory, context, navigation),
             "ca": new Cancel(urlManager, $location, commandFactory, context, navigation),
-            "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation),
             "co": new Copy(urlManager, $location, commandFactory, context, navigation),
-            "de": new Description(urlManager, $location, commandFactory, context, navigation),
             "ed": new Edit(urlManager, $location, commandFactory, context, navigation),
-            "en": new Enter(urlManager, $location, commandFactory, context, navigation),
             "fi": new Field(urlManager, $location, commandFactory, context, navigation),
             "fo": new Forward(urlManager, $location, commandFactory, context, navigation),
             "ge": new Gemini(urlManager, $location, commandFactory, context, navigation),
@@ -54,7 +51,6 @@ module NakedObjects.Angular.Gemini{
             "re": new Reload(urlManager, $location, commandFactory, context, navigation),
             "ro": new Root(urlManager, $location, commandFactory, context, navigation),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation),
-            "se": new Select(urlManager, $location, commandFactory, context, navigation),
             "ta": new Table(urlManager, $location, commandFactory, context, navigation),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation)
         }
