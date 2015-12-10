@@ -427,10 +427,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-
-
-
-
         context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();

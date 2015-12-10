@@ -82,7 +82,8 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ItemViewModel extends LinkViewModel{
-        target: DomainObjectViewModel;      
+        target: DomainObjectViewModel;   
+        selected : boolean;    
     }
 
     export class MessageViewModel {
@@ -203,6 +204,7 @@ module NakedObjects.Angular.Gemini {
     } 
 
     export class ActionViewModel {
+        actionRep : ActionMember;
         menuPath : string;
         title: string;
         description: string;

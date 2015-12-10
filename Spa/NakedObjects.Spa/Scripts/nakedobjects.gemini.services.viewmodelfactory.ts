@@ -246,6 +246,7 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.actionViewModel = (actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel) => {
             var actionViewModel = new ActionViewModel();
 
+            actionViewModel.actionRep = actionRep;
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => { return !!actionRep.disabledReason(); }
@@ -506,6 +507,28 @@ module NakedObjects.Angular.Gemini {
 
             const actions = listRep.actionMembers();
             collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
+
+            // todo do more elegantly 
+
+            _.forEach(collectionViewModel.actions, a => {
+                a.doInvoke = a.actionRep.parameters.length > 1 ?
+                    (right?: boolean) =>
+                        urlManager.setDialog(a.actionRep.actionId(), paneId) :
+                    (right?: boolean) => {
+                        const selected = _.filter(collectionViewModel.items, i => i.selected);
+                        const parmValue =  new Value(_.map(selected, i =>  i.reference));
+                        const parmKey = _.first(_.keys(a.actionRep.parameters()));
+                        const parm = {} as _.Dictionary<Value>;
+                        parm[parmKey] = parmValue;
+
+                        const dvm = viewModelFactory.dialogViewModel($scope, a.actionRep, parm, paneId);
+
+                        context.invokeAction(a.actionRep, clickHandler.pane(paneId, right), dvm);
+                    }
+            });
+
+
+
 
             collectionViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
 

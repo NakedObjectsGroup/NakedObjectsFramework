@@ -34,7 +34,7 @@
             <tbody>
                 <tr ng-repeat="item in collection.items">
                     <td class="checkbox">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="item.selected">
                     </td>
                     <td class="reference clickable-area" ng-class="item.color" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
                             {{item.title}}
