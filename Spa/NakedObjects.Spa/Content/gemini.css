@@ -196,6 +196,9 @@
     .parameter .validation {
         color: black;
     }
+    .parameters .co-validation {
+        color: red;
+    }
     
 /* Drag and drop*/
     .value.droppable {
