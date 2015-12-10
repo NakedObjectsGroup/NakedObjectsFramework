@@ -38,7 +38,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region browsers specific subclasses 
 
    // [TestClass, Ignore]
-    public class MenuBarTestsIe : FooterIconTests {
+    public class FooterIconTestsIe : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.IEDriverServer.exe");
@@ -57,7 +57,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     [TestClass]
-    public class MenuBarTestsFirefox : FooterIconTests {
+    public class FooterIconTestsFirefox : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             AWTest.InitialiseClass(context);
@@ -75,7 +75,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     }
 
     //[TestClass, Ignore]
-    public class MenuBarTestsChrome : FooterIconTests {
+    public class FooterIconTestsChrome : FooterIconTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
             FilePath(@"drivers.chromedriver.exe");
