@@ -7,6 +7,7 @@
 
 using System.Linq;
 using NakedObjects;
+using NakedObjects.Core.Util.Enumer;
 
 namespace RestfulObjects.Test.Data {
     public class ContributorService {
@@ -16,8 +17,9 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
-        public virtual void ACollectionContributedActionNoParms([ContributedAction("submenu")]IQueryable<MostSimple> ms) {
+        public virtual MostSimple ACollectionContributedActionNoParms([ContributedAction("submenu")]IQueryable<MostSimple> ms) {
             // do nothing
+            return ms.FirstOrDefault();
         }
 
         public virtual MostSimple ACollectionContributedActionParm([ContributedAction] IQueryable<MostSimple> ms, int id) {

@@ -19,6 +19,41 @@ open System.Web.Http
 open System.Linq
 open RestTestFunctions
 
+
+let makeCollectionParm  contribName pmid pid fid rt = 
+        let dburl = sprintf "domain-types/%s/actions/%s"  contribName pid
+        let pmurl = sprintf "%s/params/%s" dburl pmid
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+let makeValueParm  contribName pmid pid fid rt = 
+        let dburl = sprintf "domain-types/%s/actions/%s" contribName pid
+        let pmurl = sprintf "%s/params/%s" dburl pmid
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+
 // 19.3 post to invoke non-idempotent action no parms 
 let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnAction"
@@ -1655,6 +1690,8 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
     let obj1 = 
         TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
         :: makeLinkPropWithMethodAndTypes "GET" RelValues.Element (sprintf "objects/%s/%s" roType (ktc "1")) RepresentationTypes.Object roType "" true
@@ -1680,7 +1717,17 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -1754,8 +1801,19 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
                                TProperty("pageSize", TObjectVal(1)) 
                                TProperty("numPages", TObjectVal(2)) 
                                TProperty("totalCount", TObjectVal(2))]))
+    
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, links)
@@ -1847,8 +1905,14 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
     
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -1917,7 +1981,14 @@ let VerifyPostInvokeActionReturnCollectionFormalOnly refType oType oid f (api : 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -1980,7 +2051,14 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(0))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -2119,7 +2197,18 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
     
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2295,7 +2384,19 @@ let VerifyGetInvokeActionWithScalarParmsReturnQueryFormal refType oType oid f (a
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
+
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2465,7 +2566,14 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollectionFormal refType oType oi
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2582,7 +2690,18 @@ let VerifyGetInvokeActionWithReferenceParmsReturnQueryFormal refType oType oid f
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName  "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
     let resultProp = 
         TProperty(JsonPropertyNames.Value, 
@@ -2687,7 +2806,14 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollectionFormal refType oType
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
 
     let resultProp = 
@@ -2795,7 +2921,18 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
 
     let expected = 
@@ -2902,7 +3039,18 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
 
     let expected = 
@@ -3061,7 +3209,15 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
+
 
 
     let expected = 
@@ -3171,7 +3327,18 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
+
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("ACollectionContributedActionNoParms", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionNoParms" contribName roType [ p1 ]))
+                                                           TProperty("ACollectionContributedActionParm", 
+                                                                     TObjectJson(makeServiceActionMember "ACollectionContributedActionParm" contribName roType [ p2; p3 ]))]))
+
 
 
     let expected = 
@@ -3271,8 +3438,14 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
 
-    let membersProp = TProperty(JsonPropertyNames.Members, TObjectJson([]))
+    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
+    
+    let p1 = makeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
+    let p2 = makeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p3 = makeValueParm contribName "id" "ACollectionContributedActionParm" "Id" roType
 
+    let membersProp = 
+        TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
