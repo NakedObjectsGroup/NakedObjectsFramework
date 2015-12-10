@@ -279,11 +279,12 @@ module NakedObjects.Angular.Gemini {
         template: string;
 
         disableActions(): boolean {
-            // to do collection actions not yet implemented 
-            return true;
+            return !this.actions || this.actions.length === 0;
         }
 
         toggleActionMenu(): void { }
+
+        actions: ActionViewModel[];
     } 
 
     export class ServicesViewModel {

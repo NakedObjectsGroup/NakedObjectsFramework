@@ -129,10 +129,12 @@ module NakedObjects.Angular.Gemini {
                     
                     $scope.listTemplate = state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                     $scope.collection = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
+                    $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
 
                     getFriendlyName().then((name: string) => $scope.title = name);
                 
-                    focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());       
+                    const focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                    focusManager.focusOn(focusTarget, urlManager.currentpane());
                     urlManager.setListPaging(routeData.paneId, newPage, newPageSize, state);           
                 }).catch(error => {
                     setError(error);
@@ -142,9 +144,13 @@ module NakedObjects.Angular.Gemini {
             getFriendlyName().then((name: string) => $scope.title = name);
 
             if (cachedList) {
+                // todo same code as in pageorrecreate DRY
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
                 $scope.collection = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
-                focusManager.focusOn(FocusTarget.FirstListItem, urlManager.currentpane());
+                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                const focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                focusManager.focusOn(focusTarget, urlManager.currentpane());
+
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));

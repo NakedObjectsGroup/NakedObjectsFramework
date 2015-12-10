@@ -357,8 +357,7 @@ module NakedObjects.Angular.Gemini {
                         if (canDrop) {
                             propertyViewModel.setNewValue(newValue);
                         }
-                    }
-                    );
+                    });
             };
 
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
@@ -504,6 +503,12 @@ module NakedObjects.Angular.Gemini {
 
             collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
 
+
+            const actions = listRep.actionMembers();
+            collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));
+
+            collectionViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
+
             const setPage = (newPage: number, newState: CollectionViewState) => {
                 // todo do we need timeout ?
                 $timeout(() => recreate(newPage, pageSize, newState));
@@ -534,7 +539,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: any, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
+        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: CollectionMember | ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
 
             if (collection instanceof CollectionMember) {
@@ -572,7 +577,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         viewModelFactory.menusViewModel = (menusRep: MenusRepresentation, paneId: number) => {
-            var menusViewModel = new MenusViewModel();
+            const menusViewModel = new MenusViewModel();
 
             menusViewModel.title = "Menus";
             menusViewModel.color = "bg-color-darkBlue";
@@ -582,8 +587,8 @@ module NakedObjects.Angular.Gemini {
 
 
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, paneId: number) => {
-            var serviceViewModel = new ServiceViewModel();
-            var actions = serviceRep.actionMembers();
+            const serviceViewModel = new ServiceViewModel();
+            const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId));

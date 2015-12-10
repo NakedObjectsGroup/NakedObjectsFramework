@@ -15,6 +15,7 @@
 
     export interface ICustomListRepresentation extends RoInterfaces.IListRepresentation {
         pagination? : IPagination;
+        members: { [index: string]: IActionMember };
     }
 
     export interface IMenuRepresentation extends IResourceRepresentation {

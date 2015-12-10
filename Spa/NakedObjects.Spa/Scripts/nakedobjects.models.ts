@@ -23,6 +23,7 @@ module NakedObjects {
     import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
+    import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
 
     // helper functions 
@@ -351,7 +352,7 @@ module NakedObjects {
     }
 
     export class Result {
-        constructor(public wrapped : RoInterfaces.IDomainObjectRepresentation | RoInterfaces.IListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) { }
+        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) { }
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
@@ -365,7 +366,7 @@ module NakedObjects {
         list(): ListRepresentation {
             if (!this.isNull() && this.resultType === "list") {
                 const lr = new ListRepresentation();
-                lr.populate(this.wrapped as RoInterfaces.IListRepresentation);
+                lr.populate(this.wrapped as RoInterfaces.Custom.ICustomListRepresentation);
                 return lr;
             }
             return null;
@@ -934,7 +935,7 @@ module NakedObjects {
 
         wrapped = () => this.resource() as RoInterfaces.IMember;
 
-        constructor(wrapped: T, public parent: DomainObjectRepresentation | MenuRepresentation) {
+        constructor(wrapped: T, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation) {
             super(wrapped);
         }
 
@@ -958,7 +959,7 @@ module NakedObjects {
             return isScalarType(this.extensions().returnType());
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation, id : string): Member<RoInterfaces.IMember> {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id : string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
@@ -1104,7 +1105,7 @@ module NakedObjects {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
-        constructor(wrapped: RoInterfaces.IActionMember, parent :  DomainObjectRepresentation | MenuRepresentation, private id : string) {
+        constructor(wrapped: RoInterfaces.IActionMember, parent :  DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id : string) {
             super(wrapped, parent);
         }
 
@@ -1365,6 +1366,13 @@ module NakedObjects {
         pagination(): RoInterfaces.Custom.IPagination {
             return this.wrapped().pagination;
         }
+
+        private actionMemberMap: _.Dictionary<ActionMember>;
+
+        actionMembers() {
+            this.actionMemberMap = this.actionMemberMap || _.mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as _.Dictionary<ActionMember>;
+            return this.actionMemberMap;
+        }
     }
 
     export interface IErrorDetails {
@@ -1462,7 +1470,7 @@ module NakedObjects {
     // matches Domain Services Representation 7.0
     export class DomainServicesRepresentation extends ListRepresentation {
 
-        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as ICustomListRepresentation;
 
         // links
         upLink(): Link {
@@ -1487,7 +1495,7 @@ module NakedObjects {
     // custom
     export class MenusRepresentation extends ListRepresentation {
 
-        wrapped = () => this.resource() as RoInterfaces.IListRepresentation;
+        wrapped = () => this.resource() as ICustomListRepresentation;
 
         // links
         upLink(): Link {

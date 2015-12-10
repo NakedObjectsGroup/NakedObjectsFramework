@@ -350,7 +350,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
 
             let setListState: jasmine.Spy;
             const lr = new NakedObjects.ListRepresentation();
-            lr.populate(rawEmptyList);
+            lr.populate(rawEmptyList as any);
             let $scope: ng.IScope;
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, urlManager) => {
@@ -382,7 +382,7 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let itemViewModel: jasmine.Spy;
             let populate: jasmine.Spy;
             const lr = new NakedObjects.ListRepresentation();
-            lr.populate(rawList);
+            lr.populate(rawList as any);
             let vmf: NakedObjects.Angular.Gemini.IViewModelFactory;
             let $scope: ng.IScope;
 

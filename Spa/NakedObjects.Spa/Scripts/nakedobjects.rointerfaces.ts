@@ -1,4 +1,5 @@
 ﻿module NakedObjects.RoInterfaces {
+    import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
     export interface ILink {
         rel?: string;
@@ -122,7 +123,7 @@
 
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
         resultType: string;
-        result?: IDomainObjectRepresentation | IListRepresentation | IScalarValueRepresentation;
+        result?: IDomainObjectRepresentation | ICustomListRepresentation | IScalarValueRepresentation;
     }
 
     export interface IParameterRepresentation extends IResourceRepresentation {
