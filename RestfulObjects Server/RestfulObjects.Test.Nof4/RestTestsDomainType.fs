@@ -1389,6 +1389,12 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PostInvokeActionContributedService() = ObjectActionInvoke19.PostInvokeActionContributedService x.api
         
+      
+
+        [<Test>]
+        member x.PostInvokeCollectionContributedActionContributedService() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedService x.api
+
+
         [<Test>]
         member x.PostInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnViewModelObject x.api
         

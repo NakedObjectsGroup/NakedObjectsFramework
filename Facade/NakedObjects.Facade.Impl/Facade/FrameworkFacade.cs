@@ -759,6 +759,11 @@ namespace NakedObjects.Facade.Impl {
                 }
             }
 
+            if (specification.IsQueryable) {
+                var rawEnumerable = rawValue as IEnumerable;
+                rawValue = rawEnumerable == null ? rawValue : rawEnumerable.AsQueryable();
+            }
+
             return framework.NakedObjectManager.CreateAdapter(rawValue, null, null);
         }
 
