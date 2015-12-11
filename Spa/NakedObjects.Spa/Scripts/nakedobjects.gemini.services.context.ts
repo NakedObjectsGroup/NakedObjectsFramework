@@ -471,6 +471,7 @@ module NakedObjects.Angular.Gemini {
             }
             else if (parent instanceof ListRepresentation && parms) {
                 if (actionIsNotQueryOnly) {
+                    // todo can we optimize this ? 
                     const list = _.filter(parms, v => v.isList());
                     const lists = _.map(list, v => v.list());
                     const values = _.flatten(lists);

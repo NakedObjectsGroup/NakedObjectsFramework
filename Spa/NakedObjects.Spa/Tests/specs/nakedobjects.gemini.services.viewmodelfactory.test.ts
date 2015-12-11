@@ -185,11 +185,12 @@ describe("nakedobjects.gemini.services.viewmodelfactory", () => {
             let invokeAction: jasmine.Spy;
             let closeDialog: jasmine.Spy;
             const am = new NakedObjects.ActionMember(rawAction, {} as any, "anid");
+            const avm = new NakedObjects.Angular.Gemini.ActionViewModel();
 
             beforeEach(inject(($rootScope, viewModelFactory: NakedObjects.Angular.Gemini.IViewModelFactory, context, urlManager) => {
                 invokeAction = spyOn(context, "invokeAction");
                 closeDialog = spyOn(urlManager, "closeDialog");
-                resultVm = viewModelFactory.dialogViewModel($rootScope.$new(), am, {}, 1);
+                resultVm = viewModelFactory.dialogViewModel($rootScope.$new(), avm, {}, 1);
             }));
 
             it("creates a dialog view model", () => {

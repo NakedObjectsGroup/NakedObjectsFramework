@@ -12,7 +12,7 @@ module NakedObjects.Angular.Gemini {
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId: number): ItemViewModel;
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
-        dialogViewModel($scope: ng.IScope, actionRep: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel): DialogViewModel;
+        dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel): DialogViewModel;
 
         collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
         collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
@@ -254,13 +254,16 @@ module NakedObjects.Angular.Gemini {
             if (actionViewModel.disabled()) {
                 actionViewModel.description = actionRep.disabledReason();
             } else {
-                actionViewModel.description = actionRep.extensions().description()
+                actionViewModel.description = actionRep.extensions().description();
             }
+
+            actionViewModel.executeInvoke = (dvm: DialogViewModel, right?: boolean) =>
+                context.invokeAction(actionRep, clickHandler.pane(paneId, right), dvm);
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
-                (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
-                (right?: boolean) => context.invokeAction(actionRep, clickHandler.pane(paneId, right));
+            (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
+            (right?: boolean) => actionViewModel.executeInvoke(null, right);
 
             return actionViewModel;
         };
@@ -297,15 +300,17 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionMember: ActionMember, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel) => {
 
+            const actionMember = actionViewModel.actionRep;
             const {dialogViewModel, ret} = getDialogViewModel(paneId, actionMember);
 
             if (ret) {
                 return dialogViewModel;
             }
 
-            const parameters = actionMember.parameters();
+            const parameters = _.pick(actionMember.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+
             dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName();
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
@@ -313,7 +318,7 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
             dialogViewModel.onPaneId = paneId;
 
-            dialogViewModel.doInvoke = (right?: boolean) => context.invokeAction(actionMember, clickHandler.pane(paneId, right), dialogViewModel);
+            dialogViewModel.doInvoke = (right?: boolean) => actionViewModel.executeInvoke(dialogViewModel, right);
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p, paneId, false));
 
@@ -512,24 +517,26 @@ module NakedObjects.Angular.Gemini {
             // todo do more elegantly 
 
             _.forEach(collectionViewModel.actions, a => {
-                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
-                    (right?: boolean) =>
-                        urlManager.setDialog(a.actionRep.actionId(), paneId) :
-                    (right?: boolean) => {
-                        const selected = _.filter(collectionViewModel.items, i => i.selected);
 
-                        if (selected.length === 0) {
-                            collectionViewModel.messages = "Must select items for collection contributed action";
-                            return;
-                        }
+                a.executeInvoke = (dvm : DialogViewModel, right?: boolean) => {
+                    const selected = _.filter(collectionViewModel.items, i => i.selected);
 
-                        const parmValue =  new Value(_.map(selected, i => i.link));
-                        const parmKey = _.first(_.keys(a.actionRep.parameters()));
-            
-                        const parm: _.Dictionary<Value> = _.zipObject([[parmKey, parmValue]]);
-
-                        context.invokeActionWithParms(a.actionRep, clickHandler.pane(paneId, right), parm);
+                    if (selected.length === 0) {
+                        collectionViewModel.messages = "Must select items for collection contributed action";
+                        return;
                     }
+
+                    const parmValue = new Value(_.map(selected, i => i.link));
+                    const parmKey = _.first(_.keys(a.actionRep.parameters()));
+
+                    const parm: _.Dictionary<Value> = _.zipObject([[parmKey, parmValue]]);
+
+                    context.invokeActionWithParms(a.actionRep, clickHandler.pane(paneId, right), parm);
+                }
+
+                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
+                    (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
+                    (right?: boolean) => a.executeInvoke(null, right);
             });
 
 
