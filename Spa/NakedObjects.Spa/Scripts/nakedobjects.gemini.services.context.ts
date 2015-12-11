@@ -59,10 +59,29 @@ module NakedObjects.Angular.Gemini {
             return type + "-" + id;
         }
 
-        setDirty(objectRepresentation: DomainObjectRepresentation) {
+        setDirty(obj: DomainObjectRepresentation | Link) {
+            if (obj instanceof DomainObjectRepresentation) {
+                this.setDirtyObject(obj);
+            }
+            if (obj instanceof Link) {
+                this.setDirtyLink(obj);
+            }
+        }
+
+
+        setDirtyObject(objectRepresentation: DomainObjectRepresentation) {
             const key = this.getKey(objectRepresentation.domainType(), objectRepresentation.instanceId());
             this.dirtyObjects[key] = true;
         }
+
+        setDirtyLink(link: Link) {
+            const href = link.href().split("/");
+            const [id, dt] = href.reverse();
+            const key = this.getKey(dt, id);
+            this.dirtyObjects[key] = true;
+        }
+
+
 
         getDirty(type: string, id: string) {
             const key = this.getKey(type, id);
@@ -431,22 +450,40 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, dvm? : DialogViewModel) {
+        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void,  dvm? : DialogViewModel) {
             repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
-                    const parent = action.parent;
-                    if (parent instanceof DomainObjectRepresentation) {
-                        const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
-                        if (actionIsNotQueryOnly) {
-                            dirtyCache.setDirty(parent);
-                        }
-                    }
-
+                    setDirty();
                     context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
                     context.setInvokeUpdateError(error, [], dvm);
                 });
+        }
+
+        function getSetDirtyFunction(action: ActionMember, parms: _.Dictionary<Value>) {
+            const parent = action.parent;
+            const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
+            if (parent instanceof DomainObjectRepresentation) {
+                if (actionIsNotQueryOnly) {
+                    return () => dirtyCache.setDirty(parent);
+                }
+            }
+            else if (parent instanceof ListRepresentation && parms) {
+                if (actionIsNotQueryOnly) {
+                    // todo can we optimize this ? 
+                    const list = _.filter(parms, v => v.isList());
+                    const lists = _.map(list, v => v.list());
+                    const values = _.flatten(lists);
+                    const objs = _.filter(values, v => v.isReference() && v.link().getTarget() instanceof DomainObjectRepresentation);
+                    const links = _.map(objs, v => v.link()); 
+
+                    return () =>  _.forEach(links, l => dirtyCache.setDirty(l));
+
+                }
+            }
+
+            return () => { };
         }
 
 
@@ -456,7 +493,9 @@ module NakedObjects.Angular.Gemini {
          
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
-            invokeActionInternal(invokeMap, invoke, action, paneId);
+            const setDirty = getSetDirtyFunction(action, parms);
+
+            invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
 
 
@@ -474,7 +513,9 @@ module NakedObjects.Angular.Gemini {
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
-            invokeActionInternal(invokeMap, invoke, action, paneId, dvm);
+            const setDirty = getSetDirtyFunction(action, null);
+
+            invokeActionInternal(invokeMap, invoke, action, paneId, setDirty, dvm);
         };
 
         context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {

@@ -93,7 +93,8 @@ module NakedObjects.Angular.Gemini {
                                 if (routeData.dialogId) {
                                     $scope.dialogTemplate = dialogTemplate;
                                     const action = menu.actionMember(routeData.dialogId);
-                                    $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                                    const actionVewModel = viewModelFactory.actionViewModel(action, routeData.paneId);
+                                    $scope.dialog = viewModelFactory.dialogViewModel($scope, actionVewModel, routeData.parms, routeData.paneId);
                                 }
 
                                 focusManager.focusOn(focusTarget, urlManager.currentpane());
@@ -128,15 +129,19 @@ module NakedObjects.Angular.Gemini {
                     const state = newState || routeData.state;
                     
                     $scope.listTemplate = state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    $scope.collection = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
+                    const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
+                    $scope.collection = collectionViewModel;
                     $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
 
                     let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
 
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
-                        const action = list.actionMember(routeData.dialogId);
-                        $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                   
+
+                        const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
+
+                        $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.parms, routeData.paneId);
                         focusTarget = FocusTarget.Dialog;
                     } 
 
@@ -155,14 +160,15 @@ module NakedObjects.Angular.Gemini {
             if (cachedList) {
                 // todo same code as in pageorrecreate DRY
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                $scope.collection = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
+                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
+                $scope.collection = collectionViewModel;
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
 
                 if (routeData.dialogId) {
                     $scope.dialogTemplate = dialogTemplate;
-                    const action = cachedList.actionMember(routeData.dialogId);
-                    $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId);
+                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
+                    $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.parms, routeData.paneId);
                     focusTarget = FocusTarget.Dialog;
                 } 
 
@@ -226,7 +232,8 @@ module NakedObjects.Angular.Gemini {
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                         const action = object.actionMember(routeData.dialogId);
-                        $scope.dialog = viewModelFactory.dialogViewModel($scope, action, routeData.parms, routeData.paneId, ovm);
+                        const actionVewModel = viewModelFactory.actionViewModel(action, routeData.paneId, ovm);
+                        $scope.dialog = viewModelFactory.dialogViewModel($scope, actionVewModel, routeData.parms, routeData.paneId, ovm);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.FirstSubAction;

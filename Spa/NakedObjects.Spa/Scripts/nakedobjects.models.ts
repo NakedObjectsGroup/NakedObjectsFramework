@@ -570,7 +570,7 @@ module NakedObjects {
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
         // fix parent type
-        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: any, private id : string) {
+        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private id : string) {
             super(wrapped);
         }
 
@@ -613,10 +613,22 @@ module NakedObjects {
                    (isListType(this.extensions().returnType()) && isScalarType(this.extensions().elementType()));
         }
 
+        isList(): boolean {
+            return isListType(this.extensions().returnType());
+        }
+
         hasPrompt(): boolean {
             return !!this.promptLink();
         }
 
+        isCollectionContributed(): boolean {
+            const myparent = this.parent;
+            const isOnList = myparent instanceof ActionMember &&  myparent.parent  instanceof ListRepresentation;
+            const isList = this.isList(); 
+            // todo also need to check element types and ordering perhaps ?
+
+            return isList && isOnList;
+        }
     }
 
     export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {

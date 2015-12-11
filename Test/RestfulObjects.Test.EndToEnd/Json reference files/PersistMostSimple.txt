@@ -1,1 +1,76 @@
-{  "instanceId": "5",  "domainType": "MostSimple",  "title": "5",  "links": [    {      "rel": "self",      "method": "GET",      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/5"    },    {      "rel": "describedby",      "method": "GET",      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"    },    {      "arguments": {        "Id": {          "value": null        }      },      "rel": "urn:org.restfulobjects:rels/update",      "method": "PUT",      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/5"    }  ],  "extensions": {    "friendlyName": "Most Simple",    "description": "",    "pluralName": "Most Simples",    "domainType": "MostSimple",    "isService": false  },  "members": {    "Id": {      "value": 5,      "hasChoices": false,      "memberType": "property",      "id": "Id",      "links": [        {          "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",          "method": "GET",          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/5/properties/Id"        },        {          "rel": "describedby",          "method": "GET",          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/properties/Id"        },        {          "arguments": {            "value": null          },          "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",          "method": "PUT",          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/5/properties/Id"        }      ],      "extensions": {        "friendlyName": "Id",        "description": "",        "optional": false,        "memberOrder": 0,        "returnType": "number",        "format": "integer"      }    }  }}
+{
+  "instanceId": "4",
+  "domainType": "MostSimple",
+  "title": "4",
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/4"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
+    },
+    {
+      "arguments": {
+        "Id": {
+          "value": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/update",
+      "method": "PUT",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"MostSimple\"",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/4"
+    }
+  ],
+  "extensions": {
+    "friendlyName": "Most Simple",
+    "description": "",
+    "pluralName": "Most Simples",
+    "domainType": "MostSimple",
+    "isService": false
+  },
+  "members": {
+    "Id": {
+      "value": 4,
+      "hasChoices": false,
+      "memberType": "property",
+      "id": "Id",
+      "links": [
+        {
+          "rel": "urn:org.restfulobjects:rels/details;property=\"Id\"",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/4/properties/Id"
+        },
+        {
+          "rel": "describedby",
+          "method": "GET",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/properties/Id"
+        },
+        {
+          "arguments": {
+            "value": null
+          },
+          "rel": "urn:org.restfulobjects:rels/modify;property=\"Id\"",
+          "method": "PUT",
+          "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+          "href": "http://nakedobjectsrotest.azurewebsites.net/objects/MostSimple/4/properties/Id"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "Id",
+        "description": "",
+        "optional": false,
+        "memberOrder": 0,
+        "returnType": "number",
+        "format": "integer"
+      }
+    }
+  }
+}

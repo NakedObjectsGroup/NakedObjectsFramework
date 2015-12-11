@@ -1387,6 +1387,9 @@ type Nof4Tests() =
         member x.PostInvokeActionContributedService() = ObjectActionInvoke19.PostInvokeActionContributedService x.api
         
         [<Test>]
+        member x.PostInvokeCollectionContributedActionContributedService() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedService x.api
+
+        [<Test>]
         member x.PostInvokeActionReturnRedirectedObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectObject x.api
         
         [<Test>]
