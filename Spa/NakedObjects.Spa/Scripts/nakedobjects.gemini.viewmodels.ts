@@ -288,6 +288,7 @@ module NakedObjects.Angular.Gemini {
         toggleActionMenu(): void { }
 
         actions: ActionViewModel[];
+        messages: string;
     } 
 
     export class ServicesViewModel {

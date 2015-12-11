@@ -517,6 +517,12 @@ module NakedObjects.Angular.Gemini {
                         urlManager.setDialog(a.actionRep.actionId(), paneId) :
                     (right?: boolean) => {
                         const selected = _.filter(collectionViewModel.items, i => i.selected);
+
+                        if (selected.length === 0) {
+                            collectionViewModel.messages = "Must select items for collection contributed action";
+                            return;
+                        }
+
                         const parmValue =  new Value(_.map(selected, i => i.link));
                         const parmKey = _.first(_.keys(a.actionRep.parameters()));
             

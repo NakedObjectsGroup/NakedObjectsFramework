@@ -21,8 +21,7 @@
         <div class="action clickable-area" tabindex="0" ng-click="collection.pageLast()" ng-disabled="collection.pageLastDisabled()">
             Last
         </div>
-        <div class="messages"></div>
-
+        <div class="messages">{{collection.messages}}</div>
     </div>
     <div class="actions" ng-include="actionsTemplate"></div>
     <div class="collection">
