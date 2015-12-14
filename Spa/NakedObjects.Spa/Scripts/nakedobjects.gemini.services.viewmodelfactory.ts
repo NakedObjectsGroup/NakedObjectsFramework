@@ -10,12 +10,12 @@ module NakedObjects.Angular.Gemini {
 
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
-        itemViewModel(linkRep: Link, paneId: number): ItemViewModel;
+        itemViewModel(linkRep: Link, paneId: number, selected : boolean): ItemViewModel;
         actionViewModel(actionRep: ActionMember, paneId: number, ovm?: DomainObjectViewModel): ActionViewModel;
         dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, parms: _.Dictionary<Value>, paneId: number, ovm?: DomainObjectViewModel): DialogViewModel;
 
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: CollectionMember, state: CollectionViewState, paneId: number, selectedItems : boolean[],   recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, state: CollectionViewState, paneId: number, selectedItems: boolean[],  recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
 
         collectionPlaceholderViewModel(page: number, reload: () => void): CollectionPlaceholderViewModel;
 
@@ -86,10 +86,16 @@ module NakedObjects.Angular.Gemini {
             return linkViewModel;
         };
 
-        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number) => {
+        viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected : boolean) => {
             const itemViewModel = new ItemViewModel();
             itemViewModel.doClick = (right?: boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));
             initLinkViewModel(itemViewModel, linkRep);
+
+            itemViewModel.selected = selected;
+
+            itemViewModel.checkboxChange = (index) =>
+                urlManager.setListItem(paneId, index, itemViewModel.selected);
+
 
             return itemViewModel;
         };
@@ -437,11 +443,11 @@ module NakedObjects.Angular.Gemini {
             return propertyViewModel;
         };
 
-        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean) {
+        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean, selectedItems: boolean[]) {
 
             if (populateItems) {
-                return _.map(links, link => {
-                    const itemViewModel = viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId);
+                return _.map(links, (link, i) => {
+                    const itemViewModel = viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId, selectedItems[i]);
                     const tempTgt = link.getTarget();
                     repLoader.populate<DomainObjectRepresentation>(tempTgt).
                         then((obj: DomainObjectRepresentation) => {
@@ -455,7 +461,7 @@ module NakedObjects.Angular.Gemini {
                     return itemViewModel;
                 });
             } else {
-                return _.map(links, link => viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId));
+                return _.map(links, (link, i) => viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId, selectedItems[i]));
             }
         }
 
@@ -470,7 +476,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType());
 
-            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table, []);
 
             switch (state) {
                 case CollectionViewState.List:
@@ -491,14 +497,14 @@ module NakedObjects.Angular.Gemini {
             return collectionViewModel;
         }
 
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, state: CollectionViewState, paneId: number, selectedItems: boolean[], recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
             const collectionViewModel = new CollectionViewModel();
             const links = listRep.value();
 
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.pluralName = "Objects";
-            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table);
+            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table, selectedItems);
 
             const page = listRep.pagination().page;
             const pageSize = listRep.pagination().pageSize;
@@ -572,7 +578,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: CollectionMember | ListRepresentation, state: CollectionViewState, paneId: number, recreate: (page: number) => void) => {
+        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: CollectionMember | ListRepresentation, state: CollectionViewState, paneId: number, selectedItems: boolean[],  recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
 
             if (collection instanceof CollectionMember) {
@@ -580,7 +586,7 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (collection instanceof ListRepresentation) {
-                collectionVm = createFromList($scope, collection, state, paneId, recreate);
+                collectionVm = createFromList($scope, collection, state, paneId, selectedItems,  recreate);
             }
 
             return collectionVm;
@@ -653,7 +659,7 @@ module NakedObjects.Angular.Gemini {
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, paneId, objectViewModel));
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId, (page: number) => { }));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, collectionStates[collection.collectionId()], paneId, [], (page: number) => { }));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);

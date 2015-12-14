@@ -39,5 +39,6 @@ module NakedObjects.Angular.Gemini {
         dialogId: string;
         page: number;
         pageSize : number;
+        selectedItems: boolean[];
     }
 }

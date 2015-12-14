@@ -84,7 +84,8 @@ module NakedObjects.Angular.Gemini {
 
     export class ItemViewModel extends LinkViewModel{
         target: DomainObjectViewModel;   
-        selected : boolean;    
+        selected : boolean;
+        checkboxChange: (index: number) => void;
     }
 
     export class MessageViewModel {

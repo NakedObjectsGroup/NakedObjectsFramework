@@ -127,9 +127,10 @@ module NakedObjects.Angular.Gemini {
                 recreate(newPage, newPageSize).then((list: ListRepresentation) => {
 
                     const state = newState || routeData.state;
+                    const sel = routeData.selectedItems;
                     
                     $scope.listTemplate = state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, pageOrRecreate);
+                    const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, state, routeData.paneId, sel, pageOrRecreate);
                     $scope.collection = collectionViewModel;
                     $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
 
@@ -138,7 +139,6 @@ module NakedObjects.Angular.Gemini {
                     if (routeData.dialogId) {
                         $scope.dialogTemplate = dialogTemplate;
                    
-
                         const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
 
                         $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.parms, routeData.paneId);
@@ -160,7 +160,7 @@ module NakedObjects.Angular.Gemini {
             if (cachedList) {
                 // todo same code as in pageorrecreate DRY
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, pageOrRecreate);
+                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData.state, routeData.paneId, routeData.selectedItems, pageOrRecreate);
                 $scope.collection = collectionViewModel;
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;

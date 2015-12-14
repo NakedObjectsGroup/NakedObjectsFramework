@@ -23,6 +23,7 @@ module NakedObjects.Angular.Gemini {
         setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
         setListState(paneId: number, state: CollectionViewState): void;
         setListPaging(paneId: number, newPage: number, newPageSize: number, state : CollectionViewState): void;
+        setListItem(paneId: number, item : number, selected : boolean): void;
 
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
@@ -50,6 +51,7 @@ module NakedObjects.Angular.Gemini {
         const menu = "menu";
         const object = "object";
         const collection = "collection";
+        const selected = "selected";
         const edit = "edit";
         const list = "list";
         const action = "action";
@@ -67,6 +69,25 @@ module NakedObjects.Angular.Gemini {
         const capturedPanes = [];
 
         let currentPaneId = 1;
+
+        function createMask(arr) {
+            let nMask = 0;
+            let nFlag = 0;
+            const nLen = arr.length > 32 ? 32 : arr.length;
+            for (nFlag; nFlag < nLen; nMask |= arr[nFlag] << nFlag++);
+            return nMask;
+        }
+
+        function arrayFromMask(nMask) {
+            // nMask must be between -2147483648 and 2147483647
+            if (nMask > 0x7fffffff || nMask < -0x80000000) {
+                throw new TypeError("arrayFromMask - out of range");
+            }
+            const aFromMask = [];
+            for (var nShifted = nMask; nShifted; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+            return aFromMask;
+        }
+
 
         function getIds(typeOfId : string,  paneId : number) {
             return <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
@@ -109,6 +130,9 @@ module NakedObjects.Angular.Gemini {
 
             paneRouteData.page = $routeParams[page + paneId];
             paneRouteData.pageSize = $routeParams[pageSize + paneId];
+
+            paneRouteData.selectedItems = arrayFromMask($routeParams[selected + paneId] || 0)
+
         }
 
         function setSearch(parmId: string, parmValue: string, clearOthers: boolean) {
@@ -361,6 +385,21 @@ module NakedObjects.Angular.Gemini {
             const collectionPrefix = `${collection}${paneId}`;
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };
+
+        helper.setListItem = (paneId: number, item : number, isSelected : boolean) => {
+            currentPaneId = paneId;
+
+            const selectedIndex = `${selected}${paneId}`
+            let currentSelected : number = $location.search()[selectedIndex] || 0;
+            const selectedArray : boolean[] = arrayFromMask(currentSelected);
+            selectedArray[item] = isSelected;
+            currentSelected = createMask(selectedArray); 
+
+            const search = $location.search();
+
+            search[selectedIndex] = currentSelected;
+            $location.search(search);
+        }
 
         helper.setListPaging = (paneId: number, newPage: number, newPageSize: number, state : CollectionViewState) => {
             currentPaneId = paneId;
