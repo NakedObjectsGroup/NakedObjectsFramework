@@ -560,6 +560,19 @@
             redrawPopupDialog(popupElement, response);
         }
 
+        $.validator.setDefaults({
+            onkeyup: function (element) {
+                // is this remote validation - if yes turn off validation on onkeyup 
+                // will still validate on blur
+           
+                if ($(element).attr("data-val-remote-url")) {
+                    return false; 
+                }
+                // not remote so fall back to default
+                return $.validator.defaults.onkeyup;
+            }
+        });
+
         $.validator.unobtrusive.parse(popupElement);
 
         return true;
