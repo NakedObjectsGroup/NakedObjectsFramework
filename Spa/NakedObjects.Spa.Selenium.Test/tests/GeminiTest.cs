@@ -432,7 +432,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void AssertHasFocus(IWebElement el)
         {
-            wait.Until(dr => dr.SwitchTo().ActiveElement().Location == el.Location);
+            wait.Until(dr => dr.SwitchTo().ActiveElement() == el);
         }
 
         protected void Reload(Pane pane = Pane.Single)
