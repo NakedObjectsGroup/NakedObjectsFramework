@@ -959,12 +959,14 @@ namespace NakedObjects.Facade.Impl {
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 IActionSpec[] cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
 
-                ccaContexts = cca.Select(a => new ActionContext {
-                    Action = a,
-                    Target = framework.ServicesManager.GetService(a.OnSpec as IServiceSpec),
-                    VisibleParameters = a.Parameters.Select(p => new ParameterContext {
-                        Action = a,
-                        Parameter = p
+                ccaContexts = cca.Select(a => new { action = a, uid = FacadeUtils.GetOverloadedUId(a, a.OnSpec) }).Select(a => new ActionContext {
+                    Action = a.action,
+                    OverloadedUniqueId = a.uid,
+                    Target = framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
+                    VisibleParameters = a.action.Parameters.Select(p => new ParameterContext {
+                        Action = a.action,
+                        Parameter = p,
+                        OverloadedUniqueId = a.uid
                     }).ToArray()
                 }).ToArray();
             }
