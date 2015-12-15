@@ -9,15 +9,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Threading;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Web.UnitTests.Selenium
+{
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
-    public abstract class HomeTests : AWTest
+    public abstract class HomeTestsRoot : AWTest
     {
-
-        [TestMethod]
-        public void WaitForSingleHome()
+        public virtual void WaitForSingleHome()
         {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
@@ -38,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         #region Clicking on menus and opening/closing dialogs
-        [TestMethod]
+
         public virtual void ClickOnVariousMenus()
         {
             GoToMenuFromHomePage("Customers");
@@ -54,7 +53,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Customer Dashboard", actions[7].Text);
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
 
-            AssertHasFocus(actions[0]);
+            //AssertHasFocus(actions[0]);
 
             GoToMenuFromHomePage("Sales");
             actions = WaitForCss(".actions .action", 4); ;
@@ -63,10 +62,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("List Accounts For Sales Person", actions[2].Text);
             Assert.AreEqual("Random Sales Person", actions[3].Text);
 
-            AssertHasFocus(actions[0]);
+            //AssertHasFocus(actions[0]);
         }
 
-        [TestMethod]
+
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
             Url(CustomersMenuUrl);
@@ -78,8 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         #endregion
 
-        #region Invoking main menu actions
-        [TestMethod]
+        #region Invoking main menu actions        
         public virtual void ZeroParamReturnsObject()
         {
             Url(CustomersMenuUrl);
@@ -87,10 +85,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object);
 
             var title = WaitForCss(".header .title");
-            AssertHasFocus(title);
+            //AssertHasFocus(title);
         }
 
-        [TestMethod]
+
         public virtual void ZeroParamReturnsCollection()
         {
             Url(OrdersMenuUrl);
@@ -103,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //AssertHasFocus(first); //TODO: test all focus separately
         }
 
-        [TestMethod]
+
         public virtual void ZeroParamThrowsError()
         {
             Url(CustomersMenuUrl);
@@ -113,7 +111,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Foo", msg.Text);
         }
 
-        [TestMethod]
+
         public virtual void ZeroParamReturnsEmptyCollection()
         {
             Url(OrdersMenuUrl);
@@ -124,89 +122,193 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(0, rows.Count);
         }
 
-        [TestMethod] //Failing due to focus issue 
+        //Failing due to focus issue 
         public virtual void DialogActionOK()
         {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
 
-            
-           var fieldCss = ".parameter:nth-child(1) input";
+
+            var fieldCss = ".parameter:nth-child(1) input";
             //TODO: Test focus in separate tests; unreliable here
             //AssertHasFocus(WaitForCss(fieldCss));
 
-            TypeIntoField(fieldCss, Keys.ArrowRight+Keys.ArrowRight+"00022262");
+            TypeIntoField(fieldCss, Keys.ArrowRight + Keys.ArrowRight + "00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
+        }
+        #endregion
+    }
+    public abstract class HomeTests : HomeTestsRoot
+    {
+
+        [TestMethod]
+        public override void WaitForSingleHome()
+        {
+            base.WaitForSingleHome();
+        }
+
+        #region Clicking on menus and opening/closing dialogs
+        [TestMethod]
+        public override void ClickOnVariousMenus()
+        {
+            base.ClickOnVariousMenus();
+        }
+
+        [TestMethod]
+        public override void SelectSuccessiveDialogActionsThenCancel()
+        {
+            base.SelectSuccessiveDialogActionsThenCancel();
+        }
+        #endregion
+
+        #region Invoking main menu actions
+        [TestMethod]
+        public override void ZeroParamReturnsObject()
+        {
+            base.ZeroParamReturnsObject();
+        }
+
+        [TestMethod]
+        public override void ZeroParamReturnsCollection()
+        {
+            base.ZeroParamReturnsCollection();
+        }
+
+        [TestMethod]
+        public override void ZeroParamThrowsError()
+        {
+            base.ZeroParamThrowsError();
+        }
+
+        [TestMethod]
+        public override void ZeroParamReturnsEmptyCollection()
+        {
+            base.ZeroParamReturnsEmptyCollection();
+        }
+
+        [TestMethod] //Failing due to focus issue 
+        public override void DialogActionOK()
+        {
+            base.DialogActionOK();
         }
         #endregion
     }
     #region browsers specific subclasses 
 
     //    [TestClass, Ignore]
-    public class HomeTestsIe : HomeTests {
+    public class HomeTestsIe : HomeTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
     //[TestClass]
-    public class HomeTestsFirefox : HomeTests {
+    public class HomeTestsFirefox : HomeTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitFirefoxDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
-   // [TestClass, Ignore]
-    public class HomeTestsChrome : HomeTests {
+    // [TestClass, Ignore]
+    public class HomeTestsChrome : HomeTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element) {
+        protected override void ScrollTo(IWebElement element)
+        {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
     #endregion
+
+    [TestClass]
+    public class HomeMegaTestFirefox : HomeTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+
+        [TestMethod]
+        public virtual void MegaTest()
+        {
+            WaitForSingleHome();
+            ClickOnVariousMenus();
+            SelectSuccessiveDialogActionsThenCancel();
+            ZeroParamReturnsObject();
+            ZeroParamReturnsCollection();
+            ZeroParamThrowsError();
+            ZeroParamReturnsEmptyCollection();
+            DialogActionOK();
+        }
+    }
 }

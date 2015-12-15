@@ -308,6 +308,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         #endregion
 
     }
+
+
     #region browsers specific subclasses 
 
    // [TestClass, Ignore]
@@ -378,7 +380,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region Running all tests in one go
     [TestClass]
-    public class MegaUrlTestFirefox : UrlTestsRoot
+    public class UrlMegaTestFirefox : UrlTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
