@@ -65,7 +65,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void PasteIntoReferenceField()
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Employee-161");
-            WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
+            WaitForView(Pane.Left, PaneType.Object);
             Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Kirk Koenigsbauer", title.Text);
@@ -124,7 +124,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CannotPasteWrongTypeIntoReferenceField()
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Product-771");
-            WaitForView(Pane.Left, PaneType.Object, "Editing - 07/01/2008 00:00:00");
+            WaitForView(Pane.Left, PaneType.Object);
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text);
             var title = WaitForCss("#pane2 .header .title");
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CanClearADroppableReferenceField()
         {
             GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-561&edit1=true");
-            WaitForView(Pane.Single, PaneType.Object, "Editing - 15/09/2007 00:00:00");
+            WaitForView(Pane.Single, PaneType.Object);
             var fieldCss = ".property:nth-child(4) .value.droppable";
             var field = WaitForCss(fieldCss);
             Assert.AreEqual("Ben Miller", field.Text);
@@ -179,7 +179,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class CopyAndPasteTestsFirefox : CopyAndPasteTests
     {
         [ClassInitialize]
