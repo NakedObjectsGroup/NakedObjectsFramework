@@ -295,6 +295,7 @@ module NakedObjects.Angular.Gemini {
 
             search[`${page}${paneId}`] = 1;
             search[`${pageSize}${paneId}`] = defaultPageSize;
+            search[`${selected}${paneId}`] = 0;
 
             if (dvm) {
                 _.each(dvm.parameters, p => setParameter(paneId, search, p));
@@ -399,6 +400,7 @@ module NakedObjects.Angular.Gemini {
 
             search[selectedIndex] = currentSelected;
             $location.search(search);
+            $location.replace();
         }
 
         helper.setListPaging = (paneId: number, newPage: number, newPageSize: number, state : CollectionViewState) => {
