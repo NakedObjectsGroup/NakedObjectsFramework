@@ -402,7 +402,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual(actionName, WaitForCss(selector + "> .title").Text);
             //Check it has OK & cancel buttons
             wait.Until(d => br.FindElement(By.CssSelector(selector +".ok")));
-            wait.Until(d => br.FindElement(By.CssSelector(".cancel")));
+            wait.Until(d => br.FindElement(By.CssSelector(selector+".cancel")));
             return dialog;
         }
 
