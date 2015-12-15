@@ -379,7 +379,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #endregion
 
     #region Running all tests in one go
-    [TestClass]
+    //[TestClass]
     public class UrlMegaTestFirefox : UrlTestsRoot
     {
         [ClassInitialize]
