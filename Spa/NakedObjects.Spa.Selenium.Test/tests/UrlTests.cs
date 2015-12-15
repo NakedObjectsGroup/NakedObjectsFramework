@@ -8,35 +8,32 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
     /// <summary>
     /// Tests only that a given URLs return the correct views. No actions performed on them
     /// </summary>
-    public abstract class UrlTests : AWTest
+    /// 
+    public abstract class UrlTestsRoot : AWTest
     {
-        [TestMethod]
         public virtual void UnrecognisedUrlGoesToHome()
         {
-            GeminiUrl( "unrecognised");
+            GeminiUrl("unrecognised");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
-
         #region Single pane Urls
-        [TestMethod]
         public virtual void Home()
         {
-            GeminiUrl( "home");
+            GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
         }
-
-        [TestMethod]
         public virtual void HomeWithMenu()
         {
-            GeminiUrl( "home?menu1=CustomerRepository");
+            GeminiUrl("home?menu1=CustomerRepository");
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElement(By.CssSelector(".actions")));
             ReadOnlyCollection<IWebElement> actions = br.FindElements(By.CssSelector(".action"));
@@ -51,16 +48,164 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Customer Dashboard", actions[7].Text);
             Assert.AreEqual("Throw Domain Exception", actions[8].Text);
         }
-
-       [TestMethod]
         public virtual void Object()
         {
-            GeminiUrl( "object?object1=AdventureWorksModel.Store-350");
+            GeminiUrl("object?object1=AdventureWorksModel.Store-350");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             AssertObjectElementsPresent();
         }
+        private void AssertObjectElementsPresent()
+        {
+            wait.Until(d => d.FindElement(By.CssSelector(".single")));
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".view")));
+            wait.Until(d => d.FindElement(By.CssSelector(".header")));
+            wait.Until(d => d.FindElement(By.CssSelector(".menu")).Text == "Actions");
+            wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
+            wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
+            Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
+
+        }
+        public virtual void ObjectWithNoSuchObject()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Foo-555");
+            wait.Until(d => d.FindElement(By.CssSelector(".error")));
+        }
+        public virtual void ObjectWithActions()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            GetObjectAction("Create New Address");
+            AssertObjectElementsPresent();
+        }
+        //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
+        public virtual void ObjectWithCollections()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Store-350&&collection1_Addresses=List&collection1_Contacts=Table");
+            wait.Until(d => d.FindElement(By.CssSelector(".collections")));
+            AssertObjectElementsPresent();
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
+            var collections = br.FindElements(By.CssSelector(".collection"));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.TagName("table")));
+            //Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
+
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon-table")));
+            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-table")));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon-summary")));
+
+            //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-summary")));
+            wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon-list")).Count == 0);
+
+            //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon-list")).Count == 0);
+        }
+        public virtual void ObjectInEditMode()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.Store-350&edit1=true");
+            wait.Until(d => d.FindElement(By.CssSelector(".object")));
+            wait.Until(d => d.FindElement(By.CssSelector(".edit")));
+            SaveButton();
+            GetCancelEditButton();
+            // AssertObjectElementsPresent();
+        }
+        public virtual void ListZeroParameterAction()
+        {
+            GeminiUrl("list?menu1=OrderRepository&action1=HighestValueOrders");
+            //todo: test that title is correct
+            Reload(Pane.Single);
+            wait.Until(d => d.FindElement(By.CssSelector(".list")));
+            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
+        }
+        #endregion
+        #region Split pane Urls
+        public virtual void SplitHomeHome()
+        {
+            GeminiUrl("home/home");
+            WaitForView(Pane.Left, PaneType.Home, "Home");
+            WaitForView(Pane.Right, PaneType.Home, "Home");
+        }
+        public virtual void SplitHomeObject()
+        {
+            GeminiUrl("home/object?object2=AdventureWorksModel.Store-350");
+            WaitForView(Pane.Left, PaneType.Home, "Home");
+            WaitForView(Pane.Right, PaneType.Object, "Twin Cycles");
+        }
+        public virtual void SplitHomeList()
+        {
+            GeminiUrl("home/list?&menu2=OrderRepository&action2=HighestValueOrders");
+            WaitForView(Pane.Left, PaneType.Home, "Home");
+            WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
+            Reload(Pane.Right);
+            wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .summary .details")).Text == "Page 1 of 1574; viewing 20 of 31465 items");
+        }
+        public virtual void SplitObjectHome()
+        {
+            GeminiUrl("object/home?object1=AdventureWorksModel.Store-350");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            WaitForView(Pane.Right, PaneType.Home, "Home");
+        }
+        public virtual void SplitObjectObject()
+        {
+            GeminiUrl("object/object?object1=AdventureWorksModel.Store-350&object2=AdventureWorksModel.Store-604");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
+        }
+        public virtual void SplitObjectList()
+        {
+            GeminiUrl("object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
+            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
+            Reload(Pane.Right);
+            WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
+        }
+        public virtual void SplitListHome()
+        {
+            GeminiUrl("list/home?menu1=OrderRepository&action1=HighestValueOrders");
+            Reload(Pane.Left);
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.Home, "Home");
+        }
+        public virtual void SplitListObject()
+        {
+            GeminiUrl("list/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
+            Reload(Pane.Left);
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
+        }
+        public virtual void SplitListList()
+        {
+            GeminiUrl("list/list?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
+            Reload(Pane.Left);
+            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            Reload(Pane.Right);
+            WaitForView(Pane.Right, PaneType.List, "Current Special Offers");
+        }
+        #endregion
+    }
+    public abstract class UrlTests : UrlTestsRoot
+    {
+        [TestMethod]
+        public override void UnrecognisedUrlGoesToHome()
+        {
+            base.UnrecognisedUrlGoesToHome();
+        }
+
+        #region Single pane Urls
+        [TestMethod]
+        public override void Home()
+        {
+            base.Home();
+        }
+
+        [TestMethod]
+        public override void HomeWithMenu()
+        {
+            base.HomeWithMenu();
+        }
+       [TestMethod]
+        public override void Object()
+        {
+            base.Object();
+        }
         private void AssertObjectElementsPresent()
         {
             wait.Until(d => d.FindElement(By.CssSelector(".single")));
@@ -76,136 +221,89 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void ObjectWithNoSuchObject()
+        public override void ObjectWithNoSuchObject()
         {
-            GeminiUrl( "object?object1=AdventureWorksModel.Foo-555");
-            wait.Until(d => d.FindElement(By.CssSelector(".error")));
+            base.ObjectWithNoSuchObject();
         }
 
         [TestMethod]
-        public virtual void ObjectWithActions()
+        public override void ObjectWithActions()
         {
-            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
-            GetObjectAction("Create New Address");
-            AssertObjectElementsPresent();
-        }
-
-//TODO:  Need to add tests for object & home (later, list) with action (dialog) open
-
-        [TestMethod]
-        public virtual void ObjectWithCollections()
-        {
-            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&&collection1_Addresses=List&collection1_Contacts=Table");
-            wait.Until(d => d.FindElement(By.CssSelector(".collections")));
-            AssertObjectElementsPresent();
-            wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
-            var collections = br.FindElements(By.CssSelector(".collection"));
-            Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
-            Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-table")));
-            Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon-summary")));
-            Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon-list")).Count == 0);
+            base.ObjectWithActions();
         }
 
         [TestMethod]
-        public virtual void ObjectInEditMode()
+        public override void ObjectWithCollections()
         {
-            GeminiUrl( "object?object1=AdventureWorksModel.Store-350&edit1=true");
-            wait.Until(d => d.FindElement(By.CssSelector(".object")));
-            wait.Until(d => d.FindElement(By.CssSelector(".edit")));
-            SaveButton();
-            GetCancelEditButton();
-           // AssertObjectElementsPresent();
+            base.ObjectWithCollections();
         }
 
         [TestMethod]
-        public virtual void ListZeroParameterAction()
+        public override void ObjectInEditMode()
         {
-            GeminiUrl( "list?menu1=OrderRepository&action1=HighestValueOrders");
-            //todo: test that title is correct
-            Reload(Pane.Single);
-            wait.Until(d => d.FindElement(By.CssSelector(".list")));
-            WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
+            base.ObjectInEditMode();
+        }
+
+        [TestMethod]
+        public override void ListZeroParameterAction()
+        {
+            base.ListZeroParameterAction();
         }
         #endregion
 
         #region Split pane Urls
 
         [TestMethod]
-        public virtual void SplitHomeHome()
+        public override void SplitHomeHome()
         {
-            GeminiUrl( "home/home");
-            WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Home, "Home");
+            base.SplitHomeHome();
         }
 
         [TestMethod]
-        public virtual void SplitHomeObject()
+        public override void SplitHomeObject()
         {
-            GeminiUrl( "home/object?object2=AdventureWorksModel.Store-350");
-            WaitForView(Pane.Left, PaneType.Home, "Home");
-            WaitForView(Pane.Right, PaneType.Object,  "Twin Cycles");
+            base.SplitHomeObject();
         }
 
         [TestMethod]
-        public virtual void SplitHomeList()
+        public override void SplitHomeList()
         {
-            GeminiUrl( "home/list?&menu2=OrderRepository&action2=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Home, "Home");
-            Reload(Pane.Right);
-            WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
+            base.SplitHomeList();        }
+
+        [TestMethod]
+        public override void SplitObjectHome()
+        {
+            base.SplitObjectHome();
         }
 
         [TestMethod]
-        public virtual void SplitObjectHome()
+        public override void SplitObjectObject()
         {
-            GeminiUrl( "object/home?object1=AdventureWorksModel.Store-350");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            WaitForView(Pane.Right, PaneType.Home, "Home");
+            base.SplitObjectObject();
         }
 
         [TestMethod]
-        public virtual void SplitObjectObject()
+        public override void SplitObjectList()
         {
-            GeminiUrl( "object/object?object1=AdventureWorksModel.Store-350&object2=AdventureWorksModel.Store-604");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
+            base.SplitObjectList();
         }
 
         [TestMethod]
-        public virtual void SplitObjectList()
+        public override void SplitListHome()
         {
-            GeminiUrl( "object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            Reload(Pane.Right);
-            WaitForView(Pane.Right, PaneType.List,  "Highest Value Orders");
-        }
-
-        [TestMethod]
-        public virtual void SplitListHome()
-        {
-            GeminiUrl( "list/home?menu1=OrderRepository&action1=HighestValueOrders");
-            Reload(Pane.Left);
-            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
-            WaitForView(Pane.Right, PaneType.Home, "Home");
+            base.SplitListHome();
         }
 
         [TestMethod] 
-        public virtual void SplitListObject()
+        public override void SplitListObject()
         {
-            GeminiUrl( "list/object?menu1=OrderRepository&action1=HighestValueOrders&object2=AdventureWorksModel.Store-604");
-            Reload(Pane.Left);
-            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
-            WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
+            base.SplitListObject();
         }
 
         [TestMethod]
-        public virtual void SplitListList()
+        public override void SplitListList()
         {
-            GeminiUrl( "list/list?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
-            Reload(Pane.Left);
-            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
-            Reload(Pane.Right);
-            WaitForView(Pane.Right, PaneType.List, "Current Special Offers");
+            base.SplitListList();
         }
         #endregion
 
@@ -279,8 +377,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #endregion
 
     #region Running all tests in one go
-    //[TestClass]
-    public class MegaUrlTestFirefox : UrlTests
+    [TestClass]
+    public class MegaUrlTestFirefox : UrlTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -302,7 +400,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
-        public virtual void MegaTest()
+        public virtual void MegaUrlTest()
         {
             Home();
             UnrecognisedUrlGoesToHome();
@@ -312,15 +410,15 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ObjectWithActions();
             ObjectWithCollections();
             ObjectWithNoSuchObject();
-            this.SplitHomeHome();
-            this.SplitHomeObject();
-            this.SplitHomeList();
-            this.SplitObjectHome();
-            this.SplitObjectObject();
-            this.SplitObjectList();
-            this.SplitListHome();
-            this.SplitListObject();
-            this.SplitListList();
+            SplitHomeHome();
+            SplitHomeObject();
+            SplitHomeList();
+            SplitObjectHome();
+            SplitObjectObject();
+            SplitObjectList();
+            SplitListHome();
+            SplitListObject();
+            SplitListList();
         }
     }
     #endregion
