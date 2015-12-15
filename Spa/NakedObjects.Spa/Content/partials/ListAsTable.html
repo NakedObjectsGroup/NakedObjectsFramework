@@ -33,32 +33,36 @@
         <table >
             <thead>
             <tr>
+                <th>Select</th>
                 <th ng-repeat="heading in collection.header" scope="col">
                     {{heading}}
                 </th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
-                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
-                    <div ng-switch-when="ref" class="clickable-area">
-                        {{property.value}}
-                    </div>
-                    <div ng-switch-when="scalar" ng-switch="property.returnType">
-                        <div ng-switch-when="string" ng-switch="property.format">
-                            <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
-                            <div ng-switch-default class="clickable-area">{{property.value}}</div>
-                        </div>
-                        <div ng-switch-when="boolean" class="clickable-area">
-                            <input type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled"/>
-                        </div>
-                        <div ng-switch-default class="clickable-area">
+                <tr ng-repeat="item in collection.items"  class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
+                    <td>
+                        <input type="checkbox" ng-model="item.selected" ng-change="item.checkboxChange($index)">
+                    </td>
+                    <td ng-class="item.color" class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+                        <div ng-switch-when="ref" class="clickable-area">
                             {{property.value}}
                         </div>
-                    </div>
+                        <div ng-switch-when="scalar" ng-switch="property.returnType">
+                            <div ng-switch-when="string" ng-switch="property.format">
+                                <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
+                                <div ng-switch-default class="clickable-area">{{property.value}}</div>
+                            </div>
+                            <div ng-switch-when="boolean" class="clickable-area">
+                                <input type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
+                            </div>
+                            <div ng-switch-default class="clickable-area">
+                                {{property.value}}
+                            </div>
+                        </div>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

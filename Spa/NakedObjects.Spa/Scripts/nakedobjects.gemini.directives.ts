@@ -306,7 +306,7 @@ module NakedObjects.Angular.Gemini {
 
              // make the dragged element look like a reference 
             if ($(element)[0].nodeName.toLowerCase() === "tr") {
-                const title = $(element).find("td:first").text();
+                const title = $(element).find("td.cell:first").text();
                 cloned = $(`<div>${title}</div>`);
             } else {
                 cloned = $(element).clone();
