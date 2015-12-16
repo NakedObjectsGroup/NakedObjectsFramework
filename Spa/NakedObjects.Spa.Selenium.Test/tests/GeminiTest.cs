@@ -35,8 +35,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected static int TimeOut {
             get {
                 if (timeOut != 0) { return timeOut; }
-                timeOut = 10;
-                return 30;
+                timeOut = 20;
+                return 40;
             }
         }
 
