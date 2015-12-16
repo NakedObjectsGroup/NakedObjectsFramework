@@ -75,7 +75,7 @@ param($rootPath, $toolsPath, $package, $project)
 	function global:New-NakedObjectsCleanBuildTest()
 	{		
 		Function build( $project, $target ){
-			& "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" $project $target
+			& "C:\Program Files (x86)\MSBuild\14.0\Bin\MsBuild.exe" $project $target
 			if ($LastExitCode -eq 1) {exit $LastExitCode}
 		}
 
@@ -126,7 +126,7 @@ param($rootPath, $toolsPath, $package, $project)
 	function global:New-NakedObjectsCleanBuildNoTest()
 	{		
 		Function build( $project, $target ){
-			& "C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" $project $target
+			& "C:\Program Files (x86)\MSBuild\14.0\Bin\MsBuild.exe" $project $target
 			if ($LastExitCode -eq 1) {exit $LastExitCode}
 		}
 

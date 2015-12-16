@@ -926,6 +926,16 @@ namespace NakedObjects.Facade.Impl {
             return GetAction(actionName, nakedObject);
         }
 
+        private static IActionSpec MatchingActionSpecOnService(IActionSpec actionToMatch) {
+            var allServiceActions = actionToMatch.OnSpec.GetActionLeafNodes();
+
+            return allServiceActions.SingleOrDefault(sa => sa.Id == actionToMatch.Id &&
+                                                           sa.ParameterCount == actionToMatch.ParameterCount &&
+                                                           sa.Parameters.Select(p => p.Spec).SequenceEqual(actionToMatch.Parameters.Select(p => p.Spec)));
+
+
+        }
+
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject) {
             if (nakedObject == null) {
                 return null;
@@ -935,7 +945,6 @@ namespace NakedObjects.Facade.Impl {
             var objectSpec = nakedObject.Spec as IObjectSpec;
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
-
             ActionContext[] ccaContexts = {}; 
 
             if (nakedObject.Spec.IsQueryable) {
@@ -943,8 +952,9 @@ namespace NakedObjects.Facade.Impl {
                 var introspectableSpecification = typeOfFacet.GetValueSpec(nakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 IActionSpec[] cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
+             
 
-                ccaContexts = cca.Select(a => new { action = a, uid = FacadeUtils.GetOverloadedUId(a, cca) }).Select(a => new ActionContext {
+                ccaContexts = cca.Select(a => new { action = a, uid = FacadeUtils.GetOverloadedUId(MatchingActionSpecOnService(a) , a.OnSpec) }).Select(a => new ActionContext {
                     Action = a.action,
                     OverloadedUniqueId = a.uid,
                     Target = framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
