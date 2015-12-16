@@ -29,24 +29,20 @@ using NakedObjects.Util;
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly IMessageBrokerFacade messageBroker;
         private readonly IOidStrategy oidStrategy;
-        private readonly IOidTranslator oidTranslator;
 
         public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework) {
             oidStrategy.FrameworkFacade = this;
             this.oidStrategy = oidStrategy;
-            this.oidTranslator = oidTranslator;
+            OidTranslator = oidTranslator;
             this.framework = framework;
-            messageBroker = new MessageBrokerWrapper(framework.MessageBroker);
+            MessageBroker = new MessageBrokerWrapper(framework.MessageBroker);
         }
 
         /// <summary>
         ///  mainly for testing
         /// </summary>
-        public INakedObjectsFramework Framework {
-            get { return framework; }
-        }
+        public INakedObjectsFramework Framework => framework;
 
         #region IFrameworkFacade Members
 
@@ -81,17 +77,11 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => framework.Session.Principal);
         }
 
-        public IOidTranslator OidTranslator {
-            get { return oidTranslator; }
-        }
+        public IOidTranslator OidTranslator { get; }
 
-        public IOidStrategy OidStrategy {
-            get { return oidStrategy; }
-        }
+        public IOidStrategy OidStrategy => oidStrategy;
 
-        public IMessageBrokerFacade MessageBroker {
-            get { return messageBroker; }
-        }
+        public IMessageBrokerFacade MessageBroker { get; }
 
         public ITypeFacade[] GetDomainTypes() {
             return MapErrors(() => framework.MetamodelManager.AllSpecs.
@@ -167,18 +157,14 @@ namespace NakedObjects.Facade.Impl {
 
         public IObjectFacade GetObject(ITypeFacade spec, object value) {
             var s = ((TypeFacade) spec).WrappedValue;
-            INakedObjectAdapter adapter;
 
             if (value == null) {
                 return null;
             }
 
-            if (value is string) {
-                adapter = s.GetFacet<IParseableFacet>().ParseTextEntry((string) value, Framework.NakedObjectManager);
-            }
-            else {
-                adapter = Framework.GetNakedObject(value);
-            }
+            var text = value as string;
+            var adapter = text != null ? s.GetFacet<IParseableFacet>().ParseTextEntry(text, Framework.NakedObjectManager) :
+                Framework.GetNakedObject(value);
 
             return ObjectFacade.Wrap(adapter, this, Framework);
         }
@@ -950,8 +936,7 @@ namespace NakedObjects.Facade.Impl {
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
 
-            ActionContext[] ccaContexts = new ActionContext[] {}; 
-
+            ActionContext[] ccaContexts = {}; 
 
             if (nakedObject.Spec.IsQueryable) {
                 ITypeOfFacet typeOfFacet = nakedObject.GetTypeOfFacetFromSpec();
@@ -959,7 +944,7 @@ namespace NakedObjects.Facade.Impl {
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 IActionSpec[] cca = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
 
-                ccaContexts = cca.Select(a => new { action = a, uid = FacadeUtils.GetOverloadedUId(a, a.OnSpec) }).Select(a => new ActionContext {
+                ccaContexts = cca.Select(a => new { action = a, uid = FacadeUtils.GetOverloadedUId(a, cca) }).Select(a => new ActionContext {
                     Action = a.action,
                     OverloadedUniqueId = a.uid,
                     Target = framework.ServicesManager.GetService(a.action.OnSpec as IServiceSpec),
@@ -1058,25 +1043,15 @@ namespace NakedObjects.Facade.Impl {
                 CheckAutocompleOrConditional();
             }
 
-            private bool IsAutoCompleteEnabled {
-                get { return prop == null ? parm.IsAutoCompleteEnabled : prop.IsAutoCompleteEnabled; }
-            }
+            private bool IsAutoCompleteEnabled => prop == null ? parm.IsAutoCompleteEnabled : prop.IsAutoCompleteEnabled;
 
-            public IObjectSpec Specification {
-                get { return prop == null ? parm.Spec : prop.ReturnSpec; }
-            }
+            public IObjectSpec Specification => prop == null ? parm.Spec : prop.ReturnSpec;
 
-            private Func<Tuple<string, IObjectSpec>[]> GetChoicesParameters {
-                get { return prop == null ? (Func<Tuple<string, IObjectSpec>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters; }
-            }
+            private Func<Tuple<string, IObjectSpec>[]> GetChoicesParameters => prop == null ? (Func<Tuple<string, IObjectSpec>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
 
-            private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices {
-                get { return prop == null ? (Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]>) parm.GetChoices : prop.GetChoices; }
-            }
+            private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? (Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]>) parm.GetChoices : prop.GetChoices;
 
-            private Func<INakedObjectAdapter, string, INakedObjectAdapter[]> GetCompletions {
-                get { return prop == null ? (Func<INakedObjectAdapter, string, INakedObjectAdapter[]>) parm.GetCompletions : prop.GetCompletions; }
-            }
+            private Func<INakedObjectAdapter, string, INakedObjectAdapter[]> GetCompletions => prop == null ? (Func<INakedObjectAdapter, string, INakedObjectAdapter[]>) parm.GetCompletions : prop.GetCompletions;
 
             private void CheckAutocompleOrConditional() {
                 if (!(IsAutoCompleteEnabled || GetChoicesParameters().Any())) {
@@ -1099,7 +1074,7 @@ namespace NakedObjects.Facade.Impl {
                 string[] expectedParmNames = expectedParms.Select(t => t.Item1).ToArray();
                 string[] actualParmNames = actualParms.Keys.ToArray();
 
-                if (expectedParmNames.Count() < actualParmNames.Count()) {
+                if (expectedParmNames.Length < actualParmNames.Length) {
                     throw new BadRequestNOSException("Wrong number of conditional arguments");
                 }
 
@@ -1150,7 +1125,7 @@ namespace NakedObjects.Facade.Impl {
                     }
                     else if (actualType != null && !actualType.IsOfType(expectedType)) {
                         errors.Add(new ChoiceContextFacade(key, GetSpecificationWrapper(expectedType)) {
-                            Reason = string.Format("Argument is of wrong type is {0} expect {1}", actualType.FullName, expectedType.FullName),
+                            Reason = $"Argument is of wrong type is {actualType.FullName} expect {expectedType.FullName}",
                             ProposedValue = actualParms[ep.Item1]
                         });
                     }
