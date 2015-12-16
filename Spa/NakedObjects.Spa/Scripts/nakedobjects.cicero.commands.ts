@@ -46,10 +46,6 @@ module NakedObjects.Angular.Gemini {
             this.vm.output.concat("/n" + text);
         }
 
-        protected newPath(path: string): void {
-            this.nglocation.path(path).search({});
-        }
-
         public checkMatch(matchText: string): void {
             if (this.fullCommand.indexOf(matchText) != 0) {
                 throw new Error("No such command: " + matchText);
@@ -153,7 +149,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            const p1 = this.argumentAsString(args, 1); 
+            const p1 = this.argumentAsString(args, 1, true); 
             if (p1) {
                 this.clearInputAndSetOutputTo("Second argument for action is not yet supported.");
             }
@@ -381,7 +377,8 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
-            this.newPath("/gemini/home");
+            const newPath = "/gemini/"+this.nglocation.path().split("/")[2];
+            this.nglocation.path(newPath);
         };
     }
     export class Go extends Command {
