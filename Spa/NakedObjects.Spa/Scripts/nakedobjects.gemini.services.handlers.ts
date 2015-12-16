@@ -34,6 +34,7 @@ module NakedObjects.Angular.Gemini {
                 const errorRep = ErrorRepresentation.create(`unexpected error map: ${em.warningMessage}`);
                 context.setError(errorRep);
             } else {
+                error = error || "unknown";
                 const errorRep = ErrorRepresentation.create(`unexpected error: ${error.toString()}`);
                 context.setError(errorRep);
             }

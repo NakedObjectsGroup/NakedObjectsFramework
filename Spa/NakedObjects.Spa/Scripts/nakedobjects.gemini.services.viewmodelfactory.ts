@@ -737,24 +737,33 @@ module NakedObjects.Angular.Gemini {
             return objectViewModel;
         };
 
+        let cachedTvm: ToolBarViewModel;
+
+        function getTvm() {
+            if (!cachedTvm) {
+                const tvm = new ToolBarViewModel();
+                tvm.goHome = (right?: boolean) => urlManager.setHome(clickHandler.pane(1, right));
+                tvm.goBack = () => navigation.back();
+                tvm.goForward = () => navigation.forward();
+                tvm.swapPanes = () => urlManager.swapPanes();
+                tvm.singlePane = (right?: boolean) => {
+                    urlManager.singlePane(clickHandler.pane(1, right));
+                    focusManager.refresh(1);
+                };
+
+                tvm.template = appBarTemplate;
+                tvm.footerTemplate = footerTemplate;
+                cachedTvm = tvm;
+            }
+            return cachedTvm;
+        }
+
         viewModelFactory.toolBarViewModel = ($scope) => {
-            var tvm = new ToolBarViewModel();
+            const tvm = getTvm();
 
             $scope.$on("ajax-change", (event, count) => tvm.loading = count > 0 ? "Loading..." : "");
             $scope.$on("back", () => navigation.back());
             $scope.$on("forward", () => navigation.forward());
-
-            tvm.goHome = (right?: boolean) => urlManager.setHome(clickHandler.pane(1, right));
-            tvm.goBack = () => navigation.back();
-            tvm.goForward = () => navigation.forward();
-            tvm.swapPanes = () => urlManager.swapPanes();
-            tvm.singlePane = (right?: boolean) => {
-                urlManager.singlePane(clickHandler.pane(1, right));
-                focusManager.refresh(1);
-            };
-
-            tvm.template = appBarTemplate;
-            tvm.footerTemplate = footerTemplate;
 
             return tvm;
         };
