@@ -120,6 +120,7 @@ module NakedObjects.Angular.Gemini {
         color: string;
         description: string;
         optional: boolean;
+        isCollectionContributed : boolean;
 
         //setSelectedChoice() {}
 
@@ -171,9 +172,9 @@ module NakedObjects.Angular.Gemini {
 
         getValue(): Value {
            
-            if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete) {
+            if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete || this.isCollectionContributed) {
 
-                if (this.isMultipleChoices) {
+                if (this.isMultipleChoices || this.isCollectionContributed) {
                     const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
                         const selValues = _.map(selections, cvm => cvm.value);

@@ -149,6 +149,7 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.title = parmRep.extensions().friendlyName();
             parmViewModel.returnType = parmRep.extensions().returnType();
             parmViewModel.format = parmRep.extensions().format();
+            parmViewModel.isCollectionContributed = parmRep.isCollectionContributed();
 
             parmViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
@@ -180,13 +181,13 @@ module NakedObjects.Angular.Gemini {
                 }
             }
 
-            if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
+            if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices || parmViewModel.isCollectionContributed) {
 
                 function setCurrentChoices(vals: Value) {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
-                    if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
+                    if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices || parmViewModel.isCollectionContributed) {
                         parmViewModel.multiChoices = choicesToSet;
                     } else {
                         parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
@@ -205,7 +206,7 @@ module NakedObjects.Angular.Gemini {
 
                 if (previousValue || parmViewModel.dflt) {
                     const toSet = previousValue || parmRep.default();
-                    if (parmViewModel.isMultipleChoices) {
+                    if (parmViewModel.isMultipleChoices || parmViewModel.isCollectionContributed) {
                         setCurrentChoices(toSet);
                     } else {
                         setCurrentChoice(toSet);
@@ -531,13 +532,13 @@ module NakedObjects.Angular.Gemini {
                         collectionViewModel.messages = "Must select items for collection contributed action";
                         return;
                     }
-
+                    const parms = _.values(a.actionRep.parameters()) as Parameter[];
+                    const contribParm = _.find(parms, p => p.isCollectionContributed());
                     const parmValue = new Value(_.map(selected, i => i.link));
-                    const parmKey = _.first(_.keys(a.actionRep.parameters()));
+                    const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
+                    dvm.parameters.push(collectionParmVm);
 
-                    const parm: _.Dictionary<Value> = _.zipObject([[parmKey, parmValue]]);
-
-                    context.invokeActionWithParms(a.actionRep, clickHandler.pane(paneId, right), parm);
+                    context.invokeAction(a.actionRep, clickHandler.pane(paneId, right), dvm);
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
