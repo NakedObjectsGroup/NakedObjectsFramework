@@ -135,15 +135,17 @@ module NakedObjects.Angular.Gemini {
     export class Action extends Command {
 
         public fullCommand = "action";
-        public helpText = "Open an action from a Main Menu, or object actions menu. " +
+        public helpText = "Open an action from a Main Menu, or object actions. " +
         "The first (optional) argument is the name, or partial name, of the action. " +
         "If the partial name matches more than one action, a list of matches is returned," +
-        "but none opened. If no argument is provided, a full list of available action names is returned." +
-        "If the action name matches a single action, then a question-mark may be added as a second "
-        "parameter - which will generate a more detailed description of the Action.";j
+        "but none opened. If no argument is provided, a full list of available action names is returned. " +
+        "The partial name may have more than one clause, separated by spaces, and these may match either " +
+        "part(s) of the action name or the sub-menu name if one exists. " +
+        "Not yet implemented: if the action name matches a single action, then a question-mark may be added as a second "
+        "parameter - which will generate a more detailed description of the Action.";
 
         protected minArguments = 0;
-        protected maxArguments = 1;
+        protected maxArguments = 2;
 
         public isAvailableInCurrentContext(): boolean {
             return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
@@ -151,6 +153,10 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
+            const p1 = this.argumentAsString(args, 1); 
+            if (p1) {
+                this.clearInputAndSetOutputTo("Second argument for action is not yet supported.");
+            }
             if (this.isObject()) {
                 const oid = this.urlManager.getRouteData().pane1.objectId;
                 this.context.getObjectByOid(1, oid)
@@ -201,7 +207,7 @@ module NakedObjects.Angular.Gemini {
     export class Back extends Command {
 
         public fullCommand = "back";
-        public helpText = "Move back to the previous context";
+        public helpText = "Move back to the previous context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -216,8 +222,7 @@ module NakedObjects.Angular.Gemini {
     export class Cancel extends Command {
 
         public fullCommand = "cancel";
-        public helpText = "Leave the current activity (action, or object edit), incomplete." +
-        ". Does not take any arguments";;
+        public helpText = "Leave the current activity (action, or object edit), incomplete.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -237,14 +242,13 @@ module NakedObjects.Angular.Gemini {
     export class Copy extends Command {
 
         public fullCommand = "copy";
-        public helpText = "Copy a reference to an object into the clipboard. If the current context is " +
-        "an object and no argument is specified, the object is copiedl; alternatively the name of a property " +
+        public helpText = "Not yet implemented.  Copy a reference to an object into the clipboard. If the current context is " +
+        "an object and no argument is specified, the object is copied; alternatively the name of a property " +
         "that contains an object reference may be specified. If the context is a list view, then the number of the item " +
-        "in that list should be specified, and, optionally, if the item is not on the first page of the list, "
-        "the page number may be specified as a second argument.";
+        "in that list should be specified.";
 
         protected minArguments = 0;
-        protected maxArguments = 2;
+        protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
             return this.isObject() || this.isList();
@@ -273,8 +277,7 @@ module NakedObjects.Angular.Gemini {
     export class Edit extends Command {
 
         public fullCommand = "edit";
-        public helpText = "Put an object into Edit mode." +
-        ". Does not take any arguments";;
+        public helpText = "Put an object into Edit mode.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -289,16 +292,18 @@ module NakedObjects.Angular.Gemini {
     export class Field extends Command {
 
         public fullCommand = "field";
-        public helpText = "Display the name and value of a field or fields. " +
-        "The first, optional, argument: the partial field name. " +
+        public helpText = "Display the name and content of a field or fields. " +
+        "In the context of an object, a field is a property; in the context of an action dialog a field is a parameter." +
+        "Field may take 2 arguments, both of which are optional. "+
+        "The argument is the partial field name. " +
         "If this matches more than one field, a list of matches is returned. " +
         "If no argument is provided, the full list of fields is returned. "+
-        "The second optional argument applies only to fields in an action dialog, or " +
+        "Not yet implemented: the second optional argument applies only to fields in an action dialog, or " +
         "in an object beign edited, and specifies the value, or selection, to be entered " +
         "into the field.  If a ? is provided as the second argument, the field will not be "+
         "updated but further details will be provided about that input field.";
         protected minArguments = 0;
-        protected maxArguments = 1;
+        protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
             return this.isObject();
@@ -306,6 +311,10 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
+            const p1 = this.argumentAsString(args, 1);
+            if (p1) {
+                this.clearInputAndSetOutputTo("The second argument for field, is not yet supported");
+            }
             const oid = this.urlManager.getRouteData().pane1.objectId;
             const obj = this.context.getObjectByOid(1, oid)
                 .then((obj: DomainObjectRepresentation) => {
@@ -347,7 +356,7 @@ module NakedObjects.Angular.Gemini {
     export class Forward extends Command {
 
         public fullCommand = "forward";
-        public helpText = "Move forward to next context in history (having previously moved back).";
+        public helpText = "Move forward to next context in the history (if you have previously moved back).";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -362,8 +371,9 @@ module NakedObjects.Angular.Gemini {
     export class Gemini extends Command {
 
         public fullCommand = "gemini";
-        public helpText = "Switch to the Gemini (graphical) user interface displaying the same context. " +
-        ". Does not take any arguments";;
+        public helpText = "Switch to the Gemini (graphical) user interface. " +
+        "Not yet implemented: the Gemini interface will preserve the context - in the current implementation " +
+        "it just goes to home";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -377,7 +387,7 @@ module NakedObjects.Angular.Gemini {
     export class Go extends Command {
 
         public fullCommand = "go";
-        public helpText = "Go to an object referenced in a property, or a list." +
+        public helpText = "Not yet implemented: Go to an object referenced in a property, or a list." +
         "Go takes one argument.  In the context of an object, that is the name or partial name" +
         "of the property holding the reference. In the context of a list, it is the " +
         "number of the item within the list (starting at 1). ";
@@ -391,11 +401,11 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             if (this.isObject()) {
                 const prop = this.argumentAsString(args, 0);
-                this.clearInputAndSetOutputTo("Go to property" + prop + " invoked"); //todo: temporary
+                this.clearInputAndSetOutputTo("The go command is not yet implemented"); 
             }
             if (this.isList()) {
                 const item = this.argumentAsNumber(args, 1);
-                this.clearInputAndSetOutputTo("Go to list item" + item + " invoked"); //todo: temporary
+                this.clearInputAndSetOutputTo("The go command is not yet implemented"); 
             }
         };
     }
@@ -430,7 +440,7 @@ module NakedObjects.Angular.Gemini {
     export class Item extends Command {
 
         public fullCommand = "item";
-        public helpText = "In the context of an opened object collection, or a list view, the item command" +
+        public helpText = "Not yet implemented. In the context of an opened object collection, or a list view, the item command" +
         "will display one or more of the items. If no arguments are specified, item will list all of the " +
         "the items in the object collection, or the first page of items if in a list view. Alternatively, " +
         "the command may be specified with a starting item number and/or an ending item number, for example " +
@@ -444,18 +454,17 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const startNo = this.argumentAsNumber(args, 1, true);
-            const endNo = this.argumentAsNumber(args, 2, true);
-            const pageNo = this.argumentAsNumber(args, 3, true);
-            if (this.isCollection()) {
-                if (pageNo != null) {
-                    throw new Error("Item may not have a third argument (page number) in the context of an object collection");
-                }
-                this.clearInputAndSetOutputTo("Item command is not yet implemented on Collection, from " + startNo + " to " + endNo); //todo: temporary
+            this.clearInputAndSetOutputTo("Item command is not yet implemented");
+            //const startNo = this.argumentAsNumber(args, 1, true);
+            //const endNo = this.argumentAsNumber(args, 2, true);
+            //const pageNo = this.argumentAsNumber(args, 3, true);
+            //if (this.isCollection()) {
+            //    if (pageNo != null) {
+            //        throw new Error("Item may not have a third argument (page number) in the context of an object collection");
+            //    }
 
-            } else {
-                this.clearInputAndSetOutputTo("Item command is not yet implemented on List, from " + startNo + " to " + endNo + " page " + pageNo); //todo: temporary
-            }
+            //} else {
+            //}
         };
 
     }
@@ -501,8 +510,7 @@ module NakedObjects.Angular.Gemini {
     export class OK extends Command {
 
         public fullCommand = "ok";
-        public helpText = "Invokes an action, assuming that any necessary parameters have already been set up. " +
-        ". Does not take any arguments";;
+        public helpText = "Invokes an action, assuming that any necessary parameters have already been set up. ";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -533,7 +541,7 @@ module NakedObjects.Angular.Gemini {
     export class Open extends Command {
 
         public fullCommand = "open";
-        public helpText = "Opens a view of a specific collection within an object, from which " +
+        public helpText = "Not yet implemented. Opens a view of a specific collection within an object, from which " +
         "individual items may be read using the item command. Open command takes one argument: " +
         "the name, or partial name, of the collection.  If the partial name matches more than one " +
         "collection, the list of matches will be returned, but none will be opened.";
@@ -545,20 +553,19 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
-            this.clearInputAndSetOutputTo("Open command is not yet implemented with argument: " + match); //todo: temporary
+            //const match = this.argumentAsString(args, 0);
+            this.clearInputAndSetOutputTo("Open command is not yet implemented");
         };
 
     }
     export class Paste extends Command {
 
         public fullCommand = "paste";
-        public helpText = "Pastes the object reference from the clipboard into a named property on an object that is in edit mode, " +
-        "or into a named parameter on an opened action. The paste command takes one argument: the " +
-        "name or partial name of the property or paramater. If the partial name is ambigious the " +
-        "list of matching properties or parameters will be returned but the reference will not have been pasted. " +
-        "Paste ? will provide a reminder both of the object currently held in the clipboard without " +
-        "pasting it anywhere.";
+        public helpText = "Not yet implemented. Pastes the object reference from the clipboard into a named field " +
+        "on an object that is in edit mode, or in an opened action dialog. The paste command takes one argument: the " +
+        "name or partial name of the field. If the partial name is ambigious the " +
+        "list of matching fields will be returned but the reference will not have been pasted. " +
+        "Paste ? will provide a reminder of the object currently held in the clipboard without pasting it anywhere.";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -567,21 +574,20 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
-            if (this.isEdit()) {
-                this.clearInputAndSetOutputTo("Paste command is not yet implemented on property: " + match); //todo: temporary
-            }
-            if (this.isDialog) {
-                this.clearInputAndSetOutputTo("Paste command is not yet implemented on parameter: " + match); //todo: temporary
-            }
+            this.clearInputAndSetOutputTo("Paste command is not yet implemented");
+            //const match = this.argumentAsString(args, 0);
+            //if (this.isEdit()) {
+            //}
+            //if (this.isDialog) {
+            //}
         };
 
     }
     export class Reload extends Command {
 
         public fullCommand = "reload";
-        public helpText = "In the context of an object or a list, reloads the data from the server" +
-        "to ensure it is up to date." + ". Does not take any arguments";;
+        public helpText = "Not yet implemented. In the context of an object or a list, reloads the data from the server" +
+        "to ensure it is up to date.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -596,7 +602,7 @@ module NakedObjects.Angular.Gemini {
     export class Root extends Command {
 
         public fullCommand = "root";
-        public helpText = "From within a collection context, the root command returns" +
+        public helpText = "Not yet implemented. From within a collection context, the root command returns" +
         " to the 'root' object that owns the collection." +
         ". Does not take any arguments";;
         protected minArguments = 0;
@@ -607,15 +613,14 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Object command is not yet implemented");
+            this.clearInputAndSetOutputTo("Root command is not yet implemented");
         };
     }
     export class Save extends Command {
 
         public fullCommand = "save";
-        public helpText = "Saves the updated properties on an object that is being edited, and returns " +
-        "from edit mode to a normal view of that object" +
-        ". Does not take any arguments";;
+        public helpText = "Not yet implemented. Saves the updated properties on an object that is being edited, and returns " +
+        "from edit mode to a normal view of that object";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -623,14 +628,14 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit();
         }
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Object saved"); //todo: temporary
+            this.clearInputAndSetOutputTo("save command is not yet implemented");
         };
     }
     export class Table extends Command {
         public fullCommand = "table";
-        public helpText = "In the context of a list or an opened object collection, the table command" +
-        "switches to table mode. Items then accessed via the item command, will be presented as table rows" +
-        ". Does not take any arguments. Invoking table a second time will return the system to list mode.";
+        public helpText = "Not yet implemented. In the context of a list or an opened object collection, the table command" +
+        "switches that context to table mode. Items then accessed via the item command, will be presented as table rows." +
+        "Invoking table when the context is already in table mode will return the system to list mode.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -640,7 +645,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            this.clearInputAndSetOutputTo("Open command is not yet implemented with argument: " + match); //todo: temporary
+            this.clearInputAndSetOutputTo("Table command is not yet implemented");
         };
 
     }
