@@ -370,6 +370,7 @@ module NakedObjects.Angular.Gemini {
         goForward: () => void;
         swapPanes: () => void;
         singlePane: (right?: boolean) => void;
+        cicero: () => void;
     }
 
     export class CiceroViewModel {

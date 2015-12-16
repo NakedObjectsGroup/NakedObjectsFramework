@@ -42,6 +42,7 @@ module NakedObjects.Angular.Gemini {
         getListCacheIndex: (paneId: number, newPage: number, newPageSize: number) => string;
 
         isHome(paneId: number): boolean;
+        cicero(): void;
     }
 
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
@@ -519,6 +520,11 @@ module NakedObjects.Angular.Gemini {
             currentPaneId = currentPaneId === 1 ? 2 : 1;
 
             $location.path(newPath).search(search);
+        }
+
+        helper.cicero = () => {
+            const newPath = "/cicero/" + $location.path().split("/")[2];
+            $location.path(newPath);
         }
 
         helper.currentpane = () => currentPaneId;
