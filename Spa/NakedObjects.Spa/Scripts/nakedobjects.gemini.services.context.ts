@@ -457,11 +457,11 @@ module NakedObjects.Angular.Gemini {
                     context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, [], dvm);
+                    context.setInvokeUpdateError(error, dvm ? dvm.parameters : [], dvm);
                 });
         }
 
-        function getSetDirtyFunction(action: ActionMember, parms: _.Dictionary<Value>) {
+        function getSetDirtyFunction(action: ActionMember, parms: Value[]) {
             const parent = action.parent;
             const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
             if (parent instanceof DomainObjectRepresentation) {
@@ -471,15 +471,17 @@ module NakedObjects.Angular.Gemini {
             }
             else if (parent instanceof ListRepresentation && parms) {
                 if (actionIsNotQueryOnly) {
+
+
                     // todo can we optimize this ? 
+                    // todo match parm id of cca parm with passed in id - make values map ?
                     const list = _.filter(parms, v => v.isList());
                     const lists = _.map(list, v => v.list());
                     const values = _.flatten(lists);
-                    const objs = _.filter(values, v => v.isReference() && v.link().getTarget() instanceof DomainObjectRepresentation);
+                    const objs = _.filter(values, v => v.isReference());
                     const links = _.map(objs, v => v.link()); 
 
                     return () =>  _.forEach(links, l => dirtyCache.setDirty(l));
-
                 }
             }
 
@@ -493,7 +495,7 @@ module NakedObjects.Angular.Gemini {
          
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
-            const setDirty = getSetDirtyFunction(action, parms);
+            const setDirty = getSetDirtyFunction(action, _.values<Value>(parms));
 
             invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
@@ -513,7 +515,7 @@ module NakedObjects.Angular.Gemini {
                 _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
             }
 
-            const setDirty = getSetDirtyFunction(action, null);
+            const setDirty = getSetDirtyFunction(action, _.map(parameters, p => p.getValue()));
 
             invokeActionInternal(invokeMap, invoke, action, paneId, setDirty, dvm);
         };
