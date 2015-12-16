@@ -27,8 +27,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //No match
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
-            EnterCommand("act foo, bar  ");
-            WaitForOutput("Wrong number of arguments provided.");
+            //EnterCommand("act foo, bar  ");  //TODO: needs updating when 2nd param is implemented
+            //WaitForOutput("Wrong number of arguments provided.");
             //single match
             EnterCommand("act rand");
             WaitForOutput("Products menu. Action dialog: Random Product.");
@@ -41,8 +41,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Matching actions: Open Purchase Orders For Product, Create New Work Order, Work Orders,");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
-            EnterCommand("act foo, bar  ");
-            WaitForOutput("Wrong number of arguments provided.");
+            //EnterCommand("act foo, bar  "); //TODO: Update when second argyment implemented
+            //WaitForOutput("Wrong number of arguments provided.");
             EnterCommand("ac best");
             WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
             //Not available in current context
@@ -180,8 +180,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("x does not match any fields");
 
             //Too many arguments
-            EnterCommand("fi num,cat");
-            WaitForOutput("Wrong number of arguments provided.");
+            //EnterCommand("fi num,cat"); //TODO: revisit when second argument implemented
+            //WaitForOutput("Wrong number of arguments provided.");
 
             //Invalid context
             CiceroUrl("home");

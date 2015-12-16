@@ -307,7 +307,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
-            const p1 = this.argumentAsString(args, 1);
+            const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
                 this.clearInputAndSetOutputTo("The second argument for field, is not yet supported");
             }
