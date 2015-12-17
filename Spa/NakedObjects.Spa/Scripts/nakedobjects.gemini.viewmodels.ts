@@ -265,6 +265,8 @@ module NakedObjects.Angular.Gemini {
         header: string[];
         onPaneId: number;
 
+        id : string; 
+
         doSummary(): void { }
         doTable(): void { }
         doList(): void { }
@@ -293,6 +295,12 @@ module NakedObjects.Angular.Gemini {
 
         actions: ActionViewModel[];
         messages: string;
+
+        isSame(paneId: number, key : string) {
+            return this.collectionRep instanceof ListRepresentation && this.id === key;
+        }
+
+        collectionRep: CollectionMember | ListRepresentation;
     } 
 
     export class ServicesViewModel {

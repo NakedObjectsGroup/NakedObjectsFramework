@@ -316,6 +316,21 @@ module NakedObjects.Angular.Gemini {
             return { objectViewModel: ovm, ret: false };
         }
 
+        const currentLvms: CollectionViewModel[] = [];
+
+        function getCollectionViewModel(obj: ListRepresentation, routeData: PaneRouteData) {
+
+            const paneId = routeData.paneId;
+            const currentLvm = currentLvms[paneId];
+            if (currentLvm && currentLvm.isSame(paneId, collectionId(routeData))) {
+                return { collectionViewModel: currentLvm, ret: true };
+            }
+            const lvm = new CollectionViewModel();
+            currentLvms[paneId] = lvm;
+            return { collectionViewModel: lvm, ret: false };
+        }
+
+
         function clearDialog(paneId: number, actionMember: ActionMember) {
             const currentDvm = currentDvms[paneId];
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
@@ -482,10 +497,12 @@ module NakedObjects.Angular.Gemini {
 
         function create($scope: ng.IScope, collectionRep: CollectionMember, routeData : PaneRouteData) {
             const collectionViewModel = new CollectionViewModel();
+
             const links = collectionRep.value();
             const paneId = routeData.paneId;
             const state = routeData.state;
 
+            collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.title = collectionRep.extensions().friendlyName();
@@ -514,13 +531,24 @@ module NakedObjects.Angular.Gemini {
             return collectionViewModel;
         }
 
+        function collectionId(routeData: PaneRouteData) {
+            return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}`;
+        }
+
         function createFromList($scope: ng.IScope, listRep: ListRepresentation, routeData : PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
-            const collectionViewModel = new CollectionViewModel();
+          
+            const {collectionViewModel, ret} = getCollectionViewModel(listRep, routeData);
+            if (ret) {
+                return collectionViewModel;
+            }
+
             const links = listRep.value();
             const paneId = routeData.paneId;
             const state = routeData.state;
-          
 
+            collectionViewModel.id = collectionId(routeData);
+          
+            collectionViewModel.collectionRep = listRep;
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.pluralName = "Objects";
@@ -659,7 +687,7 @@ module NakedObjects.Angular.Gemini {
         // seperate function so we can reuse in reload
         function setupDomainObjectViewModel(objectViewModel: DomainObjectViewModel, $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData : PaneRouteData) {
 
-            const collectionStates = routeData.collections;
+           
             const props: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
             const editing = routeData.edit;
             const paneId = routeData.paneId;
