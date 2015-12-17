@@ -197,6 +197,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("field");
             WaitForOutput("The command: field is not available in the current context");
 
+            //Multi-clause match
+            CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
+            WaitForOutput("SalesPerson: Tete Mensa-Annan.");
+            EnterCommand("fi sales a");
+            WaitForOutput("Matching fields: Sales Territory: SalesTerritory Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
+            EnterCommand("fi ter ory");
+            WaitForOutput("Field: Sales Territory: SalesTerritory Northwest,");
+            EnterCommand("fi sales z");
+            WaitForOutput("sales z does not match any fields");
+
             //No fields
             CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
             EnterCommand("field");
@@ -208,6 +218,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: Road-450 Red, 52.");
             EnterCommand("field num,?");
             WaitForOutput("The second argument for field, is not yet supported");
+            
             //To many args
             EnterCommand("field num,x,y");
             WaitForOutput("Wrong number of arguments provided.");

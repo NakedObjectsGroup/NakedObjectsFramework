@@ -129,13 +129,17 @@ module NakedObjects.Angular.Gemini {
 
         protected matchingProperties(
             obj: DomainObjectRepresentation,
-            name: string): PropertyMember[] {
-        var fields = _.map(obj.propertyMembers(), prop => prop);
-        if (name) {
-            var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
+            match: string): PropertyMember[] {
+            var fields = _.map(obj.propertyMembers(), prop => prop);
+            if (match) {
+                const clauses = match.split(" ");
+                var fields = _.filter(fields, (field) => {
+                    const name = field.extensions().friendlyName().toLowerCase();
+                    return _.all(clauses, clause => name.indexOf(clause) >= 0);
+                });
+            }
+            return fields;
         }
-        return fields;
-    }
     }
 
     export class Action extends Command {
@@ -159,7 +163,7 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const match = this.argumentAsString(args, 0);
-            const p1 = this.argumentAsString(args, 1, true); 
+            const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
                 this.clearInputAndSetOutputTo("Second argument for action is not yet supported.");
                 return;
@@ -305,13 +309,13 @@ module NakedObjects.Angular.Gemini {
         public fullCommand = "field";
         public helpText = "Display the name and content of a field or fields. " +
         "In the context of an object, a field is a property; in the context of an action dialog a field is a parameter." +
-        "Field may take 2 arguments, both of which are optional. "+
+        "Field may take 2 arguments, both of which are optional. " +
         "The argument is the partial field name. " +
         "If this matches more than one field, a list of matches is returned. " +
-        "If no argument is provided, the full list of fields is returned. "+
+        "If no argument is provided, the full list of fields is returned. " +
         "Not yet implemented: the second optional argument applies only to fields in an action dialog, or " +
         "in an object beign edited, and specifies the value, or selection, to be entered " +
-        "into the field.  If a ? is provided as the second argument, the field will not be "+
+        "into the field.  If a ? is provided as the second argument, the field will not be " +
         "updated but further details will be provided about that input field.";
         protected minArguments = 0;
         protected maxArguments = 2;
@@ -393,7 +397,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
-            const newPath = "/gemini/"+this.nglocation.path().split("/")[2];
+            const newPath = "/gemini/" + this.nglocation.path().split("/")[2];
             this.nglocation.path(newPath);
         };
     }
@@ -415,7 +419,7 @@ module NakedObjects.Angular.Gemini {
             const name = this.argumentAsString(args, 0);
             if (this.isList() || this.isCollection()) {
                 const item = this.argumentAsNumber(args, 1);
-                this.clearInputAndSetOutputTo("The go command is not yet implemented for lists or collections"); 
+                this.clearInputAndSetOutputTo("The go command is not yet implemented for lists or collections");
                 return;
             }
             const oid = this.urlManager.getRouteData().pane1.objectId;
@@ -433,18 +437,17 @@ module NakedObjects.Angular.Gemini {
                             }
                             break;
                         case 1:
-                            const propertyRep = refFields[0];
-                            this.urlManager.setProperty(propertyRep, 1);
+                            this.urlManager.setProperty(refFields[0], 1);
                             break;
                         default:
-                            var label = "Multiple reference fields match "+name+": ";
+                            var label = "Multiple reference fields match " + name + ": ";
                             s = _.reduce(refFields, (s, prop) => {
                                 return s + prop.extensions().friendlyName();
                             }, label);
                     }
                     this.clearInputAndSetOutputTo(s);
                 });
-          
+
         };
     }
     export class Help extends Command {
@@ -467,7 +470,7 @@ module NakedObjects.Angular.Gemini {
                     const c = this.commandFactory.getCommand(arg);
                     this.clearInputAndSetOutputTo(c.fullCommand + " command: " + c.helpText);
                 } catch (Error) {
-                        this.clearInputAndSetOutputTo(Error.message);
+                    this.clearInputAndSetOutputTo(Error.message);
                 }
             } else {
                 const commands = this.commandFactory.allCommandsForCurrentContext();
@@ -538,8 +541,8 @@ module NakedObjects.Angular.Gemini {
                             this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
                             break;
                         default:
-                            var label = name? "Matching menus: ": "Menus: ";
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + ", "; }, label);                           
+                            var label = name ? "Matching menus: " : "Menus: ";
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + ", "; }, label);
                             this.clearInputAndSetOutputTo(s);
                     }
                 });
