@@ -213,7 +213,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (dvm: DialogViewModel, right?: boolean)  => void;
+        executeInvoke: (right?: boolean)  => void;
         disabled(): boolean { return false; }
 
         parameters: ParameterViewModel[];

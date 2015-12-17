@@ -277,13 +277,16 @@ module NakedObjects.Angular.Gemini {
                 deregisterSearchWatch();
             };
 
-            actionViewModel.executeInvoke = (dvm: DialogViewModel, right?: boolean) =>
-                context.invokeAction(actionRep, clickHandler.pane(paneId, right), dvm);
+            actionViewModel.executeInvoke = (right?: boolean) => {
+                const pps = actionViewModel.parameters;
+                const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+                context.invokeActionWithParms(actionRep, clickHandler.pane(paneId, right), parmMap);
+            }
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
             (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
-            (right?: boolean) => actionViewModel.executeInvoke(null, right);
+            (right?: boolean) => actionViewModel.executeInvoke(right);
 
             return actionViewModel;
         };
@@ -354,7 +357,7 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.message = "";
             
             dialogViewModel.onPaneId = paneId;
-            dialogViewModel.doInvoke = (right?: boolean) => actionViewModel.executeInvoke(dialogViewModel, right);
+            dialogViewModel.doInvoke = (right?: boolean) => actionViewModel.executeInvoke(right);
 
             dialogViewModel.doClose = () => {
                 actionViewModel.stopWatchingParms();
@@ -572,7 +575,8 @@ module NakedObjects.Angular.Gemini {
 
             _.forEach(collectionViewModel.actions, a => {
 
-                a.executeInvoke = (dvm : DialogViewModel, right?: boolean) => {
+                const wrappedInvoke = a.executeInvoke;
+                a.executeInvoke = (right?: boolean) => {
                     const selected = _.filter(collectionViewModel.items, i => i.selected);
 
                     if (selected.length === 0) {
@@ -585,12 +589,12 @@ module NakedObjects.Angular.Gemini {
                     const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
                     a.parameters.push(collectionParmVm);
 
-                    context.invokeAction(a.actionRep, clickHandler.pane(paneId, right), dvm);
+                    wrappedInvoke(right);
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
                     (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
-                    (right?: boolean) => a.executeInvoke(null, right);
+                    (right?: boolean) => a.executeInvoke( right);
             });
 
 
