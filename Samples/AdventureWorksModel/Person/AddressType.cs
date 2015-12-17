@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [Disabled]
+        [NakedObjectsIgnore]
         public virtual int AddressTypeID { get; set; }
 
         #endregion
@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
         #region Name
 
         [Title]
-        [Disabled]
+        [NakedObjectsIgnore]
         public virtual string Name { get; set; }
 
         #endregion
@@ -54,7 +54,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        [NakedObjectsIgnore]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion

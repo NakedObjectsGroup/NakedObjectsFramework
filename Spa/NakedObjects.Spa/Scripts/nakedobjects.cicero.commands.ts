@@ -152,6 +152,7 @@ module NakedObjects.Angular.Gemini {
             const p1 = this.argumentAsString(args, 1, true); 
             if (p1) {
                 this.clearInputAndSetOutputTo("Second argument for action is not yet supported.");
+                return;
             }
             if (this.isObject()) {
                 const oid = this.urlManager.getRouteData().pane1.objectId;
@@ -172,6 +173,10 @@ module NakedObjects.Angular.Gemini {
 
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
             var actions = _.map(actionsMap, action => action);
+            if (actions.length == 0) {
+                this.clearInputAndSetOutputTo("No actions available");
+                return;
+            }
             if (match) {
                 const clauses = match.split(" ");
                 actions = _.filter(actions, (action) => {
@@ -310,11 +315,16 @@ module NakedObjects.Angular.Gemini {
             const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
                 this.clearInputAndSetOutputTo("The second argument for field, is not yet supported");
+                return;
             }
             const oid = this.urlManager.getRouteData().pane1.objectId;
             const obj = this.context.getObjectByOid(1, oid)
                 .then((obj: DomainObjectRepresentation) => {
                     var fields = _.map(obj.propertyMembers(), prop => prop);
+                    if (fields.length == 0) {
+                        this.clearInputAndSetOutputTo("No visible fields");
+                        return;
+                    }
                     if (name) {
                         var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
                     }
@@ -367,9 +377,8 @@ module NakedObjects.Angular.Gemini {
     export class Gemini extends Command {
 
         public fullCommand = "gemini";
-        public helpText = "Switch to the Gemini (graphical) user interface. " +
-        "Not yet implemented: the Gemini interface will preserve the context - in the current implementation " +
-        "it just goes to home";
+        public helpText = "Switch to the Gemini (graphical) user interface preserving " +
+        "the current context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 

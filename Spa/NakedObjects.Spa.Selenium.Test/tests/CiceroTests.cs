@@ -41,8 +41,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Matching actions: Open Purchase Orders For Product, Create New Work Order, Work Orders,");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
-            //EnterCommand("act foo, bar  "); //TODO: Update when second argyment implemented
-            //WaitForOutput("Wrong number of arguments provided.");
             EnterCommand("ac best");
             WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
             //Not available in current context
@@ -66,6 +64,21 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu.");
             EnterCommand("ac ran individuals"); //Order doesn't matter
             WaitForOutput("Customers menu. Action dialog: Random Individual.");
+
+            //object with no actions
+            CiceroUrl("object?object1=AdventureWorksModel.ProductInventory-442-6");
+            EnterCommand("ac");
+            WaitForOutput("No actions available");
+
+            //second arg
+            CiceroUrl("home?menu1=CustomerRepository");
+            WaitForOutput("Customers menu.");
+            EnterCommand("ac name find by, ?");
+            WaitForOutput("Second argument for action is not yet supported.");
+
+            //To many args
+            EnterCommand("ac name find by, x, y");
+            WaitForOutput("Wrong number of arguments provided.");
         }
         public virtual void BackAndForward() //Tested together for simplicity
         {
@@ -179,14 +192,45 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("fi x");
             WaitForOutput("x does not match any fields");
 
-            //Too many arguments
-            //EnterCommand("fi num,cat"); //TODO: revisit when second argument implemented
-            //WaitForOutput("Wrong number of arguments provided.");
-
             //Invalid context
             CiceroUrl("home");
             EnterCommand("field");
             WaitForOutput("The command: field is not available in the current context");
+
+            //No fields
+            CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
+            EnterCommand("field");
+            WaitForOutput("No visible fields");
+
+            //More arguments
+            //second arg
+            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
+            WaitForOutput("Product: Road-450 Red, 52.");
+            EnterCommand("field num,?");
+            WaitForOutput("The second argument for field, is not yet supported");
+            //To many args
+            EnterCommand("field num,x,y");
+            WaitForOutput("Wrong number of arguments provided.");
+
+        }
+        public virtual void Gemini()
+        {
+            //home
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("gemini");
+            WaitForView(Pane.Single, PaneType.Home);
+
+            CiceroUrl("object?object1=AdventureWorksModel.Product-968");
+            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            EnterCommand("gemini");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
+
+            //No arguments
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("ge x");
+            WaitForOutput("Wrong number of arguments provided.");
         }
         public virtual void Help()
         {
@@ -424,6 +468,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Cancel();
             base.Edit();
             base.Field();
+            base.Gemini();
             base.Help();
             base.Menu();
             base.OK();
