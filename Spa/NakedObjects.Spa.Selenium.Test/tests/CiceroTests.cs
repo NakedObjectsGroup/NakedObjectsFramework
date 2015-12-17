@@ -183,11 +183,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("field num");
             WaitForOutput("Field: Product Number: BK-R68R-52,");
             EnterCommand("fi cat");
-            WaitForOutput("Matching fields: Product Category: ProductCategory Bikes, Product Subcategory: ProductSubcategory Road Bikes,");
+            WaitForOutput("Matching fields: Product Category: Bikes, Product Subcategory: Road Bikes,");
             //No argument
             EnterCommand("fi ");
-            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: ProductModel Road-450, List Price: 1457.99,");
-
+            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
             //No match
             EnterCommand("fi x");
             WaitForOutput("x does not match any fields");
@@ -201,14 +200,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
             WaitForOutput("SalesPerson: Tete Mensa-Annan.");
             EnterCommand("fi sales a");
-            WaitForOutput("Matching fields: Sales Territory: SalesTerritory Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
+            WaitForOutput("Matching fields: Sales Territory: Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
             EnterCommand("fi ter ory");
-            WaitForOutput("Field: Sales Territory: SalesTerritory Northwest,");
+            WaitForOutput("Field: Sales Territory: Northwest,");
             EnterCommand("fi sales z");
             WaitForOutput("sales z does not match any fields");
 
             //No fields
             CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
+            WaitForOutput("AddressType: Home.");
             EnterCommand("field");
             WaitForOutput("No visible fields");
 

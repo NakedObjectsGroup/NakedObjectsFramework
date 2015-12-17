@@ -359,14 +359,7 @@ module NakedObjects.Angular.Gemini {
 
         private renderProp(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();
-            let value: string = pm.value().toString();
-            if (value) {
-                let type = _.last(pm.extensions().returnType().split("."));
-                if (type == 'string' || type == 'number' || type == 'date') type = "";
-                value = type + " " + value;
-            } else {
-                value = "empty";
-            }
+            let value: string = pm.value().toString() || "empty";
             return name + ": " + value + ", ";
         }
     }
