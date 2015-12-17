@@ -190,7 +190,7 @@ module NakedObjects.Angular.Gemini {
 
                     if (isDomainObjectViewModel(object)) {
                         _.forEach(pArgs, (v, n) => {
-                            const property = _.find(object.properties, p => p.argId === n);
+                            const property = _.find(object.properties, p => p.id === n);
                             const newValue = property.getValue();
                             nArgs[n] = newValue;
                         });

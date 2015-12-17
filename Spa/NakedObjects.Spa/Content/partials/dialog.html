@@ -4,7 +4,7 @@
 <form>
  <div class="parameters">
   <div class="parameter" ng-repeat="parameter in dialog.actionViewModel.parameters" ng-switch="parameter.type">
-   <div class="name"><label for="{{parameter.argId}}{{dialog.onPaneId}}">{{parameter.title}}</label></div>
+   <div class="name"><label for="{{parameter.argId}}">{{parameter.title}}</label></div>
    <div ng-switch-when="ref">
     <div class="value input-control text" ng-switch="parameter.hasChoices">
      <input type="hidden" value="{{parameter.reference}}" ng-model="parameter.reference" />
@@ -13,16 +13,16 @@
        <div ng-switch-when="false" tabindex="0" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop>
         {{parameter.value}}
        </div>
-       <input id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop />
+       <input id="{{parameter.argId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" ng-switch-when="true" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-drop />
       </div>
       <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-       <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
-       <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
+       <select id="{{parameter.argId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
+       <select id="{{parameter.argId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
       </div>
      </div>
      <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-      <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
-      <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
+      <select id="{{parameter.argId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
+      <select id="{{parameter.argId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
      </div>
     </div>
    </div>
@@ -32,25 +32,25 @@
       <div ng-switch-when="false" ng-switch="parameter.returnType">
        <div ng-switch-when="string" ng-switch="parameter.format">
         <div ng-switch-when="date-time">
-         <input id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker />
+         <input id="{{parameter.argId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker />
         </div>
-        <input id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" />
+        <input id="{{parameter.argId}}" class="{{parameter.status}}" ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" />
        </div>
        <div ng-switch-when="boolean">
-        <input id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" type="checkbox" ng-model="parameter.value" />
+        <input id="{{parameter.argId}}" class="{{parameter.status}}" type="checkbox" ng-model="parameter.value" />
        </div>
        <div ng-switch-default>
-        <input id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" />
+        <input id="{{parameter.argId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" />
        </div>
       </div>
       <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-       <select id="{{parameter.argId}}{{dialog.onPaneId}}"  class="{{parameter.status}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
-       <select id="{{parameter.argId}}{{dialog.onPaneId}}"  class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
+       <select id="{{parameter.argId}}"  class="{{parameter.status}}" ng-switch-when="false" ng-model="$parent.parameter.choice" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
+       <select id="{{parameter.argId}}"  class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="$parent.parameter.multiChoices" select="parameter.conditionalChoices(args)" gemini-conditionalchoices><option value="" disabled selected>{{parameter.description}}</option></select>
       </div>
      </div>
      <div ng-switch-when="true" ng-switch="parameter.isMultipleChoices">
-      <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"><option></option><option value="" disabled>{{parameter.description}}</option></select>
-      <select id="{{parameter.argId}}{{dialog.onPaneId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
+      <select id="{{parameter.argId}}" class="{{parameter.status}}" ng-switch-when="false" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices"><option></option><option value="" disabled>{{parameter.description}}</option></select>
+      <select id="{{parameter.argId}}" class="{{parameter.status}}" multiple ng-switch-when="true" ng-model="parameter.multiChoices" ng-options="c as c.name for c in parameter.choices"><option value="" disabled>{{parameter.description}}</option></select>
      </div>
     </div>
    </div>

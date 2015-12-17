@@ -124,7 +124,7 @@ module NakedObjects.Angular.Gemini {
             };
         }
 
-        // tested
+    
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             var parmViewModel = new ParameterViewModel();
 
@@ -138,7 +138,7 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
-            parmViewModel.argId = parmViewModel.id.toLowerCase();
+            parmViewModel.argId = `${parmViewModel.id.toLowerCase()}${paneId}`;
             parmViewModel.reference = "";
 
             parmViewModel.mask = parmRep.extensions().mask();
@@ -399,7 +399,7 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType()) : "";
 
             propertyViewModel.id = id;
-            propertyViewModel.argId = id.toLowerCase();
+            propertyViewModel.argId = `${id.toLowerCase()}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.choices = [];
             propertyViewModel.hasPrompt = propertyRep.hasPrompt();
