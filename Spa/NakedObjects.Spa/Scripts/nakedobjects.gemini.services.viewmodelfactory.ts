@@ -753,7 +753,10 @@ module NakedObjects.Angular.Gemini {
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
-                tvm.cicero = () => urlManager.cicero();
+                tvm.cicero = () => {
+                    urlManager.singlePane(clickHandler.pane(1));
+                    urlManager.cicero();
+                }
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
                 cachedTvm = tvm;
