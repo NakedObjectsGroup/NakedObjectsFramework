@@ -150,6 +150,7 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.returnType = parmRep.extensions().returnType();
             parmViewModel.format = parmRep.extensions().format();
             parmViewModel.isCollectionContributed = parmRep.isCollectionContributed();
+            parmViewModel.onPaneId = paneId;
 
             parmViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
@@ -349,6 +350,7 @@ module NakedObjects.Angular.Gemini {
 
             propertyViewModel.title = propertyRep.extensions().friendlyName();
             propertyViewModel.optional = propertyRep.extensions().optional();
+            propertyViewModel.onPaneId = paneId;
 
             const required = propertyViewModel.optional ? "" : "* ";
 

@@ -120,7 +120,8 @@ module NakedObjects.Angular.Gemini {
         color: string;
         description: string;
         optional: boolean;
-        isCollectionContributed : boolean;
+        isCollectionContributed: boolean;
+        onPaneId : number;
 
         //setSelectedChoice() {}
 

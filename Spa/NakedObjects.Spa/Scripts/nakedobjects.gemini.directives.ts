@@ -166,6 +166,7 @@ module NakedObjects.Angular.Gemini {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
                 const pArgs = viewModel.arguments;
+                const paneId = viewModel.onPaneId;
                 let currentOptions: ChoiceViewModel[] = [];
 
                 function isDomainObjectViewModel(object : any) : object is DomainObjectViewModel {
@@ -261,7 +262,7 @@ module NakedObjects.Angular.Gemini {
 
 
                 function setListeners() {
-                    _.forEach(pArgs, (v, n) => $(`#${n}`).on("change", () => populateDropdown()));
+                    _.forEach(pArgs, (v, n) => $(`#${n}${paneId}`).on("change", () => populateDropdown()));
                     $(element).on("change", optionChanged);
                 }
 
