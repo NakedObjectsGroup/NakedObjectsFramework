@@ -47,7 +47,7 @@ module NakedObjects.Angular.Gemini {
     });
 
     app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
-        const cvm = viewModelFactory.setCiceroVMIfNecessary();
+        const cvm = viewModelFactory.ciceroViewModel();
         $scope.cicero = cvm;
         cvm.setOutputToSummaryOfRepresentation(urlManager.getRouteData().pane1);
         focusManager.focusOn(FocusTarget.FirstInput, 1);

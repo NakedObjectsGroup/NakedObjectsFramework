@@ -215,6 +215,9 @@ module NakedObjects.Angular.Gemini {
         doInvoke: (right?: boolean) => void;
         executeInvoke: (dvm: DialogViewModel, right?: boolean)  => void;
         disabled(): boolean { return false; }
+
+        parameters: ParameterViewModel[];
+        stopWatchingParms: () => void;
     } 
 
     export class DialogViewModel extends MessageViewModel {
@@ -225,16 +228,13 @@ module NakedObjects.Angular.Gemini {
         onPaneId: number;
 
         action : ActionMember;
-
-        parameters: ParameterViewModel[];
+        actionViewModel : ActionViewModel;
+        
 
         doClose: () => void;
         doInvoke: (right?: boolean) => void;
 
-        clearMessages() {
-            this.message = "";
-            _.each(this.parameters, parm => parm.clearMessage());
-        }
+        clearMessages: () => void; 
 
         isSame(paneId : number, otherAction : ActionMember ) {
             return this.onPaneId === paneId && this.action.invokeLink().href() === otherAction.invokeLink().href();

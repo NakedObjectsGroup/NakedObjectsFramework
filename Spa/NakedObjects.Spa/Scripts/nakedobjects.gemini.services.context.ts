@@ -457,7 +457,7 @@ module NakedObjects.Angular.Gemini {
                     context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, dvm ? dvm.parameters : [], dvm);
+                    context.setInvokeUpdateError(error, dvm ? dvm.actionViewModel.parameters : [], dvm);
                 });
         }
 
@@ -508,7 +508,7 @@ module NakedObjects.Angular.Gemini {
 
             if (dvm) {
                 dvm.clearMessages();
-                parameters = dvm.parameters;
+                parameters = dvm.actionViewModel.parameters;
                 _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
 
                 // todo do we still need to do this ? Test

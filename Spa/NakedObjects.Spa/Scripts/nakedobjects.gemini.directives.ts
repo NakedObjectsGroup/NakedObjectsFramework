@@ -182,7 +182,7 @@ module NakedObjects.Angular.Gemini {
                     // todo replace with _.mapValue 
                     if (dialog) {
                         _.forEach(pArgs, (v, n) => {
-                            const parm = _.find(dialog.parameters, p => p.id === n);
+                            const parm = _.find(dialog.actionViewModel.parameters, p => p.id === n);
                             const newValue = parm.getValue();
                             nArgs[n] = newValue;
                         });
