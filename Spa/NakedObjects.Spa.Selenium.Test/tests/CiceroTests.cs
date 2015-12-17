@@ -181,12 +181,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
             WaitForOutput("Product: Road-450 Red, 52.");
             EnterCommand("field num");
-            WaitForOutput("Field: Product Number: BK-R68R-52,");
+            WaitForOutput("Product Number: BK-R68R-52,");
             EnterCommand("fi cat");
-            WaitForOutput("Matching fields: Product Category: Bikes, Product Subcategory: Road Bikes,");
+            WaitForOutput("Product Category: Bikes, Product Subcategory: Road Bikes,");
             //No argument
             EnterCommand("fi ");
-            WaitForOutputStartingWith("Fields: Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
+            WaitForOutputStartingWith("Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
             //No match
             EnterCommand("fi x");
             WaitForOutput("x does not match any fields");
@@ -198,31 +198,33 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Multi-clause match
             CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
-            WaitForOutput("SalesPerson: Tete Mensa-Annan.");
+            WaitForOutput("Sales Person: Tete Mensa-Annan.");
             EnterCommand("fi sales a");
-            WaitForOutput("Matching fields: Sales Territory: Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
+            WaitForOutput("Sales Territory: Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
             EnterCommand("fi ter ory");
-            WaitForOutput("Field: Sales Territory: Northwest,");
+            WaitForOutput("Sales Territory: Northwest,");
             EnterCommand("fi sales z");
             WaitForOutput("sales z does not match any fields");
 
             //No fields
             CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
-            WaitForOutput("AddressType: Home.");
+            WaitForOutput("Address Type: Home.");
             EnterCommand("field");
             WaitForOutput("No visible fields");
 
-            //More arguments
-            //second arg
+            //With question mark
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
             WaitForOutput("Product: Road-450 Red, 52.");
             EnterCommand("field num,?");
-            WaitForOutput("The second argument for field, is not yet supported");
+            WaitForOutput("Field name: Product Number, Value: BK-R68R-52, Type: String, Mandatory");
             
             //To many args
             EnterCommand("field num,x,y");
             WaitForOutput("Wrong number of arguments provided.");
 
+            //Input
+            EnterCommand("field num,x");
+            WaitForOutput("Writing to fields is not yet supported");
         }
         public virtual void Gemini()
         {
@@ -314,7 +316,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
             WaitForOutput("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
             EnterCommand("ok");
-            WaitForOutput("SalesOrderHeader: SO69562.");
+            WaitForOutput("Sales Order Header: SO69562.");
 
             //Invalid contexts
             CiceroUrl("home");

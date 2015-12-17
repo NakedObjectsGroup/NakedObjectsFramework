@@ -327,10 +327,16 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
             const p1 = this.argumentAsString(args, 1, true);
-            if (p1) {
-                this.clearInputAndSetOutputTo("The second argument for field, is not yet supported");
+            if (!p1 || p1 == "?") {
+                this.renderProperties(name, p1);
                 return;
-            }
+            } else {
+                this.clearInputAndSetOutputTo("Writing to fields is not yet supported");
+                return;
+            }         
+        };
+
+        private renderProperties(name: string, arg1: string) {
             const oid = this.urlManager.getRouteData().pane1.objectId;
             const obj = this.context.getObjectByOid(1, oid)
                 .then((obj: DomainObjectRepresentation) => {
@@ -345,17 +351,38 @@ module NakedObjects.Angular.Gemini {
                             }
                             break;
                         case 1:
-                            s = "Field: " + this.renderProp(fields[0]);
+                            const field = fields[0];
+                            if (!arg1) {
+                                s = this.renderProp(field);
+                            } else {
+                                s = "Field name: " + field.extensions().friendlyName();
+                                s += ", Value: ";
+                                s += field.value().toString() || "empty";
+                                s += ", Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
+                                if (field.disabledReason()) {
+                                    s += ", Unmodifiable: " + field.disabledReason();
+                                } else {
+                                    s += field.extensions().optional() ? ", Optional" : ", Mandatory";
+                                    if (field.choices()) {
+                                        var label = ", Choices: ";
+                                        s += _.reduce(field.choices(), (s, cho) => {
+                                            return s + cho + " ";
+                                        }, label);
+                                    }
+                                    const desc = field.extensions().description()
+                                    s += desc ? ", Description: " + desc : "";
+                                    //TODO:  Add a Can Paste if clipboard has compatible type
+                                }
+                            }
                             break;
                         default:
-                            var label = name ? "Matching fields: " : "Fields: ";
                             s = _.reduce(fields, (s, prop) => {
                                 return s + this.renderProp(prop);
-                            }, label);
+                            }, "");
                     }
                     this.clearInputAndSetOutputTo(s);
                 });
-        };
+        }
 
         private renderProp(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();

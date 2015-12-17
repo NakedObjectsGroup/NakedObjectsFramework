@@ -25,4 +25,10 @@ module NakedObjects.Helpers {
         var results = (typeRegex).exec(url);
         return (results && results.length > 2) ? results[2] : "";
     }
+
+    export function friendlyTypeName(fullName: string) {
+        const shortName = _.last(fullName.split("."));
+        const result = shortName.replace(/([A-Z])/g, " $1");
+        return result.charAt(0).toUpperCase() + result.slice(1);
+    }
 }

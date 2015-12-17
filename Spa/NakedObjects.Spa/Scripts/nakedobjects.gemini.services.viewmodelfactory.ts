@@ -789,8 +789,8 @@ module NakedObjects.Angular.Gemini {
                         const [domainType, ...id] = routeData.objectId.split("-");
                         context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
-                                let output = ""; //TODO: use builder
-                                const type = _.last(obj.domainType().split("."));
+                                let output = "";
+                                const type = Helpers.friendlyTypeName(obj.domainType());
                                 if (routeData.edit) {
                                     output += "Editing ";
                                 }
