@@ -299,7 +299,7 @@ module NakedObjects.Angular.Gemini {
             search[`${selected}${paneId}`] = 0;
 
             if (dvm) {
-                _.each(dvm.parameters, p => setParameter(paneId, search, p));
+                _.each(dvm.actionViewModel.parameters, p => setParameter(paneId, search, p));
             }
 
             $location.search(search);

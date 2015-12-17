@@ -23,8 +23,8 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
-        invokeAction(action: ActionMember, paneId: number, dvm? : DialogViewModel);
-        invokeActionWithParms(action: ActionMember, paneId: number, parms : _.Dictionary<Value>);
+        //invokeAction(action: ActionMember, paneId: number, dvm? : DialogViewModel);
+        invokeActionWithParms(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
         updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
 
@@ -457,7 +457,7 @@ module NakedObjects.Angular.Gemini {
                     context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, dvm ? dvm.parameters : [], dvm);
+                    context.setInvokeUpdateError(error, dvm ? dvm.actionViewModel.parameters : [], dvm);
                 });
         }
 
@@ -489,7 +489,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        context.invokeActionWithParms = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>) => {
+        context.invokeActionWithParms = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>)     => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
          
@@ -498,27 +498,29 @@ module NakedObjects.Angular.Gemini {
             const setDirty = getSetDirtyFunction(action, _.values<Value>(parms));
 
             invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
+
+            return $q.when(new ErrorMap(null, null, null));
         };
 
 
-        context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
-            const invoke = action.getInvoke();
-            const invokeMap = invoke.getInvokeMap();
-            let parameters: ParameterViewModel[] = [];
+        //context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
+        //    const invoke = action.getInvoke();
+        //    const invokeMap = invoke.getInvokeMap();
+        //    let parameters: ParameterViewModel[] = [];
 
-            if (dvm) {
-                dvm.clearMessages();
-                parameters = dvm.parameters;
-                _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
+        //    if (dvm) {
+        //        dvm.clearMessages();
+        //        parameters = dvm.actionViewModel.parameters;
+        //        _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
 
-                // todo do we still need to do this ? Test
-                _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
-            }
+        //        // todo do we still need to do this ? Test
+        //        _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
+        //    }
 
-            const setDirty = getSetDirtyFunction(action, _.map(parameters, p => p.getValue()));
+        //    const setDirty = getSetDirtyFunction(action, _.map(parameters, p => p.getValue()));
 
-            invokeActionInternal(invokeMap, invoke, action, paneId, setDirty, dvm);
-        };
+        //    invokeActionInternal(invokeMap, invoke, action, paneId, setDirty, dvm);
+        //};
 
         context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
             const update = object.getUpdateMap();

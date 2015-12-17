@@ -213,8 +213,11 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (dvm: DialogViewModel, right?: boolean)  => void;
+        executeInvoke: (right?: boolean)  => void;
         disabled(): boolean { return false; }
+
+        parameters: ParameterViewModel[];
+        stopWatchingParms: () => void;
     } 
 
     export class DialogViewModel extends MessageViewModel {
@@ -225,16 +228,13 @@ module NakedObjects.Angular.Gemini {
         onPaneId: number;
 
         action : ActionMember;
-
-        parameters: ParameterViewModel[];
+        actionViewModel : ActionViewModel;
+        
 
         doClose: () => void;
         doInvoke: (right?: boolean) => void;
 
-        clearMessages() {
-            this.message = "";
-            _.each(this.parameters, parm => parm.clearMessage());
-        }
+        clearMessages: () => void; 
 
         isSame(paneId : number, otherAction : ActionMember ) {
             return this.onPaneId === paneId && this.action.invokeLink().href() === otherAction.invokeLink().href();
@@ -265,6 +265,8 @@ module NakedObjects.Angular.Gemini {
         header: string[];
         onPaneId: number;
 
+        id : string; 
+
         doSummary(): void { }
         doTable(): void { }
         doList(): void { }
@@ -293,6 +295,12 @@ module NakedObjects.Angular.Gemini {
 
         actions: ActionViewModel[];
         messages: string;
+
+        isSame(paneId: number, key : string) {
+            return this.collectionRep instanceof ListRepresentation && this.id === key;
+        }
+
+        collectionRep: CollectionMember | ListRepresentation;
     } 
 
     export class ServicesViewModel {
