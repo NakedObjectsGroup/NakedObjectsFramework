@@ -126,6 +126,16 @@ module NakedObjects.Angular.Gemini {
         protected isEdit(): boolean {
             return this.pane1RouteData().edit;
         }
+
+        protected matchingProperties(
+            obj: DomainObjectRepresentation,
+            name: string): PropertyMember[] {
+        var fields = _.map(obj.propertyMembers(), prop => prop);
+        if (name) {
+            var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
+        }
+        return fields;
+    }
     }
 
     export class Action extends Command {
@@ -320,26 +330,23 @@ module NakedObjects.Angular.Gemini {
             const oid = this.urlManager.getRouteData().pane1.objectId;
             const obj = this.context.getObjectByOid(1, oid)
                 .then((obj: DomainObjectRepresentation) => {
-                    var fields = _.map(obj.propertyMembers(), prop => prop);
-                    if (fields.length == 0) {
-                        this.clearInputAndSetOutputTo("No visible fields");
-                        return;
-                    }
-                    if (name) {
-                        var fields = _.filter(fields, (p) => { return p.extensions().friendlyName().toLowerCase().indexOf(name) > -1 });
-                    }
+                    var fields = this.matchingProperties(obj, name);
                     var s: string = "";
                     switch (fields.length) {
                         case 0:
-                            s = name + " does not match any fields";
+                            if (!name) {
+                                s = "No visible fields";
+                            } else {
+                                s = name + " does not match any fields";
+                            }
                             break;
                         case 1:
                             s = "Field: " + this.renderProp(fields[0]);
                             break;
                         default:
                             var label = name ? "Matching fields: " : "Fields: ";
-                            s = _.reduce(fields, (s, t) => {
-                                return s + this.renderProp(t);
+                            s = _.reduce(fields, (s, prop) => {
+                                return s + this.renderProp(prop);
                             }, label);
                     }
                     this.clearInputAndSetOutputTo(s);
@@ -405,14 +412,39 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            if (this.isObject()) {
-                const prop = this.argumentAsString(args, 0);
-                this.clearInputAndSetOutputTo("The go command is not yet implemented"); 
-            }
-            if (this.isList()) {
+            const name = this.argumentAsString(args, 0);
+            if (this.isList() || this.isCollection()) {
                 const item = this.argumentAsNumber(args, 1);
-                this.clearInputAndSetOutputTo("The go command is not yet implemented"); 
+                this.clearInputAndSetOutputTo("The go command is not yet implemented for lists or collections"); 
+                return;
             }
+            const oid = this.urlManager.getRouteData().pane1.objectId;
+            const obj = this.context.getObjectByOid(1, oid)
+                .then((obj: DomainObjectRepresentation) => {
+                    const allFields = this.matchingProperties(obj, name);
+                    const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
+                    var s: string = "";
+                    switch (refFields.length) {
+                        case 0:
+                            if (!name) {
+                                s = "No visible fields";
+                            } else {
+                                s = name + " does not match any reference fields";
+                            }
+                            break;
+                        case 1:
+                            const propertyRep = refFields[0];
+                            this.urlManager.setProperty(propertyRep, 1);
+                            break;
+                        default:
+                            var label = "Multiple reference fields match "+name+": ";
+                            s = _.reduce(refFields, (s, prop) => {
+                                return s + prop.extensions().friendlyName();
+                            }, label);
+                    }
+                    this.clearInputAndSetOutputTo(s);
+                });
+          
         };
     }
     export class Help extends Command {
