@@ -190,8 +190,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
-
-            $scope.toolBar = viewModelFactory.toolBarViewModel($scope);
+            $scope.toolBar = viewModelFactory.toolBarViewModel();
         };
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {

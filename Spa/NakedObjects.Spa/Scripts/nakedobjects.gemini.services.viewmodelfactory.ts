@@ -6,7 +6,7 @@
 module NakedObjects.Angular.Gemini {
 
     export interface IViewModelFactory {
-        toolBarViewModel($scope): ToolBarViewModel;
+        toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         actionViewModel($scope: ng.IScope, actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
         dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number): DialogViewModel;
@@ -40,7 +40,8 @@ module NakedObjects.Angular.Gemini {
         focusManager: IFocusManager,
         navigation: INavigation,
         clickHandler: IClickHandler,
-        commandFactory: ICommandFactory) {
+        commandFactory: ICommandFactory,
+        $rootScope: ng.IRootScopeService) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -870,22 +871,19 @@ module NakedObjects.Angular.Gemini {
                 }
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
+               
+                $rootScope.$on("ajax-change", (event, count) =>
+                    tvm.loading = count > 0 ? "Loading..." : "");
+                $rootScope.$on("back", () => navigation.back());
+                $rootScope.$on("forward", () => navigation.forward());
+
                 cachedToolBarViewModel = tvm;
             }
             return cachedToolBarViewModel;
         }
 
-        viewModelFactory.toolBarViewModel = ($scope) => {
-            const tvm = getToolBarViewModel();
-
-            $scope.$on("ajax-change", (event, count) =>
-                tvm.loading = count > 0 ? "Loading..." : "");
-            $scope.$on("back", () => navigation.back());
-            $scope.$on("forward", () => navigation.forward());
-
-            return tvm;
-        };
-
+        viewModelFactory.toolBarViewModel = () =>  getToolBarViewModel();
+    
         let cvm: CiceroViewModel = null;
 
         viewModelFactory.ciceroViewModel = () => {
