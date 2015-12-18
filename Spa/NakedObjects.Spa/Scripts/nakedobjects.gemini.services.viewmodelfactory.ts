@@ -550,7 +550,7 @@ module NakedObjects.Angular.Gemini {
 
             const links = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.state;
+            const state = routeData.collections[collectionRep.collectionId()];
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
@@ -742,7 +742,6 @@ module NakedObjects.Angular.Gemini {
             const props: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
             const editing = routeData.edit;
             const paneId = routeData.paneId;
-
 
             objectViewModel.domainObject = objectRep;
             objectViewModel.onPaneId = paneId;

@@ -158,7 +158,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function allSearchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, edit, action, parm, prop, actions, page, pageSize];
+            const raw = [menu, dialog, object, collection, edit, action, parm, prop, actions, page, pageSize, selected];
             return searchKeysForPane(search, paneId, raw);
         }
 
@@ -298,10 +298,6 @@ module NakedObjects.Angular.Gemini {
             search[`${pageSize}${paneId}`] = defaultPageSize;
             search[`${selected}${paneId}`] = 0;
 
-            //if (dvm) {
-            //    _.each(dvm.actionViewModel.parameters, p => setParameter(paneId, search, p));
-            //}
-
             $location.search(search);
         };
 
@@ -411,6 +407,7 @@ module NakedObjects.Angular.Gemini {
             search[`${page}${paneId}`] = newPage;
             search[`${pageSize}${paneId}`] = newPageSize;
             search[`${collection}${paneId}`] = CollectionViewState[state];
+            search[`${selected}${paneId}`] = 0; // clear selection 
 
             $location.search(search);
         };

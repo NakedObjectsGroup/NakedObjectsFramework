@@ -54,6 +54,13 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
+        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
+            $scope.dialogTemplate = dialogTemplate;          
+            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel($scope, action, routeData) : action as ActionViewModel;    
+            $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.paneId);
+        }
+
+
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
 
@@ -91,11 +98,9 @@ module NakedObjects.Angular.Gemini {
 
                                 const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstSubAction;
 
-                                if (routeData.dialogId) {
-                                    $scope.dialogTemplate = dialogTemplate;
+                                if (routeData.dialogId) {                               
                                     const action = menu.actionMember(routeData.dialogId);
-                                    const actionViewModel = viewModelFactory.actionViewModel($scope, action, routeData);
-                                    $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.paneId);
+                                    setDialog($scope, action, routeData);
                                 }
 
                                 focusManager.focusOn(focusTarget, urlManager.currentpane());
@@ -136,15 +141,11 @@ module NakedObjects.Angular.Gemini {
 
                     let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
 
-                    if (routeData.dialogId) {
-                        $scope.dialogTemplate = dialogTemplate;
-                   
+                    if (routeData.dialogId) {                                   
                         const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-
-                        $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.paneId);
+                        setDialog($scope, actionViewModel, routeData);
                         focusTarget = FocusTarget.Dialog;
                     } 
-
 
                     getFriendlyName().then((name: string) => $scope.title = name);
                              
@@ -165,15 +166,13 @@ module NakedObjects.Angular.Gemini {
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
 
-                if (routeData.dialogId) {
-                    $scope.dialogTemplate = dialogTemplate;
-                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-                    $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.paneId);
+                if (routeData.dialogId) {                  
+                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);                  
+                    setDialog($scope, actionViewModel, routeData);
                     focusTarget = FocusTarget.Dialog;
                 } 
 
                 focusManager.focusOn(focusTarget, urlManager.currentpane());
-
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
@@ -203,9 +202,6 @@ module NakedObjects.Angular.Gemini {
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
             $scope.object = { color: color.toColorFromType(dt) }; 
-            
-            // only pass previous values if editing 
-            const previousValues: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
 
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
@@ -229,11 +225,9 @@ module NakedObjects.Angular.Gemini {
 
                     let focusTarget: FocusTarget;
 
-                    if (routeData.dialogId) {
-                        $scope.dialogTemplate = dialogTemplate;
+                    if (routeData.dialogId) {                    
                         const action = object.actionMember(routeData.dialogId);
-                        const actionVewModel = viewModelFactory.actionViewModel($scope, action, routeData);
-                        $scope.dialog = viewModelFactory.dialogViewModel($scope, actionVewModel, routeData.paneId);
+                        setDialog($scope, action, routeData);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.FirstSubAction;
