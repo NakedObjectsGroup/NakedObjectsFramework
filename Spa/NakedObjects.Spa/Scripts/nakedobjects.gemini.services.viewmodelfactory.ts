@@ -342,40 +342,38 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms : ValueViewModel[]) {
-            if (err.containsError()) {
+        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) {
 
-                let requiredFieldsMissing = false; // only show warning message if we have nothing else 
-                let fieldValidationErrors = false;
+            let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+            let fieldValidationErrors = false;
 
-                _.each(vms, vmi => {
-                    const errorValue = err.valuesMap()[vmi.id];
+            _.each(vms, vmi => {
+                const errorValue = err.valuesMap()[vmi.id];
 
-                    if (errorValue) {
-                        vmi.value = errorValue.value.toValueString();
+                if (errorValue) {
+                    vmi.value = errorValue.value.toValueString();
 
-                        const reason = errorValue.invalidReason;
-                        if (reason) {
-                            if (reason === "Mandatory") {
-                                const r = "REQUIRED";
-                                requiredFieldsMissing = true;
-                                vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
-                            } else {
-                                vmi.message = reason;
-                                fieldValidationErrors = true;
-                            }
+                    const reason = errorValue.invalidReason;
+                    if (reason) {
+                        if (reason === "Mandatory") {
+                            const r = "REQUIRED";
+                            requiredFieldsMissing = true;
+                            vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                        } else {
+                            vmi.message = reason;
+                            fieldValidationErrors = true;
                         }
                     }
-                });
+                }
+            });
 
-                let msg = "";
-                if (err.invalidReason()) msg += err.invalidReason();
-                if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
-                if (fieldValidationErrors) msg += "See field validation message(s). ";
-                if (!msg) msg = err.warningMessage;
-                vm.message = msg;
+            let msg = "";
+            if (err.invalidReason()) msg += err.invalidReason();
+            if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
+            if (fieldValidationErrors) msg += "See field validation message(s). ";
+            if (!msg) msg = err.warningMessage;
+            vm.message = msg;
 
-            }
         }
 
 
@@ -400,7 +398,11 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.onPaneId = paneId;
             dialogViewModel.doInvoke = (right?: boolean) => {
                 actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
-                    handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);              
+                    if (err.containsError()) {
+                        handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
+                    } else {
+                        dialogViewModel.doClose();
+                    }
                 });
             };
         
@@ -807,11 +809,12 @@ module NakedObjects.Angular.Gemini {
                 objectViewModel.doSave = viewObject => {
 
                     const pps = _.filter(objectViewModel.properties, property => property.isEditable);
-
                     const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
 
                     saveHandler(objectRep, propMap, paneId, viewObject).then((err: ErrorMap) => {
-                        handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+                        if (err.containsError()) {
+                            handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+                        }
                     });
                 };
                 objectViewModel.isInEdit = true;
