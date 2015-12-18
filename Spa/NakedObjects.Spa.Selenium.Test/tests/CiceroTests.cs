@@ -223,9 +223,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("field num,x,y");
             WaitForOutput("Wrong number of arguments provided.");
 
-            //Input
-            EnterCommand("field num,x");
-            WaitForOutput("Writing to fields is not yet supported");
+            //Input: TODO
         }
         public virtual void Gemini()
         {

@@ -15,7 +15,8 @@ module NakedObjects.Angular.Gemini{
         getCommand(commandWord: string): Command;
     }
 
-    app.service('commandFactory', function ($q: ng.IQService,
+    app.service('commandFactory', function (
+        $q: ng.IQService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
         $cacheFactory: ng.ICacheFactoryService,
@@ -33,26 +34,26 @@ module NakedObjects.Angular.Gemini{
         let commandsInitialised = false;
 
         const commands: _.Dictionary<Command> = {
-            "ac": new Action(urlManager, $location, commandFactory, context, navigation),
-            "ba": new Back(urlManager, $location, commandFactory, context, navigation),
-            "ca": new Cancel(urlManager, $location, commandFactory, context, navigation),
-            "co": new Copy(urlManager, $location, commandFactory, context, navigation),
-            "ed": new Edit(urlManager, $location, commandFactory, context, navigation),
-            "fi": new Field(urlManager, $location, commandFactory, context, navigation),
-            "fo": new Forward(urlManager, $location, commandFactory, context, navigation),
-            "ge": new Gemini(urlManager, $location, commandFactory, context, navigation),
-            "go": new Go(urlManager, $location, commandFactory, context, navigation),
-            "he": new Help(urlManager, $location, commandFactory, context, navigation),
-            "it": new Item(urlManager, $location, commandFactory, context, navigation),
-            "me": new Menu(urlManager, $location, commandFactory, context, navigation),
-            "ok": new OK(urlManager, $location, commandFactory, context, navigation),
-            "op": new Open(urlManager, $location, commandFactory, context, navigation),
-            "pa": new Paste(urlManager, $location, commandFactory, context, navigation),
-            "re": new Reload(urlManager, $location, commandFactory, context, navigation),
-            "ro": new Root(urlManager, $location, commandFactory, context, navigation),
-            "sa": new Save(urlManager, $location, commandFactory, context, navigation),
-            "ta": new Table(urlManager, $location, commandFactory, context, navigation),
-            "wh": new Where(urlManager, $location, commandFactory, context, navigation)
+            "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q),
+            "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q),
+            "ca": new Cancel(urlManager, $location, commandFactory, context, navigation, $q),
+            "co": new Copy(urlManager, $location, commandFactory, context, navigation, $q),
+            "ed": new Edit(urlManager, $location, commandFactory, context, navigation, $q),
+            "fi": new Field(urlManager, $location, commandFactory, context, navigation, $q),
+            "fo": new Forward(urlManager, $location, commandFactory, context, navigation, $q),
+            "ge": new Gemini(urlManager, $location, commandFactory, context, navigation, $q),
+            "go": new Go(urlManager, $location, commandFactory, context, navigation, $q),
+            "he": new Help(urlManager, $location, commandFactory, context, navigation, $q),
+            "it": new Item(urlManager, $location, commandFactory, context, navigation, $q),
+            "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q),
+            "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q),
+            "op": new Open(urlManager, $location, commandFactory, context, navigation, $q),
+            "pa": new Paste(urlManager, $location, commandFactory, context, navigation, $q),
+            "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q),
+            "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
+            "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
+            "ta": new Table(urlManager, $location, commandFactory, context, navigation, $q),
+            "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         
         commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {

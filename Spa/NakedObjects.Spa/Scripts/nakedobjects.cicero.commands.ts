@@ -2,13 +2,17 @@
 
 module NakedObjects.Angular.Gemini {
 
+    import IResourceRepresentation = NakedObjects.RoInterfaces.IResourceRepresentation;
+
     export abstract class Command {
 
         constructor(protected urlManager: IUrlManager,
             protected nglocation: ng.ILocationService,
             protected commandFactory: ICommandFactory,
             protected context: IContext,
-            protected navigation: INavigation) {
+            protected navigation: INavigation,
+            protected $q: ng.IQService
+        ) {
         }
 
         public fullCommand: string;
@@ -98,7 +102,7 @@ module NakedObjects.Angular.Gemini {
             return null;
         }
 
-        private pane1RouteData(): PaneRouteData {
+        protected RouteData(): PaneRouteData {
             return this.urlManager.getRouteData().pane1;
         }
         //Helpers delegating to RouteData
@@ -106,16 +110,36 @@ module NakedObjects.Angular.Gemini {
             return this.urlManager.isHome(1);
         }
         protected isObject(): boolean {
-            return !!this.pane1RouteData().objectId;
+            return !!this.RouteData().objectId;
+        }
+        protected getObject(): ng.IPromise<DomainObjectRepresentation> {
+            const oid = this.RouteData().objectId;
+            return this.context.getObjectByOid(1, oid);
         }
         protected isList(): boolean {
             return false;  //TODO
         }
         protected isMenu(): boolean {
-            return !!this.pane1RouteData().menuId;
+            return !!this.RouteData().menuId;
+        }
+        protected getMenu(): ng.IPromise<MenuRepresentation> {
+            return this.context.getMenu(this.RouteData().menuId);
         }
         protected isDialog(): boolean {
-            return !!this.pane1RouteData().dialogId;
+            return !!this.RouteData().dialogId;
+        }
+        protected getActionForCurrentDialog(): ng.IPromise<ActionMember> {
+            const dialogId = this.RouteData().dialogId;
+            if (this.isObject()) {
+                return this.getObject().then((obj: DomainObjectRepresentation) => {
+                    return this.$q.when(obj.actionMember(dialogId));
+                });
+            } else if (this.isMenu()) {
+                return this.getMenu().then((menu: MenuRepresentation) => {
+                    return this.$q.when(menu.actionMember(dialogId)); //i.e. return a promise
+                });
+            }
+            return this.$q.reject("List actions not implemented yet");
         }
         protected isCollection(): boolean {
             return false; //TODO
@@ -124,21 +148,38 @@ module NakedObjects.Angular.Gemini {
             throw false; //TODO
         }
         protected isEdit(): boolean {
-            return this.pane1RouteData().edit;
+            return this.RouteData().edit;
         }
 
         protected matchingProperties(
             obj: DomainObjectRepresentation,
             match: string): PropertyMember[] {
-            var fields = _.map(obj.propertyMembers(), prop => prop);
+            let props = _.map(obj.propertyMembers(), prop => prop);
             if (match) {
-                const clauses = match.split(" ");
-                var fields = _.filter(fields, (field) => {
-                    const name = field.extensions().friendlyName().toLowerCase();
-                    return _.all(clauses, clause => name.indexOf(clause) >= 0);
-                });
+                props = this.matchFriendlyNameAndOrMenuPath(props, match);
             }
-            return fields;
+            return props;
+        }
+
+        protected matchingParameters(
+            action: ActionMember,
+            match: string): Parameter[] {
+            let params = _.map(action.parameters(), p => p);
+            if (match) {
+                params = this.matchFriendlyNameAndOrMenuPath(params, match);
+            }
+            return params;
+        }
+
+        protected matchFriendlyNameAndOrMenuPath<T extends IHasExtensions>(
+            reps: T[], match: string): T[] {
+            const clauses = match.split(" ");
+            return _.filter(reps, (rep) => {
+                const path = rep.extensions().menuPath();
+                const name = rep.extensions().friendlyName().toLowerCase();
+                return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
+                    (!!path && path.toLowerCase().indexOf(clause) >= 0));
+            });
         }
     }
 
@@ -169,15 +210,13 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             if (this.isObject()) {
-                const oid = this.urlManager.getRouteData().pane1.objectId;
-                this.context.getObjectByOid(1, oid)
+                this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
                         this.processActions(match, obj.actionMembers());
                     });
             }
             else if (this.isMenu()) {
-                const menuId = this.urlManager.getRouteData().pane1.menuId;
-                this.context.getMenu(menuId)
+                this.getMenu()
                     .then((menu: MenuRepresentation) => {
                         this.processActions(match, menu.actionMembers());
                     });
@@ -192,15 +231,8 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             if (match) {
-                const clauses = match.split(" ");
-                actions = _.filter(actions, (action) => {
-                    const path = action.extensions().menuPath();
-                    const name = action.extensions().friendlyName().toLowerCase();
-                    return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
-                        (!!path && path.toLowerCase().indexOf(clause) >= 0));
-                });
+                actions = this.matchFriendlyNameAndOrMenuPath(actions, match);
             }
-
             switch (actions.length) {
                 case 0:
                     this.clearInputAndSetOutputTo(match + " does not match any actions");
@@ -326,26 +358,42 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             const name = this.argumentAsString(args, 0);
-            const p1 = this.argumentAsString(args, 1, true);
-            if (!p1 || p1 == "?") {
-                this.renderProperties(name, p1);
+            const newValue = this.argumentAsString(args, 1, true);
+            if (!newValue || newValue == "?") {
+                this.renderProperties(name, newValue);
                 return;
-            } else { //i.e. write/select value in field
-                if (this.isDialog) {
-                    this.clearInputAndSetOutputTo("Modifying fields on an action dialog is not yet supported.");                                  
-                }
-                else if (this.isEdit()) {
-                    this.clearInputAndSetOutputTo("Modifying fields on an object in edit mode is not yet supported.");                                  
-                }
-                else {
-                    this.clearInputAndSetOutputTo("Fields may only be modified if object is in edit mode.");
-                }
-            }         
+            }
+            if (this.isDialog) {
+                this.getActionForCurrentDialog().then((action: ActionMember) => {
+                    let params = _.map(action.parameters(), param => param);
+                    params = this.matchFriendlyNameAndOrMenuPath(params, name);
+                    switch (params.length) {
+                        case 0:
+                            this.clearInputAndSetOutputTo("No fields in the current context match "+name); 
+                            break;
+                        case 1:
+                            const value = new Value(newValue);
+                            const p = params[0];
+                            this.urlManager.setParameterValue(this.RouteData().dialogId, p, value, 1); 
+                             break;
+                        default:
+                            this.clearInputAndSetOutputTo("Multiple fields match " + name); //TODO: list them
+                            break;
+                    }
+                     
+                });
+                return;
+            }
+            else if (this.isEdit()) {
+                this.clearInputAndSetOutputTo("Modifying fields on an object in edit mode is not yet supported.");
+                return
+            }
+            //Must be object but not in Edit mode
+            this.clearInputAndSetOutputTo("Fields may only be modified if object is in edit mode.");
         };
 
         private renderProperties(name: string, arg1: string) {
-            const oid = this.urlManager.getRouteData().pane1.objectId;
-            const obj = this.context.getObjectByOid(1, oid)
+            this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
                     var fields = this.matchingProperties(obj, name);
                     var s: string = "";
@@ -449,8 +497,7 @@ module NakedObjects.Angular.Gemini {
                 this.clearInputAndSetOutputTo("The go command is not yet implemented for lists or collections");
                 return;
             }
-            const oid = this.urlManager.getRouteData().pane1.objectId;
-            const obj = this.context.getObjectByOid(1, oid)
+            this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
                     const allFields = this.matchingProperties(obj, name);
                     const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
@@ -587,23 +634,9 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            //TODO: Need to factor out more helper functions from common code in execute methods
-            const dialogId = this.urlManager.getRouteData().pane1.dialogId;
-            if (this.isObject()) {
-                const oid = this.urlManager.getRouteData().pane1.objectId;
-                this.context.getObjectByOid(1, oid)
-                    .then((obj: DomainObjectRepresentation) => {
-                        const action = obj.actionMember(dialogId);
-                        this.context.invokeAction(action, 1, {});
-                    });
-            } else if (this.isMenu()) {
-                const menuId = this.urlManager.getRouteData().pane1.menuId;
-                this.context.getMenu(menuId)
-                    .then((menu: MenuRepresentation) => {
-                        const action = menu.actionMember(dialogId);
-                        this.context.invokeAction(action, 1, {});
-                    });
-            } //TODO: List actions
+            this.getActionForCurrentDialog().then((action: ActionMember) => {
+                this.context.invokeAction(action, 1, {});
+            });
         };
     }
     export class Open extends Command {
@@ -729,7 +762,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.vm.setOutputToSummaryOfRepresentation(this.urlManager.getRouteData().pane1);
+            this.vm.setOutputToSummaryOfRepresentation(this.RouteData());
         };
 
     }

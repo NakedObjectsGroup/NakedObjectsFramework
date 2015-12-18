@@ -570,7 +570,7 @@ module NakedObjects {
     // matches an action representation 18.0 
 
     // matches 18.2.1
-    export class Parameter extends NestedRepresentation<RoInterfaces.IParameterRepresentation> {
+    export class Parameter extends NestedRepresentation<RoInterfaces.IParameterRepresentation> implements IField {
 
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
@@ -636,7 +636,7 @@ module NakedObjects {
         }
     }
 
-    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
+   export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
@@ -995,7 +995,7 @@ module NakedObjects {
     }
 
     // matches 14.4.1
-    export class PropertyMember extends Member<RoInterfaces.IPropertyMember> {
+    export class PropertyMember extends Member<RoInterfaces.IPropertyMember> implements IField {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
@@ -1739,8 +1739,16 @@ module NakedObjects {
         }
     }
 
-    export interface IHasActions {
+    export interface IHasActions extends IHasExtensions {
         actionMembers(): _.Dictionary<ActionMember>;
         actionMember(id: string): ActionMember;
+    }
+
+    //TODO: Review name (common capbilities of PropertyMember and Parameter)
+    export interface IField extends IHasExtensions {
+
+    }
+    export interface IHasExtensions {
+        extensions(): Extensions;
     }
 }
