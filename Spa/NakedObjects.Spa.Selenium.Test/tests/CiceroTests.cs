@@ -67,6 +67,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //object with no actions
             CiceroUrl("object?object1=AdventureWorksModel.ProductInventory-442-6");
+            WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G.");
             EnterCommand("ac");
             WaitForOutput("No actions available");
 

@@ -321,7 +321,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isObject();
+            return this.isObject() || this.isDialog();
         }
 
         execute(args: string): void {
@@ -330,9 +330,16 @@ module NakedObjects.Angular.Gemini {
             if (!p1 || p1 == "?") {
                 this.renderProperties(name, p1);
                 return;
-            } else {
-                this.clearInputAndSetOutputTo("Writing to fields is not yet supported");
-                return;
+            } else { //i.e. write/select value in field
+                if (this.isDialog) {
+                    this.clearInputAndSetOutputTo("Modifying fields on an action dialog is not yet supported.");                                  
+                }
+                else if (this.isEdit()) {
+                    this.clearInputAndSetOutputTo("Modifying fields on an object in edit mode is not yet supported.");                                  
+                }
+                else {
+                    this.clearInputAndSetOutputTo("Fields may only be modified if object is in edit mode.");
+                }
             }         
         };
 
