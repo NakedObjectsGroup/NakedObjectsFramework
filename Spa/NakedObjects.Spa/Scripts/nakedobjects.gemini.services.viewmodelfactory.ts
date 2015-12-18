@@ -628,7 +628,6 @@ module NakedObjects.Angular.Gemini {
                     const selected = _.filter(collectionViewModel.items, i => i.selected);
 
                     if (selected.length === 0) {
-                        //collectionViewModel.messages = "Must select items for collection contributed action";
                         return $q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
                     }
                     const parms = _.values(a.actionRep.parameters()) as Parameter[];
@@ -642,7 +641,15 @@ module NakedObjects.Angular.Gemini {
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
                     (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
-                    (right?: boolean) => a.executeInvoke( right);
+                    (right?: boolean) => {
+                        a.executeInvoke(right).then((errorMap: ErrorMap) => {
+                            if (errorMap.containsError()) {
+                                collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                            } else {
+                                collectionViewModel.messages = "";
+                            };
+                        });
+                    };
             });
 
 

@@ -236,7 +236,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
-            search[`${parm}${paneId}_${p.parameterId}`] = encodeURIComponent(pv.toJsonString());
+            search[`${parm}${paneId}_${p.parameterId()}`] = encodeURIComponent(pv.toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {

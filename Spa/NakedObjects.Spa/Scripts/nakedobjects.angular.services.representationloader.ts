@@ -49,7 +49,7 @@ module NakedObjects.Angular {
                         reason = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, promiseCallback.headers("warning"));
                     }
                     else {
-                        reason = promiseCallback.headers("warning");
+                        reason = promiseCallback.headers("warning") || "unknown server error";
                     }
                     $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.reject(reason);
