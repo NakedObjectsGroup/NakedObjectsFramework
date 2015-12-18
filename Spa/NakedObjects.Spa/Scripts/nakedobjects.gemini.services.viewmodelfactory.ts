@@ -878,7 +878,8 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.toolBarViewModel = ($scope) => {
             const tvm = getToolBarViewModel();
 
-            $scope.$on("ajax-change", (event, count) => tvm.loading = count > 0 ? "Loading..." : "");
+            $scope.$on("ajax-change", (event, count) =>
+                tvm.loading = count > 0 ? "Loading..." : "");
             $scope.$on("back", () => navigation.back());
             $scope.$on("forward", () => navigation.forward());
 
