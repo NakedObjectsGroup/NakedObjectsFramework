@@ -23,13 +23,11 @@ module NakedObjects.Angular.Gemini {
         prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
         conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
-        //invokeAction(action: ActionMember, paneId: number, dvm? : DialogViewModel);
-        invokeActionWithParms(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
+        invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
-        updateObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel);
+        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId : number): ng.IPromise<ErrorMap>;
+        saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
 
-
-        saveObject(object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean);
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
         setError: (object: ErrorRepresentation) => void;
@@ -461,7 +459,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        context.invokeActionWithParms = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>)     => {
+        context.invokeAction = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>)     => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
          
@@ -472,35 +470,15 @@ module NakedObjects.Angular.Gemini {
             return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
 
-
-        //context.invokeAction = (action: ActionMember, paneId: number, dvm : DialogViewModel) => {
-        //    const invoke = action.getInvoke();
-        //    const invokeMap = invoke.getInvokeMap();
-        //    let parameters: ParameterViewModel[] = [];
-
-        //    if (dvm) {
-        //        dvm.clearMessages();
-        //        parameters = dvm.actionViewModel.parameters;
-        //        _.each(parameters, parm => invokeMap.setParameter(parm.id, parm.getValue()));
-
-        //        // todo do we still need to do this ? Test
-        //        _.each(parameters, parm => urlManager.setParameterValue(action.actionId(), parm, paneId, false));
-        //    }
-
-        //    const setDirty = getSetDirtyFunction(action, _.map(parameters, p => p.getValue()));
-
-        //    invokeActionInternal(invokeMap, invoke, action, paneId, setDirty, dvm);
-        //};
-
-        context.updateObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel) => {
+        context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId : number) => {
             const update = object.getUpdateMap();
 
-            const properties = _.filter(ovm.properties, property => property.isEditable);
-            _.each(properties, property => update.setProperty(property.id, property.getValue()));
+      
+            _.each(props, (v, k) => update.setProperty(k, v));
 
-            repLoader.populate(update, true, new DomainObjectRepresentation()).
+            return repLoader.populate(update, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    ovm.editComplete();
+                    //ovm.editComplete();
 
                     // This is a kludge because updated object has no self link.
                     const rawLinks = object.wrapped().links;
@@ -509,33 +487,35 @@ module NakedObjects.Angular.Gemini {
                     // remove pre-changed object from cache
                     $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
 
-                    context.setObject(ovm.onPaneId, updatedObject);
+                    context.setObject(paneId, updatedObject);
 
-                    urlManager.setObject(updatedObject, ovm.onPaneId);
+                    urlManager.setObject(updatedObject, paneId);
+                    return $q.when(new ErrorMap({}, 0, ""));
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error);
+                    return $q.when(context.setInvokeUpdateError(error));
                 });
         };
 
-        context.saveObject = (object: DomainObjectRepresentation, ovm: DomainObjectViewModel, viewObject: boolean) => {
+        context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean ) => {
             const persist = object.getPersistMap();
 
-            const properties = _.filter(ovm.properties, property => property.isEditable);
-            _.each(properties, property => persist.setMember(property.id, property.getValue()));
+            _.each(props, (v, k) => persist.setMember(k, v));
 
-            repLoader.populate(persist, true, new DomainObjectRepresentation()).
+            return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(ovm.onPaneId, updatedObject);
+                    context.setObject(paneId, updatedObject);
 
-                    if (viewObject) {
-                        urlManager.setObject(updatedObject, ovm.onPaneId);
+                    if (viewSavedObject) {
+                        urlManager.setObject(updatedObject, paneId);
                     } else {
-                        urlManager.popUrlState(ovm.onPaneId);
+                        urlManager.popUrlState(paneId);
                     }
+
+                    return $q.when(new ErrorMap({}, 0, ""));
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error);
+                    return $q.when(context.setInvokeUpdateError(error));
                 });
         };
 
