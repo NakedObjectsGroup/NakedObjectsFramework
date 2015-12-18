@@ -949,12 +949,17 @@ module NakedObjects.Angular.Gemini {
             const actionMember = context.actionMember(routeData.dialogId);
             const actionName = actionMember.extensions().friendlyName();
             output += "Action dialog: " + actionName + ". ";
-            _.forEach(actionMember.parameters(), (param: Parameter) => {
-                output += param.extensions().friendlyName();
-                
-                //TODO: get param value (from UrlManager)
+            _.forEach(routeData.parms, (value, key) => {
+                output += friendlyNameForParam(actionMember, key)+ ": ";
+                output += value.toValueString() || "empty";
+                output += ", ";
             });
         }
         return output;
+    }
+
+    function friendlyNameForParam(action: ActionMember, parmId: string) {
+        var param = _.find(action.parameters(), (p) => p.parameterId() == parmId);
+        return param.extensions().friendlyName();
     }
 }

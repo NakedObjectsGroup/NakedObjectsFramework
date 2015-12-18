@@ -357,40 +357,44 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const name = this.argumentAsString(args, 0);
-            const newValue = this.argumentAsString(args, 1, true);
-            if (!newValue || newValue == "?") {
-                this.renderProperties(name, newValue);
+            const fieldName = this.argumentAsString(args, 0);
+            const fieldEntry = this.argumentAsString(args, 1, true);
+            if (!fieldEntry || fieldEntry == "?") {
+                this.renderProperties(fieldName, fieldEntry);
                 return;
             }
             if (this.isDialog) {
-                this.getActionForCurrentDialog().then((action: ActionMember) => {
-                    let params = _.map(action.parameters(), param => param);
-                    params = this.matchFriendlyNameAndOrMenuPath(params, name);
-                    switch (params.length) {
-                        case 0:
-                            this.clearInputAndSetOutputTo("No fields in the current context match "+name); 
-                            break;
-                        case 1:
-                            const value = new Value(newValue);
-                            const p = params[0];
-                            this.urlManager.setParameterValue(this.RouteData().dialogId, p, value, 1); 
-                             break;
-                        default:
-                            this.clearInputAndSetOutputTo("Multiple fields match " + name); //TODO: list them
-                            break;
-                    }
-                     
-                });
+                this.fieldEntryForDialog(fieldName, fieldEntry);
                 return;
             }
             else if (this.isEdit()) {
                 this.clearInputAndSetOutputTo("Modifying fields on an object in edit mode is not yet supported.");
-                return
+                return;
             }
             //Must be object but not in Edit mode
             this.clearInputAndSetOutputTo("Fields may only be modified if object is in edit mode.");
         };
+
+        private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
+            this.getActionForCurrentDialog().then((action: ActionMember) => {
+                let params = _.map(action.parameters(), param => param);
+                params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
+                switch (params.length) {
+                    case 0:
+                        this.clearInputAndSetOutputTo("No fields in the current context match " + fieldName);
+                        break;
+                    case 1:
+                        const value = new Value(fieldEntry);
+                        const param = params[0];
+                        this.urlManager.setParameterValue(this.RouteData().dialogId, param, value, 1);
+                        break;
+                    default:
+                        this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them
+                        break;
+                }
+
+            });
+        }
 
         private renderProperties(name: string, arg1: string) {
             this.getObject()

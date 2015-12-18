@@ -42,7 +42,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             EnterCommand("ac best");
-            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
+            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity: empty,");
             //Not available in current context
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
