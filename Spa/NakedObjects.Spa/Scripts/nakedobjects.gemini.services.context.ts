@@ -46,8 +46,8 @@ module NakedObjects.Angular.Gemini {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm : DialogViewModel);
-        setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ErrorMap;
+        setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string) : ErrorMap;
         setPreviousUrl: (url: string) => void;
 
     }
@@ -343,16 +343,10 @@ module NakedObjects.Angular.Gemini {
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
 
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number, dvm? : DialogViewModel) => {
+        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 
             if (result.result().isNull() && result.resultType() !== "void") {
-                if (dvm) {
-                    dvm.message = "no result found";
-                }
-                return;
-            }
-            else if (dvm) {
-                dvm.doClose();
+                return new ErrorMap({}, 0, "no result found");
             }
 
             const resultObject = result.result().object();
@@ -383,11 +377,13 @@ module NakedObjects.Angular.Gemini {
             else if (result.resultType() === "list") {
                 const resultList = result.result().list();
 
-                urlManager.setList(action, paneId, dvm);
+                urlManager.setList(action, paneId);
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
-            } 
+            }
+
+            return new ErrorMap({}, 0, "");
         };
 
         context.getCachedList = (paneId: number, page: number, pageSize: number) => {
@@ -410,54 +406,30 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string, vms: ValueViewModel[], vm?: MessageViewModel) => {
+        context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string) => {
             const err = error as ErrorMap | ErrorRepresentation | string;
-            let requiredFieldsMissing = false; // only show warning message if we have nothing else 
-            let fieldValidationErrors = false; 
+         
             if (err instanceof ErrorMap) {
-                _.each(vms, vmi => {
-                    const errorValue = err.valuesMap()[vmi.id];
-
-                    if (errorValue) {
-                        vmi.value = errorValue.value.toValueString();
-
-                        const reason = errorValue.invalidReason;
-                        if (reason) {
-                            if (reason === "Mandatory") {
-                                const r = "REQUIRED";
-                                requiredFieldsMissing = true;
-                                vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
-                            } else {
-                                vmi.message = reason;
-                                fieldValidationErrors = true;
-                            }
-                        }
-                    }
-                });
-
-                let msg = "";
-                if (err.invalidReason()) msg += err.invalidReason();
-                if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
-                if (fieldValidationErrors) msg += "See field validation message(s). ";
-                if (!msg)   msg = err.warningMessage;
-                setError(msg, vm);
+                return err;
             }
             else if (err instanceof ErrorRepresentation) {
                 setErrorRep(err);
             }
             else {
-                setError(err as string, vm);
+                setError(err as string);
             }
+
+            return new ErrorMap({}, 0, "");
         };
 
-        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void,  dvm? : DialogViewModel) {
-            repLoader.populate(invokeMap, true, invoke).
+        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void) {
+            return repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
-                    context.setResult(action, result, paneId, 1, defaultPageSize, dvm);
+                    return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, dvm ? dvm.actionViewModel.parameters : [], dvm);
+                    return $q.when(context.setInvokeUpdateError(error));
                 });
         }
 
@@ -497,9 +469,7 @@ module NakedObjects.Angular.Gemini {
 
             const setDirty = getSetDirtyFunction(action, _.values<Value>(parms));
 
-            invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
-
-            return $q.when(new ErrorMap(null, null, null));
+            return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
 
 
@@ -544,7 +514,7 @@ module NakedObjects.Angular.Gemini {
                     urlManager.setObject(updatedObject, ovm.onPaneId);
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, properties, ovm);
+                    context.setInvokeUpdateError(error);
                 });
         };
 
@@ -565,7 +535,7 @@ module NakedObjects.Angular.Gemini {
                     }
                 }).
                 catch((error: any) => {
-                    context.setInvokeUpdateError(error, properties, ovm);
+                    context.setInvokeUpdateError(error);
                 });
         };
 

@@ -3,7 +3,7 @@
 </div>
 <form>
  <div class="parameters">
-  <div class="parameter" ng-repeat="parameter in dialog.actionViewModel.parameters" ng-switch="parameter.type">
+  <div class="parameter" ng-repeat="parameter in dialog.parameters" ng-switch="parameter.type">
    <div class="name"><label for="{{parameter.argId}}">{{parameter.title}}</label></div>
    <div ng-switch-when="ref">
     <div class="value input-control text" ng-switch="parameter.hasChoices">

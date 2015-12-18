@@ -412,6 +412,11 @@ module NakedObjects {
         invalidReason() {
             return this.wrapped()["x-ro-invalidReason"] as string;
         }
+
+        containsError() {
+            return !!this.invalidReason() || !!this.warningMessage ||  _.any(this.valuesMap(), ev => !!ev.invalidReason);
+        }
+
     }
 
     export class UpdateMap extends ArgumentMap implements IHateoasModel {

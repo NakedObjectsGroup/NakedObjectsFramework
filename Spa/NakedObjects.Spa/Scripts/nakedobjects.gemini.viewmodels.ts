@@ -204,6 +204,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ParameterViewModel extends ValueViewModel{
+        parameterRep : Parameter;
         dflt: string;       
     } 
 
@@ -213,7 +214,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (right?: boolean)  => void;
+        executeInvoke: (right?: boolean)  => ng.IPromise<ErrorMap>;
         disabled(): boolean { return false; }
 
         parameters: ParameterViewModel[];
@@ -239,6 +240,8 @@ module NakedObjects.Angular.Gemini {
         isSame(paneId : number, otherAction : ActionMember ) {
             return this.onPaneId === paneId && this.action.invokeLink().href() === otherAction.invokeLink().href();
         }
+
+        parameters: ParameterViewModel[];
     } 
     
     export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {

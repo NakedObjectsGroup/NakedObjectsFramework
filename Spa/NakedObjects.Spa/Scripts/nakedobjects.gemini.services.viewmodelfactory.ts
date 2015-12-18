@@ -128,6 +128,7 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             var parmViewModel = new ParameterViewModel();
 
+            parmViewModel.parameterRep = parmRep;
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
@@ -267,7 +268,7 @@ module NakedObjects.Angular.Gemini {
 
             const parameters = _.pick(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
-            const setParms = () => _.forEach(actionViewModel.parameters, p => urlManager.setParameterValue(actionRep.actionId(), p, paneId, false));
+            const setParms = () => _.forEach(actionViewModel.parameters, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
 
             const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
             const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
@@ -280,7 +281,7 @@ module NakedObjects.Angular.Gemini {
             actionViewModel.executeInvoke = (right?: boolean) => {
                 const pps = actionViewModel.parameters;
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
-                context.invokeActionWithParms(actionRep, clickHandler.pane(paneId, right), parmMap);
+                return context.invokeActionWithParms(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
@@ -344,21 +345,63 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number) => {
 
             const actionMember = actionViewModel.actionRep;
-            const {dialogViewModel, ret} = getDialogViewModel(paneId, actionMember);
+            const { dialogViewModel, ret } = getDialogViewModel(paneId, actionMember);
 
             if (ret) {
                 return dialogViewModel;
             }
 
             dialogViewModel.actionViewModel = actionViewModel;
+
+            dialogViewModel.parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
+
             dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName();
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
-            
-            dialogViewModel.onPaneId = paneId;
-            dialogViewModel.doInvoke = (right?: boolean) => actionViewModel.executeInvoke(right);
 
+            dialogViewModel.onPaneId = paneId;
+            dialogViewModel.doInvoke = (right?: boolean) => {
+                actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
+
+                    if (err.containsError()) {
+
+                        let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+                        let fieldValidationErrors = false;
+
+                        const vms = dialogViewModel.actionViewModel.parameters;
+
+                        _.each(vms, vmi => {
+                            const errorValue = err.valuesMap()[vmi.id];
+
+                            if (errorValue) {
+                                vmi.value = errorValue.value.toValueString();
+
+                                const reason = errorValue.invalidReason;
+                                if (reason) {
+                                    if (reason === "Mandatory") {
+                                        const r = "REQUIRED";
+                                        requiredFieldsMissing = true;
+                                        vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                                    } else {
+                                        vmi.message = reason;
+                                        fieldValidationErrors = true;
+                                    }
+                                }
+                            }
+                        });
+
+                        let msg = "";
+                        if (err.invalidReason()) msg += err.invalidReason();
+                        if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
+                        if (fieldValidationErrors) msg += "See field validation message(s). ";
+                        if (!msg) msg = err.warningMessage;
+                        dialogViewModel.message = msg;
+
+                    }
+                });
+            };
+        
             dialogViewModel.doClose = () => {
                 actionViewModel.stopWatchingParms();
                 urlManager.closeDialog(paneId);
@@ -580,8 +623,8 @@ module NakedObjects.Angular.Gemini {
                     const selected = _.filter(collectionViewModel.items, i => i.selected);
 
                     if (selected.length === 0) {
-                        collectionViewModel.messages = "Must select items for collection contributed action";
-                        return;
+                        //collectionViewModel.messages = "Must select items for collection contributed action";
+                        return $q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
                     }
                     const parms = _.values(a.actionRep.parameters()) as Parameter[];
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
@@ -589,7 +632,7 @@ module NakedObjects.Angular.Gemini {
                     const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
                     a.parameters.push(collectionParmVm);
 
-                    wrappedInvoke(right);
+                    return wrappedInvoke(right);
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?

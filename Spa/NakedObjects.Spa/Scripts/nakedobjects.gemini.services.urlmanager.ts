@@ -14,7 +14,7 @@ module NakedObjects.Angular.Gemini {
         closeDialog(paneId: number);
 
         setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
-        setList(action: ActionMember, paneId: number, dvm?: DialogViewModel);
+        setList(action: ActionMember, paneId: number);
         setProperty(propertyMember: PropertyMember, paneId: number);
         setItem(link: Link, paneId: number): void;
 
@@ -34,7 +34,7 @@ module NakedObjects.Angular.Gemini {
 
         swapPanes(): void;
         singlePane(paneId : number) : void;
-        setParameterValue: (dialogId: string, p: ParameterViewModel, paneId: number, reload?: boolean) => void;
+        setParameterValue: (dialogId: string, p: Parameter, pv: Value, paneId: number, reload?: boolean) => void;
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
 
         currentpane(): number;
@@ -235,8 +235,8 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
-        function setParameter(paneId: number, search: any, p: ParameterViewModel) {
-            search[`${parm}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+        function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
+            search[`${parm}${paneId}_${p.parameterId}`] = encodeURIComponent(pv.toJsonString());
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
@@ -270,7 +270,7 @@ module NakedObjects.Angular.Gemini {
             setObjectSearch(paneId, oid);  
         };
 
-        helper.setList = (actionMember: ActionMember, paneId: number, dvm?: DialogViewModel) => {
+        helper.setList = (actionMember: ActionMember, paneId: number) => {
             currentPaneId = paneId;
 
             const aid = actionMember.actionId();
@@ -298,21 +298,21 @@ module NakedObjects.Angular.Gemini {
             search[`${pageSize}${paneId}`] = defaultPageSize;
             search[`${selected}${paneId}`] = 0;
 
-            if (dvm) {
-                _.each(dvm.actionViewModel.parameters, p => setParameter(paneId, search, p));
-            }
+            //if (dvm) {
+            //    _.each(dvm.actionViewModel.parameters, p => setParameter(paneId, search, p));
+            //}
 
             $location.search(search);
         };
 
-        helper.setParameterValue = (dialogId: string, pvm: ParameterViewModel, paneId: number, reload = true) => {
+        helper.setParameterValue = (dialogId: string, p: Parameter, pv : Value, paneId: number, reload = true) => {
             currentPaneId = paneId;
 
             const search = $location.search();
 
             // only add parm if matching dialog (to catch case when swapping panes) 
             if (search[`${dialog}${paneId}`] === dialogId) {
-                setParameter(paneId, search, pvm);
+                setParameter(paneId, search, p, pv);
                 $location.search(search);
 
                 if (!reload) {
