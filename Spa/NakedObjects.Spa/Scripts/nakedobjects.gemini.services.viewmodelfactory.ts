@@ -281,7 +281,7 @@ module NakedObjects.Angular.Gemini {
             actionViewModel.executeInvoke = (right?: boolean) => {
                 const pps = actionViewModel.parameters;
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
-                return context.invokeActionWithParms(actionRep, clickHandler.pane(paneId, right), parmMap);
+                return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
@@ -342,6 +342,43 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
+        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms : ValueViewModel[]) {
+            if (err.containsError()) {
+
+                let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+                let fieldValidationErrors = false;
+
+                _.each(vms, vmi => {
+                    const errorValue = err.valuesMap()[vmi.id];
+
+                    if (errorValue) {
+                        vmi.value = errorValue.value.toValueString();
+
+                        const reason = errorValue.invalidReason;
+                        if (reason) {
+                            if (reason === "Mandatory") {
+                                const r = "REQUIRED";
+                                requiredFieldsMissing = true;
+                                vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                            } else {
+                                vmi.message = reason;
+                                fieldValidationErrors = true;
+                            }
+                        }
+                    }
+                });
+
+                let msg = "";
+                if (err.invalidReason()) msg += err.invalidReason();
+                if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
+                if (fieldValidationErrors) msg += "See field validation message(s). ";
+                if (!msg) msg = err.warningMessage;
+                vm.message = msg;
+
+            }
+        }
+
+
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number) => {
 
             const actionMember = actionViewModel.actionRep;
@@ -363,42 +400,7 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.onPaneId = paneId;
             dialogViewModel.doInvoke = (right?: boolean) => {
                 actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
-
-                    if (err.containsError()) {
-
-                        let requiredFieldsMissing = false; // only show warning message if we have nothing else 
-                        let fieldValidationErrors = false;
-
-                        const vms = dialogViewModel.actionViewModel.parameters;
-
-                        _.each(vms, vmi => {
-                            const errorValue = err.valuesMap()[vmi.id];
-
-                            if (errorValue) {
-                                vmi.value = errorValue.value.toValueString();
-
-                                const reason = errorValue.invalidReason;
-                                if (reason) {
-                                    if (reason === "Mandatory") {
-                                        const r = "REQUIRED";
-                                        requiredFieldsMissing = true;
-                                        vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
-                                    } else {
-                                        vmi.message = reason;
-                                        fieldValidationErrors = true;
-                                    }
-                                }
-                            }
-                        });
-
-                        let msg = "";
-                        if (err.invalidReason()) msg += err.invalidReason();
-                        if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
-                        if (fieldValidationErrors) msg += "See field validation message(s). ";
-                        if (!msg) msg = err.warningMessage;
-                        dialogViewModel.message = msg;
-
-                    }
+                    handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);              
                 });
             };
         
@@ -802,7 +804,16 @@ module NakedObjects.Angular.Gemini {
                 };
 
                 const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = viewObject => saveHandler(objectRep, objectViewModel, viewObject);
+                objectViewModel.doSave = viewObject => {
+
+                    const pps = _.filter(objectViewModel.properties, property => property.isEditable);
+
+                    const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+
+                    saveHandler(objectRep, propMap, paneId, viewObject).then((err: ErrorMap) => {
+                        handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+                    });
+                };
                 objectViewModel.isInEdit = true;
             }
 

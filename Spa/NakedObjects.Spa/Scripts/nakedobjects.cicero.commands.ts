@@ -594,14 +594,14 @@ module NakedObjects.Angular.Gemini {
                 this.context.getObjectByOid(1, oid)
                     .then((obj: DomainObjectRepresentation) => {
                         const action = obj.actionMember(dialogId);
-                        this.context.invokeActionWithParms(action, 1, {});
+                        this.context.invokeAction(action, 1, {});
                     });
             } else if (this.isMenu()) {
                 const menuId = this.urlManager.getRouteData().pane1.menuId;
                 this.context.getMenu(menuId)
                     .then((menu: MenuRepresentation) => {
                         const action = menu.actionMember(dialogId);
-                        this.context.invokeActionWithParms(action, 1, {});
+                        this.context.invokeAction(action, 1, {});
                     });
             } //TODO: List actions
         };
