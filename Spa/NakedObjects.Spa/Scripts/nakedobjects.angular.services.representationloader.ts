@@ -13,8 +13,8 @@ module NakedObjects.Angular {
     // TODO investigate using transformations to transform results 
     app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService) {
 
-        const repLoader = this; 
-        repLoader.loadingCount = 0; 
+        const repLoader = this as IRepLoader;
+        let loadingCount = 0; 
 
         repLoader.populate = <T>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
 
@@ -28,15 +28,15 @@ module NakedObjects.Angular {
                 data: model.getBody()
             };
 
-            $rootScope.$broadcast("ajax-change", ++this.loadingCount); 
+            $rootScope.$broadcast("ajax-change", ++loadingCount); 
 
             return $http(config).
-                then(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) {
+                then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
                     response.populate(promiseCallback.data);
-                    $rootScope.$broadcast("ajax-change", --this.loadingCount);
+                    $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.when(response);
                 }).
-                catch(function (promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) {
+                catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
 
                     let reason: ErrorRepresentation | ErrorMap | string; 
 
@@ -49,9 +49,9 @@ module NakedObjects.Angular {
                         reason = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, promiseCallback.headers("warning"));
                     }
                     else {
-                        reason = promiseCallback.headers("warning");
+                        reason = promiseCallback.headers("warning") || "unknown server error";
                     }
-                    $rootScope.$broadcast("ajax-change", --this.loadingCount);
+                    $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.reject(reason);
                 });
         };

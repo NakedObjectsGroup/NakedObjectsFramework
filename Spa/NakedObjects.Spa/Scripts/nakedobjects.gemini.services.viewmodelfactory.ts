@@ -6,7 +6,7 @@
 module NakedObjects.Angular.Gemini {
 
     export interface IViewModelFactory {
-        toolBarViewModel($scope): ToolBarViewModel;
+        toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         actionViewModel($scope: ng.IScope, actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
         dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number): DialogViewModel;
@@ -40,7 +40,8 @@ module NakedObjects.Angular.Gemini {
         focusManager: IFocusManager,
         navigation: INavigation,
         clickHandler: IClickHandler,
-        commandFactory: ICommandFactory) {
+        commandFactory: ICommandFactory,
+        $rootScope: ng.IRootScopeService) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -342,40 +343,38 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms : ValueViewModel[]) {
-            if (err.containsError()) {
+        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) {
 
-                let requiredFieldsMissing = false; // only show warning message if we have nothing else 
-                let fieldValidationErrors = false;
+            let requiredFieldsMissing = false; // only show warning message if we have nothing else 
+            let fieldValidationErrors = false;
 
-                _.each(vms, vmi => {
-                    const errorValue = err.valuesMap()[vmi.id];
+            _.each(vms, vmi => {
+                const errorValue = err.valuesMap()[vmi.id];
 
-                    if (errorValue) {
-                        vmi.value = errorValue.value.toValueString();
+                if (errorValue) {
+                    vmi.value = errorValue.value.toValueString();
 
-                        const reason = errorValue.invalidReason;
-                        if (reason) {
-                            if (reason === "Mandatory") {
-                                const r = "REQUIRED";
-                                requiredFieldsMissing = true;
-                                vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
-                            } else {
-                                vmi.message = reason;
-                                fieldValidationErrors = true;
-                            }
+                    const reason = errorValue.invalidReason;
+                    if (reason) {
+                        if (reason === "Mandatory") {
+                            const r = "REQUIRED";
+                            requiredFieldsMissing = true;
+                            vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                        } else {
+                            vmi.message = reason;
+                            fieldValidationErrors = true;
                         }
                     }
-                });
+                }
+            });
 
-                let msg = "";
-                if (err.invalidReason()) msg += err.invalidReason();
-                if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
-                if (fieldValidationErrors) msg += "See field validation message(s). ";
-                if (!msg) msg = err.warningMessage;
-                vm.message = msg;
+            let msg = "";
+            if (err.invalidReason()) msg += err.invalidReason();
+            if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
+            if (fieldValidationErrors) msg += "See field validation message(s). ";
+            if (!msg) msg = err.warningMessage;
+            vm.message = msg;
 
-            }
         }
 
 
@@ -400,7 +399,11 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.onPaneId = paneId;
             dialogViewModel.doInvoke = (right?: boolean) => {
                 actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
-                    handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);              
+                    if (err.containsError()) {
+                        handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
+                    } else {
+                        dialogViewModel.doClose();
+                    }
                 });
             };
         
@@ -548,7 +551,7 @@ module NakedObjects.Angular.Gemini {
 
             const links = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.state;
+            const state = routeData.collections[collectionRep.collectionId()];
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
@@ -625,7 +628,6 @@ module NakedObjects.Angular.Gemini {
                     const selected = _.filter(collectionViewModel.items, i => i.selected);
 
                     if (selected.length === 0) {
-                        //collectionViewModel.messages = "Must select items for collection contributed action";
                         return $q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
                     }
                     const parms = _.values(a.actionRep.parameters()) as Parameter[];
@@ -639,7 +641,15 @@ module NakedObjects.Angular.Gemini {
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
                     (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
-                    (right?: boolean) => a.executeInvoke( right);
+                    (right?: boolean) => {
+                        a.executeInvoke(right).then((errorMap: ErrorMap) => {
+                            if (errorMap.containsError()) {
+                                collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                            } else {
+                                collectionViewModel.messages = "";
+                            };
+                        });
+                    };
             });
 
 
@@ -741,7 +751,6 @@ module NakedObjects.Angular.Gemini {
             const editing = routeData.edit;
             const paneId = routeData.paneId;
 
-
             objectViewModel.domainObject = objectRep;
             objectViewModel.onPaneId = paneId;
             objectViewModel.isTransient = !!objectRep.persistLink();
@@ -807,11 +816,12 @@ module NakedObjects.Angular.Gemini {
                 objectViewModel.doSave = viewObject => {
 
                     const pps = _.filter(objectViewModel.properties, property => property.isEditable);
-
                     const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
 
                     saveHandler(objectRep, propMap, paneId, viewObject).then((err: ErrorMap) => {
-                        handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+                        if (err.containsError()) {
+                            handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+                        }
                     });
                 };
                 objectViewModel.isInEdit = true;
@@ -868,21 +878,19 @@ module NakedObjects.Angular.Gemini {
                 }
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
+               
+                $rootScope.$on("ajax-change", (event, count) =>
+                    tvm.loading = count > 0 ? "Loading..." : "");
+                $rootScope.$on("back", () => navigation.back());
+                $rootScope.$on("forward", () => navigation.forward());
+
                 cachedToolBarViewModel = tvm;
             }
             return cachedToolBarViewModel;
         }
 
-        viewModelFactory.toolBarViewModel = ($scope) => {
-            const tvm = getToolBarViewModel();
-
-            $scope.$on("ajax-change", (event, count) => tvm.loading = count > 0 ? "Loading..." : "");
-            $scope.$on("back", () => navigation.back());
-            $scope.$on("forward", () => navigation.forward());
-
-            return tvm;
-        };
-
+        viewModelFactory.toolBarViewModel = () =>  getToolBarViewModel();
+    
         let cvm: CiceroViewModel = null;
 
         viewModelFactory.ciceroViewModel = () => {
