@@ -269,19 +269,11 @@ module NakedObjects.Angular.Gemini {
 
             const parameters = _.pick(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
-            const setParms = () => _.forEach(actionViewModel.parameters, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
-
-            const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
-            const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
-
-            actionViewModel.stopWatchingParms = () => {
-                deregisterLocationWatch();
-                deregisterSearchWatch();
-            };
 
             actionViewModel.executeInvoke = (right?: boolean) => {
                 const pps = actionViewModel.parameters;
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+                _.forEach(pps,  p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
@@ -397,7 +389,10 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.message = "";
 
             dialogViewModel.onPaneId = paneId;
-            dialogViewModel.doInvoke = (right?: boolean) => {
+
+            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
+
+            dialogViewModel.doInvoke = (right?: boolean) => 
                 actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
                     if (err.containsError()) {
                         handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
@@ -405,10 +400,15 @@ module NakedObjects.Angular.Gemini {
                         dialogViewModel.doClose();
                     }
                 });
-            };
+            
         
+   
+            const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
+            const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
+
             dialogViewModel.doClose = () => {
-                actionViewModel.stopWatchingParms();
+                deregisterLocationWatch();
+                deregisterSearchWatch();
                 urlManager.closeDialog(paneId);
                 clearDialog(paneId, actionMember);
             };
