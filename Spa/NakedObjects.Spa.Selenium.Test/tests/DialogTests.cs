@@ -299,7 +299,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Parameter validation
-        [TestMethod, Ignore] //REQUIRED placeholder no longer showing; 199 RO message instead
+        [TestMethod]
         public virtual void MandatoryParameterEnforced()
         {
             GeminiUrl("home?menu1=SalesRepository&dialog1=FindSalesPersonByName");
@@ -312,7 +312,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
 
-        [TestMethod, Ignore] //Validation messages not working correctly!
+        [TestMethod] 
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
@@ -328,7 +328,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
 
-        [TestMethod, Ignore] //Validation messages not working correctly
+        [TestMethod] 
         public virtual void ValidateSingleRefParamFromChoices()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");

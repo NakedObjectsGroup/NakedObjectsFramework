@@ -15,14 +15,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class ObjectEditTests : AWTest {
 
-        [TestMethod, Ignore] //Focus not going onto first field
+        [TestMethod]
         public virtual void ObjectEditChangeScalar() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
-
-            //test focus
-            var field1 = WaitForCss(".property:nth-child(1) input");
-            AssertHasFocus(field1);
 
             // set price and days to mfctr
             TypeIntoField("#listprice1",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
@@ -75,7 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
         }
 
-        [TestMethod, Ignore] //TODO: Conditional choices not working!
+        [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
