@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -78,9 +79,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             // set product category and sub category
             SelectDropDownOnField("#productcategory1", "Clothing");
 
-            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
 
-            SelectDropDownOnField("#productsubcategory1", "Caps");
+            SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
 
             TypeIntoField("#daystomanufacture1", Keys.Backspace + "1");
 
@@ -89,7 +90,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
-            Assert.AreEqual("Product Subcategory:\r\nCaps", properties[7].Text);
+            Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
 
             EditObject();
 
