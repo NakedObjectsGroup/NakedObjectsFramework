@@ -609,7 +609,7 @@ module NakedObjects {
         }
 
         default(): Value {
-            const dflt = this.wrapped().default || isScalarType(this.extensions().returnType()) ? "" : null;
+            const dflt = this.wrapped().default || (isScalarType(this.extensions().returnType()) ? "" : null);
             return new Value(dflt);
         }
 
