@@ -182,7 +182,7 @@ module NakedObjects.Angular.Gemini {
                     // todo replace with _.mapValue 
                     if (dialog) {
                         _.forEach(pArgs, (v, n) => {
-                            const parm = _.find(dialog.actionViewModel.parameters, p => p.id === n);
+                            const parm = _.find(dialog.actionViewModel.parameters, p => p.argId === n);
                             const newValue = parm.getValue();
                             nArgs[n] = newValue;
                         });
@@ -190,7 +190,7 @@ module NakedObjects.Angular.Gemini {
 
                     if (isDomainObjectViewModel(object)) {
                         _.forEach(pArgs, (v, n) => {
-                            const property = _.find(object.properties, p => p.id === n);
+                            const property = _.find(object.properties, p => p.argId === n);
                             const newValue = property.getValue();
                             nArgs[n] = newValue;
                         });
