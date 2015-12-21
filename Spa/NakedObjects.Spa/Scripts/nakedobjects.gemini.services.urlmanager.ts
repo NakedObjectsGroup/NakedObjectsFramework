@@ -258,10 +258,10 @@ module NakedObjects.Angular.Gemini {
         helper.closeDialog = (paneId: number) => {
             currentPaneId = paneId;
             const dialogId = `${dialog}${paneId}`;
-            const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0);
-            ids.push(dialogId);
+            //const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0);
+            //ids.push(dialogId);
 
-            clearSearch(ids);
+            clearSearch([dialogId]);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
@@ -274,7 +274,11 @@ module NakedObjects.Angular.Gemini {
             currentPaneId = paneId;
 
             const aid = actionMember.actionId();
-            const search = clearPane($location.search(), paneId);
+            const search = $location.search();
+
+            _.omit(search, menu + paneId); 
+            _.omit(search, object + paneId); 
+            _.omit(search, dialog + paneId); 
 
             setupPaneNumberAndTypes(paneId, list);
 

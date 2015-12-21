@@ -586,7 +586,9 @@ module NakedObjects.Angular.Gemini {
         }
 
         function collectionId(routeData: PaneRouteData) {
-            return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}`;
+            const parmString = _.reduce(routeData.parms, (result, n, k) => result + k + n.toValueString(), "");
+           
+            return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}${parmString || "pms"} `;
         }
 
         function createFromList($scope: ng.IScope, listRep: ListRepresentation, routeData : PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
