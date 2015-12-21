@@ -289,7 +289,7 @@ module NakedObjects.Angular.Gemini {
                 this.urlManager.setObjectEdit(false, 1);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog(1);
+                this.urlManager.closeDialog(1, true);
             }
         };
     }

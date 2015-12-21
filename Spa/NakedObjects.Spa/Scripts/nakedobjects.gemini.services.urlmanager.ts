@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
         setError();
         setMenu(menuId: string, paneId: number);
         setDialog(dialogId: string, paneId: number);
-        closeDialog(paneId: number);
+        closeDialog(paneId: number, clearParms : boolean);
 
         setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
         setList(action: ActionMember, paneId: number);
@@ -255,13 +255,13 @@ module NakedObjects.Angular.Gemini {
             setSearch(`${dialog}${paneId}`, dialogId, false);
         };
 
-        helper.closeDialog = (paneId: number) => {
+        helper.closeDialog = (paneId: number, clearParms : boolean) => {
             currentPaneId = paneId;
             const dialogId = `${dialog}${paneId}`;
-            //const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0);
-            //ids.push(dialogId);
+            const ids = clearParms ? _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0) : [];
+            ids.push(dialogId);
 
-            clearSearch([dialogId]);
+            clearSearch(ids);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId: number) => {
@@ -278,7 +278,6 @@ module NakedObjects.Angular.Gemini {
 
             _.omit(search, menu + paneId); 
             _.omit(search, object + paneId); 
-            _.omit(search, dialog + paneId); 
 
             setupPaneNumberAndTypes(paneId, list);
 

@@ -350,6 +350,8 @@ module NakedObjects.Angular.Gemini {
             const resultObject = result.result().object();
 
             if (result.resultType() === "object") {
+                urlManager.closeDialog(paneId, true);
+
                 if (resultObject.persistLink()) {
                     // transient object
                     const domainType = resultObject.extensions().domainType();
@@ -373,12 +375,16 @@ module NakedObjects.Angular.Gemini {
                 }
             }
             else if (result.resultType() === "list") {
+
                 const resultList = result.result().list();
 
+                urlManager.closeDialog(paneId, false);
                 urlManager.setList(action, paneId);
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
+            } else {
+                urlManager.closeDialog(paneId, true);
             }
 
             return new ErrorMap({}, 0, "");

@@ -402,7 +402,6 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
             
-        
    
             const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
             const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
@@ -410,8 +409,12 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.doClose = () => {
                 deregisterLocationWatch();
                 deregisterSearchWatch();
-                urlManager.closeDialog(paneId);
                 clearDialog(paneId, actionMember);
+            };
+
+            dialogViewModel.doCancel = () => {
+                dialogViewModel.doClose();
+                urlManager.closeDialog(paneId, true);
             };
 
             dialogViewModel.clearMessages = () => {
@@ -591,9 +594,9 @@ module NakedObjects.Angular.Gemini {
             return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}${parmString || "pms"} `;
         }
 
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, routeData : PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
-          
-            const {collectionViewModel, ret} = getCollectionViewModel(listRep, routeData);
+        function createFromList($scope: ng.IScope, listRep: ListRepresentation, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
+
+            const { collectionViewModel, ret } = getCollectionViewModel(listRep, routeData);
             if (ret) {
                 return collectionViewModel;
             }
@@ -603,7 +606,7 @@ module NakedObjects.Angular.Gemini {
             const state = routeData.state;
 
             collectionViewModel.id = collectionId(routeData);
-          
+
             collectionViewModel.collectionRep = listRep;
             collectionViewModel.onPaneId = paneId;
 
@@ -645,16 +648,16 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
-                    (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
-                    (right?: boolean) => {
-                        a.executeInvoke(right).then((errorMap: ErrorMap) => {
-                            if (errorMap.containsError()) {
-                                collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
-                            } else {
-                                collectionViewModel.messages = "";
-                            };
-                        });
-                    };
+                (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
+                (right?: boolean) => {
+                    a.executeInvoke(right).then((errorMap: ErrorMap) => {
+                        if (errorMap.containsError()) {
+                            collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                        } else {
+                            collectionViewModel.messages = "";
+                        };
+                    });
+                };
             });
 
 
@@ -684,9 +687,10 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
             collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
 
-            collectionViewModel.reload = () => setPage(page, state);
+            collectionViewModel.reload = () =>  setPage(page, state);
+        
 
-            return collectionViewModel;
+        return collectionViewModel;
         }
 
 

@@ -233,7 +233,7 @@ module NakedObjects.Angular.Gemini {
         action : ActionMember;
         actionViewModel : ActionViewModel;
         
-
+        doCancel: () => void;
         doClose: () => void;
         doInvoke: (right?: boolean) => void;
 
