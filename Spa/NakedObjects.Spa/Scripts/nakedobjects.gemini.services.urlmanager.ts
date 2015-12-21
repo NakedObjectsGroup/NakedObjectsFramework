@@ -35,7 +35,7 @@ module NakedObjects.Angular.Gemini {
         swapPanes(): void;
         singlePane(paneId : number) : void;
         setParameterValue: (dialogId: string, p: Parameter, pv: Value, paneId: number, reload?: boolean) => void;
-        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => void;
+        setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv : Value,  paneId: number, reload?: boolean) => void;
 
         currentpane(): number;
         getUrlState: (paneId: number) => { paneType: string; search: Object };
@@ -317,7 +317,7 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyViewModel, paneId: number, reload?: boolean) => {
+        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv : Value, paneId: number, reload?: boolean) => {
             currentPaneId = paneId;
 
             const search = $location.search();
@@ -327,7 +327,7 @@ module NakedObjects.Angular.Gemini {
             // and only add to edit url
             if (search[`${object}${paneId}`] === oid && search[`${edit}${paneId}`] === "true" ) {
 
-                search[`${prop}${paneId}_${p.id}`] = encodeURIComponent(p.getValue().toJsonString());
+                search[`${prop}${paneId}_${p.propertyId()}`] = encodeURIComponent(pv.toJsonString());
 
                 $location.search(search);
 

@@ -248,6 +248,7 @@ module NakedObjects.Angular.Gemini {
     
     export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
 
+        propertyRep : PropertyMember;
         target: string;
         isEditable: boolean;
         attachment: AttachmentViewModel;

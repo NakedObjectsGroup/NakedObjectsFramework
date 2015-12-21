@@ -430,6 +430,7 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.title = propertyRep.extensions().friendlyName();
             propertyViewModel.optional = propertyRep.extensions().optional();
             propertyViewModel.onPaneId = paneId;
+            propertyViewModel.propertyRep = propertyRep;
 
             const required = propertyViewModel.optional ? "" : "* ";
 
@@ -795,7 +796,7 @@ module NakedObjects.Angular.Gemini {
             if (editing || objectViewModel.isTransient) {
 
                 const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
-                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p, paneId, false));
+                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p.propertyRep,  p.getValue(),  paneId, false));
                 const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
                 const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
