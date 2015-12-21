@@ -102,7 +102,7 @@ module NakedObjects.Angular.Gemini {
             return null;
         }
 
-        protected RouteData(): PaneRouteData {
+        protected routeData(): PaneRouteData {
             return this.urlManager.getRouteData().pane1;
         }
         //Helpers delegating to RouteData
@@ -110,26 +110,26 @@ module NakedObjects.Angular.Gemini {
             return this.urlManager.isHome(1);
         }
         protected isObject(): boolean {
-            return !!this.RouteData().objectId;
+            return !!this.routeData().objectId;
         }
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
-            const oid = this.RouteData().objectId;
+            const oid = this.routeData().objectId;
             return this.context.getObjectByOid(1, oid);
         }
         protected isList(): boolean {
             return false;  //TODO
         }
         protected isMenu(): boolean {
-            return !!this.RouteData().menuId;
+            return !!this.routeData().menuId;
         }
         protected getMenu(): ng.IPromise<MenuRepresentation> {
-            return this.context.getMenu(this.RouteData().menuId);
+            return this.context.getMenu(this.routeData().menuId);
         }
         protected isDialog(): boolean {
-            return !!this.RouteData().dialogId;
+            return !!this.routeData().dialogId;
         }
         protected getActionForCurrentDialog(): ng.IPromise<ActionMember> {
-            const dialogId = this.RouteData().dialogId;
+            const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
                 return this.getObject().then((obj: DomainObjectRepresentation) => {
                     return this.$q.when(obj.actionMember(dialogId));
@@ -148,7 +148,7 @@ module NakedObjects.Angular.Gemini {
             throw false; //TODO
         }
         protected isEdit(): boolean {
-            return this.RouteData().edit;
+            return this.routeData().edit;
         }
 
         protected matchingProperties(
@@ -359,9 +359,12 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const fieldName = this.argumentAsString(args, 0);
             const fieldEntry = this.argumentAsString(args, 1, true);
-            if (!fieldEntry || fieldEntry == "?") {
-                this.renderProperties(fieldName, fieldEntry);
+            if (!fieldEntry) {
+                this.renderFields(fieldName);
                 return;
+            }
+            if (fieldEntry == "?") {
+                this.renderFields(fieldName, true);
             }
             if (this.isDialog) {
                 this.fieldEntryForDialog(fieldName, fieldEntry);
@@ -386,7 +389,7 @@ module NakedObjects.Angular.Gemini {
                     case 1:
                         const value = new Value(fieldEntry);
                         const param = params[0];
-                        this.urlManager.setParameterValue(this.RouteData().dialogId, param, value, 1);
+                        this.urlManager.setParameterValue(this.routeData().dialogId, param, value, 1);
                         break;
                     default:
                         this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them
@@ -396,51 +399,68 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
-        private renderProperties(name: string, arg1: string) {
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
-                    var fields = this.matchingProperties(obj, name);
-                    var s: string = "";
-                    switch (fields.length) {
-                        case 0:
-                            if (!name) {
-                                s = "No visible fields";
-                            } else {
-                                s = name + " does not match any fields";
-                            }
-                            break;
-                        case 1:
-                            const field = fields[0];
-                            if (!arg1) {
-                                s = this.renderProp(field);
-                            } else {
-                                s = "Field name: " + field.extensions().friendlyName();
-                                s += ", Value: ";
-                                s += field.value().toString() || "empty";
-                                s += ", Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
-                                if (field.disabledReason()) {
-                                    s += ", Unmodifiable: " + field.disabledReason();
-                                } else {
-                                    s += field.extensions().optional() ? ", Optional" : ", Mandatory";
-                                    if (field.choices()) {
-                                        var label = ", Choices: ";
-                                        s += _.reduce(field.choices(), (s, cho) => {
-                                            return s + cho + " ";
-                                        }, label);
-                                    }
-                                    const desc = field.extensions().description()
-                                    s += desc ? ", Description: " + desc : "";
-                                    //TODO:  Add a Can Paste if clipboard has compatible type
-                                }
-                            }
-                            break;
-                        default:
-                            s = _.reduce(fields, (s, prop) => {
-                                return s + this.renderProp(prop);
-                            }, "");
-                    }
-                    this.clearInputAndSetOutputTo(s);
+        private renderFields(fieldName: string, details: boolean = false) {
+            if (this.isDialog) {
+                //TODO: duplication with function on ViewModelFactory for rendering dialog ???
+                //Is this needed at all, or should the fields always be rendered? i.e. if in dialog
+                //you must provide a name arg for field?
+                this.getActionForCurrentDialog().then((action: ActionMember) => {
+                    let output = "";
+                    _.forEach(this.routeData().parms, (value, key) => {
+                        output += Helpers.friendlyNameForParam(action, key) + ": ";
+                        output += value.toValueString() || "empty";
+                        output += ", ";
+                    });
+                    this.clearInputAndSetOutputTo(output);
                 });
+                return;
+            }
+            if (this.isObject) {
+                this.getObject()
+                    .then((obj: DomainObjectRepresentation) => {
+                        var fields = this.matchingProperties(obj, fieldName);
+                        var s: string = "";
+                        switch (fields.length) {
+                            case 0:
+                                if (!fieldName) {
+                                    s = "No visible fields";
+                                } else {
+                                    s = fieldName + " does not match any fields";
+                                }
+                                break;
+                            case 1:
+                                const field = fields[0];
+                                if (!details) {
+                                    s = this.renderProp(field);
+                                } else {
+                                    s = "Field name: " + field.extensions().friendlyName();
+                                    s += ", Value: ";
+                                    s += field.value().toString() || "empty";
+                                    s += ", Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
+                                    if (field.disabledReason()) {
+                                        s += ", Unmodifiable: " + field.disabledReason();
+                                    } else {
+                                        s += field.extensions().optional() ? ", Optional" : ", Mandatory";
+                                        if (field.choices()) {
+                                            var label = ", Choices: ";
+                                            s += _.reduce(field.choices(), (s, cho) => {
+                                                return s + cho + " ";
+                                            }, label);
+                                        }
+                                        const desc = field.extensions().description()
+                                        s += desc ? ", Description: " + desc : "";
+                                        //TODO:  Add a Can Paste if clipboard has compatible type
+                                    }
+                                }
+                                break;
+                            default:
+                                s = _.reduce(fields, (s, prop) => {
+                                    return s + this.renderProp(prop);
+                                }, "");
+                        }
+                        this.clearInputAndSetOutputTo(s);
+                    });
+            }
         }
 
         private renderProp(pm: PropertyMember): string {
@@ -766,7 +786,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.vm.setOutputToSummaryOfRepresentation(this.RouteData());
+            this.vm.setOutputToSummaryOfRepresentation(this.routeData());
         };
 
     }

@@ -31,4 +31,9 @@ module NakedObjects.Helpers {
         const result = shortName.replace(/([A-Z])/g, " $1");
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
+
+   export function friendlyNameForParam(action: ActionMember, parmId: string) {
+        var param = _.find(action.parameters(), (p) => p.parameterId() == parmId);
+        return param.extensions().friendlyName();
+    }
 }

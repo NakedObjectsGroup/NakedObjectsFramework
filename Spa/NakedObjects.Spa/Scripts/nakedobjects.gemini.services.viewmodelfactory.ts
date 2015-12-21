@@ -950,7 +950,7 @@ module NakedObjects.Angular.Gemini {
             const actionName = actionMember.extensions().friendlyName();
             output += "Action dialog: " + actionName + ". ";
             _.forEach(routeData.parms, (value, key) => {
-                output += friendlyNameForParam(actionMember, key)+ ": ";
+                output += Helpers.friendlyNameForParam(actionMember, key)+ ": ";
                 output += value.toValueString() || "empty";
                 output += ", ";
             });
@@ -958,8 +958,4 @@ module NakedObjects.Angular.Gemini {
         return output;
     }
 
-    function friendlyNameForParam(action: ActionMember, parmId: string) {
-        var param = _.find(action.parameters(), (p) => p.parameterId() == parmId);
-        return param.extensions().friendlyName();
-    }
 }
