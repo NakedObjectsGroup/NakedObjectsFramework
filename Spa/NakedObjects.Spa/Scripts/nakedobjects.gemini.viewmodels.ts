@@ -101,6 +101,7 @@ module NakedObjects.Angular.Gemini {
         value: number | string | boolean;    
         id: string; 
         argId: string; 
+        paneArgId: string;
         choices: ChoiceViewModel[];
         hasChoices: boolean;
         hasPrompt: boolean; 
@@ -205,7 +206,8 @@ module NakedObjects.Angular.Gemini {
 
     export class ParameterViewModel extends ValueViewModel{
         parameterRep : Parameter;
-        dflt: string;       
+        dflt: string;
+        
     } 
 
     export class ActionViewModel {
@@ -246,6 +248,7 @@ module NakedObjects.Angular.Gemini {
     
     export class PropertyViewModel extends ValueViewModel implements IDraggableViewModel {
 
+        propertyRep : PropertyMember;
         target: string;
         isEditable: boolean;
         attachment: AttachmentViewModel;

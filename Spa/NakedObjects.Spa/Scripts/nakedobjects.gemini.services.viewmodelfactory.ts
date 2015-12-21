@@ -140,7 +140,8 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
-            parmViewModel.argId = `${parmViewModel.id.toLowerCase()}${paneId}`;
+            parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
+            parmViewModel.paneArgId = `${parmViewModel.argId}${paneId}`;
             parmViewModel.reference = "";
 
             parmViewModel.mask = parmRep.extensions().mask();
@@ -429,6 +430,7 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.title = propertyRep.extensions().friendlyName();
             propertyViewModel.optional = propertyRep.extensions().optional();
             propertyViewModel.onPaneId = paneId;
+            propertyViewModel.propertyRep = propertyRep;
 
             const required = propertyViewModel.optional ? "" : "* ";
 
@@ -465,7 +467,8 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType()) : "";
 
             propertyViewModel.id = id;
-            propertyViewModel.argId = `${id.toLowerCase()}${paneId}`;
+            propertyViewModel.argId = `${id.toLowerCase()}`;
+            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.choices = [];
             propertyViewModel.hasPrompt = propertyRep.hasPrompt();
@@ -793,7 +796,7 @@ module NakedObjects.Angular.Gemini {
             if (editing || objectViewModel.isTransient) {
 
                 const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
-                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p, paneId, false));
+                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p.propertyRep,  p.getValue(),  paneId, false));
                 const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
                 const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
