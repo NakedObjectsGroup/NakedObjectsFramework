@@ -687,7 +687,10 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
             collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
 
-            collectionViewModel.reload = () =>  setPage(page, state);
+            collectionViewModel.reload = () => {
+                currentLvms[paneId] = null;
+                setPage(page, state);
+            };
         
 
         return collectionViewModel;
