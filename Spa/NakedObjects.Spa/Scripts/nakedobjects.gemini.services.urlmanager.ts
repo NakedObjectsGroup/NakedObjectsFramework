@@ -99,8 +99,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function mapIds(ids : _.Dictionary<string>) : _.Dictionary<string>  {
-            //missing from lodash types :-( 
-            return (<any>_).mapKeys(ids, (v, k : string) => k.substr(k.indexOf("_") + 1));
+            return _.mapKeys(ids, (v, k : string) => k.substr(k.indexOf("_") + 1));
         }
 
         function getAndMapIds(typeOfId: string, paneId: number) {
@@ -354,7 +353,7 @@ module NakedObjects.Angular.Gemini {
             let search = $location.search();
             const ids = _.filter(_.keys(search), k => k.indexOf(`${field}${paneId}`) === 0);
             const fields = _.pick(search, ids);
-            const parms = (<any>_).mapKeys(fields, (v, k: string) => k.replace(field, parm));
+            const parms = _.mapKeys(fields, (v, k: string) => k.replace(field, parm));
 
             search = _.omit(search, ids);
             search = _.merge(search, parms);
@@ -550,7 +549,7 @@ module NakedObjects.Angular.Gemini {
 
 
         function swapSearchIds(search: any) {
-            return (<any>_).mapKeys(search,
+            return _.mapKeys(search,
                 (v, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
         }
 
