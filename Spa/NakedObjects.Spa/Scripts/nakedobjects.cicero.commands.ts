@@ -254,7 +254,7 @@ module NakedObjects.Angular.Gemini {
             this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
             _.forEach(action.parameters(), (p) => {
                 let pVal = p.default();
-                this.urlManager.setParameterValue(action.actionId(), p, pVal, 1, false);
+                this.urlManager.setFieldValue(action.actionId(), p, pVal, 1, false);
             });
         }
     }
@@ -289,7 +289,7 @@ module NakedObjects.Angular.Gemini {
                 this.urlManager.setObjectEdit(false, 1);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog(1, true);
+                this.urlManager.closeDialog(1);
             }
         };
     }
@@ -397,7 +397,7 @@ module NakedObjects.Angular.Gemini {
                     case 1:
                         const value = new Value(fieldEntry);
                         const param = params[0];
-                        this.urlManager.setParameterValue(this.routeData().dialogId, param, value, 1);
+                        this.urlManager.setFieldValue(this.routeData().dialogId, param, value, 1);
                         break;
                     default:
                         this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them

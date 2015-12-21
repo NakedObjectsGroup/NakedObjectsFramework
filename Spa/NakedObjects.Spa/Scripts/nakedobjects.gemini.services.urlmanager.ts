@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
         setError();
         setMenu(menuId: string, paneId: number);
         setDialog(dialogId: string, paneId: number);
-        closeDialog(paneId: number, clearParms : boolean);
+        closeDialog(paneId: number);
 
         setObject(resultObject: DomainObjectRepresentation, paneId: number, mode?: ApplicationMode);
         setList(action: ActionMember, paneId: number);
@@ -28,13 +28,16 @@ module NakedObjects.Angular.Gemini {
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
 
+        setFieldsToParms(paneId : number);
+
         pushUrlState(paneId: number): void;
         clearUrlState(paneId: number): void;
         popUrlState(onPaneId: number): void;
 
         swapPanes(): void;
-        singlePane(paneId : number) : void;
-        setParameterValue: (dialogId: string, p: Parameter, pv: Value, paneId: number, reload?: boolean) => void;
+        singlePane(paneId: number): void;
+        setFieldValue: (dialogId: string, p: Parameter, pv: Value, paneId: number, reload?: boolean) => void;
+        setParameterValue: (actionId: string, p: Parameter, pv: Value, paneId: number, reload?: boolean) => void;
         setPropertyValue: (obj: DomainObjectRepresentation, p: PropertyMember, pv : Value,  paneId: number, reload?: boolean) => void;
 
         currentpane(): number;
@@ -58,6 +61,7 @@ module NakedObjects.Angular.Gemini {
         const action = "action";
         const dialog = "dialog";
         const parm = "parm";
+        const field = "field";
         const prop = "prop";
         const actions = "actions";
         const page = "page";
@@ -125,6 +129,9 @@ module NakedObjects.Angular.Gemini {
 
             const parmKeyMap = getAndMapIds(parm, paneId);
             paneRouteData.parms = getMappedValues(parmKeyMap);
+
+            const fieldKeyMap = getAndMapIds(field, paneId);
+            paneRouteData.fields = getMappedValues(fieldKeyMap);
 
             const propKeyMap = getAndMapIds(prop, paneId);
             paneRouteData.props = getMappedValues(propKeyMap);
@@ -235,8 +242,16 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         }
 
+        function setFieldOrParameter(paneId: number, search: any, p: Parameter, pv: Value, fieldOrParameter : string) {
+            search[`${fieldOrParameter}${paneId}_${p.parameterId()}`] = encodeURIComponent(pv.toJsonString());
+        }
+
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
-            search[`${parm}${paneId}_${p.parameterId()}`] = encodeURIComponent(pv.toJsonString());
+            setFieldOrParameter(paneId, search, p, pv, parm);
+        }
+
+        function setField(paneId: number, search: any, p: Parameter, pv: Value) {
+            setFieldOrParameter(paneId, search, p, pv, field);
         }
 
         helper.setMenu = (menuId: string, paneId: number) => {
@@ -255,10 +270,10 @@ module NakedObjects.Angular.Gemini {
             setSearch(`${dialog}${paneId}`, dialogId, false);
         };
 
-        helper.closeDialog = (paneId: number, clearParms : boolean) => {
+        helper.closeDialog = (paneId: number) => {
             currentPaneId = paneId;
             const dialogId = `${dialog}${paneId}`;
-            const ids = clearParms ? _.filter(_.keys($location.search()), k => k.indexOf(`${parm}${paneId}`) === 0) : [];
+            const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${field}${paneId}`) === 0);
             ids.push(dialogId);
 
             clearSearch(ids);
@@ -304,21 +319,50 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setParameterValue = (dialogId: string, p: Parameter, pv : Value, paneId: number, reload = true) => {
+        function checkAndSetFieldOrParameter(paneId : number,  check: (search : any) => boolean, set: (search : any) => void, reload : boolean) {
             currentPaneId = paneId;
 
             const search = $location.search();
 
-            // only add parm if matching dialog (to catch case when swapping panes) 
-            if (search[`${dialog}${paneId}`] === dialogId) {
-                setParameter(paneId, search, p, pv);
+            // only add field if matching dialog or dialog (to catch case when swapping panes) 
+            if (check(search)) {
+                set(search);
                 $location.search(search);
 
                 if (!reload) {
                     $location.replace();
                 }
             }
-        };
+        }
+
+
+        helper.setFieldValue = (dialogId: string, p: Parameter, pv: Value, paneId: number, reload = true) =>
+
+            checkAndSetFieldOrParameter(paneId,
+                search => search[`${dialog}${paneId}`] === dialogId,
+                search => setField(paneId, search, p, pv),
+                reload);
+
+        helper.setParameterValue = (actionId: string, p: Parameter, pv: Value, paneId: number, reload = true) =>
+      
+            checkAndSetFieldOrParameter(paneId,
+                search => search[`${action}${paneId}`] === actionId,
+                search => setParameter(paneId, search, p, pv),
+                reload);
+       
+        helper.setFieldsToParms = (paneId : number) => {
+            let search = $location.search();
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${field}${paneId}`) === 0);
+            const fields = _.pick(search, ids);
+            const parms = (<any>_).mapKeys(fields, (v, k: string) => k.replace(field, parm));
+
+            search = _.omit(search, ids);
+            search = _.merge(search, parms);
+
+            $location.search(search);
+
+        }
+
 
         helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv : Value, paneId: number, reload?: boolean) => {
             currentPaneId = paneId;

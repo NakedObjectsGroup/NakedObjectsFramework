@@ -391,7 +391,7 @@ module NakedObjects.Angular.Gemini {
 
             dialogViewModel.onPaneId = paneId;
 
-            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setParameterValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
+            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setFieldValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
 
             dialogViewModel.doInvoke = (right?: boolean) => 
                 actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
@@ -410,12 +410,9 @@ module NakedObjects.Angular.Gemini {
                 deregisterLocationWatch();
                 deregisterSearchWatch();
                 clearDialog(paneId, actionMember);
+                urlManager.closeDialog(paneId);
             };
 
-            dialogViewModel.doCancel = () => {
-                dialogViewModel.doClose();
-                urlManager.closeDialog(paneId, true);
-            };
 
             dialogViewModel.clearMessages = () => {
                 this.message = "";

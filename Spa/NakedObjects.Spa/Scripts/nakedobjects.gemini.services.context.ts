@@ -350,7 +350,7 @@ module NakedObjects.Angular.Gemini {
             const resultObject = result.result().object();
 
             if (result.resultType() === "object") {
-                urlManager.closeDialog(paneId, true);
+        
 
                 if (resultObject.persistLink()) {
                     // transient object
@@ -378,14 +378,12 @@ module NakedObjects.Angular.Gemini {
 
                 const resultList = result.result().list();
 
-                urlManager.closeDialog(paneId, false);
+                urlManager.setFieldsToParms(paneId);
                 urlManager.setList(action, paneId);
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
-            } else {
-                urlManager.closeDialog(paneId, true);
-            }
+            } 
 
             return new ErrorMap({}, 0, "");
         };
