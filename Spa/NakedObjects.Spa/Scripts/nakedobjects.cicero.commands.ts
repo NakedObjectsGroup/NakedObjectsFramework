@@ -254,7 +254,6 @@ module NakedObjects.Angular.Gemini {
             this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
             _.forEach(action.parameters(), (p) => {
                 let pVal = p.default();
-               if (!pVal.isReference() && pVal.isNull()) pVal = new Value("");
                 this.urlManager.setParameterValue(action.actionId(), p, pVal, 1, false);
             });
         }
