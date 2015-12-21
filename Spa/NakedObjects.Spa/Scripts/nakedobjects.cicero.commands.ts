@@ -238,8 +238,7 @@ module NakedObjects.Angular.Gemini {
                     this.clearInputAndSetOutputTo(match + " does not match any actions");
                     break;
                 case 1:
-                    const actionId = actions[0].actionId();
-                    this.urlManager.setDialog(actionId, 1);  //1 = pane 1
+                    this.openActionDialog(actions[0]);
                     break;
                 default:
                     let label = match ? " Matching actions: " : "Actions: ";
@@ -249,6 +248,15 @@ module NakedObjects.Angular.Gemini {
                     }, label);
                     this.clearInputAndSetOutputTo(s);
             }
+        }
+
+        private openActionDialog(action: ActionMember) {
+            this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
+            _.forEach(action.parameters(), (p) => {
+                let pVal = p.default();
+               if (!pVal.isReference() && pVal.isNull()) pVal = new Value("");
+                this.urlManager.setParameterValue(action.actionId(), p, pVal, 1, false);
+            });
         }
     }
     export class Back extends Command {
@@ -365,6 +373,7 @@ module NakedObjects.Angular.Gemini {
             }
             if (fieldEntry == "?") {
                 this.renderFields(fieldName, true);
+                return;
             }
             if (this.isDialog) {
                 this.fieldEntryForDialog(fieldName, fieldEntry);
@@ -400,7 +409,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         private renderFields(fieldName: string, details: boolean = false) {
-            if (this.isDialog) {
+            if (this.isDialog()) {
                 //TODO: duplication with function on ViewModelFactory for rendering dialog ???
                 //Is this needed at all, or should the fields always be rendered? i.e. if in dialog
                 //you must provide a name arg for field?

@@ -110,7 +110,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Menu dialog
             CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
-            WaitForOutput("Products menu. Action dialog: Find Product By Name. Search String");
+            WaitForOutputStartingWith("Products menu. Action dialog: Find Product By Name");
             EnterCommand("cancel");
             WaitForOutput("Products menu.");
             //Test on a zero param action
@@ -126,12 +126,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Object dialog
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
-            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity");
+            WaitForOutputStartingWith("Product: HL Grip Tape. Action dialog: Best Special Offer");
             EnterCommand("cancel");
             WaitForOutput("Product: HL Grip Tape.");
             //Zero param
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
+            WaitForOutputStartingWith("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
             EnterCommand("Ca");
             WaitForOutput("Customer: Handy Bike Services, AW00029688.");
 
@@ -413,7 +413,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
