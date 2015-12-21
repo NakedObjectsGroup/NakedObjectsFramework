@@ -141,12 +141,9 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\karma-jasmine\karma-jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
-    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.controllers.test.ts" />
-    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.handlers.test.ts" />
-    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.urlmanager.test.ts" />
-    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.viewmodelfactory.test.ts" />
-    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.services.context.test.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.test.ts" />
     <Content Include="web.config" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.test.helpers.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\iconFont.eot" />
