@@ -15,12 +15,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            WaitForCss(".value  input").SendKeys(Keys.ArrowRight + Keys.ArrowRight + "00022262");
+            TypeIntoField(".value  input","AW00022262");
             RightClick(OKButton());
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Object, "Marcus Collins, AW00022262");
         }
-
 
         public virtual void RightClickActionReturningListFromHomeSingle()
         {

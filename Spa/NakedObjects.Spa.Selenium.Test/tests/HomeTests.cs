@@ -134,7 +134,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //TODO: Test focus in separate tests; unreliable here
             //AssertHasFocus(WaitForCss(fieldCss));
 
-            TypeIntoField(fieldCss, Keys.ArrowRight + Keys.ArrowRight + "00022262");
+            TypeIntoField(fieldCss, "AW00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
         }

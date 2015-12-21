@@ -189,19 +189,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-            == "Page 1 of 1; viewing 11 of 11 items");
+            == "Page 1 of 1; viewing 10 of 10 items");
 
-            GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-11");
+            GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
             TypeIntoField("#minqty1", Keys.Backspace + "10");
             SaveObject();
             GoBack(3);
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1 of 1; viewing 11 of 11 items");
+                == "Page 1 of 1; viewing 10 of 10 items");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text 
-                == "Page 1 of 1; viewing 10 of 10 items");
+                == "Page 1 of 1; viewing 9 of 9 items");
 
             //Undo to leave in original state
             GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-11");
@@ -212,7 +212,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-                == "Page 1 of 1; viewing 11 of 11 items");
+                == "Page 1 of 1; viewing 10 of 10 items");
         }
     }
 

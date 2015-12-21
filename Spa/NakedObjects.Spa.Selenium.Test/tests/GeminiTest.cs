@@ -164,9 +164,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
         }
 
-        protected virtual void TypeIntoField(string cssFieldId, string characters)
+        protected virtual void TypeIntoField(string cssFieldId, string characters, bool clearFirst = true)
         {
-            WaitForCss(cssFieldId).SendKeys(characters);
+            var input = WaitForCss(cssFieldId);
+            input.SendKeys(Keys.Control + "a" + Keys.Delete);
+            input.SendKeys(characters);
         }
 
         /// <summary>

@@ -48,7 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
             Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54. Action dialog: Best Special Offer. Quantity");
+            WaitForOutput("Product: Touring-1000 Blue, 54. Action dialog: Best Special Offer. Quantity: empty,");
         }
 
     }

@@ -72,14 +72,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         [TestMethod]
-        public virtual void ScalarParmKeepsValue()
+        public virtual void ScalarParmShowsDefaultValue()
         {
             Url(CustomersMenuUrl);
             GetObjectActions(CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            WaitForCss(".value input").SendKeys(Keys.ArrowRight+Keys.ArrowRight +"00000042");
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
+            var input = WaitForCss(".value input");
+            Assert.AreEqual("AW", input.GetAttribute("value"));
         }
 
         [TestMethod]
