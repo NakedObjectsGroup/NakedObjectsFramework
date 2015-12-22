@@ -332,7 +332,7 @@ module NakedObjects.Angular.Gemini {
         const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map : PromptMap) => void) => {
             const map = promptRep.getPromptMap();
             setupPrompt(map);
-            const createcvm = <(p: PromptRepresentation) => angular.IPromise<Gemini.ChoiceViewModel[]>>(_.partial(createChoiceViewModels, id, searchTerm));
+            const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
             return repLoader.populate(map, true, promptRep).then(createcvm);
         };
 

@@ -138,7 +138,7 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.page = $routeParams[page + paneId];
             paneRouteData.pageSize = $routeParams[pageSize + paneId];
 
-            paneRouteData.selectedItems = arrayFromMask($routeParams[selected + paneId] || 0)
+            paneRouteData.selectedItems = arrayFromMask($routeParams[selected + paneId] || 0);
 
         }
 
@@ -433,7 +433,7 @@ module NakedObjects.Angular.Gemini {
         helper.setListItem = (paneId: number, item : number, isSelected : boolean) => {
             currentPaneId = paneId;
 
-            const selectedIndex = `${selected}${paneId}`
+            const selectedIndex = `${selected}${paneId}`;
             let currentSelected : number = $location.search()[selectedIndex] || 0;
             const selectedArray : boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
@@ -606,7 +606,7 @@ module NakedObjects.Angular.Gemini {
         helper.isHome = (paneId: number) => {
             const path = $location.path();
             const segments = path.split("/");
-            return segments[paneId+1] == home; // e.g. segments 0=~/1=cicero/2=home/3=home
+            return segments[paneId+1] === home; // e.g. segments 0=~/1=cicero/2=home/3=home
         }
     });
 }
