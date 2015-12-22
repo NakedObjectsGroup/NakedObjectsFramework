@@ -675,8 +675,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
 
             const setPage = (newPage: number, newState: CollectionViewState) => {
-                // todo do we need timeout ?
-                $timeout(() => recreate(newPage, pageSize, newState));
+                recreate(newPage, pageSize, newState);
             }
 
             collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
@@ -699,8 +698,9 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
 
             collectionViewModel.reload = () => {
-                currentLvms[paneId] = null;
-                setPage(page, state);
+                    currentLvms[paneId] = null;
+                    context.clearCachedList(paneId, routeData.page, routeData.pageSize);
+                    setPage(page, state);
             };
         
 
