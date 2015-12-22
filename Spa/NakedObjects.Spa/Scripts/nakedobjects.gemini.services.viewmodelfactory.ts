@@ -273,7 +273,7 @@ module NakedObjects.Angular.Gemini {
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
-                _.forEach(pps,  p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
+                _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
@@ -402,6 +402,7 @@ module NakedObjects.Angular.Gemini {
 
             const executeInvoke = (right?: boolean) => {
                 const pps = dialogViewModel.parameters;
+                _.forEach(pps, p => urlManager.setFieldValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
                 return actionViewModel.executeInvoke(pps, right);
             }
 
