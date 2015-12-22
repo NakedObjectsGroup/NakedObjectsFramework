@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected virtual void TypeIntoField(string cssFieldId, string characters, bool clearFirst = true)
         {
             var input = WaitForCss(cssFieldId);
-            input.SendKeys(Keys.Control + "a" + Keys.Delete);
+            if (clearFirst) input.SendKeys(Keys.Control + "a" + Keys.Delete);
             input.SendKeys(characters);
         }
 
@@ -525,9 +525,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected void EnterCommand(string command)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).Text == "");
-            TypeIntoField("input", command);
+            TypeIntoField("input", command, false);
             Thread.Sleep(300); //To make it easier to see that the command has been entered
-            TypeIntoField("input",  Keys.Enter);
+            TypeIntoField("input",  Keys.Enter, false);
         }
         #endregion
 

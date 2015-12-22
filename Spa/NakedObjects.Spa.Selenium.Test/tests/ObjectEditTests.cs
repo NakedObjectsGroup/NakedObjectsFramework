@@ -20,16 +20,28 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ObjectEditChangeScalar() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
+            var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
+            var newPrice = DateTime.Now.Millisecond.ToString();            
+            TypeIntoField("#listprice1", newPrice);
 
-            // set price and days to mfctr
-            TypeIntoField("#listprice1",Keys.Backspace + Keys.Backspace + Keys.Backspace + "100");
-            TypeIntoField("#daystomanufacture1",Keys.Backspace + "1");
+            var oldDays = WaitForCss("#daystomanufacture1").GetAttribute("value");
+            var newDays = DateTime.Now.Millisecond.ToString().Substring(0,2);
+            TypeIntoField("#daystomanufacture1", newDays);
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("List Price:\r\n4100", properties[5].Text);
-            Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
+            Assert.AreEqual("List Price:\r\n"+newPrice, properties[5].Text);
+            Assert.AreEqual("Days To Manufacture:\r\n"+newDays, properties[17].Text);
+
+            //Restore for convenience
+            EditObject();
+            TypeIntoField("#listprice1", oldPrice);
+            TypeIntoField("#daystomanufacture1", oldDays);
+            SaveObject();
+            properties = br.FindElements(By.CssSelector(".property"));
+            Assert.AreEqual("List Price:\r\n" + oldPrice, properties[5].Text);
+            Assert.AreEqual("Days To Manufacture:\r\n" + oldDays, properties[17].Text);
         }
 
         [TestMethod]
@@ -161,9 +173,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-43134&edit1=true");
             WaitForView(Pane.Single, PaneType.Object);
-            var deleteDate = Repeat(Keys.Backspace, 11);
-            TypeIntoField("input#startdate1", deleteDate +"17 Oct 2007");
-            TypeIntoField("input#enddate1", deleteDate + "15 Oct 2007");
+            TypeIntoField("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
+            TypeIntoField("input#startdate1", "");
+            TypeIntoField("input#startdate1", "17 Oct 2007");
+            TypeIntoField("input#enddate1", ""); //Seems to be necessary to clear the date fields fully
+            TypeIntoField("input#enddate1", "");
+            TypeIntoField("input#enddate1",  "15 Oct 2007");
             Click(SaveButton());
             WaitForMessage("StartDate must be before EndDate");
         }

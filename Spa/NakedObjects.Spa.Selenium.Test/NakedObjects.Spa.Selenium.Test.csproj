@@ -68,6 +68,7 @@
     <Compile Include="tests\CopyAndPasteTests.cs" />
     <Compile Include="tests\CiceroTests.cs" />
     <Compile Include="tests\KeyboardNavigationTests.cs" />
+    <Compile Include="tests\CCAtests.cs" />
     <Compile Include="tests\TransientObjectTests.cs" />
     <Compile Include="tests\SplitPaneTests.cs" />
     <Compile Include="tests\ListTests.cs" />

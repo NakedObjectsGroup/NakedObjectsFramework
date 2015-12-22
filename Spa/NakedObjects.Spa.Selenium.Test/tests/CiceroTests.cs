@@ -472,9 +472,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
     public abstract class CiceroMegaTestRoot : CiceroTestRoot
     {
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CiceroMegaTest()
         {
+
             base.Action();
             base.BackAndForward();
             base.Cancel();
