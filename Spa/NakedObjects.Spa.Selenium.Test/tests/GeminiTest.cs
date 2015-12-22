@@ -164,11 +164,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
         }
 
-        protected virtual void TypeIntoField(string cssFieldId, string characters, bool clearFirst = true)
+        protected virtual void ClearFieldThenType(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);
-            if (clearFirst) input.SendKeys(Keys.Control + "a" + Keys.Delete);
+            input.SendKeys(Keys.Control + "a" + Keys.Delete);
             wait.Until(dr => input.GetAttribute("value") == "");
+            input.SendKeys(characters);
+        }
+        protected virtual void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
+        {
+            var input = WaitForCss(cssFieldId);
             input.SendKeys(characters);
         }
 
@@ -526,9 +531,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected void EnterCommand(string command)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).Text == "");
-            TypeIntoField("input", command, false);
+            TypeIntoFieldWithoutClearing("input", command);
             Thread.Sleep(300); //To make it easier to see that the command has been entered
-            TypeIntoField("input",  Keys.Enter, false);
+            TypeIntoFieldWithoutClearing("input",  Keys.Enter);
         }
         #endregion
 

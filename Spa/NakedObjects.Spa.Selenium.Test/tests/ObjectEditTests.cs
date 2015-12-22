@@ -22,11 +22,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
             var newPrice = DateTime.Now.Millisecond.ToString();            
-            TypeIntoField("#listprice1", newPrice);
+            ClearFieldThenType("#listprice1", newPrice);
 
             var oldDays = WaitForCss("#daystomanufacture1").GetAttribute("value");
             var newDays = DateTime.Now.Millisecond.ToString().Substring(0,2);
-            TypeIntoField("#daystomanufacture1", newDays);
+            ClearFieldThenType("#daystomanufacture1", newDays);
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -36,8 +36,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             //Restore for convenience
             EditObject();
-            TypeIntoField("#listprice1", oldPrice);
-            TypeIntoField("#daystomanufacture1", oldDays);
+            ClearFieldThenType("#listprice1", oldPrice);
+            ClearFieldThenType("#daystomanufacture1", oldDays);
             SaveObject();
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("List Price:\r\n" + oldPrice, properties[5].Text);
@@ -54,11 +54,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dateStr = date.ToString("d MMM yyyy");
 
             for (int i = 0; i < 12; i++) {
-                TypeIntoField("#sellstartdate1", Keys.Backspace);
+                ClearFieldThenType("#sellstartdate1", Keys.Backspace);
             }
 
-            TypeIntoField("#sellstartdate1", dateStr + Keys.Tab);
-            TypeIntoField("#daystomanufacture1", Keys.Backspace + "1");
+            ClearFieldThenType("#sellstartdate1", dateStr + Keys.Tab);
+            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -76,7 +76,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             SelectDropDownOnField("#productline1", "S");
 
-            TypeIntoField("#daystomanufacture1", Keys.Backspace + "1");
+            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
@@ -95,7 +95,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
 
-            TypeIntoField("#daystomanufacture1", Keys.Backspace + "1");
+            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
 
             SaveObject();
 
@@ -158,7 +158,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
-            TypeIntoField(".parameter:nth-child(1) input", newValue);
+            ClearFieldThenType(".parameter:nth-child(1) input", newValue);
             Click(OKButton()); //This will have updated server, but not client-cached object
             WaitUntilElementDoesNotExist(".dialog");
             //Check view has not updated because it was a queryonly action
@@ -173,12 +173,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-43134&edit1=true");
             WaitForView(Pane.Single, PaneType.Object);
-            TypeIntoField("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
-            TypeIntoField("input#startdate1", "");
-            TypeIntoField("input#startdate1", "17 Oct 2007");
-            TypeIntoField("input#enddate1", ""); //Seems to be necessary to clear the date fields fully
-            TypeIntoField("input#enddate1", "");
-            TypeIntoField("input#enddate1",  "15 Oct 2007");
+            ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
+            ClearFieldThenType("input#startdate1", "");
+            ClearFieldThenType("input#startdate1", "17 Oct 2007");
+            ClearFieldThenType("input#enddate1", ""); //Seems to be necessary to clear the date fields fully
+            ClearFieldThenType("input#enddate1", "");
+            ClearFieldThenType("input#enddate1",  "15 Oct 2007");
             Click(SaveButton());
             WaitForMessage("StartDate must be before EndDate");
         }

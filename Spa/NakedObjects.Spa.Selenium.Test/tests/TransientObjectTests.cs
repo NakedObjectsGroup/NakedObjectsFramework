@@ -22,7 +22,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField("#cardnumber1", number);
+            ClearFieldThenType("#cardnumber1", number);
             SelectDropDownOnField("#expmonth1","12");
             SelectDropDownOnField("#expyear1","2020");
             Click(SaveButton()); 
@@ -37,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
-            TypeIntoField("#cardnumber1", number);
+            ClearFieldThenType("#cardnumber1", number);
             SelectDropDownOnField("#expmonth1", "12");
             SelectDropDownOnField("#expyear1", "2020");
             Click(SaveAndCloseButton());
@@ -69,7 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
-            TypeIntoField("input#cardnumber1", "123");
+            ClearFieldThenType("input#cardnumber1", "123");
             SelectDropDownOnField("#expmonth1", "1");
             SelectDropDownOnField("#expyear1", "2020");
             Click(SaveButton());
@@ -84,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
-            TypeIntoField("#cardnumber1", "1111222233334444");
+            ClearFieldThenType("#cardnumber1", "1111222233334444");
             SelectDropDownOnField("#expmonth1", "1");
             SelectDropDownOnField("#expyear1", "2008");
             Click(SaveButton());

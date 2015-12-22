@@ -341,7 +341,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Empty command == where
             EnterCommand("help");
             WaitForOutputStartingWith("Commands");
-            TypeIntoField("input", Keys.Enter);
+            ClearFieldThenType("input", Keys.Enter);
             WaitForOutput("Product: HL Grip Tape.");
 
             //No arguments
@@ -353,15 +353,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home");
             EnterCommand("help");
             WaitForOutputStartingWith("Commands available");
-            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
-            TypeIntoField("input", Keys.ArrowUp);
+            Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
+            TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
-            TypeIntoField("input", " gem" + Keys.Enter);
+            TypeIntoFieldWithoutClearing("input", " gem" + Keys.Enter);
             WaitForOutputStartingWith("gemini command");
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
-            TypeIntoField("input", Keys.ArrowUp);
+            TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
-            TypeIntoField("input", Keys.ArrowDown);
+            TypeIntoFieldWithoutClearing("input", Keys.ArrowDown);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         }
     }

@@ -193,7 +193,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
-            TypeIntoField("#minqty1", "10");
+            ClearFieldThenType("#minqty1", "10");
             SaveObject();
             GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
@@ -206,7 +206,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Undo to leave in original state
             GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
-            TypeIntoField("#minqty1", Keys.Backspace + Keys.Backspace + "0");
+            ClearFieldThenType("#minqty1", Keys.Backspace + Keys.Backspace + "0");
             SaveObject();
             GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");

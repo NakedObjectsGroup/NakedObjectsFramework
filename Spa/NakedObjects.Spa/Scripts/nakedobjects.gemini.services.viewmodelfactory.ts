@@ -972,7 +972,7 @@ module NakedObjects.Angular.Gemini {
             const actionMember = context.actionMember(routeData.dialogId);
             const actionName = actionMember.extensions().friendlyName();
             output += "Action dialog: " + actionName + ". ";
-            _.forEach(routeData.parms, (value, key) => {
+            _.forEach(routeData.fields, (value, key) => {
                 output += Helpers.friendlyNameForParam(actionMember, key)+ ": ";
                 output += value.toValueString() || "empty";
                 output += ", ";

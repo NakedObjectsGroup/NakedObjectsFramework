@@ -86,8 +86,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
             OpenActionDialog("Search For Orders");
-            TypeIntoField("#fromdate1","1 Jan 2003");
-            TypeIntoField("#todate1", "1 Dec 2003" + Keys.Escape);
+            ClearFieldThenType("#fromdate1","1 Jan 2003");
+            ClearFieldThenType("#todate1", "1 Dec 2003" + Keys.Escape);
 
             Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
@@ -306,7 +306,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "REQUIRED * ");
-            TypeIntoField("input#lastname1", "a");
+            ClearFieldThenType("input#lastname1", "a");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
@@ -343,9 +343,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl( "object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
-            TypeIntoField("#qtyreceived1","100");
-            TypeIntoField("#qtyrejected1","50");
-            TypeIntoField("#qtyintostock1","49");
+            ClearFieldThenType("#qtyreceived1","100");
+            ClearFieldThenType("#qtyrejected1","50");
+            ClearFieldThenType("#qtyintostock1","49");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
                 "Qty Into Stock + Qty Rejected must add up to Qty Received");

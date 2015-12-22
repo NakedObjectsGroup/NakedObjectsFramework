@@ -87,7 +87,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             PasteIntoInputField("input#salesperson1");
             //Now check that Auto-complete is working
             WaitForCss("input#salesperson1").Clear();
-            TypeIntoField("input#salesperson1", "Ito");
+            ClearFieldThenType("input#salesperson1", "Ito");
             wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
             Click(WaitForCss(".ui-menu-item"));
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
