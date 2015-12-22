@@ -653,9 +653,10 @@ module NakedObjects.Angular.Gemini {
                     const parmValue = new Value(_.map(selected, i => i.link));
                     const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
 
-                    pps.push(collectionParmVm);
+                    const allpps = _.clone(pps);
+                    allpps.push(collectionParmVm);
 
-                    return wrappedInvoke(pps, right);
+                    return wrappedInvoke(allpps, right);
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
