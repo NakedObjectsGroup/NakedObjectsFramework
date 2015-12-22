@@ -9,7 +9,7 @@ module NakedObjects.Angular.Gemini {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         actionViewModel($scope: ng.IScope, actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
-        dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number): DialogViewModel;
+        dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, routedata: PaneRouteData): DialogViewModel;
         collectionViewModel($scope: ng.IScope, collection: CollectionMember, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
         collectionViewModel($scope: ng.IScope, collection: ListRepresentation, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
         collectionPlaceholderViewModel(page: number, reload: () => void): CollectionPlaceholderViewModel;
@@ -271,8 +271,7 @@ module NakedObjects.Angular.Gemini {
             const parameters = _.pick(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
 
-            actionViewModel.executeInvoke = (right?: boolean) => {
-                const pps = actionViewModel.parameters;
+            actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps,  p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
@@ -281,7 +280,11 @@ module NakedObjects.Angular.Gemini {
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
             (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
-            (right?: boolean) => actionViewModel.executeInvoke(right);
+            (right?: boolean) => {
+                const pps = actionViewModel.parameters;
+                actionViewModel.executeInvoke(pps, right);
+                // todo display error if fails on parent ?
+             };
 
             return actionViewModel;
         };
@@ -371,8 +374,9 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, paneId: number) => {
+        viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, routeData : PaneRouteData) => {
 
+            const paneId = routeData.paneId;
             const actionMember = actionViewModel.actionRep;
             const { dialogViewModel, ret } = getDialogViewModel(paneId, actionMember);
 
@@ -382,7 +386,10 @@ module NakedObjects.Angular.Gemini {
 
             dialogViewModel.actionViewModel = actionViewModel;
 
-            dialogViewModel.parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
+            const fields = routeData.fields;
+            const parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
+            dialogViewModel.parameters = _.map(parameters, p => viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.parameterId()], paneId));
+
 
             dialogViewModel.action = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName();
@@ -393,8 +400,13 @@ module NakedObjects.Angular.Gemini {
 
             const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setFieldValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
 
+            const executeInvoke = (right?: boolean) => {
+                const pps = dialogViewModel.parameters;
+                return actionViewModel.executeInvoke(pps, right);
+            }
+
             dialogViewModel.doInvoke = (right?: boolean) => 
-                actionViewModel.executeInvoke(right).then((err: ErrorMap) => {
+                executeInvoke(right).then((err: ErrorMap) => {
                     if (err.containsError()) {
                         handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
                     } else {
@@ -629,7 +641,7 @@ module NakedObjects.Angular.Gemini {
             _.forEach(collectionViewModel.actions, a => {
 
                 const wrappedInvoke = a.executeInvoke;
-                a.executeInvoke = (right?: boolean) => {
+                a.executeInvoke = (pps : ParameterViewModel[],  right?: boolean) => {
                     const selected = _.filter(collectionViewModel.items, i => i.selected);
 
                     if (selected.length === 0) {
@@ -639,15 +651,16 @@ module NakedObjects.Angular.Gemini {
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
                     const parmValue = new Value(_.map(selected, i => i.link));
                     const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
-                    a.parameters.push(collectionParmVm);
 
-                    return wrappedInvoke(right);
+                    pps.push(collectionParmVm);
+
+                    return wrappedInvoke(pps, right);
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
                 (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
                 (right?: boolean) => {
-                    a.executeInvoke(right).then((errorMap: ErrorMap) => {
+                    a.executeInvoke([], right).then((errorMap: ErrorMap) => {
                         if (errorMap.containsError()) {
                             collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
                         } else {
@@ -780,7 +793,7 @@ module NakedObjects.Angular.Gemini {
 
             objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel($scope, action, routeData));
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, routeData, (page: number) => { }));
+            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, routeData, (page: number, newPageSize : number) => { }));
 
             // for dropping
             objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);

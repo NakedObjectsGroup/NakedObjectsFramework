@@ -57,7 +57,7 @@ module NakedObjects.Angular.Gemini {
         function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
             $scope.dialogTemplate = dialogTemplate;          
             const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel($scope, action, routeData) : action as ActionViewModel;    
-            $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData.paneId);
+            $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData);
         }
 
 

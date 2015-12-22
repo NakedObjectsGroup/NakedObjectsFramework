@@ -216,7 +216,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (right?: boolean)  => ng.IPromise<ErrorMap>;
+        executeInvoke: (pps : ParameterViewModel[], right?: boolean)  => ng.IPromise<ErrorMap>;
         disabled(): boolean { return false; }
 
         parameters: ParameterViewModel[];
