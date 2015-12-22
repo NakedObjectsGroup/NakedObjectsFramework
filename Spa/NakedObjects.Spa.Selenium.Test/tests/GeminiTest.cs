@@ -167,7 +167,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected virtual void ClearFieldThenType(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);
-            input.SendKeys(Keys.Control + "a" + Keys.Delete);
+            input.SendKeys(Keys.Control + "a");
+            input.SendKeys(Keys.Delete);
             wait.Until(dr => input.GetAttribute("value") == "");
             input.SendKeys(characters);
         }

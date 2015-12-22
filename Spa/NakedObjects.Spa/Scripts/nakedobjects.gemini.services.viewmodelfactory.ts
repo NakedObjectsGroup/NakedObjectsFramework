@@ -926,18 +926,24 @@ module NakedObjects.Angular.Gemini {
                 };
                 cvm.setOutputToSummaryOfRepresentation = (routeData: PaneRouteData) => {
                     
-                    if (routeData.objectId) {
+                    if (routeData.objectId) { //TODO: Factor nested ifs into functions
                         const [domainType, ...id] = routeData.objectId.split("-");
                         context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
-                                const type = Helpers.friendlyTypeName(obj.domainType());
-                                if (routeData.edit) {
-                                    output += "Editing ";
+                                if (_.any(routeData.collections)) {
+                                    output += "Collection: " + _.keys(routeData.collections)[0]; //TODO: get friendly name!
+                                    //TODO: Indicate if in List or table mode
+                                    //TODO: Add the summary of the collection
+                                } else {
+                                    const type = Helpers.friendlyTypeName(obj.domainType());
+                                    if (routeData.edit) {
+                                        output += "Editing ";
+                                    }
+                                    output += type + ": " + obj.title() + ". ";
+                                    output += renderActionDialogIfOpen(obj, routeData, urlManager);
                                 }
-                                output += type + ": " + obj.title() + ". ";
-                                output += renderActionDialogIfOpen(obj, routeData, urlManager);
-                                cvm.clearInput(); 
+                                cvm.clearInput();
                                 cvm.output = output;
                             });
                     }

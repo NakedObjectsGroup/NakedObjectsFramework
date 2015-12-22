@@ -18,14 +18,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
+            var rand = new Random();
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
-            var newPrice = DateTime.Now.Millisecond.ToString();            
+            var newPrice = rand.Next(50, 150).ToString();
             ClearFieldThenType("#listprice1", newPrice);
 
             var oldDays = WaitForCss("#daystomanufacture1").GetAttribute("value");
-            var newDays = DateTime.Now.Millisecond.ToString().Substring(0,2);
+
+            var newDays = rand.Next(1, 49).ToString();
             ClearFieldThenType("#daystomanufacture1", newDays);
             SaveObject();
 
@@ -53,12 +55,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var date = new DateTime(2014, 7, 18, 0, 0, 0, DateTimeKind.Utc);
             var dateStr = date.ToString("d MMM yyyy");
 
-            for (int i = 0; i < 12; i++) {
-                ClearFieldThenType("#sellstartdate1", Keys.Backspace);
-            }
+            //for (int i = 0; i < 12; i++) {
+            //    ClearFieldThenType("#sellstartdate1", Keys.Backspace);
+            //}
 
-            ClearFieldThenType("#sellstartdate1", dateStr + Keys.Tab);
-            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
+            ClearFieldThenType("#sellstartdate1", dateStr);
+            ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));

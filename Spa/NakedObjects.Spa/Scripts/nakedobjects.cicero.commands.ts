@@ -128,6 +128,7 @@ module NakedObjects.Angular.Gemini {
         protected isDialog(): boolean {
             return !!this.routeData().dialogId;
         }
+
         protected getActionForCurrentDialog(): ng.IPromise<ActionMember> {
             const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
@@ -141,11 +142,13 @@ module NakedObjects.Angular.Gemini {
             }
             return this.$q.reject("List actions not implemented yet");
         }
+        //Tests that at least one collection is open (should only be one). 
+        //TODO: assumes that closing collection removes it from routeData NOT sets it to Summary
         protected isCollection(): boolean {
-            return false; //TODO
+            return this.isObject && _.any(this.routeData().collections);
         }
         protected isTable(): boolean {
-            throw false; //TODO
+            return false; //TODO
         }
         protected isEdit(): boolean {
             return this.routeData().edit;
@@ -686,9 +689,46 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            //const match = this.argumentAsString(args, 0);
-            this.clearInputAndSetOutputTo("Open command is not yet implemented");
+            const match = this.argumentAsString(args, 0);
+            this.getObject()
+                .then((obj: DomainObjectRepresentation) => {
+                    this.processCollections(match, obj.collectionMembers());
+                });
         };
+
+        //TODO: Get commonality out of processing actions (properties?, fields?, menus?)
+        private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
+            var colls = _.map(collsMap, action => action);
+            if (colls.length == 0) {
+                this.clearInputAndSetOutputTo("No collections visible");
+                return;
+            }
+            if (match) {
+                colls = this.matchFriendlyNameAndOrMenuPath(colls, match);
+            }
+            switch (colls.length) {
+                case 0:
+                    this.clearInputAndSetOutputTo(match + " does not match any collections");
+                    break;
+                case 1:
+                    this.openCollectionAsList(colls[0]);
+                    break;
+                default:
+                    let label = match ? " Matching collections: " : "Collections: ";
+                    var s = _.reduce(colls, (s, t) => {
+                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
+                        return s + menupath + t.extensions().friendlyName() + ", ";
+                    }, label);
+                    this.clearInputAndSetOutputTo(s);
+            }
+        }
+
+
+        private openCollectionAsList(collection: CollectionMember): void {
+            //TODO: Must close all other collections!!
+            this.clearInput();
+            this.urlManager.setCollectionMemberState(1, collection, CollectionViewState.List);
+        }
 
     }
     export class Paste extends Command {
