@@ -7,6 +7,7 @@ module NakedObjects.Angular.Gemini {
     export interface IContext {
 
         getCachedList: (paneId: number, page: number, pageSize: number) => ListRepresentation;
+        clearCachedList: (paneId: number, page: number, pageSize: number) => void;
 
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
@@ -392,6 +393,15 @@ module NakedObjects.Angular.Gemini {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             const e = _.find(currentLists, entry => entry[index]);
             return e ? e[index] : null;
+        }
+
+        context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
+            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+            const e = _.find(currentLists, entry => entry[index]);
+
+            if (e) {
+                delete e[index];
+            }
         }
 
         function setErrorRep(errorRep: ErrorRepresentation) {
