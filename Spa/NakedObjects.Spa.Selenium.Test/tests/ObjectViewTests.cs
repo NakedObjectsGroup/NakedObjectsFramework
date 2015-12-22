@@ -35,9 +35,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void PropertiesAndCollections() {
             GeminiUrl( "object?object1=AdventureWorksModel.Store-350&actions1=open");
-            wait.Until(d => d.FindElement(By.CssSelector(".object")));
-            Assert.IsTrue(br.FindElement(By.CssSelector(".view")).Displayed);
-
+            wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".view")).Displayed == true);
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));

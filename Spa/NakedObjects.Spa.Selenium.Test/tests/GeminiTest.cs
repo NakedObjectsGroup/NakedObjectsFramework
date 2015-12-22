@@ -168,6 +168,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             var input = WaitForCss(cssFieldId);
             if (clearFirst) input.SendKeys(Keys.Control + "a" + Keys.Delete);
+            wait.Until(dr => input.GetAttribute("value") == "");
             input.SendKeys(characters);
         }
 

@@ -140,7 +140,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Road-150 Red, 44");
         }
 
-        [TestMethod, Ignore] //Pending bug fix
+        [TestMethod]
         public virtual void ChoicesDefaults()
         {
             Url(ProductServiceUrl);
