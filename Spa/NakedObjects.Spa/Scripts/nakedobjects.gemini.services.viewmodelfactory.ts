@@ -107,7 +107,7 @@ module NakedObjects.Angular.Gemini {
             // make sure current value is cached so can be recovered ! 
 
             const { returnType: key, reference: subKey } = valueViewModel;
-            const dict = <any>cache.get(key) || {}; // todo fix type !
+            const dict = cache.get(key) || {}; // todo fix type !
             dict[subKey] = { value: currentValue, name: currentValue.toString() };
             cache.put(key, dict);
 
@@ -171,12 +171,12 @@ module NakedObjects.Angular.Gemini {
 
                 const promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.prompt, promptRep, parmViewModel.id);
+                    parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id);
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.conditionalChoices, promptRep, parmViewModel.id);
+                    parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
                     parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -503,12 +503,12 @@ module NakedObjects.Angular.Gemini {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {
-                    propertyViewModel.prompt = <(st: string) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.prompt, promptRep, id);
+                    propertyViewModel.prompt = _.partial(context.prompt, promptRep, id);
                     propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
                 }
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = <(args: _.Dictionary<Value>) => ng.IPromise<ChoiceViewModel[]>>_.partial(context.conditionalChoices, promptRep, id);
+                    propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id);
                     propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -590,7 +590,7 @@ module NakedObjects.Angular.Gemini {
                     collectionViewModel.template = collectionSummaryTemplate;
             }
 
-            const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setCollectionMemberState, paneId, collectionRep);
+            const setState = _.partial(urlManager.setCollectionMemberState, paneId, collectionRep);
             collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
             collectionViewModel.doList = () => setState(CollectionViewState.List);
             collectionViewModel.doTable = () => setState(CollectionViewState.Table);
@@ -692,7 +692,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.pageNextDisabled = laterDisabled;
             collectionViewModel.pagePreviousDisabled = earlierDisabled;
 
-            const setState = <(state: CollectionViewState) => void>_.partial(urlManager.setListState, paneId);
+            const setState = _.partial(urlManager.setListState, paneId);
 
             collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
             collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
