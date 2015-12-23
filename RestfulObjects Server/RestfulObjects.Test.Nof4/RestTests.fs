@@ -1390,6 +1390,10 @@ type Nof4Tests() =
         member x.PostInvokeCollectionContributedActionContributedService() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedService x.api
 
         [<Test>]
+        member x.PostInvokeCollectionContributedActionContributedServiceMissingParm() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedServiceMissingParm x.api
+
+
+        [<Test>]
         member x.PostInvokeActionReturnRedirectedObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnRedirectedObjectObject x.api
         
         [<Test>]

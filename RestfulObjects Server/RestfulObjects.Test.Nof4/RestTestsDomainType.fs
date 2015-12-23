@@ -1394,6 +1394,9 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PostInvokeCollectionContributedActionContributedService() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedService x.api
 
+        [<Test>]
+        member x.PostInvokeCollectionContributedActionContributedServiceMissingParm() = ObjectActionInvoke19.PostInvokeCollectionContributedActionContributedServiceMissingParm x.api
+
 
         [<Test>]
         member x.PostInvokeActionReturnViewModelObject() = ObjectActionInvoke19.PostInvokeActionReturnViewModelObject x.api
