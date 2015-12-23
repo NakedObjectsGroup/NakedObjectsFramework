@@ -3,6 +3,12 @@
 
 module NakedObjects.Angular.Gemini {
 
+    export enum ViewType {
+        Home,
+        Object,
+        List
+    }
+
     export enum CollectionViewState {
         Summary,
         List,

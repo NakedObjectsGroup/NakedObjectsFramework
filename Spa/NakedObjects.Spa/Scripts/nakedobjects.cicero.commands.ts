@@ -107,17 +107,22 @@ module NakedObjects.Angular.Gemini {
         }
         //Helpers delegating to RouteData
         protected isHome(): boolean {
-            return this.urlManager.isHome(1);
+            return this.vm.viewType == ViewType.Home;
         }
         protected isObject(): boolean {
-            return !!this.routeData().objectId;
+            return this.vm.viewType == ViewType.Object;
         }
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
             const oid = this.routeData().objectId;
             return this.context.getObjectByOid(1, oid);
         }
         protected isList(): boolean {
-            return false;  //TODO
+            return this.vm.viewType == ViewType.List;
+        }
+        protected getList(): ng.IPromise<ListRepresentation> {
+            const routeData = this.routeData();
+            //TODO: Currently covers only the list-from-menu; need to cover list from object action
+            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.parms, routeData.page, routeData.pageSize);
         }
         protected isMenu(): boolean {
             return !!this.routeData().menuId;
@@ -177,6 +182,18 @@ module NakedObjects.Angular.Gemini {
         protected matchFriendlyNameAndOrMenuPath<T extends IHasExtensions>(
             reps: T[], match: string): T[] {
             const clauses = match.split(" ");
+            //An exact match has preference over any partial match
+            const exactMatches = _.filter(reps, (rep) => {
+                const path = rep.extensions().menuPath();
+                const name = rep.extensions().friendlyName().toLowerCase();
+                return match == name ||
+                    (!!path && match == path.toLowerCase() + " " + name) ||
+                    _.all(clauses, clause => {
+                    name == clause  ||
+                    (!!path && path.toLowerCase() == clause)
+                });            
+            });
+            if (exactMatches.length > 0) return exactMatches;
             return _.filter(reps, (rep) => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
@@ -526,37 +543,46 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            const name = this.argumentAsString(args, 0);
-            if (this.isList() || this.isCollection()) {
-                const item = this.argumentAsNumber(args, 1);
-                this.clearInputAndSetOutputTo("The go command is not yet implemented for lists or collections");
+            const arg0 = this.argumentAsString(args, 0);
+            if (this.isList()) {
+                const itemNo: number = +arg0;
+                this.getList().then((list: ListRepresentation) => {
+                    const link = list.value()[itemNo - 1]; // On UI, first item is '1'
+                    this.urlManager.setItem(link, 1);
+                });
                 return;
             }
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
-                    const allFields = this.matchingProperties(obj, name);
-                    const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
-                    var s: string = "";
-                    switch (refFields.length) {
-                        case 0:
-                            if (!name) {
-                                s = "No visible fields";
-                            } else {
-                                s = name + " does not match any reference fields";
-                            }
-                            break;
-                        case 1:
-                            this.urlManager.setProperty(refFields[0], 1);
-                            break;
-                        default:
-                            var label = "Multiple reference fields match " + name + ": ";
-                            s = _.reduce(refFields, (s, prop) => {
-                                return s + prop.extensions().friendlyName();
-                            }, label);
-                    }
-                    this.clearInputAndSetOutputTo(s);
-                });
-
+            if (this.isObject) {
+                if (this.isCollection()) {
+                    const item = this.argumentAsNumber(args, 1);
+                    this.clearInputAndSetOutputTo("The go command is not yet implemented for collections");
+                    return;
+                }
+                this.getObject()
+                    .then((obj: DomainObjectRepresentation) => {
+                        const allFields = this.matchingProperties(obj, arg0);
+                        const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
+                        var s: string = "";
+                        switch (refFields.length) {
+                            case 0:
+                                if (!arg0) {
+                                    s = "No visible fields";
+                                } else {
+                                    s = arg0 + " does not match any reference fields";
+                                }
+                                break;
+                            case 1:
+                                this.urlManager.setProperty(refFields[0], 1);
+                                break;
+                            default:
+                                var label = "Multiple reference fields match " + arg0 + ": ";
+                                s = _.reduce(refFields, (s, prop) => {
+                                    return s + prop.extensions().friendlyName();
+                                }, label);
+                        }
+                        this.clearInputAndSetOutputTo(s);
+                    });
+            }
         };
     }
     export class Help extends Command {
@@ -604,17 +630,18 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Item command is not yet implemented");
-            //const startNo = this.argumentAsNumber(args, 1, true);
-            //const endNo = this.argumentAsNumber(args, 2, true);
-            //const pageNo = this.argumentAsNumber(args, 3, true);
-            //if (this.isCollection()) {
-            //    if (pageNo != null) {
-            //        throw new Error("Item may not have a third argument (page number) in the context of an object collection");
-            //    }
-
-            //} else {
-            //}
+            const startNo = this.argumentAsNumber(args, 0, true);
+            const endNo = this.argumentAsNumber(args, 1, true);
+            const pageNo = this.argumentAsNumber(args, 2, true);
+            if (this.isCollection()) {
+                this.clearInputAndSetOutputTo("Item command is not yet implemented");
+                return;
+            }
+            //List
+            this.getList().then((list: ListRepresentation) => {
+                const link = list.value()[startNo - 1]; // On UI, first item is '1'
+                this.clearInputAndSetOutputTo("Item " + startNo + ": " + link.title());
+            });
         };
 
     }
@@ -639,7 +666,10 @@ module NakedObjects.Angular.Gemini {
                 .then((menus: MenusRepresentation) => {
                     var links = menus.value();
                     if (name) {
-                        links = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
+                        //TODO: do multi-clause match
+                        const exactMatches = _.filter(links, (t) => { return t.title().toLowerCase() == name; });
+                        const partialMatches = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
+                        links = exactMatches.length == 1 ? exactMatches : partialMatches;
                     }
                     switch (links.length) {
                         case 0:
@@ -825,7 +855,7 @@ module NakedObjects.Angular.Gemini {
     export class Where extends Command {
 
         public fullCommand = "where";
-        public helpText = "Reminds the user of the current context.";
+        public helpText = "Not implemented yet. Reminds the user of the current context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -834,7 +864,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.vm.setOutputToSummaryOfRepresentation(this.routeData());
+            this.vm.renderForViewType(this.routeData());
         };
 
     }

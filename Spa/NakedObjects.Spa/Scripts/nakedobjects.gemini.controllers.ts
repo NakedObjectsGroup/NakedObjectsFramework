@@ -46,10 +46,25 @@ module NakedObjects.Angular.Gemini {
         handlers.handleToolBar($scope);
     });
 
-    app.controller("CiceroController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
+    app.controller("CiceroHomeController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = viewModelFactory.ciceroViewModel();
         $scope.cicero = cvm;
-        cvm.setOutputToSummaryOfRepresentation(urlManager.getRouteData().pane1);
+        cvm.viewType = ViewType.Home;
+        cvm.renderHome(urlManager.getRouteData().pane1);
+        focusManager.focusOn(FocusTarget.FirstInput, 1);
+    });
+    app.controller("CiceroObjectController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
+        const cvm = viewModelFactory.ciceroViewModel();
+        $scope.cicero = cvm;
+        cvm.viewType = ViewType.Object;
+        cvm.renderObject(urlManager.getRouteData().pane1);
+        focusManager.focusOn(FocusTarget.FirstInput, 1);
+    });
+    app.controller("CiceroListController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
+        const cvm = viewModelFactory.ciceroViewModel();
+        $scope.cicero = cvm;
+        cvm.viewType = ViewType.List;
+        cvm.renderList(urlManager.getRouteData().pane1);
         focusManager.focusOn(FocusTarget.FirstInput, 1);
     });
 }

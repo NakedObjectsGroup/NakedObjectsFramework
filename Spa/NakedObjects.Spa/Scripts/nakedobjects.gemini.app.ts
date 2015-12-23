@@ -163,15 +163,15 @@ module NakedObjects.Angular {
             //Cicero
             when("/cicero/home", {
                 templateUrl: ciceroTemplate,
-                controller: "CiceroController"
+                controller: "CiceroHomeController"
             }).
             when("/cicero/object", {
                 templateUrl: ciceroTemplate,
-                controller: "CiceroController"
+                controller: "CiceroObjectController"
             }).
             when("/cicero/list", {
                 templateUrl: ciceroTemplate,
-                controller: "CiceroController"
+                controller: "CiceroListController"
             }).
             otherwise({
             redirectTo: "/gemini/home"

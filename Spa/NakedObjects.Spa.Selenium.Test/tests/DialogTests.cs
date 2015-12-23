@@ -219,48 +219,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         #region Auto Complete
-        [TestMethod]
-        public virtual void AutoCompleteParmShow()
-        {
-            Url(SalesServiceUrl);
-            OpenActionDialog("List Accounts For Sales Person");
-
-            br.FindElement(By.CssSelector(".value input[type='text']")).SendKeys("Valdez");
-
-            wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
-
-            Click(WaitForCss(".ui-menu-item"));
-
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
-        }
 
         [TestMethod]
-        public virtual void AutoCompleteParmGo()
+        public virtual void AutoCompleteParm()
         {
             Url(SalesServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("List Accounts For Sales Person");
-
-            WaitForCss(".value input[type='text']").SendKeys("Valdez");
-
+            ClearFieldThenType("#sp1","Valdez");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
-
             Click(WaitForCss(".ui-menu-item"));
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
-
-            try
-            {
-                WaitForCss(".value input[type='text']");
-                // found so it fails
-                Assert.Fail();
-            }
-            catch
-            {
-                // all OK 
-            }
         }
 
         [TestMethod]
@@ -281,14 +252,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("Find Product");
-
-            var acElem = WaitForCss(".value input[type='text']");
-
-            for (int i = 0; i < 15; i++)
-            {
-                acElem.SendKeys(Keys.Backspace);
-            }
-            acElem.SendKeys("BB");
+            ClearFieldThenType("#product1","BB");
             wait.Until(dr => dr.FindElement(By.CssSelector(".ui-menu-item")).Text == "BB Ball Bearing");
             var item = br.FindElement(By.CssSelector(".ui-menu-item"));
             Click(item);

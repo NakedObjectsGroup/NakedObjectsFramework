@@ -80,6 +80,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //To many args
             EnterCommand("ac name find by, x, y");
             WaitForOutput("Wrong number of arguments provided.");
+
+            //Exact match takes precedence over partial match
+            CiceroUrl("home?menu1=WorkOrderRepository");
+            WaitForOutput("Work Orders menu.");
+            EnterCommand("ac Create New Work Order"); //which would also match Create New Work Order2
+            WaitForOutput("Work Orders menu. Action dialog: Create New Work Order. Product: empty,");
+
+            //Invoking action (no args) on an object with only one action goes straight to dialog
+            CiceroUrl("object?object1=AdventureWorksModel.SpecialOffer-1");
+            WaitForOutput("Special Offer: No Discount.");
+            EnterCommand("ac");
+            WaitForOutput("Special Offer: No Discount. Action dialog: Associate Special Offer With Product. Product: empty,");
         }
         public virtual void BackAndForward() //Tested together for simplicity
         {
@@ -223,6 +235,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("field num,x,y");
             WaitForOutput("Wrong number of arguments provided.");
 
+            //exact match takes priority over partial match
+            EnterCommand("field product category"); //which would also match product subcategory
+            WaitForOutput("Product Category: Bikes,");
             //Input: TODO
         }
         public virtual void Gemini()
@@ -296,6 +311,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             EnterCommand("Menu");
             WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
+
+            //Test for exact match taking precedence over partial matches
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("menu orders"); //which would match 3, but one exactly
+            WaitForOutput("Orders menu.");
         }
         public virtual void OK()
         {

@@ -400,6 +400,25 @@ module NakedObjects.Angular.Gemini {
         clearInput(): void {
             this.input = null;
         }
-        setOutputToSummaryOfRepresentation: (routeData: PaneRouteData) => void;
+
+        renderHome: (routeData: PaneRouteData) => void;
+        renderObject: (routeData: PaneRouteData) => void;
+        renderList: (routeData: PaneRouteData) => void;
+
+        viewType: ViewType;
+
+        renderForViewType(routeData: PaneRouteData) {
+            switch (this.viewType) {
+                case ViewType.Home:
+                    this.renderHome(routeData);
+                    break;
+                case ViewType.Object:
+                    this.renderObject(routeData);
+                    break;
+                case ViewType.List:
+                    this.renderList(routeData);
+                    break;
+            }
+        }
     }
 }
