@@ -38,7 +38,7 @@ namespace RestfulObjects.Snapshot.Representations {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
-            if (context.Specification.IsCollection && !context.ElementSpecification.IsParseable) {         
+            if (context.Specification.IsCollection && context.ElementSpecification != null &&  !context.ElementSpecification.IsParseable) {         
                 var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);                   
                 var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
                 value = CreateMap(context, coll);

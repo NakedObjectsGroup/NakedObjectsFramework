@@ -278,6 +278,68 @@ let PostInvokeCollectionContributedActionContributedService(api : RestfulObjects
     let oid = oType
     VerifyPostInvokeCollectionContributedActionContributedService "services" oType oid (wrap api.PostInvokeOnService) api
 
+let VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm refType oType oid f (api : RestfulObjectsControllerBase) = 
+    let pid = "ACollectionContributedActionParm"
+    let ourl = sprintf "%s/%s" refType oid
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+
+    let msHref = new hrefType((sprintf "objects/%s/%s" roType (ktc "1")));
+    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, msHref.ToString()))   
+    let colParm = new JArray([refParm])
+    let parms = 
+        new JObject(new JProperty("ms", new JObject(new JProperty(JsonPropertyNames.Value, colParm))), 
+                    new JProperty("id", new JObject(new JProperty(JsonPropertyNames.Value, ""))))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    let args = CreateArgMap parms
+
+
+    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
+    let result = f (oType, ktc "1", pid, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let roid = roType + "/" + ktc "1"
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let resultObject = 
+        TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                      TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
+                      TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+                      TProperty(JsonPropertyNames.Links, 
+                                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
+                                         TObjectJson(makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "")
+                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
+                      
+                      TProperty
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                              TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
+    
+
+    
+    let expected = 
+        [ TProperty("id", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ]))
+          TProperty("ms", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TArray([TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(msHref.ToString()) ) ])])) ])) ]
+
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+    compareObject expected parsedResult
+
+let PostInvokeCollectionContributedActionContributedServiceMissingParm(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
+    let oid = oType
+    VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm "services" oType oid (wrap api.PostInvokeOnService) api
+
 
 let VerifyPostInvokeActionReturnRedirectedObject refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionReturnsRedirectedObject"
