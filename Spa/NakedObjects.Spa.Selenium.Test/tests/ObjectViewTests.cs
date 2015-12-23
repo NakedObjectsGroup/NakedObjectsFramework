@@ -174,7 +174,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
 
 
-        [TestMethod, Ignore] //Failing on server
+        [TestMethod]
         public void QueryOnlyActionDoesNotReloadAutomatically()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
@@ -191,14 +191,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             Click(br.FindElement(By.CssSelector(".icon-back")));
             WaitForView(Pane.Single, PaneType.Object);
-            var valueNow = WaitForCss(".property:nth-child(6) .value");
-            Assert.AreEqual(original, valueNow.Text);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
             Reload();
-            GeminiUrl("");
-            WaitForView(Pane.Single, PaneType.Home);
-            Click(br.FindElement(By.CssSelector(".icon-back")));
-            valueNow = WaitForCss(".property:nth-child(6) .value");
-            Assert.AreEqual(newValue, valueNow.Text);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
        }
 
         [TestMethod]
