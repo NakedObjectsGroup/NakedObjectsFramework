@@ -26,12 +26,24 @@ namespace RestfulObjects.Snapshot.Representations {
 
         #endregion
 
+
+        private static RefValueRepresentation CreateObjectRef(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, RestControlFlags flags) {
+            var helper = new UriMtHelper(oidStrategy, req, no);
+            ObjectRelType rt = new ObjectRelType(RelValues.Element, helper);
+
+            return RefValueRepresentation.Create(oidStrategy, rt, flags);
+        }
+
         private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, RestControlFlags flags) {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
-            if (context.Specification.IsParseable ||
-                context.Specification.IsCollection ||
+            if (context.Specification.IsCollection && !context.ElementSpecification.IsParseable) {         
+                var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);                   
+                var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
+                value = CreateMap(context, coll);
+            }
+            else if (context.Specification.IsParseable ||
                 context.ProposedValue == null ||
                 context.ProposedObjectFacade == null ||
                 context.ProposedObjectFacade.Specification.IsParseable) {
