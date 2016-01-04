@@ -171,6 +171,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             input.SendKeys(Keys.Delete);
             wait.Until(dr => input.GetAttribute("value") == "");
             input.SendKeys(characters);
+            wait.Until(dr => input.GetAttribute("value") == characters);
         }
         protected virtual void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
         {
