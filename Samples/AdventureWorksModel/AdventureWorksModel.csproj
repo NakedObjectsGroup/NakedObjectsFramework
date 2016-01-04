@@ -234,6 +234,7 @@
     <Compile Include="Sales\ShoppingCartRepository.cs" />
     <Compile Include="Sales\ShoppingCartItem.cs" />
     <Compile Include="Sales\SpecialOffer.cs" />
+    <Compile Include="Sales\SpecialOfferContributedActions.cs" />
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOfferRepository.cs" />
     <Compile Include="Sales\Store.cs" />

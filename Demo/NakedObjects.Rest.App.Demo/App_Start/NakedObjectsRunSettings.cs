@@ -54,7 +54,8 @@ namespace NakedObjects.Rest.App.Demo {
                     typeof (PurchaseOrderRepository),
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
-                    typeof (CustomerContributedActions)
+                    typeof (CustomerContributedActions),
+                    typeof (SpecialOfferContributedActions)
                 };
             }
         }
