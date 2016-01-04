@@ -189,8 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
-            == "Page 1 of 1; viewing 11 of 11 items");
-
+                .StartsWith("Page 1 of 1;"));
             GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
             ClearFieldThenType("#minqty1", "10");

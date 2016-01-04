@@ -40,6 +40,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             EditObject();
             ClearFieldThenType("#listprice1", oldPrice);
             ClearFieldThenType("#daystomanufacture1", oldDays);
+            wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == oldDays);
             SaveObject();
             properties = br.FindElements(By.CssSelector(".property"));
             Assert.AreEqual("List Price:\r\n" + oldPrice, properties[5].Text);
