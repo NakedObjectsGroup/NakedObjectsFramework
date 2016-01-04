@@ -173,11 +173,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void SplitListList()
         {
-            GeminiUrl("list/list?menu1=OrderRepository&action1=HighestValueOrders&menu2=SpecialOfferRepository&action2=CurrentSpecialOffers");
+            GeminiUrl("list/list?menu2=PersonRepository&parm2_firstName=%2522a%2522&parm2_lastName=%2522a%2522&action2=FindContactByName&page2=1&pageSize2=20&selected2=0&menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
             Reload(Pane.Left);
-            WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
+            WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
             Reload(Pane.Right);
-            WaitForView(Pane.Right, PaneType.List, "Current Special Offers");
+            WaitForView(Pane.Right, PaneType.List, "Find Contact By Name");
         }
         #endregion
     }
