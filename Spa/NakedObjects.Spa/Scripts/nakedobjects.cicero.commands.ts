@@ -91,7 +91,7 @@ module NakedObjects.Angular.Gemini {
         protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
             const arg = this.argumentAsString(args, argNo, optional);
             const number = parseInt(arg);
-            if (number == NaN) {
+            if (isNaN(number)) {
                 throw new Error("Argument number " + +(argNo + 1).toString + + " must be a number");
             }
             return number;
@@ -545,8 +545,16 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const arg0 = this.argumentAsString(args, 0);
             if (this.isList()) {
-                const itemNo: number = +arg0;
+                const itemNo: number = parseInt(arg0);
+                if (isNaN(itemNo)) {
+                    this.clearInputAndSetOutputTo(arg0 + " is not a valid number");
+                    return;
+                } 
                 this.getList().then((list: ListRepresentation) => {
+                    if (itemNo < 1 || itemNo > list.value().length) {
+                        this.clearInputAndSetOutputTo(arg0+" is out of range for displayed items");
+                        return;
+                    }
                     const link = list.value()[itemNo - 1]; // On UI, first item is '1'
                     this.urlManager.setItem(link, 1);
                 });

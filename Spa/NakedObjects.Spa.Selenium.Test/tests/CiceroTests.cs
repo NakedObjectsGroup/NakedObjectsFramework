@@ -259,6 +259,65 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ge x");
             WaitForOutput("Wrong number of arguments provided.");
         }
+        public virtual void Go()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-577");
+            WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577.");
+            //Full match
+            EnterCommand("go Details");
+            WaitForOutput("Store: Synthetic Materials Manufacturing.");
+            //Partial match (on Sales Person)
+            EnterCommand("go pers");
+            WaitForOutput("Sales Person: Pamela Ansman-Wolfe.");
+            //No match
+            EnterCommand("go x");
+            WaitForOutput("x does not match any reference fields");
+            //Matches only value fields
+            EnterCommand("go bonus");
+            WaitForOutput("bonus does not match any reference fields");
+
+            //Multiple matches
+            EnterCommand("go details");
+            WaitForOutput("Multiple reference fields match details: Employee DetailsPerson Details");
+            //Multiple clause match
+            EnterCommand("go details pers"); //Person Details
+            WaitForOutput("Person: Pamela Ansman-Wolfe.");
+            //Wrong no of args
+            EnterCommand("go");
+            WaitForOutput("No arguments provided.");
+            EnterCommand("go x,y");
+            WaitForOutput("Wrong number of arguments provided.");
+            //Now try for a list context
+            CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
+            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("go 1");
+            WaitForOutput("Special Offer: No Discount.");
+            CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
+            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("go 16");
+            WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale.");
+            //Try out of range
+            CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
+            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("go 0");
+            WaitForOutput("0 is out of range for displayed items");
+            EnterCommand("go 17");
+            WaitForOutput("17 is out of range for displayed items");
+            EnterCommand("go x");
+            WaitForOutput("x is not a valid number");
+            EnterCommand("go 1x"); //Because of behaviour of tryParse
+            WaitForOutput("Special Offer: No Discount.");
+            //Wrong context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("go x");
+            WaitForOutput("The command: go is not available in the current context");
+            CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
+            WaitForOutput("Products menu. Action dialog: Random Product.");
+            EnterCommand("go x");
+            WaitForOutput("The command: go is not available in the current context");
+            
+        }
         public virtual void Help()
         {
             //Help from home
@@ -397,6 +456,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Field() { base.Field(); }
         [TestMethod]
+        public override void Gemini() { base.Gemini(); }
+        [TestMethod]
+        public override void Go() { base.Go(); }
+        [TestMethod]
         public override void Help() { base.Help(); }
         [TestMethod]
         public override void Menu() { base.Menu(); }
@@ -503,6 +566,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Edit();
             base.Field();
             base.Gemini();
+            base.Go();
             base.Help();
             base.Menu();
             base.OK();
