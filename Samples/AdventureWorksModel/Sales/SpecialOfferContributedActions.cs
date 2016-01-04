@@ -30,5 +30,15 @@ namespace AdventureWorksModel.Sales
                 }
             }
         }
+
+        public void ChangeType(
+            [ContributedAction] IQueryable<SpecialOffer> offers, 
+            string newType)
+        {
+            foreach (SpecialOffer offer in offers)
+            {
+                offer.Type = newType;
+            }
+        }
     }
 }

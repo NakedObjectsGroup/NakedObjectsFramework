@@ -35,10 +35,10 @@
             <tbody>
             <tr ng-repeat="item in collection.items">
                 <td class="checkbox">
-                    <input type="checkbox" ng-model="item.selected" ng-change="item.checkboxChange($index)">
+                    <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.checkboxChange($index)">
                 </td>
                 <td class="reference clickable-area" ng-class="item.color" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
-                    {{item.title}}
+                 <label for="{{'item'+collection.onPaneId+'-'+ $index}}">{{item.title}}</label>
                 </td>
             </tr>
             </tbody>

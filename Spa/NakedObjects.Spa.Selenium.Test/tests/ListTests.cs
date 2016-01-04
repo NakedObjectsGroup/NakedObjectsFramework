@@ -5,8 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
@@ -213,6 +215,41 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 == "Page 1 of 1; viewing 11 of 11 items");
         }
+
+        [TestMethod, Ignore] //Initially pending fix by stef
+        public void CCA1()
+        {
+            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open");
+            Reload();
+            WaitForView(Pane.Single, PaneType.List);
+            SelectCheckBox("#item1-0");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-4");
+            OpenActionDialog("Extend Offers");
+            var date = new DateTime(2029, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var dateStr = date.ToString("d MMM yyyy");
+            TypeIntoFieldWithoutClearing("#todate1", dateStr);
+            TypeIntoFieldWithoutClearing("#todate1", Keys.Escape); //To lose datepicker
+
+            Thread.Sleep(300); //TODO: not good, but can't find any other way to detect that datepicker is no longer overlapping OK
+            Click(OKButton());
+
+        }
+
+        [TestMethod, Ignore]
+        public void CCAWithDialogNotOpen()
+        {
+            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open");
+            Reload();
+            WaitForView(Pane.Single, PaneType.List);
+            SelectCheckBox("#item1-0");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-4");
+            OpenActionDialog("Change Type");
+
+        }
+
+
     }
 
     #region browsers specific subclasses

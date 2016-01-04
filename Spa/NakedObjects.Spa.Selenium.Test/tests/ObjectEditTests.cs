@@ -39,6 +39,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             //Restore for convenience
             EditObject();
             ClearFieldThenType("#listprice1", oldPrice);
+            wait.Until(dr => dr.FindElement(By.CssSelector("#listprice1")).GetAttribute("value") == oldPrice);
             ClearFieldThenType("#daystomanufacture1", oldDays);
             wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == oldDays);
             SaveObject();

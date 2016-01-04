@@ -178,6 +178,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             input.SendKeys(characters);
         }
 
+        protected void SelectCheckBox(string css)
+        {
+            var checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
+            checkbox.Click();
+        }
+
         /// <summary>
         /// Returns a string of n backspace keys for typing into a field
         /// </summary>
