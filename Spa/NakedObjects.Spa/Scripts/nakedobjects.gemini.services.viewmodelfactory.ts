@@ -77,7 +77,8 @@ module NakedObjects.Angular.Gemini {
             linkViewModel.doClick = () => {
                 // because may be clicking on menu already open so want to reset focus             
                 urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
-                focusManager.focusOn(FocusTarget.FirstSubAction, paneId);
+                focusManager.focusOverrideOff();
+                focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
             };
             initLinkViewModel(linkViewModel, linkRep);
             return linkViewModel;
@@ -90,8 +91,10 @@ module NakedObjects.Angular.Gemini {
 
             itemViewModel.selected = selected;
 
-            itemViewModel.checkboxChange = (index) =>
+            itemViewModel.checkboxChange = (index) => {
                 urlManager.setListItem(paneId, index, itemViewModel.selected);
+                focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
+            }
 
 
             return itemViewModel;
@@ -279,8 +282,12 @@ module NakedObjects.Angular.Gemini {
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
-                (right?: boolean) => urlManager.setDialog(actionRep.actionId(), paneId) :
                 (right?: boolean) => {
+                    focusManager.focusOverrideOff();
+                    urlManager.setDialog(actionRep.actionId(), paneId);
+                } :
+                (right?: boolean) => {
+                    focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters;
                     actionViewModel.executeInvoke(pps, right);
                     // todo display error if fails on parent ?
@@ -552,7 +559,8 @@ module NakedObjects.Angular.Gemini {
 
                             if (!collectionViewModel.header) {
                                 collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
-                                focusManager.focusOn(FocusTarget.FirstTableItem, urlManager.currentpane());
+                                focusManager.focusOverrideOff();
+                                focusManager.focusOn(FocusTarget.TableItem, 0, urlManager.currentpane());
                             }
                         });
                     return itemViewModel;
@@ -660,7 +668,10 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
-                    (right?: boolean) => urlManager.setDialog(a.actionRep.actionId(), paneId) :
+                    (right?: boolean) => {
+                        focusManager.focusOverrideOff();
+                        urlManager.setDialog(a.actionRep.actionId(), paneId);
+                    } :
                     (right?: boolean) => {
                         a.executeInvoke([], right).then((errorMap: ErrorMap) => {
                             if (errorMap.containsError()) {
@@ -673,9 +684,13 @@ module NakedObjects.Angular.Gemini {
             });
 
 
-            collectionViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
+            collectionViewModel.toggleActionMenu = () => {
+                focusManager.focusOverrideOff();
+                urlManager.toggleObjectMenu(paneId);
+            };
 
             const setPage = (newPage: number, newState: CollectionViewState) => {
+                focusManager.focusOverrideOff();
                 recreate(newPage, pageSize, newState);
             }
 
@@ -797,9 +812,13 @@ module NakedObjects.Angular.Gemini {
             objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
             objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, routeData, (page: number, newPageSize: number) => { }));
 
-            // for dropping
-            objectViewModel.toggleActionMenu = () => urlManager.toggleObjectMenu(paneId);
+           
+            objectViewModel.toggleActionMenu = () => {
+                focusManager.focusOverrideOff();
+                urlManager.toggleObjectMenu(paneId);
+            };
 
+             // for dropping
             const link = objectRep.selfLink();
             if (link) {
                 // not transient - can't drag transients so no need to set up IDraggable members on transients
@@ -888,9 +907,18 @@ module NakedObjects.Angular.Gemini {
         function getToolBarViewModel() {
             if (!cachedToolBarViewModel) {
                 const tvm = new ToolBarViewModel();
-                tvm.goHome = (right?: boolean) => urlManager.setHome(clickHandler.pane(1, right));
-                tvm.goBack = () => navigation.back();
-                tvm.goForward = () => navigation.forward();
+                tvm.goHome = (right?: boolean) => {
+                    focusManager.focusOverrideOff();
+                    urlManager.setHome(clickHandler.pane(1, right));
+                };
+                tvm.goBack = () => {
+                    focusManager.focusOverrideOff();
+                    navigation.back();
+                };
+                tvm.goForward = () => {
+                    focusManager.focusOverrideOff();
+                    navigation.forward();
+                };
                 tvm.swapPanes = () => urlManager.swapPanes();
                 tvm.singlePane = (right?: boolean) => {
                     urlManager.singlePane(clickHandler.pane(1, right));
@@ -905,8 +933,14 @@ module NakedObjects.Angular.Gemini {
 
                 $rootScope.$on("ajax-change", (event, count) =>
                     tvm.loading = count > 0 ? "Loading..." : "");
-                $rootScope.$on("back", () => navigation.back());
-                $rootScope.$on("forward", () => navigation.forward());
+                $rootScope.$on("back", () => {
+                    focusManager.focusOverrideOff();
+                    navigation.back();
+                });
+                $rootScope.$on("forward", () => {
+                    focusManager.focusOverrideOff();
+                    navigation.forward();
+                });
 
                 cachedToolBarViewModel = tvm;
             }

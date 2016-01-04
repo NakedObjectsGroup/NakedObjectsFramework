@@ -96,19 +96,19 @@ module NakedObjects.Angular.Gemini {
                                 const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel($scope, am, routeData)) };
                                 $scope.object = actions;
 
-                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.FirstSubAction;
+                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.SubAction;
 
                                 if (routeData.dialogId) {                               
                                     const action = menu.actionMember(routeData.dialogId);
                                     setDialog($scope, action, routeData);
                                 }
 
-                                focusManager.focusOn(focusTarget, urlManager.currentpane());
+                                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
                             }).catch(error => {
                                 setError(error);
                             });
                     } else {
-                        focusManager.focusOn(FocusTarget.FirstMenu, urlManager.currentpane());
+                        focusManager.focusOn(FocusTarget.Menu, 0, urlManager.currentpane());
                     }
                 }).catch(error => {
                     setError(error);
@@ -139,7 +139,7 @@ module NakedObjects.Angular.Gemini {
                     $scope.collection = collectionViewModel;
                     $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
 
-                    let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                    let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
                     if (routeData.dialogId) {                                   
                         const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
@@ -149,7 +149,7 @@ module NakedObjects.Angular.Gemini {
 
                     getFriendlyName().then((name: string) => $scope.title = name);
                              
-                    focusManager.focusOn(focusTarget, urlManager.currentpane());
+                    focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
                     urlManager.setListPaging(routeData.paneId, newPage, newPageSize, routeData.state);           
                 }).catch(error => {
                     setError(error);
@@ -164,7 +164,7 @@ module NakedObjects.Angular.Gemini {
                 const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData, pageOrRecreate);
                 $scope.collection = collectionViewModel;
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                let focusTarget = routeData.actionsOpen ? FocusTarget.FirstSubAction : FocusTarget.FirstListItem;
+                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
                 if (routeData.dialogId) {                  
                     const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);                  
@@ -172,11 +172,11 @@ module NakedObjects.Angular.Gemini {
                     focusTarget = FocusTarget.Dialog;
                 } 
 
-                focusManager.focusOn(focusTarget, urlManager.currentpane());
+                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
-                focusManager.focusOn(FocusTarget.FirstAction, urlManager.currentpane());       
+                focusManager.focusOn(FocusTarget.Action, 0, urlManager.currentpane());       
             }
         };
 
@@ -229,14 +229,14 @@ module NakedObjects.Angular.Gemini {
                         setDialog($scope, action, routeData);
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
-                        focusTarget = FocusTarget.FirstSubAction;
+                        focusTarget = FocusTarget.SubAction;
                     } else if (routeData.edit || ovm.isTransient) {
-                        focusTarget = FocusTarget.FirstProperty;
+                        focusTarget = FocusTarget.Property;
                     } else {
                         focusTarget = FocusTarget.ObjectTitle;
                     }
 
-                    focusManager.focusOn(focusTarget, urlManager.currentpane());
+                    focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
 
                 }).catch(error => {
                     setError(error);

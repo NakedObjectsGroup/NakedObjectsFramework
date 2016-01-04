@@ -51,20 +51,20 @@ module NakedObjects.Angular.Gemini {
         $scope.cicero = cvm;
         cvm.viewType = ViewType.Home;
         cvm.renderHome(urlManager.getRouteData().pane1);
-        focusManager.focusOn(FocusTarget.FirstInput, 1);
+        focusManager.focusOn(FocusTarget.Input, 0, 1);
     });
     app.controller("CiceroObjectController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = viewModelFactory.ciceroViewModel();
         $scope.cicero = cvm;
         cvm.viewType = ViewType.Object;
         cvm.renderObject(urlManager.getRouteData().pane1);
-        focusManager.focusOn(FocusTarget.FirstInput, 1);
+        focusManager.focusOn(FocusTarget.Input, 0, 1);
     });
     app.controller("CiceroListController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = viewModelFactory.ciceroViewModel();
         $scope.cicero = cvm;
         cvm.viewType = ViewType.List;
         cvm.renderList(urlManager.getRouteData().pane1);
-        focusManager.focusOn(FocusTarget.FirstInput, 1);
+        focusManager.focusOn(FocusTarget.Input, 0, 1);
     });
 }
