@@ -41,11 +41,8 @@ module.exports = function(config) {
       'Scripts/nakedobjects.gemini.services.clickhandler.js',
       'Scripts/nakedobjects.cicero.commands.js',
       'Scripts/nakedobjects.cicero.commandFactory.js',
-      'Tests/specs/nakedobjects.gemini.controllers.test.js',
-      'Tests/specs/nakedobjects.gemini.services.context.test.js',
-      'Tests/specs/nakedobjects.gemini.services.handlers.test.js',
-      'Tests/specs/nakedobjects.gemini.services.urlmanager.test.js',
-      'Tests/specs/nakedobjects.gemini.services.viewmodelfactory.test.js'
+      'Tests/specs/nakedobjects.gemini.test.helpers.js',
+      'Tests/specs/nakedobjects.gemini.test.js'
     ],
 
 
@@ -57,9 +54,9 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-        'Scripts/nakedobjects.*.js': ['coverage']
-    },
+    //preprocessors: {
+    //    'Scripts/nakedobjects.*.js': ['coverage']
+    //},
 
 
     // test results reporter to use
@@ -102,10 +99,10 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['IE'],
+    browsers: ['Chrome'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true
+    singleRun: false
   });
 };
