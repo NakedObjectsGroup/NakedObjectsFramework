@@ -68,6 +68,7 @@ module NakedObjects.Angular.Gemini {
 
             // validate version 
 
+            // todo just do once - cached but still pointless repeating each page refresh
             context.getVersion().then((v: VersionRepresentation) => {
                 const specVersion = parseFloat(v.specVersion());
                 const domainModel = v.optionalCapabilities().domainModel;
@@ -209,6 +210,7 @@ module NakedObjects.Angular.Gemini {
 
                     $scope.object = ovm;
 
+                    // todo can the object be transient ?
                     if (routeData.edit || ovm.isTransient) {
                         $scope.objectTemplate = objectEditTemplate;
                         $scope.actionsTemplate = nullTemplate;

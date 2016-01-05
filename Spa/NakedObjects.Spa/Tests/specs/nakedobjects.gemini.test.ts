@@ -81,7 +81,6 @@ module NakedObjects.Gemini.Test {
             expect(dialogViewModel.title).toBe(title);
         }
 
-
         describe("Go to Home Page", () => {
                                 
             function executeHandleHome(handlers: IHandlers) {
@@ -167,13 +166,21 @@ module NakedObjects.Gemini.Test {
                 timeout.flush();
             }
 
-            function verifyBaseObjectViewPageState(ts: INakedObjectsScope) {
-                expect(ts.objectTemplate).toBe(Angular.objectViewTemplate);
+            function verifyBaseObjectPageState(ts: INakedObjectsScope) {            
                 expect(ts.collectionsTemplate).toBe(Angular.collectionsTemplate);
                 const objectViewModel = ts.object as DomainObjectViewModel;
                 expect(objectViewModel.properties.length).toBe(7);
                 expect(testEventSpy).toHaveBeenCalled();
                 expect(cacheFactory.get("recentlyViewed").get("AdventureWorksModel.Vendor")[objectViewModel.domainObject.selfLink().href()].name).toBe(objectViewModel.domainObject.title());
+            }
+
+            function verifyObjectViewPageState(ts: INakedObjectsScope) {
+                expect(ts.objectTemplate).toBe(Angular.objectViewTemplate);              
+            }
+
+            function verifyObjectEditPageState(ts: INakedObjectsScope) {
+                expect(ts.objectTemplate).toBe(Angular.objectEditTemplate);  
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);          
             }
 
             function verifyActionsOpenPageState(ts: INakedObjectsScope) {
@@ -203,7 +210,8 @@ module NakedObjects.Gemini.Test {
                 }));
 
                 it("Verify state in scope", () => {
-                    verifyBaseObjectViewPageState(testScope);
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
                     verifyActionsClosedPageState(testScope);
                 });
             });
@@ -220,7 +228,8 @@ module NakedObjects.Gemini.Test {
                 }));
 
                 it("Verify state in scope", () => {
-                    verifyBaseObjectViewPageState(testScope);
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
                     verifyActionsOpenPageState(testScope);
                 });
             });
@@ -238,7 +247,8 @@ module NakedObjects.Gemini.Test {
                 }));
 
                 it("Verify state in scope", () => {
-                    verifyBaseObjectViewPageState(testScope);
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
                     verifyActionsOpenPageState(testScope);
                     verifyOpenDialogObjectPageState(testScope);
                 });
@@ -256,13 +266,29 @@ module NakedObjects.Gemini.Test {
                 }));
 
                 it("Verify state in scope", () => {
-                    verifyBaseObjectViewPageState(testScope);
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
                     verifyActionsClosedPageState(testScope);
                     verifyOpenDialogObjectPageState(testScope);
                 });
             });
 
+            describe("Edit", () => {
 
+                beforeEach(inject(() => {
+                    testRouteData.edit = true;
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.Property, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleObject(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectEditPageState(testScope);
+                });
+            });
         });
     });
 }
