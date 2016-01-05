@@ -79,7 +79,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //To many args
             EnterCommand("ac name find by, x, y");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
 
             //Exact match takes precedence over partial match
             CiceroUrl("home?menu1=WorkOrderRepository");
@@ -114,9 +114,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No arguments
             EnterCommand("back x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
             EnterCommand("forward y");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
         }
         public virtual void Cancel()
         {
@@ -134,7 +134,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=EmployeeRepository&dialog1=RandomEmployee");
             WaitForOutput("Employees menu. Action dialog: Random Employee.");
             EnterCommand("cancel x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
 
             //Object dialog
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
@@ -167,6 +167,55 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
+        public virtual void Collection()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
+            WaitForOutput("Sales Order Header: SO60485.");
+
+            //Simple case
+            EnterCommand("collection details");
+            WaitForOutput("Collection: Details on Sales Order Header: SO60485, 3 items");
+
+            //Multiple matches
+            CiceroUrl("object?object1=AdventureWorksModel.Product-901");
+            WaitForOutput("Product: LL Touring Frame - Yellow, 54.");
+            EnterCommand("coll pr");
+            WaitForOutput("Matching collections: Product Inventory, Product Reviews,");
+
+            //No argument
+            EnterCommand("co");
+            WaitForOutput("Collections: Product Inventory, Product Reviews, Special Offers,");
+
+            //Multi-clause match
+            EnterCommand("coll v ory");
+            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54, empty");
+
+            //No matches
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
+            WaitForOutput("Sales Order Header: SO60485.");
+            EnterCommand("co x son");
+            WaitForOutput("x son does not match any collections");
+
+            //Too many arguments
+            EnterCommand("co de,tails");
+            WaitForOutput("Too many arguments provided.");
+
+            //Invalid context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("co");
+            WaitForOutput("The command: collection is not available in the current context");
+
+            //Switching between different collections
+            CiceroUrl("object?object1=AdventureWorksModel.Product-901");
+            WaitForOutput("Product: LL Touring Frame - Yellow, 54.");
+            EnterCommand("coll inventory");
+            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54, empty");
+            EnterCommand("coll reviews");
+            WaitForOutput("Collection: Product Reviews on Product: LL Touring Frame - Yellow, 54, empty");
+            EnterCommand("coll spec");
+            WaitForOutput("Collection: Special Offers on Product: LL Touring Frame - Yellow, 54, 1 item");
+        }
         public virtual void Edit()
         {
             CiceroUrl("home");
@@ -178,7 +227,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688.");
             EnterCommand("edit x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
             //Invalid contexts
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&edit1=true");
             WaitForOutput("Editing Product: HL Grip Tape.");
@@ -233,7 +282,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             
             //To many args
             EnterCommand("field num,x,y");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
 
             //exact match takes priority over partial match
             EnterCommand("field product category"); //which would also match product subcategory
@@ -257,7 +306,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("ge x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
         }
         public virtual void Go()
         {
@@ -286,7 +335,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("go");
             WaitForOutput("No arguments provided.");
             EnterCommand("go x,y");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
             //Now try for a list context
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
             WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
@@ -330,7 +379,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, copy, edit, field, forward, gemini, go, help, menu, open, reload, where,");
+            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
@@ -343,7 +392,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("help menu back");
             WaitForOutput("No such command: menu back");
             EnterCommand("help menu, back");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
         }
         public virtual void Menu()
         {   //No argument
@@ -364,7 +413,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Menu cust prod");
             WaitForOutput("cust prod does not match any menu");
             EnterCommand("Menu cus, ord");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
             //Invoked in another context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
@@ -389,7 +438,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
             WaitForOutput("Products menu. Action dialog: Random Product.");
             EnterCommand("ok x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
 
             //Object action
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
@@ -406,6 +455,30 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu.");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
+        }
+        public virtual void Root()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-459&collection1_ProductInventory=List");
+            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19, 3 items");
+            EnterCommand("root");
+            WaitForOutput("Product: Lock Nut 19.");
+
+            //Invalid contexts
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("root");
+            WaitForOutput("The command: root is not available in the current context");
+
+            CiceroUrl("object?object1=AdventureWorksModel.Product-459");
+            WaitForOutput("Product: Lock Nut 19.");
+            EnterCommand("root");
+            WaitForOutput("The command: root is not available in the current context");
+
+            //Argument added
+            CiceroUrl("object?object1=AdventureWorksModel.Product-459&collection1_ProductInventory=List");
+            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19, 3 items");
+            EnterCommand("root x");
+            WaitForOutput("Too many arguments provided.");
         }
         public virtual void Where()
         {
@@ -426,7 +499,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No arguments
             EnterCommand("where x");
-            WaitForOutput("Wrong number of arguments provided.");
+            WaitForOutput("Too many arguments provided.");
         }
         public virtual void UpAndDownArrow()
         {
@@ -452,6 +525,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Cancel() { base.Cancel(); }
         [TestMethod]
+        public override void Collection() { base.Collection(); }
+        [TestMethod]
         public override void Edit() { base.Edit(); }
         [TestMethod]
         public override void Field() { base.Field(); }
@@ -465,6 +540,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void Menu() { base.Menu(); }
         [TestMethod]
         public override void OK() { base.OK(); }
+        [TestMethod]
+        public override void Root() { base.Root(); }
         [TestMethod]
         public override void Where() { base.Where(); }
         [TestMethod]
@@ -497,7 +574,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -570,6 +647,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Help();
             base.Menu();
             base.OK();
+            base.Root();
+            base.Collection();
             base.UpAndDownArrow();
             base.Where();
         }

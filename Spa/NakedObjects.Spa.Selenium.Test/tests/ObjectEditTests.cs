@@ -35,17 +35,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
             Assert.AreEqual("List Price:\r\n"+newPrice, properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n"+newDays, properties[17].Text);
-
-            //Restore for convenience
-            EditObject();
-            ClearFieldThenType("#listprice1", oldPrice);
-            wait.Until(dr => dr.FindElement(By.CssSelector("#listprice1")).GetAttribute("value") == oldPrice);
-            ClearFieldThenType("#daystomanufacture1", oldDays);
-            wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == oldDays);
-            SaveObject();
-            properties = br.FindElements(By.CssSelector(".property"));
-            Assert.AreEqual("List Price:\r\n" + oldPrice, properties[5].Text);
-            Assert.AreEqual("Days To Manufacture:\r\n" + oldDays, properties[17].Text);
         }
 
         [TestMethod]

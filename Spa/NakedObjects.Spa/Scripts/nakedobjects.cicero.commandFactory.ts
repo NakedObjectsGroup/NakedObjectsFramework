@@ -37,7 +37,8 @@ module NakedObjects.Angular.Gemini{
             "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q),
             "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q),
             "ca": new Cancel(urlManager, $location, commandFactory, context, navigation, $q),
-            "co": new Copy(urlManager, $location, commandFactory, context, navigation, $q),
+            "co": new Collection(urlManager, $location, commandFactory, context, navigation, $q),
+            "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation, $q),
             "ed": new Edit(urlManager, $location, commandFactory, context, navigation, $q),
             "fi": new Field(urlManager, $location, commandFactory, context, navigation, $q),
             "fo": new Forward(urlManager, $location, commandFactory, context, navigation, $q),
@@ -47,12 +48,10 @@ module NakedObjects.Angular.Gemini{
             "it": new Item(urlManager, $location, commandFactory, context, navigation, $q),
             "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q),
             "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q),
-            "op": new Open(urlManager, $location, commandFactory, context, navigation, $q),
             "pa": new Paste(urlManager, $location, commandFactory, context, navigation, $q),
             "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q),
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
-            "ta": new Table(urlManager, $location, commandFactory, context, navigation, $q),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         
