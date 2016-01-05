@@ -135,10 +135,11 @@
                 method: "GET",
                 type: "application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8",
                 href: "http://nakedobjectsrodemo.azurewebsites.net/menus/WorkOrderRepository"
-            }]
+            }
+        ]
     }
 
-    const vendorRepositoryMenuRepresentation : IMenuRepresentation  =  {
+    const vendorRepositoryMenuRepresentation: IMenuRepresentation = {
         title: "Vendors",
         menuId: "VendorRepository",
         links: [
@@ -380,9 +381,567 @@
         }
     }
 
+    const vendorObjectRepresentation  = {
+        instanceId: "1634",
+        domainType: "AdventureWorksModel.Vendor",
+        title: "GMA Ski & Bike",
+        links: [
+            {
+                rel: "self",
+                method: "GET",
+                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634"
+            },
+            {
+                rel: "describedby",
+                method: "GET",
+                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor"
+            },
+            {
+                arguments: {
+                    AccountNumber: { value: null },
+                    Name: { value: null },
+                    CreditRating: { value: null },
+                    PreferredVendorStatus: { value: null },
+                    ActiveFlag: { value: null },
+                    PurchasingWebServiceURL: { value: null }
+                },
+                rel: "urn:org.restfulobjects:rels/update",
+                method: "PUT",
+                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634"
+            }
+        ],
+        extensions: {
+            friendlyName: "Vendor",
+            description: "",
+            pluralName: "Vendors",
+            domainType: "AdventureWorksModel.Vendor",
+            isService: false
+        },
+        members: {
+            AccountNumber: {
+                value: "GMASKI0001",
+                hasChoices: false,
+                memberType: "property",
+                id: "AccountNumber",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"AccountNumber\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/AccountNumber"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/AccountNumber"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"AccountNumber\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/AccountNumber"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Account Number",
+                    description: "",
+                    optional: false,
+                    memberOrder: 10,
+                    returnType: "string",
+                    format: "string",
+                    maxLength: 0,
+                    pattern: ""
+                }
+            },
+            "Name": {
+                value: "GMA Ski & Bike",
+                hasChoices: false,
+                memberType: "property",
+                id: "Name",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"Name\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/Name"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/Name"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"Name\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/Name"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Name",
+                    description: "",
+                    optional: false,
+                    memberOrder: 20,
+                    returnType: "string",
+                    format: "string",
+                    maxLength: 0,
+                    pattern: ""
+                }
+            },
+            CreditRating: {
+                value: 1,
+                hasChoices: false,
+                memberType: "property",
+                id: "CreditRating",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"CreditRating\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/CreditRating"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/CreditRating"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"CreditRating\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/CreditRating"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Credit Rating",
+                    description: "",
+                    optional: false,
+                    memberOrder: 30,
+                    returnType: "number",
+                    format: "integer"
+                }
+            },
+            PreferredVendorStatus: {
+                value: true,
+                hasChoices: false,
+                memberType: "property",
+                id: "PreferredVendorStatus",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"PreferredVendorStatus\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/PreferredVendorStatus"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/PreferredVendorStatus"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"PreferredVendorStatus\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/PreferredVendorStatus"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Preferred Vendor Status",
+                    description: "",
+                    optional: false,
+                    memberOrder: 40,
+                    returnType: "boolean"
+                }
+            },
+            ActiveFlag: {
+                value: true,
+                hasChoices: false,
+                memberType: "property",
+                id: "ActiveFlag",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"ActiveFlag\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/ActiveFlag"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/ActiveFlag"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"ActiveFlag\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/ActiveFlag"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Active Flag",
+                    description: "",
+                    optional: false,
+                    memberOrder: 50,
+                    returnType: "boolean"
+                }
+            },
+            PurchasingWebServiceURL: {
+                value: null,
+                hasChoices: false,
+                memberType: "property",
+                id: "PurchasingWebServiceURL",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"PurchasingWebServiceURL\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/PurchasingWebServiceURL"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/PurchasingWebServiceURL"
+                    },
+                    {
+                        arguments: { value: null },
+                        rel: "urn:org.restfulobjects:rels/modify;property=\"PurchasingWebServiceURL\"",
+                        method: "PUT",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/PurchasingWebServiceURL"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/clear;property=\"PurchasingWebServiceURL\"",
+                        method: "DELETE",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/PurchasingWebServiceURL"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Purchasing Web Service URL",
+                    description: "",
+                    optional: true,
+                    memberOrder: 60,
+                    returnType: "string",
+                    format: "string",
+                    maxLength: 0,
+                    pattern: ""
+                }
+            },
+            ModifiedDate: {
+                disabledReason: "Field not editable",
+                value: "2005-06-09T00:00:00Z",
+                hasChoices: false,
+                memberType: "property",
+                id: "ModifiedDate",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;property=\"ModifiedDate\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/properties/ModifiedDate"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/ModifiedDate"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Modified Date",
+                    description: "",
+                    optional: false,
+                    memberOrder: 99,
+                    returnType: "string",
+                    format: "date-time",
+                    maxLength: 0,
+                    pattern: ""
+                }
+            },
+            Products: {
+                disabledReason: "Field not editable",
+                size: 0,
+                value: [],
+                memberType: "collection",
+                id: "Products",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/collection-value;collection=\"Products\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-value\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/collections/Products/value"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;collection=\"Products\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-collection\"; charset=utf-8; x-ro-element-type=\"AdventureWorksModel.ProductVendor\"",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/collections/Products"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/collection-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/collections/Products"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Product - Order Info",
+                    description: "",
+                    memberOrder: 0,
+                    returnType: "list",
+                    elementType: "AdventureWorksModel.ProductVendor",
+                    pluralName: "Product Vendors"
+                }
+            },
+            "CreateNewContact": {
+                parameters: {},
+                memberType: "action",
+                id: "CreateNewContact",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"CreateNewContact\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/CreateNewContact"
+                    },
+                    {
+                        arguments: {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"CreateNewContact\"",
+                        method: "POST",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/CreateNewContact/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Person"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/CreateNewContact"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Create New Contact",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 0,
+                    returnType: "AdventureWorksModel.Person"
+                }
+            },
+            CreateNewPurchaseOrder: {
+                parameters: {},
+                memberType: "action",
+                id: "CreateNewPurchaseOrder",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"CreateNewPurchaseOrder\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/CreateNewPurchaseOrder"
+                    },
+                    {
+                        arguments: {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"CreateNewPurchaseOrder\"",
+                        method: "POST",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/CreateNewPurchaseOrder/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.PurchaseOrderHeader"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/CreateNewPurchaseOrder"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Create New Purchase Order",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 0,
+                    returnType: "AdventureWorksModel.PurchaseOrderHeader"
+                }
+            },
+            ListPurchaseOrders: {
+                parameters: {
+                    fromDate: {
+                        links: [
+                            {
+                                rel: "describedby",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/ListPurchaseOrders/params/fromDate"
+                            }
+                        ],
+                        extensions: {
+                            friendlyName: "From Date",
+                            description: "",
+                            optional: false,
+                            returnType: "string",
+                            format: "date-time",
+                            maxLength: 0,
+                            pattern: ""
+                        }
+                    },
+                    toDate: {
+                        links: [
+                            {
+                                rel: "describedby",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/ListPurchaseOrders/params/toDate"
+                            }
+                        ],
+                        extensions: {
+                            friendlyName: "To Date",
+                            description: "",
+                            optional: false,
+                            returnType: "string",
+                            format: "date-time",
+                            maxLength: 0,
+                            pattern: ""
+                        }
+                    }
+                },
+                memberType: "action",
+                id: "ListPurchaseOrders",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"ListPurchaseOrders\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/ListPurchaseOrders"
+                    },
+                    {
+                        arguments: {
+                            fromDate: { value: null },
+                            toDate: { value: null }
+                        },
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"ListPurchaseOrders\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/ListPurchaseOrders/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/list"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/element-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.PurchaseOrderHeader"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/ListPurchaseOrders"
+                    },
+                    {
+                        id: "fromDate",
+                        rel: "urn:org.restfulobjects:rels/action-param",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/ListPurchaseOrders/params/fromDate"
+                    },
+                    {
+                        id: "toDate",
+                        rel: "urn:org.restfulobjects:rels/action-param",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/ListPurchaseOrders/params/toDate"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "List Purchase Orders",
+                    description: "",
+                    hasParams: true,
+                    memberOrder: 0,
+                    returnType: "list",
+                    elementType: "AdventureWorksModel.PurchaseOrderHeader",
+                    pluralName: "Purchase Order Headers"
+                }
+            },
+            OpenPurchaseOrdersForVendor: {
+                parameters: {},
+                memberType: "action",
+                id: "OpenPurchaseOrdersForVendor",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"OpenPurchaseOrdersForVendor\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/OpenPurchaseOrdersForVendor"
+                    },
+                    {
+                        arguments: {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"OpenPurchaseOrdersForVendor\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1634/actions/OpenPurchaseOrdersForVendor/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/list"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/element-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.PurchaseOrderHeader"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/actions/OpenPurchaseOrdersForVendor"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Open Purchase Orders For Vendor",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 0,
+                    returnType: "list",
+                    elementType: "AdventureWorksModel.PurchaseOrderHeader",
+                    pluralName: "Purchase Order Headers"
+                }
+            }
+        }
+    }
+
     let homeRequestHandler: ng.mock.IRequestHandler;
     let menusRequestHandler: ng.mock.IRequestHandler;
     let vendorRepositoryMenuRequestHandler: ng.mock.IRequestHandler;
+    let vendorDomainObjectRequestHandler: ng.mock.IRequestHandler;
 
     export function setupBackend($httpBackend: ng.IHttpBackendService) {
         // backend definition common for all tests
@@ -393,6 +952,8 @@
         menusRequestHandler.respond(menusRepresentation);
         vendorRepositoryMenuRequestHandler = $httpBackend.when("GET", root + "/menus/VendorRepository");
         vendorRepositoryMenuRequestHandler.respond(vendorRepositoryMenuRepresentation);
+        vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634");
+        vendorDomainObjectRequestHandler.respond(vendorObjectRepresentation);
     }
 
 }

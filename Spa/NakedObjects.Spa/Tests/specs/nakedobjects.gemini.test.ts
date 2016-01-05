@@ -22,6 +22,7 @@ module NakedObjects.Gemini.Test {
     import FocusTarget = Angular.Gemini.FocusTarget;
     import ActionViewModel = Angular.Gemini.ActionViewModel;
     import DialogViewModel = Angular.Gemini.DialogViewModel;
+    import DomainObjectViewModel = NakedObjects.Angular.Gemini.DomainObjectViewModel;
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -30,6 +31,7 @@ module NakedObjects.Gemini.Test {
         let testRouteData: PaneRouteData;
         let testScope: INakedObjectsScope;
         let timeout: ng.ITimeoutService;
+        let testEventSpy: jasmine.Spy;
 
         function setupBasePaneRouteData(paneId: number) {
             const trd = new PaneRouteData(paneId);
@@ -39,6 +41,23 @@ module NakedObjects.Gemini.Test {
             trd.props = {};
             trd.fields = {};
             return trd;
+        }
+
+        function getEventTestFunc(t: FocusTarget, i: number, p: number, c: number) {
+            return (e, target: FocusTarget, index: number, paneId: number, count: number) => {
+                expect(e.name).toBe("geminiFocuson");
+                expect(target).toBe(t);
+                expect(index).toBe(i);
+                expect(paneId).toBe(p);
+                expect(count).toBe(c);
+            }
+        }
+
+        function setupEventSpy(ts: INakedObjectsScope, target: FocusTarget, index: number, paneId: number, count: number) {
+            const tes = jasmine.createSpy("event", getEventTestFunc(target, index, paneId, count));
+            tes.and.callThrough();
+            testScope.$on("geminiFocuson", tes);
+            return tes;
         }
 
         beforeEach(inject($injector => {
@@ -55,8 +74,7 @@ module NakedObjects.Gemini.Test {
 
         describe("Go to Home Page", () => {
             
-            let testEventSpy: jasmine.Spy;
-            
+                      
             function executeHandleHome(handlers: IHandlers) {
                 handlers.handleHome(testScope, testRouteData);
                 $httpBackend.flush();
@@ -80,23 +98,6 @@ module NakedObjects.Gemini.Test {
                 const dialogViewModel = ts.dialog as DialogViewModel;
                 expect(dialogViewModel.parameters.length).toBe(1);
                 expect(dialogViewModel.title).toBe("Find Vendor By Account Number");
-            }
-
-            function getEventTestFunc(t: FocusTarget, i: number, p: number, c: number) {
-                return (e, target: FocusTarget, index: number, paneId: number, count: number) => {
-                    expect(e.name).toBe("geminiFocuson");
-                    expect(target).toBe(t);
-                    expect(index).toBe(i);
-                    expect(paneId).toBe(p);
-                    expect(count).toBe(c);
-                }
-            }
-
-            function setupEventSpy(ts: INakedObjectsScope, target: FocusTarget, index: number, paneId: number, count: number) {
-                const tes = jasmine.createSpy("event", getEventTestFunc(target, index, paneId, count));
-                tes.and.callThrough();
-                testScope.$on("geminiFocuson", tes);
-                return tes;
             }
 
             describe("Without open menu or dialog", () => {
@@ -147,6 +148,42 @@ module NakedObjects.Gemini.Test {
                     verifyBaseHomePageState(testScope);
                     verifyOpenMenuHomePageState(testScope);
                     verifyOpenDialogHomePageState(testScope);
+                });
+            });
+        });
+
+
+        describe("Go to Object Page", () => {
+
+
+            function executeHandleObject(handlers: IHandlers) {
+                handlers.handleObject(testScope, testRouteData);
+                $httpBackend.flush();
+                timeout.flush();
+            }
+
+            function verifyBaseObjectViewPageState(ts: INakedObjectsScope) {
+                expect(ts.objectTemplate).toBe(Angular.objectViewTemplate);
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+                expect(ts.collectionsTemplate).toBe(Angular.collectionsTemplate);
+                const objectViewModel = ts.object as DomainObjectViewModel;
+                expect(objectViewModel.properties.length).toBe(7);
+                expect(testEventSpy).toHaveBeenCalled();
+            }
+
+            describe("View without open actions or dialog", () => {
+
+                beforeEach(inject(() => {
+                    testRouteData.objectId = "AdventureWorksModel.Vendor-1634";
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.ObjectTitle, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleObject(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyBaseObjectViewPageState(testScope);
                 });
             });
         });
