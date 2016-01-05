@@ -118,9 +118,9 @@
     }
 
     export interface IDomainObjectRepresentation extends IResourceRepresentation {
-        domainType: string;
-        instanceId: string;
-        serviceId: string;
+        domainType?: string;
+        instanceId?: string;
+        serviceId?: string;
         title: string;
         members: { [index: string]: IMember };
     }
