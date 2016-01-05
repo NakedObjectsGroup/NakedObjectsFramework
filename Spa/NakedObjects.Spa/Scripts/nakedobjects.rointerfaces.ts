@@ -2,6 +2,7 @@
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
     export interface ILink {
+        id? : string;
         rel?: string;
         href: string;
         type?: string;
@@ -24,6 +25,8 @@
         memberOrder?: number;
         isService?: boolean;
         minLength?: number;
+        maxLength?: number;
+        pattern?: string;
     }
 
     export interface IRepresentation {
@@ -110,6 +113,7 @@
     }
 
     export interface IActionMember extends IMember {
+        id : string;
         parameters: { [index: string]: IParameterRepresentation };
     }
 
