@@ -32,6 +32,7 @@ module NakedObjects.Gemini.Test {
         let testScope: INakedObjectsScope;
         let timeout: ng.ITimeoutService;
         let testEventSpy: jasmine.Spy;
+        let cacheFactory: ng.ICacheFactoryService;
 
         function setupBasePaneRouteData(paneId: number) {
             const trd = new PaneRouteData(paneId);
@@ -66,15 +67,23 @@ module NakedObjects.Gemini.Test {
             Helpers.setupBackend($httpBackend);
         }));
 
-        beforeEach(inject(($rootScope: ng.IRootScopeService, $timeout: ng.ITimeoutService) => {
+        beforeEach(inject(($rootScope: ng.IRootScopeService, $timeout: ng.ITimeoutService, $cacheFactory : ng.ICacheFactoryService) => {
             testScope = $rootScope.$new() as INakedObjectsScope;
             testRouteData = setupBasePaneRouteData(1);
             timeout = $timeout;
+            cacheFactory = $cacheFactory;
         }));
 
+        function verifyOpenDialogState(ts: INakedObjectsScope, parmCount : number, title : string) {
+            expect(ts.dialogTemplate).toBe(Angular.dialogTemplate);
+            const dialogViewModel = ts.dialog as DialogViewModel;
+            expect(dialogViewModel.parameters.length).toBe(parmCount);
+            expect(dialogViewModel.title).toBe(title);
+        }
+
+
         describe("Go to Home Page", () => {
-            
-                      
+                                
             function executeHandleHome(handlers: IHandlers) {
                 handlers.handleHome(testScope, testRouteData);
                 $httpBackend.flush();
@@ -93,11 +102,8 @@ module NakedObjects.Gemini.Test {
                 expect((<{ actions: ActionViewModel[] }>ts.object).actions.length).toBe(4);
             }
 
-            function verifyOpenDialogHomePageState(ts: INakedObjectsScope) {
-                expect(ts.dialogTemplate).toBe(Angular.dialogTemplate);
-                const dialogViewModel = ts.dialog as DialogViewModel;
-                expect(dialogViewModel.parameters.length).toBe(1);
-                expect(dialogViewModel.title).toBe("Find Vendor By Account Number");
+            function verifyOpenDialogHomePageState(ts: INakedObjectsScope) {          
+                verifyOpenDialogState(ts, 1, "Find Vendor By Account Number");
             }
 
             describe("Without open menu or dialog", () => {
@@ -155,7 +161,6 @@ module NakedObjects.Gemini.Test {
 
         describe("Go to Object Page", () => {
 
-
             function executeHandleObject(handlers: IHandlers) {
                 handlers.handleObject(testScope, testRouteData);
                 $httpBackend.flush();
@@ -164,17 +169,32 @@ module NakedObjects.Gemini.Test {
 
             function verifyBaseObjectViewPageState(ts: INakedObjectsScope) {
                 expect(ts.objectTemplate).toBe(Angular.objectViewTemplate);
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
                 expect(ts.collectionsTemplate).toBe(Angular.collectionsTemplate);
                 const objectViewModel = ts.object as DomainObjectViewModel;
                 expect(objectViewModel.properties.length).toBe(7);
                 expect(testEventSpy).toHaveBeenCalled();
+                expect(cacheFactory.get("recentlyViewed").get("AdventureWorksModel.Vendor")[objectViewModel.domainObject.selfLink().href()].name).toBe(objectViewModel.domainObject.title());
             }
 
-            describe("View without open actions or dialog", () => {
+            function verifyActionsOpenPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);              
+            }
+
+            function verifyActionsClosedPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+            }
+
+            function verifyOpenDialogObjectPageState(ts: INakedObjectsScope) {
+                verifyOpenDialogState(ts, 2, "List Purchase Orders");
+            }
+
+            beforeEach(inject(() => {
+                testRouteData.objectId = "AdventureWorksModel.Vendor-1634";
+            }));
+
+            describe("View with closed actions no dialog", () => {
 
                 beforeEach(inject(() => {
-                    testRouteData.objectId = "AdventureWorksModel.Vendor-1634";
                     testEventSpy = setupEventSpy(testScope, FocusTarget.ObjectTitle, 0, 1, 1);
                 }));
 
@@ -184,8 +204,65 @@ module NakedObjects.Gemini.Test {
 
                 it("Verify state in scope", () => {
                     verifyBaseObjectViewPageState(testScope);
+                    verifyActionsClosedPageState(testScope);
                 });
             });
+
+            describe("View with open actions no dialog", () => {
+
+                beforeEach(inject(() => {
+                    testRouteData.actionsOpen = "true";
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.SubAction, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleObject(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyBaseObjectViewPageState(testScope);
+                    verifyActionsOpenPageState(testScope);
+                });
+            });
+
+            describe("View with open actions and dialog", () => {
+
+                beforeEach(inject(() => {
+                    testRouteData.actionsOpen = "true";
+                    testRouteData.dialogId = "ListPurchaseOrders";
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleObject(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyBaseObjectViewPageState(testScope);
+                    verifyActionsOpenPageState(testScope);
+                    verifyOpenDialogObjectPageState(testScope);
+                });
+            });
+
+            describe("View with closed actions and dialog", () => {
+
+                beforeEach(inject(() => {
+                    testRouteData.dialogId = "ListPurchaseOrders";
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleObject(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyBaseObjectViewPageState(testScope);
+                    verifyActionsClosedPageState(testScope);
+                    verifyOpenDialogObjectPageState(testScope);
+                });
+            });
+
+
         });
     });
 }
