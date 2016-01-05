@@ -598,7 +598,7 @@ module NakedObjects.Angular.Gemini {
                     collectionViewModel.template = collectionSummaryTemplate;
             }
 
-            const setState = _.partial(urlManager.setCollectionMemberState, paneId, collectionRep);
+            const setState = _.partial(urlManager.setCollectionMemberState, paneId, collectionRep.collectionId());
             collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
             collectionViewModel.doList = () => setState(CollectionViewState.List);
             collectionViewModel.doTable = () => setState(CollectionViewState.Table);
@@ -979,13 +979,25 @@ module NakedObjects.Angular.Gemini {
                     const [domainType, ...id] = routeData.objectId.split("-");
                     context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                         .then((obj: DomainObjectRepresentation) => {
+                            const type = Helpers.friendlyTypeName(obj.domainType());
                             let output = "";
-                            if (_.any(routeData.collections)) {
-                                output += "Collection: " + _.keys(routeData.collections)[0]; //TODO: get friendly name!
-                                //TODO: Indicate if in List or table mode
-                                //TODO: Add the summary of the collection
+                            const openCollIds = openCollectionIds(routeData);
+                            if (_.any(openCollIds)) {
+                                const id = openCollIds[0];
+                                const coll = obj.collectionMember(id);
+                                output += "Collection: " + coll.extensions().friendlyName();
+                                output += " on " + type + ": " + obj.title() + ",  "
+                                  switch (coll.size()) {
+                                    case 0:
+                                        output += "empty";
+                                        break;
+                                    case 1:
+                                        output += "1 item";
+                                        break;
+                                    default:
+                                        output += coll.size() + " items";
+                                }                             
                             } else {
-                                const type = Helpers.friendlyTypeName(obj.domainType());
                                 if (routeData.edit) {
                                     output += "Editing ";
                                 }
@@ -1018,6 +1030,11 @@ module NakedObjects.Angular.Gemini {
 
 
     });
+
+    //Returns collection Ids for any collections on an object that are currently in List or Table mode
+    export function openCollectionIds(routeData: PaneRouteData ): string[] {
+        return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
+    }
 
     function renderActionDialogIfOpen(
         repWithActions: IHasActions,

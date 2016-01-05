@@ -20,7 +20,7 @@ module NakedObjects.Angular.Gemini {
 
         toggleObjectMenu(paneId: number): void;
 
-        setCollectionMemberState(paneId: number, collection: CollectionMember, state: CollectionViewState): void;
+        setCollectionMemberState(paneId: number, collectionMemberId: string, state: CollectionViewState): void;
         setListState(paneId: number, state: CollectionViewState): void;
         setListPaging(paneId: number, newPage: number, newPageSize: number, state : CollectionViewState): void;
         setListItem(paneId: number, item : number, selected : boolean): void;
@@ -416,11 +416,11 @@ module NakedObjects.Angular.Gemini {
             $location.search(search);
         };
 
-        helper.setCollectionMemberState = (paneId: number, collectionObject: CollectionMember, state: CollectionViewState) => {
+        helper.setCollectionMemberState = (paneId: number, collectionMemberId: string, state: CollectionViewState) => {
             currentPaneId = paneId;
 
             const collectionPrefix = `${collection}${paneId}`;
-            setSearch(`${collectionPrefix}_${collectionObject.collectionId() }`, CollectionViewState[state], false);
+            setSearch(`${collectionPrefix}_${collectionMemberId}`, CollectionViewState[state], false);
         };
 
         helper.setListState = (paneId: number, state: CollectionViewState) => {

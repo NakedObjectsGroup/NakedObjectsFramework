@@ -62,8 +62,11 @@ module NakedObjects.Angular.Gemini {
                 throw new Error("No arguments provided.");
             }
             const args = argString.split(",");
-            if (args.length < this.minArguments || args.length > this.maxArguments) {
-                throw new Error("Wrong number of arguments provided.");
+            if (args.length < this.minArguments) {
+                throw new Error("Too few arguments provided.");
+            }
+            else if (args.length > this.maxArguments) {
+                throw new Error("Too many arguments provided.");
             }
         }
 
@@ -152,6 +155,13 @@ module NakedObjects.Angular.Gemini {
         protected isCollection(): boolean {
             return this.isObject && _.any(this.routeData().collections);
         }
+
+        protected closeAnyOpenCollections() {
+            const open = openCollectionIds(this.routeData());
+            _.forEach(open, id => {
+                this.urlManager.setCollectionMemberState(1, id, CollectionViewState.Summary);
+            });
+        }
         protected isTable(): boolean {
             return false; //TODO
         }
@@ -189,9 +199,9 @@ module NakedObjects.Angular.Gemini {
                 return match == name ||
                     (!!path && match == path.toLowerCase() + " " + name) ||
                     _.all(clauses, clause => {
-                    name == clause  ||
-                    (!!path && path.toLowerCase() == clause)
-                });            
+                        name == clause ||
+                        (!!path && path.toLowerCase() == clause)
+                    });
             });
             if (exactMatches.length > 0) return exactMatches;
             return _.filter(reps, (rep) => {
@@ -313,13 +323,73 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Copy extends Command {
+    export class Collection extends Command {
 
-        public fullCommand = "copy";
-        public helpText = "Not yet implemented.  Copy a reference to an object into the clipboard. If the current context is " +
-        "an object and no argument is specified, the object is copied; alternatively the name of a property " +
-        "that contains an object reference may be specified. If the context is a list view, then the number of the item " +
-        "in that list should be specified.";
+        public fullCommand = "collection";
+        public helpText = "Opens a view of a specific collection within an object, from which " +
+        "individual items may be read using the item command. Open command takes one argument: " +
+        "the name, or partial name, of the collection.  If the partial name matches more than one " +
+        "collection, the list of matches will be returned, but none will be opened.";
+        protected minArguments = 0;
+        protected maxArguments = 1;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isObject();
+        }
+
+        execute(args: string): void {
+            const match = this.argumentAsString(args, 0, true);
+            this.getObject()
+                .then((obj: DomainObjectRepresentation) => {
+                    this.processCollections(match, obj.collectionMembers());
+                });
+        };
+
+        private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
+
+            const allColls = _.map(collsMap, action => action);
+            let matchingColls = allColls;
+            if (matchingColls.length == 0) {
+                this.clearInputAndSetOutputTo("No collections visible");
+                return;
+            }
+            if (match) {
+                matchingColls = this.matchFriendlyNameAndOrMenuPath(matchingColls, match);
+            }
+            switch (matchingColls.length) {
+                case 0:
+                    this.clearInputAndSetOutputTo(match + " does not match any collections");
+                    break;
+                case 1:
+                    this.openCollection(matchingColls[0]);
+                    break;
+                default:
+                    let label = match ? " Matching collections: " : "Collections: ";
+                    var s = _.reduce(matchingColls, (s, t) => {
+                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
+                        return s + menupath + t.extensions().friendlyName() + ", ";
+                    }, label);
+                    this.clearInputAndSetOutputTo(s);
+            }
+        }
+
+
+        private openCollection(collection: CollectionMember): void {
+            this.closeAnyOpenCollections();
+            this.clearInput();
+            this.urlManager.setCollectionMemberState(1, collection.collectionId(), CollectionViewState.List);
+        }
+    }
+    export class Clipboard extends Command {
+
+        public fullCommand = "clipboard";
+        public helpText = "Not yet implemented.  MCopy a reference to an object to the clipboard. " +
+        "If the current context is an object and no argument is specified, " +
+        "the object is copied; alternatively the name of a property " +
+        "that contains an object reference may be specified. If the context is a list view, " +
+        "then the number of the item in that list should be specified. " +
+        "Clipboard space question-mark, in any context, will show the current " +
+        "contents of the clipboard.";
 
         protected minArguments = 0;
         protected maxArguments = 1;
@@ -549,10 +619,10 @@ module NakedObjects.Angular.Gemini {
                 if (isNaN(itemNo)) {
                     this.clearInputAndSetOutputTo(arg0 + " is not a valid number");
                     return;
-                } 
+                }
                 this.getList().then((list: ListRepresentation) => {
                     if (itemNo < 1 || itemNo > list.value().length) {
-                        this.clearInputAndSetOutputTo(arg0+" is out of range for displayed items");
+                        this.clearInputAndSetOutputTo(arg0 + " is out of range for displayed items");
                         return;
                     }
                     const link = list.value()[itemNo - 1]; // On UI, first item is '1'
@@ -712,63 +782,6 @@ module NakedObjects.Angular.Gemini {
             });
         };
     }
-    export class Open extends Command {
-
-        public fullCommand = "open";
-        public helpText = "Not yet implemented. Opens a view of a specific collection within an object, from which " +
-        "individual items may be read using the item command. Open command takes one argument: " +
-        "the name, or partial name, of the collection.  If the partial name matches more than one " +
-        "collection, the list of matches will be returned, but none will be opened.";
-        protected minArguments = 1;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isObject();
-        }
-
-        execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
-                    this.processCollections(match, obj.collectionMembers());
-                });
-        };
-
-        //TODO: Get commonality out of processing actions (properties?, fields?, menus?)
-        private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
-            var colls = _.map(collsMap, action => action);
-            if (colls.length == 0) {
-                this.clearInputAndSetOutputTo("No collections visible");
-                return;
-            }
-            if (match) {
-                colls = this.matchFriendlyNameAndOrMenuPath(colls, match);
-            }
-            switch (colls.length) {
-                case 0:
-                    this.clearInputAndSetOutputTo(match + " does not match any collections");
-                    break;
-                case 1:
-                    this.openCollectionAsList(colls[0]);
-                    break;
-                default:
-                    let label = match ? " Matching collections: " : "Collections: ";
-                    var s = _.reduce(colls, (s, t) => {
-                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + ", ";
-                    }, label);
-                    this.clearInputAndSetOutputTo(s);
-            }
-        }
-
-
-        private openCollectionAsList(collection: CollectionMember): void {
-            //TODO: Must close all other collections!!
-            this.clearInput();
-            this.urlManager.setCollectionMemberState(1, collection, CollectionViewState.List);
-        }
-
-    }
     export class Paste extends Command {
 
         public fullCommand = "paste";
@@ -813,7 +826,7 @@ module NakedObjects.Angular.Gemini {
     export class Root extends Command {
 
         public fullCommand = "root";
-        public helpText = "Not yet implemented. From within a collection context, the root command returns" +
+        public helpText = "From within a collection context, the root command returns" +
         " to the 'root' object that owns the collection." +
         ". Does not take any arguments";;
         protected minArguments = 0;
@@ -824,7 +837,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Root command is not yet implemented");
+            this.closeAnyOpenCollections();
         };
     }
     export class Save extends Command {
@@ -841,24 +854,6 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.clearInputAndSetOutputTo("save command is not yet implemented");
         };
-    }
-    export class Table extends Command {
-        public fullCommand = "table";
-        public helpText = "Not yet implemented. In the context of a list or an opened object collection, the table command" +
-        "switches that context to table mode. Items then accessed via the item command, will be presented as table rows." +
-        "Invoking table when the context is already in table mode will return the system to list mode.";
-        protected minArguments = 0;
-        protected maxArguments = 0;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isCollection() || this.isList();
-        }
-
-        execute(args: string): void {
-            const match = this.argumentAsString(args, 0);
-            this.clearInputAndSetOutputTo("Table command is not yet implemented");
-        };
-
     }
     export class Where extends Command {
 
