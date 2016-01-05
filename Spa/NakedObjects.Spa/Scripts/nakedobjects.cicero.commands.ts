@@ -657,7 +657,9 @@ module NakedObjects.Angular.Gemini {
                                 }
                                 break;
                             case 1:
-                                this.urlManager.setProperty(refFields[0], 1);
+                                //TODO: Check for any empty reference
+                                let link = refFields[0].value().link();
+                                this.urlManager.setItem(link, 1);
                                 break;
                             default:
                                 var label = "Multiple reference fields match " + arg0 + ": ";
