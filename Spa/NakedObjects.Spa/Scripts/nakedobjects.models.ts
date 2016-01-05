@@ -1090,7 +1090,10 @@ module NakedObjects {
     }
 
     // matches 14.4.2 
-    export class CollectionMember extends Member<RoInterfaces.ICollectionMember> {
+    export class CollectionMember
+        extends Member<RoInterfaces.ICollectionMember>
+        implements IHasLinksAsValue
+    {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
@@ -1360,7 +1363,9 @@ module NakedObjects {
     }
 
     // matches List Representation 11.0
-    export class ListRepresentation extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation> {
+    export class ListRepresentation
+        extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation>
+        implements IHasLinksAsValue {
 
         wrapped = () => this.resource() as RoInterfaces.Custom.ICustomListRepresentation;
 
@@ -1743,6 +1748,10 @@ module NakedObjects {
     export interface IHasActions extends IHasExtensions {
         actionMembers(): _.Dictionary<ActionMember>;
         actionMember(id: string): ActionMember;
+    }
+
+    export interface IHasLinksAsValue {
+        value(): Link[];
     }
 
     //TODO: Review name (common capbilities of PropertyMember and Parameter)

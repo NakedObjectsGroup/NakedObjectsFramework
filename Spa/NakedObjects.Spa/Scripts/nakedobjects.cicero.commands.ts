@@ -93,9 +93,10 @@ module NakedObjects.Angular.Gemini {
         //argNo starts from 0.
         protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
             const arg = this.argumentAsString(args, argNo, optional);
+            if (!arg && optional == true) return null;
             const number = parseInt(arg);
             if (isNaN(number)) {
-                throw new Error("Argument number " + +(argNo + 1).toString + + " must be a number");
+                throw new Error("Argument number " + (argNo + 1).toString() + " must be a number");
             }
             return number;
         }
@@ -632,8 +633,14 @@ module NakedObjects.Angular.Gemini {
             }
             if (this.isObject) {
                 if (this.isCollection()) {
-                    const item = this.argumentAsNumber(args, 1);
-                    this.clearInputAndSetOutputTo("The go command is not yet implemented for collections");
+                    const item = this.argumentAsNumber(args, 0);
+                    //TODO: validate range
+                    this.getObject().then((obj: DomainObjectRepresentation) => {
+                        const openCollIds = openCollectionIds(this.routeData());
+                        const coll = obj.collectionMember(openCollIds[0]);
+                        const link = coll.value()[item - 1];
+                        this.urlManager.setItem(link, 1);
+                    });
                     return;
                 }
                 this.getObject()
@@ -698,10 +705,10 @@ module NakedObjects.Angular.Gemini {
         "will display one or more of the items. If no arguments are specified, item will list all of the " +
         "the items in the object collection, or the first page of items if in a list view. Alternatively, " +
         "the command may be specified with a starting item number and/or an ending item number, for example " +
-        "item 3,5 will display items 3,4, and 5.  In the context of a list view only, Item may have a third " +
-        "argument to specify a page number greater than 1. See also the Table command.";
+        "item 3,5 will display items 3,4, and 5.";
+        //TODO: Support columns argument
         protected minArguments = 0;
-        protected maxArguments = 3;
+        protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
             return this.isCollection() || this.isList();
@@ -710,18 +717,49 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             const startNo = this.argumentAsNumber(args, 0, true);
             const endNo = this.argumentAsNumber(args, 1, true);
-            const pageNo = this.argumentAsNumber(args, 2, true);
-            if (this.isCollection()) {
-                this.clearInputAndSetOutputTo("Item command is not yet implemented");
+            if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
+                this.clearInputAndSetOutputTo("Item number or range values must be greater than zero");
                 return;
             }
-            //List
+            if (this.isCollection()) {
+                this.getObject().then((obj: DomainObjectRepresentation) => {
+                    const openCollIds = openCollectionIds(this.routeData());
+                    const coll = obj.collectionMember(openCollIds[0]);
+                    this.renderItems(coll, startNo, endNo);
+                });
+                return;
+            }
+            //must be List
             this.getList().then((list: ListRepresentation) => {
-                const link = list.value()[startNo - 1]; // On UI, first item is '1'
-                this.clearInputAndSetOutputTo("Item " + startNo + ": " + link.title());
+                this.renderItems(list, startNo, endNo);
             });
         };
 
+        private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
+            const max = source.value().length;
+            if (!startNo) {
+                startNo = 1;
+                endNo = max;
+            }
+            if (!endNo) {
+                endNo = startNo;
+            }
+            if (startNo > max ||  endNo > max) {
+                this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);
+                return;
+            }
+            if (startNo > endNo) {
+                this.clearInputAndSetOutputTo("Starting item number cannot be greater than the ending item number");
+                return;
+            }
+            let output = "";
+            let i: number;
+            const links = source.value();
+            for (i = startNo; i <= endNo; i++) {
+                output += "Item " + i + ": " + links[i - 1].title() + "; ";
+            }
+            this.clearInputAndSetOutputTo(output);
+        }
     }
     export class Menu extends Command {
 
@@ -782,30 +820,19 @@ module NakedObjects.Angular.Gemini {
             });
         };
     }
-    export class Paste extends Command {
-
-        public fullCommand = "paste";
-        public helpText = "Not yet implemented. Pastes the object reference from the clipboard into a named field " +
-        "on an object that is in edit mode, or in an opened action dialog. The paste command takes one argument: the " +
-        "name or partial name of the field. If the partial name is ambigious the " +
-        "list of matching fields will be returned but the reference will not have been pasted. " +
-        "Paste ? will provide a reminder of the object currently held in the clipboard without pasting it anywhere.";
-        protected minArguments = 1;
-        protected maxArguments = 1;
+    export class Page extends Command {
+        public fullCommand = "page";
+        public helpText = "Not yet implemented. Will support paging of returned lists.";
+        protected minArguments = 0;
+        protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isEdit() || this.isDialog();
+            return this.isList();
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Paste command is not yet implemented");
-            //const match = this.argumentAsString(args, 0);
-            //if (this.isEdit()) {
-            //}
-            //if (this.isDialog) {
-            //}
-        };
-
+            this.clearInputAndSetOutputTo("Page command is not yet implemented");
+        }
     }
     export class Reload extends Command {
 
@@ -854,6 +881,31 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.clearInputAndSetOutputTo("save command is not yet implemented");
         };
+    }
+    export class Use extends Command {
+
+        public fullCommand = "use";
+        public helpText = "Not yet implemented. Uses the object reference from the clipboard as the input for the named field " +
+        "on an object that is in edit mode, or in an opened action dialog. The paste command takes one argument: the " +
+        "name or partial name of the field. If the partial name is ambigious the " +
+        "list of matching fields will be returned but the reference will not have been pasted. " +
+        "Paste ? will provide a reminder of the object currently held in the clipboard without pasting it anywhere.";
+        protected minArguments = 1;
+        protected maxArguments = 1;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isEdit() || this.isDialog();
+        }
+
+        execute(args: string): void {
+            this.clearInputAndSetOutputTo("Paste command is not yet implemented");
+            //const match = this.argumentAsString(args, 0);
+            //if (this.isEdit()) {
+            //}
+            //if (this.isDialog) {
+            //}
+        };
+
     }
     export class Where extends Command {
 

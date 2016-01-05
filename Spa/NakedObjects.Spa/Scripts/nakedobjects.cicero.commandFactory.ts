@@ -48,10 +48,11 @@ module NakedObjects.Angular.Gemini{
             "it": new Item(urlManager, $location, commandFactory, context, navigation, $q),
             "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q),
             "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q),
-            "pa": new Paste(urlManager, $location, commandFactory, context, navigation, $q),
+            "pa": new Page(urlManager, $location, commandFactory, context, navigation, $q),
             "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q),
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
+            "us": new Use(urlManager, $location, commandFactory, context, navigation, $q),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         
