@@ -129,54 +129,40 @@ module NakedObjects.Angular.Gemini {
             const getFriendlyName = routeData.objectId ?
                 () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
+        
+            const setListInScope = (recreateFunc: (page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
+                $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
+                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData, recreateFunc);
+                $scope.collection = collectionViewModel;
+                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
-            const pageOrRecreate = (newPage: number, newPageSize, newState? : CollectionViewState) => {
+                if (routeData.dialogId) {
+                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
+                    setDialog($scope, actionViewModel, routeData);
+                    focusTarget = FocusTarget.Dialog;
+                }
+
+                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+                getFriendlyName().then((name: string) => $scope.title = name);
+            }
+
+            const pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
                 recreate(newPage, newPageSize).then((list: ListRepresentation) => {
-
                     routeData.state = newState || routeData.state;
-                    
-                    $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                    const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, routeData, pageOrRecreate);
-                    $scope.collection = collectionViewModel;
-                    $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-
-                    let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
-
-                    if (routeData.dialogId) {                                   
-                        const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-                        setDialog($scope, actionViewModel, routeData);
-                        focusTarget = FocusTarget.Dialog;
-                    } 
-
-                    getFriendlyName().then((name: string) => $scope.title = name);
-                             
-                    focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
-                    urlManager.setListPaging(routeData.paneId, newPage, newPageSize, routeData.state);           
+                    setListInScope(pageOrRecreate);
+                    urlManager.setListPaging(routeData.paneId, newPage, newPageSize, routeData.state);
                 }).catch(error => {
                     setError(error);
                 });
             }
 
-            getFriendlyName().then((name: string) => $scope.title = name);
-
             if (cachedList) {
-                // todo same code as in pageorrecreate DRY
-                $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData, pageOrRecreate);
-                $scope.collection = collectionViewModel;
-                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
-
-                if (routeData.dialogId) {                  
-                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);                  
-                    setDialog($scope, actionViewModel, routeData);
-                    focusTarget = FocusTarget.Dialog;
-                } 
-
-                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+                setListInScope(pageOrRecreate);
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
+                getFriendlyName().then((name: string) => $scope.title = name);
                 focusManager.focusOn(FocusTarget.Action, 0, urlManager.currentpane());       
             }
         };
