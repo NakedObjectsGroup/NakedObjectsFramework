@@ -133,6 +133,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacetFactory\PrefixesAndRecognisedMethods.cs" />
     <Compile Include="FacetFactory\RemoveIgnoredMethodsFacetFactory.cs" />
     <Compile Include="Reflect\FacetFactories.cs" />
     <Compile Include="FacetFactory\FindMenuFacetFactory.cs" />
