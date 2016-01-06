@@ -14,6 +14,9 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.gemini.test.helpers.ts" />
 
+// todo make sure tests are enhanced to validate contents of view models and urls
+// todo tests for invalid url combinations ? 
+
 module NakedObjects.Gemini.Test {
     import IHandlers = Angular.Gemini.IHandlers;
     import INakedObjectsScope = Angular.INakedObjectsScope;
@@ -34,9 +37,14 @@ module NakedObjects.Gemini.Test {
         let testEventSpy: jasmine.Spy;
         let cacheFactory: ng.ICacheFactoryService;
 
+        function flushTest() {
+            $httpBackend.flush();
+            timeout.flush();
+        }
+
         function setupBasePaneRouteData(paneId: number) {
             const trd = new PaneRouteData(paneId);
-
+             
             trd.collections = {};
             trd.parms = {};
             trd.props = {};
@@ -85,8 +93,7 @@ module NakedObjects.Gemini.Test {
                                 
             function executeHandleHome(handlers: IHandlers) {
                 handlers.handleHome(testScope, testRouteData);
-                $httpBackend.flush();
-                timeout.flush();
+                flushTest();
             }
 
             function verifyBaseHomePageState(ts: INakedObjectsScope) {
@@ -162,8 +169,7 @@ module NakedObjects.Gemini.Test {
 
             function executeHandleObject(handlers: IHandlers) {
                 handlers.handleObject(testScope, testRouteData);
-                $httpBackend.flush();
-                timeout.flush();
+                flushTest();
             }
 
             function verifyBaseObjectPageState(ts: INakedObjectsScope) {            
@@ -290,5 +296,44 @@ module NakedObjects.Gemini.Test {
                 });
             });
         });
+
+        describe("Go to List Page", () => {
+
+            function executeHandleList(handlers: IHandlers) {
+               handlers.handleList(testScope, testRouteData);
+               flushTest();
+            }
+
+          
+            function verifyListPlaceholderPageState(ts: INakedObjectsScope) {
+                expect(ts.listTemplate).toBe(Angular.ListPlaceholderTemplate);
+                const collectionPlaceholderViewModel = ts.collectionPlaceholder;
+                expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
+            }
+
+            beforeEach(inject(() => {
+                testRouteData.menuId = "VendorRepository";
+                testRouteData.actionId = "AllVendorsWithWebAddresses";
+                testRouteData.page = 1;
+                testRouteData.pageSize = 20;
+                testRouteData.selectedItems = [false, false, false, false, false, false];
+            })); 
+
+            describe("List placeholder", () => {
+
+                beforeEach(inject(() => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.Action, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleList(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPlaceholderPageState(testScope);                  
+                });
+            });
+        });
+
     });
 }
