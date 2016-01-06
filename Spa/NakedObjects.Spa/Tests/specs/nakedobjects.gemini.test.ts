@@ -18,6 +18,7 @@
 // todo tests for invalid url combinations ? 
 
 module NakedObjects.Gemini.Test {
+
     import IHandlers = Angular.Gemini.IHandlers;
     import INakedObjectsScope = Angular.INakedObjectsScope;
     import PaneRouteData = Angular.Gemini.PaneRouteData;
@@ -25,8 +26,10 @@ module NakedObjects.Gemini.Test {
     import FocusTarget = Angular.Gemini.FocusTarget;
     import ActionViewModel = Angular.Gemini.ActionViewModel;
     import DialogViewModel = Angular.Gemini.DialogViewModel;
-    import DomainObjectViewModel = NakedObjects.Angular.Gemini.DomainObjectViewModel;
-    import CollectionViewState = NakedObjects.Angular.Gemini.CollectionViewState;
+    import DomainObjectViewModel = Angular.Gemini.DomainObjectViewModel;
+    import CollectionViewState = Angular.Gemini.CollectionViewState;
+    import IContext = Angular.Gemini.IContext;
+
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -309,6 +312,7 @@ module NakedObjects.Gemini.Test {
                 expect(ts.title).toBe("All Vendors With Web Addresses");
                 expect(ts.listTemplate).toBe(Angular.ListPlaceholderTemplate);
                 const collectionPlaceholderViewModel = ts.collectionPlaceholder;
+                expect(collectionPlaceholderViewModel).not.toBeNull();
                 expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
             }
 
@@ -317,6 +321,7 @@ module NakedObjects.Gemini.Test {
                 expect(ts.listTemplate).toBe(Angular.ListTemplate);
                 expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
                 const collectionViewModel = ts.collection;
+                expect(collectionViewModel).not.toBeNull();
                 expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 6 of 6 items");
                 expect(collectionViewModel.items.length).toBe(6);
             }
@@ -353,6 +358,7 @@ module NakedObjects.Gemini.Test {
 
                 beforeEach(inject((handlers: IHandlers) => {
                     handlers.handleList(testScope, testRouteData);
+                    $httpBackend.flush();
                     testScope.collectionPlaceholder.reload();
                     flushTest();
                 }));
@@ -362,7 +368,24 @@ module NakedObjects.Gemini.Test {
                 });
             });
 
-        });
+            describe("List", () => {
 
+                beforeEach(inject((context: IContext) => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                    // cache list
+                    context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                    $httpBackend.flush();
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    handlers.handleList(testScope, testRouteData);
+                    timeout.flush();
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPageState(testScope);
+                });
+            });
+        });
     });
 }

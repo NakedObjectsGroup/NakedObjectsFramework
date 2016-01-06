@@ -130,9 +130,9 @@ module NakedObjects.Angular.Gemini {
                 () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
         
-            const setListInScope = (recreateFunc: (page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
+            const setListInScope = (list : ListRepresentation, recreateFunc: (page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                const collectionViewModel = viewModelFactory.collectionViewModel($scope, cachedList, routeData, recreateFunc);
+                const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, routeData, recreateFunc);
                 $scope.collection = collectionViewModel;
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
@@ -150,7 +150,7 @@ module NakedObjects.Angular.Gemini {
             const pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
                 recreate(newPage, newPageSize).then((list: ListRepresentation) => {
                     routeData.state = newState || routeData.state;
-                    setListInScope(pageOrRecreate);
+                    setListInScope(list, pageOrRecreate);
                     urlManager.setListPaging(routeData.paneId, newPage, newPageSize, routeData.state);
                 }).catch(error => {
                     setError(error);
@@ -158,7 +158,7 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (cachedList) {
-                setListInScope(pageOrRecreate);
+                setListInScope(cachedList, pageOrRecreate);
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
