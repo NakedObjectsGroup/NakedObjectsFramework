@@ -1,11 +1,7 @@
 ﻿module NakedObjects.Gemini.Test.Helpers {
-    import PaneRouteData = Angular.Gemini.PaneRouteData;
-    import INakedObjectsScope = Angular.INakedObjectsScope;
-    import IHomePageRepresentation = NakedObjects.RoInterfaces.IHomePageRepresentation;
-    import IListRepresentation = NakedObjects.RoInterfaces.IListRepresentation;
-    import MenusViewModel = NakedObjects.Angular.Gemini.MenusViewModel;
-    import IDomainObjectRepresentation = NakedObjects.RoInterfaces.IDomainObjectRepresentation;
-    import IMenuRepresentation = NakedObjects.RoInterfaces.Custom.IMenuRepresentation;
+    import IHomePageRepresentation = RoInterfaces.IHomePageRepresentation;
+    import IListRepresentation = RoInterfaces.IListRepresentation;
+    import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
 
     const homeRepresentation: IHomePageRepresentation = {
         links: [
@@ -47,8 +43,7 @@
             }
         ],
         extensions: {}
-    }
-
+    };
     const menusRepresentation: IListRepresentation = {
         links: [
             {
@@ -137,8 +132,7 @@
                 href: "http://nakedobjectsrodemo.azurewebsites.net/menus/WorkOrderRepository"
             }
         ]
-    }
-
+    };
     const vendorRepositoryMenuRepresentation: IMenuRepresentation = {
         title: "Vendors",
         menuId: "VendorRepository",
@@ -379,9 +373,8 @@
                 }
             }
         }
-    }
-
-    const vendorObjectRepresentation  = {
+    };
+    const vendorObjectRepresentation = {
         instanceId: "1634",
         domainType: "AdventureWorksModel.Vendor",
         title: "GMA Ski & Bike",
@@ -936,12 +929,90 @@
                 }
             }
         }
-    }
+    };
+    // http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke?x-ro-page=1&x-ro-pageSize=20
+
+    const listResultRepresentation = {
+        result: {
+            pagination: {
+                page: 1,
+                pageSize: 20,
+                numPages: 1,
+                totalCount: 6
+            },
+            members: {},
+            links: [
+                {
+                    rel: "urn:org.restfulobjects:rels/element-type",
+                    method: "GET",
+                    type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor"
+                }
+            ],
+            extensions: {},
+            value: [
+                {
+                    title: "A.Datum Corporation",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1596"
+                },
+                {
+                    title: "Litware, Inc.",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application/json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1580"
+                },
+                {
+                    title: "Northwind Traders",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1606"
+                },
+                {
+                    title: "Proseware, Inc.",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application       / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1678"
+                },
+                {
+                    title: "Trey Research",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application    / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1584"
+                },
+                {
+                    title: "Wide World Importers",
+                    rel: "urn:org.restfulobjects:rels/element",
+                    method: "GET",
+                    type: "application   / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1648"
+                }
+            ]
+        },
+        links: [
+            {
+                arguments: {},
+                rel: "self",
+                method: "GET",
+                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8; x-ro-element-type=\"AdventureWorksModel.Vendor\"",
+                href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke"
+            }
+        ],
+        extensions: {},
+        resultType: "list"
+    };
 
     let homeRequestHandler: ng.mock.IRequestHandler;
     let menusRequestHandler: ng.mock.IRequestHandler;
     let vendorRepositoryMenuRequestHandler: ng.mock.IRequestHandler;
     let vendorDomainObjectRequestHandler: ng.mock.IRequestHandler;
+    let listResultRequestHandler: ng.mock.IRequestHandler;
 
     export function setupBackend($httpBackend: ng.IHttpBackendService) {
         // backend definition common for all tests
@@ -954,6 +1025,8 @@
         vendorRepositoryMenuRequestHandler.respond(vendorRepositoryMenuRepresentation);
         vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634");
         vendorDomainObjectRequestHandler.respond(vendorObjectRepresentation);
+        listResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke?x-ro-page=1&x-ro-pageSize=20");
+        listResultRequestHandler.respond(listResultRepresentation);
     }
 
 }

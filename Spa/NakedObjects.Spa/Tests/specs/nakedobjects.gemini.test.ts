@@ -26,6 +26,7 @@ module NakedObjects.Gemini.Test {
     import ActionViewModel = Angular.Gemini.ActionViewModel;
     import DialogViewModel = Angular.Gemini.DialogViewModel;
     import DomainObjectViewModel = NakedObjects.Angular.Gemini.DomainObjectViewModel;
+    import CollectionViewState = NakedObjects.Angular.Gemini.CollectionViewState;
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -303,12 +304,21 @@ module NakedObjects.Gemini.Test {
                handlers.handleList(testScope, testRouteData);
                flushTest();
             }
-
-          
+        
             function verifyListPlaceholderPageState(ts: INakedObjectsScope) {
+                expect(ts.title).toBe("All Vendors With Web Addresses");
                 expect(ts.listTemplate).toBe(Angular.ListPlaceholderTemplate);
                 const collectionPlaceholderViewModel = ts.collectionPlaceholder;
                 expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
+            }
+
+            function verifyListPageState(ts: INakedObjectsScope) {
+                expect(ts.title).toBe("All Vendors With Web Addresses");
+                expect(ts.listTemplate).toBe(Angular.ListTemplate);
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+                const collectionViewModel = ts.collection;
+                expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 6 of 6 items");
+                expect(collectionViewModel.items.length).toBe(6);
             }
 
             beforeEach(inject(() => {
@@ -316,6 +326,7 @@ module NakedObjects.Gemini.Test {
                 testRouteData.actionId = "AllVendorsWithWebAddresses";
                 testRouteData.page = 1;
                 testRouteData.pageSize = 20;
+                testRouteData.state = CollectionViewState.List;
                 testRouteData.selectedItems = [false, false, false, false, false, false];
             })); 
 
@@ -333,6 +344,24 @@ module NakedObjects.Gemini.Test {
                     verifyListPlaceholderPageState(testScope);                  
                 });
             });
+
+            describe("Reload from List placeholder", () => {
+
+                beforeEach(inject(() => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    handlers.handleList(testScope, testRouteData);
+                    testScope.collectionPlaceholder.reload();
+                    flushTest();
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPageState(testScope);
+                });
+            });
+
         });
 
     });
