@@ -632,42 +632,41 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             if (this.isObject) {
-                if (this.isCollection()) {
-                    const item = this.argumentAsNumber(args, 0);
-                    //TODO: validate range
-                    this.getObject().then((obj: DomainObjectRepresentation) => {
-                        const openCollIds = openCollectionIds(this.routeData());
-                        const coll = obj.collectionMember(openCollIds[0]);
-                        const link = coll.value()[item - 1];
-                        this.urlManager.setItem(link, 1);
-                    });
-                    return;
-                }
                 this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
-                        const allFields = this.matchingProperties(obj, arg0);
-                        const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
-                        var s: string = "";
-                        switch (refFields.length) {
-                            case 0:
-                                if (!arg0) {
-                                    s = "No visible fields";
-                                } else {
-                                    s = arg0 + " does not match any reference fields";
-                                }
-                                break;
-                            case 1:
-                                //TODO: Check for any empty reference
-                                let link = refFields[0].value().link();
-                                this.urlManager.setItem(link, 1);
-                                break;
-                            default:
-                                var label = "Multiple reference fields match " + arg0 + ": ";
-                                s = _.reduce(refFields, (s, prop) => {
-                                    return s + prop.extensions().friendlyName();
-                                }, label);
+                        if (this.isCollection()) {
+                            const item = this.argumentAsNumber(args, 0);
+                            //TODO: validate range
+                            const openCollIds = openCollectionIds(this.routeData());
+                            const coll = obj.collectionMember(openCollIds[0]);
+                            const link = coll.value()[item - 1];
+                            this.urlManager.setItem(link, 1);
+                            return;
+                        } else {
+                            const allFields = this.matchingProperties(obj, arg0);
+                            const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
+                            var s: string = "";
+                            switch (refFields.length) {
+                                case 0:
+                                    if (!arg0) {
+                                        s = "No visible fields";
+                                    } else {
+                                        s = arg0 + " does not match any reference fields";
+                                    }
+                                    break;
+                                case 1:
+                                    //TODO: Check for any empty reference
+                                    let link = refFields[0].value().link();
+                                    this.urlManager.setItem(link, 1);
+                                    break;
+                                default:
+                                    var label = "Multiple reference fields match " + arg0 + ": ";
+                                    s = _.reduce(refFields, (s, prop) => {
+                                        return s + prop.extensions().friendlyName();
+                                    }, label);
+                            }
+                            this.clearInputAndSetOutputTo(s);
                         }
-                        this.clearInputAndSetOutputTo(s);
                     });
             }
         };
@@ -746,7 +745,7 @@ module NakedObjects.Angular.Gemini {
             if (!endNo) {
                 endNo = startNo;
             }
-            if (startNo > max ||  endNo > max) {
+            if (startNo > max || endNo > max) {
                 this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);
                 return;
             }
@@ -824,7 +823,9 @@ module NakedObjects.Angular.Gemini {
     }
     export class Page extends Command {
         public fullCommand = "page";
-        public helpText = "Not yet implemented. Will support paging of returned lists.";
+        public helpText = "Not yet implemented. Will support paging of returned lists." +
+        "Takes a single argument, which may be f,p,n,l (representing first, previous, next and last) " +
+        "or a specific page number";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -882,6 +883,21 @@ module NakedObjects.Angular.Gemini {
         }
         execute(args: string): void {
             this.clearInputAndSetOutputTo("save command is not yet implemented");
+        };
+    }
+    export class Select extends Command {
+        public fullCommand = "select";
+        public helpText = "Not yet implemented. Will provide a simple SQL-like query " +
+        "language to display specific columns and/or rows from a returned List or " +
+        "a collection within an object.";
+        protected minArguments = 1;
+        protected maxArguments = 1;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isList() || this.isObject();
+        }
+        execute(args: string): void {
+            this.clearInputAndSetOutputTo("select command is not yet implemented");
         };
     }
     export class Use extends Command {
