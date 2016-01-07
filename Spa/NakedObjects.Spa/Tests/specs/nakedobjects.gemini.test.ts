@@ -50,9 +50,9 @@ module NakedObjects.Gemini.Test {
             const trd = new PaneRouteData(paneId);
              
             trd.collections = {};
-            trd.parms = {};
+            trd.actionParams = {};
             trd.props = {};
-            trd.fields = {};
+            trd.dialogFields = {};
             return trd;
         }
 
@@ -373,7 +373,7 @@ module NakedObjects.Gemini.Test {
                 beforeEach(inject((context: IContext) => {
                     testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
                     // cache list
-                    context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                    context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
                     $httpBackend.flush();
                 }));
 

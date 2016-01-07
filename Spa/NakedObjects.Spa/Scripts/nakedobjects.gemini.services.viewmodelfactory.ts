@@ -257,7 +257,7 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.actionViewModel = ($scope: ng.IScope, actionRep: ActionMember, routeData: PaneRouteData) => {
             var actionViewModel = new ActionViewModel();
 
-            const parms = routeData.parms;
+            const parms = routeData.actionParams;
             const paneId = routeData.paneId;
 
             actionViewModel.actionRep = actionRep;
@@ -393,7 +393,7 @@ module NakedObjects.Angular.Gemini {
 
             dialogViewModel.actionViewModel = actionViewModel;
 
-            const fields = routeData.fields;
+            const fields = routeData.dialogFields;
             const parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
             dialogViewModel.parameters = _.map(parameters, p => viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.parameterId()], paneId));
 
@@ -607,7 +607,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function collectionId(routeData: PaneRouteData) {
-            const parmString = _.reduce(routeData.parms, (result, n, k) => result + k + n.toValueString(), "");
+            const parmString = _.reduce(routeData.actionParams, (result, n, k) => result + k + n.toValueString(), "");
 
             return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}${parmString || "pms"} `;
         }
@@ -1009,7 +1009,7 @@ module NakedObjects.Angular.Gemini {
                         });
                 };
                 cvm.renderList = (routeData: PaneRouteData) => {
-                    const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.parms, routeData.page, routeData.pageSize);
+                    const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
                     listPromise.then((list: ListRepresentation) => {
                         const page = list.pagination().page;
                         const numPages = list.pagination().numPages;
@@ -1044,9 +1044,9 @@ module NakedObjects.Angular.Gemini {
             const actionMember = repWithActions.actionMember(routeData.dialogId);
             const actionName = actionMember.extensions().friendlyName();
             output += "Action dialog: " + actionName + ". ";
-            _.forEach(routeData.fields, (value, key) => {
+            _.forEach(routeData.dialogFields, (value, key) => {
                 output += Helpers.friendlyNameForParam(actionMember, key) + ": ";
-                output += value.toValueString() || "empty";
+                output += value.toString() || "empty";
                 output += ", ";
             });
         }

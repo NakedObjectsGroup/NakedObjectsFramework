@@ -297,6 +297,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
 
             //Todo: test selections
+            CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
+            WaitForOutput("Products menu. Action dialog: List Products By Sub Category.");
+            EnterCommand("field cat, hand");
+            WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Handlebars,");
+            EnterCommand("field cat, xx");
+            WaitForOutput("None of the choices matches xx");
+            EnterCommand("field cat, frame");
+            WaitForOutput("Multiple matches: Mountain Frames, Road Frames, Touring Frames,");
         }
         public virtual void Gemini()
         {
@@ -487,13 +495,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522%2522");
             WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: empty,");
             EnterCommand("ok");
-            WaitForOutput("Please complete required fields and/or correct entries: lastName: required,");
+            WaitForOutput("Please complete or correct these fields: Last Name: required,");
 
             //Menu action with invalid entry
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindCustomerByAccountNumber&field1_accountNumber=%252212345%2522");
             WaitForOutput("Customers menu. Action dialog: Find Customer By Account Number. Account Number: 12345,");
             EnterCommand("ok");
-            WaitForOutput("Please complete required fields and/or correct entries: accountNumber: 12345 Account number must start with AW,");
+            WaitForOutput("Please complete or correct these fields: Account Number: 12345 Account number must start with AW,");
+
+            //Menu action with select param
+            CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory&field1_subCategory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F10%2522%252C%2522title%2522%253A%2522Forks%2522%257D");
+            WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
+            EnterCommand("ok");
+            WaitForOutputStartingWith("List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
         }
         public virtual void Root()
         {
@@ -613,7 +627,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

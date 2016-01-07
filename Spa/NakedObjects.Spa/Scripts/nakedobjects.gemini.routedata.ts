@@ -39,11 +39,12 @@ module NakedObjects.Angular.Gemini {
         edit: boolean;
         actionsOpen: string;
         actionId: string;
+        //Note that actionParams applies to executed actions. For dialogs see dialogFields
+        actionParams: _.Dictionary<Value>;
         state: CollectionViewState;
-        parms: _.Dictionary<Value>;
-        fields: _.Dictionary<Value>;
         props: _.Dictionary<Value>;
         dialogId: string;
+        dialogFields: _.Dictionary<Value>;
         page: number;
         pageSize : number;
         selectedItems: boolean[];

@@ -126,7 +126,7 @@ module NakedObjects.Angular.Gemini {
         protected getList(): ng.IPromise<ListRepresentation> {
             const routeData = this.routeData();
             //TODO: Currently covers only the list-from-menu; need to cover list from object action
-            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.parms, routeData.page, routeData.pageSize);
+            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
         }
         protected isMenu(): boolean {
             return !!this.routeData().menuId;
@@ -156,7 +156,6 @@ module NakedObjects.Angular.Gemini {
         protected isCollection(): boolean {
             return this.isObject && _.any(this.routeData().collections);
         }
-
         protected closeAnyOpenCollections() {
             const open = openCollectionIds(this.routeData());
             _.forEach(open, id => {
@@ -211,6 +210,10 @@ module NakedObjects.Angular.Gemini {
                 return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
                     (!!path && path.toLowerCase().indexOf(clause) >= 0));
             });
+        }
+
+        protected findMatchingChoices(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
+            return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch) >= 0);
         }
     }
 
@@ -486,9 +489,7 @@ module NakedObjects.Angular.Gemini {
                         this.clearInputAndSetOutputTo("No fields in the current context match " + fieldName);
                         break;
                     case 1:
-                        const value = new Value(fieldEntry);
-                        const param = params[0];
-                        this.urlManager.setFieldValue(this.routeData().dialogId, param, value, 1);
+                        this.setField(params[0], fieldEntry);
                         break;
                     default:
                         this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them
@@ -498,12 +499,51 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
-        private renderFields(fieldName: string, details: boolean = false) {
+        private setField(param: Parameter, fieldEntry: string): void {
+            if (_.any(param.choices())) {
+                this.handleChoices(param, fieldEntry);
+                return;
+            }
+            if (param.isScalar()) {
+                this.setScalarField(param, fieldEntry);
+            } else {
+                this.handleReferenceField(param, fieldEntry);
+            }
+        }
+
+        private setScalarField(param: Parameter, fieldEntry: string) {
+            const value = new Value(fieldEntry);
+            this.urlManager.setFieldValue(this.routeData().dialogId, param, value, 1);
+        }
+
+        private handleReferenceField(param: Parameter, fieldEntry: string) {
+                this.clearInputAndSetOutputTo("use clipboard?");
+                return;
+        }
+
+        private handleChoices(param: Parameter, fieldEntry: string): void {
+            const matches = this.findMatchingChoices(param.choices(), fieldEntry);
+            switch (matches.length) {
+                case 0:
+                    this.clearInputAndSetOutputTo("None of the choices matches " + fieldEntry);
+                    break;
+                case 1:
+                    this.urlManager.setFieldValue(this.routeData().dialogId, param, matches[0], 1);
+                    break;
+                default:
+                    let msg = "Multiple matches: ";
+                    _.forEach(matches, m => msg += m.toString() + ", ");
+                    this.clearInputAndSetOutputTo(msg);
+                    break;
+            }            
+        }
+
+       private renderFields(fieldName: string, details: boolean = false) {
             if (this.isDialog()) {
                 //TODO: duplication with function on ViewModelFactory for rendering dialog ???
                 this.getActionForCurrentDialog().then((action: ActionMember) => {
                     let output = "";
-                    _.forEach(this.routeData().fields, (value, key) => {
+                    _.forEach(this.routeData().dialogFields, (value, key) => {
                         output += Helpers.friendlyNameForParam(action, key) + ": ";
                         output += value.toValueString() || "empty";
                         output += ", ";
@@ -816,12 +856,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            let fieldMap = this.routeData().fields;
+            let fieldMap = this.routeData().dialogFields;
             this.getActionForCurrentDialog().then((action: ActionMember) => {
                 this.context.invokeAction(action, 1, fieldMap)
                     .then((err: ErrorMap) => {
                         if (err.containsError()) {
-                            this.handleErrorResponse(err);
+                            this.handleErrorResponse(err, action);
                         } else {
                             this.urlManager.closeDialog(1);
                         }
@@ -829,16 +869,16 @@ module NakedObjects.Angular.Gemini {
             });
         };
 
-        handleErrorResponse(err: ErrorMap) {
+        handleErrorResponse(err: ErrorMap, action: ActionMember) {
+            //TODO: Not currently covering co-validation errors
             //TODO: Factor out commonality for errors on saving object
-            let msg = "Please complete required fields and/or correct entries: "
+            let msg = "Please complete or correct these fields: "
             _.each(err.valuesMap(), (errorValue, paramId) => {
                 const reason = errorValue.invalidReason;
                 const value = errorValue.value;
                 if (reason) {
-                    msg += paramId + ": "; //TODO: Need to get friendly name of param
+                    msg += Helpers.friendlyNameForParam(action, paramId) + ": ";
                     if (reason === "Mandatory") {
-                        //vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
                         msg += "required";
                     } else {
                         msg += value + " " + reason;

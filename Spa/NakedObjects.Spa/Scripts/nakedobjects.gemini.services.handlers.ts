@@ -122,8 +122,8 @@ module NakedObjects.Angular.Gemini {
 
             const recreate = (page: number, pageSize: number) => {
                 return routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.parms, page, pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.parms, page, pageSize);
+                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, page, pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, page, pageSize);
             }
 
             const getFriendlyName = routeData.objectId ?

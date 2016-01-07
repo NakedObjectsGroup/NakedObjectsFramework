@@ -131,10 +131,10 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
 
             const parmKeyMap = getAndMapIds(parm, paneId);
-            paneRouteData.parms = getMappedValues(parmKeyMap);
+            paneRouteData.actionParams = getMappedValues(parmKeyMap);
 
             const fieldKeyMap = getAndMapIds(field, paneId);
-            paneRouteData.fields = getMappedValues(fieldKeyMap);
+            paneRouteData.dialogFields = getMappedValues(fieldKeyMap);
 
             const propKeyMap = getAndMapIds(prop, paneId);
             paneRouteData.props = getMappedValues(propKeyMap);
