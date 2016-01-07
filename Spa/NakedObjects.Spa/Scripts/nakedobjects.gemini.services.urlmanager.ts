@@ -112,6 +112,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
+
+            // todo validate url data - eg cannot have dialog or actions open while editing.
+            // consider either cleaning up url or just erroring if unexpected url combination
+
             paneRouteData.menuId = $routeParams[menu + paneId];
             paneRouteData.actionId = $routeParams[action + paneId];
             paneRouteData.dialogId = $routeParams[dialog + paneId];

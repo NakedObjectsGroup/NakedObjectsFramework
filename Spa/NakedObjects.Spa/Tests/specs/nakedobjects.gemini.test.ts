@@ -14,7 +14,11 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.gemini.test.helpers.ts" />
 
+// todo make sure tests are enhanced to validate contents of view models and urls
+// todo tests for invalid url combinations ? 
+
 module NakedObjects.Gemini.Test {
+
     import IHandlers = Angular.Gemini.IHandlers;
     import INakedObjectsScope = Angular.INakedObjectsScope;
     import PaneRouteData = Angular.Gemini.PaneRouteData;
@@ -22,7 +26,10 @@ module NakedObjects.Gemini.Test {
     import FocusTarget = Angular.Gemini.FocusTarget;
     import ActionViewModel = Angular.Gemini.ActionViewModel;
     import DialogViewModel = Angular.Gemini.DialogViewModel;
-    import DomainObjectViewModel = NakedObjects.Angular.Gemini.DomainObjectViewModel;
+    import DomainObjectViewModel = Angular.Gemini.DomainObjectViewModel;
+    import CollectionViewState = Angular.Gemini.CollectionViewState;
+    import IContext = Angular.Gemini.IContext;
+
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -34,9 +41,14 @@ module NakedObjects.Gemini.Test {
         let testEventSpy: jasmine.Spy;
         let cacheFactory: ng.ICacheFactoryService;
 
+        function flushTest() {
+            $httpBackend.flush();
+            timeout.flush();
+        }
+
         function setupBasePaneRouteData(paneId: number) {
             const trd = new PaneRouteData(paneId);
-
+             
             trd.collections = {};
             trd.parms = {};
             trd.props = {};
@@ -85,8 +97,7 @@ module NakedObjects.Gemini.Test {
                                 
             function executeHandleHome(handlers: IHandlers) {
                 handlers.handleHome(testScope, testRouteData);
-                $httpBackend.flush();
-                timeout.flush();
+                flushTest();
             }
 
             function verifyBaseHomePageState(ts: INakedObjectsScope) {
@@ -162,8 +173,7 @@ module NakedObjects.Gemini.Test {
 
             function executeHandleObject(handlers: IHandlers) {
                 handlers.handleObject(testScope, testRouteData);
-                $httpBackend.flush();
-                timeout.flush();
+                flushTest();
             }
 
             function verifyBaseObjectPageState(ts: INakedObjectsScope) {            
@@ -287,6 +297,93 @@ module NakedObjects.Gemini.Test {
                 it("Verify state in scope", () => {
                     verifyBaseObjectPageState(testScope);
                     verifyObjectEditPageState(testScope);
+                });
+            });
+        });
+
+        describe("Go to List Page", () => {
+
+            function executeHandleList(handlers: IHandlers) {
+               handlers.handleList(testScope, testRouteData);
+               flushTest();
+            }
+        
+            function verifyListPlaceholderPageState(ts: INakedObjectsScope) {
+                expect(ts.title).toBe("All Vendors With Web Addresses");
+                expect(ts.listTemplate).toBe(Angular.ListPlaceholderTemplate);
+                const collectionPlaceholderViewModel = ts.collectionPlaceholder;
+                expect(collectionPlaceholderViewModel).not.toBeNull();
+                expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
+            }
+
+            function verifyListPageState(ts: INakedObjectsScope) {
+                expect(ts.title).toBe("All Vendors With Web Addresses");
+                expect(ts.listTemplate).toBe(Angular.ListTemplate);
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+                const collectionViewModel = ts.collection;
+                expect(collectionViewModel).not.toBeNull();
+                expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 6 of 6 items");
+                expect(collectionViewModel.items.length).toBe(6);
+            }
+
+            beforeEach(inject(() => {
+                testRouteData.menuId = "VendorRepository";
+                testRouteData.actionId = "AllVendorsWithWebAddresses";
+                testRouteData.page = 1;
+                testRouteData.pageSize = 20;
+                testRouteData.state = CollectionViewState.List;
+                testRouteData.selectedItems = [false, false, false, false, false, false];
+            })); 
+
+            describe("List placeholder", () => {
+
+                beforeEach(inject(() => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.Action, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    executeHandleList(handlers);
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPlaceholderPageState(testScope);                  
+                });
+            });
+
+            describe("Reload from List placeholder", () => {
+
+                beforeEach(inject(() => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    handlers.handleList(testScope, testRouteData);
+                    $httpBackend.flush();
+                    testScope.collectionPlaceholder.reload();
+                    flushTest();
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPageState(testScope);
+                });
+            });
+
+            describe("List", () => {
+
+                beforeEach(inject((context: IContext) => {
+                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                    // cache list
+                    context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                    $httpBackend.flush();
+                }));
+
+                beforeEach(inject((handlers: IHandlers) => {
+                    handlers.handleList(testScope, testRouteData);
+                    timeout.flush();
+                }));
+
+                it("Verify state in scope", () => {
+                    verifyListPageState(testScope);
                 });
             });
         });
