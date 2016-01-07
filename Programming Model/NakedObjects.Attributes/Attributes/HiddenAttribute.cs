@@ -19,6 +19,12 @@ namespace NakedObjects {
             Value = w;
         }
 
+        [Obsolete("If not intended for the UI, use [NakedObjectsIgnore].  Otherwise use [Hidden(WhenTo.Always)]")]
+        public HiddenAttribute()
+        {
+            Value = WhenTo.Always;
+        }
+
         public WhenTo Value { get; private set; }
     }
 }
