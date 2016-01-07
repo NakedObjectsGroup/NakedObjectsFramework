@@ -317,73 +317,206 @@ module NakedObjects.Gemini.Test {
             }
 
             function verifyListPageState(ts: INakedObjectsScope) {
-                expect(ts.title).toBe("All Vendors With Web Addresses");
                 expect(ts.listTemplate).toBe(Angular.ListTemplate);
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
-                const collectionViewModel = ts.collection;
-                expect(collectionViewModel).not.toBeNull();
-                expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 6 of 6 items");
-                expect(collectionViewModel.items.length).toBe(6);
             }
 
-            beforeEach(inject(() => {
-                testRouteData.menuId = "VendorRepository";
-                testRouteData.actionId = "AllVendorsWithWebAddresses";
-                testRouteData.page = 1;
-                testRouteData.pageSize = 20;
-                testRouteData.state = CollectionViewState.List;
-                testRouteData.selectedItems = [false, false, false, false, false, false];
-            })); 
+            function verifyListClosedActionsPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+            }
 
-            describe("List placeholder", () => {
+            function verifyListOpenActionsPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);
+            }
+         
+
+            describe("Vendor list tests", () => {
+
+
+                function verifyVendorListPageState(ts: INakedObjectsScope) {
+                    expect(ts.title).toBe("All Vendors With Web Addresses");
+                    const collectionViewModel = ts.collection;
+                    expect(collectionViewModel).not.toBeNull();
+                    expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 6 of 6 items");
+                    expect(collectionViewModel.items.length).toBe(6);
+                }
 
                 beforeEach(inject(() => {
-                    testEventSpy = setupEventSpy(testScope, FocusTarget.Action, 0, 1, 1);
+                    testRouteData.menuId = "VendorRepository";
+                    testRouteData.actionId = "AllVendorsWithWebAddresses";
+                    testRouteData.page = 1;
+                    testRouteData.pageSize = 20;
+                    testRouteData.state = CollectionViewState.List;
+                    testRouteData.selectedItems = [false, false, false, false, false, false];
                 }));
 
-                beforeEach(inject((handlers: IHandlers) => {
-                    executeHandleList(handlers);
-                }));
+                describe("List placeholder", () => {
 
-                it("Verify state in scope", () => {
-                    verifyListPlaceholderPageState(testScope);                  
+                    beforeEach(inject(() => {
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.Action, 0, 1, 1);
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        executeHandleList(handlers);
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPlaceholderPageState(testScope);
+                    });
+                });
+
+                describe("Reload from List placeholder", () => {
+
+                    beforeEach(inject(() => {
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        $httpBackend.flush();
+                        testScope.collectionPlaceholder.reload();
+                        flushTest();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifyVendorListPageState(testScope);
+                    });
+                });
+
+                describe("List", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifyVendorListPageState(testScope);
+                    });
                 });
             });
 
-            describe("Reload from List placeholder", () => {
+            describe("Special offers list tests", () => {
 
                 beforeEach(inject(() => {
-                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                    testRouteData.menuId = "SpecialOfferRepository";
+                    testRouteData.actionId = "SpecialOffersWithNoMinimumQty";
+                    testRouteData.page = 1;
+                    testRouteData.pageSize = 20;
+                    testRouteData.state = CollectionViewState.List;
+                    testRouteData.selectedItems = [false, false, false, false, false, false, false, false, false, false, false];
                 }));
 
-                beforeEach(inject((handlers: IHandlers) => {
-                    handlers.handleList(testScope, testRouteData);
-                    $httpBackend.flush();
-                    testScope.collectionPlaceholder.reload();
-                    flushTest();
-                }));
+                function verifySpecialOffersListPageState(ts: INakedObjectsScope) {
+                    expect(ts.title).toBe("Special Offers With No Minimum Qty");
+                    const collectionViewModel = ts.collection;
+                    expect(collectionViewModel).not.toBeNull();
+                    expect(collectionViewModel.description()).toBe("Page 1 of 1; viewing 11 of 11 items");
+                    expect(collectionViewModel.items.length).toBe(11);
+                }
 
-                it("Verify state in scope", () => {
-                    verifyListPageState(testScope);
+                function verifyOpenDialogListPageState(ts: INakedObjectsScope) {
+                    verifyOpenDialogState(ts, 1, "Extend Offers");
+                }
+
+                describe("List with closed actions no dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
                 });
-            });
 
-            describe("List", () => {
+                describe("List with open actions no dialog", () => {
 
-                beforeEach(inject((context: IContext) => {
-                    testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
-                    // cache list
-                    context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
-                    $httpBackend.flush();
-                }));
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.actionsOpen = "true";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.SubAction, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
 
-                beforeEach(inject((handlers: IHandlers) => {
-                    handlers.handleList(testScope, testRouteData);
-                    timeout.flush();
-                }));
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
 
-                it("Verify state in scope", () => {
-                    verifyListPageState(testScope);
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListOpenActionsPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
+                });
+
+                describe("List with closed actions and dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.dialogId = "ExtendOffers";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifyOpenDialogListPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
+                });
+
+                describe("List with open actions and dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.actionsOpen = "true";
+                        testRouteData.dialogId = "ExtendOffers";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListOpenActionsPageState(testScope);
+                        verifyOpenDialogListPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
                 });
             });
         });
