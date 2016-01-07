@@ -411,6 +411,70 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("help menu, back");
             WaitForOutput("Too many arguments provided.");
         }
+        public virtual void Item()
+        {
+            //Applied to List
+            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
+            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("item 1");
+            WaitForOutput("Item 1: No Discount;");
+            EnterCommand("item 16");
+            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale;");
+
+            EnterCommand("item 2,4");
+            WaitForOutput("Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24; Item 4: Volume Discount 25 to 40;");
+            EnterCommand("item 5,5");
+            WaitForOutput("Item 5: Volume Discount 41 to 60;");
+
+            //Invalid numbers
+            EnterCommand("item 17");
+            WaitForOutput("The highest numbered item is 16");
+            EnterCommand("item 0");
+            WaitForOutput("Item number or range values must be greater than zero");
+            EnterCommand("item -1");
+            WaitForOutput("Item number or range values must be greater than zero");
+            EnterCommand("item 15,17");
+            WaitForOutput("The highest numbered item is 16");
+            EnterCommand("item 0,3");
+            WaitForOutput("Item number or range values must be greater than zero");
+            EnterCommand("item 5,4");
+            WaitForOutput("Starting item number cannot be greater than the ending item number");
+
+            //Applied to collection
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-44518&selected1=256&collection1_Details=List");
+            WaitForOutput("Collection: Details on Sales Order Header: SO44518, 20 items");
+            EnterCommand("item 1");
+            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44;");
+            EnterCommand("item 20");
+            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38;");
+
+            //No number
+            EnterCommand("item");
+            WaitForOutputStartingWith("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
+
+            //Too many parms
+            EnterCommand("item 4,5,6");
+            WaitForOutput("Too many arguments provided.");
+
+            //Alpha parm
+            EnterCommand("item one");
+            WaitForOutput("Argument number 1 must be a number");
+
+            //Invalid context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("item 1");
+            WaitForOutput("The command: item is not available in the current context");
+            CiceroUrl("home?menu1=CustomerRepository");
+            WaitForOutput("Customers menu.");
+            EnterCommand("item 1");
+            WaitForOutput("The command: item is not available in the current context");
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29863");
+            WaitForOutput("Customer: Efficient Cycling, AW00029863.");
+            EnterCommand("item 1");
+            WaitForOutput("The command: item is not available in the current context");
+
+        }
         public virtual void Menu()
         {   //No argument
             CiceroUrl("home");
@@ -590,6 +654,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Help() { base.Help(); }
         [TestMethod]
+        public override void Item() { base.Item(); }
+        [TestMethod]
         public override void Menu() { base.Menu(); }
         [TestMethod]
         public override void OK() { base.OK(); }
@@ -627,7 +693,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -697,6 +763,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Gemini();
             base.Go();
             base.Help();
+            base.Item();
             base.Menu();
             base.OK();
             base.Root();
