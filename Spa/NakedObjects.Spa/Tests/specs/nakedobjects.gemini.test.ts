@@ -317,12 +317,16 @@ module NakedObjects.Gemini.Test {
             }
 
             function verifyListPageState(ts: INakedObjectsScope) {
-              
                 expect(ts.listTemplate).toBe(Angular.ListTemplate);
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
-             
             }
 
+            function verifyListClosedActionsPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+            }
+
+            function verifyListOpenActionsPageState(ts: INakedObjectsScope) {
+                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);
+            }
          
 
             describe("Vendor list tests", () => {
@@ -375,6 +379,7 @@ module NakedObjects.Gemini.Test {
 
                     it("Verify state in scope", () => {
                         verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
                         verifyVendorListPageState(testScope);
                     });
                 });
@@ -395,6 +400,7 @@ module NakedObjects.Gemini.Test {
 
                     it("Verify state in scope", () => {
                         verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
                         verifyVendorListPageState(testScope);
                     });
                 });
@@ -419,7 +425,11 @@ module NakedObjects.Gemini.Test {
                     expect(collectionViewModel.items.length).toBe(11);
                 }
 
-                describe("List with actions", () => {
+                function verifyOpenDialogListPageState(ts: INakedObjectsScope) {
+                    verifyOpenDialogState(ts, 1, "Extend Offers");
+                }
+
+                describe("List with closed actions no dialog", () => {
 
                     beforeEach(inject((context: IContext) => {
                         testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
@@ -435,12 +445,80 @@ module NakedObjects.Gemini.Test {
 
                     it("Verify state in scope", () => {
                         verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
+                });
+
+                describe("List with open actions no dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.actionsOpen = "true";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.SubAction, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListOpenActionsPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
+                });
+
+                describe("List with closed actions and dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.dialogId = "ExtendOffers";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListClosedActionsPageState(testScope);
+                        verifyOpenDialogListPageState(testScope);
+                        verifySpecialOffersListPageState(testScope);
+                    });
+                });
+
+                describe("List with open actions and dialog", () => {
+
+                    beforeEach(inject((context: IContext) => {
+                        testRouteData.actionsOpen = "true";
+                        testRouteData.dialogId = "ExtendOffers";
+                        testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
+                        // cache list
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.parms, testRouteData.page, testRouteData.pageSize);
+                        $httpBackend.flush();
+                    }));
+
+                    beforeEach(inject((handlers: IHandlers) => {
+                        handlers.handleList(testScope, testRouteData);
+                        timeout.flush();
+                    }));
+
+                    it("Verify state in scope", () => {
+                        verifyListPageState(testScope);
+                        verifyListOpenActionsPageState(testScope);
+                        verifyOpenDialogListPageState(testScope);
                         verifySpecialOffersListPageState(testScope);
                     });
                 });
             });
-
-
         });
     });
 }
