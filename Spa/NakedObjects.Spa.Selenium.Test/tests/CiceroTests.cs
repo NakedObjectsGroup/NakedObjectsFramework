@@ -287,7 +287,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //exact match takes priority over partial match
             EnterCommand("field product category"); //which would also match product subcategory
             WaitForOutput("Product Category: Bikes,");
-            //Input: TODO
+
+            //Entering fields (into dialogs)
+            CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522%2522&field1_lastName=%2522%2522");
+            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: empty, Last Name: empty,");
+            EnterCommand("field first, a");
+            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: empty,");
+            EnterCommand("field last, b");
+            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
+
+            //Todo: test selections
         }
         public virtual void Gemini()
         {
@@ -379,7 +388,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, where,");
+            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, select, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
@@ -425,6 +434,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Welcome to Cicero");
             EnterCommand("menu orders"); //which would match 3, but one exactly
             WaitForOutput("Orders menu.");
+
+            //Invoking menu from a non-home context, clears state
+            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
+            WaitForOutputStartingWith("Current Special Offers: Page 1");
+            EnterCommand("menu cus");
+            WaitForOutput("Customers menu.");
         }
         public virtual void OK()
         {
@@ -455,6 +470,30 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu.");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
+
+            //Menu action that returns a List
+            CiceroUrl("home?menu1=OrderRepository&dialog1=HighestValueOrders");
+            WaitForOutput("Orders menu. Action dialog: Highest Value Orders.");
+            EnterCommand("ok");
+            WaitForOutputStartingWith("Highest Value Orders: Page 1 of ");
+
+            //Menu action with params
+            CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522b%2522");
+            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
+            EnterCommand("ok");
+            WaitForOutputStartingWith("Find Individual Customer By Name: Page 1 of 8 containing 20 of");
+
+            //Menu action with missing mandatory params
+            CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522%2522");
+            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: empty,");
+            EnterCommand("ok");
+            WaitForOutput("Please complete required fields and/or correct entries: lastName: required,");
+
+            //Menu action with invalid entry
+            CiceroUrl("home?menu1=CustomerRepository&dialog1=FindCustomerByAccountNumber&field1_accountNumber=%252212345%2522");
+            WaitForOutput("Customers menu. Action dialog: Find Customer By Account Number. Account Number: 12345,");
+            EnterCommand("ok");
+            WaitForOutput("Please complete required fields and/or correct entries: accountNumber: 12345 Account number must start with AW,");
         }
         public virtual void Root()
         {
@@ -574,7 +613,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -632,7 +671,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class CiceroMegaTestRoot : CiceroTestRoot
     {
-
         [TestMethod]
         public void CiceroMegaTest()
         {

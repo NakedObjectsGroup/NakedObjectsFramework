@@ -1017,7 +1017,7 @@ module NakedObjects.Angular.Gemini {
                         const totalCount = list.pagination().totalCount;
                         const description = "Page " + page + " of " + numPages + " containing " + count + " of " + totalCount + " items";
                         context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
-                            const actionMember = menu.actionMember(routeData.dialogId);
+                            const actionMember = menu.actionMember(routeData.actionId);
                             const actionName = actionMember.extensions().friendlyName();
                             cvm.clearInput();
                             cvm.output = actionName + ": " + description;

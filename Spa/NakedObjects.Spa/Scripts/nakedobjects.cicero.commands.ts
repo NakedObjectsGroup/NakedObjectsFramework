@@ -501,11 +501,9 @@ module NakedObjects.Angular.Gemini {
         private renderFields(fieldName: string, details: boolean = false) {
             if (this.isDialog()) {
                 //TODO: duplication with function on ViewModelFactory for rendering dialog ???
-                //Is this needed at all, or should the fields always be rendered? i.e. if in dialog
-                //you must provide a name arg for field?
                 this.getActionForCurrentDialog().then((action: ActionMember) => {
                     let output = "";
-                    _.forEach(this.routeData().parms, (value, key) => {
+                    _.forEach(this.routeData().fields, (value, key) => {
                         output += Helpers.friendlyNameForParam(action, key) + ": ";
                         output += value.toValueString() || "empty";
                         output += ", ";
@@ -794,7 +792,9 @@ module NakedObjects.Angular.Gemini {
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
-                            this.urlManager.setMenu(menuId, 1);  //1 = pane 1  Resolving promise
+                            this.urlManager.setHome(1);
+                            this.urlManager.clearUrlState(1);
+                            this.urlManager.setMenu(menuId, 1);
                             break;
                         default:
                             var label = name ? "Matching menus: " : "Menus: ";
@@ -816,10 +816,38 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
+            let fieldMap = this.routeData().fields;
             this.getActionForCurrentDialog().then((action: ActionMember) => {
-                this.context.invokeAction(action, 1, {});
+                this.context.invokeAction(action, 1, fieldMap)
+                    .then((err: ErrorMap) => {
+                        if (err.containsError()) {
+                            this.handleErrorResponse(err);
+                        } else {
+                            this.urlManager.closeDialog(1);
+                        }
+                    });
             });
         };
+
+        handleErrorResponse(err: ErrorMap) {
+            //TODO: Factor out commonality for errors on saving object
+            let msg = "Please complete required fields and/or correct entries: "
+            _.each(err.valuesMap(), (errorValue, paramId) => {
+                const reason = errorValue.invalidReason;
+                const value = errorValue.value;
+                if (reason) {
+                    msg += paramId + ": "; //TODO: Need to get friendly name of param
+                    if (reason === "Mandatory") {
+                        //vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                        msg += "required";
+                    } else {
+                        msg += value + " " + reason;
+                    }
+                    msg += ", ";
+                }
+            });
+            this.clearInputAndSetOutputTo(msg);
+        }
     }
     export class Page extends Command {
         public fullCommand = "page";
