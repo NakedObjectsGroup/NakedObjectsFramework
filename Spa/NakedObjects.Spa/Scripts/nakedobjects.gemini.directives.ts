@@ -37,25 +37,33 @@ module NakedObjects.Angular.Gemini {
                 select: "&"        // Bind the select function we refer to the right scope
             },
             link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
+
+                if (!ngModel) return;
+
+                ngModel.$parsers.reverse();
+                ngModel.$parsers.push(val => new Date(val).toISOString().substring(0, 10));
+                ngModel.$parsers.reverse();
+
+                   //ngModel.$formatters = [];
+
+                    //ngModel.$formatters.push(val => {
+                    //    return $filter("date")(val, "d MMM yy");
+                    //});
+
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
-                    if (!ngModel) return;
-
+                  
                     const updateModel = dateTxt => {
                         scope.$apply(() => {
                             // Call the internal AngularJS helper to
                             // update the two way binding
 
-                            ngModel.$parsers.push(val => new Date(val).toISOString());
                             ngModel.$setViewValue(dateTxt);
                         });
                     };
 
                     const onSelect = dateTxt => {
                         updateModel(dateTxt);
-                        if (scope.select) {
-                            scope.$apply(() => scope.select({ date: dateTxt }));
-                        }
                     };
 
                     const optionsObj = {
