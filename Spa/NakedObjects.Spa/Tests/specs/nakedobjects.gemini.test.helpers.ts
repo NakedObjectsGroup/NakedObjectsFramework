@@ -374,6 +374,273 @@
             }
         }
     };
+
+    const specialOfferRepositoryMenuRepresentation = {
+        title: "Special Offers",
+        menuId: "SpecialOfferRepository",
+        links: [
+            {
+                rel: "self",
+                method: "GET",
+                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8",
+                href: "http://nakedobjectsrodemo.azurewebsites.net/menus/SpecialOfferRepository"
+            }
+        ],
+        extensions: {},
+        members: {
+            CurrentSpecialOffers: {
+                parameters: {},
+                memberType: "action",
+                id: "CurrentSpecialOffers",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"CurrentSpecialOffers\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn: org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/CurrentSpecialOffers"
+                    },
+                    {
+                        arguments: {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"CurrentSpecialOffers\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/CurrentSpecialOffers/invoke"
+                    }, {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/list"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/element-type",
+                        method: "GET",
+                        type: "application/ json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOffer"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/ json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/CurrentSpecialOffers"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Current Special Offers",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 1,
+                    returnType: "list",
+                    elementType: "AdventureWorksModel.SpecialOffer",
+                    pluralName: "Special Offers"
+                }
+            },
+            AssociateSpecialOfferWithProduct: {
+                parameters: {
+                    offer: {
+                        links: [
+                            {
+                                rel: "describedby",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/offer"
+                            },
+                            {
+                                arguments: {
+                                     "x-ro-searchTerm": {
+                                          value: null
+                                     }
+                                },
+                                extensions: {
+                                     minLength: 2
+                                },
+                                rel: "urn:org.restfulobjects:rels/prompt;action=\"AssociateSpecialOfferWithProduct\";param=\"offer\"",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/prompt\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/offer/prompt"
+                            }
+                        ],
+                        extensions: {
+                            friendlyName: "Offer",
+                            description: "",
+                            optional: false,
+                            returnType: "AdventureWorksModel.SpecialOffer"
+                        }
+                    },
+                    product: {
+                        links: [
+                            {
+                                rel: "describedby",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/product"
+                            },
+                            {
+                                arguments: {
+                                     "x-ro-searchTerm": {
+                                          value: null
+                                     }
+                                },
+                                extensions: { "minLength": 2 },
+                                rel: "urn:org.restfulobjects:rels/prompt;action=\"AssociateSpecialOfferWithProduct\";param=\"product\"",
+                                method: "GET",
+                                type: "application/json; profile=\"urn:org.restfulobjects:repr-types/prompt\"; charset=utf-8",
+                                href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/product/prompt"
+                            }
+                        ],
+                        extensions: {
+                            friendlyName: "Product",
+                            description: "",
+                            optional: false,
+                            returnType: "AdventureWorksModel.Product"
+                        }
+                    }
+                },
+                memberType: "action",
+                id: "AssociateSpecialOfferWithProduct",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"AssociateSpecialOfferWithProduct\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct"
+                    },
+                    {
+                        arguments: {
+                            offer: {
+                                 value: null
+                            },
+                            product: {
+                                value: null
+                            }
+                        },
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"AssociateSpecialOfferWithProduct\"",
+                        method: "POST",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferProduct"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct"
+                    },
+                    {
+                        id: "offer",
+                        rel: "urn:org.restfulobjects:rels/action-param",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/offer"
+                    },
+                    {
+                        id: "product",
+                        rel: "urn: org.restfulobjects:rels/action-param",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/AssociateSpecialOfferWithProduct/params/product"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Associate Special Offer With Product",
+                    description: "",
+                    hasParams: true,
+                    memberOrder: 2,
+                    returnType: "AdventureWorksModel.SpecialOfferProduct"
+                }
+            },
+            CreateNewSpecialOffer: {
+                parameters: {},
+                memberType: "action",
+                id: "CreateNewSpecialOffer",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"CreateNewSpecialOffer\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/CreateNewSpecialOffer"
+                    }, {
+                        "arguments": {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"CreateNewSpecialOffer   \"",
+                        method: "POST",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/CreateNewSpecialOffer/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOffer"
+                    }, {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/CreateNewSpecialOffer"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Create New Special Offer",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 3,
+                    returnType: "AdventureWorksModel.SpecialOffer"
+                }
+            },
+            SpecialOffersWithNoMinimumQty: {
+                parameters: {},
+                memberType: "action",
+                id: "SpecialOffersWithNoMinimumQty",
+                links: [
+                    {
+                        rel: "urn:org.restfulobjects:rels/details;action=\"SpecialOffersWithNoMinimumQty\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-action\"; charset                              = utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty"
+                    },
+                    {
+                        arguments: {},
+                        rel: "urn:org.restfulobjects:rels/invoke;action=\"SpecialOffersWithNoMinimumQty\"",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/services/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty/invoke"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/return-type",
+                        method: "GET",
+                        type: "application/ json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/list"
+                    },
+                    {
+                        rel: "urn:org.restfulobjects:rels/element-type",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOffer"
+                    },
+                    {
+                        rel: "describedby",
+                        method: "GET",
+                        type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+                        href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty"
+                    }
+                ],
+                extensions: {
+                    friendlyName: "Special Offers With No Minimum Qty",
+                    description: "",
+                    hasParams: false,
+                    memberOrder: 0,
+                    returnType: "list",
+                    elementType: "AdventureWorksModel.SpecialOffer",
+                    pluralName: "Special Offers"
+                }
+            }
+        }
+    }
+
+
     const vendorObjectRepresentation = {
         instanceId: "1634",
         domainType: "AdventureWorksModel.Vendor",
@@ -692,7 +959,7 @@
                     }
                 ],
                 extensions: {
-                    friendlyName: "Product - Order Info",
+                    friendlyName: "Product-Order Info",
                     description: "",
                     memberOrder: 0,
                     returnType: "list",
@@ -969,28 +1236,28 @@
                     title: "Northwind Traders",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    type: "application/json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1606"
                 },
                 {
                     title: "Proseware, Inc.",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application       / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    type: "application/json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1678"
                 },
                 {
                     title: "Trey Research",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application    / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    type: "application/json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1584"
                 },
                 {
                     title: "Wide World Importers",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application   / json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
+                    type: "application/json; profile =\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.Vendor\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.Vendor/1648"
                 }
             ]
@@ -1011,7 +1278,7 @@
     const listSpecialOffersWithNoMinimumQtyResultResultRepresentation = {
         result: {
             pagination: {
-               page: 1,
+                page: 1,
                 pageSize: 20,
                 numPages: 1,
                 totalCount: 11
@@ -1086,7 +1353,7 @@
                             id: "offers",
                             rel: "urn:org.restfulobjects:rels/action-param",
                             method: "GET",
-                            type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset      = utf - 8",
+                            type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset      = utf-8",
                             href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/ChangeType/params/offers"
                         },
                         {
@@ -1112,7 +1379,7 @@
                                     rel: "describedby",
                                     method: "GET",
                                     type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
-                                    href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/ExtendOffers/params               / offers"
+                                    href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/ExtendOffers/params/offers"
                                 }
                             ],
                             extensions: {
@@ -1177,7 +1444,7 @@
                             href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/ExtendOffers/params/offers"
                         }, {
                             id: "toDate",
-                            rel: "urn:org.restfulobjects:rels / action - param",
+                            rel: "urn:org.restfulobjects:rels/action-param",
                             method: "GET",
                             type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
                             href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/ExtendOffers/params/toDate"
@@ -1241,7 +1508,7 @@
                             id: "offers",
                             rel: "urn:org.restfulobjects:rels/action-param",
                             method: "GET",
-                            type: "application       / json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
+                            type: "application/json; profile=\"urn:org.restfulobjects:repr-types/action-param-description\"; charset=utf-8",
                             href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Sales.SpecialOfferContributedActions/actions/TerminateActiveOffers/params/offers"
                         }
                     ],
@@ -1257,7 +1524,7 @@
                 {
                     rel: "urn:org.restfulobjects:rels/element-type",
                     method: "GET",
-                    type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf - 8",
+                    type: "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.SpecialOffer"
                 }
             ],
@@ -1274,14 +1541,14 @@
                     title: "Mountain-100 Clearance Sale",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application/json; profile=\"urn:org.restfulobjects   : repr - types / object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.SpecialOffer\"",
+                    type: "application/json; profile=\"urn:org.restfulobjects   : repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.SpecialOffer\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.SpecialOffer/7"
                 },
                 {
                     title: "Sport Helmet Discount-2002",
                     rel: "urn:org.restfulobjects:rels/element",
                     method: "GET",
-                    type: "application  / json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.SpecialOffer\"",
+                    type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"AdventureWorksModel.SpecialOffer\"",
                     href: "http://nakedobjectsrodemo.azurewebsites.net/objects/AdventureWorksModel.SpecialOffer/8"
                 },
                 {
@@ -1361,6 +1628,7 @@
     let vendorDomainObjectRequestHandler: ng.mock.IRequestHandler;
     let listAllVendorsWithWebAddressesResultRequestHandler: ng.mock.IRequestHandler;
     let listSpecialOffersWithNoMinimumQtyResultRequestHandler: ng.mock.IRequestHandler;
+    let specialOfferRepositoryMenuRequestHandler: angular.mock.IRequestHandler;
 
 
     export function setupBackend($httpBackend: ng.IHttpBackendService) {
@@ -1368,15 +1636,23 @@
         const root = "http://nakedobjectsrodemo.azurewebsites.net";
         homeRequestHandler = $httpBackend.when("GET", root);
         homeRequestHandler.respond(homeRepresentation);
+
         menusRequestHandler = $httpBackend.when("GET", root + "/menus");
         menusRequestHandler.respond(menusRepresentation);
+
         vendorRepositoryMenuRequestHandler = $httpBackend.when("GET", root + "/menus/VendorRepository");
         vendorRepositoryMenuRequestHandler.respond(vendorRepositoryMenuRepresentation);
+
+        specialOfferRepositoryMenuRequestHandler = $httpBackend.when("GET", root + "/menus/SpecialOfferRepository");
+        specialOfferRepositoryMenuRequestHandler.respond(specialOfferRepositoryMenuRepresentation);
+
         vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634");
         vendorDomainObjectRequestHandler.respond(vendorObjectRepresentation);
+
         listAllVendorsWithWebAddressesResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke?x-ro-page=1&x-ro-pageSize=20");
         listAllVendorsWithWebAddressesResultRequestHandler.respond(listAllVendorsWithWebAddressesResultResultRepresentation);
-        listSpecialOffersWithNoMinimumQtyResultRequestHandler = $httpBackend.when("GET", root + "services/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty/invoke?x-ro-page=1&x-ro-pageSize=20");
+
+        listSpecialOffersWithNoMinimumQtyResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty/invoke?x-ro-page=1&x-ro-pageSize=20");
         listSpecialOffersWithNoMinimumQtyResultRequestHandler.respond(listSpecialOffersWithNoMinimumQtyResultResultRepresentation);
     }
 
