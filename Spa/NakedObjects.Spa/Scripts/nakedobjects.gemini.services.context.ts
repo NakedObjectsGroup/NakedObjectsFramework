@@ -455,8 +455,6 @@ module NakedObjects.Angular.Gemini {
             }
             else if (parent instanceof ListRepresentation && parms) {
                 if (actionIsNotQueryOnly) {
-
-
                     // todo can we optimize this ? 
                     // todo match parm id of cca parm with passed in id - make values map ?
                     const list = _.filter(parms, v => v.isList());
