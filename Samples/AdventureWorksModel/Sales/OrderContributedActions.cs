@@ -17,6 +17,10 @@ namespace AdventureWorksModel {
     public class OrderContributedActions : AbstractFactoryAndRepository {
         private const string subMenu = "Orders";
 
+        #region Injected Services
+        public PersonRepository PersonRepository { set; protected get; }
+        #endregion
+
         #region RecentOrders
 
         [MemberOrder(22)]
@@ -27,11 +31,9 @@ namespace AdventureWorksModel {
                 orderby obj.SalesOrderNumber descending
                 select obj;
         }
-
         #endregion
 
         #region LastOrder
-
         [MemberOrder(20), QueryOnly]
         public SalesOrderHeader LastOrder([ContributedAction(subMenu)] Customer customer) {
             var query = from obj in Container.Instances<SalesOrderHeader>()
@@ -41,11 +43,9 @@ namespace AdventureWorksModel {
 
             return SingleObjectWarnIfNoMatch(query);
         }
-
         #endregion
 
         #region OpenOrders
-
         [MemberOrder(21)]
         [TableView(true, "OrderDate", "TotalDue")]
         public IQueryable<SalesOrderHeader> OpenOrders([ContributedAction(subMenu)] Customer customer) {
@@ -55,7 +55,6 @@ namespace AdventureWorksModel {
                 orderby obj.SalesOrderNumber descending
                 select obj;
         }
-
         #endregion
 
         [QueryOnly]
@@ -179,8 +178,8 @@ namespace AdventureWorksModel {
                 }
             }
             else {
-                newOrder.BillingAddress = newOrder.DefaultBillingAddress();
-                newOrder.ShippingAddress = newOrder.DefaultShippingAddress();
+                newOrder.BillingAddress = PersonRepository.AddressesFor(customer.BusinessEntity(), "Billing").FirstOrDefault();
+                newOrder.ShippingAddress = PersonRepository.AddressesFor(customer.BusinessEntity(), "Shipping").FirstOrDefault();
             }
             return newOrder;
         }

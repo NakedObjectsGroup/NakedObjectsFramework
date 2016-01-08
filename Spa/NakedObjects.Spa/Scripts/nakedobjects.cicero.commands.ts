@@ -387,13 +387,12 @@ module NakedObjects.Angular.Gemini {
     export class Clipboard extends Command {
 
         public fullCommand = "clipboard";
-        public helpText = "Not yet implemented.  MCopy a reference to an object to the clipboard. " +
-        "If the current context is an object and no argument is specified, " +
-        "the object is copied; alternatively the name of a property " +
-        "that contains an object reference may be specified. If the context is a list view, " +
-        "then the number of the item in that list should be specified. " +
-        "Clipboard space question-mark, in any context, will show the current " +
-        "contents of the clipboard.";
+        public helpText = "Not yet implemented. The clipboard command is used for temporarily " +
+        "holding a reference to an object, so that it may be used later to enter into a field. " +
+        "Clipboard requires one argument, which may only take one of four values - copy, show, go, clear " +
+        "each of which may be abbreviated down to two characters. The reference stored in the " +
+        "clipboard may be used within the Field command, by typing the word clipboard for the " +
+        "second argument instead of an input value.";
 
         protected minArguments = 0;
         protected maxArguments = 1;
@@ -443,13 +442,15 @@ module NakedObjects.Angular.Gemini {
         public helpText = "Display the name and content of a field or fields. " +
         "In the context of an object, a field is a property; in the context of an action dialog a field is a parameter." +
         "Field may take 2 arguments, both of which are optional. " +
-        "The argument is the partial field name. " +
+        "The first argument is the partial field name. " +
         "If this matches more than one field, a list of matches is returned. " +
         "If no argument is provided, the full list of fields is returned. " +
         "Not yet implemented: the second optional argument applies only to fields in an action dialog, or " +
         "in an object beign edited, and specifies the value, or selection, to be entered " +
         "into the field.  If a ? is provided as the second argument, the field will not be " +
-        "updated but further details will be provided about that input field.";
+        "updated but further details will be provided about that input field." +
+        "If the word clipboard is used as the second argument, then, provided that the field is " +
+        "a reference field, the object in the clipboard will be copied into the field.";
         protected minArguments = 0;
         protected maxArguments = 2;
 

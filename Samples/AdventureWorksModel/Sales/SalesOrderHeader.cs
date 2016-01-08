@@ -196,11 +196,6 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
-        public Address DefaultBillingAddress() {
-            return PersonRepository.AddressesFor(Customer.BusinessEntity(), "Billing").FirstOrDefault();
-
-        }
-
         [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
             return  PersonRepository.AddressesFor(Customer.BusinessEntity()).ToList();
@@ -222,10 +217,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
-
-        public Address DefaultShippingAddress() {
-            return PersonRepository.AddressesFor(Customer.BusinessEntity(), "Shipping").FirstOrDefault();
-        }
 
         [Executed(Where.Remotely)]
         public List<Address> ChoicesShippingAddress() {
