@@ -53,7 +53,6 @@ module NakedObjects.Angular.Gemini{
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
             "se": new Select(urlManager, $location, commandFactory, context, navigation, $q),
-            "us": new Use(urlManager, $location, commandFactory, context, navigation, $q),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         

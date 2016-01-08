@@ -936,7 +936,7 @@ module NakedObjects.Angular.Gemini {
     export class Page extends Command {
         public fullCommand = "page";
         public helpText = "Not yet implemented. Will support paging of returned lists." +
-        "The page command takes a single argument, which may be one of these four words:
+        "The page command takes a single argument, which may be one of these four words: "+
         "first, previous, next, or last, which may be abbreviated down to the one character. "+
         "Alternative, a specific page number may be specified.";
         protected minArguments = 0;
