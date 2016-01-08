@@ -39,6 +39,8 @@ module NakedObjects.Angular.Gemini {
             link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
+                 // only add datepicker if date field not supported 
+                if (element.prop("type") === "date") return;
 
                 // adding parser at the front that converts to a format angluar parsers understand
                 ngModel.$parsers.reverse();
@@ -76,6 +78,7 @@ module NakedObjects.Angular.Gemini {
                     };
 
                     element.datepicker(optionsObj);
+                 
                 });
             }
         };
