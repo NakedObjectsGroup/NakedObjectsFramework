@@ -39,17 +39,25 @@ module NakedObjects.Angular.Gemini {
             link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
+                 // only add datepicker if date field not supported 
+                if (element.prop("type") === "date") return;
 
+                // adding parser at the front that converts to a format angluar parsers understand
                 ngModel.$parsers.reverse();
-                ngModel.$parsers.push(val => new Date(val).toISOString().substring(0, 10));
+                ngModel.$parsers.push(val => {
+
+                    if (Date.parse(val)) {
+                        return new Date(val).toISOString().substring(0, 10);
+                    }
+
+                    return undefined;
+                });
                 ngModel.$parsers.reverse();
 
-                   //ngModel.$formatters = [];
-
-                    //ngModel.$formatters.push(val => {
-                    //    return $filter("date")(val, "d MMM yy");
-                    //});
-
+                // add our formatter that converts from date to our format
+                ngModel.$formatters = [];
+                ngModel.$formatters.push(val =>  $filter("date")(val, "d MMM yyyy"));
+               
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
                   
@@ -62,22 +70,15 @@ module NakedObjects.Angular.Gemini {
                         });
                     };
 
-                    const onSelect = dateTxt => {
-                        updateModel(dateTxt);
-                    };
-
+                    const onSelect = dateTxt => updateModel(dateTxt);
+                
                     const optionsObj = {
                         dateFormat: "d M yy", // datepicker format
                         onSelect: onSelect
                     };
 
-                    ngModel.$render = () => {
-                        const formattedDate = $filter("date")(ngModel.$viewValue, "d MMM yyyy"); // angularjs format
-                        // Use the AngularJS internal 'binding-specific' variable
-                        element.datepicker("setDate", formattedDate);
-                    };
-
                     element.datepicker(optionsObj);
+                 
                 });
             }
         };

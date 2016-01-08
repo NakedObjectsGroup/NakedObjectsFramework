@@ -98,6 +98,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ValueViewModel extends MessageViewModel {
+        formattedValue: string;
         value: number | string | boolean | Date;    
         id: string; 
         argId: string; 

@@ -206,7 +206,6 @@ module NakedObjects.Angular.Gemini {
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
                     }
                 }
-
                 if (previousValue || parmViewModel.dflt) {
                     const toSet = previousValue || parmRep.default();
                     if (parmViewModel.isMultipleChoices || parmViewModel.isCollectionContributed) {
@@ -218,6 +217,10 @@ module NakedObjects.Angular.Gemini {
             } else {
                 if (parmRep.extensions().returnType() === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
+                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time" ) {
+                    const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
+                    const dateValue = Date.parse(rawValue);
+                    parmViewModel.value = dateValue ? new Date(rawValue) : null; 
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
@@ -228,7 +231,10 @@ module NakedObjects.Angular.Gemini {
             if (remoteMask && parmRep.isScalar()) {
                 const localFilter = mask.toLocalFilter(remoteMask);
                 if (localFilter) {
-                    parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
+                    // todo formatting will have to happen in directive - at lesat for dates - value is now date in that case
+                    //parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
+                    parmViewModel.formattedValue = parmViewModel.value ? $filter(localFilter.name)(parmViewModel.value.toString(), localFilter.mask) : "";
+
                 }
             }
 
@@ -405,7 +411,8 @@ module NakedObjects.Angular.Gemini {
 
             dialogViewModel.onPaneId = paneId;
 
-            const setParms = () => _.forEach(dialogViewModel.parameters, p => urlManager.setFieldValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
+            const setParms = () =>
+                _.forEach(dialogViewModel.parameters, p => urlManager.setFieldValue(actionMember.actionId(), p.parameterRep, p.getValue(), paneId, false));
 
             const executeInvoke = (right?: boolean) => {
                 const pps = dialogViewModel.parameters;
@@ -458,7 +465,15 @@ module NakedObjects.Angular.Gemini {
 
             const value = previousValue || propertyRep.value();
 
-            propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
+            if (propertyRep.extensions().returnType() === "string" && propertyRep.extensions().format() === "date-time") {
+                const rawValue = value ? value.toString() : "";
+                const dateValue = Date.parse(rawValue);
+                propertyViewModel.value = dateValue ? new Date(rawValue) : null;
+            } else {
+                propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
+            }
+
+
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType();
             propertyViewModel.format = propertyRep.extensions().format();
@@ -535,7 +550,9 @@ module NakedObjects.Angular.Gemini {
                 const remoteMask = propertyRep.extensions().mask();
                 const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
                 if (localFilter) {
-                    propertyViewModel.value = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
+                    propertyViewModel.formattedValue = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
+                } else {
+                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
                 }
             }
 
