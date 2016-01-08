@@ -1036,7 +1036,7 @@ module NakedObjects.Angular.Gemini {
                             const actionMember = menu.actionMember(routeData.actionId);
                             const actionName = actionMember.extensions().friendlyName();
                             cvm.clearInput();
-                            cvm.output = actionName + ": " + description;
+                            cvm.output = "Result from "+actionName + ": " + description;
                         });
                     });
                 };

@@ -591,13 +591,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=OrderRepository&dialog1=HighestValueOrders");
             WaitForOutput("Orders menu. Action dialog: Highest Value Orders.");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Highest Value Orders: Page 1 of ");
+            WaitForOutputStartingWith("Result from Highest Value Orders: Page 1 of ");
 
             //Menu action with params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522b%2522");
             WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Find Individual Customer By Name: Page 1 of 8 containing 20 of");
+            WaitForOutputStartingWith("Result from Find Individual Customer By Name: Page 1 of 8 containing 20 of");
 
             //Menu action with missing mandatory params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522%2522");
@@ -615,7 +615,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory&field1_subCategory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F10%2522%252C%2522title%2522%253A%2522Forks%2522%257D");
             WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
             EnterCommand("ok");
-            WaitForOutputStartingWith("List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
+            WaitForOutputStartingWith("Result from List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
 
             //Action resuling in an error
             CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
@@ -745,7 +745,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

@@ -37,7 +37,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Days To Manufacture:\r\n"+newDays, properties[17].Text);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending fix for date localization
         public virtual void ObjectEditChangeDateTime() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
