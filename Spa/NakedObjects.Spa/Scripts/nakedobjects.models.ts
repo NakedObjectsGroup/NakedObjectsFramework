@@ -114,6 +114,23 @@ module NakedObjects {
             return {};
         }
 
+        getDtId() {
+            if (this.hateoasUrl) {
+                const segments = this.hateoasUrl.split("/");
+                if (segments.length >= 2) {
+                    segments.reverse();
+                    const [idr, dt] = segments;
+                    const id = idr.split("-");
+                    return {
+                        dt,
+                        id
+                    }
+                }
+            }
+            return { dt: "", id: [] };
+        }
+
+
         getUrl() {
             const url = this.hateoasUrl;
             const attrAsJson = _.clone(this.model);

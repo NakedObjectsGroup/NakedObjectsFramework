@@ -569,8 +569,9 @@ module NakedObjects.Angular.Gemini {
             if (populateItems) {
                 return _.map(links, (link, i) => {
                     const itemViewModel = viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId, selectedItems[i]);
-                    const tempTgt = link.getTarget();
-                    repLoader.populate<DomainObjectRepresentation>(tempTgt).
+                    const tempTgt = link.getTarget() as DomainObjectRepresentation;
+
+                    context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id).
                         then((obj: DomainObjectRepresentation) => {
                             itemViewModel.target = viewModelFactory.domainObjectViewModel($scope, obj, routeData);
 
