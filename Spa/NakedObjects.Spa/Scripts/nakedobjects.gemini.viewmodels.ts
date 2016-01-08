@@ -428,5 +428,6 @@ module NakedObjects.Angular.Gemini {
                     break;
             }
         }
+        clipboard: DomainObjectRepresentation;
     }
 }

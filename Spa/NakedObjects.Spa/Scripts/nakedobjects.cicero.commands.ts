@@ -58,7 +58,7 @@ module NakedObjects.Angular.Gemini {
 
         public checkNumberOfArguments(argString: string): void {
             if (argString == null) {
-                if (this.minArguments == 0) return;
+                if (this.minArguments === 0) return;
                 throw new Error("No arguments provided.");
             }
             const args = argString.split(",");
@@ -93,7 +93,7 @@ module NakedObjects.Angular.Gemini {
         //argNo starts from 0.
         protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
             const arg = this.argumentAsString(args, argNo, optional);
-            if (!arg && optional == true) return null;
+            if (!arg && optional === true) return null;
             const number = parseInt(arg);
             if (isNaN(number)) {
                 throw new Error("Argument number " + (argNo + 1).toString() + " must be a number");
@@ -111,17 +111,17 @@ module NakedObjects.Angular.Gemini {
         }
         //Helpers delegating to RouteData
         protected isHome(): boolean {
-            return this.vm.viewType == ViewType.Home;
+            return this.vm.viewType === ViewType.Home;
         }
         protected isObject(): boolean {
-            return this.vm.viewType == ViewType.Object;
+            return this.vm.viewType === ViewType.Object;
         }
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
             const oid = this.routeData().objectId;
             return this.context.getObjectByOid(1, oid);
         }
         protected isList(): boolean {
-            return this.vm.viewType == ViewType.List;
+            return this.vm.viewType === ViewType.List;
         }
         protected getList(): ng.IPromise<ListRepresentation> {
             const routeData = this.routeData();
@@ -196,11 +196,11 @@ module NakedObjects.Angular.Gemini {
             const exactMatches = _.filter(reps, (rep) => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
-                return match == name ||
-                    (!!path && match == path.toLowerCase() + " " + name) ||
+                return match === name ||
+                    (!!path && match === path.toLowerCase() + " " + name) ||
                     _.all(clauses, clause => {
-                        name == clause ||
-                        (!!path && path.toLowerCase() == clause)
+                        name === clause ||
+                        (!!path && path.toLowerCase() === clause)
                     });
             });
             if (exactMatches.length > 0) return exactMatches;
@@ -260,7 +260,7 @@ module NakedObjects.Angular.Gemini {
 
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
             var actions = _.map(actionsMap, action => action);
-            if (actions.length == 0) {
+            if (actions.length === 0) {
                 this.clearInputAndSetOutputTo("No actions available");
                 return;
             }
@@ -353,7 +353,7 @@ module NakedObjects.Angular.Gemini {
 
             const allColls = _.map(collsMap, action => action);
             let matchingColls = allColls;
-            if (matchingColls.length == 0) {
+            if (matchingColls.length === 0) {
                 this.clearInputAndSetOutputTo("No collections visible");
                 return;
             }
@@ -387,39 +387,69 @@ module NakedObjects.Angular.Gemini {
     export class Clipboard extends Command {
 
         public fullCommand = "clipboard";
-        public helpText = "Not yet implemented. The clipboard command is used for temporarily " +
+        public helpText = "The clipboard command is used for temporarily " +
         "holding a reference to an object, so that it may be used later to enter into a field. " +
-        "Clipboard requires one argument, which may only take one of four values - copy, show, go, clear " +
-        "each of which may be abbreviated down to two characters. The reference stored in the " +
-        "clipboard may be used within the Field command, by typing the word clipboard for the " +
-        "second argument instead of an input value.";
+        "Clipboard requires one argument, which may only take one of three values: " +
+        "copy, show, go, or discard, each of which may be abbreviated down to one character. " +
+        "Copy copies a reference to the object being view into the clipboard, overwriting any existing content." +
+        "Show displays the content of the clipboard without using it or changing context." +
+        "Go opens the object held in the clipboard."
+        "Discard removes any existing reference from the clipboard."
+        "The reference held in the clipboard may be used within the Field command.";
 
-        protected minArguments = 0;
+        protected minArguments = 1;
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isObject() || this.isList();
+            return true;
         }
 
         execute(args: string): void {
-            if (this.isObject()) {
-                if (this.isCollection()) {
-                    const item = this.argumentAsNumber(args, 1);
-                    this.clearInputAndSetOutputTo("Copy item " + item);
-                } else {
-                    const arg = this.argumentAsString(args, 1, true);
-                    if (arg == null) {
-                        this.clearInputAndSetOutputTo("Copy object");
-                    } else {
-                        this.clearInputAndSetOutputTo("Copy property" + arg);
-                    }
-                }
-            }
-            if (this.isList()) {
-                const item = this.argumentAsNumber(args, 1);
-                this.clearInputAndSetOutputTo("Copy item " + item);
+            const sub = this.argumentAsString(args, 0);
+            if ("copy".indexOf(sub) === 0) {
+                this.copy();
+            } else if ("show".indexOf(sub) === 0) {
+                this.show();
+            } else if ("go".indexOf(sub) === 0) {
+                this.go();
+            } else if ("discard".indexOf(sub) === 0) {
+                this.discard();
+            } else {
+                this.clearInputAndSetOutputTo("Clipboard command may only be followed by copy, show, go, or discard");
             }
         };
+
+        private copy(): void {
+            if (!this.isObject()) {
+                this.clearInputAndSetOutputTo("Clipboard copy may only be used in the context of viewing and object");
+                return;
+            }
+            this.getObject().then((obj: DomainObjectRepresentation) => {
+                this.vm.clipboard = obj;
+                this.show();
+            });
+        }
+        private show(): void {
+            if (this.vm.clipboard) {
+                const label = Helpers.typePlusTitle(this.vm.clipboard);
+                this.clearInputAndSetOutputTo("Clipboard contains: " + label );
+            } else {
+                this.clearInputAndSetOutputTo("Clipboard is empty");
+            }
+        }
+        private go(): void {
+            const link = this.vm.clipboard.selfLink();
+            if (link) {
+                this.urlManager.setItem(link, 1);
+            } else {
+                this.show();
+            }
+        }
+
+        private discard(): void {
+            this.vm.clipboard = null;
+            this.show();
+        }
     }
     export class Edit extends Command {
 
@@ -465,7 +495,7 @@ module NakedObjects.Angular.Gemini {
                 this.renderFields(fieldName);
                 return;
             }
-            if (fieldEntry == "?") {
+            if (fieldEntry === "?") {
                 this.renderFields(fieldName, true);
                 return;
             }
@@ -506,20 +536,27 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             if (param.isScalar()) {
-                this.setScalarField(param, fieldEntry);
+                this.handleScalarField(param, fieldEntry);
             } else {
                 this.handleReferenceField(param, fieldEntry);
             }
         }
 
-        private setScalarField(param: Parameter, fieldEntry: string) {
-            const value = new Value(fieldEntry);
+        private handleScalarField(param: Parameter, fieldEntry: string) {
+            this.setFieldValue(param, new Value(fieldEntry));
+        }
+
+        private setFieldValue(param: Parameter, value: Value) {
             this.urlManager.setFieldValue(this.routeData().dialogId, param, value, 1);
         }
 
         private handleReferenceField(param: Parameter, fieldEntry: string) {
-                this.clearInputAndSetOutputTo("use clipboard?");
-                return;
+            if ("clipboard".indexOf(fieldEntry) === 0) {
+                const value = new Value(this.vm.clipboard.selfLink());
+                this.setFieldValue(param, value);
+            } else {
+                this.clearInputAndSetOutputTo("Invalid entry for a reference field. Use clipboard or clip");
+            }
         }
 
         private handleChoices(param: Parameter, fieldEntry: string): void {
@@ -529,17 +566,17 @@ module NakedObjects.Angular.Gemini {
                     this.clearInputAndSetOutputTo("None of the choices matches " + fieldEntry);
                     break;
                 case 1:
-                    this.urlManager.setFieldValue(this.routeData().dialogId, param, matches[0], 1);
+                    this.setFieldValue( param, matches[0]);
                     break;
                 default:
                     let msg = "Multiple matches: ";
                     _.forEach(matches, m => msg += m.toString() + ", ");
                     this.clearInputAndSetOutputTo(msg);
                     break;
-            }            
+            }
         }
 
-       private renderFields(fieldName: string, details: boolean = false) {
+        private renderFields(fieldName: string, details: boolean = false) {
             if (this.isDialog()) {
                 //TODO: duplication with function on ViewModelFactory for rendering dialog ???
                 this.getActionForCurrentDialog().then((action: ActionMember) => {
@@ -823,9 +860,9 @@ module NakedObjects.Angular.Gemini {
                     var links = menus.value();
                     if (name) {
                         //TODO: do multi-clause match
-                        const exactMatches = _.filter(links, (t) => { return t.title().toLowerCase() == name; });
+                        const exactMatches = _.filter(links, (t) => { return t.title().toLowerCase() === name; });
                         const partialMatches = _.filter(links, (t) => { return t.title().toLowerCase().indexOf(name) > -1; });
-                        links = exactMatches.length == 1 ? exactMatches : partialMatches;
+                        links = exactMatches.length === 1 ? exactMatches : partialMatches;
                     }
                     switch (links.length) {
                         case 0:

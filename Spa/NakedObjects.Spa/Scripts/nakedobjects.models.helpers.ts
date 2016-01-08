@@ -36,4 +36,10 @@ module NakedObjects.Helpers {
         var param = _.find(action.parameters(), (p) => p.parameterId() == parmId);
         return param.extensions().friendlyName();
     }
+
+   export function typePlusTitle(obj: DomainObjectRepresentation) {
+       const type = friendlyTypeName(obj.domainType());
+       const title = obj.title();
+       return type + ": " + title;
+   }
 }

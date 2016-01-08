@@ -979,14 +979,13 @@ module NakedObjects.Angular.Gemini {
                     const [domainType, ...id] = routeData.objectId.split("-");
                     context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                         .then((obj: DomainObjectRepresentation) => {
-                            const type = Helpers.friendlyTypeName(obj.domainType());
                             let output = "";
                             const openCollIds = openCollectionIds(routeData);
                             if (_.any(openCollIds)) {
                                 const id = openCollIds[0];
                                 const coll = obj.collectionMember(id);
                                 output += "Collection: " + coll.extensions().friendlyName();
-                                output += " on " + type + ": " + obj.title() + ",  "
+                                output += " on " + Helpers.typePlusTitle(obj) + ",  "
                                   switch (coll.size()) {
                                     case 0:
                                         output += "empty";
@@ -1001,7 +1000,7 @@ module NakedObjects.Angular.Gemini {
                                 if (routeData.edit) {
                                     output += "Editing ";
                                 }
-                                output += type + ": " + obj.title() + ". ";
+                                output += Helpers.typePlusTitle(obj) + ". ";
                                 output += renderActionDialogIfOpen(obj, routeData);
                             }
                             cvm.clearInput();

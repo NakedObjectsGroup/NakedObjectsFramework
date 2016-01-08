@@ -167,6 +167,51 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
+        public virtual void Clipboard()
+        {
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+
+
+            CiceroUrl("object?object1=AdventureWorksModel.Person-12941");
+            WaitForOutput("Person: Dakota Wood.");
+            EnterCommand("clipboard cop");
+            WaitForOutput("Clipboard contains: Person: Dakota Wood");
+            CiceroUrl("object?object1=AdventureWorksModel.Person-12942");
+            WaitForOutput("Person: Jaclyn Liang.");
+            //Check clipboard still unmodified
+            EnterCommand("clipboard sh");
+            WaitForOutput("Clipboard contains: Person: Dakota Wood");
+            //Now change it
+            EnterCommand("clipboard cop");
+            WaitForOutput("Clipboard contains: Person: Jaclyn Liang");
+            //Discard
+            EnterCommand("clipboard d");
+            WaitForOutput("Clipboard is empty");
+
+            //Invalid argument
+            EnterCommand("clipboard copyx");
+            WaitForOutput("Clipboard command may only be followed by copy, show, go, or discard");
+
+            //No argument
+            EnterCommand("clipboard");
+            WaitForOutput("No arguments provided.");
+
+            //Too many arguments
+            EnterCommand("clipboard copy, show");
+            WaitForOutput("Too many arguments provided.");
+
+            //Attempt to copy from home
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("clipboard c");
+            WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
+            //Attempt to copy from list
+            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
+            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("clipboard c");
+            WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
+        }
         public virtual void Collection()
         {
             CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
@@ -389,8 +434,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Help from home
             CiceroUrl("home");
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: " +
-                "back, forward, gemini, help, menu, where,");
+            WaitForOutput("Commands available in current context: back, clipboard, forward, gemini, help, menu, where,");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
@@ -642,6 +686,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Cancel() { base.Cancel(); }
         [TestMethod]
+        public override void Clipboard() { base.Clipboard(); }
+        [TestMethod]
         public override void Collection() { base.Collection(); }
         [TestMethod]
         public override void Edit() { base.Edit(); }
@@ -693,7 +739,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -758,6 +804,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Action();
             base.BackAndForward();
             base.Cancel();
+            base.Clipboard();
+            base.Collection();
             base.Edit();
             base.Field();
             base.Gemini();
@@ -767,7 +815,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Menu();
             base.OK();
             base.Root();
-            base.Collection();
             base.UpAndDownArrow();
             base.Where();
         }
