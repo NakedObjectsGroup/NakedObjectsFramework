@@ -148,6 +148,10 @@ namespace AdventureWorksModel {
                 select obj;
         }
 
+        public DateTime Default1SearchForOrders() {
+            return DateTime.Now;
+        }
+
         public string ValidateSearchForOrders(Customer customer, DateTime? fromDate, DateTime? toDate) {
             if (fromDate.HasValue && toDate.HasValue) {
                 if (fromDate >= toDate) {
