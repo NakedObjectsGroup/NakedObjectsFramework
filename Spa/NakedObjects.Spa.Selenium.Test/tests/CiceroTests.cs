@@ -616,6 +616,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
             EnterCommand("ok");
             WaitForOutputStartingWith("List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
+
+            //Action resuling in an error
+            CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
+            WaitForOutput("Customers menu. Action dialog: Throw Domain Exception.");
+            EnterCommand("ok");
+            WaitForOutput("Sorry, an application error has occurred. Foo");
         }
         public virtual void Root()
         {
@@ -739,7 +745,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

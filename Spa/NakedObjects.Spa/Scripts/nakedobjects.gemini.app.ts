@@ -173,6 +173,10 @@ module NakedObjects.Angular {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroListController"
             }).
+            when("/cicero/error", {
+                templateUrl: ciceroTemplate,
+                controller: "CiceroErrorController"
+            }).
             otherwise({
             redirectTo: "/gemini/home"
             });

@@ -412,6 +412,7 @@ module NakedObjects.Angular.Gemini {
         renderHome: (routeData: PaneRouteData) => void;
         renderObject: (routeData: PaneRouteData) => void;
         renderList: (routeData: PaneRouteData) => void;
+        renderError: (routeData: PaneRouteData) => void;
 
         viewType: ViewType;
 

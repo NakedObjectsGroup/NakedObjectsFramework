@@ -475,7 +475,11 @@ module NakedObjects.Angular.Gemini {
         };
 
         helper.setError = () => {
-            $location.path("/gemini/error").search({});
+            const path = $location.path();
+            const segments = path.split("/");
+            const mode = segments[1];
+            const newPath = `/${mode}/error`;
+            $location.path(newPath).search({});
         };
 
         helper.setHome = (paneId: number, mode?: ApplicationMode) => {

@@ -1023,6 +1023,11 @@ module NakedObjects.Angular.Gemini {
                         });
                     });
                 };
+                cvm.renderError = () => {
+                    const err = context.getError();
+                    cvm.clearInput();
+                    cvm.output = "Sorry, an application error has occurred. " + err.message();
+                };
             }
             return cvm;
         };
