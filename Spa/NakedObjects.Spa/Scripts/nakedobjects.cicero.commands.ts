@@ -224,8 +224,8 @@ module NakedObjects.Angular.Gemini {
         "Note that a dialog is always opened for an action, even if it has no fields (parameters) - " +
         "this is a safety mechanism, allowing the user to confirm that the action is the one intended." +
         "Once any fields have been completed, using the Field command, the action may then be invoked " +
-        "with the OK command."+
-        "The action command takes two optional arguments. "+
+        "with the OK command." +
+        "The action command takes two optional arguments. " +
         "The first is the name, or partial name, of the action. " +
         "If the partial name matches more than one action, a list of matches is returned," +
         "but none opened. If no argument is provided, a full list of available action names is returned. " +
@@ -438,7 +438,7 @@ module NakedObjects.Angular.Gemini {
         private show(): void {
             if (this.vm.clipboard) {
                 const label = Helpers.typePlusTitle(this.vm.clipboard);
-                this.clearInputAndSetOutputTo("Clipboard contains: " + label );
+                this.clearInputAndSetOutputTo("Clipboard contains: " + label);
             } else {
                 this.clearInputAndSetOutputTo("Clipboard is empty");
             }
@@ -532,7 +532,6 @@ module NakedObjects.Angular.Gemini {
                         this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them
                         break;
                 }
-
             });
         }
 
@@ -558,11 +557,29 @@ module NakedObjects.Angular.Gemini {
 
         private handleReferenceField(param: Parameter, fieldEntry: string) {
             if ("clipboard".indexOf(fieldEntry) === 0) {
-                const value = new Value(this.vm.clipboard.selfLink());
-                this.setFieldValue(param, value);
+                this.handleClipboard(param);
             } else {
                 this.clearInputAndSetOutputTo("Invalid entry for a reference field. Use clipboard or clip");
             }
+        }
+
+        private handleClipboard(param: Parameter) {
+            const ref = this.vm.clipboard;
+            if (!ref) {
+                this.clearInputAndSetOutputTo("Cannot use Clipboard as it is empty");
+            }
+            const paramType = param.extensions().returnType();
+            const refType = ref.domainType();
+            this.context.isSubTypeOf(refType, paramType)
+                .then((isSubType: boolean) => {
+                    if (isSubType) {
+                        const value = new Value(this.vm.clipboard.selfLink());
+                        //TODO test for type compatibility
+                        this.setFieldValue(param, value);
+                    } else {
+                        this.clearInputAndSetOutputTo("Contents of Clipboard are not compatible with the field.");
+                    }
+                });
         }
 
         private handleChoices(param: Parameter, fieldEntry: string): void {
@@ -572,7 +589,7 @@ module NakedObjects.Angular.Gemini {
                     this.clearInputAndSetOutputTo("None of the choices matches " + fieldEntry);
                     break;
                 case 1:
-                    this.setFieldValue( param, matches[0]);
+                    this.setFieldValue(param, matches[0]);
                     break;
                 default:
                     let msg = "Multiple matches: ";
@@ -936,8 +953,8 @@ module NakedObjects.Angular.Gemini {
     export class Page extends Command {
         public fullCommand = "page";
         public helpText = "Not yet implemented. Will support paging of returned lists." +
-        "The page command takes a single argument, which may be one of these four words: "+
-        "first, previous, next, or last, which may be abbreviated down to the one character. "+
+        "The page command takes a single argument, which may be one of these four words: " +
+        "first, previous, next, or last, which may be abbreviated down to the one character. " +
         "Alternative, a specific page number may be specified.";
         protected minArguments = 0;
         protected maxArguments = 0;
