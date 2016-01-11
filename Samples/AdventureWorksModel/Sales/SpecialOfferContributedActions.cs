@@ -40,5 +40,15 @@ namespace AdventureWorksModel.Sales
                 offer.Type = newType;
             }
         }
+
+
+        public void ChangeMaxQuantity([ContributedAction] IQueryable<SpecialOffer> offers, int newMax)
+        {
+            foreach (SpecialOffer offer in offers)
+            {
+                offer.MaxQty = newMax;
+            }
+        }
+
     }
 }
