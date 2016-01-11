@@ -42,7 +42,7 @@ module NakedObjects.Angular.Gemini {
 
         currentpane(): number;
         getUrlState: (paneId: number) => { paneType: string; search: Object };
-        getListCacheIndex: (paneId: number, newPage: number, newPageSize: number) => string;
+        getListCacheIndex: (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => string;
 
         isHome(paneId: number): boolean;
         cicero(): void;
@@ -515,7 +515,7 @@ module NakedObjects.Angular.Gemini {
             return { paneType: paneType, search: paneSearch };
         }
 
-        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number) => {
+        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format? : CollectionViewState) => {
             const search = $location.search();
        
             const s1 = search[`${menu}${paneId}`] || "";
@@ -530,7 +530,9 @@ module NakedObjects.Angular.Gemini {
             const s5 = `${newPage}`;
             const s6 = `${newPageSize}`;
 
-            const ss = [s1, s2, s3, s4, s5, s6] as string[];
+            const s7 = format ? `${format}` : "";
+
+            const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
             return _.reduce(ss, (r, n) => r + "-" + n, "");
         }

@@ -625,7 +625,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function collectionId(routeData: PaneRouteData) {
-            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
         }
 
         function createFromList($scope: INakedObjectsScope, listRep: ListRepresentation, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
