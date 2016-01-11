@@ -48,7 +48,6 @@ module NakedObjects.Angular.Gemini {
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ErrorMap;
         setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string) : ErrorMap;
         setPreviousUrl: (url: string) => void;
-
     }
 
     class DirtyCache {
@@ -109,8 +108,7 @@ module NakedObjects.Angular.Gemini {
         let currentVersion: VersionRepresentation = null;
 
         const dirtyCache = new DirtyCache();
-
-        let currentLists: _.Dictionary<ListRepresentation>[] = []; // cache last 'listCacheSize' lists
+        const currentLists: _.Dictionary<{ list : ListRepresentation; added : number} > = {};
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
@@ -261,15 +259,36 @@ module NakedObjects.Angular.Gemini {
             return context.getObject(paneId, dt, id);
         };
 
-        function cacheList(list: ListRepresentation, index: string) {
-            if (currentLists.length >= listCacheSize) {
-                const firstIndex = (currentLists.length - listCacheSize) + 1;
-                currentLists = currentLists.slice(firstIndex);
-            }
+        context.getCachedList = (paneId: number, page: number, pageSize: number) => {
+            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+            const entry = currentLists[index];
+            return entry ? entry.list : null;
+        }
 
-            const entry: _.Dictionary<ListRepresentation> = {};
-            entry[index] = list;
-            currentLists.push(entry);
+        context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
+            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+            delete currentLists[index];
+        }
+
+        function cacheList(list: ListRepresentation, index: string) {
+
+            const entry = currentLists[index];
+            if (entry) {
+                entry.list = list;
+                entry.added = Date.now();
+            } else {
+
+                if (_.keys(currentLists).length >= listCacheSize) {
+                    //delete oldest;
+                    const oldest = _.first(_.sortBy(currentLists, "e.added")).added;
+                    const oldestIndex = _.findKey(currentLists, (e: { added: number }) => e.added === oldest);
+                    if (oldestIndex) {
+                        delete currentLists[oldestIndex];
+                    }
+                }
+
+                currentLists[index] = { list: list, added: Date.now() };
+            }
         }
 
 
@@ -389,20 +408,7 @@ module NakedObjects.Angular.Gemini {
             return new ErrorMap({}, 0, "");
         };
 
-        context.getCachedList = (paneId: number, page: number, pageSize: number) => {
-            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-            const e = _.find(currentLists, entry => entry[index]);
-            return e ? e[index] : null;
-        }
-
-        context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
-            const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-            const e = _.find(currentLists, entry => entry[index]);
-
-            if (e) {
-                delete e[index];
-            }
-        }
+      
 
         function setErrorRep(errorRep: ErrorRepresentation) {
             context.setError(errorRep);

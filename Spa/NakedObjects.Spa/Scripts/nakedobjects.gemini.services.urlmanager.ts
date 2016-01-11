@@ -522,10 +522,10 @@ module NakedObjects.Angular.Gemini {
             const s2 = search[`${object}${paneId}`] || "";
             const s3 = search[`${action}${paneId}`] || "";
 
-            const parmkeys = _.filter(search as _.Dictionary<string>, (v, k) => k.indexOf(parm + paneId) === 0);
-            const parms = _.pick(search, parmkeys) as _.Dictionary<string>;
+            const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(parm + paneId) === 0);
+            const mappedParms = _.mapValues(parms, v => decodeURIComponent(v));
 
-            const s4 = _.reduce(parms, (r, n, k) => r + (k + "=" + n + "-"), "");
+            const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
 
             const s5 = `${newPage}`;
             const s6 = `${newPageSize}`;

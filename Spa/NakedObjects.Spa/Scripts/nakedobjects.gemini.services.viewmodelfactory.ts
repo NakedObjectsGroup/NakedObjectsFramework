@@ -625,12 +625,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         function collectionId(routeData: PaneRouteData) {
-            const parmString = _.reduce(routeData.actionParams, (result, n, k) => result + k + n.toValueString(), "");
-
-            return `${routeData.menuId || "mid"}${routeData.actionId || "aid"}${routeData.paneId || "pid"}${routeData.page || "pg"}${routeData.pageSize || "ps"}${routeData.state || "st"}${parmString || "pms"} `;
+            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
         }
 
-        function createFromList($scope: ng.IScope, listRep: ListRepresentation, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
+        function createFromList($scope: INakedObjectsScope, listRep: ListRepresentation, routeData: PaneRouteData, recreate: (page: number, newPageSize: number, newState: CollectionViewState) => void) {
 
             const { collectionViewModel, ret } = getCollectionViewModel(listRep, routeData);
             if (ret) {
@@ -731,10 +729,10 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
             collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
 
-            collectionViewModel.reload = () => {
+            collectionViewModel.reload = () => {           
                 currentLvms[paneId] = null;
-                context.clearCachedList(paneId, routeData.page, routeData.pageSize);
-                setPage(page, state);
+                context.clearCachedList(paneId, routeData.page, routeData.pageSize);         
+                setPage(page, state);         
             };
 
 
@@ -742,7 +740,7 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        viewModelFactory.collectionViewModel = ($scope: ng.IScope, collection: CollectionMember | ListRepresentation, routeData: PaneRouteData, recreate: (page: number) => void) => {
+        viewModelFactory.collectionViewModel = ($scope: INakedObjectsScope, collection: CollectionMember | ListRepresentation, routeData: PaneRouteData, recreate: (page: number) => void) => {
             let collectionVm: CollectionViewModel = null;
 
             if (collection instanceof CollectionMember) {
