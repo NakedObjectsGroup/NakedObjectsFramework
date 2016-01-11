@@ -1716,6 +1716,11 @@ module NakedObjects {
             return this.wrapped.title;
         }
 
+        //Typically used to set a title on a link that doesn't naturally have one e.g. Self link
+        setTitle(title: string): void {
+            this.wrapped.title = title;
+        }
+
         arguments(): IValue | RoInterfaces.IValueMap | RoInterfaces.IObjectOfType {
             return this.wrapped.arguments;
         }

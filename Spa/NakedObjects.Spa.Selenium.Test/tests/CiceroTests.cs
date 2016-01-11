@@ -684,6 +684,37 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TypeIntoFieldWithoutClearing("input", Keys.ArrowDown);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         }
+
+        public virtual void ScenarioUsingClipboard()
+        {
+            //Copy a Product to clipboard
+            CiceroUrl("object?object1=AdventureWorksModel.Product-980");
+            WaitForOutput("Product: Mountain-400-W Silver, 38.");
+            EnterCommand("clip copy");
+            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
+            EnterCommand("menu emp");
+            WaitForOutput("Employees menu.");
+            EnterCommand("ac create");
+            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: empty,");
+            EnterCommand("field details, paste");
+            WaitForOutput("Contents of Clipboard are not compatible with the field.");
+            EnterCommand("clip show");
+            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
+            EnterCommand("clip discard");
+            WaitForOutput("Clipboard is empty");
+            EnterCommand("field details, paste");
+            WaitForOutput("Cannot use Clipboard as it is empty");
+            CiceroUrl("object?object1=AdventureWorksModel.Person-7185");
+            WaitForOutput("Person: Carmen Perez.");
+            EnterCommand("clip copy");
+            WaitForOutput("Clipboard contains: Person: Carmen Perez");
+            EnterCommand("back");
+            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: empty,");
+            EnterCommand("field details, paste");
+            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: Carmen Perez,");
+            EnterCommand("ok");
+            WaitForOutput("Employee: Untitled Employee.");
+        }
     }
     public abstract class CiceroTests : CiceroTestRoot
     {
@@ -717,6 +748,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void Where() { base.Where(); }
         [TestMethod]
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
+
+        [TestMethod]
+        public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
     }
 
     #region Individual tests - browser specific 
@@ -745,7 +779,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -823,6 +857,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Root();
             base.UpAndDownArrow();
             base.Where();
+            base.ScenarioUsingClipboard();
         }
     }
     [TestClass]

@@ -485,8 +485,8 @@ module NakedObjects.Angular.Gemini {
         "in an object beign edited (not yet implemented), and specifies the value, or selection, to be entered " +
         "into the field. If a ? is provided as the second argument, the field will not be " +
         "updated but further details will be provided about that input field." +
-        "If the word clipboard is used as the second argument, then, provided that the field is " +
-        "a reference field, the object reference in the clipboard will be copied into the field.";
+        "If the word paste is used as the second argument, then, provided that the field is " +
+        "a reference field, the object reference in the clipboard will be pasted into the field.";
         protected minArguments = 0;
         protected maxArguments = 2;
 
@@ -556,7 +556,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleReferenceField(param: Parameter, fieldEntry: string) {
-            if ("clipboard".indexOf(fieldEntry) === 0) {
+            if ("paste".indexOf(fieldEntry) === 0) {
                 this.handleClipboard(param);
             } else {
                 this.clearInputAndSetOutputTo("Invalid entry for a reference field. Use clipboard or clip");
@@ -567,14 +567,18 @@ module NakedObjects.Angular.Gemini {
             const ref = this.vm.clipboard;
             if (!ref) {
                 this.clearInputAndSetOutputTo("Cannot use Clipboard as it is empty");
+                return;
             }
             const paramType = param.extensions().returnType();
             const refType = ref.domainType();
             this.context.isSubTypeOf(refType, paramType)
                 .then((isSubType: boolean) => {
                     if (isSubType) {
-                        const value = new Value(this.vm.clipboard.selfLink());
-                        //TODO test for type compatibility
+                        const obj = this.vm.clipboard;
+                        const selfLink = obj.selfLink();
+                        //Need to add a title to the SelfLink as not there by default
+                        selfLink.setTitle(obj.title());
+                        const value = new Value(selfLink);
                         this.setFieldValue(param, value);
                     } else {
                         this.clearInputAndSetOutputTo("Contents of Clipboard are not compatible with the field.");
