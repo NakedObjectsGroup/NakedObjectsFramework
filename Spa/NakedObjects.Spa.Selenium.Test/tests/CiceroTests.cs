@@ -208,7 +208,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutputStartingWith("Current Special Offers: Page 1 ");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
         }
