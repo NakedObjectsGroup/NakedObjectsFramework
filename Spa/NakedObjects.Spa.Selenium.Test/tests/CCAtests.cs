@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
 
@@ -83,18 +84,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var newMax = rand.Next(1000, 10000).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
             //Now select items
-            SelectCheckBox("#item1-5");
-            SelectCheckBox("#item1-7");
-            SelectCheckBox("#item1-9");
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-8");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
-            //Now check individual items
-            CheckIndividualItem(5, newMax);
-            CheckIndividualItem(7, newMax);
-            CheckIndividualItem(9, newMax);
-            //Confirm others have not
-            CheckIndividualItem(6, newMax, false);
-            CheckIndividualItem(8, newMax, false);
+            Reload();
+            //Check that exactly two rows were updated
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(9)")).Count(el => el.Text == newMax) == 2);
         }
 
         [TestMethod]
@@ -110,12 +106,40 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var newMax = rand.Next(10, 10000).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
             Click(OKButton());
-            CheckIndividualItem(2, newMax);
-            CheckIndividualItem(3, newMax);
-            CheckIndividualItem(4, newMax);
-            //Confirm others have not
-            CheckIndividualItem(1, newMax, false);
-            CheckIndividualItem(5, newMax, false);
+            WaitUntilElementDoesNotExist(".dialog");
+            Reload();
+            //Check that exactly three rows were updated
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(9)")).Count(el => el.Text == newMax)==3);
+        }
+
+        [TestMethod, Ignore] //Pending fix to date issues (date recorded is one day off date entered)
+        public void DateParamAndZeroParam()
+        {
+            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open&collection1=Table");
+            Reload();
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-9");
+            OpenActionDialog("Extend Offers");
+            var rand = new Random();
+            var futureDate = DateTime.Today.AddDays(rand.Next(1000)).ToString("dd MMM yyyy");
+            ClearFieldThenType("#todate1", futureDate + Keys.Escape);
+            Thread.Sleep(1000); // need to wait for datepicker :-(
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            Reload();
+            //Check that exactly two rows were updated
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == futureDate) == 2);
+
+            //Check that 6 & 9 still checked
+            //SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-7"); // Not currently active so should not update
+            //SelectCheckBox("#item1-9");
+            Click(GetObjectAction("Terminate Active Offers"));
+            Reload();
+            //Check that exactly three rows were updated
+            var today = DateTime.Today.ToString("d");
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == today) == 2);
+
         }
     }
 

@@ -149,7 +149,7 @@ namespace AdventureWorksModel {
         }
 
         public DateTime Default1SearchForOrders() {
-            return DateTime.Now;
+            return new DateTime(2000, 1, 1);
         }
 
         public string ValidateSearchForOrders(Customer customer, DateTime? fromDate, DateTime? toDate) {

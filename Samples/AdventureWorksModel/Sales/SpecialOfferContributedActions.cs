@@ -12,10 +12,7 @@ namespace AdventureWorksModel.Sales
         {
             foreach (SpecialOffer offer in offers)
             {
-                if (offer.EndDate < toDate)
-                {
                     offer.EndDate = toDate;
-                }
             }
         }
 

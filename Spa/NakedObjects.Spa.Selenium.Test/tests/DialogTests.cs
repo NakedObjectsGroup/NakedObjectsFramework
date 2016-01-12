@@ -84,14 +84,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public virtual void DateTimeParmKeepsValue()
         {
-            GeminiUrl( "object?object1=AdventureWorksModel.Customer-555&actions1=open");
+            GeminiUrl("object?object1=AdventureWorksModel.Customer-29923&actions1=open");
             OpenActionDialog("Search For Orders");
-            ClearFieldThenType("#fromdate1","1 Jan 2003");
-            ClearFieldThenType("#todate1", "1 Dec 2003" + Keys.Escape);
+            var fromDate = WaitForCss("#fromdate1");
+            Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
+            ClearFieldThenType("#fromdate1", "1 Sep 2007" + Keys.Escape);
+            ClearFieldThenType("#todate1", "1 Apr 2008" + Keys.Escape);
 
-            Thread.Sleep(2000); // need to wait for datepicker :-(
+            Thread.Sleep(1000); // need to wait for datepicker :-(
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
+            var details = WaitForCss(".summary .details");
+            Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
         }
 
         [TestMethod]
