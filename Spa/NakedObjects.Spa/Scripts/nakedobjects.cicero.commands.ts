@@ -808,19 +808,34 @@ module NakedObjects.Angular.Gemini {
         public helpText = "Display one or more of the items from an opened object collection, " +
         "or a list view. If no arguments are specified, item will list all of the " +
         "the items in the opened object collection, or the first page of items if in a list view. " +
-        "Alternatively, the command may be specified with a starting item number " +
-        "and / or an ending item number, for example: item 3,5 will display items 3,4, and 5.";
+        "Alternatively, the command may be specified with an item number, or a range such as 3-5";
         protected minArguments = 0;
-        protected maxArguments = 2;
+        protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
             return this.isCollection() || this.isList();
         }
 
         execute(args: string): void {
-            //TODO: re-do this as a single argument, that may be a range, open started or ended.
-            const startNo = this.argumentAsNumber(args, 0, true);
-            const endNo = this.argumentAsNumber(args, 1, true);
+            let arg = this.argumentAsString(args, 0, true);
+            if (!arg) {
+                arg = "1-";
+            }
+            let startNo, endNo: number;
+            const clauses = arg.split("-");
+            switch (clauses.length) {
+                case 1:
+                    startNo = this.parseInt(clauses[0]);
+                    endNo = startNo;
+                    break;
+                case 2:
+                    startNo = this.parseInt(clauses[0]);
+                    endNo = this.parseInt(clauses[1]);
+                    break;
+                default:
+                    this.clearInputAndSetOutputTo("Cannot have more than one dash in argument");
+                    return;
+            }
             if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
                 this.clearInputAndSetOutputTo("Item number or range values must be greater than zero");
                 return;
@@ -839,14 +854,24 @@ module NakedObjects.Angular.Gemini {
             });
         };
 
+        private parseInt(input: string): number {
+            if (!input) {
+                return null;
+            }
+            const number = parseInt(input);
+            if (isNaN(number)) {
+                throw new Error("Argument must be a single number or number range such as 3-5");
+            }
+            return number;
+        }
+
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
             const max = source.value().length;
             if (!startNo) {
                 startNo = 1;
-                endNo = max;
             }
             if (!endNo) {
-                endNo = startNo;
+                endNo = max;
             }
             if (startNo > max || endNo > max) {
                 this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);

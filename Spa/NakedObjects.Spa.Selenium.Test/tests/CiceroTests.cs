@@ -466,23 +466,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("item 16");
             WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale;");
 
-            EnterCommand("item 2,4");
+            EnterCommand("item 2-4");
             WaitForOutput("Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24; Item 4: Volume Discount 25 to 40;");
-            EnterCommand("item 5,5");
+            EnterCommand("item 5-5");
             WaitForOutput("Item 5: Volume Discount 41 to 60;");
+            EnterCommand("item -3");
+            WaitForOutput("Item 1: No Discount; Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24;");
+            EnterCommand("item 15-");
+            WaitForOutput("Item 15: Half-Price Pedal Sale; Item 16: Mountain-500 Silver Clearance Sale;");
+
 
             //Invalid numbers
             EnterCommand("item 17");
             WaitForOutput("The highest numbered item is 16");
             EnterCommand("item 0");
             WaitForOutput("Item number or range values must be greater than zero");
-            EnterCommand("item -1");
-            WaitForOutput("Item number or range values must be greater than zero");
-            EnterCommand("item 15,17");
+            EnterCommand("item 15-17");
             WaitForOutput("The highest numbered item is 16");
-            EnterCommand("item 0,3");
+            EnterCommand("item 0-3");
             WaitForOutput("Item number or range values must be greater than zero");
-            EnterCommand("item 5,4");
+            EnterCommand("item 5-4");
             WaitForOutput("Starting item number cannot be greater than the ending item number");
 
             //Applied to collection
@@ -498,12 +501,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
 
             //Too many parms
-            EnterCommand("item 4,5,6");
+            EnterCommand("item 4,5");
             WaitForOutput("Too many arguments provided.");
 
             //Alpha parm
             EnterCommand("item one");
-            WaitForOutput("Argument number 1 must be a number");
+            WaitForOutput("Argument must be a single number or number range such as 3-5");
 
             //Invalid context
             CiceroUrl("home");
@@ -825,7 +828,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -848,7 +851,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass, Ignore]
+    //[TestClass, Ignore]
     public class CiceroTestsChrome : CiceroTests
     {
         [ClassInitialize]
