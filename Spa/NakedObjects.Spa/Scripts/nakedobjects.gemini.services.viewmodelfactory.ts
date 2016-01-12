@@ -874,6 +874,7 @@ module NakedObjects.Angular.Gemini {
 
 
                 objectViewModel.editComplete = () => {
+                    setProperties();
                     deregisterLocationWatch();
                     deregisterSearchWatch();
                 };
@@ -885,7 +886,7 @@ module NakedObjects.Angular.Gemini {
 
                 const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
                 objectViewModel.doSave = viewObject => {
-
+                    setProperties();
                     const pps = _.filter(objectViewModel.properties, property => property.isEditable);
                     const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
 
