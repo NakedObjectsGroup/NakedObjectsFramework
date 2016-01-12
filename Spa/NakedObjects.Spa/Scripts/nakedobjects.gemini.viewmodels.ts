@@ -83,7 +83,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ItemViewModel extends LinkViewModel{
-        target: DomainObjectViewModel;   
+        target: TableRowViewModel;   
         selected : boolean;
         checkboxChange: (index: number) => void;
     }
@@ -346,6 +346,9 @@ module NakedObjects.Angular.Gemini {
         color: string;
     } 
 
+    export class TableRowViewModel {     
+        properties: PropertyViewModel[];
+    }
 
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel{
         title: string;

@@ -17,6 +17,8 @@ module NakedObjects.Angular.Gemini {
         menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
         serviceViewModel($scope: ng.IScope, serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, routedata: PaneRouteData): DomainObjectViewModel;
+        tableRowViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
+
         ciceroViewModel(): CiceroViewModel;
     }
 
@@ -572,14 +574,13 @@ module NakedObjects.Angular.Gemini {
 
             if (populateItems) {
 
-
                 _.forEach(items, itemViewModel => {
                     const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
 
                     context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id).
                         then((obj: DomainObjectRepresentation) => {
 
-                            itemViewModel.target = viewModelFactory.domainObjectViewModel($scope, obj, routeData);
+                            itemViewModel.target = viewModelFactory.tableRowViewModel($scope, obj, routeData);
 
                             if (!collectionViewModel.header) {
                                 collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
@@ -917,6 +918,14 @@ module NakedObjects.Angular.Gemini {
                         }
                     });
 
+        };
+
+        viewModelFactory.tableRowViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
+            const tableRowViewModel = new TableRowViewModel();
+            const properties = objectRep.propertyMembers();
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId));
+
+            return tableRowViewModel;
         };
 
 
