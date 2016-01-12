@@ -337,7 +337,7 @@ module NakedObjects.Angular.Gemini {
             const paneId = routeData.paneId;
             const currentLvm = currentLvms[paneId];
             if (currentLvm && currentLvm.isSame(paneId, collectionId(routeData))) {
-                currentLvm.setNewScope(scope);
+                currentLvm.refreshState(scope, routeData);
                 return { collectionViewModel: currentLvm, ret: true };
             }
             const lvm = new CollectionViewModel();
@@ -742,11 +742,10 @@ module NakedObjects.Angular.Gemini {
                 setPage(page, state);         
             };
 
-            collectionViewModel.setNewScope = (newScope: INakedObjectsScope) => {
+            collectionViewModel.refreshState = (newScope: INakedObjectsScope, rd : PaneRouteData) => {
                 scope = newScope;
-                collectionViewModel.items = getItems(newScope, collectionViewModel, links, state === CollectionViewState.Table, routeData);
+                collectionViewModel.items = getItems(newScope, collectionViewModel, links, state === CollectionViewState.Table, rd);
             }
-
 
             return collectionViewModel;
         }
@@ -874,6 +873,7 @@ module NakedObjects.Angular.Gemini {
 
 
                 objectViewModel.editComplete = () => {
+                    setProperties();
                     deregisterLocationWatch();
                     deregisterSearchWatch();
                 };
@@ -885,7 +885,7 @@ module NakedObjects.Angular.Gemini {
 
                 const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
                 objectViewModel.doSave = viewObject => {
-
+                    setProperties();
                     const pps = _.filter(objectViewModel.properties, property => property.isEditable);
                     const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
 

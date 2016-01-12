@@ -273,7 +273,7 @@ module NakedObjects.Angular.Gemini {
 
     export class CollectionViewModel {
 
-        setNewScope(scope: INakedObjectsScope): void {};
+        refreshState(scope: INakedObjectsScope, routeData : PaneRouteData): void {};
 
         title: string;
         size: number;
