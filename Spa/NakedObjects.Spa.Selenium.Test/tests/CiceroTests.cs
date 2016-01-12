@@ -208,7 +208,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStartingWith("Current Special Offers: Page 1 ");
+            WaitForOutputStartingWith("Result from Current Special Offers: Page 1 ");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
         }
@@ -400,16 +400,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided.");
             //Now try for a list context
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
             EnterCommand("go 1");
             WaitForOutput("Special Offer: No Discount.");
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
             EnterCommand("go 16");
             WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale.");
             //Try out of range
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
             EnterCommand("go 17");
@@ -443,11 +443,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, select, where,");
             //Now with params
             EnterCommand("help me");
-            WaitForOutput("menu command: From any context, Menu opens a named main menu. " +
-                "This command normally takes one argument: the name, or partial name, " +
-                "of the menu. If the partial name matches more than one menu, a list of " +
-                "matches will be returned but no menu will be opened; if no argument is " +
-                "provided a list of all the menus will be returned.");
+            WaitForOutput("menu command: Open a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
             EnterCommand("help menux");
             WaitForOutput("No such command: menux");
             EnterCommand("help menu back");
@@ -459,7 +455,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Applied to List
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutput("Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
             EnterCommand("item 1");
             WaitForOutput("Item 1: No Discount;");
             EnterCommand("item 16");
@@ -553,7 +549,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invoking menu from a non-home context, clears state
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStartingWith("Current Special Offers: Page 1");
+            WaitForOutputStartingWith("Result from Current Special Offers: Page 1");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
         }
