@@ -272,6 +272,9 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CollectionViewModel {
+
+        setNewScope(scope: INakedObjectsScope): void {};
+
         title: string;
         size: number;
         pluralName: string;

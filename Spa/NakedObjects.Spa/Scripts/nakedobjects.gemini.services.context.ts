@@ -503,9 +503,11 @@ module NakedObjects.Angular.Gemini {
                     updatedObject.wrapped().links = rawLinks;
 
                     // remove pre-changed object from cache
-                    $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
+                   // $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
 
                     context.setObject(paneId, updatedObject);
+
+                    dirtyCache.setDirty(updatedObject);
 
                     urlManager.setObject(updatedObject, paneId);
                     return $q.when(new ErrorMap({}, 0, ""));
@@ -522,7 +524,10 @@ module NakedObjects.Angular.Gemini {
 
             return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(paneId, updatedObject);
+                   context.setObject(paneId, updatedObject);
+
+
+                    dirtyCache.setDirty(updatedObject);
 
                     if (viewSavedObject) {
                         urlManager.setObject(updatedObject, paneId);
