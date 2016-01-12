@@ -11,7 +11,7 @@ module NakedObjects.Angular {
     }
 
     // TODO investigate using transformations to transform results 
-    app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService) {
+    app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService, $cacheFactory : ng.ICacheFactoryService ) {
 
         const repLoader = this as IRepLoader;
         let loadingCount = 0; 
@@ -28,7 +28,12 @@ module NakedObjects.Angular {
                 data: model.getBody()
             };
 
-            $rootScope.$broadcast("ajax-change", ++loadingCount); 
+            $rootScope.$broadcast("ajax-change", ++loadingCount);
+
+            if (ignoreCache) {
+                // clear cache of existing values
+                $cacheFactory.get("$http").remove(config.url);
+            }
 
             return $http(config).
                 then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {

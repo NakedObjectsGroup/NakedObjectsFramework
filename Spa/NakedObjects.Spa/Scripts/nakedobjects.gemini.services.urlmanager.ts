@@ -42,7 +42,7 @@ module NakedObjects.Angular.Gemini {
 
         currentpane(): number;
         getUrlState: (paneId: number) => { paneType: string; search: Object };
-        getListCacheIndex: (paneId: number, newPage: number, newPageSize: number) => string;
+        getListCacheIndex: (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => string;
 
         isHome(paneId: number): boolean;
         cicero(): void;
@@ -515,22 +515,24 @@ module NakedObjects.Angular.Gemini {
             return { paneType: paneType, search: paneSearch };
         }
 
-        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number) => {
+        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format? : CollectionViewState) => {
             const search = $location.search();
        
             const s1 = search[`${menu}${paneId}`] || "";
             const s2 = search[`${object}${paneId}`] || "";
             const s3 = search[`${action}${paneId}`] || "";
 
-            const parmkeys = _.filter(search as _.Dictionary<string>, (v, k) => k.indexOf(parm + paneId) === 0);
-            const parms = _.pick(search, parmkeys) as _.Dictionary<string>;
+            const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(parm + paneId) === 0);
+            const mappedParms = _.mapValues(parms, v => decodeURIComponent(v));
 
-            const s4 = _.reduce(parms, (r, n, k) => r + (k + "=" + n + "-"), "");
+            const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
 
             const s5 = `${newPage}`;
             const s6 = `${newPageSize}`;
 
-            const ss = [s1, s2, s3, s4, s5, s6] as string[];
+            const s7 = format ? `${format}` : "";
+
+            const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
             return _.reduce(ss, (r, n) => r + "-" + n, "");
         }

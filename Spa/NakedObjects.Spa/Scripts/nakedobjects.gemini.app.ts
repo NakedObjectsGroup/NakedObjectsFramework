@@ -13,9 +13,6 @@ module NakedObjects.Angular {
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
-    
-
-
     export interface INakedObjectsRouteParams extends ng.route.IRouteParamsService {
         menu1: string;
         dialog1: string;

@@ -15,7 +15,7 @@ module NakedObjects.Angular.Gemini {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
+    app.service("handlers", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager, $timeout: ng.ITimeoutService) {
         const handlers = <IHandlers>this;
 
         function setVersionError(error) {
@@ -130,27 +130,29 @@ module NakedObjects.Angular.Gemini {
                 () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
         
-            const setListInScope = (list : ListRepresentation, recreateFunc: (page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
-                $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                const collectionViewModel = viewModelFactory.collectionViewModel($scope, list, routeData, recreateFunc);
-                $scope.collection = collectionViewModel;
-                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+            const setListInScope = (scope : INakedObjectsScope, list: ListRepresentation, recreateFunc: (scope : INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
+
+                scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
+                const collectionViewModel = viewModelFactory.collectionViewModel(scope, list, routeData, recreateFunc);
+                scope.collection = collectionViewModel;
+                scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
                 if (routeData.dialogId) {
                     const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-                    setDialog($scope, actionViewModel, routeData);
+                    setDialog(scope, actionViewModel, routeData);
                     focusTarget = FocusTarget.Dialog;
                 }
 
                 focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
-                getFriendlyName().then((name: string) => $scope.title = name);
+                getFriendlyName().then((name: string) => scope.title = name);
+
             }
 
-            const pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
+            const pageOrRecreate = (scope : INakedObjectsScope,  newPage: number, newPageSize, newState?: CollectionViewState) => {
                 recreate(newPage, newPageSize).then((list: ListRepresentation) => {
                     routeData.state = newState || routeData.state;
-                    setListInScope(list, pageOrRecreate);
+                    setListInScope(scope, list, pageOrRecreate);
                     urlManager.setListPaging(routeData.paneId, newPage, newPageSize, routeData.state);
                 }).catch(error => {
                     setError(error);
@@ -158,10 +160,10 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (cachedList) {
-                setListInScope(cachedList, pageOrRecreate);
+                setListInScope($scope, cachedList, pageOrRecreate);
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
-                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData.page, () => pageOrRecreate(routeData.page, routeData.pageSize));
+                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel($scope, routeData.page, (scope : INakedObjectsScope) => pageOrRecreate(scope, routeData.page, routeData.pageSize));
                 getFriendlyName().then((name: string) => $scope.title = name);
                 focusManager.focusOn(FocusTarget.Action, 0, urlManager.currentpane());       
             }
