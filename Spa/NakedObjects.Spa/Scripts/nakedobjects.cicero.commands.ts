@@ -154,7 +154,7 @@ module NakedObjects.Angular.Gemini {
         //Tests that at least one collection is open (should only be one). 
         //TODO: assumes that closing collection removes it from routeData NOT sets it to Summary
         protected isCollection(): boolean {
-            return this.isObject && _.any(this.routeData().collections);
+            return this.isObject() && _.any(this.routeData().collections);
         }
         protected closeAnyOpenCollections() {
             const open = openCollectionIds(this.routeData());
@@ -818,6 +818,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
+            //TODO: re-do this as a single argument, that may be a range, open started or ended.
             const startNo = this.argumentAsNumber(args, 0, true);
             const endNo = this.argumentAsNumber(args, 1, true);
             if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
@@ -956,19 +957,58 @@ module NakedObjects.Angular.Gemini {
     }
     export class Page extends Command {
         public fullCommand = "page";
-        public helpText = "Not yet implemented. Will support paging of returned lists." +
+        public helpText = "Supports paging of returned lists." +
         "The page command takes a single argument, which may be one of these four words: " +
         "first, previous, next, or last, which may be abbreviated down to the one character. " +
-        "Alternative, a specific page number may be specified.";
-        protected minArguments = 0;
-        protected maxArguments = 0;
+        "Alternative, the argument may be a specific page number.";
+        protected minArguments = 1;
+        protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
             return this.isList();
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Page command is not yet implemented");
+            const arg = this.argumentAsString(args, 0);
+            this.getList().then((listRep: ListRepresentation) => {
+                const numPages = listRep.pagination().numPages;
+                const page = this.routeData().page;               
+                const pageSize = this.routeData().pageSize;
+                if ("first".indexOf(arg) === 0) {
+                    this.setPage(1);
+                    return;
+                } else if ("previous".indexOf(arg) === 0) {
+                    if (page === 1) {
+                        this.clearInputAndSetOutputTo("List is already showing the first page");
+                    } else {
+                        this.setPage(page - 1);
+                    }
+                } else if ("next".indexOf(arg) === 0) {
+                    if (page === numPages) {
+                        this.clearInputAndSetOutputTo("List is already showing the last page");
+                    } else {
+                        this.setPage(page + 1);
+                    }
+                } else if ("last".indexOf(arg) === 0) {
+                    this.setPage(numPages);
+                } else {
+                    const number = parseInt(arg);
+                    if (isNaN(number)) {
+                        this.clearInputAndSetOutputTo("The argument must match: first, previous, next, last, or a single number");
+                        return;
+                    }
+                    if (number < 1 || number > numPages) {
+                        this.clearInputAndSetOutputTo("Specified page number must be between 1 and " + numPages);
+                        return;
+                    }
+                    this.setPage(number);
+                }
+            });
+        }
+
+        private setPage(page) {
+            const pageSize = this.routeData().pageSize;
+            this.urlManager.setListPaging(1, page, pageSize, CollectionViewState.List);
         }
     }
     export class Reload extends Command {
@@ -1021,8 +1061,27 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetOutputTo("save command is not yet implemented");
         };
     }
-    export class Select extends Command {
-        public fullCommand = "select";
+    export class Selection extends Command {
+
+        public fullCommand = "selection";
+        public helpText = "Not yet implemented. Select one or more items from" +
+        "a list, prior to invoking an action on the selection." +
+        "Selection has one mandatory argument, which must be one of these words, " +
+        "though it may be abbreviated: add, remove, all, clear, show. " +
+        "The Add and Remove options must be followed by a second argument specifying " +
+        "the item number, or range, to be added or removed.";
+        protected minArguments = 0;
+        protected maxArguments = 0;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isList();
+        }
+        execute(args: string): void {
+            this.clearInputAndSetOutputTo("save command is not yet implemented");
+        };
+    }
+    export class Table extends Command {
+        public fullCommand = "table";
         public helpText = "Not yet implemented. Will provide a simple SQL-like query " +
         "language to display specific columns and/or rows from a returned List or " +
         "a collection within an object.";

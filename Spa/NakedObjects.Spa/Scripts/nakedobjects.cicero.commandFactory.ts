@@ -52,7 +52,8 @@ module NakedObjects.Angular.Gemini{
             "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q),
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
-            "se": new Select(urlManager, $location, commandFactory, context, navigation, $q),
+            "se": new Selection(urlManager, $location, commandFactory, context, navigation, $q),
+            "ta": new Table(urlManager, $location, commandFactory, context, navigation, $q),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         

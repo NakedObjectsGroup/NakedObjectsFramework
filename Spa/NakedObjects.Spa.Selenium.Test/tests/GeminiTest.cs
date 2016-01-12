@@ -530,7 +530,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text == output);
         }
 
-        protected void WaitForOutputStartingWith(string output)
+        protected void WaitForOutputStarting(string output)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text.StartsWith(output));
         }

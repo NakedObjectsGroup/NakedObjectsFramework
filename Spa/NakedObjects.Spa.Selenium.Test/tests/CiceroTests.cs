@@ -122,7 +122,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Menu dialog
             CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
-            WaitForOutputStartingWith("Products menu. Action dialog: Find Product By Name");
+            WaitForOutputStarting("Products menu. Action dialog: Find Product By Name");
             EnterCommand("cancel");
             WaitForOutput("Products menu.");
             //Test on a zero param action
@@ -138,12 +138,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Object dialog
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
-            WaitForOutputStartingWith("Product: HL Grip Tape. Action dialog: Best Special Offer");
+            WaitForOutputStarting("Product: HL Grip Tape. Action dialog: Best Special Offer");
             EnterCommand("cancel");
             WaitForOutput("Product: HL Grip Tape.");
             //Zero param
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutputStartingWith("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
+            WaitForOutputStarting("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
             EnterCommand("Ca");
             WaitForOutput("Customer: Handy Bike Services, AW00029688.");
 
@@ -208,7 +208,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStartingWith("Result from Current Special Offers: Page 1 ");
+            WaitForOutputStarting("Result from Current Special Offers: Page 1 ");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
         }
@@ -293,7 +293,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product Category: Bikes, Product Subcategory: Road Bikes,");
             //No argument
             EnterCommand("fi ");
-            WaitForOutputStartingWith("Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
+            WaitForOutputStarting("Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
             //No match
             EnterCommand("fi x");
             WaitForOutput("x does not match any fields");
@@ -440,7 +440,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, select, where,");
+            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, table, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: Open a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
@@ -450,6 +450,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("No such command: menu back");
             EnterCommand("help menu, back");
             WaitForOutput("Too many arguments provided.");
+            //List context
+            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
+            WaitForOutputStarting("Result from Current Special Offers: Page 1 of 1");
+            EnterCommand("help");
+            WaitForOutput("Commands available in current context: action, back, clipboard, forward, gemini, go, help, item, menu, page, reload, selection, table, where,");
         }
         public virtual void Item()
         {
@@ -490,7 +495,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No number
             EnterCommand("item");
-            WaitForOutputStartingWith("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
+            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
 
             //Too many parms
             EnterCommand("item 4,5,6");
@@ -549,7 +554,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invoking menu from a non-home context, clears state
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStartingWith("Result from Current Special Offers: Page 1");
+            WaitForOutputStarting("Result from Current Special Offers: Page 1");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
         }
@@ -560,7 +565,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
             WaitForOutput("Products menu. Action dialog: Random Product.");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Product: ");
+            WaitForOutputStarting("Product: ");
             // No arguments
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
             WaitForOutput("Products menu. Action dialog: Random Product.");
@@ -587,13 +592,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=OrderRepository&dialog1=HighestValueOrders");
             WaitForOutput("Orders menu. Action dialog: Highest Value Orders.");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Result from Highest Value Orders: Page 1 of ");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of ");
 
             //Menu action with params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522b%2522");
             WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Result from Find Individual Customer By Name: Page 1 of 8 containing 20 of");
+            WaitForOutputStarting("Result from Find Individual Customer By Name: Page 1 of 8 containing 20 of");
 
             //Menu action with missing mandatory params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522%2522");
@@ -611,13 +616,56 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory&field1_subCategory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F10%2522%252C%2522title%2522%253A%2522Forks%2522%257D");
             WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
             EnterCommand("ok");
-            WaitForOutputStartingWith("Result from List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
+            WaitForOutputStarting("Result from List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
 
             //Action resuling in an error
             CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
             WaitForOutput("Customers menu. Action dialog: Throw Domain Exception.");
             EnterCommand("ok");
             WaitForOutput("Sorry, an application error has occurred. Foo");
+        }
+        public virtual void Page()
+        {
+            CiceroUrl("list?menu1=OrderRepository&action1=HighestValueOrders&page1=1&pageSize1=20&selected1=0");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of 1574");
+            EnterCommand("page 0");
+            WaitForOutput("Specified page number must be between 1 and 1574");
+            EnterCommand("page 2");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 2 of 1574");
+            EnterCommand("page 1574");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+            EnterCommand("page 1575");
+            WaitForOutput("Specified page number must be between 1 and 1574");
+            EnterCommand("page f");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of 1574");
+            EnterCommand("page p");
+            WaitForOutput("List is already showing the first page");
+            EnterCommand("pa last");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+            EnterCommand("pa nex");
+            WaitForOutput("List is already showing the last page");
+            EnterCommand("page p");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1573 of 1574");
+            EnterCommand("pa ne");
+            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+
+            //Invalid argument
+            EnterCommand("page furst");
+            WaitForOutput("The argument must match: first, previous, next, last, or a single number");
+
+            //No argument
+            EnterCommand("page");
+            WaitForOutput("No arguments provided.");
+
+            //Invalid context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("page 1");
+            WaitForOutput("The command: page is not available in the current context");
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-51131");
+            WaitForOutput("Sales Order Header: SO51131.");
+            EnterCommand("page 1");
+            WaitForOutput("The command: page is not available in the current context");
         }
         public virtual void Root()
         {
@@ -650,13 +698,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: HL Grip Tape.");
             //Do something to change the output
             EnterCommand("help");
-            WaitForOutputStartingWith("Commands");
+            WaitForOutputStarting("Commands");
             EnterCommand("where");
             WaitForOutput("Product: HL Grip Tape.");
 
             //Empty command == where
             EnterCommand("help");
-            WaitForOutputStartingWith("Commands");
+            WaitForOutputStarting("Commands");
             ClearFieldThenType("input", Keys.Enter);
             WaitForOutput("Product: HL Grip Tape.");
 
@@ -668,12 +716,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             CiceroUrl("home");
             EnterCommand("help");
-            WaitForOutputStartingWith("Commands available");
+            WaitForOutputStarting("Commands available");
             Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
             TypeIntoFieldWithoutClearing("input", " gem" + Keys.Enter);
-            WaitForOutputStartingWith("gemini command");
+            WaitForOutputStarting("gemini command");
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
@@ -739,6 +787,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void OK() { base.OK(); }
         [TestMethod]
+        public override void Page() { base.Page(); }
+        [TestMethod]
         public override void Root() { base.Root(); }
         [TestMethod]
         public override void Where() { base.Where(); }
@@ -775,7 +825,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -798,7 +848,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    // [TestClass, Ignore]
+    [TestClass, Ignore]
     public class CiceroTestsChrome : CiceroTests
     {
         [ClassInitialize]
@@ -850,6 +900,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Item();
             base.Menu();
             base.OK();
+            base.Page();
             base.Root();
             base.UpAndDownArrow();
             base.Where();
