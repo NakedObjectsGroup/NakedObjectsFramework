@@ -337,7 +337,7 @@ module NakedObjects.Angular.Gemini {
             const paneId = routeData.paneId;
             const currentLvm = currentLvms[paneId];
             if (currentLvm && currentLvm.isSame(paneId, collectionId(routeData))) {
-                currentLvm.setNewScope(scope);
+                currentLvm.refreshState(scope, routeData);
                 return { collectionViewModel: currentLvm, ret: true };
             }
             const lvm = new CollectionViewModel();
@@ -742,11 +742,10 @@ module NakedObjects.Angular.Gemini {
                 setPage(page, state);         
             };
 
-            collectionViewModel.setNewScope = (newScope: INakedObjectsScope) => {
+            collectionViewModel.refreshState = (newScope: INakedObjectsScope, rd : PaneRouteData) => {
                 scope = newScope;
-                collectionViewModel.items = getItems(newScope, collectionViewModel, links, state === CollectionViewState.Table, routeData);
+                collectionViewModel.items = getItems(newScope, collectionViewModel, links, state === CollectionViewState.Table, rd);
             }
-
 
             return collectionViewModel;
         }
