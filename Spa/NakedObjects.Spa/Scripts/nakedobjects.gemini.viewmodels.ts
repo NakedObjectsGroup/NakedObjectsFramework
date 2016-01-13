@@ -353,10 +353,10 @@ module NakedObjects.Angular.Gemini {
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
 
         constructor(private colorService: IColor,
-            private contextService: IContext,
-            private viewModelFactory: IViewModelFactory,
-            private urlManager: IUrlManager,
-            private focusManager: IFocusManager) {
+                    private contextService: IContext,
+                    private viewModelFactory: IViewModelFactory,
+                    private urlManager: IUrlManager,
+                    private focusManager: IFocusManager) {
             super();
         }
 
@@ -432,15 +432,12 @@ module NakedObjects.Angular.Gemini {
 
         editComplete = () => {
             this.setProperties();
-            //deregisterLocationWatch();
-            //deregisterSearchWatch();
         };
 
         doEditCancel = () => {
             this.editComplete();
             this.cancelHandler();
         };
-
 
         doSave = viewObject => {
 
@@ -461,21 +458,15 @@ module NakedObjects.Angular.Gemini {
             this.contextService.reloadObject(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                    //setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
-                    //$scope.object = objectViewModel;
                     this.urlManager.pushUrlState(this.onPaneId);
                     this.urlManager.setObjectEdit(true, this.onPaneId);
                 });
         }
 
-        doReload = (refreshScope?: boolean) =>
+        doReload = () =>
             this.contextService.reloadObject(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                    //setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
-                    //if (refreshScope) {
-                    //    $scope.object = objectViewModel;
-                    //}
                 });
 
 
