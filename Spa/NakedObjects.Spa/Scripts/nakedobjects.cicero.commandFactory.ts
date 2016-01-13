@@ -45,7 +45,6 @@ module NakedObjects.Angular.Gemini{
             "ge": new Gemini(urlManager, $location, commandFactory, context, navigation, $q),
             "go": new Go(urlManager, $location, commandFactory, context, navigation, $q),
             "he": new Help(urlManager, $location, commandFactory, context, navigation, $q),
-            "it": new Item(urlManager, $location, commandFactory, context, navigation, $q),
             "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q),
             "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q),
             "pa": new Page(urlManager, $location, commandFactory, context, navigation, $q),
@@ -53,7 +52,7 @@ module NakedObjects.Angular.Gemini{
             "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q),
             "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q),
             "se": new Selection(urlManager, $location, commandFactory, context, navigation, $q),
-            "ta": new Table(urlManager, $location, commandFactory, context, navigation, $q),
+            "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q)
         }
         

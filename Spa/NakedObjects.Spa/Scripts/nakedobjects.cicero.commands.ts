@@ -802,94 +802,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Item extends Command {
-
-        public fullCommand = "item";
-        public helpText = "Display one or more of the items from an opened object collection, " +
-        "or a list view. If no arguments are specified, item will list all of the " +
-        "the items in the opened object collection, or the first page of items if in a list view. " +
-        "Alternatively, the command may be specified with an item number, or a range such as 3-5";
-        protected minArguments = 0;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isCollection() || this.isList();
-        }
-
-        execute(args: string): void {
-            let arg = this.argumentAsString(args, 0, true);
-            if (!arg) {
-                arg = "1-";
-            }
-            let startNo, endNo: number;
-            const clauses = arg.split("-");
-            switch (clauses.length) {
-                case 1:
-                    startNo = this.parseInt(clauses[0]);
-                    endNo = startNo;
-                    break;
-                case 2:
-                    startNo = this.parseInt(clauses[0]);
-                    endNo = this.parseInt(clauses[1]);
-                    break;
-                default:
-                    this.clearInputAndSetOutputTo("Cannot have more than one dash in argument");
-                    return;
-            }
-            if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
-                this.clearInputAndSetOutputTo("Item number or range values must be greater than zero");
-                return;
-            }
-            if (this.isCollection()) {
-                this.getObject().then((obj: DomainObjectRepresentation) => {
-                    const openCollIds = openCollectionIds(this.routeData());
-                    const coll = obj.collectionMember(openCollIds[0]);
-                    this.renderItems(coll, startNo, endNo);
-                });
-                return;
-            }
-            //must be List
-            this.getList().then((list: ListRepresentation) => {
-                this.renderItems(list, startNo, endNo);
-            });
-        };
-
-        private parseInt(input: string): number {
-            if (!input) {
-                return null;
-            }
-            const number = parseInt(input);
-            if (isNaN(number)) {
-                throw new Error("Argument must be a single number or number range such as 3-5");
-            }
-            return number;
-        }
-
-        private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
-            const max = source.value().length;
-            if (!startNo) {
-                startNo = 1;
-            }
-            if (!endNo) {
-                endNo = max;
-            }
-            if (startNo > max || endNo > max) {
-                this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);
-                return;
-            }
-            if (startNo > endNo) {
-                this.clearInputAndSetOutputTo("Starting item number cannot be greater than the ending item number");
-                return;
-            }
-            let output = "";
-            let i: number;
-            const links = source.value();
-            for (i = startNo; i <= endNo; i++) {
-                output += "Item " + i + ": " + links[i - 1].title() + "; ";
-            }
-            this.clearInputAndSetOutputTo(output);
-        }
-    }
     export class Menu extends Command {
 
         public fullCommand = "menu";
@@ -1105,20 +1017,95 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetOutputTo("save command is not yet implemented");
         };
     }
-    export class Table extends Command {
-        public fullCommand = "table";
-        public helpText = "Not yet implemented. Will provide a simple SQL-like query " +
-        "language to display specific columns and/or rows from a returned List or " +
-        "a collection within an object.";
-        protected minArguments = 1;
+    export class Show extends Command {
+
+        public fullCommand = "show";
+        public helpText = "Show one or more of the items from or a list view, or " +
+        "an opened object collection. If no arguments are specified, show will list all of the " +
+        "the items in the opened object collection, or the first page of items if in a list view. " +
+        "Alternatively, the command may be specified with an item number, or a range such as 3-5. " +
+        "Not yet implemented: Show can take additional parameters to specify table view, and/or to " +
+        "specify logical matches for items to be shown e.g. status='pending'"
+        protected minArguments = 0;
         protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isList() || this.isObject();
+            return this.isCollection() || this.isList();
         }
+
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("select command is not yet implemented");
+            let arg = this.argumentAsString(args, 0, true);
+            if (!arg) {
+                arg = "1-";
+            }
+            let startNo, endNo: number;
+            const clauses = arg.split("-");
+            switch (clauses.length) {
+                case 1:
+                    startNo = this.parseInt(clauses[0]);
+                    endNo = startNo;
+                    break;
+                case 2:
+                    startNo = this.parseInt(clauses[0]);
+                    endNo = this.parseInt(clauses[1]);
+                    break;
+                default:
+                    this.clearInputAndSetOutputTo("Cannot have more than one dash in argument");
+                    return;
+            }
+            if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
+                this.clearInputAndSetOutputTo("Item number or range values must be greater than zero");
+                return;
+            }
+            if (this.isCollection()) {
+                this.getObject().then((obj: DomainObjectRepresentation) => {
+                    const openCollIds = openCollectionIds(this.routeData());
+                    const coll = obj.collectionMember(openCollIds[0]);
+                    this.renderItems(coll, startNo, endNo);
+                });
+                return;
+            }
+            //must be List
+            this.getList().then((list: ListRepresentation) => {
+                this.renderItems(list, startNo, endNo);
+            });
         };
+
+        private parseInt(input: string): number {
+            if (!input) {
+                return null;
+            }
+            const number = parseInt(input);
+            if (isNaN(number)) {
+                throw new Error("Argument must be a single number or number range such as 3-5");
+            }
+            return number;
+        }
+
+        private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
+            const max = source.value().length;
+            if (!startNo) {
+                startNo = 1;
+            }
+            if (!endNo) {
+                endNo = max;
+            }
+            if (startNo > max || endNo > max) {
+                this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);
+                return;
+            }
+            if (startNo > endNo) {
+                this.clearInputAndSetOutputTo("Starting item number cannot be greater than the ending item number");
+                return;
+            }
+            let output = "";
+            let i: number;
+            const links = source.value();
+            for (i = startNo; i <= endNo; i++) {
+                output += "Item " + i + ": " + links[i - 1].title() + "; ";
+            }
+            this.clearInputAndSetOutputTo(output);
+        }
     }
     export class Where extends Command {
 

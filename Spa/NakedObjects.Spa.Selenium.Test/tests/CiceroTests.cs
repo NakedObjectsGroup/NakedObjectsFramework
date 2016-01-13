@@ -440,7 +440,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40.");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, table, where,");
+            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, where,");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command: Open a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
@@ -454,74 +454,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
             WaitForOutputStarting("Result from Current Special Offers: Page 1 of 1");
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, clipboard, forward, gemini, go, help, item, menu, page, reload, selection, table, where,");
-        }
-        public virtual void Item()
-        {
-            //Applied to List
-            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
-            EnterCommand("item 1");
-            WaitForOutput("Item 1: No Discount;");
-            EnterCommand("item 16");
-            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale;");
-
-            EnterCommand("item 2-4");
-            WaitForOutput("Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24; Item 4: Volume Discount 25 to 40;");
-            EnterCommand("item 5-5");
-            WaitForOutput("Item 5: Volume Discount 41 to 60;");
-            EnterCommand("item -3");
-            WaitForOutput("Item 1: No Discount; Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24;");
-            EnterCommand("item 15-");
-            WaitForOutput("Item 15: Half-Price Pedal Sale; Item 16: Mountain-500 Silver Clearance Sale;");
-
-
-            //Invalid numbers
-            EnterCommand("item 17");
-            WaitForOutput("The highest numbered item is 16");
-            EnterCommand("item 0");
-            WaitForOutput("Item number or range values must be greater than zero");
-            EnterCommand("item 15-17");
-            WaitForOutput("The highest numbered item is 16");
-            EnterCommand("item 0-3");
-            WaitForOutput("Item number or range values must be greater than zero");
-            EnterCommand("item 5-4");
-            WaitForOutput("Starting item number cannot be greater than the ending item number");
-
-            //Applied to collection
-            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-44518&selected1=256&collection1_Details=List");
-            WaitForOutput("Collection: Details on Sales Order Header: SO44518, 20 items");
-            EnterCommand("item 1");
-            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44;");
-            EnterCommand("item 20");
-            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38;");
-
-            //No number
-            EnterCommand("item");
-            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
-
-            //Too many parms
-            EnterCommand("item 4,5");
-            WaitForOutput("Too many arguments provided.");
-
-            //Alpha parm
-            EnterCommand("item one");
-            WaitForOutput("Argument must be a single number or number range such as 3-5");
-
-            //Invalid context
-            CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
-            EnterCommand("item 1");
-            WaitForOutput("The command: item is not available in the current context");
-            CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu.");
-            EnterCommand("item 1");
-            WaitForOutput("The command: item is not available in the current context");
-            CiceroUrl("object?object1=AdventureWorksModel.Customer-29863");
-            WaitForOutput("Customer: Efficient Cycling, AW00029863.");
-            EnterCommand("item 1");
-            WaitForOutput("The command: item is not available in the current context");
-
+            WaitForOutput("Commands available in current context: action, back, clipboard, forward, gemini, go, help, menu, page, reload, selection, show, where,");
         }
         public virtual void Menu()
         {   //No argument
@@ -694,6 +627,73 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided.");
         }
+        public virtual void Show()
+        {
+            //Applied to List
+            CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
+            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            EnterCommand("show 1");
+            WaitForOutput("Item 1: No Discount;");
+            EnterCommand("show 16");
+            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale;");
+
+            EnterCommand("show 2-4");
+            WaitForOutput("Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24; Item 4: Volume Discount 25 to 40;");
+            EnterCommand("show 5-5");
+            WaitForOutput("Item 5: Volume Discount 41 to 60;");
+            EnterCommand("show -3");
+            WaitForOutput("Item 1: No Discount; Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24;");
+            EnterCommand("show 15-");
+            WaitForOutput("Item 15: Half-Price Pedal Sale; Item 16: Mountain-500 Silver Clearance Sale;");
+
+
+            //Invalid numbers
+            EnterCommand("show 17");
+            WaitForOutput("The highest numbered item is 16");
+            EnterCommand("show 0");
+            WaitForOutput("Item number or range values must be greater than zero");
+            EnterCommand("show 15-17");
+            WaitForOutput("The highest numbered item is 16");
+            EnterCommand("show 0-3");
+            WaitForOutput("Item number or range values must be greater than zero");
+            EnterCommand("show 5-4");
+            WaitForOutput("Starting item number cannot be greater than the ending item number");
+
+            //Applied to collection
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-44518&selected1=256&collection1_Details=List");
+            WaitForOutput("Collection: Details on Sales Order Header: SO44518, 20 items");
+            EnterCommand("show 1");
+            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44;");
+            EnterCommand("show 20");
+            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38;");
+
+            //No number
+            EnterCommand("show");
+            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
+
+            //Too many parms
+            EnterCommand("show 4,5");
+            WaitForOutput("Too many arguments provided.");
+
+            //Alpha parm
+            EnterCommand("show one");
+            WaitForOutput("Argument must be a single number or number range such as 3-5");
+
+            //Invalid context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("show 1");
+            WaitForOutput("The command: show is not available in the current context");
+            CiceroUrl("home?menu1=CustomerRepository");
+            WaitForOutput("Customers menu.");
+            EnterCommand("show 1");
+            WaitForOutput("The command: show is not available in the current context");
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29863");
+            WaitForOutput("Customer: Efficient Cycling, AW00029863.");
+            EnterCommand("show 1");
+            WaitForOutput("The command: show is not available in the current context");
+
+        }
         public virtual void Where()
         {
             CiceroUrl("home");
@@ -784,8 +784,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Help() { base.Help(); }
         [TestMethod]
-        public override void Item() { base.Item(); }
-        [TestMethod]
         public override void Menu() { base.Menu(); }
         [TestMethod]
         public override void OK() { base.OK(); }
@@ -793,6 +791,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void Page() { base.Page(); }
         [TestMethod]
         public override void Root() { base.Root(); }
+        [TestMethod]
+        public override void Show() { base.Show(); }
         [TestMethod]
         public override void Where() { base.Where(); }
         [TestMethod]
@@ -900,13 +900,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Gemini();
             base.Go();
             base.Help();
-            base.Item();
             base.Menu();
             base.OK();
             base.Page();
             base.Root();
-            base.UpAndDownArrow();
+            base.Show();
             base.Where();
+            base.UpAndDownArrow();
             base.ScenarioUsingClipboard();
         }
     }
