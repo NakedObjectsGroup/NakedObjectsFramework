@@ -8,25 +8,26 @@ module NakedObjects.Angular.Gemini {
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        actionViewModel($scope: ng.IScope, actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
         dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, routedata: PaneRouteData): DialogViewModel;
-        collectionViewModel($scope: ng.IScope, collection: CollectionMember, routeData: PaneRouteData, recreate: (scope : INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
-        collectionViewModel($scope: ng.IScope, collection: ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
+        collectionViewModel(collection: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
+        listViewModel($scope: ng.IScope, collection: ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
         collectionPlaceholderViewModel(scope: INakedObjectsScope, page: number, reload: (scope: INakedObjectsScope) => void): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
         serviceViewModel($scope: ng.IScope, serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
-        domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, routedata: PaneRouteData): DomainObjectViewModel;
-        tableRowViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
-
-        ciceroViewModel(): CiceroViewModel;
-    }
-
-    interface IViewModelFactoryInternal extends IViewModelFactory {
+        //domainObjectViewModel($scope: ng.IScope, objectRep: DomainObjectRepresentation, routedata: PaneRouteData): DomainObjectViewModel;
+        tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
+        ciceroViewModel(): CiceroViewModel;
+        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
+    }
+
+    interface IViewModelFactoryInternal extends IViewModelFactory {
+       
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
@@ -262,7 +263,7 @@ module NakedObjects.Angular.Gemini {
             return parmViewModel;
         };
 
-        viewModelFactory.actionViewModel = ($scope: ng.IScope, actionRep: ActionMember, routeData: PaneRouteData) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, routeData: PaneRouteData) => {
             var actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
@@ -317,20 +318,20 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        const currentOvms: DomainObjectViewModel[] = [];
+       // const currentOvms: DomainObjectViewModel[] = [];
 
-        function getObjectViewModel(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
+        //function getObjectViewModel(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
 
-            const paneId = routeData.paneId;
-            const editing = routeData.edit;
-            const currentOvm = currentOvms[paneId];
-            if (editing && currentOvm && currentOvm.isSameEditView(paneId, obj, editing)) {
-                return { objectViewModel: currentOvm, ret: true };
-            }
-            const ovm = new DomainObjectViewModel();
-            currentOvms[paneId] = ovm;
-            return { objectViewModel: ovm, ret: false };
-        }
+        //    const paneId = routeData.paneId;
+        //    const editing = routeData.edit;
+        //    const currentOvm = currentOvms[paneId];
+        //    if (editing && currentOvm && currentOvm.isSameEditView(paneId, obj, editing)) {
+        //        return { objectViewModel: currentOvm, ret: true };
+        //    }
+        //    const ovm = new DomainObjectViewModel();
+        //    currentOvms[paneId] = ovm;
+        //    return { objectViewModel: ovm, ret: false };
+        //}
 
         const currentLvms: CollectionViewModel[] = [];
 
@@ -355,7 +356,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        function handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) {
+        viewModelFactory.handleErrorResponse = (err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) => {
 
             let requiredFieldsMissing = false; // only show warning message if we have nothing else 
             let fieldValidationErrors = false;
@@ -426,7 +427,7 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.doInvoke = (right?: boolean) =>
                 executeInvoke(right).then((err: ErrorMap) => {
                     if (err.containsError()) {
-                        handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
+                        viewModelFactory.handleErrorResponse(err, dialogViewModel, dialogViewModel.parameters);
                     } else {
                         dialogViewModel.doClose();
                     }
@@ -567,7 +568,7 @@ module NakedObjects.Angular.Gemini {
             return propertyViewModel;
         };
 
-        function getItems($scope: ng.IScope, collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean, routeData: PaneRouteData) {
+        function getItems(collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean, routeData: PaneRouteData) {
             const selectedItems = routeData.selectedItems;
 
             const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId, selectedItems[i]));
@@ -580,7 +581,7 @@ module NakedObjects.Angular.Gemini {
                     context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id).
                         then((obj: DomainObjectRepresentation) => {
 
-                            itemViewModel.target = viewModelFactory.tableRowViewModel($scope, obj, routeData);
+                            itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData);
 
                             if (!collectionViewModel.header) {
                                 collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
@@ -595,7 +596,7 @@ module NakedObjects.Angular.Gemini {
             return items;
         }
 
-        function create($scope: ng.IScope, collectionRep: CollectionMember, routeData: PaneRouteData) {
+        function create(collectionRep: CollectionMember, routeData: PaneRouteData) {
             const collectionViewModel = new CollectionViewModel();
 
             const links = collectionRep.value();
@@ -610,7 +611,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType());
 
-            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table, routeData);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, routeData);
 
             switch (state) {
                 case CollectionViewState.List:
@@ -653,7 +654,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.pluralName = "Objects";
-            collectionViewModel.items = getItems($scope, collectionViewModel, links, state === CollectionViewState.Table, routeData);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, routeData);
 
             const page = listRep.pagination().page;
             const pageSize = listRep.pagination().pageSize;
@@ -667,7 +668,7 @@ module NakedObjects.Angular.Gemini {
 
 
             const actions = listRep.actionMembers();
-            collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel($scope, action, routeData));
+            collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
 
             // todo do more elegantly 
 
@@ -745,19 +746,29 @@ module NakedObjects.Angular.Gemini {
 
             collectionViewModel.refreshState = (newScope: INakedObjectsScope, rd : PaneRouteData) => {
                 scope = newScope;
-                collectionViewModel.items = getItems(newScope, collectionViewModel, links, state === CollectionViewState.Table, rd);
+                collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, rd);
             }
 
             return collectionViewModel;
         }
 
 
-        viewModelFactory.collectionViewModel = ($scope: INakedObjectsScope, collection: CollectionMember | ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number) => void) => {
+        viewModelFactory.collectionViewModel = (collection: CollectionMember , routeData: PaneRouteData) => {
             let collectionVm: CollectionViewModel = null;
 
             if (collection instanceof CollectionMember) {
-                collectionVm = create($scope, collection, routeData);
+                collectionVm = create( collection, routeData);
             }
+
+     
+
+            return collectionVm;
+        };
+
+        viewModelFactory.listViewModel = ($scope: INakedObjectsScope, collection:  ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number) => void) => {
+            let collectionVm: CollectionViewModel = null;
+
+       
 
             if (collection instanceof ListRepresentation) {
                 collectionVm = createFromList($scope, collection, routeData, recreate);
@@ -765,6 +776,7 @@ module NakedObjects.Angular.Gemini {
 
             return collectionVm;
         };
+
 
         viewModelFactory.collectionPlaceholderViewModel = (scope: INakedObjectsScope, page: number, reload: (scope: INakedObjectsScope) => void) => {
             const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
@@ -804,123 +816,123 @@ module NakedObjects.Angular.Gemini {
             const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel($scope, action, routeData));
+            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel( action, routeData));
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
         };
   
         // seperate function so we can reuse in reload
-        function setupDomainObjectViewModel(objectViewModel: DomainObjectViewModel, $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData) {
+        //function setupDomainObjectViewModel(objectViewModel: DomainObjectViewModel, $scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData) {
 
 
-            const props: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
-            const editing = routeData.edit;
-            const paneId = routeData.paneId;
+        //    const props: _.Dictionary<Value> = routeData.edit ? routeData.props : {};
+        //    const editing = routeData.edit;
+        //    const paneId = routeData.paneId;
 
-            objectViewModel.domainObject = objectRep;
-            objectViewModel.onPaneId = paneId;
-            objectViewModel.isTransient = !!objectRep.persistLink();
-            objectViewModel.color = color.toColorFromType(objectRep.domainType());
-            objectViewModel.domainType = objectRep.domainType();
-            objectViewModel.instanceId = objectRep.instanceId();
-            objectViewModel.draggableType = objectViewModel.domainType;
+        //    objectViewModel.domainObject = objectRep;
+        //    objectViewModel.onPaneId = paneId;
+        //    objectViewModel.isTransient = !!objectRep.persistLink();
+        //    objectViewModel.color = color.toColorFromType(objectRep.domainType());
+        //    objectViewModel.domainType = objectRep.domainType();
+        //    objectViewModel.instanceId = objectRep.instanceId();
+        //    objectViewModel.draggableType = objectViewModel.domainType;
 
-            objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
+        //    objectViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, objectViewModel.domainType);
 
-            const properties = objectRep.propertyMembers();
-            const collections = objectRep.collectionMembers();
-            const actions = objectRep.actionMembers();
+        //    const properties = objectRep.propertyMembers();
+        //    const collections = objectRep.collectionMembers();
+        //    const actions = objectRep.actionMembers();
 
-            objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName() }` : objectRep.title();
+        //    objectViewModel.title = objectViewModel.isTransient ? `Unsaved ${objectRep.extensions().friendlyName() }` : objectRep.title();
 
-            objectViewModel.message = "";
+        //    objectViewModel.message = "";
 
-            objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel($scope, action, routeData));
-            objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
-            objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel($scope, collection, routeData, (scope : INakedObjectsScope, page: number, newPageSize: number) => { }));
+        //    objectViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel( action, routeData));
+        //    objectViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, props[id], paneId));
+        //    objectViewModel.collections = _.map(collections, collection => viewModelFactory.collectionViewModel(collection, routeData));
 
            
-            objectViewModel.toggleActionMenu = () => {
-                focusManager.focusOverrideOff();
-                urlManager.toggleObjectMenu(paneId);
-            };
+        //    objectViewModel.toggleActionMenu = () => {
+        //        focusManager.focusOverrideOff();
+        //        urlManager.toggleObjectMenu(paneId);
+        //    };
 
-             // for dropping
-            const link = objectRep.selfLink();
-            if (link) {
-                // not transient - can't drag transients so no need to set up IDraggable members on transients
-                //link.set("title", objectViewModel.title);
-                link.wrapped.title = objectViewModel.title;
-
-
-                const value = new Value(link);
-
-                objectViewModel.value = value.toString();
-                objectViewModel.reference = value.toValueString();
-                objectViewModel.choice = ChoiceViewModel.create(value, "");
-            }
-
-            if (editing || objectViewModel.isTransient) {
-
-                const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
-                const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p.propertyRep, p.getValue(), paneId, false));
-                const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
-                const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
-
-                const cancelHandler = objectViewModel.isTransient ?
-                    () => urlManager.popUrlState(paneId) :
-                    () => urlManager.setObjectEdit(false, paneId);
+        //     // for dropping
+        //    const link = objectRep.selfLink();
+        //    if (link) {
+        //        // not transient - can't drag transients so no need to set up IDraggable members on transients
+        //        //link.set("title", objectViewModel.title);
+        //        link.wrapped.title = objectViewModel.title;
 
 
-                objectViewModel.editComplete = () => {
-                    setProperties();
-                    deregisterLocationWatch();
-                    deregisterSearchWatch();
-                };
+        //        const value = new Value(link);
 
-                objectViewModel.doEditCancel = () => {
-                    objectViewModel.editComplete();
-                    cancelHandler();
-                };
+        //        objectViewModel.value = value.toString();
+        //        objectViewModel.reference = value.toValueString();
+        //        objectViewModel.choice = ChoiceViewModel.create(value, "");
+        //    }
 
-                const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
-                objectViewModel.doSave = viewObject => {
-                    setProperties();
-                    const pps = _.filter(objectViewModel.properties, property => property.isEditable);
-                    const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+        //    if (editing || objectViewModel.isTransient) {
 
-                    saveHandler(objectRep, propMap, paneId, viewObject).then((err: ErrorMap) => {
-                        if (err.containsError()) {
-                            handleErrorResponse(err, objectViewModel, objectViewModel.properties);
-                        }
-                    });
-                };
-                objectViewModel.isInEdit = true;
-            }
+        //        const editProperties = _.filter(objectViewModel.properties, p => p.isEditable);
+        //        const setProperties = () => _.forEach(editProperties, p => urlManager.setPropertyValue(objectRep, p.propertyRep, p.getValue(), paneId, false));
+        //        const deregisterLocationWatch = $scope.$on("$locationChangeStart", setProperties);
+        //        const deregisterSearchWatch = $scope.$watch(() => $location.search(), setProperties, true);
 
-            objectViewModel.doEdit = () => {
-                context.reloadObject(paneId, objectRep).
-                    then((updatedObject: DomainObjectRepresentation) => {
-                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
-                        $scope.object = objectViewModel;
-                        urlManager.pushUrlState(paneId);
-                        urlManager.setObjectEdit(true, paneId);
-                    });
-            }
+        //        const cancelHandler = objectViewModel.isTransient ?
+        //            () => urlManager.popUrlState(paneId) :
+        //            () => urlManager.setObjectEdit(false, paneId);
 
-            objectViewModel.doReload = (refreshScope?: boolean) =>
-                context.reloadObject(paneId, objectRep).
-                    then((updatedObject: DomainObjectRepresentation) => {
-                        setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
-                        if (refreshScope) {
-                            $scope.object = objectViewModel;
-                        }
-                    });
 
-        };
+        //        objectViewModel.editComplete = () => {
+        //            setProperties();
+        //            deregisterLocationWatch();
+        //            deregisterSearchWatch();
+        //        };
 
-        viewModelFactory.tableRowViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
+        //        objectViewModel.doEditCancel = () => {
+        //            objectViewModel.editComplete();
+        //            cancelHandler();
+        //        };
+
+        //        const saveHandler = objectViewModel.isTransient ? context.saveObject : context.updateObject;
+        //        objectViewModel.doSave = viewObject => {
+        //            setProperties();
+        //            const pps = _.filter(objectViewModel.properties, property => property.isEditable);
+        //            const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+
+        //            saveHandler(objectRep, propMap, paneId, viewObject).then((err: ErrorMap) => {
+        //                if (err.containsError()) {
+        //                    handleErrorResponse(err, objectViewModel, objectViewModel.properties);
+        //                }
+        //            });
+        //        };
+        //        objectViewModel.isInEdit = true;
+        //    }
+
+        //    objectViewModel.doEdit = () => {
+        //        context.reloadObject(paneId, objectRep).
+        //            then((updatedObject: DomainObjectRepresentation) => {
+        //                setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
+        //                $scope.object = objectViewModel;
+        //                urlManager.pushUrlState(paneId);
+        //                urlManager.setObjectEdit(true, paneId);
+        //            });
+        //    }
+
+        //    objectViewModel.doReload = (refreshScope?: boolean) =>
+        //        context.reloadObject(paneId, objectRep).
+        //            then((updatedObject: DomainObjectRepresentation) => {
+        //                setupDomainObjectViewModel(objectViewModel, $scope, updatedObject, routeData);
+        //                if (refreshScope) {
+        //                    $scope.object = objectViewModel;
+        //                }
+        //            });
+
+        //};
+
+        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
             tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId));
@@ -929,15 +941,15 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData): DomainObjectViewModel => {
-            const {objectViewModel, ret} = getObjectViewModel(objectRep, routeData);
-            if (ret) {
-                return objectViewModel;
-            }
+        //viewModelFactory.domainObjectViewModel = ($scope: INakedObjectsScope, objectRep: DomainObjectRepresentation, routeData: PaneRouteData): DomainObjectViewModel => {
+        //    const {objectViewModel, ret} = getObjectViewModel(objectRep, routeData);
+        //    if (ret) {
+        //        return objectViewModel;
+        //    }
 
-            setupDomainObjectViewModel(objectViewModel, $scope, objectRep, routeData);
-            return objectViewModel;
-        };
+        //    setupDomainObjectViewModel(objectViewModel, $scope, objectRep, routeData);
+        //    return objectViewModel;
+        //};
 
         let cachedToolBarViewModel: ToolBarViewModel;
 

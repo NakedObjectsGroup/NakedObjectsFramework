@@ -28,6 +28,8 @@ module NakedObjects.Angular.Gemini {
 
         pane1: PaneRouteData;
         pane2: PaneRouteData;
+
+        pane = () => [, this.pane1, this.pane2];
     }
 
     export class PaneRouteData {
