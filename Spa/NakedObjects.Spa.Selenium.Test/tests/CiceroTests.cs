@@ -208,7 +208,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStarting("Result from Current Special Offers: Page 1 ");
+            WaitForOutputStarting("Result from Current Special Offers: 16 items");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
         }
@@ -400,16 +400,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided.");
             //Now try for a list context
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: 16 items");
             EnterCommand("go 1");
             WaitForOutput("Special Offer: No Discount.");
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: 16 items");
             EnterCommand("go 16");
             WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale.");
             //Try out of range
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: 16 items");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
             EnterCommand("go 17");
@@ -452,7 +452,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided.");
             //List context
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutputStarting("Result from Current Special Offers: Page 1 of 1");
+            WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("help");
             WaitForOutput("Commands available in current context: action, back, clipboard, forward, gemini, go, help, menu, page, reload, selection, show, where,");
         }
@@ -490,7 +490,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invoking menu from a non-home context, clears state
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStarting("Result from Current Special Offers: Page 1");
+            WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("menu cus");
             WaitForOutput("Customers menu.");
         }
@@ -552,7 +552,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory&field1_subCategory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F10%2522%252C%2522title%2522%253A%2522Forks%2522%257D");
             WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
             EnterCommand("ok");
-            WaitForOutputStarting("Result from List Products By Sub Category: Page 1 of 1 containing 3 of 3 items");
+            WaitForOutputStarting("Result from List Products By Sub Category: 3 items");
 
             //Action resuling in an error
             CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
@@ -631,7 +631,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Applied to List
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutput("Result from Current Special Offers: Page 1 of 1 containing 16 of 16 items");
+            WaitForOutput("Result from Current Special Offers: 16 items");
             EnterCommand("show 1");
             WaitForOutput("Item 1: No Discount;");
             EnterCommand("show 16");

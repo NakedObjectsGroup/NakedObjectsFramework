@@ -782,11 +782,16 @@ module NakedObjects.Angular.Gemini {
                         const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
                         listPromise.then((list: ListRepresentation) => {
                             context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
-                                const page = list.pagination().page;
-                                const numPages = list.pagination().numPages;
                                 const count = list.value().length;
-                                const totalCount = list.pagination().totalCount;
-                                const description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+                                const numPages = list.pagination().numPages;
+                                let description: string;
+                                if (numPages > 1) {
+                                    const page = list.pagination().page;
+                                    const totalCount = list.pagination().totalCount;
+                                    description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+                                } else {
+                                    description = `${count} items`;
+                                }
                                 const actionMember = menu.actionMember(routeData.actionId);
                                 const actionName = actionMember.extensions().friendlyName();
                                 cvm.clearInput();
