@@ -56,7 +56,7 @@ module NakedObjects.Angular.Gemini {
 
         function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
             $scope.dialogTemplate = dialogTemplate;          
-            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel($scope, action, routeData) : action as ActionViewModel;    
+            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel( action, routeData) : action as ActionViewModel;    
             $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData);
         }
 
@@ -94,7 +94,7 @@ module NakedObjects.Angular.Gemini {
                         context.getMenu(routeData.menuId).
                             then((menu: MenuRepresentation) => {
                                 $scope.actionsTemplate = actionsTemplate;
-                                const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel($scope, am, routeData)) };
+                                const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel( am, routeData)) };
                                 $scope.object = actions;
 
                                 const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.SubAction;
@@ -133,7 +133,7 @@ module NakedObjects.Angular.Gemini {
             const setListInScope = (scope : INakedObjectsScope, list: ListRepresentation, recreateFunc: (scope : INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void) => {
 
                 scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
-                const collectionViewModel = viewModelFactory.collectionViewModel(scope, list, routeData, recreateFunc);
+                const collectionViewModel = viewModelFactory.listViewModel(scope, list, routeData, recreateFunc);
                 scope.collection = collectionViewModel;
                 scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
@@ -182,6 +182,9 @@ module NakedObjects.Angular.Gemini {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
         };
 
+        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager),
+                                      new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
             const [dt, ...id] = routeData.objectId.split("-");
@@ -194,7 +197,8 @@ module NakedObjects.Angular.Gemini {
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
-                    const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData);
+                    //const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData);
+                    const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
                     $scope.object = ovm;
 

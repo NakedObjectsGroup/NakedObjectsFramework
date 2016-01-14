@@ -490,20 +490,15 @@ module NakedObjects.Angular.Gemini {
 
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId : number) => {
             const update = object.getUpdateMap();
-
-      
+    
             _.each(props, (v, k) => update.setProperty(k, v));
 
             return repLoader.populate(update, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    //ovm.editComplete();
-
+             
                     // This is a kludge because updated object has no self link.
                     const rawLinks = object.wrapped().links;
                     updatedObject.wrapped().links = rawLinks;
-
-                    // remove pre-changed object from cache
-                   // $cacheFactory.get("$http").remove(updatedObject.hateoasUrl);
 
                     context.setObject(paneId, updatedObject);
 
@@ -525,7 +520,6 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
                    context.setObject(paneId, updatedObject);
-
 
                     dirtyCache.setDirty(updatedObject);
 

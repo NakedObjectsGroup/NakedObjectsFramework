@@ -83,7 +83,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ItemViewModel extends LinkViewModel{
-        target: DomainObjectViewModel;   
+        target: TableRowViewModel;   
         selected : boolean;
         checkboxChange: (index: number) => void;
     }
@@ -346,44 +346,139 @@ module NakedObjects.Angular.Gemini {
         color: string;
     } 
 
+    export class TableRowViewModel {     
+        properties: PropertyViewModel[];
+    }
 
-    export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel{
+    export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
+
+        constructor(private colorService: IColor,
+                    private contextService: IContext,
+                    private viewModelFactory: IViewModelFactory,
+                    private urlManager: IUrlManager,
+                    private focusManager: IFocusManager) {
+            super();
+        }
+
+        reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
+            this.domainObject = obj;
+            this.onPaneId = routeData.paneId;
+            this.routeData = routeData;
+            this.isInEdit = routeData.edit;
+            this.props = routeData.edit ? routeData.props : {};
+            this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
+            this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId));
+            this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
+
+            this.isTransient = !!this.domainObject.persistLink();
+
+            this.title = this.isTransient ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+            this.domainType = this.domainObject.domainType();
+            this.instanceId = this.domainObject.instanceId();
+            this.draggableType = this.domainObject.domainType();
+
+            this.isInEdit = routeData.edit;
+
+            const selfAsValue = () => {
+                const link = this.domainObject.selfLink();
+                if (link) {
+                    // not transient - can't drag transients so no need to set up IDraggable members on transients
+                    link.setTitle(this.title);
+                    return new Value(link);
+                }
+                return null;
+            }
+
+            const sav = selfAsValue();
+
+            this.value = sav ? sav.toString() : "";
+            this.reference = sav ? sav.toValueString() : "";
+            this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
+            this.color = this.colorService.toColorFromType(this.domainObject.domainType());
+
+            return this;
+        }
+
+        routeData: PaneRouteData;
+        domainObject: DomainObjectRepresentation;
+        onPaneId: number;
+        props: _.Dictionary<Value> | {};
+
         title: string;
-        domainType: string; 
+        domainType: string;
         instanceId: string;
+        isTransient: boolean;
+        draggableType: string;
+        isInEdit: boolean;
+        value: string;
+        reference: string;
+        choice: ChoiceViewModel;
+        color: string;
+        actions: ActionViewModel[];
         properties: PropertyViewModel[];
         collections: CollectionViewModel[];
-        actions: ActionViewModel[];
-        color: string; 
-        doSave(edit : boolean): void { }
-        toggleActionMenu(): void { }
-        isTransient: boolean;
-        onPaneId: number;
-        draggableType : string;
 
-        doEdit(): void { }
-        doEditCancel(): void { }
-        doReload(refreshScope?: boolean): void { }
-        editComplete(): void { };
+        toggleActionMenu = () => {
+            this.focusManager.focusOverrideOff();
+            this.urlManager.toggleObjectMenu(this.onPaneId);
+        };
 
-        hideEdit(): boolean {
-            return  this.isTransient ||  _.all(this.properties, p => !p.isEditable);
+        private editProperties = () => _.filter(this.properties, p => p.isEditable);
+        private setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
+
+        private cancelHandler = this.isTransient ?
+            () => this.urlManager.popUrlState(this.onPaneId) :
+            () => this.urlManager.setObjectEdit(false, this.onPaneId);
+
+        editComplete = () => {
+            this.setProperties();
+        };
+
+        doEditCancel = () => {
+            this.editComplete();
+            this.cancelHandler();
+        };
+
+        doSave = viewObject => {
+
+            const saveHandler = this.isTransient ? this.contextService.saveObject : this.contextService.updateObject;
+            this.setProperties();
+            const pps = _.filter(this.properties, property => property.isEditable);
+            const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+
+            saveHandler(this.domainObject, propMap, this.onPaneId, viewObject).then((err: ErrorMap) => {
+                if (err.containsError()) {
+                    this.viewModelFactory.handleErrorResponse(err, this, this.properties);
+                }
+            });
+        };
+
+
+        doEdit = () => {
+            this.contextService.reloadObject(this.onPaneId, this.domainObject).
+                then((updatedObject: DomainObjectRepresentation) => {
+                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                    this.urlManager.pushUrlState(this.onPaneId);
+                    this.urlManager.setObjectEdit(true, this.onPaneId);
+                });
         }
+
+        doReload = () =>
+            this.contextService.reloadObject(this.onPaneId, this.domainObject).
+                then((updatedObject: DomainObjectRepresentation) => {
+                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                });
+
+
+        hideEdit = () => this.isTransient || _.all(this.properties, p => !p.isEditable);
 
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
         }
 
-        canDropOn: (targetType: string) => ng.IPromise<boolean>;
+        canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
 
-        value: number | string | boolean;
-        reference: string;
-        choice: ChoiceViewModel;
-
-        domainObject : DomainObjectRepresentation;
-        isInEdit : boolean = false;
-
-        isSameEditView(paneId: number, otherObject: DomainObjectRepresentation, editing : boolean) {
+        isSameEditView(paneId: number, otherObject: DomainObjectRepresentation, editing: boolean) {
             const bothEditing = this.isInEdit && editing;
             return bothEditing && this.onPaneId === paneId && this.domainObject.selfLink().href() === otherObject.selfLink().href();
         }
