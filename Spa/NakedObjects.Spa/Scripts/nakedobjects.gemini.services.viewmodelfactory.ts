@@ -20,7 +20,6 @@ module NakedObjects.Angular.Gemini {
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
-        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel );
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
@@ -43,8 +42,7 @@ module NakedObjects.Angular.Gemini {
         navigation: INavigation,
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
-        $rootScope: ng.IRootScopeService,
-        $route ) {
+        $rootScope: ng.IRootScopeService) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -220,10 +218,10 @@ module NakedObjects.Angular.Gemini {
             } else {
                 if (parmRep.extensions().returnType() === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
-                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time" ) {
+                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time") {
                     const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
                     const dateValue = Date.parse(rawValue);
-                    parmViewModel.value = dateValue ? new Date(rawValue) : null; 
+                    parmViewModel.value = dateValue ? new Date(rawValue) : null;
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
@@ -535,10 +533,10 @@ module NakedObjects.Angular.Gemini {
             return propertyViewModel;
         };
 
-        viewModelFactory.getItems = (links: Link[], populateItems: boolean, routeData: PaneRouteData, listViewModel : ListViewModel | CollectionViewModel) => {
+        function getItems(collectionViewModel: CollectionViewModel, links: Link[], populateItems: boolean, routeData: PaneRouteData) {
             const selectedItems = routeData.selectedItems;
 
-            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
+            const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, collectionViewModel.onPaneId, selectedItems[i]));
 
             if (populateItems) {
 
@@ -550,8 +548,8 @@ module NakedObjects.Angular.Gemini {
 
                             itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData);
 
-                            if (!listViewModel.header) {
-                                listViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
+                            if (!collectionViewModel.header) {
+                                collectionViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
                                 focusManager.focusOverrideOff();
                                 focusManager.focusOn(FocusTarget.TableItem, 0, urlManager.currentpane());
                             }
@@ -578,7 +576,7 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType());
 
-            collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
+            collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, routeData);
 
             switch (state) {
                 case CollectionViewState.List:
@@ -599,22 +597,24 @@ module NakedObjects.Angular.Gemini {
             return collectionViewModel;
         };
 
+        viewModelFactory.listViewModel = ($scope: INakedObjectsScope, collection: ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number) => void) => {
+            let collectionVm: CollectionViewModel = null;
       
         viewModelFactory.listPlaceholderViewModel = (routeData : PaneRouteData) => {
+
+            if (collection instanceof ListRepresentation) {
+                collectionVm = createFromList($scope, collection, routeData, recreate);
+            }
+
+            return collectionVm;
+        };
+
+
+        viewModelFactory.collectionPlaceholderViewModel = (scope: INakedObjectsScope, page: number, reload: (scope: INakedObjectsScope) => void) => {
             const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
 
-            collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
-
-            const recreate = () =>
-                routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
-
-
-            collectionPlaceholderViewModel.reload = () =>
-                recreate().then(() => {
-                $route.reload();
-            });
+            collectionPlaceholderViewModel.description = () => `Page ${page}`;
+            collectionPlaceholderViewModel.reload = () => reload(scope);
             return collectionPlaceholderViewModel;
         }
 
@@ -648,13 +648,13 @@ module NakedObjects.Angular.Gemini {
             const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel( action, routeData));
+            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
         };
-  
-        
+
+
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
@@ -720,83 +720,93 @@ module NakedObjects.Angular.Gemini {
                     commandFactory.parseInput(input, cvm);
                 };
                 cvm.renderHome = (routeData: PaneRouteData) => {
-                    if (routeData.menuId) {
-                        context.getMenu(routeData.menuId)
-                            .then((menu: MenuRepresentation) => {
-                                let output = ""; //TODO: use builder
-                                output += menu.title() + " menu" + ". ";
-                                output += renderActionDialogIfOpen(menu, routeData);
+                    //TODO: Could put this in a function passed into a render method on CVM
+                    if (cvm.message) {
+                        cvm.outputMessageThenClearIt();
+                    } else { 
+                        if (routeData.menuId) {
+                            context.getMenu(routeData.menuId)
+                                .then((menu: MenuRepresentation) => {
+                                    let output = "";
+                                    output += menu.title() + " menu" + ". ";
+                                    output += renderActionDialogIfOpen(menu, routeData);
+                                    cvm.clearInput();
+                                    cvm.output = output;
+                                });
+                        }
+                        else {
+                            cvm.clearInput();
+                            cvm.output = "Welcome to Cicero";
+                        }
+                    }
+                };
+                cvm.renderObject = (routeData: PaneRouteData) => {
+                    if (cvm.message) {
+                        cvm.outputMessageThenClearIt();
+                    } else {
+                        const [domainType, ...id] = routeData.objectId.split("-");
+                        context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                            .then((obj: DomainObjectRepresentation) => {
+                                let output = "";
+                                const openCollIds = openCollectionIds(routeData);
+                                if (_.any(openCollIds)) {
+                                    const id = openCollIds[0];
+                                    const coll = obj.collectionMember(id);
+                                    output += `Collection: ${coll.extensions().friendlyName() } on ${Helpers.typePlusTitle(obj) },  `;
+                                    switch (coll.size()) {
+                                        case 0:
+                                            output += "empty";
+                                            break;
+                                        case 1:
+                                            output += "1 item";
+                                            break;
+                                        default:
+                                            output += `${coll.size() } items`;
+                                    }
+                                } else {
+                                    if (routeData.edit) {
+                                        output += "Editing ";
+                                    }
+                                    output += Helpers.typePlusTitle(obj) + ". ";
+                                    output += renderActionDialogIfOpen(obj, routeData);
+                                }
                                 cvm.clearInput();
                                 cvm.output = output;
                             });
                     }
-                    else {
-                        cvm.clearInput();
-                        cvm.output = "Welcome to Cicero";
-                    }
-
-                };
-                cvm.renderObject = (routeData: PaneRouteData) => {
-                    const [domainType, ...id] = routeData.objectId.split("-");
-                    context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
-                        .then((obj: DomainObjectRepresentation) => {
-                            let output = "";
-                            const openCollIds = openCollectionIds(routeData);
-                            if (_.any(openCollIds)) {
-                                const id = openCollIds[0];
-                                const coll = obj.collectionMember(id);
-                                output += `Collection: ${coll.extensions().friendlyName()} on ${Helpers.typePlusTitle(obj)},  `;
-                                  switch (coll.size()) {
-                                    case 0:
-                                        output += "empty";
-                                        break;
-                                    case 1:
-                                        output += "1 item";
-                                        break;
-                                    default:
-                                        output += `${coll.size()} items`;
-                                }                             
-                            } else {
-                                if (routeData.edit) {
-                                    output += "Editing ";
-                                }
-                                output += Helpers.typePlusTitle(obj) + ". ";
-                                output += renderActionDialogIfOpen(obj, routeData);
-                            }
-                            cvm.clearInput();
-                            cvm.output = output;
-                        });
                 };
                 cvm.renderList = (routeData: PaneRouteData) => {
-                    const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
-                    listPromise.then((list: ListRepresentation) => {
-                        const page = list.pagination().page;
-                        const numPages = list.pagination().numPages;
-                        const count = list.value().length;
-                        const totalCount = list.pagination().totalCount;
-                        const description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
-                        context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
-                            const actionMember = menu.actionMember(routeData.actionId);
-                            const actionName = actionMember.extensions().friendlyName();
-                            cvm.clearInput();
-                            cvm.output = `Result from ${actionName}: ${description}`;
+                    if (cvm.message) {
+                        cvm.outputMessageThenClearIt();
+                    } else {
+                        const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                        listPromise.then((list: ListRepresentation) => {
+                            context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
+                                const page = list.pagination().page;
+                                const numPages = list.pagination().numPages;
+                                const count = list.value().length;
+                                const totalCount = list.pagination().totalCount;
+                                const description = `Page ${page} of ${numPages} containing ${count} of ${totalCount} items`;
+                                const actionMember = menu.actionMember(routeData.actionId);
+                                const actionName = actionMember.extensions().friendlyName();
+                                cvm.clearInput();
+                                cvm.output = `Result from ${actionName}: ${description}`;
+                            });
                         });
-                    });
+                    }
                 };
                 cvm.renderError = () => {
                     const err = context.getError();
                     cvm.clearInput();
-                    cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
+                    cvm.output = `Sorry, an application error has occurred. ${err.message() }`;
                 };
             }
             return cvm;
         };
-
-
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
-    export function openCollectionIds(routeData: PaneRouteData ): string[] {
+    export function openCollectionIds(routeData: PaneRouteData): string[] {
         return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
     }
 

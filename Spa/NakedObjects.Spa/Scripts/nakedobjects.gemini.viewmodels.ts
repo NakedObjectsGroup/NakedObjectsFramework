@@ -694,6 +694,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CiceroViewModel {
+        message: string;
         output: string;
         input: string;
         parseInput: (input: string) => void;
@@ -705,26 +706,16 @@ module NakedObjects.Angular.Gemini {
             this.input = null;
         }
 
+        outputMessageThenClearIt() {          
+                this.output = this.message;
+                this.message = null;
+        }
+
         renderHome: (routeData: PaneRouteData) => void;
         renderObject: (routeData: PaneRouteData) => void;
         renderList: (routeData: PaneRouteData) => void;
         renderError: () => void;
-
         viewType: ViewType;
-
-        renderForViewType(routeData: PaneRouteData) {
-            switch (this.viewType) {
-                case ViewType.Home:
-                    this.renderHome(routeData);
-                    break;
-                case ViewType.Object:
-                    this.renderObject(routeData);
-                    break;
-                case ViewType.List:
-                    this.renderList(routeData);
-                    break;
-            }
-        }
         clipboard: DomainObjectRepresentation;
     }
 }

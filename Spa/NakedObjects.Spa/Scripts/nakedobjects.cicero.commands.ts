@@ -11,7 +11,8 @@ module NakedObjects.Angular.Gemini {
             protected commandFactory: ICommandFactory,
             protected context: IContext,
             protected navigation: INavigation,
-            protected $q: ng.IQService
+            protected $q: ng.IQService,
+            protected $route: ng.route.IRouteService
         ) {
         }
 
@@ -36,14 +37,12 @@ module NakedObjects.Angular.Gemini {
 
         public abstract isAvailableInCurrentContext(): boolean;
 
-        protected clearInput(): void {
-            this.vm.input = "";
-        }
-        
+       
         //Helper methods follow
-        protected clearInputAndSetOutputTo(text: string): void {
-            this.clearInput();
-            this.vm.output = text;
+        protected clearInputAndSetMessage(text: string): void {
+            this.vm.clearInput();
+            this.vm.message = text;
+            this.$route.reload();
         }
 
         protected appendAsNewLineToOutput(text: string): void {
@@ -281,7 +280,7 @@ module NakedObjects.Angular.Gemini {
             const match = this.argumentAsString(args, 0);
             const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
-                this.clearInputAndSetOutputTo("Second argument for action is not yet supported.");
+                this.clearInputAndSetMessage("Second argument for action is not yet supported.");
                 return;
             }
             if (this.isObject()) {
@@ -302,7 +301,7 @@ module NakedObjects.Angular.Gemini {
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
             var actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
-                this.clearInputAndSetOutputTo("No actions available");
+                this.clearInputAndSetMessage("No actions available");
                 return;
             }
             if (match) {
@@ -310,7 +309,7 @@ module NakedObjects.Angular.Gemini {
             }
             switch (actions.length) {
                 case 0:
-                    this.clearInputAndSetOutputTo(match + " does not match any actions");
+                    this.clearInputAndSetMessage(match + " does not match any actions");
                     break;
                 case 1:
                     this.openActionDialog(actions[0]);
@@ -321,7 +320,7 @@ module NakedObjects.Angular.Gemini {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + ", ";
                     }, label);
-                    this.clearInputAndSetOutputTo(s);
+                    this.clearInputAndSetMessage(s);
             }
         }
 
@@ -396,7 +395,7 @@ module NakedObjects.Angular.Gemini {
             const allColls = _.map(collsMap, action => action);
             let matchingColls = allColls;
             if (matchingColls.length === 0) {
-                this.clearInputAndSetOutputTo("No collections visible");
+                this.clearInputAndSetMessage("No collections visible");
                 return;
             }
             if (match) {
@@ -404,7 +403,7 @@ module NakedObjects.Angular.Gemini {
             }
             switch (matchingColls.length) {
                 case 0:
-                    this.clearInputAndSetOutputTo(match + " does not match any collections");
+                    this.clearInputAndSetMessage(match + " does not match any collections");
                     break;
                 case 1:
                     this.openCollection(matchingColls[0]);
@@ -415,14 +414,14 @@ module NakedObjects.Angular.Gemini {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + ", ";
                     }, label);
-                    this.clearInputAndSetOutputTo(s);
+                    this.clearInputAndSetMessage(s);
             }
         }
 
 
         private openCollection(collection: CollectionMember): void {
             this.closeAnyOpenCollections();
-            this.clearInput();
+            this.vm.clearInput();
             this.urlManager.setCollectionMemberState(1, collection.collectionId(), CollectionViewState.List);
         }
     }
@@ -457,13 +456,13 @@ module NakedObjects.Angular.Gemini {
             } else if ("discard".indexOf(sub) === 0) {
                 this.discard();
             } else {
-                this.clearInputAndSetOutputTo("Clipboard command may only be followed by copy, show, go, or discard");
+                this.clearInputAndSetMessage("Clipboard command may only be followed by copy, show, go, or discard");
             }
         };
 
         private copy(): void {
             if (!this.isObject()) {
-                this.clearInputAndSetOutputTo("Clipboard copy may only be used in the context of viewing and object");
+                this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing and object");
                 return;
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
@@ -474,9 +473,9 @@ module NakedObjects.Angular.Gemini {
         private show(): void {
             if (this.vm.clipboard) {
                 const label = Helpers.typePlusTitle(this.vm.clipboard);
-                this.clearInputAndSetOutputTo("Clipboard contains: " + label);
+                this.clearInputAndSetMessage("Clipboard contains: " + label);
             } else {
-                this.clearInputAndSetOutputTo("Clipboard is empty");
+                this.clearInputAndSetMessage("Clipboard is empty");
             }
         }
         private go(): void {
@@ -546,11 +545,11 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             else if (this.isEdit()) {
-                this.clearInputAndSetOutputTo("Modifying fields on an object in edit mode is not yet supported.");
+                this.clearInputAndSetMessage("Modifying fields on an object in edit mode is not yet supported.");
                 return;
             }
             //Must be object but not in Edit mode
-            this.clearInputAndSetOutputTo("Fields may only be modified if object is in edit mode.");
+            this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode.");
         };
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
@@ -559,13 +558,13 @@ module NakedObjects.Angular.Gemini {
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
                     case 0:
-                        this.clearInputAndSetOutputTo("No fields in the current context match " + fieldName);
+                        this.clearInputAndSetMessage("No fields in the current context match " + fieldName);
                         break;
                     case 1:
                         this.setField(params[0], fieldEntry);
                         break;
                     default:
-                        this.clearInputAndSetOutputTo("Multiple fields match " + fieldName); //TODO: list them
+                        this.clearInputAndSetMessage("Multiple fields match " + fieldName); //TODO: list them
                         break;
                 }
             });
@@ -595,14 +594,14 @@ module NakedObjects.Angular.Gemini {
             if ("paste".indexOf(fieldEntry) === 0) {
                 this.handleClipboard(param);
             } else {
-                this.clearInputAndSetOutputTo("Invalid entry for a reference field. Use clipboard or clip");
+                this.clearInputAndSetMessage("Invalid entry for a reference field. Use clipboard or clip");
             }
         }
 
         private handleClipboard(param: Parameter) {
             const ref = this.vm.clipboard;
             if (!ref) {
-                this.clearInputAndSetOutputTo("Cannot use Clipboard as it is empty");
+                this.clearInputAndSetMessage("Cannot use Clipboard as it is empty");
                 return;
             }
             const paramType = param.extensions().returnType();
@@ -617,7 +616,7 @@ module NakedObjects.Angular.Gemini {
                         const value = new Value(selfLink);
                         this.setFieldValue(param, value);
                     } else {
-                        this.clearInputAndSetOutputTo("Contents of Clipboard are not compatible with the field.");
+                        this.clearInputAndSetMessage("Contents of Clipboard are not compatible with the field.");
                     }
                 });
         }
@@ -626,7 +625,7 @@ module NakedObjects.Angular.Gemini {
             const matches = this.findMatchingChoices(param.choices(), fieldEntry);
             switch (matches.length) {
                 case 0:
-                    this.clearInputAndSetOutputTo("None of the choices matches " + fieldEntry);
+                    this.clearInputAndSetMessage("None of the choices matches " + fieldEntry);
                     break;
                 case 1:
                     this.setFieldValue(param, matches[0]);
@@ -634,7 +633,7 @@ module NakedObjects.Angular.Gemini {
                 default:
                     let msg = "Multiple matches: ";
                     _.forEach(matches, m => msg += m.toString() + ", ");
-                    this.clearInputAndSetOutputTo(msg);
+                    this.clearInputAndSetMessage(msg);
                     break;
             }
         }
@@ -649,7 +648,7 @@ module NakedObjects.Angular.Gemini {
                         output += value.toValueString() || "empty";
                         output += ", ";
                     });
-                    this.clearInputAndSetOutputTo(output);
+                    this.clearInputAndSetMessage(output);
                 });
                 return;
             }
@@ -696,7 +695,7 @@ module NakedObjects.Angular.Gemini {
                                     return s + this.renderProp(prop);
                                 }, "");
                         }
-                        this.clearInputAndSetOutputTo(s);
+                        this.clearInputAndSetMessage(s);
                     });
             }
         }
@@ -718,7 +717,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
         execute(args: string): void {
-            this.clearInput();  //To catch case where can't go any further forward and hence url does not change.
+            this.vm.clearInput();  //To catch case where can't go any further forward and hence url does not change.
             this.navigation.forward();
         };
     }
@@ -757,12 +756,12 @@ module NakedObjects.Angular.Gemini {
             if (this.isList()) {
                 const itemNo: number = parseInt(arg0);
                 if (isNaN(itemNo)) {
-                    this.clearInputAndSetOutputTo(arg0 + " is not a valid number");
+                    this.clearInputAndSetMessage(arg0 + " is not a valid number");
                     return;
                 }
                 this.getList().then((list: ListRepresentation) => {
                     if (itemNo < 1 || itemNo > list.value().length) {
-                        this.clearInputAndSetOutputTo(arg0 + " is out of range for displayed items");
+                        this.clearInputAndSetMessage(arg0 + " is out of range for displayed items");
                         return;
                     }
                     const link = list.value()[itemNo - 1]; // On UI, first item is '1'
@@ -804,7 +803,7 @@ module NakedObjects.Angular.Gemini {
                                         return s + prop.extensions().friendlyName();
                                     }, label);
                             }
-                            this.clearInputAndSetOutputTo(s);
+                            this.clearInputAndSetMessage(s);
                         }
                     });
             }
@@ -828,13 +827,13 @@ module NakedObjects.Angular.Gemini {
             if (arg) {
                 try {
                     const c = this.commandFactory.getCommand(arg);
-                    this.clearInputAndSetOutputTo(c.fullCommand + " command: " + c.helpText);
+                    this.clearInputAndSetMessage(c.fullCommand + " command: " + c.helpText);
                 } catch (Error) {
-                    this.clearInputAndSetOutputTo(Error.message);
+                    this.clearInputAndSetMessage(Error.message);
                 }
             } else {
                 const commands = this.commandFactory.allCommandsForCurrentContext();
-                this.clearInputAndSetOutputTo(commands);
+                this.clearInputAndSetMessage(commands);
             }
         };
     }
@@ -866,7 +865,7 @@ module NakedObjects.Angular.Gemini {
                     }
                     switch (links.length) {
                         case 0:
-                            this.clearInputAndSetOutputTo(name + " does not match any menu");
+                            this.clearInputAndSetMessage(name + " does not match any menu");
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
@@ -877,7 +876,7 @@ module NakedObjects.Angular.Gemini {
                         default:
                             var label = name ? "Matching menus: " : "Menus: ";
                             var s = _.reduce(links, (s, t) => { return s + t.title() + ", "; }, label);
-                            this.clearInputAndSetOutputTo(s);
+                            this.clearInputAndSetMessage(s);
                     }
                 });
         }
@@ -925,7 +924,7 @@ module NakedObjects.Angular.Gemini {
                     msg += ", ";
                 }
             });
-            this.clearInputAndSetOutputTo(msg);
+            this.clearInputAndSetMessage(msg);
         }
     }
     export class Page extends Command {
@@ -952,13 +951,13 @@ module NakedObjects.Angular.Gemini {
                     return;
                 } else if ("previous".indexOf(arg) === 0) {
                     if (page === 1) {
-                        this.clearInputAndSetOutputTo("List is already showing the first page");
+                        this.clearInputAndSetMessage("List is already showing the first page");
                     } else {
                         this.setPage(page - 1);
                     }
                 } else if ("next".indexOf(arg) === 0) {
                     if (page === numPages) {
-                        this.clearInputAndSetOutputTo("List is already showing the last page");
+                        this.clearInputAndSetMessage("List is already showing the last page");
                     } else {
                         this.setPage(page + 1);
                     }
@@ -967,11 +966,11 @@ module NakedObjects.Angular.Gemini {
                 } else {
                     const number = parseInt(arg);
                     if (isNaN(number)) {
-                        this.clearInputAndSetOutputTo("The argument must match: first, previous, next, last, or a single number");
+                        this.clearInputAndSetMessage("The argument must match: first, previous, next, last, or a single number");
                         return;
                     }
                     if (number < 1 || number > numPages) {
-                        this.clearInputAndSetOutputTo("Specified page number must be between 1 and " + numPages);
+                        this.clearInputAndSetMessage("Specified page number must be between 1 and " + numPages);
                         return;
                     }
                     this.setPage(number);
@@ -1000,7 +999,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("Reload command is not yet implemented");
+            this.clearInputAndSetMessage("Reload command is not yet implemented");
         };
     }
     export class Root extends Command {
@@ -1031,7 +1030,7 @@ module NakedObjects.Angular.Gemini {
             return this.isEdit();
         }
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("save command is not yet implemented");
+            this.clearInputAndSetMessage("save command is not yet implemented");
         };
     }
     export class Selection extends Command {
@@ -1107,11 +1106,11 @@ module NakedObjects.Angular.Gemini {
                 endNo = max;
             }
             if (startNo > max || endNo > max) {
-                this.clearInputAndSetOutputTo("The highest numbered item is " + source.value().length);
+                this.clearInputAndSetMessage("The highest numbered item is " + source.value().length);
                 return;
             }
             if (startNo > endNo) {
-                this.clearInputAndSetOutputTo("Starting item number cannot be greater than the ending item number");
+                this.clearInputAndSetMessage("Starting item number cannot be greater than the ending item number");
                 return;
             }
             let output = "";
@@ -1120,7 +1119,7 @@ module NakedObjects.Angular.Gemini {
             for (i = startNo; i <= endNo; i++) {
                 output += "Item " + i + ": " + links[i - 1].title() + "; ";
             }
-            this.clearInputAndSetOutputTo(output);
+            this.clearInputAndSetMessage(output);
         }
     }
     export class Where extends Command {
@@ -1135,7 +1134,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         execute(args: string): void {
-            this.vm.renderForViewType(this.routeData());
+            this.$route.reload();
         };
 
     }
