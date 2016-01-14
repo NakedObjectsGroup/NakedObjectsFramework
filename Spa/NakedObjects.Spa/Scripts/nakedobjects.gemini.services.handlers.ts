@@ -145,7 +145,7 @@ module NakedObjects.Angular.Gemini {
                 getFriendlyName().then((name: string) => $scope.title = name);
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
-                $scope.collectionPlaceholder = viewModelFactory.collectionPlaceholderViewModel(routeData);
+                $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
                 getFriendlyName().then((name: string) => $scope.title = name);
                 focusManager.focusOn(FocusTarget.Action, 0, urlManager.currentpane());       
             }

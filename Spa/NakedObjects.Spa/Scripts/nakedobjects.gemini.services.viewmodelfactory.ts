@@ -10,12 +10,11 @@ module NakedObjects.Angular.Gemini {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         actionViewModel(actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
         dialogViewModel($scope: ng.IScope, actionViewModel: ActionViewModel, routedata: PaneRouteData): DialogViewModel;
-        collectionViewModel(collection: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
-        //listViewModel($scope: ng.IScope, collection: ListRepresentation, routeData: PaneRouteData, recreate: (scope: INakedObjectsScope, page: number, newPageSize: number, newState?: CollectionViewState) => void): CollectionViewModel;
-        collectionPlaceholderViewModel(routeData : PaneRouteData): CollectionPlaceholderViewModel;
+        collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
+        listPlaceholderViewModel(routeData : PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
-        serviceViewModel($scope: ng.IScope, serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
+        serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
@@ -318,22 +317,6 @@ module NakedObjects.Angular.Gemini {
             return { dialogViewModel: dvm, ret: false };
         }
 
-        const currentLvms: CollectionViewModel[] = [];
-
-        function getCollectionViewModel(scope : INakedObjectsScope, obj: ListRepresentation, routeData: PaneRouteData) {
-
-            const paneId = routeData.paneId;
-            const currentLvm = currentLvms[paneId];
-            if (currentLvm && currentLvm.isSame(paneId, collectionId(routeData))) {
-                currentLvm.refreshState(scope, routeData);
-                return { collectionViewModel: currentLvm, ret: true };
-            }
-            const lvm = new CollectionViewModel();
-            currentLvms[paneId] = lvm;
-            return { collectionViewModel: lvm, ret: false };
-        }
-
-
         function clearDialog(paneId: number, actionMember: ActionMember) {
             const currentDvm = currentDvms[paneId];
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
@@ -374,7 +357,6 @@ module NakedObjects.Angular.Gemini {
             vm.message = msg;
 
         }
-
 
         viewModelFactory.dialogViewModel = ($scope: ng.IScope, actionViewModel: ActionViewModel, routeData: PaneRouteData) => {
 
@@ -581,7 +563,11 @@ module NakedObjects.Angular.Gemini {
             return items;
         }
 
-        function create(collectionRep: CollectionMember, routeData: PaneRouteData) {
+        function collectionId(routeData: PaneRouteData) {
+            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
+        }
+
+        viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
             const links = collectionRep.value();
@@ -615,144 +601,10 @@ module NakedObjects.Angular.Gemini {
             collectionViewModel.doTable = () => setState(CollectionViewState.Table);
 
             return collectionViewModel;
-        }
-
-        function collectionId(routeData: PaneRouteData) {
-            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
-        }
-
-        //function createFromList($scope: INakedObjectsScope, listRep: ListRepresentation, routeData: PaneRouteData, recreate: (scope : INakedObjectsScope, page: number, newPageSize: number, newState: CollectionViewState) => void) {
-
-        //    const { collectionViewModel, ret } = getCollectionViewModel($scope, listRep, routeData);
-        //    if (ret) {
-        //        return collectionViewModel;
-        //    }
-
-        //    const links = listRep.value();
-        //    const paneId = routeData.paneId;
-        //    const state = routeData.state;
-        //    let scope = $scope; 
-
-        //    collectionViewModel.id = collectionId(routeData);
-
-        //    collectionViewModel.collectionRep = listRep;
-        //    collectionViewModel.onPaneId = paneId;
-
-        //    collectionViewModel.pluralName = "Objects";
-        //    collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, routeData);
-
-        //    const page = listRep.pagination().page;
-        //    const pageSize = listRep.pagination().pageSize;
-        //    const numPages = listRep.pagination().numPages;
-        //    const totalCount = listRep.pagination().totalCount;
-        //    const count = links.length;
-
-        //    collectionViewModel.size = count;
-
-        //    collectionViewModel.description = () => `Page ${page} of ${numPages}; viewing ${count} of ${totalCount} items`;
-
-
-        //    const actions = listRep.actionMembers();
-        //    collectionViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
-
-        //    // todo do more elegantly 
-
-        //    _.forEach(collectionViewModel.actions, a => {
-
-        //        const wrappedInvoke = a.executeInvoke;
-        //        a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
-        //            const selected = _.filter(collectionViewModel.items, i => i.selected);
-
-        //            if (selected.length === 0) {
-        //                return $q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
-        //            }
-        //            const parms = _.values(a.actionRep.parameters()) as Parameter[];
-        //            const contribParm = _.find(parms, p => p.isCollectionContributed());
-        //            const parmValue = new Value(_.map(selected, i => i.link));
-        //            const collectionParmVm = viewModelFactory.parameterViewModel(contribParm, parmValue, paneId);
-
-        //            const allpps = _.clone(pps);
-        //            allpps.push(collectionParmVm);
-
-        //            return wrappedInvoke(allpps, right);
-        //        }
-
-        //        a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
-        //            (right?: boolean) => {
-        //                focusManager.focusOverrideOff();
-        //                urlManager.setDialog(a.actionRep.actionId(), paneId);
-        //            } :
-        //            (right?: boolean) => {
-        //                a.executeInvoke([], right).then((errorMap: ErrorMap) => {
-        //                    if (errorMap.containsError()) {
-        //                        collectionViewModel.messages = errorMap.invalidReason() || errorMap.warningMessage;
-        //                    } else {
-        //                        collectionViewModel.messages = "";
-        //                    };
-        //                });
-        //            };
-        //    });
-
-
-        //    collectionViewModel.toggleActionMenu = () => {
-        //        focusManager.focusOverrideOff();
-        //        urlManager.toggleObjectMenu(paneId);
-        //    };
-
-        //    const setPage = (newPage: number, newState: CollectionViewState) => {
-        //        focusManager.focusOverrideOff();
-        //        recreate(scope, newPage, pageSize, newState);
-        //    }
-
-        //    collectionViewModel.pageNext = () => setPage(page < numPages ? page + 1 : page, state);
-        //    collectionViewModel.pagePrevious = () => setPage(page > 1 ? page - 1 : page, state);
-        //    collectionViewModel.pageFirst = () => setPage(1, state);
-        //    collectionViewModel.pageLast = () => setPage(numPages, state);
-
-        //    const earlierDisabled = () => page === 1 || numPages === 1;
-        //    const laterDisabled = () => page === numPages || numPages === 1;
-
-        //    collectionViewModel.pageFirstDisabled = earlierDisabled;
-        //    collectionViewModel.pageLastDisabled = laterDisabled;
-        //    collectionViewModel.pageNextDisabled = laterDisabled;
-        //    collectionViewModel.pagePreviousDisabled = earlierDisabled;
-
-        //    const setState = _.partial(urlManager.setListState, paneId);
-
-        //    collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
-        //    collectionViewModel.doList = () => setPage(page, CollectionViewState.List);
-        //    collectionViewModel.doTable = () => setPage(page, CollectionViewState.Table);
-
-        //    collectionViewModel.reload = () => {           
-        //        currentLvms[paneId] = null;
-        //        context.clearCachedList(paneId, routeData.page, routeData.pageSize);         
-        //        setPage(page, state);         
-        //    };
-
-        //    collectionViewModel.refreshState = (newScope: INakedObjectsScope, rd : PaneRouteData) => {
-        //        scope = newScope;
-        //        collectionViewModel.items = getItems(collectionViewModel, links, state === CollectionViewState.Table, rd);
-        //    }
-
-        //    return collectionViewModel;
-        //}
-
-
-        viewModelFactory.collectionViewModel = (collection: CollectionMember , routeData: PaneRouteData) => {
-            let collectionVm: CollectionViewModel = null;
-
-            if (collection instanceof CollectionMember) {
-                collectionVm = create( collection, routeData);
-            }
-
-     
-
-            return collectionVm;
         };
 
-       
-
-        viewModelFactory.collectionPlaceholderViewModel = (routeData : PaneRouteData) => {
+      
+        viewModelFactory.listPlaceholderViewModel = (routeData : PaneRouteData) => {
             const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
 
             collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
@@ -795,7 +647,7 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        viewModelFactory.serviceViewModel = ($scope: ng.IScope, serviceRep: DomainObjectRepresentation, routeData: PaneRouteData) => {
+        viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, routeData: PaneRouteData) => {
             const serviceViewModel = new ServiceViewModel();
             const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
@@ -807,7 +659,6 @@ module NakedObjects.Angular.Gemini {
         };
   
         
-
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
