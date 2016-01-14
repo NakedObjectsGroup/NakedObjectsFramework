@@ -101,6 +101,42 @@ module NakedObjects.Angular.Gemini {
             return number;
         }
 
+        protected parseInt(input: string): number {
+            if (!input || input ==="") {
+                return null;
+            }
+            const number = parseInt(input);
+            if (isNaN(number)) {
+                throw new Error(input + " is not a number");
+            }
+            return number;
+        }
+
+        //Parses '17, 3-5, -9, 6-' into two numbers 
+        protected parseRange(arg: string): { start: number, end: number } {
+            if (!arg) {
+                arg = "1-";
+            }
+            const clauses = arg.split("-");
+            const range = { start: null, end: null };
+            switch (clauses.length) {
+                case 1:
+                    range.start = this.parseInt(clauses[0]);
+                    range.end = range.start;
+                    break;
+                case 2:
+                    range.start = this.parseInt(clauses[0]);
+                    range.end = this.parseInt(clauses[1]);
+                    break;
+                default:
+                    throw new Error("Cannot have more than one dash in argument");
+            }
+            if ((range.start != null && range.start < 1) || (range.end != null && range.end < 1)) {
+                throw new Error("Item number or range values must be greater than zero");
+            }
+            return range;
+        }
+
         protected getContextDescription(): string {
             //todo
             return null;
@@ -1007,15 +1043,27 @@ module NakedObjects.Angular.Gemini {
         "though it may be abbreviated: add, remove, all, clear, show. " +
         "The Add and Remove options must be followed by a second argument specifying " +
         "the item number, or range, to be added or removed.";
-        protected minArguments = 0;
-        protected maxArguments = 0;
+        protected minArguments = 1;
+        protected maxArguments = 1;
 
         isAvailableInCurrentContext(): boolean {
             return this.isList();
         }
         execute(args: string): void {
-            this.clearInputAndSetOutputTo("save command is not yet implemented");
+            //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
+            const arg = this.argumentAsString(args, 0);
+            const {start, end} = this.parseRange(arg); //'destructuring'
+            this.getList().then((list: ListRepresentation) => {
+                this.selectItems(list, start, end);
+            });
         };
+
+        private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
+            let itemNo: number;
+            for (itemNo = startNo; itemNo <= endNo; itemNo++  ) {
+                this.urlManager.setListItem(1, itemNo-1, true);
+            }
+        }
     }
     export class Show extends Command {
 
@@ -1035,52 +1083,20 @@ module NakedObjects.Angular.Gemini {
 
         execute(args: string): void {
             let arg = this.argumentAsString(args, 0, true);
-            if (!arg) {
-                arg = "1-";
-            }
-            let startNo, endNo: number;
-            const clauses = arg.split("-");
-            switch (clauses.length) {
-                case 1:
-                    startNo = this.parseInt(clauses[0]);
-                    endNo = startNo;
-                    break;
-                case 2:
-                    startNo = this.parseInt(clauses[0]);
-                    endNo = this.parseInt(clauses[1]);
-                    break;
-                default:
-                    this.clearInputAndSetOutputTo("Cannot have more than one dash in argument");
-                    return;
-            }
-            if ((startNo != null && startNo < 1) || (endNo != null && endNo < 1)) {
-                this.clearInputAndSetOutputTo("Item number or range values must be greater than zero");
-                return;
-            }
+            const {start, end} = this.parseRange(arg);
             if (this.isCollection()) {
                 this.getObject().then((obj: DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
-                    this.renderItems(coll, startNo, endNo);
+                    this.renderItems(coll, start, end);
                 });
                 return;
             }
             //must be List
             this.getList().then((list: ListRepresentation) => {
-                this.renderItems(list, startNo, endNo);
+                this.renderItems(list, start, end);
             });
         };
-
-        private parseInt(input: string): number {
-            if (!input) {
-                return null;
-            }
-            const number = parseInt(input);
-            if (isNaN(number)) {
-                throw new Error("Argument must be a single number or number range such as 3-5");
-            }
-            return number;
-        }
 
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
             const max = source.value().length;

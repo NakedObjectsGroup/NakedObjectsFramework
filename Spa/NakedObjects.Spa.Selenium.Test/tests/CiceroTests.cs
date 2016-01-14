@@ -677,7 +677,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Alpha parm
             EnterCommand("show one");
-            WaitForOutput("Argument must be a single number or number range such as 3-5");
+            WaitForOutput("one is not a number");
 
             //Invalid context
             CiceroUrl("home");

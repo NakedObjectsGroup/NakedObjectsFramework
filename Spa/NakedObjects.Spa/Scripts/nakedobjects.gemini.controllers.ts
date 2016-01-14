@@ -71,7 +71,7 @@ module NakedObjects.Angular.Gemini {
         const cvm = viewModelFactory.ciceroViewModel();
         $scope.cicero = cvm;
         //cvm.viewType = ViewType.Error;
-        cvm.renderError(urlManager.getRouteData().pane1);
+        cvm.renderError();
         focusManager.focusOn(FocusTarget.Input, 0, 1);
     });
 }
