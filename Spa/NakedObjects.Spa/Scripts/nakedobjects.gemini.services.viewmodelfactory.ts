@@ -16,8 +16,6 @@ module NakedObjects.Angular.Gemini {
         menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
-        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
-        itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
@@ -26,7 +24,9 @@ module NakedObjects.Angular.Gemini {
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
-       
+        itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
+        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
+
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
@@ -312,7 +312,7 @@ module NakedObjects.Angular.Gemini {
             if (currentDvm && currentDvm.isSame(paneId, actionMember)) {
                 return { dialogViewModel: currentDvm, ret: true };
             }
-            const dvm = new DialogViewModel();
+            const dvm = new DialogViewModel(null, null, null, null, null);
             currentDvms[paneId] = dvm;
             return { dialogViewModel: dvm, ret: false };
         }
@@ -375,7 +375,7 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.parameters = _.map(parameters, p => viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.parameterId()], paneId));
 
 
-            dialogViewModel.action = actionMember;
+            dialogViewModel.actionMember = actionMember;
             dialogViewModel.title = actionMember.extensions().friendlyName();
             dialogViewModel.isQueryOnly = actionMember.invokeLink().method() === "GET";
             dialogViewModel.message = "";
@@ -400,7 +400,7 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
 
-
+            // do this in handler
             const deregisterLocationWatch = $scope.$on("$locationChangeStart", setParms);
             const deregisterSearchWatch = $scope.$watch(() => $location.search(), setParms, true);
 
@@ -563,10 +563,6 @@ module NakedObjects.Angular.Gemini {
             return items;
         }
 
-        function collectionId(routeData: PaneRouteData) {
-            return urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
-        }
-
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
@@ -666,7 +662,6 @@ module NakedObjects.Angular.Gemini {
 
             return tableRowViewModel;
         };
-
 
         let cachedToolBarViewModel: ToolBarViewModel;
 

@@ -18,6 +18,19 @@ module NakedObjects.Angular.Gemini {
     app.service("handlers", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager, $timeout: ng.ITimeoutService) {
         const handlers = <IHandlers>this;
 
+        const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+            new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
+
+        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager),
+            new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+
+        const perPaneDialogViews = [, new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
+            new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+
+        //const perPaneHomeViews = [, new HomeViewModel(color, context, viewModelFactory, urlManager, focusManager),
+        //    new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+
+
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
             context.setError(errorRep);
@@ -116,8 +129,7 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                                    new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
+       
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -164,8 +176,7 @@ module NakedObjects.Angular.Gemini {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
         };
 
-        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager),
-                                      new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+       
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 

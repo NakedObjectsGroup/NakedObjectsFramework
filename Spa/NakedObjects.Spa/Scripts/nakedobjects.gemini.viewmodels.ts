@@ -233,23 +233,73 @@ module NakedObjects.Angular.Gemini {
     } 
 
     export class DialogViewModel extends MessageViewModel {
+        constructor(private color: IColor,
+            private context: IContext,
+            private viewModelFactory: IViewModelFactory,
+            private urlManager: IUrlManager,
+            private focusManager: IFocusManager) {
+            super();
+        }
+
+        reset(actionViewModel: ActionViewModel, routeData : PaneRouteData) {
+            this.actionMember = actionViewModel.actionRep;
+            this.actionViewModel = actionViewModel;
+            this.onPaneId = routeData.paneId;
+         
+            const fields = routeData.dialogFields;
+            const parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
+            this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.parameterId()], this.onPaneId));
+
+            this.title = this.actionMember.extensions().friendlyName();
+            this.isQueryOnly = this.actionMember.invokeLink().method() === "GET";
+            this.message = "";
+        }
+
 
         title: string;
         message: string;
         isQueryOnly: boolean;
         onPaneId: number;
 
-        action : ActionMember;
-        actionViewModel : ActionViewModel;
-        
-        doCancel: () => void;
-        doClose: () => void;
-        doInvoke: (right?: boolean) => void;
+        actionMember : ActionMember;
+        actionViewModel: ActionViewModel;
 
-        clearMessages: () => void; 
+        private setParms = () =>
+            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+
+        private executeInvoke = (right?: boolean) => {
+            const pps = this.parameters;
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+            return this.actionViewModel.executeInvoke(pps, right);
+        }
+
+        doInvoke = (right?: boolean) =>
+            this.executeInvoke(right).then((err: ErrorMap) => {
+                if (err.containsError()) {
+                    this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
+                } else {
+                    this.doClose();
+                }
+            });
+
+        doClose = () => {
+            //deregisterLocationWatch();
+            //deregisterSearchWatch();
+            //clearDialog(this.onPaneId, this.actionMember);
+            this.urlManager.closeDialog(this.onPaneId);
+        };
+
+        //doCancel: () => void;
+        //doClose: () => void;
+        //doInvoke: (right?: boolean) => void;
+
+        clearMessages = () => {
+            this.message = "";
+            _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
+        }
 
         isSame(paneId : number, otherAction : ActionMember ) {
-            return this.onPaneId === paneId && this.action.invokeLink().href() === otherAction.invokeLink().href();
+            return this.onPaneId === paneId && this.actionMember.invokeLink().href() === otherAction.invokeLink().href();
         }
 
         parameters: ParameterViewModel[];
@@ -309,7 +359,6 @@ module NakedObjects.Angular.Gemini {
             this.size = count;
 
             this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
-
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
@@ -445,52 +494,28 @@ module NakedObjects.Angular.Gemini {
 
     export class CollectionViewModel {
 
-        refreshState(scope: INakedObjectsScope, routeData : PaneRouteData): void {};
-
         title: string;
         size: number;
         pluralName: string;
-        color: string; 
+        color: string;
         items: ItemViewModel[];
         header: string[];
         onPaneId: number;
 
-        id : string; 
+        id: string;
 
         doSummary(): void { }
         doTable(): void { }
         doList(): void { }
 
-        pageFirst(): void { }
-        pagePrevious(): void { }
-        pageNext(): void { }
-        pageLast(): void {}
-
-        pageFirstDisabled(): boolean { return false; }
-        pagePreviousDisabled(): boolean { return false; }
-        pageNextDisabled(): boolean { return false; }
-        pageLastDisabled(): boolean { return false; }
-
-        reload: () => void;
-
-        description(): string { return this.size.toString()}
+        description(): string { return this.size.toString() }
 
         template: string;
-
-        disableActions(): boolean {
-            return !this.actions || this.actions.length === 0;
-        }
-
-        toggleActionMenu(): void { }
 
         actions: ActionViewModel[];
         messages: string;
 
-        isSame(paneId: number, key : string) {
-            return this.collectionRep instanceof ListRepresentation && this.id === key;
-        }
-
-        collectionRep: CollectionMember | ListRepresentation;
+        collectionRep: CollectionMember;
     } 
 
     export class ServicesViewModel {
