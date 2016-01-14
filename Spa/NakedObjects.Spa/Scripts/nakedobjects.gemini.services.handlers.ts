@@ -116,8 +116,8 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager),
-                                    new ListViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+        const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+                                    new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 

@@ -282,7 +282,8 @@ module NakedObjects.Angular.Gemini {
             private contextService: IContext,
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
-            private focusManager: IFocusManager) {
+            private focusManager: IFocusManager,
+            private $q : ng.IQService) {
         }
 
         reset(list : ListRepresentation, routeData : PaneRouteData) {
@@ -312,6 +313,45 @@ module NakedObjects.Angular.Gemini {
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
+
+            // todo do more elegantly 
+
+            _.forEach(this.actions, a => {
+
+                const wrappedInvoke = a.executeInvoke;
+                a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+                    const selected = _.filter(this.items, i => i.selected);
+
+                    if (selected.length === 0) {
+                        return this.$q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
+                    }
+                    const parms = _.values(a.actionRep.parameters()) as Parameter[];
+                    const contribParm = _.find(parms, p => p.isCollectionContributed());
+                    const parmValue = new Value(_.map(selected, i => i.link));
+                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
+
+                    const allpps = _.clone(pps);
+                    allpps.push(collectionParmVm);
+
+                    return wrappedInvoke(allpps, right);
+                }
+
+                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
+                    (right?: boolean) => {
+                        this.focusManager.focusOverrideOff();
+                        this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
+                    } :
+                    (right?: boolean) => {
+                        a.executeInvoke([], right).then((errorMap: ErrorMap) => {
+                            if (errorMap.containsError()) {
+                                this.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                            } else {
+                                this.messages = "";
+                            };
+                        });
+                    };
+            });
+
         }
 
         toggleActionMenu = () => {
