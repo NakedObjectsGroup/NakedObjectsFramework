@@ -264,8 +264,7 @@ module NakedObjects.Angular.Gemini {
         actionMember : ActionMember;
         actionViewModel: ActionViewModel;
 
-        private setParms = () =>
-            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+        setParms = () =>   _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
 
         private executeInvoke = (right?: boolean) => {
             const pps = this.parameters;
@@ -283,16 +282,10 @@ module NakedObjects.Angular.Gemini {
             });
 
         doClose = () => {
-            //deregisterLocationWatch();
-            //deregisterSearchWatch();
-            //clearDialog(this.onPaneId, this.actionMember);
             this.urlManager.closeDialog(this.onPaneId);
         };
 
-        //doCancel: () => void;
-        //doClose: () => void;
-        //doInvoke: (right?: boolean) => void;
-
+  
         clearMessages = () => {
             this.message = "";
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
@@ -592,6 +585,7 @@ module NakedObjects.Angular.Gemini {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
             this.color = this.colorService.toColorFromType(this.domainObject.domainType());
+            this.message = "";
 
             return this;
         }
