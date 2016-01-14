@@ -267,9 +267,181 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CollectionPlaceholderViewModel {
+
+
         description: () => string;
         reload: () => void;
+
+    
     }
+
+
+    export class ListViewModel {
+
+        constructor(private colorService: IColor,
+            private contextService: IContext,
+            private viewModelFactory: IViewModelFactory,
+            private urlManager: IUrlManager,
+            private focusManager: IFocusManager,
+            private $q : ng.IQService) {
+        }
+
+        reset(list : ListRepresentation, routeData : PaneRouteData) {
+            this.listRep = list;
+            this.routeData = routeData; 
+
+            const links = list.value();
+            this.state = routeData.state;
+
+            this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
+
+            this.onPaneId = routeData.paneId;
+
+            this.pluralName = "Objects";
+            this.items = this.viewModelFactory.getItems(links, this.state === CollectionViewState.Table, routeData, this);
+
+            this.page = this.listRep.pagination().page;
+            this.pageSize = this.listRep.pagination().pageSize;
+            this.numPages = this.listRep.pagination().numPages;
+            const totalCount = this.listRep.pagination().totalCount;
+            const count = links.length;
+
+            this.size = count;
+
+            this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+
+
+            const actions = this.listRep.actionMembers();
+            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
+
+            // todo do more elegantly 
+
+            _.forEach(this.actions, a => {
+
+                const wrappedInvoke = a.executeInvoke;
+                a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+                    const selected = _.filter(this.items, i => i.selected);
+
+                    if (selected.length === 0) {
+                        return this.$q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
+                    }
+                    const parms = _.values(a.actionRep.parameters()) as Parameter[];
+                    const contribParm = _.find(parms, p => p.isCollectionContributed());
+                    const parmValue = new Value(_.map(selected, i => i.link));
+                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
+
+                    const allpps = _.clone(pps);
+                    allpps.push(collectionParmVm);
+
+                    return wrappedInvoke(allpps, right);
+                }
+
+                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
+                    (right?: boolean) => {
+                        this.focusManager.focusOverrideOff();
+                        this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
+                    } :
+                    (right?: boolean) => {
+                        a.executeInvoke([], right).then((errorMap: ErrorMap) => {
+                            if (errorMap.containsError()) {
+                                this.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                            } else {
+                                this.messages = "";
+                            };
+                        });
+                    };
+            });
+
+        }
+
+        toggleActionMenu = () => {
+            this.focusManager.focusOverrideOff();
+            this.urlManager.toggleObjectMenu(this.onPaneId);
+        };
+
+        private recreate = (page: number, pageSize: number) => {
+            return this.routeData.objectId ?
+                this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, page, pageSize) :
+                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, page, pageSize);
+        }
+
+        private pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
+                this.recreate(newPage, newPageSize).then((list: ListRepresentation) => {
+                    this.routeData.state = newState || this.routeData.state;
+                    this.reset(list, this.routeData);
+                    this.urlManager.setListPaging(this.onPaneId, newPage, newPageSize, this.routeData.state);
+                }).catch(error => {
+                    //setError(error);
+                });
+            }
+
+
+        listRep: ListRepresentation;
+        routeData : PaneRouteData;
+
+        //title: string;
+        size: number;
+        pluralName: string;
+        color: string;
+        items: ItemViewModel[];
+        header: string[];
+        onPaneId: number;
+        page: number;
+        pageSize: number; 
+        numPages: number; 
+        state: CollectionViewState; 
+
+        id: string;
+
+        private setPage = (newPage: number, newState: CollectionViewState) => {
+            this.focusManager.focusOverrideOff();
+            this.pageOrRecreate(newPage, this.pageSize, newState);
+        }
+
+        pageNext = () => this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
+        pagePrevious = () => this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
+        pageFirst = () => this.setPage(1, this.state);
+        pageLast = () => this.setPage(this.numPages, this.state);
+
+        private earlierDisabled = () => this.page === 1 || this.numPages === 1;
+        private laterDisabled = () => this.page === this.numPages || this.numPages === 1;
+
+        private pageFirstDisabled = this.earlierDisabled;
+        private pageLastDisabled = this.laterDisabled;
+        private pageNextDisabled = this.laterDisabled;
+        private pagePreviousDisabled = this.earlierDisabled;
+
+        private setState = _.partial(this.urlManager.setListState, this.onPaneId);
+
+        doSummary = () => this.setState(CollectionViewState.Summary);
+        doList = () => this.setPage(this.page, CollectionViewState.List);
+        doTable = () => this.setPage(this.page, CollectionViewState.Table);
+
+        reload = () => {
+           
+            this.contextService.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
+            this.setPage(this.page, this.state);
+        };
+
+        description(): string { return this.size.toString() }
+
+        template: string;
+
+        disableActions(): boolean {
+            return !this.actions || this.actions.length === 0;
+        }
+
+        //toggleActionMenu(): void { }
+
+        actions: ActionViewModel[];
+        messages: string;
+
+        isSame(paneId: number, key: string) {
+            return  this.id === key;
+        }
+       
+    } 
+
 
     export class CollectionViewModel {
 

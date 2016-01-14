@@ -34,7 +34,7 @@ module NakedObjects.Angular {
         error: Angular.Gemini.ErrorViewModel;
         errorTemplate: string;
         listTemplate: string;
-        collection: Angular.Gemini.CollectionViewModel;
+        collection: Angular.Gemini.ListViewModel;
         collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
 
         title: string;
