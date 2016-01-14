@@ -62,6 +62,7 @@ module NakedObjects.Angular.Gemini {
 
     }
 
+
     export class ErrorViewModel {
         message: string;
         stackTrace: string[];   
@@ -253,6 +254,7 @@ module NakedObjects.Angular.Gemini {
             this.title = this.actionMember.extensions().friendlyName();
             this.isQueryOnly = this.actionMember.invokeLink().method() === "GET";
             this.message = "";
+            return this;
         }
 
 
@@ -310,12 +312,8 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CollectionPlaceholderViewModel {
-
-
         description: () => string;
-        reload: () => void;
-
-    
+        reload: () => void;  
     }
 
 
@@ -393,7 +391,7 @@ module NakedObjects.Angular.Gemini {
                         });
                     };
             });
-
+            return this;
         }
 
         toggleActionMenu = () => {
@@ -518,6 +516,22 @@ module NakedObjects.Angular.Gemini {
     } 
 
     export class MenusViewModel {
+        constructor(private viewModelFactory : IViewModelFactory) {
+            
+        }
+
+        reset(menusRep : MenusRepresentation, routeData : PaneRouteData) {
+            this.menusRep = menusRep;
+            this.onPaneId = routeData.paneId;
+
+            this.title = "Menus";
+            this.color = "bg-color-darkBlue";
+            this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
+            return this;
+        }
+
+        menusRep: MenusRepresentation;
+        onPaneId : number;
         title: string;
         color: string;
         items: LinkViewModel[];

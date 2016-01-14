@@ -27,9 +27,8 @@ module NakedObjects.Angular.Gemini {
         const perPaneDialogViews = [, new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
                                       new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
 
-        //const perPaneHomeViews = [, new HomeViewModel(color, context, viewModelFactory, urlManager, focusManager),
-        //    new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
-
+        const perPaneMenusViews = [, new MenusViewModel(viewModelFactory),
+                                    new MenusViewModel(viewModelFactory)];
 
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
@@ -117,7 +116,7 @@ module NakedObjects.Angular.Gemini {
 
             context.getMenus().
                 then((menus: MenusRepresentation) => {
-                    $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
+                    $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);
                     $scope.homeTemplate = homeTemplate;
 
                     if (routeData.menuId) {

@@ -12,7 +12,6 @@ module NakedObjects.Angular.Gemini {
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData : PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
-        menusViewModel(menusRep: MenusRepresentation, paneId: number): MenusViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
@@ -20,11 +19,11 @@ module NakedObjects.Angular.Gemini {
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
         getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel );
+        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
-        linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
     }
 
     app.service('viewModelFactory', function ($q: ng.IQService,
@@ -550,16 +549,6 @@ module NakedObjects.Angular.Gemini {
             servicesViewModel.items = _.map(links, link => viewModelFactory.linkViewModel(link, 1));
             return servicesViewModel;
         };
-
-        viewModelFactory.menusViewModel = (menusRep: MenusRepresentation, paneId: number) => {
-            const menusViewModel = new MenusViewModel();
-
-            menusViewModel.title = "Menus";
-            menusViewModel.color = "bg-color-darkBlue";
-            menusViewModel.items = _.map(menusRep.value(), link => viewModelFactory.linkViewModel(link, paneId));
-            return menusViewModel;
-        };
-
 
         viewModelFactory.serviceViewModel = (serviceRep: DomainObjectRepresentation, routeData: PaneRouteData) => {
             const serviceViewModel = new ServiceViewModel();
