@@ -62,6 +62,7 @@ module NakedObjects.Angular.Gemini {
 
     }
 
+
     export class ErrorViewModel {
         message: string;
         stackTrace: string[];   
@@ -253,6 +254,7 @@ module NakedObjects.Angular.Gemini {
             this.title = this.actionMember.extensions().friendlyName();
             this.isQueryOnly = this.actionMember.invokeLink().method() === "GET";
             this.message = "";
+            return this;
         }
 
 
@@ -264,8 +266,7 @@ module NakedObjects.Angular.Gemini {
         actionMember : ActionMember;
         actionViewModel: ActionViewModel;
 
-        private setParms = () =>
-            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+        setParms = () =>   _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
 
         private executeInvoke = (right?: boolean) => {
             const pps = this.parameters;
@@ -283,16 +284,10 @@ module NakedObjects.Angular.Gemini {
             });
 
         doClose = () => {
-            //deregisterLocationWatch();
-            //deregisterSearchWatch();
-            //clearDialog(this.onPaneId, this.actionMember);
             this.urlManager.closeDialog(this.onPaneId);
         };
 
-        //doCancel: () => void;
-        //doClose: () => void;
-        //doInvoke: (right?: boolean) => void;
-
+  
         clearMessages = () => {
             this.message = "";
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
@@ -317,12 +312,8 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class CollectionPlaceholderViewModel {
-
-
         description: () => string;
-        reload: () => void;
-
-    
+        reload: () => void;  
     }
 
 
@@ -400,7 +391,7 @@ module NakedObjects.Angular.Gemini {
                         });
                     };
             });
-
+            return this;
         }
 
         toggleActionMenu = () => {
@@ -525,6 +516,22 @@ module NakedObjects.Angular.Gemini {
     } 
 
     export class MenusViewModel {
+        constructor(private viewModelFactory : IViewModelFactory) {
+            
+        }
+
+        reset(menusRep : MenusRepresentation, routeData : PaneRouteData) {
+            this.menusRep = menusRep;
+            this.onPaneId = routeData.paneId;
+
+            this.title = "Menus";
+            this.color = "bg-color-darkBlue";
+            this.items = _.map(this.menusRep.value(), link => this.viewModelFactory.linkViewModel(link, this.onPaneId));
+            return this;
+        }
+
+        menusRep: MenusRepresentation;
+        onPaneId : number;
         title: string;
         color: string;
         items: LinkViewModel[];
@@ -592,6 +599,7 @@ module NakedObjects.Angular.Gemini {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
             this.color = this.colorService.toColorFromType(this.domainObject.domainType());
+            this.message = "";
 
             return this;
         }

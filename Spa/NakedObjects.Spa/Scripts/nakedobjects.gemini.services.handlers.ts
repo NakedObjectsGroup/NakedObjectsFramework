@@ -25,11 +25,10 @@ module NakedObjects.Angular.Gemini {
             new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
 
         const perPaneDialogViews = [, new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
-            new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+                                      new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
 
-        //const perPaneHomeViews = [, new HomeViewModel(color, context, viewModelFactory, urlManager, focusManager),
-        //    new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
-
+        const perPaneMenusViews = [, new MenusViewModel(viewModelFactory),
+                                    new MenusViewModel(viewModelFactory)];
 
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
@@ -67,12 +66,29 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
-            $scope.dialogTemplate = dialogTemplate;          
-            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel( action, routeData) : action as ActionViewModel;    
-            $scope.dialog = viewModelFactory.dialogViewModel($scope, actionViewModel, routeData);
+        class DeReg {
+            deRegLocation: () => void = () => { };
+            deRegSearch: () => void = () => { };
+            deReg() {
+                this.deRegLocation();
+                this.deRegSearch();
+            }
         }
 
+        const deReg = [new DeReg(), new DeReg()];
+
+        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
+            deReg[routeData.paneId].deReg();
+
+            $scope.dialogTemplate = dialogTemplate;
+            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, routeData) : action as ActionViewModel;
+            const dialogViewModel = perPaneDialogViews[routeData.paneId];
+            dialogViewModel.reset(actionViewModel, routeData);
+            $scope.dialog = dialogViewModel; 
+
+            deReg[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void;
+            deReg[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void;
+        }
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
@@ -100,7 +116,7 @@ module NakedObjects.Angular.Gemini {
 
             context.getMenus().
                 then((menus: MenusRepresentation) => {
-                    $scope.menus = viewModelFactory.menusViewModel(menus, routeData.paneId);
+                    $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);
                     $scope.homeTemplate = homeTemplate;
 
                     if (routeData.menuId) {
@@ -127,9 +143,7 @@ module NakedObjects.Angular.Gemini {
                 }).catch(error => {
                     setError(error);
                 });
-        };
-
-       
+        };       
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -174,9 +188,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
-        };
-
-       
+        };     
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
