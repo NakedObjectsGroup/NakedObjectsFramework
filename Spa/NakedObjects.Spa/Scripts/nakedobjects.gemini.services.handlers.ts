@@ -143,9 +143,7 @@ module NakedObjects.Angular.Gemini {
                 }).catch(error => {
                     setError(error);
                 });
-        };
-
-       
+        };       
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -190,9 +188,7 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
-        };
-
-       
+        };     
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
