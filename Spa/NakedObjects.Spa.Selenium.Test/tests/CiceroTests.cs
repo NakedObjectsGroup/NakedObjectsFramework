@@ -761,7 +761,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void UpAndDownArrow()
         {
             CiceroUrl("home");
-            EnterCommand("help");
+            EnterCommand("he");
             WaitForOutputStarting("Commands available");
             Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);

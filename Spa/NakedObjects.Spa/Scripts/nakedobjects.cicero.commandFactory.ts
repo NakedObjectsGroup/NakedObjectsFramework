@@ -79,6 +79,7 @@ module NakedObjects.Angular.Gemini {
                     input = firstWord = "wh"; //Special case '[Enter]' = 'where'
                 }
                 const command: Command = commandFactory.getCommand(firstWord);
+                cvm.previousInput = command.fullCommand + input.substring(firstWord.length, input.length);
                 command.checkIsAvailableInCurrentContext();
                 var argString: string = null;
                 const index = input.indexOf(" ");
