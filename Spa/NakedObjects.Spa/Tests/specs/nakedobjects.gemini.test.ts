@@ -374,7 +374,8 @@ module NakedObjects.Gemini.Test {
                         handlers.handleList(testScope, testRouteData);
                         $httpBackend.flush();
                         testScope.collectionPlaceholder.reload();
-                        flushTest();
+                        $httpBackend.flush();
+                        handlers.handleList(testScope, testRouteData);
                     }));
 
                     it("Verify state in scope", () => {
