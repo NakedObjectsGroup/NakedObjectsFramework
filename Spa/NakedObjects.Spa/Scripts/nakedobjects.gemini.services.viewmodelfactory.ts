@@ -622,9 +622,12 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.ciceroViewModel = () => {
             if (cvm == null) {
                 cvm = new CiceroViewModel();
-                cvm.parseInput = (input: string) => {
-                    cvm.previousInput = input;
+                commandFactory.initialiseCommands(cvm);
+                cvm.parseInput = (input: string) => {                    
                     commandFactory.parseInput(input, cvm);
+                };
+                cvm.autoComplete = (input: string) => {
+                    commandFactory.autoComplete(input, cvm);
                 };
                 cvm.renderHome = (routeData: PaneRouteData) => {
                     //TODO: Could put this in a function passed into a render method on CVM

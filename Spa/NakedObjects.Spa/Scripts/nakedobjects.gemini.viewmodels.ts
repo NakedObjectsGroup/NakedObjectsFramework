@@ -713,7 +713,7 @@ module NakedObjects.Angular.Gemini {
         clearInput(): void {
             this.input = null;
         }
-
+        autoComplete: (input: string) => void;
         outputMessageThenClearIt() {          
                 this.output = this.message;
                 this.message = null;

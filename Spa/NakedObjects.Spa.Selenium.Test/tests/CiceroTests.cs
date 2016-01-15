@@ -715,6 +715,49 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("where x");
             WaitForOutput("Too many arguments provided.");
         }
+
+        public virtual void Tab()
+        {
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            TypeIntoFieldWithoutClearing("input", "sel"+Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
+
+            CiceroUrl("object?object1=AdventureWorksModel.Product-968");
+            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            //Hitting Tab with no entry has no effect
+            TypeIntoFieldWithoutClearing("input", Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+            WaitForOutput("Product: Touring-1000 Blue, 54.");
+
+            //Unrecognised two chars
+            TypeIntoFieldWithoutClearing("input", "xx" + Keys.Tab);
+            WaitForOutput("No command begins with xx");
+
+            //No effect on a single character
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            TypeIntoFieldWithoutClearing("input", "f" + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "f");
+
+            //No effect if there's any argument specified
+            CiceroUrl("object?object1=AdventureWorksModel.Product-968");
+            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Tab);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "he menu");
+
+        }
+        public virtual void UnrecognisedCommand()
+        {
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("m");
+            WaitForOutput("Command word must have at least 2 characters");
+
+            EnterCommand("hl");
+            WaitForOutput("No command begins with hl");
+
+        }
         public virtual void UpAndDownArrow()
         {
             CiceroUrl("home");
@@ -796,8 +839,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Where() { base.Where(); }
         [TestMethod]
+        public override void Tab() { base.Tab(); }
+        [TestMethod]
+        public override void UnrecognisedCommand() { base.UnrecognisedCommand(); }
+        [TestMethod]
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
-
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
     }
@@ -906,6 +952,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Root();
             base.Show();
             base.Where();
+            base.Tab();
+            base.UnrecognisedCommand();
             base.UpAndDownArrow();
             base.ScenarioUsingClipboard();
         }

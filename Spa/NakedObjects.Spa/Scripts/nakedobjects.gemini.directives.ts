@@ -574,4 +574,14 @@ module NakedObjects.Angular.Gemini {
             }
         });
     });
+
+    app.directive("ciceroTab", () => (scope, element, attrs) => {
+        element.bind("keydown keypress", event => {
+            const tabKeyCode = 9;
+            if (event.which === tabKeyCode) {
+                scope.$apply(() => scope.$eval(attrs.ciceroTab));
+                event.preventDefault();
+            }
+        });
+    });
 }

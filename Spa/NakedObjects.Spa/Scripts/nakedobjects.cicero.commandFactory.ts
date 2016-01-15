@@ -3,11 +3,15 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular.Gemini{
+module NakedObjects.Angular.Gemini {
 
     export interface ICommandFactory {
 
+        initialiseCommands(cvm: CiceroViewModel): void;
+
         parseInput(command: string, cvm: CiceroViewModel): void;
+
+        autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
 
         //Returns all commands (as separated words) that may be invoked in the current context
         allCommandsForCurrentContext(): string;
@@ -24,7 +28,7 @@ module NakedObjects.Angular.Gemini{
         repLoader: IRepLoader,
         color: IColor,
         context: IContext,
-        mask: IMask,    
+        mask: IMask,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
         navigation: INavigation,
@@ -56,14 +60,18 @@ module NakedObjects.Angular.Gemini{
             "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route)
         }
-        
-        commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
+
+        commandFactory.initialiseCommands = (cvm: CiceroViewModel) => {
             if (!commandsInitialised) {
                 _.forEach(commands, command => command.initialiseWithViewModel(cvm));
                 commandsInitialised = true;
             }
+        };
+
+        commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
+            cvm.previousInput = input;
             try {
-                var firstWord : string;
+                var firstWord: string;
                 if (input) {
                     input = input.toLowerCase();
                     firstWord = input.split(" ")[0];
@@ -74,7 +82,7 @@ module NakedObjects.Angular.Gemini{
                 command.checkIsAvailableInCurrentContext();
                 var argString: string = null;
                 const index = input.indexOf(" ");
-                if (index >= 0 ) {
+                if (index >= 0) {
                     argString = input.substr(index + 1);
                 }
                 command.checkNumberOfArguments(argString);
@@ -86,11 +94,28 @@ module NakedObjects.Angular.Gemini{
             }
         };
 
+        commandFactory.autoComplete = (input: string, cvm: CiceroViewModel) => {
+            if (!input || input.length < 2 || input.indexOf(" ") >0) return; 
+            cvm.previousInput = input;
+            try {
+                input = input.toLowerCase().trim();
+                const command: Command = commandFactory.getCommand(input);
+                cvm.input = command.fullCommand + " ";
+            }
+            catch (Error) {
+                cvm.output = Error.message;
+                cvm.input = "";
+            }
+        };
+
         commandFactory.getCommand = (commandWord: string) => {
+            if (commandWord.length < 2) {
+                throw new Error("Command word must have at least 2 characters");
+            }
             const abbr = commandWord.substr(0, 2);
             const command: Command = commands[abbr];
             if (command == null) {
-                throw new Error("No command begins with "+abbr);
+                throw new Error("No command begins with " + abbr);
             }
             command.checkMatch(commandWord);
             return command;
@@ -107,5 +132,4 @@ module NakedObjects.Angular.Gemini{
             return result;
         }
     });
-
 }
