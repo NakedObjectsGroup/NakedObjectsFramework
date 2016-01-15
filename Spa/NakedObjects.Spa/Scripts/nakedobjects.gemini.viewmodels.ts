@@ -631,7 +631,7 @@ module NakedObjects.Angular.Gemini {
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
         private setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
 
-        private cancelHandler = this.isTransient ?
+        private cancelHandler = () => this.isTransient ?
             () => this.urlManager.popUrlState(this.onPaneId) :
             () => this.urlManager.setObjectEdit(false, this.onPaneId);
 
@@ -641,17 +641,19 @@ module NakedObjects.Angular.Gemini {
 
         doEditCancel = () => {
             this.editComplete();
-            this.cancelHandler();
+            this.cancelHandler()();
         };
+
+        private saveHandler = () => this.isTransient ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
 
-            const saveHandler = this.isTransient ? this.contextService.saveObject : this.contextService.updateObject;
+            
             this.setProperties();
             const pps = _.filter(this.properties, property => property.isEditable);
             const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
 
-            saveHandler(this.domainObject, propMap, this.onPaneId, viewObject).then((err: ErrorMap) => {
+            this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).then((err: ErrorMap) => {
                 if (err.containsError()) {
                     this.viewModelFactory.handleErrorResponse(err, this, this.properties);
                 }

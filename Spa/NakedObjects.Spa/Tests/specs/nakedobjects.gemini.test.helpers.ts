@@ -1634,6 +1634,11 @@
     export function setupBackend($httpBackend: ng.IHttpBackendService) {
         // backend definition common for all tests
         const root = "http://nakedobjectsrodemo.azurewebsites.net";
+
+
+        const contentRequestHandler = $httpBackend.when("GET", "Content/partials/singleHome.html");
+        contentRequestHandler.respond("");
+
         homeRequestHandler = $httpBackend.when("GET", root);
         homeRequestHandler.respond(homeRepresentation);
 
