@@ -638,7 +638,7 @@ module NakedObjects.Angular.Gemini {
                             context.getMenu(routeData.menuId)
                                 .then((menu: MenuRepresentation) => {
                                     let output = "";
-                                    output += menu.title() + " menu" + ". ";
+                                    output += menu.title() + " menu" + "\n";
                                     output += renderActionDialogIfOpen(menu, routeData);
                                     cvm.clearInput();
                                     cvm.output = output;
@@ -677,7 +677,7 @@ module NakedObjects.Angular.Gemini {
                                     if (routeData.edit) {
                                         output += "Editing ";
                                     }
-                                    output += Helpers.typePlusTitle(obj) + ". ";
+                                    output += Helpers.typePlusTitle(obj) + "\n";
                                     output += renderActionDialogIfOpen(obj, routeData);
                                 }
                                 cvm.clearInput();
@@ -705,7 +705,7 @@ module NakedObjects.Angular.Gemini {
                                 const actionMember = menu.actionMember(routeData.actionId);
                                 const actionName = actionMember.extensions().friendlyName();
                                 cvm.clearInput();
-                                cvm.output = `Result from ${actionName}: ${description}`;
+                                cvm.output = `Result from ${actionName}:\n ${description}`;
                             });
                         });
                     }
@@ -732,11 +732,11 @@ module NakedObjects.Angular.Gemini {
         if (routeData.dialogId) {
             const actionMember = repWithActions.actionMember(routeData.dialogId);
             const actionName = actionMember.extensions().friendlyName();
-            output += `Action dialog: ${actionName}. `;
+            output += `Action dialog: ${actionName}\n`;
             _.forEach(routeData.dialogFields, (value, key) => {
                 output += Helpers.friendlyNameForParam(actionMember, key) + ": ";
                 output += value.toString() || "empty";
-                output += ", ";
+                output += "\n";
             });
         }
         return output;

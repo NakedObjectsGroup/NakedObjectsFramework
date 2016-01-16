@@ -315,10 +315,10 @@ module NakedObjects.Angular.Gemini {
                     this.openActionDialog(actions[0]);
                     break;
                 default:
-                    let label = match ? " Matching actions: " : "Actions: ";
+                    let label = match ? " Matching actions:\n" : "Actions:\n";
                     var s = _.reduce(actions, (s, t) => {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + ", ";
+                        return s + menupath + t.extensions().friendlyName() + "\n";
                     }, label);
                     this.clearInputAndSetMessage(s);
             }
@@ -646,7 +646,7 @@ module NakedObjects.Angular.Gemini {
                     _.forEach(this.routeData().dialogFields, (value, key) => {
                         output += Helpers.friendlyNameForParam(action, key) + ": ";
                         output += value.toValueString() || "empty";
-                        output += ", ";
+                        output += "\n";
                     });
                     this.clearInputAndSetMessage(output);
                 });
@@ -671,21 +671,21 @@ module NakedObjects.Angular.Gemini {
                                     s = this.renderProp(field);
                                 } else {
                                     s = "Field name: " + field.extensions().friendlyName();
-                                    s += ", Value: ";
+                                    s += "\n Value: ";
                                     s += field.value().toString() || "empty";
-                                    s += ", Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
+                                    s += "\n Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
                                     if (field.disabledReason()) {
-                                        s += ", Unmodifiable: " + field.disabledReason();
+                                        s += "\n Unmodifiable: " + field.disabledReason();
                                     } else {
-                                        s += field.extensions().optional() ? ", Optional" : ", Mandatory";
+                                        s += field.extensions().optional() ? "\n Optional" : "\n Mandatory";
                                         if (field.choices()) {
-                                            var label = ", Choices: ";
+                                            var label = "\n Choices: ";
                                             s += _.reduce(field.choices(), (s, cho) => {
                                                 return s + cho + " ";
                                             }, label);
                                         }
                                         const desc = field.extensions().description()
-                                        s += desc ? ", Description: " + desc : "";
+                                        s += desc ? "\n Description: " + desc : "";
                                         //TODO:  Add a Can Paste if clipboard has compatible type
                                     }
                                 }
@@ -703,7 +703,7 @@ module NakedObjects.Angular.Gemini {
         private renderProp(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();
             let value: string = pm.value().toString() || "empty";
-            return name + ": " + value + ", ";
+            return name + ": " + value + "\n";
         }
     }
     export class Forward extends Command {
@@ -874,8 +874,8 @@ module NakedObjects.Angular.Gemini {
                             this.urlManager.setMenu(menuId, 1);
                             break;
                         default:
-                            var label = name ? "Matching menus: " : "Menus: ";
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + ", "; }, label);
+                            var label = name ? "Matching menus:\n" : "Menus:\n";
+                            var s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
                             this.clearInputAndSetMessage(s);
                     }
                 });
@@ -1117,7 +1117,7 @@ module NakedObjects.Angular.Gemini {
             let i: number;
             const links = source.value();
             for (i = startNo; i <= endNo; i++) {
-                output += "Item " + i + ": " + links[i - 1].title() + "; ";
+                output += "Item " + i + ": " + links[i - 1].title() + "\n";
             }
             this.clearInputAndSetMessage(output);
         }
