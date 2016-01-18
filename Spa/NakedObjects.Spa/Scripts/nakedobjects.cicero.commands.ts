@@ -58,14 +58,14 @@ module NakedObjects.Angular.Gemini {
         public checkNumberOfArguments(argString: string): void {
             if (argString == null) {
                 if (this.minArguments === 0) return;
-                throw new Error("No arguments provided.");
+                throw new Error("No arguments provided");
             }
             const args = argString.split(",");
             if (args.length < this.minArguments) {
-                throw new Error("Too few arguments provided.");
+                throw new Error("Too few arguments provided");
             }
             else if (args.length > this.maxArguments) {
-                throw new Error("Too many arguments provided.");
+                throw new Error("Too many arguments provided");
             }
         }
 
@@ -280,7 +280,7 @@ module NakedObjects.Angular.Gemini {
             const match = this.argumentAsString(args, 0);
             const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
-                this.clearInputAndSetMessage("Second argument for action is not yet supported.");
+                this.clearInputAndSetMessage("Second argument for action is not yet supported");
                 return;
             }
             if (this.isObject()) {
@@ -315,7 +315,7 @@ module NakedObjects.Angular.Gemini {
                     this.openActionDialog(actions[0]);
                     break;
                 default:
-                    let label = match ? " Matching actions:\n" : "Actions:\n";
+                    let label = match ? "Matching actions:\n" : "Actions:\n";
                     var s = _.reduce(actions, (s, t) => {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                         return s + menupath + t.extensions().friendlyName() + "\n";
@@ -409,10 +409,10 @@ module NakedObjects.Angular.Gemini {
                     this.openCollection(matchingColls[0]);
                     break;
                 default:
-                    let label = match ? " Matching collections: " : "Collections: ";
+                    let label = match ? "Matching collections:\n" : "Collections:\n";
                     var s = _.reduce(matchingColls, (s, t) => {
                         const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + ", ";
+                        return s + menupath + t.extensions().friendlyName() + "\n";
                     }, label);
                     this.clearInputAndSetMessage(s);
             }
@@ -545,11 +545,11 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             else if (this.isEdit()) {
-                this.clearInputAndSetMessage("Modifying fields on an object in edit mode is not yet supported.");
+                this.clearInputAndSetMessage("Modifying fields on an object in edit mode is not yet supported");
                 return;
             }
             //Must be object but not in Edit mode
-            this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode.");
+            this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode");
         };
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
@@ -616,7 +616,7 @@ module NakedObjects.Angular.Gemini {
                         const value = new Value(selfLink);
                         this.setFieldValue(param, value);
                     } else {
-                        this.clearInputAndSetMessage("Contents of Clipboard are not compatible with the field.");
+                        this.clearInputAndSetMessage("Contents of Clipboard are not compatible with the field");
                     }
                 });
         }
@@ -631,8 +631,8 @@ module NakedObjects.Angular.Gemini {
                     this.setFieldValue(param, matches[0]);
                     break;
                 default:
-                    let msg = "Multiple matches: ";
-                    _.forEach(matches, m => msg += m.toString() + ", ");
+                    let msg = "Multiple matches:\n";
+                    _.forEach(matches, m => msg += m.toString() + "\n");
                     this.clearInputAndSetMessage(msg);
                     break;
             }
@@ -671,21 +671,21 @@ module NakedObjects.Angular.Gemini {
                                     s = this.renderProp(field);
                                 } else {
                                     s = "Field name: " + field.extensions().friendlyName();
-                                    s += "\n Value: ";
+                                    s += "\nValue: ";
                                     s += field.value().toString() || "empty";
-                                    s += "\n Type: " + Helpers.friendlyTypeName(field.extensions().returnType());
+                                    s += "\nType: " + Helpers.friendlyTypeName(field.extensions().returnType());
                                     if (field.disabledReason()) {
-                                        s += "\n Unmodifiable: " + field.disabledReason();
+                                        s += "\nUnmodifiable: " + field.disabledReason();
                                     } else {
-                                        s += field.extensions().optional() ? "\n Optional" : "\n Mandatory";
+                                        s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
                                         if (field.choices()) {
-                                            var label = "\n Choices: ";
+                                            var label = "\nChoices: ";
                                             s += _.reduce(field.choices(), (s, cho) => {
                                                 return s + cho + " ";
                                             }, label);
                                         }
                                         const desc = field.extensions().description()
-                                        s += desc ? "\n Description: " + desc : "";
+                                        s += desc ? "\nDescription: " + desc : "";
                                         //TODO:  Add a Can Paste if clipboard has compatible type
                                     }
                                 }
@@ -827,7 +827,7 @@ module NakedObjects.Angular.Gemini {
             if (arg) {
                 try {
                     const c = this.commandFactory.getCommand(arg);
-                    this.clearInputAndSetMessage(c.fullCommand + " command: " + c.helpText);
+                    this.clearInputAndSetMessage(c.fullCommand + " command:\n" + c.helpText);
                 } catch (Error) {
                     this.clearInputAndSetMessage(Error.message);
                 }
@@ -910,7 +910,7 @@ module NakedObjects.Angular.Gemini {
         handleErrorResponse(err: ErrorMap, action: ActionMember) {
             //TODO: Not currently covering co-validation errors
             //TODO: Factor out commonality for errors on saving object
-            let msg = "Please complete or correct these fields: "
+            let msg = "Please complete or correct these fields:\n"
             _.each(err.valuesMap(), (errorValue, paramId) => {
                 const reason = errorValue.invalidReason;
                 const value = errorValue.value;
@@ -921,7 +921,7 @@ module NakedObjects.Angular.Gemini {
                     } else {
                         msg += value + " " + reason;
                     }
-                    msg += ", ";
+                    msg += "\n";
                 }
             });
             this.clearInputAndSetMessage(msg);

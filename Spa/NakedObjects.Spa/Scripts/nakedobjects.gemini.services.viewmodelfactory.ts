@@ -662,7 +662,7 @@ module NakedObjects.Angular.Gemini {
                                 if (_.any(openCollIds)) {
                                     const id = openCollIds[0];
                                     const coll = obj.collectionMember(id);
-                                    output += `Collection: ${coll.extensions().friendlyName() } on ${Helpers.typePlusTitle(obj) },  `;
+                                    output += `Collection: ${coll.extensions().friendlyName() } on ${Helpers.typePlusTitle(obj) }\n`;
                                     switch (coll.size()) {
                                         case 0:
                                             output += "empty";
@@ -671,7 +671,7 @@ module NakedObjects.Angular.Gemini {
                                             output += "1 item";
                                             break;
                                         default:
-                                            output += `${coll.size() } items`;
+                                            output += `${coll.size()} items`;
                                     }
                                 } else {
                                     if (routeData.edit) {
@@ -705,7 +705,7 @@ module NakedObjects.Angular.Gemini {
                                 const actionMember = menu.actionMember(routeData.actionId);
                                 const actionName = actionMember.extensions().friendlyName();
                                 cvm.clearInput();
-                                cvm.output = `Result from ${actionName}:\n ${description}`;
+                                cvm.output = `Result from ${actionName}:\n${description}`;
                             });
                         });
                     }

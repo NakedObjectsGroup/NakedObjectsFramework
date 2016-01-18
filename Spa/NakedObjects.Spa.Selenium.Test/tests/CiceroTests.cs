@@ -17,32 +17,34 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Test from home menu
             CiceroUrl("home?menu1=ProductRepository");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             //First, without paramsd
             EnterCommand("Action");
-            WaitForOutput("Actions: Find Product By Name, Find Product By Number, List Products By Sub Category, List Products By Sub Categories, Find By Product Line And Class, Find By Product Lines And Classes, Find Product, Find Products By Category, New Product, Random Product, Find Product By Key, Stock Report,");
+            WaitForOutput("Actions:\r\nFind Product By Name\r\nFind Product By Number\r\nList Products By Sub Category\r\nList Products By Sub Categories\r\nFind By Product Line And Class\r\nFind By Product Lines And Classes\r\nFind Product\r\nFind Products By Category\r\nNew Product\r\nRandom Product\r\nFind Product By Key\r\nStock Report");
+
             //Filtered list
             EnterCommand("act cateGory  ");
-            WaitForOutput("Matching actions: List Products By Sub Category, Find Products By Category,");
+            WaitForOutput("Matching actions:\r\nList Products By Sub Category\r\nFind Products By Category");
             //No match
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             //EnterCommand("act foo, bar  ");  //TODO: needs updating when 2nd param is implemented
-            //WaitForOutput("Wrong number of arguments provided.");
+            //WaitForOutput("Wrong number of arguments provided");
             //single match
             EnterCommand("act rand");
-            WaitForOutput("Products menu. Action dialog: Random Product.");
+            WaitForOutput("Products menu\r\nAction dialog: Random Product");
             //Test from object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
+
             EnterCommand("Action");
-            WaitForOutput("Actions: Add Or Change Photo, Best Special Offer, Associate Special Offer With Product, Open Purchase Orders For Product, Create New Work Order, Work Orders,");
+            WaitForOutput("Actions:\r\nAdd Or Change Photo\r\nBest Special Offer\r\nAssociate Special Offer With Product\r\nOpen Purchase Orders For Product\r\nCreate New Work Order\r\nWork Orders");
             EnterCommand("act ord");
-            WaitForOutput("Matching actions: Open Purchase Orders For Product, Create New Work Order, Work Orders,");
+            WaitForOutput("Matching actions:\r\nOpen Purchase Orders For Product\r\nCreate New Work Order\r\nWork Orders");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             EnterCommand("ac best");
-            WaitForOutput("Product: HL Grip Tape. Action dialog: Best Special Offer. Quantity: empty,");
+            WaitForOutput("Product: HL Grip Tape\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
             //Not available in current context
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
@@ -50,108 +52,108 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("The command: action is not available in the current context");
             //multi clause search
             CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("ac name find by");
-            WaitForOutput("Matching actions: Stores - Find Store By Name, Individuals - Find Individual Customer By Name,");
+            WaitForOutput("Matching actions:\r\nStores - Find Store By Name\r\nIndividuals - Find Individual Customer By Name");
             //Matches includes sub-menu
             EnterCommand("ac stores");
-            WaitForOutput("Matching actions: Stores - Find Store By Name, Stores - Create New Store Customer, Stores - Random Store,");
+            WaitForOutput("Matching actions:\r\nStores - Find Store By Name\r\nStores - Create New Store Customer\r\nStores - Random Store");
             EnterCommand("ac ores d");
-            WaitForOutput("Matching actions: Stores - Find Store By Name, Stores - Random Store,");
+            WaitForOutput("Matching actions:\r\nStores - Find Store By Name\r\nStores - Random Store");
             EnterCommand("ac ores ran");
-            WaitForOutput("Customers menu. Action dialog: Random Store.");
+            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
             CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("ac ran individuals"); //Order doesn't matter
-            WaitForOutput("Customers menu. Action dialog: Random Individual.");
+            WaitForOutput("Customers menu\r\nAction dialog: Random Individual");
 
             //object with no actions
             CiceroUrl("object?object1=AdventureWorksModel.ProductInventory-442-6");
-            WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G.");
+            WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G");
             EnterCommand("ac");
             WaitForOutput("No actions available");
 
             //second arg
             CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("ac name find by, ?");
-            WaitForOutput("Second argument for action is not yet supported.");
+            WaitForOutput("Second argument for action is not yet supported");
 
             //To many args
             EnterCommand("ac name find by, x, y");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Exact match takes precedence over partial match
             CiceroUrl("home?menu1=WorkOrderRepository");
-            WaitForOutput("Work Orders menu.");
+            WaitForOutput("Work Orders menu");
             EnterCommand("ac Create New Work Order"); //which would also match Create New Work Order2
-            WaitForOutput("Work Orders menu. Action dialog: Create New Work Order. Product: empty,");
+            WaitForOutput("Work Orders menu\r\nAction dialog: Create New Work Order\r\nProduct: empty");
 
             //Invoking action (no args) on an object with only one action goes straight to dialog
             CiceroUrl("object?object1=AdventureWorksModel.SpecialOffer-1");
-            WaitForOutput("Special Offer: No Discount.");
+            WaitForOutput("Special Offer: No Discount");
             EnterCommand("ac");
-            WaitForOutput("Special Offer: No Discount. Action dialog: Associate Special Offer With Product. Product: empty,");
+            WaitForOutput("Special Offer: No Discount\r\nAction dialog: Associate Special Offer With Product\r\nProduct: empty");
         }
         public virtual void BackAndForward() //Tested together for simplicity
         {
             CiceroUrl("home");
             EnterCommand("menu cus");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("action random store");
-            WaitForOutput("Customers menu. Action dialog: Random Store.");
+            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
             EnterCommand("back");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("Ba");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("forward");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("fO  ");
-            WaitForOutput("Customers menu. Action dialog: Random Store.");
+            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
             //Can't go forward beyond most recent
             EnterCommand("forward");
-            WaitForOutput("Customers menu. Action dialog: Random Store.");
+            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
 
             //No arguments
             EnterCommand("back x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
             EnterCommand("forward y");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
         }
         public virtual void Cancel()
         {
             //Menu dialog
             CiceroUrl("home?menu1=ProductRepository&dialog1=FindProductByName");
-            WaitForOutputStarting("Products menu. Action dialog: Find Product By Name");
+            WaitForOutputStarting("Products menu\r\nAction dialog: Find Product By Name");
             EnterCommand("cancel");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             //Test on a zero param action
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action dialog: Random Product.");
+            WaitForOutput("Products menu\r\nAction dialog: Random Product");
             EnterCommand("cancel");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             //Try with argument
             CiceroUrl("home?menu1=EmployeeRepository&dialog1=RandomEmployee");
-            WaitForOutput("Employees menu. Action dialog: Random Employee.");
+            WaitForOutput("Employees menu\r\nAction dialog: Random Employee");
             EnterCommand("cancel x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Object dialog
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&dialog1=BestSpecialOffer");
-            WaitForOutputStarting("Product: HL Grip Tape. Action dialog: Best Special Offer");
+            WaitForOutputStarting("Product: HL Grip Tape\r\nAction dialog: Best Special Offer");
             EnterCommand("cancel");
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
             //Zero param
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutputStarting("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
+            WaitForOutputStarting("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("Ca");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688");
 
             //Cancel of Edits
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&edit1=true");
-            WaitForOutput("Editing Product: HL Grip Tape.");
+            WaitForOutput("Editing Product: HL Grip Tape");
             EnterCommand("cancel");
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
 
             //Invalid contexts
             CiceroUrl("home");
@@ -159,11 +161,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
         }
@@ -174,11 +176,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
 
             CiceroUrl("object?object1=AdventureWorksModel.Person-12941");
-            WaitForOutput("Person: Dakota Wood.");
+            WaitForOutput("Person: Dakota Wood");
             EnterCommand("clipboard cop");
             WaitForOutput("Clipboard contains: Person: Dakota Wood");
             CiceroUrl("object?object1=AdventureWorksModel.Person-12942");
-            WaitForOutput("Person: Jaclyn Liang.");
+            WaitForOutput("Person: Jaclyn Liang");
             //Check clipboard still unmodified
             EnterCommand("clipboard sh");
             WaitForOutput("Clipboard contains: Person: Dakota Wood");
@@ -195,11 +197,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No argument
             EnterCommand("clipboard");
-            WaitForOutput("No arguments provided.");
+            WaitForOutput("No arguments provided");
 
             //Too many arguments
             EnterCommand("clipboard copy, show");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Attempt to copy from home
             CiceroUrl("home");
@@ -208,42 +210,42 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutputStarting("Result from Current Special Offers: 16 items");
+            WaitForOutputStarting("Result from Current Special Offers:\r\n16 items");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
         }
         public virtual void Collection()
         {
             CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
-            WaitForOutput("Sales Order Header: SO60485.");
+            WaitForOutput("Sales Order Header: SO60485");
 
             //Simple case
             EnterCommand("collection details");
-            WaitForOutput("Collection: Details on Sales Order Header: SO60485, 3 items");
+            WaitForOutput("Collection: Details on Sales Order Header: SO60485\r\n3 items");
 
             //Multiple matches
             CiceroUrl("object?object1=AdventureWorksModel.Product-901");
-            WaitForOutput("Product: LL Touring Frame - Yellow, 54.");
+            WaitForOutput("Product: LL Touring Frame - Yellow, 54");
             EnterCommand("coll pr");
-            WaitForOutput("Matching collections: Product Inventory, Product Reviews,");
+            WaitForOutput("Matching collections:\r\nProduct Inventory\r\nProduct Reviews");
 
             //No argument
             EnterCommand("co");
-            WaitForOutput("Collections: Product Inventory, Product Reviews, Special Offers,");
+            WaitForOutput("Collections:\r\nProduct Inventory\r\nProduct Reviews\r\nSpecial Offers");
 
             //Multi-clause match
             EnterCommand("coll v ory");
-            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54, empty");
+            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
 
             //No matches
             CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
-            WaitForOutput("Sales Order Header: SO60485.");
+            WaitForOutput("Sales Order Header: SO60485");
             EnterCommand("co x son");
             WaitForOutput("x son does not match any collections");
 
             //Too many arguments
             EnterCommand("co de,tails");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Invalid context
             CiceroUrl("home");
@@ -253,29 +255,29 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Switching between different collections
             CiceroUrl("object?object1=AdventureWorksModel.Product-901");
-            WaitForOutput("Product: LL Touring Frame - Yellow, 54.");
+            WaitForOutput("Product: LL Touring Frame - Yellow, 54");
             EnterCommand("coll inventory");
-            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54, empty");
+            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
             EnterCommand("coll reviews");
-            WaitForOutput("Collection: Product Reviews on Product: LL Touring Frame - Yellow, 54, empty");
+            WaitForOutput("Collection: Product Reviews on Product: LL Touring Frame - Yellow, 54\r\nempty");
             EnterCommand("coll spec");
-            WaitForOutput("Collection: Special Offers on Product: LL Touring Frame - Yellow, 54, 1 item");
+            WaitForOutput("Collection: Special Offers on Product: LL Touring Frame - Yellow, 54\r\n1 item");
         }
         public virtual void Edit()
         {
             CiceroUrl("home");
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("edit");
-            WaitForOutput("Editing Customer: Handy Bike Services, AW00029688.");
+            WaitForOutput("Editing Customer: Handy Bike Services, AW00029688");
             //No arguments
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688.");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("edit x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
             //Invalid contexts
             CiceroUrl("object?object1=AdventureWorksModel.Product-358&edit1=true");
-            WaitForOutput("Editing Product: HL Grip Tape.");
+            WaitForOutput("Editing Product: HL Grip Tape");
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
             CiceroUrl("home");
@@ -286,14 +288,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void Field()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52.");
+            WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("field num");
-            WaitForOutput("Product Number: BK-R68R-52,");
+            WaitForOutput("Product Number: BK-R68R-52");
             EnterCommand("fi cat");
-            WaitForOutput("Product Category: Bikes, Product Subcategory: Road Bikes,");
+            WaitForOutput("Product Category: Bikes\r\nProduct Subcategory: Road Bikes");
             //No argument
             EnterCommand("fi ");
-            WaitForOutputStarting("Name: Road-450 Red, 52, Product Number: BK-R68R-52, Color: Red, Photo: empty, Product Model: Road-450, List Price: 1457.99,");
+            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
             //No match
             EnterCommand("fi x");
             WaitForOutput("x does not match any fields");
@@ -305,51 +307,51 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Multi-clause match
             CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
-            WaitForOutput("Sales Person: Tete Mensa-Annan.");
+            WaitForOutput("Sales Person: Tete Mensa-Annan");
             EnterCommand("fi sales a");
-            WaitForOutput("Sales Territory: Northwest, Sales Quota: 300000, Sales YTD: 1576562.1966, Sales Last Year: 0,");
+            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
             EnterCommand("fi ter ory");
-            WaitForOutput("Sales Territory: Northwest,");
+            WaitForOutput("Sales Territory: Northwest");
             EnterCommand("fi sales z");
             WaitForOutput("sales z does not match any fields");
 
             //No fields
             CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
-            WaitForOutput("Address Type: Home.");
+            WaitForOutput("Address Type: Home");
             EnterCommand("field");
             WaitForOutput("No visible fields");
 
             //With question mark
             CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52.");
+            WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("field num,?");
-            WaitForOutput("Field name: Product Number, Value: BK-R68R-52, Type: String, Mandatory");
+            WaitForOutput("Field name: Product Number\r\nValue: BK-R68R-52\r\nType: String\r\nMandatory");
             
             //To many args
             EnterCommand("field num,x,y");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //exact match takes priority over partial match
             EnterCommand("field product category"); //which would also match product subcategory
-            WaitForOutput("Product Category: Bikes,");
+            WaitForOutput("Product Category: Bikes");
 
             //Entering fields (into dialogs)
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522%2522&field1_lastName=%2522%2522");
-            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: empty, Last Name: empty,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
             EnterCommand("field first, a");
-            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: empty,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: empty");
             EnterCommand("field last, b");
-            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
 
             //Todo: test selections
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
-            WaitForOutput("Products menu. Action dialog: List Products By Sub Category.");
+            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category");
             EnterCommand("field cat, hand");
-            WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Handlebars,");
+            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Handlebars");
             EnterCommand("field cat, xx");
             WaitForOutput("None of the choices matches xx");
             EnterCommand("field cat, frame");
-            WaitForOutput("Multiple matches: Mountain Frames, Road Frames, Touring Frames,");
+            WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
         }
         public virtual void Gemini()
         {
@@ -360,7 +362,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
 
             CiceroUrl("object?object1=AdventureWorksModel.Product-968");
-            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
             EnterCommand("gemini");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
 
@@ -368,18 +370,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("ge x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
         }
         public virtual void Go()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Customer-577");
-            WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577.");
+            WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
             //Full match
             EnterCommand("go Details");
-            WaitForOutput("Store: Synthetic Materials Manufacturing.");
+            WaitForOutput("Store: Synthetic Materials Manufacturing");
             //Partial match (on Sales Person)
             EnterCommand("go pers");
-            WaitForOutput("Sales Person: Pamela Ansman-Wolfe.");
+            WaitForOutput("Sales Person: Pamela Ansman-Wolfe");
             //No match
             EnterCommand("go x");
             WaitForOutput("x does not match any reference fields");
@@ -392,24 +394,24 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Multiple reference fields match details: Employee DetailsPerson Details");
             //Multiple clause match
             EnterCommand("go details pers"); //Person Details
-            WaitForOutput("Person: Pamela Ansman-Wolfe.");
+            WaitForOutput("Person: Pamela Ansman-Wolfe");
             //Wrong no of args
             EnterCommand("go");
-            WaitForOutput("No arguments provided.");
+            WaitForOutput("No arguments provided");
             EnterCommand("go x,y");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
             //Now try for a list context
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: 16 items");
+            WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 1");
-            WaitForOutput("Special Offer: No Discount.");
+            WaitForOutput("Special Offer: No Discount");
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: 16 items");
+            WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 16");
-            WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale.");
+            WaitForOutput("Special Offer: Mountain-500 Silver Clearance Sale");
             //Try out of range
             CiceroUrl("list?menu1=SpecialOfferRepository&dialog1=CurrentSpecialOffers&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
-            WaitForOutput("Result from Current Special Offers: 16 items");
+            WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("go 0");
             WaitForOutput("0 is out of range for displayed items");
             EnterCommand("go 17");
@@ -417,14 +419,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("go x");
             WaitForOutput("x is not a valid number");
             EnterCommand("go 1x"); //Because of behaviour of tryParse
-            WaitForOutput("Special Offer: No Discount.");
+            WaitForOutput("Special Offer: No Discount");
             //Wrong context
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("go x");
             WaitForOutput("The command: go is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action dialog: Random Product.");
+            WaitForOutput("Products menu\r\nAction dialog: Random Product");
             EnterCommand("go x");
             WaitForOutput("The command: go is not available in the current context");
             
@@ -434,85 +436,85 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Help from home
             CiceroUrl("home");
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: back, clipboard, forward, gemini, help, menu, where,");
+            WaitForOutput("Commands available in current context:\r\nback\r\nclipboard\r\nforward\r\ngemini\r\nhelp\r\nmenu\r\nwhere");
             //Now try an object context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
-            WaitForOutput("Product: LL Mountain Frame - Black, 40.");
+            WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, collection, clipboard, edit, field, forward, gemini, go, help, menu, reload, where,");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\ncollection\r\nclipboard\r\nedit\r\nfield\r\nforward\r\ngemini\r\ngo\r\nhelp\r\nmenu\r\nreload\r\nwhere");
             //Now with params
             EnterCommand("help me");
-            WaitForOutput("menu command: Open a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
+            WaitForOutput("menu command:\r\nOpen a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
             EnterCommand("help menux");
             WaitForOutput("No such command: menux");
             EnterCommand("help menu back");
             WaitForOutput("No such command: menu back");
             EnterCommand("help menu, back");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
             //List context
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
             WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("help");
-            WaitForOutput("Commands available in current context: action, back, clipboard, forward, gemini, go, help, menu, page, reload, selection, show, where,");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngo\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
         }
         public virtual void Menu()
         {   //No argument
             CiceroUrl("home");
             EnterCommand("Menu");
-            WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
+            WaitForOutput("Menus:\r\nCustomers\r\nOrders\r\nProducts\r\nEmployees\r\nSales\r\nSpecial Offers\r\nContacts\r\nVendors\r\nPurchase Orders\r\nWork Orders");
             //Now with arguments
             EnterCommand("Menu Customers");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("Menu pro");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             EnterCommand("Menu off");
-            WaitForOutput("Special Offers menu.");
+            WaitForOutput("Special Offers menu");
             EnterCommand("Menu ord");
-            WaitForOutput("Matching menus: Orders, Purchase Orders, Work Orders,");
+            WaitForOutput("Matching menus:\r\nOrders\r\nPurchase Orders\r\nWork Orders");
             EnterCommand("Menu foo");
             WaitForOutput("foo does not match any menu");
             EnterCommand("Menu cust prod");
             WaitForOutput("cust prod does not match any menu");
             EnterCommand("Menu cus, ord");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
             //Invoked in another context
             CiceroUrl("object?object1=AdventureWorksModel.Product-943");
-            WaitForOutput("Product: LL Mountain Frame - Black, 40.");
+            WaitForOutput("Product: LL Mountain Frame - Black, 40");
             EnterCommand("Menu");
-            WaitForOutput("Menus: Customers, Orders, Products, Employees, Sales, Special Offers, Contacts, Vendors, Purchase Orders, Work Orders,");
+            WaitForOutput("Menus:\r\nCustomers\r\nOrders\r\nProducts\r\nEmployees\r\nSales\r\nSpecial Offers\r\nContacts\r\nVendors\r\nPurchase Orders\r\nWork Orders");
 
             //Test for exact match taking precedence over partial matches
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("menu orders"); //which would match 3, but one exactly
-            WaitForOutput("Orders menu.");
+            WaitForOutput("Orders menu");
 
             //Invoking menu from a non-home context, clears state
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
             WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("menu cus");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
         }
         public virtual void OK()
         {
             CiceroUrl("home");
             //Open a zero-param action on main menu
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action dialog: Random Product.");
+            WaitForOutput("Products menu\r\nAction dialog: Random Product");
             EnterCommand("ok");
             WaitForOutputStarting("Product: ");
             // No arguments
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
-            WaitForOutput("Products menu. Action dialog: Random Product.");
+            WaitForOutput("Products menu\r\nAction dialog: Random Product");
             EnterCommand("ok x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Object action
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
-            WaitForOutput("Customer: Handy Bike Services, AW00029688. Action dialog: Last Order.");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("ok");
-            WaitForOutput("Sales Order Header: SO69562.");
+            WaitForOutput("Sales Order Header: SO69562");
 
             //Invalid contexts
             CiceroUrl("home");
@@ -520,70 +522,70 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository");
-            WaitForOutput("Products menu.");
+            WaitForOutput("Products menu");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
 
             //Menu action that returns a List
             CiceroUrl("home?menu1=OrderRepository&dialog1=HighestValueOrders");
-            WaitForOutput("Orders menu. Action dialog: Highest Value Orders.");
+            WaitForOutput("Orders menu\r\nAction dialog: Highest Value Orders");
             EnterCommand("ok");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of ");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of ");
 
             //Menu action with params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522b%2522");
-            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: b,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
             EnterCommand("ok");
-            WaitForOutputStarting("Result from Find Individual Customer By Name: Page 1 of 8 containing 20 of");
+            WaitForOutputStarting("Result from Find Individual Customer By Name:\r\nPage 1 of 8 containing 20 of");
 
             //Menu action with missing mandatory params
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522a%2522&field1_lastName=%2522%2522");
-            WaitForOutput("Customers menu. Action dialog: Find Individual Customer By Name. First Name: a, Last Name: empty,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: empty");
             EnterCommand("ok");
-            WaitForOutput("Please complete or correct these fields: Last Name: required,");
+            WaitForOutput("Please complete or correct these fields:\r\nLast Name: required");
 
             //Menu action with invalid entry
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindCustomerByAccountNumber&field1_accountNumber=%252212345%2522");
-            WaitForOutput("Customers menu. Action dialog: Find Customer By Account Number. Account Number: 12345,");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Customer By Account Number\r\nAccount Number: 12345");
             EnterCommand("ok");
-            WaitForOutput("Please complete or correct these fields: Account Number: 12345 Account number must start with AW,");
+            WaitForOutput("Please complete or correct these fields:\r\nAccount Number: 12345 Account number must start with AW");
 
             //Menu action with select param
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory&field1_subCategory=%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F10%2522%252C%2522title%2522%253A%2522Forks%2522%257D");
-            WaitForOutput("Products menu. Action dialog: List Products By Sub Category. Sub Category: Forks,");
+            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Forks");
             EnterCommand("ok");
-            WaitForOutputStarting("Result from List Products By Sub Category: 3 items");
+            WaitForOutputStarting("Result from List Products By Sub Category:\r\n3 items");
 
             //Action resuling in an error
             CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
-            WaitForOutput("Customers menu. Action dialog: Throw Domain Exception.");
+            WaitForOutput("Customers menu\r\nAction dialog: Throw Domain Exception");
             EnterCommand("ok");
             WaitForOutput("Sorry, an application error has occurred. Foo");
         }
         public virtual void Page()
         {
             CiceroUrl("list?menu1=OrderRepository&action1=HighestValueOrders&page1=1&pageSize1=20&selected1=0");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
             EnterCommand("page 0");
             WaitForOutput("Specified page number must be between 1 and 1574");
             EnterCommand("page 2");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 2 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 2 of 1574");
             EnterCommand("page 1574");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
             EnterCommand("page 1575");
             WaitForOutput("Specified page number must be between 1 and 1574");
             EnterCommand("page f");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 1574");
             EnterCommand("page p");
             WaitForOutput("List is already showing the first page");
             EnterCommand("pa last");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
             EnterCommand("pa nex");
             WaitForOutput("List is already showing the last page");
             EnterCommand("page p");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1573 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1573 of 1574");
             EnterCommand("pa ne");
-            WaitForOutputStarting("Result from Highest Value Orders: Page 1574 of 1574");
+            WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1574 of 1574");
 
             //Invalid argument
             EnterCommand("page furst");
@@ -591,7 +593,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No argument
             EnterCommand("page");
-            WaitForOutput("No arguments provided.");
+            WaitForOutput("No arguments provided");
 
             //Invalid context
             CiceroUrl("home");
@@ -599,16 +601,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
             CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-51131");
-            WaitForOutput("Sales Order Header: SO51131.");
+            WaitForOutput("Sales Order Header: SO51131");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
         }
         public virtual void Root()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Product-459&collection1_ProductInventory=List");
-            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19, 3 items");
+            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
             EnterCommand("root");
-            WaitForOutput("Product: Lock Nut 19.");
+            WaitForOutput("Product: Lock Nut 19");
 
             //Invalid contexts
             CiceroUrl("home");
@@ -617,34 +619,33 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("The command: root is not available in the current context");
 
             CiceroUrl("object?object1=AdventureWorksModel.Product-459");
-            WaitForOutput("Product: Lock Nut 19.");
+            WaitForOutput("Product: Lock Nut 19");
             EnterCommand("root");
             WaitForOutput("The command: root is not available in the current context");
 
             //Argument added
             CiceroUrl("object?object1=AdventureWorksModel.Product-459&collection1_ProductInventory=List");
-            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19, 3 items");
+            WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
             EnterCommand("root x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
         }
         public virtual void Show()
         {
             //Applied to List
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
-            WaitForOutput("Result from Current Special Offers: 16 items");
+            WaitForOutput("Result from Current Special Offers:\r\n16 items");
             EnterCommand("show 1");
-            WaitForOutput("Item 1: No Discount;");
+            WaitForOutput("Item 1: No Discount");
             EnterCommand("show 16");
-            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale;");
-
+            WaitForOutput("Item 16: Mountain-500 Silver Clearance Sale");
             EnterCommand("show 2-4");
-            WaitForOutput("Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24; Item 4: Volume Discount 25 to 40;");
+            WaitForOutput("Item 2: Volume Discount 11 to 14\r\nItem 3: Volume Discount 15 to 24\r\nItem 4: Volume Discount 25 to 40");
             EnterCommand("show 5-5");
-            WaitForOutput("Item 5: Volume Discount 41 to 60;");
+            WaitForOutput("Item 5: Volume Discount 41 to 60");
             EnterCommand("show -3");
-            WaitForOutput("Item 1: No Discount; Item 2: Volume Discount 11 to 14; Item 3: Volume Discount 15 to 24;");
+            WaitForOutput("Item 1: No Discount\r\nItem 2: Volume Discount 11 to 14\r\nItem 3: Volume Discount 15 to 24");
             EnterCommand("show 15-");
-            WaitForOutput("Item 15: Half-Price Pedal Sale; Item 16: Mountain-500 Silver Clearance Sale;");
+            WaitForOutput("Item 15: Half-Price Pedal Sale\r\nItem 16: Mountain-500 Silver Clearance Sale");
 
 
             //Invalid numbers
@@ -661,19 +662,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Applied to collection
             CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-44518&selected1=256&collection1_Details=List");
-            WaitForOutput("Collection: Details on Sales Order Header: SO44518, 20 items");
+            WaitForOutput("Collection: Details on Sales Order Header: SO44518\r\n20 items");
             EnterCommand("show 1");
-            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44;");
+            WaitForOutput("Item 1: 5 x Mountain-100 Black, 44");
             EnterCommand("show 20");
-            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38;");
+            WaitForOutput("Item 20: 2 x HL Mountain Frame - Black, 38");
 
             //No number
             EnterCommand("show");
-            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44; Item 2: 3 x Sport-100 Helmet, Black; Item 3:");
+            WaitForOutputStarting("Item 1: 5 x Mountain-100 Black, 44\r\nItem 2: 3 x Sport-100 Helmet, Black\r\nItem 3:");
 
             //Too many parms
             EnterCommand("show 4,5");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
 
             //Alpha parm
             EnterCommand("show one");
@@ -685,11 +686,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
             CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu.");
+            WaitForOutput("Customers menu");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
             CiceroUrl("object?object1=AdventureWorksModel.Customer-29863");
-            WaitForOutput("Customer: Efficient Cycling, AW00029863.");
+            WaitForOutput("Customer: Efficient Cycling, AW00029863");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
 
@@ -698,22 +699,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             CiceroUrl("home");
             CiceroUrl("object?object1=AdventureWorksModel.Product-358");
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
             //Do something to change the output
             EnterCommand("help");
             WaitForOutputStarting("Commands");
             EnterCommand("where");
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
 
             //Empty command == where
             EnterCommand("help");
             WaitForOutputStarting("Commands");
             ClearFieldThenType("input", Keys.Enter);
-            WaitForOutput("Product: HL Grip Tape.");
+            WaitForOutput("Product: HL Grip Tape");
 
             //No arguments
             EnterCommand("where x");
-            WaitForOutput("Too many arguments provided.");
+            WaitForOutput("Too many arguments provided");
         }
 
         public virtual void Tab()
@@ -724,11 +725,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
             CiceroUrl("object?object1=AdventureWorksModel.Product-968");
-            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
             //Hitting Tab with no entry has no effect
             TypeIntoFieldWithoutClearing("input", Keys.Tab);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
-            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
 
             //Unrecognised two chars
             TypeIntoFieldWithoutClearing("input", "xx" + Keys.Tab);
@@ -742,7 +743,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No effect if there's any argument specified
             CiceroUrl("object?object1=AdventureWorksModel.Product-968");
-            WaitForOutput("Product: Touring-1000 Blue, 54.");
+            WaitForOutput("Product: Touring-1000 Blue, 54");
             TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Tab);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "he menu");
 
@@ -779,15 +780,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Copy a Product to clipboard
             CiceroUrl("object?object1=AdventureWorksModel.Product-980");
-            WaitForOutput("Product: Mountain-400-W Silver, 38.");
+            WaitForOutput("Product: Mountain-400-W Silver, 38");
             EnterCommand("clip copy");
             WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
             EnterCommand("menu emp");
-            WaitForOutput("Employees menu.");
+            WaitForOutput("Employees menu");
             EnterCommand("ac create");
-            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: empty,");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
             EnterCommand("field details, paste");
-            WaitForOutput("Contents of Clipboard are not compatible with the field.");
+            WaitForOutput("Contents of Clipboard are not compatible with the field");
             EnterCommand("clip show");
             WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
             EnterCommand("clip discard");
@@ -795,21 +796,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("field details, paste");
             WaitForOutput("Cannot use Clipboard as it is empty");
             CiceroUrl("object?object1=AdventureWorksModel.Person-7185");
-            WaitForOutput("Person: Carmen Perez.");
+            WaitForOutput("Person: Carmen Perez");
             EnterCommand("clip copy");
             WaitForOutput("Clipboard contains: Person: Carmen Perez");
             EnterCommand("back");
-            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: empty,");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
             EnterCommand("field details, paste");
-            WaitForOutput("Employees menu. Action dialog: Create New Employee From Contact. Contact Details: Carmen Perez,");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
             EnterCommand("ok");
-            WaitForOutput("Employee: Untitled Employee.");
+            WaitForOutput("Employee: Untitled Employee");
         }
     }
     public abstract class CiceroTests : CiceroTestRoot
     {
         [TestMethod]
         public override void Action() { base.Action(); }
+        [TestMethod]
+        public override void BackAndForward() { base.BackAndForward(); }
         [TestMethod]
         public override void Cancel() { base.Cancel(); }
         [TestMethod]
@@ -874,7 +877,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

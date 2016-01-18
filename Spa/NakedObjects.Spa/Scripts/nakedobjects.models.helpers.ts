@@ -28,7 +28,7 @@ module NakedObjects.Helpers {
 
     export function friendlyTypeName(fullName: string) {
         const shortName = _.last(fullName.split("."));
-        const result = shortName.replace(/([A-Z])/g, " $1");
+        const result = shortName.replace(/([A-Z])/g, " $1").trim();
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 

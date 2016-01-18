@@ -13,7 +13,7 @@ module NakedObjects.Angular.Gemini {
 
         autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
 
-        //Returns all commands (as separated words) that may be invoked in the current context
+        //Returns all commands that may be invoked in the current context
         allCommandsForCurrentContext(): string;
 
         getCommand(commandWord: string): Command;
@@ -123,11 +123,11 @@ module NakedObjects.Angular.Gemini {
         }
 
         commandFactory.allCommandsForCurrentContext = () => {
-            var result = "Commands available in current context: ";
+            var result = "Commands available in current context:\n";
             for (var key in commands) {
                 var c = commands[key];
                 if (c.isAvailableInCurrentContext()) {
-                    result = result + c.fullCommand + ", ";
+                    result = result + c.fullCommand + "\n";
                 }
             }
             return result;
