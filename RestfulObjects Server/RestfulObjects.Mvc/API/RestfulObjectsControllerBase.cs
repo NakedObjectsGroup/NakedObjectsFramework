@@ -841,11 +841,8 @@ namespace RestfulObjects.Mvc {
 
         private void CacheTransient(ActionResultContextFacade actionResult) {
 
-            if (actionResult.Result.Target.IsTransient) {
-                var cacheIndex = Guid.NewGuid().ToString();
-                var session = HttpContext.Current.Session;
-                session[cacheIndex] = actionResult.Result.Target.Object;
-
+            if (!RestControlFlags.ProtoPersistentObjects && actionResult.Result.Target.IsTransient) {
+         
 
 
             }
