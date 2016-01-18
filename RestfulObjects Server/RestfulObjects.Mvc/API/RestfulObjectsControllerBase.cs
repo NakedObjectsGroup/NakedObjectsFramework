@@ -32,8 +32,10 @@ namespace RestfulObjects.Mvc {
         private static readonly ILog Logger = LogManager.GetLogger<RestfulObjectsControllerBase>();
 
         static RestfulObjectsControllerBase() {
+            // defaults 
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
             DefaultPageSize = 20;
+            ProtoPersistentObjects = true;
         }
 
         protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
@@ -61,6 +63,13 @@ namespace RestfulObjects.Mvc {
             get { return RestSnapshot.AcceptHeaderStrict; }
             set { RestSnapshot.AcceptHeaderStrict = value; }
         }
+
+        public static bool ProtoPersistentObjects
+        {
+            get { return RestControlFlags.ProtoPersistentObjects; }
+            set { RestControlFlags.ProtoPersistentObjects = value; }
+        }
+
 
         protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
@@ -830,6 +839,21 @@ namespace RestfulObjects.Mvc {
             }
         }
 
+        private void CacheTransient(ActionResultContextFacade actionResult) {
+
+            if (actionResult.Result.Target.IsTransient) {
+                var cacheIndex = Guid.NewGuid().ToString();
+                var session = HttpContext.Current.Session;
+                session[cacheIndex] = actionResult.Result.Target.Object;
+
+
+
+            }
+
+
+        }
+
+
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
          
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
@@ -1036,7 +1060,7 @@ namespace RestfulObjects.Mvc {
 
         private static IDictionary<string, string> GetOptionalCapabilities() {
             return new Dictionary<string, string> {
-                {"protoPersistentObjects", "yes"},
+                {"protoPersistentObjects",  ProtoPersistentObjects ? "yes" : "no"},
                 {"deleteObjects", "no"},
                 {"validateOnly", "yes"},
                 {"domainModel", DomainModel.ToString().ToLower()},
