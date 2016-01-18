@@ -32,6 +32,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectCheckBox("#item1-7");
             SelectCheckBox("#item1-9");
             Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
             CheckIndividualItem(5, newMax);
             CheckIndividualItem(7, newMax);
             CheckIndividualItem(9, newMax);
@@ -53,6 +54,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var newMax = rand.Next(10, 10000).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
             Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
             CheckIndividualItem(2, newMax);
             CheckIndividualItem(3, newMax);
             CheckIndividualItem(4, newMax);

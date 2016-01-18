@@ -32,8 +32,10 @@ namespace RestfulObjects.Mvc {
         private static readonly ILog Logger = LogManager.GetLogger<RestfulObjectsControllerBase>();
 
         static RestfulObjectsControllerBase() {
+            // defaults 
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
             DefaultPageSize = 20;
+            ProtoPersistentObjects = true;
         }
 
         protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
@@ -62,6 +64,11 @@ namespace RestfulObjects.Mvc {
             set { RestSnapshot.AcceptHeaderStrict = value; }
         }
 
+        public static bool ProtoPersistentObjects {
+            get { return RestControlFlags.ProtoPersistentObjects; }
+            set { RestControlFlags.ProtoPersistentObjects = value; }
+        }
+
         protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
 
@@ -88,11 +95,10 @@ namespace RestfulObjects.Mvc {
             // custom extension 
             var menus = PrefixRoute(SegmentValues.Menus, routePrefix);
 
-
             // ReSharper disable RedundantArgumentName
             routes.MapHttpRoute("GetInvokeIsTypeOf",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
-                defaults: new { controller = "RestfulObjects", action = "GetInvokeTypeActions" },
+                defaults: new {controller = "RestfulObjects", action = "GetInvokeTypeActions"},
                 constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
@@ -336,13 +342,13 @@ namespace RestfulObjects.Mvc {
 
             routes.MapHttpRoute("Menu",
                 routeTemplate: menus + "/{menuName}",
-                defaults: new { controller = "RestfulObjects", action = "GetMenu" },
-                constraints: new { httpMethod = new HttpMethodConstraint("GET") }
+                defaults: new {controller = "RestfulObjects", action = "GetMenu"},
+                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
             routes.MapHttpRoute("InvalidMenu",
                 routeTemplate: menus + "/{menuName}",
-                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
+                defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
             routes.MapHttpRoute("DomainType",
                 routeTemplate: domainTypes + "/{typeName}",
@@ -385,15 +391,14 @@ namespace RestfulObjects.Mvc {
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
             routes.MapHttpRoute("Menus",
-               routeTemplate: menus,
-               defaults: new { controller = "RestfulObjects", action = "GetMenus" },
-               constraints: new { httpMethod = new HttpMethodConstraint("GET") }
-               );
+                routeTemplate: menus,
+                defaults: new {controller = "RestfulObjects", action = "GetMenus"},
+                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                );
 
             routes.MapHttpRoute("InvalidMenus",
                 routeTemplate: menus,
-                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
-
+                defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
             routes.MapHttpRoute("User",
                 routeTemplate: user,
@@ -460,10 +465,7 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetMenu(string menuName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => {
-                
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus().Single(m => m.Id == menuName), Request, GetFlags(arguments));
-            });
+            return InitAndHandleErrors(() => { return new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus().Single(m => m.Id == menuName), Request, GetFlags(arguments)); });
         }
 
         public virtual HttpResponseMessage GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
@@ -483,12 +485,11 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
                 ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
                 VerifyNoPersistError(context, args.Item2);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
             });
         }
 
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
-
             return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
@@ -537,7 +538,7 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, true);
-                ObjectContextFacade context = FrameworkFacade.PutObject( FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
+                ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
@@ -552,7 +553,7 @@ namespace RestfulObjects.Mvc {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
-                return new RestSnapshot(OidStrategy , propertyContext, Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
             });
         }
 
@@ -564,7 +565,6 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
-
 
                     if (propertyContext.Property.IsCollection) {
                         return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
@@ -583,7 +583,6 @@ namespace RestfulObjects.Mvc {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
-
                     if (propertyContext.Property.IsCollection) {
                         return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), true);
                     }
@@ -599,7 +598,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetCollectionType(string typeName, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 try {
-                    return new RestSnapshot( OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
+                    return new RestSnapshot(OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
                 }
                 catch (TypePropertyResourceNotFoundNOSException e) {
                     throw new TypeCollectionResourceNotFoundNOSException(e.ResourceId, e.DomainId);
@@ -608,15 +607,15 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionType(string typeName, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot( OidStrategy, FrameworkFacade.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
@@ -625,7 +624,7 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessArgument(argument);
                 PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -635,7 +634,7 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument(arguments);
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -653,7 +652,8 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(context);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -663,7 +663,8 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(result);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -674,7 +675,8 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(result);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -684,7 +686,8 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(result);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -695,7 +698,8 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(result);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
@@ -705,14 +709,13 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot( OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
+                CacheTransient(result);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
 
         public virtual HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
-
             return InitAndHandleErrors(() => {
-
                 switch (actionName) {
                     case WellKnownIds.IsSubtypeOf:
                     case WellKnownIds.IsSupertypeOf:
@@ -730,7 +733,7 @@ namespace RestfulObjects.Mvc {
         }
 
         private RestSnapshot GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
-            return  new RestSnapshot(OidStrategy, GetFilterFrom(new FilterFromInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
+            return new RestSnapshot(OidStrategy, GetFilterFrom(new FilterFromInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }
 
         #endregion
@@ -745,14 +748,12 @@ namespace RestfulObjects.Mvc {
             }, arguments.Item2);
         }
 
-
         private RestControlFlags GetFlags(ReservedArguments arguments) {
             if (arguments.IsMalformed) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
             return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, arguments.Page, arguments.PageSize, arguments.DomainModel);
         }
-
 
         private string GetIfMatchTag() {
             if (ConcurrencyChecking) {
@@ -765,7 +766,6 @@ namespace RestfulObjects.Mvc {
 
             return null;
         }
-
 
         private void HandlePredefinedTypes(string typeName) {
             var regExBigInteger = new Regex(PredefinedType.Big_integer.ToRoString() + @"\(\d+\)");
@@ -781,7 +781,6 @@ namespace RestfulObjects.Mvc {
                 }
             }
         }
-
 
         private void VerifyNoError(ActionResultContextFacade result) {
             if (result.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason))) {
@@ -830,8 +829,17 @@ namespace RestfulObjects.Mvc {
             }
         }
 
+        private void CacheTransient(ActionResultContextFacade actionResult) {
+            if (!RestControlFlags.ProtoPersistentObjects && actionResult.Result.Target.IsTransient) {
+                var id = Guid.NewGuid();
+                actionResult.Result.UniqueIdForTransient = id;
+                var session = HttpContext.Current.Session;
+                var index = id.ToString();
+                session[index] = actionResult.Result.Target.Object;
+            }
+        }
+
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
-         
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
                 throw new BadPersistArgumentsException("Arguments invalid", objectContext, objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
             }
@@ -946,7 +954,7 @@ namespace RestfulObjects.Mvc {
         private Tuple<object, RestControlFlags> ExtractValueAndFlags(SingleValueArgument argument) {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
-                object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy ,Request), OidStrategy);
+                object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
                 return new Tuple<object, RestControlFlags>(parm, GetFlags(argument));
             });
         }
@@ -968,7 +976,7 @@ namespace RestfulObjects.Mvc {
 
             ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
             IValue parameter = arguments.Map[context.ParameterId];
-            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy ,Request), OidStrategy);
+            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
             var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value));
             context.ThisSpecification = thisSpecification;
             context.OtherSpecification = otherSpecification;
@@ -991,11 +999,8 @@ namespace RestfulObjects.Mvc {
             return context;
         }
 
-
-
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
             Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(persistArgumentMap, true);
-
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
                 Digest = null,
@@ -1033,10 +1038,9 @@ namespace RestfulObjects.Mvc {
             return ToTuple(new Tuple<object, RestControlFlags>(null, GetFlags(arguments)), GetIfMatchTag());
         }
 
-
         private static IDictionary<string, string> GetOptionalCapabilities() {
             return new Dictionary<string, string> {
-                {"protoPersistentObjects", "yes"},
+                {"protoPersistentObjects", ProtoPersistentObjects ? "yes" : "no"},
                 {"deleteObjects", "no"},
                 {"validateOnly", "yes"},
                 {"domainModel", DomainModel.ToString().ToLower()},

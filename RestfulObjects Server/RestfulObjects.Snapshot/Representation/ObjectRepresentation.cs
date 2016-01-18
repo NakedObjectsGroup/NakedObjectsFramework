@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -20,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class ObjectRepresentation : Representation {
         protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            var objectUri = new UriMtHelper(oidStrategy ,req, objectContext.Target);
+            var objectUri = new UriMtHelper(oidStrategy, req, objectContext.Target);
             SetScalars(objectContext);
             SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
             SetLinksAndMembers(req, objectContext);
@@ -40,6 +41,10 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
+        private static bool IsProtoPersistent(IObjectFacade objectFacade) {
+            return objectFacade.IsTransient && RestControlFlags.ProtoPersistentObjects;
+        }
+
         private void SetScalars(ObjectContextFacade objectContext) {
             Title = objectContext.Target.TitleString;
         }
@@ -51,12 +56,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
-            if (!objectContext.Mutated && !objectContext.Target.IsTransient) {
+            if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
             }
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, objectContext.Specification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, objectContext.Specification)), Flags));
             }
 
             // temp disable icons 
@@ -75,34 +80,33 @@ namespace RestfulObjects.Snapshot.Representations {
 
             PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
-            if (!objectContext.Target.IsTransient && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
+            if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
                 OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, new UriMtHelper(OidStrategy ,req, objectContext.Target)) {Method = RelMethod.Put}, Flags,
+                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, new UriMtHelper(OidStrategy, req, objectContext.Target)) {Method = RelMethod.Put}, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
             }
 
-            if (objectContext.Target.IsTransient) {
-                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy ,req, p, objectContext.Target, Flags, true)).ToArray();
+            if (IsProtoPersistent(objectContext.Target)) {
+                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true)).ToArray();
                 OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
                 var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
                 var args = new List<OptionalProperty> {argMembers};
 
-                LinkRepresentation persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) { Method = RelMethod.Post }, Flags,
+                LinkRepresentation persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
 
                 tempLinks.Add(persistLink);
             }
 
-            InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy ,req, p, Flags)).ToArray();
+            InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags)).ToArray();
 
             InlineActionRepresentation[] actions = objectContext.Target.IsTransient ? new InlineActionRepresentation[] {}
-                : objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy ,req, a, Flags)).ToArray();
-
+                : objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
 
             IEnumerable<InlineMemberAbstractRepresentation> allMembers = properties.Union(actions);
 
@@ -124,15 +128,15 @@ namespace RestfulObjects.Snapshot.Representations {
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
             ObjectContextFacade oc = target.FrameworkFacade.GetObject(target);
-            return Create(oidStrategy ,oc, req, flags);
+            return Create(oidStrategy, oc, req, flags);
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
-            if (objectContext.Target != null && (objectContext.Specification.IsService || !objectContext.Target.IsTransient)) {
-                return CreateObjectWithOptionals(oidStrategy ,objectContext, req, flags);
+            if (objectContext.Target != null && (objectContext.Specification.IsService || !IsProtoPersistent(objectContext.Target))) {
+                return CreateObjectWithOptionals(oidStrategy, objectContext, req, flags);
             }
 
-            return new ObjectRepresentation(oidStrategy ,req, objectContext, flags);
+            return new ObjectRepresentation(oidStrategy, req, objectContext, flags);
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
@@ -143,13 +147,15 @@ namespace RestfulObjects.Snapshot.Representations {
                 props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
             }
             else {
-                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, oid.InstanceId));
+                // if get here and transient then must be non-protopersistent so add pseudo id;
+                var id = objectContext.Target.IsTransient ? (object) objectContext.UniqueIdForTransient : oid.InstanceId;
+                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
                 if (flags.SimpleDomainModel) {
                     props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
                 }
             }
 
-            return CreateWithOptionals<ObjectRepresentation>(new object[] {oidStrategy ,req, objectContext, flags}, props);
+            return CreateWithOptionals<ObjectRepresentation>(new object[] {oidStrategy, req, objectContext, flags}, props);
         }
     }
 }

@@ -14,5 +14,9 @@ namespace RestfulObjects.Mvc.App {
         protected void Application_Start() {
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
+
+        protected void Application_PostAuthorizeRequest() {
+            HttpContext.Current.SetSessionStateBehavior(System.Web.SessionState.SessionStateBehavior.Required);
+        }
     }
 }

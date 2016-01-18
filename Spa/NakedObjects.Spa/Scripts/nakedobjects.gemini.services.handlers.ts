@@ -75,7 +75,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        const deReg = [new DeReg(), new DeReg()];
+        const deReg = [, new DeReg(), new DeReg()];
 
         function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
             deReg[routeData.paneId].deReg();

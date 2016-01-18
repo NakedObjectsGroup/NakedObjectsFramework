@@ -51,6 +51,9 @@ namespace MvcTestApp {
 
                 // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
                 //RestfulObjectsControllerBase.DefaultPageSize = 50; 
+
+                // to set if we support ProtoPersistentObjects (if not use custom transients solution) 
+                RestfulObjectsControllerBase.ProtoPersistentObjects = true;
             }
         }
     }
