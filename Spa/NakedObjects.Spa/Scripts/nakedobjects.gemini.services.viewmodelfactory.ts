@@ -626,6 +626,9 @@ module NakedObjects.Angular.Gemini {
                 cvm.parseInput = (input: string) => {                    
                     commandFactory.parseInput(input, cvm);
                 };
+                cvm.executeNextChainedCommandIfAny = () => {
+                    commandFactory.executeNextChainedCommandIfAny(cvm);
+                }
                 cvm.autoComplete = (input: string) => {
                     commandFactory.autoComplete(input, cvm);
                 };
