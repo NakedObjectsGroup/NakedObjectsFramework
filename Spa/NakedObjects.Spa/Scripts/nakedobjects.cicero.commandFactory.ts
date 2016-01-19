@@ -9,7 +9,13 @@ module NakedObjects.Angular.Gemini {
 
         initialiseCommands(cvm: CiceroViewModel): void;
 
-        parseInput(command: string, cvm: CiceroViewModel): void;
+        parseInput(input: string, cvm: CiceroViewModel): void;
+
+        processSingleCommand(command: string, cvm: CiceroViewModel): void;
+
+        processChain(commands: string[], cvm: CiceroViewModel): void;
+
+        executeNextChainedCommandIfAny(cvm: CiceroViewModel): void;
 
         autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
 
@@ -69,11 +75,21 @@ module NakedObjects.Angular.Gemini {
         };
 
         commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
-            cvm.previousInput = input;
+            cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
+            const commands = input.split(";");
+            if (commands.length > 1) {
+                commandFactory.processChain(commands, cvm);
+            } else {
+                 commandFactory.processSingleCommand(input, cvm);
+            }
+        };
+
+        commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel) => {
+            cvm.previousInput = input; //TODO: do this here?
             try {
                 var firstWord: string;
                 if (input) {
-                    input = input.toLowerCase();
+                    input = input.toLowerCase().trim();
                     firstWord = input.split(" ")[0];
                 } else {
                     input = firstWord = "wh"; //Special case '[Enter]' = 'where'
@@ -92,6 +108,20 @@ module NakedObjects.Angular.Gemini {
             catch (Error) {
                 cvm.output = Error.message;
                 cvm.input = "";
+            }
+        };
+
+        commandFactory.processChain = (commands: string[], cvm: CiceroViewModel) => {
+            let first = commands[0];
+            commands.splice(0, 1);
+            cvm.chainedCommands = commands;
+            commandFactory.processSingleCommand(first, cvm);
+        };
+
+        commandFactory.executeNextChainedCommandIfAny = (cvm: CiceroViewModel) => {
+            if (cvm.chainedCommands && cvm.chainedCommands.length > 0) {
+                const next = cvm.popNextCommand();
+                commandFactory.processSingleCommand(next, cvm);
             }
         };
 

@@ -961,8 +961,11 @@ module NakedObjects.Angular.Gemini {
         };
 
         mayBeChained(args: string): boolean {
-            //TODO: Allowed only if the action itself is query only
-            return false;
+            let isQueryAction = false;
+            this.getActionForCurrentDialog().then((action: ActionMember) => {
+                isQueryAction = action.getDetails().method === "GET";
+            });
+            return isQueryAction;
         }
 
         handleErrorResponse(err: ErrorMap, action: ActionMember) {

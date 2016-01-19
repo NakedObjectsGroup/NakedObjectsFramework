@@ -709,6 +709,7 @@ module NakedObjects.Angular.Gemini {
         input: string;
         parseInput: (input: string) => void;
         previousInput: string;
+        chainedCommands: string[];
         selectPreviousInput(): void {
             this.input = this.previousInput;
         }
@@ -727,5 +728,17 @@ module NakedObjects.Angular.Gemini {
         renderError: () => void;
         viewType: ViewType;
         clipboard: DomainObjectRepresentation;
+
+        executeNextChainedCommandIfAny: () => void;
+
+        popNextCommand(): string {
+            if (this.chainedCommands) {
+                const next = this.chainedCommands[0];
+                this.chainedCommands.splice(0, 1);
+                return next;
+               
+            }
+            return null;
+        }
     }
 }
