@@ -775,7 +775,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TypeIntoFieldWithoutClearing("input", Keys.ArrowDown);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         }
-
         public virtual void ScenarioUsingClipboard()
         {
             //Copy a Product to clipboard
@@ -805,6 +804,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
             EnterCommand("ok");
             WaitForOutput("Employee: Untitled Employee");
+        }
+        public virtual void ChainedCommands()
+        {
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("menu cust; action find indiv");
+            WaitForOutputStarting("Customers menu\r\nAction dialog: Find Individual Customer By Name");
         }
     }
     public abstract class CiceroTests : CiceroTestRoot
@@ -849,6 +855,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
+        [TestMethod]
+        public override void ChainedCommands() { base.ChainedCommands(); }
+
     }
 
     #region Individual tests - browser specific 
@@ -877,7 +886,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -959,6 +968,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.UnrecognisedCommand();
             base.UpAndDownArrow();
             base.ScenarioUsingClipboard();
+            base.ChainedCommands();
         }
     }
     [TestClass]
