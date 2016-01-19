@@ -839,9 +839,8 @@ namespace RestfulObjects.Mvc {
             }
         }
 
-        private object CheckForTransient(NakedObjects.Facade.Translation.IOidTranslation loid) {
+        private object CheckForTransient(NakedObjects.Facade.Translation.IOidTranslation loid, out Guid idAsGuid) {
             var id = loid.InstanceId;
-            Guid idAsGuid;
 
             if (Guid.TryParse(id, out idAsGuid)) {
                 var index = idAsGuid.ToString();
@@ -853,11 +852,14 @@ namespace RestfulObjects.Mvc {
         }
 
         private ObjectContextFacade GetObject(NakedObjects.Facade.Translation.IOidTranslation loid) {
-            var transient = CheckForTransient(loid);
+            Guid idAsGuid;
+            var transient = CheckForTransient(loid, out idAsGuid);
 
             if (transient != null) {
                 var obj = FrameworkFacade.GetObject(transient);
-                return FrameworkFacade.GetObject(obj);
+                var objectContext = FrameworkFacade.GetObject(obj);
+                objectContext.UniqueIdForTransient = idAsGuid;
+                return objectContext;
             }
 
             return FrameworkFacade.GetObject(loid);
