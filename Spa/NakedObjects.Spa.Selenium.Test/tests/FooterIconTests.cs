@@ -38,17 +38,17 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("object?object1=AdventureWorksModel.Product-968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54."); //Cicero
+            WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
             GeminiUrl("object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Store: Twin Cycles."); //Cicero
+            WaitForOutput("Store: Twin Cycles"); //Cicero
 
             GeminiUrl("object?object1=AdventureWorksModel.Product-968&actions1=open&dialog1=BestSpecialOffer&parm1_quantity=%2522%2522");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
             Click(WaitForCss(".icon-speech"));
-            WaitForOutput("Product: Touring-1000 Blue, 54. Action dialog: Best Special Offer. Quantity: empty,");
+            WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
 
     }
