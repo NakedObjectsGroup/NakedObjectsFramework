@@ -829,14 +829,42 @@ namespace RestfulObjects.Mvc {
             }
         }
 
+        private void ClearOldest(Dictionary<string, TransientSlot> dict) {
+            while (dict.Count >= 2) {
+                var ordered = dict.OrderBy(kvp => kvp.Value.TimeAdded);
+                dict.Remove(ordered.First().Key);
+            }
+        }
+
+        private const string  NofTransients = "nof-transients";
+
+
         private void CacheTransient(ActionResultContextFacade actionResult) {
             if (!RestControlFlags.ProtoPersistentObjects && actionResult.Result.Target.IsTransient) {
                 var id = Guid.NewGuid();
                 actionResult.Result.UniqueIdForTransient = id;
                 var session = HttpContext.Current.Session;
+                var transientDict = session[NofTransients] as Dictionary<string, TransientSlot> ?? new Dictionary<string, TransientSlot>();
                 var index = id.ToString();
-                session[index] = actionResult.Result.Target.Object;
+                var transient = actionResult.Result.Target.Object;
+
+                if (transientDict.ContainsKey(index)) {
+                    transientDict[index].Transient = transient;
+                    transientDict[index].TimeAdded = DateTime.UtcNow;
+                }
+                else {
+                    // clear oldest
+                    ClearOldest(transientDict);
+                    transientDict[index] = new TransientSlot {Transient = transient, TimeAdded = DateTime.UtcNow};
+                }
+                session[NofTransients] =  transientDict;
             }
+        }
+
+        private class TransientSlot {
+            public DateTime TimeAdded { get; set; }
+            public object Transient { get; set; }
+
         }
 
         private object CheckForTransient(NakedObjects.Facade.Translation.IOidTranslation loid, out Guid idAsGuid) {
@@ -845,7 +873,10 @@ namespace RestfulObjects.Mvc {
             if (Guid.TryParse(id, out idAsGuid)) {
                 var index = idAsGuid.ToString();
                 var session = HttpContext.Current.Session;
-                return session?[index];
+                if (session != null) {
+                    var transientDict = session[NofTransients] as Dictionary<string, TransientSlot>;
+                    return transientDict != null && transientDict.ContainsKey(index) ? transientDict[index].Transient : null;
+                }
             }
 
             return null;

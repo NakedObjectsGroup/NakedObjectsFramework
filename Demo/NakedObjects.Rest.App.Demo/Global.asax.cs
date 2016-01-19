@@ -12,5 +12,9 @@ namespace NakedObjects.Rest.App.Demo {
             GlobalConfiguration.Configure(CorsConfig.RegisterCors);
 
         }
+
+        protected void Application_PostAuthorizeRequest() {
+            HttpContext.Current.SetSessionStateBehavior(System.Web.SessionState.SessionStateBehavior.Required);
+        }
     }
 }
