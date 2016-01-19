@@ -21,13 +21,22 @@ namespace RestfulObjects.Snapshot.Representations {
     public class ObjectRepresentation : Representation {
         protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            var objectUri = new UriMtHelper(oidStrategy, req, objectContext.Target);
+            var objectUri = GetHelper(oidStrategy, req, objectContext);
             SetScalars(objectContext);
             SelfRelType = objectContext.Specification.IsService ? new ServiceRelType(RelValues.Self, objectUri) : new ObjectRelType(RelValues.Self, objectUri);
             SetLinksAndMembers(req, objectContext);
             SetExtensions(objectContext.Target);
             SetHeader(objectContext);
         }
+
+        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
+            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
+                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.ToString());
+            }
+
+            return new UriMtHelper(oidStrategy, req, objectContext.Target);
+        }
+
 
         [DataMember(Name = JsonPropertyNames.Title)]
         public string Title { get; set; }
@@ -82,9 +91,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
-                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
+                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, new UriMtHelper(OidStrategy, req, objectContext.Target)) {Method = RelMethod.Put}, Flags,
+
+                var helper = GetHelper(OidStrategy, req, objectContext);
+
+                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) { Method = RelMethod.Put }, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
