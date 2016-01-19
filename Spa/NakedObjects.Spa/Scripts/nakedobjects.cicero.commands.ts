@@ -28,6 +28,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         abstract execute(args: string): void;
+        //If a command is not the first one in a chain, then this method
+        //will be called before it is executed, to test validity. The 
+        //implementation should return false unless it can be determined that
+        //the command does not change the server state i.e. only query-style
+        //commands may be chained.
+        abstract mayBeChained(args: string): boolean;
 
         public checkIsAvailableInCurrentContext(): void {
             if (!this.isAvailableInCurrentContext()) {
@@ -298,6 +304,11 @@ module NakedObjects.Angular.Gemini {
             //TODO: handle list
         }
 
+        mayBeChained(args: string): boolean {
+            return true; //Note however, that the OK command may not be
+            //chained unless the action is query-only.
+        }
+
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
             var actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
@@ -346,6 +357,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.navigation.back();
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class Cancel extends Command {
 
@@ -366,6 +381,10 @@ module NakedObjects.Angular.Gemini {
                 this.urlManager.closeDialog(1);
             }
         };
+
+        mayBeChained(args: string): boolean {
+            return false;
+        }
     }
     export class Collection extends Command {
 
@@ -390,6 +409,9 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
+        mayBeChained(args: string): boolean {
+            return true;
+        }
         private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
 
             const allColls = _.map(collsMap, action => action);
@@ -460,6 +482,9 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
+        mayBeChained(args: string): boolean {
+            return true;
+        }
         private copy(): void {
             if (!this.isObject()) {
                 this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing and object");
@@ -506,6 +531,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.urlManager.setObjectEdit(true, 1);
         };
+
+        mayBeChained(args: string): boolean {
+            return false;
+        }
     }
     export class Field extends Command {
 
@@ -552,6 +581,11 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode");
         };
 
+        mayBeChained(args: string): boolean {
+            //TODO: For properties: only allowed without the second arg
+            //For dialog fields, all OK
+            return false;
+        }
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
             this.getActionForCurrentDialog().then((action: ActionMember) => {
                 let params = _.map(action.parameters(), param => param);
@@ -720,6 +754,9 @@ module NakedObjects.Angular.Gemini {
             this.vm.clearInput();  //To catch case where can't go any further forward and hence url does not change.
             this.navigation.forward();
         };
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class Gemini extends Command {
 
@@ -736,6 +773,10 @@ module NakedObjects.Angular.Gemini {
             const newPath = "/gemini/" + this.nglocation.path().split("/")[2];
             this.nglocation.path(newPath);
         };
+
+        mayBeChained(args: string): boolean {
+            return false;
+        }
     }
     export class Go extends Command {
 
@@ -808,6 +849,10 @@ module NakedObjects.Angular.Gemini {
                     });
             }
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class Help extends Command {
 
@@ -836,6 +881,10 @@ module NakedObjects.Angular.Gemini {
                 this.clearInputAndSetMessage(commands);
             }
         };
+
+        mayBeChained(args: string): boolean {
+            return false;
+        }
     }
     export class Menu extends Command {
 
@@ -880,6 +929,10 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
         }
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class OK extends Command {
 
@@ -906,6 +959,11 @@ module NakedObjects.Angular.Gemini {
                     });
             });
         };
+
+        mayBeChained(args: string): boolean {
+            //TODO: Allowed only if the action itself is query only
+            return false;
+        }
 
         handleErrorResponse(err: ErrorMap, action: ActionMember) {
             //TODO: Not currently covering co-validation errors
@@ -978,6 +1036,10 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
+        mayBeChained(args: string): boolean {
+            return true;
+        }
+
         private setPage(page) {
             const pageSize = this.routeData().pageSize;
             this.urlManager.setListPaging(1, page, pageSize, CollectionViewState.List);
@@ -1001,6 +1063,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.clearInputAndSetMessage("Reload command is not yet implemented");
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class Root extends Command {
 
@@ -1017,6 +1083,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.closeAnyOpenCollections();
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
     }
     export class Save extends Command {
 
@@ -1032,6 +1102,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.clearInputAndSetMessage("save command is not yet implemented");
         };
+
+        mayBeChained(args: string): boolean {
+            return false;
+        }
     }
     export class Selection extends Command {
 
@@ -1056,6 +1130,10 @@ module NakedObjects.Angular.Gemini {
                 this.selectItems(list, start, end);
             });
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
 
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
             let itemNo: number;
@@ -1097,6 +1175,10 @@ module NakedObjects.Angular.Gemini {
             });
         };
 
+        mayBeChained(args: string): boolean {
+            return true;
+        }
+
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
             const max = source.value().length;
             if (!startNo) {
@@ -1136,6 +1218,10 @@ module NakedObjects.Angular.Gemini {
         execute(args: string): void {
             this.$route.reload();
         };
+
+        mayBeChained(args: string): boolean {
+            return true;
+        }
 
     }
 }
