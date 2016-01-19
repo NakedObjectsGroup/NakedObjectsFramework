@@ -492,7 +492,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, GetObject(loid), Request, GetFlags(arguments));
             });
         }
 
@@ -837,6 +837,30 @@ namespace RestfulObjects.Mvc {
                 var index = id.ToString();
                 session[index] = actionResult.Result.Target.Object;
             }
+        }
+
+        private object CheckForTransient(NakedObjects.Facade.Translation.IOidTranslation loid) {
+            var id = loid.InstanceId;
+            Guid idAsGuid;
+
+            if (Guid.TryParse(id, out idAsGuid)) {
+                var index = idAsGuid.ToString();
+                var session = HttpContext.Current.Session;
+                return session?[index];
+            }
+
+            return null;
+        }
+
+        private ObjectContextFacade GetObject(NakedObjects.Facade.Translation.IOidTranslation loid) {
+            var transient = CheckForTransient(loid);
+
+            if (transient != null) {
+                var obj = FrameworkFacade.GetObject(transient);
+                return FrameworkFacade.GetObject(obj);
+            }
+
+            return FrameworkFacade.GetObject(loid);
         }
 
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
