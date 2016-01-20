@@ -31,7 +31,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
             if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
-                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.ToString());
+                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.ToString("N"));
             }
 
             return new UriMtHelper(oidStrategy, req, objectContext.Target);
@@ -160,7 +160,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
             else {
                 // if get here and transient then must be non-protopersistent so add pseudo id;
-                var id = objectContext.Target.IsTransient ? (object) objectContext.UniqueIdForTransient : oid.InstanceId;
+                var id = objectContext.Target.IsTransient ?  objectContext.UniqueIdForTransient.ToString("N") : oid.InstanceId;
                 props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
                 if (flags.SimpleDomainModel) {
                     props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
