@@ -207,8 +207,7 @@ module NakedObjects.Angular.Gemini {
 
                     $scope.object = ovm;
 
-                    // todo can the object be transient ?
-                    if (routeData.edit || ovm.isTransient) {
+                    if (ovm.isInEdit) {
                         $scope.objectTemplate = objectEditTemplate;
                         $scope.actionsTemplate = nullTemplate;
                     } else {
@@ -229,7 +228,7 @@ module NakedObjects.Angular.Gemini {
                         focusTarget = FocusTarget.Dialog;
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.SubAction;
-                    } else if (routeData.edit || ovm.isTransient) {
+                    } else if (ovm.isInEdit) {
                         focusTarget = FocusTarget.Property;
                     } else {
                         focusTarget = FocusTarget.ObjectTitle;

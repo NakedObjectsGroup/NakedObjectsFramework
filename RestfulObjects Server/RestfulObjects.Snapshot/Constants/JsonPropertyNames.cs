@@ -65,6 +65,7 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string CustomMask = "x-ro-nof-mask";
         public const string CustomChoices = "x-ro-nof-choices";
         public const string PresentationHint = "x-ro-nof-presentationHint";
+        public const string RenderInEdit = "x-ro-nof-renderInEditMode";
         //public const string ServiceType = "x-ro-nof-serviceType";
         // extensions
         public const string SubTypes = "subtypes";

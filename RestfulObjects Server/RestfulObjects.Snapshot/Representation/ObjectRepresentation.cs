@@ -126,7 +126,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
-            return objectFacade.ExtensionData == null ? null : objectFacade.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
+            return objectFacade.ExtensionData;
         }
 
         private void SetExtensions(IObjectFacade objectFacade) {

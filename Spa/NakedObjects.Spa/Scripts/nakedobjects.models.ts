@@ -527,7 +527,7 @@ module NakedObjects {
         choices(): { [index: string]: (string | number | boolean | ILink)[]; } { return this.wrapped["x-ro-nof-choices"]  ; }
         menuPath(): string { return this.wrapped["x-ro-nof-menuPath"]  ;}
         mask(): string { return this.wrapped["x-ro-nof-mask"];}
-
+        renderInEdit(): boolean { return this.wrapped["x-ro-nof-renderInEditMode"]; }
     } 
 
     // matches a action invoke resource 19.0 representation 

@@ -568,21 +568,19 @@ module NakedObjects.Angular.Gemini {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
-            this.isInEdit = routeData.edit;
+            this.isInEdit = routeData.edit || this.domainObject.extensions().renderInEdit();
             this.props = routeData.edit ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-            this.isTransient = !!this.domainObject.persistLink();
+            const unsaved = this.isInEdit && !routeData.edit;
 
-            this.title = this.isTransient ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+            this.title = unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
-
-            this.isInEdit = routeData.edit;
-
+         
             const selfAsValue = () => {
                 const link = this.domainObject.selfLink();
                 if (link) {
@@ -612,7 +610,6 @@ module NakedObjects.Angular.Gemini {
         title: string;
         domainType: string;
         instanceId: string;
-        isTransient: boolean;
         draggableType: string;
         isInEdit: boolean;
         value: string;
@@ -631,7 +628,7 @@ module NakedObjects.Angular.Gemini {
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
         private setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
 
-        private cancelHandler = () => this.isTransient ?
+        private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :
             () => this.urlManager.setObjectEdit(false, this.onPaneId);
 
@@ -644,7 +641,7 @@ module NakedObjects.Angular.Gemini {
             this.cancelHandler()();
         };
 
-        private saveHandler = () => this.isTransient ? this.contextService.saveObject : this.contextService.updateObject;
+        private saveHandler = () => this.domainObject.extensions().renderInEdit() ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
 
@@ -677,7 +674,7 @@ module NakedObjects.Angular.Gemini {
                 });
 
 
-        hideEdit = () => this.isTransient || _.all(this.properties, p => !p.isEditable);
+        hideEdit = () => this.domainObject.extensions().renderInEdit() || _.all(this.properties, p => !p.isEditable);
 
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
