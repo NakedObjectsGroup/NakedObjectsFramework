@@ -51,6 +51,10 @@ namespace NakedObjects.Facade.Impl {
                     extData[IdConstants.RenderInEditMode] = true;
                 }
 
+                if (IsTransient) {
+                    extData[IdConstants.RenderInEditMode] = true;
+                }
+
                 if (spec.ContainsFacet<IPresentationHintFacet>()) {
                     extData[IdConstants.PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
                 }
