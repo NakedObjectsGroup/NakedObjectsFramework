@@ -22,6 +22,7 @@ module NakedObjects.Angular {
             const useCache = !ignoreCache;
 
             const config = {
+                withCredentials : true,
                 url: model.getUrl(),
                 method: model.method,
                 cache: useCache,
