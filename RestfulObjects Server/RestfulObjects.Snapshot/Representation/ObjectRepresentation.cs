@@ -96,18 +96,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
                 var helper = GetHelper(OidStrategy, req, objectContext);
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) { Method = RelMethod.Put }, Flags,
+                var method = objectContext.Target.IsTransient ? RelMethod.Post : RelMethod.Put;
+
+                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) { Method = method }, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
-
-                if (objectContext.Target.IsTransient) {
-                    // transient but not proto-persistent so add custom link 
-                    LinkRepresentation persistLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Persist, helper) {Method = RelMethod.Post}, Flags,
-                        new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
-
-                    tempLinks.Add(persistLink);
-                }
             }
 
             if (IsProtoPersistent(objectContext.Target)) {
