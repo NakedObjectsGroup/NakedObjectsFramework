@@ -13,10 +13,6 @@ module NakedObjects.Angular.Gemini {
 
         processSingleCommand(command: string, cvm: CiceroViewModel, chained: boolean): void;
 
-        processChain(commands: string[], cvm: CiceroViewModel): void;
-
-        executeNextChainedCommandIfAny(cvm: CiceroViewModel): void;
-
         autoComplete(partialCommand: string, cvm: CiceroViewModel): void;
 
         //Returns all commands that may be invoked in the current context
@@ -82,7 +78,10 @@ module NakedObjects.Angular.Gemini {
             }
             const commands = input.split(";");
             if (commands.length > 1) {
-                commandFactory.processChain(commands, cvm);
+                let first = commands[0];
+                commands.splice(0, 1);
+                cvm.chainedCommands = commands;
+                commandFactory.processSingleCommand(first, cvm, false);
             } else {
                 commandFactory.processSingleCommand(input, cvm, false);
             }
@@ -106,20 +105,6 @@ module NakedObjects.Angular.Gemini {
             catch (Error) {
                 cvm.output = Error.message;
                 cvm.input = "";
-            }
-        };
-
-        commandFactory.processChain = (commands: string[], cvm: CiceroViewModel) => {
-            let first = commands[0];
-            commands.splice(0, 1);
-            cvm.chainedCommands = commands;
-            commandFactory.processSingleCommand(first, cvm, false);
-        };
-
-        commandFactory.executeNextChainedCommandIfAny = (cvm: CiceroViewModel) => {
-            if (cvm.chainedCommands && cvm.chainedCommands.length > 0) {
-                const next = cvm.popNextCommand();
-                commandFactory.processSingleCommand(next, cvm, true);
             }
         };
 
