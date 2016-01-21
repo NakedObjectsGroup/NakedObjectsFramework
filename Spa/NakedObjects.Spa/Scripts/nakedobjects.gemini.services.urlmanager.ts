@@ -548,6 +548,10 @@ module NakedObjects.Angular.Gemini {
                 search = _.merge(search, capturedPane.search);
                 setupPaneNumberAndTypes(paneId, capturedPane.paneType);
                 $location.search(search);
+            } else {
+                // probably reloaded page so no state to pop. 
+                // just go home 
+                helper.setHome(paneId);
             }
         }
 

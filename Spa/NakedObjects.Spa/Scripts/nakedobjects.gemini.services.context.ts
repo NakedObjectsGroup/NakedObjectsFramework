@@ -517,9 +517,9 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean ) => {
-            const persist = object.getPersistMap();
+            const persist = object.getUpdateMap();
 
-            _.each(props, (v, k) => persist.setMember(k, v));
+            _.each(props, (v, k) => persist.setProperty(k, v));
 
             return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
