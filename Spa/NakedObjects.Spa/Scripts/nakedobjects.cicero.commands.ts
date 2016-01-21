@@ -27,19 +27,32 @@ module NakedObjects.Angular.Gemini {
             this.vm = cvm;
         }
 
-        abstract execute(args: string): void;
-        //If a command is not the first one in a chain, then this method
-        //will be called before it is executed, to test validity. The 
-        //implementation should return false unless it can be determined that
-        //the command does not change the server state i.e. only query-style
-        //commands may be chained.
-        abstract mayBeChained(args: string): boolean;
-
-        public checkIsAvailableInCurrentContext(): void {
+        public execute(argString: string, chained: boolean): void {
             if (!this.isAvailableInCurrentContext()) {
-                throw new Error("The command: " + this.fullCommand + " is not available in the current context");
+                this.clearInputAndSetMessage("The command: " + this.fullCommand + " is not available in the current context");
+                return;
             }
+            //TODO: This could be moved into a pre-parse method as it does not depend on context
+            if (argString == null) {
+                if (this.minArguments > 0) {
+                    this.clearInputAndSetMessage("No arguments provided");
+                    return;
+                }
+            } else {
+                const args = argString.split(",");
+                if (args.length < this.minArguments) {
+                    this.clearInputAndSetMessage("Too few arguments provided");
+                    return;
+                }
+                else if (args.length > this.maxArguments) {
+                    this.clearInputAndSetMessage("Too many arguments provided");
+                    return;
+                }
+            }
+            this.doExecute(argString, chained);
         }
+
+        abstract doExecute(args: string, chained: boolean): void;
 
         public abstract isAvailableInCurrentContext(): boolean;
 
@@ -51,6 +64,10 @@ module NakedObjects.Angular.Gemini {
             this.$route.reload();
         }
 
+        protected mayNotBeChained(rider: string = ""): void {
+            this.clearInputAndSetMessage(this.fullCommand + " command may not be chained" + rider+ ". Use Where command to see where execution stopped.");
+        }
+
         protected appendAsNewLineToOutput(text: string): void {
             this.vm.output.concat("/n" + text);
         }
@@ -58,20 +75,6 @@ module NakedObjects.Angular.Gemini {
         public checkMatch(matchText: string): void {
             if (this.fullCommand.indexOf(matchText) != 0) {
                 throw new Error("No such command: " + matchText);
-            }
-        }
-
-        public checkNumberOfArguments(argString: string): void {
-            if (argString == null) {
-                if (this.minArguments === 0) return;
-                throw new Error("No arguments provided");
-            }
-            const args = argString.split(",");
-            if (args.length < this.minArguments) {
-                throw new Error("Too few arguments provided");
-            }
-            else if (args.length > this.maxArguments) {
-                throw new Error("Too many arguments provided");
             }
         }
 
@@ -282,7 +285,7 @@ module NakedObjects.Angular.Gemini {
             return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const match = this.argumentAsString(args, 0);
             const p1 = this.argumentAsString(args, 1, true);
             if (p1) {
@@ -302,11 +305,6 @@ module NakedObjects.Angular.Gemini {
                     });
             }
             //TODO: handle list
-        }
-
-        mayBeChained(args: string): boolean {
-            return true; //Note however, that the OK command may not be
-            //chained unless the action is query-only.
         }
 
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
@@ -354,13 +352,9 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             this.navigation.back();
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class Cancel extends Command {
 
@@ -373,7 +367,7 @@ module NakedObjects.Angular.Gemini {
             return this.isDialog() || this.isEdit();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             if (this.isEdit()) {
                 this.urlManager.setObjectEdit(false, 1);
             }
@@ -381,10 +375,6 @@ module NakedObjects.Angular.Gemini {
                 this.urlManager.closeDialog(1);
             }
         };
-
-        mayBeChained(args: string): boolean {
-            return false;
-        }
     }
     export class Collection extends Command {
 
@@ -401,7 +391,7 @@ module NakedObjects.Angular.Gemini {
             return this.isObject();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const match = this.argumentAsString(args, 0, true);
             this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
@@ -409,9 +399,6 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        mayBeChained(args: string): boolean {
-            return true;
-        }
         private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
 
             const allColls = _.map(collsMap, action => action);
@@ -467,7 +454,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const sub = this.argumentAsString(args, 0);
             if ("copy".indexOf(sub) === 0) {
                 this.copy();
@@ -482,12 +469,9 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        mayBeChained(args: string): boolean {
-            return true;
-        }
         private copy(): void {
             if (!this.isObject()) {
-                this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing and object");
+                this.clearInputAndSetMessage("Clipboard copy may only be used in the context of viewing an object");
                 return;
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
@@ -528,13 +512,13 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() && !this.isEdit();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
+            if (chained) {
+                this.mayNotBeChained();
+                return;
+            }
             this.urlManager.setObjectEdit(true, 1);
         };
-
-        mayBeChained(args: string): boolean {
-            return false;
-        }
     }
     export class Field extends Command {
 
@@ -558,7 +542,7 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isDialog();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const fieldName = this.argumentAsString(args, 0);
             const fieldEntry = this.argumentAsString(args, 1, true);
             if (!fieldEntry) {
@@ -581,11 +565,6 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode");
         };
 
-        mayBeChained(args: string): boolean {
-            //TODO: For properties: only allowed without the second arg
-            //For dialog fields, all OK
-            return false;
-        }
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
             this.getActionForCurrentDialog().then((action: ActionMember) => {
                 let params = _.map(action.parameters(), param => param);
@@ -750,13 +729,10 @@ module NakedObjects.Angular.Gemini {
         public isAvailableInCurrentContext(): boolean {
             return true;
         }
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             this.vm.clearInput();  //To catch case where can't go any further forward and hence url does not change.
             this.navigation.forward();
         };
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class Gemini extends Command {
 
@@ -769,14 +745,10 @@ module NakedObjects.Angular.Gemini {
         public isAvailableInCurrentContext(): boolean {
             return true;
         }
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const newPath = "/gemini/" + this.nglocation.path().split("/")[2];
             this.nglocation.path(newPath);
         };
-
-        mayBeChained(args: string): boolean {
-            return false;
-        }
     }
     export class Go extends Command {
 
@@ -792,7 +764,7 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isList();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const arg0 = this.argumentAsString(args, 0);
             if (this.isList()) {
                 const itemNo: number = parseInt(arg0);
@@ -849,10 +821,6 @@ module NakedObjects.Angular.Gemini {
                     });
             }
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class Help extends Command {
 
@@ -867,7 +835,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             var arg = this.argumentAsString(args, 0);
             if (arg) {
                 try {
@@ -881,10 +849,6 @@ module NakedObjects.Angular.Gemini {
                 this.clearInputAndSetMessage(commands);
             }
         };
-
-        mayBeChained(args: string): boolean {
-            return false;
-        }
     }
     export class Menu extends Command {
 
@@ -901,7 +865,7 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const name = this.argumentAsString(args, 0);
             this.context.getMenus()
                 .then((menus: MenusRepresentation) => {
@@ -929,10 +893,6 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
         }
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class OK extends Command {
 
@@ -946,9 +906,14 @@ module NakedObjects.Angular.Gemini {
             return this.isDialog();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             let fieldMap = this.routeData().dialogFields;
             this.getActionForCurrentDialog().then((action: ActionMember) => {
+                
+                if (chained && action.invokeLink().method() != "GET" ) {
+                    this.mayNotBeChained(" unless the action is query-only");
+                    return;
+                }
                 this.context.invokeAction(action, 1, fieldMap)
                     .then((err: ErrorMap) => {
                         if (err.containsError()) {
@@ -959,15 +924,6 @@ module NakedObjects.Angular.Gemini {
                     });
             });
         };
-
-        mayBeChained(args: string): boolean {
-            let isQueryAction = false;
-            this.getActionForCurrentDialog().then((action: ActionMember) => {
-                isQueryAction = action.getDetails().method === "GET";
-            });
-            return isQueryAction;
-        }
-
         handleErrorResponse(err: ErrorMap, action: ActionMember) {
             //TODO: Not currently covering co-validation errors
             //TODO: Factor out commonality for errors on saving object
@@ -1001,7 +957,7 @@ module NakedObjects.Angular.Gemini {
             return this.isList();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             const arg = this.argumentAsString(args, 0);
             this.getList().then((listRep: ListRepresentation) => {
                 const numPages = listRep.pagination().numPages;
@@ -1039,10 +995,6 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
-        mayBeChained(args: string): boolean {
-            return true;
-        }
-
         private setPage(page) {
             const pageSize = this.routeData().pageSize;
             this.urlManager.setListPaging(1, page, pageSize, CollectionViewState.List);
@@ -1063,13 +1015,9 @@ module NakedObjects.Angular.Gemini {
             return this.isObject() || this.isList();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             this.clearInputAndSetMessage("Reload command is not yet implemented");
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class Root extends Command {
 
@@ -1083,13 +1031,9 @@ module NakedObjects.Angular.Gemini {
             return this.isCollection();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             this.closeAnyOpenCollections();
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
     }
     export class Save extends Command {
 
@@ -1102,13 +1046,13 @@ module NakedObjects.Angular.Gemini {
         isAvailableInCurrentContext(): boolean {
             return this.isEdit();
         }
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
+            if (chained) {
+                this.mayNotBeChained();
+                return;
+            }
             this.clearInputAndSetMessage("save command is not yet implemented");
         };
-
-        mayBeChained(args: string): boolean {
-            return false;
-        }
     }
     export class Selection extends Command {
 
@@ -1125,7 +1069,7 @@ module NakedObjects.Angular.Gemini {
         isAvailableInCurrentContext(): boolean {
             return this.isList();
         }
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
             const arg = this.argumentAsString(args, 0);
             const {start, end} = this.parseRange(arg); //'destructuring'
@@ -1133,10 +1077,6 @@ module NakedObjects.Angular.Gemini {
                 this.selectItems(list, start, end);
             });
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
 
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
             let itemNo: number;
@@ -1161,7 +1101,7 @@ module NakedObjects.Angular.Gemini {
             return this.isCollection() || this.isList();
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             let arg = this.argumentAsString(args, 0, true);
             const {start, end} = this.parseRange(arg);
             if (this.isCollection()) {
@@ -1177,10 +1117,6 @@ module NakedObjects.Angular.Gemini {
                 this.renderItems(list, start, end);
             });
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
 
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
             const max = source.value().length;
@@ -1218,13 +1154,8 @@ module NakedObjects.Angular.Gemini {
             return true;
         }
 
-        execute(args: string): void {
+        doExecute(args: string, chained: boolean): void {
             this.$route.reload();
         };
-
-        mayBeChained(args: string): boolean {
-            return true;
-        }
-
     }
 }

@@ -207,12 +207,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("clipboard c");
-            WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
+            WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
             //Attempt to copy from list
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers");
             WaitForOutputStarting("Result from Current Special Offers:\r\n16 items");
             EnterCommand("clipboard c");
-            WaitForOutput("Clipboard copy may only be used in the context of viewing and object");
+            WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
         }
         public virtual void Collection()
         {
@@ -807,10 +807,39 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ChainedCommands()
         {
+            //Happy case
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
-            EnterCommand("menu cust; action find indiv");
-            WaitForOutputStarting("Customers menu\r\nAction dialog: Find Individual Customer By Name");
+            EnterCommand("menu pr; action rand; ok");
+            WaitForOutputStarting("Product:");
+
+            //Try to chain a command that may never be chained
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("menu pr; action rand; ok; edit");
+            WaitForOutputStarting("edit command may not be chained. Use Where command to see where execution stopped.");
+            EnterCommand("where");
+            WaitForOutputStarting("Product:");
+
+            //Try to chain an action invocation on a non-query action
+            EnterCommand("menu special; ac create; ok");
+            WaitForOutputStarting("ok command may not be chained unless the action is query-only. Use Where command to see where execution stopped.");
+            EnterCommand("where");
+            WaitForOutputStarting("Special Offers menu\r\nAction dialog: Create New Special Offer");
+
+            //Try to chain a command that is not avialable in the current context
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("menu pr; action rand; ok; show 1");
+            WaitForOutput("The command: show is not available in the current context");
+
+            //Error in execution -  Timing problem?
+            //CiceroUrl("home");
+            //WaitForOutput("Welcome to Cicero");
+            //EnterCommand("menu special; ac current; ok; show 20");
+            //WaitForOutput("The highest numbered item is 16");
+            //EnterCommand("where");
+            //WaitForOutput("Result from Current Special Offers:\r\n16 items");
         }
     }
     public abstract class CiceroTests : CiceroTestRoot
@@ -886,7 +915,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

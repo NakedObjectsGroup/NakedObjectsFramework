@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
 
         parseInput(input: string, cvm: CiceroViewModel): void;
 
-        processSingleCommand(command: string, cvm: CiceroViewModel): void;
+        processSingleCommand(command: string, cvm: CiceroViewModel, chained: boolean): void;
 
         processChain(commands: string[], cvm: CiceroViewModel): void;
 
@@ -76,34 +76,32 @@ module NakedObjects.Angular.Gemini {
 
         commandFactory.parseInput = (input: string, cvm: CiceroViewModel) => {
             cvm.chainedCommands = null; //TODO: Maybe not needed if unexecuted commands are cleared down upon error?
+            if (!input) { //Special case for hitting Enter with no input
+                commandFactory.getCommand("wh").execute(null, false);
+                return;
+            }
             const commands = input.split(";");
             if (commands.length > 1) {
                 commandFactory.processChain(commands, cvm);
             } else {
-                 commandFactory.processSingleCommand(input, cvm);
+                commandFactory.processSingleCommand(input, cvm, false);
             }
         };
 
-        commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel) => {
+        commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
             cvm.previousInput = input; //TODO: do this here?
             try {
-                var firstWord: string;
-                if (input) {
-                    input = input.toLowerCase().trim();
-                    firstWord = input.split(" ")[0];
-                } else {
-                    input = firstWord = "wh"; //Special case '[Enter]' = 'where'
-                }
+                input = input.toLowerCase().trim();
+                const firstWord = input.split(" ")[0];
                 const command: Command = commandFactory.getCommand(firstWord);
+                //TODO: Should previousInput be set here (given chained commands)
                 cvm.previousInput = command.fullCommand + input.substring(firstWord.length, input.length);
-                command.checkIsAvailableInCurrentContext();
                 var argString: string = null;
                 const index = input.indexOf(" ");
                 if (index >= 0) {
                     argString = input.substr(index + 1);
                 }
-                command.checkNumberOfArguments(argString);
-                command.execute(argString);
+                command.execute(argString, chained);
             }
             catch (Error) {
                 cvm.output = Error.message;
@@ -115,18 +113,18 @@ module NakedObjects.Angular.Gemini {
             let first = commands[0];
             commands.splice(0, 1);
             cvm.chainedCommands = commands;
-            commandFactory.processSingleCommand(first, cvm);
+            commandFactory.processSingleCommand(first, cvm, false);
         };
 
         commandFactory.executeNextChainedCommandIfAny = (cvm: CiceroViewModel) => {
             if (cvm.chainedCommands && cvm.chainedCommands.length > 0) {
                 const next = cvm.popNextCommand();
-                commandFactory.processSingleCommand(next, cvm);
+                commandFactory.processSingleCommand(next, cvm, true);
             }
         };
 
         commandFactory.autoComplete = (input: string, cvm: CiceroViewModel) => {
-            if (!input || input.length < 2 || input.indexOf(" ") >0) return; 
+            if (!input || input.length < 2 || input.indexOf(" ") > 0) return;
             cvm.previousInput = input;
             try {
                 input = input.toLowerCase().trim();

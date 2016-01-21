@@ -60,6 +60,7 @@ module NakedObjects.Angular.Gemini {
         cvm.viewType = ViewType.Object;
         cvm.renderObject(urlManager.getRouteData().pane1);
         focusManager.focusOn(FocusTarget.Input, 0, 1);
+        cvm.executeNextChainedCommandIfAny();
     });
     app.controller("CiceroListController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = viewModelFactory.ciceroViewModel();
@@ -67,6 +68,7 @@ module NakedObjects.Angular.Gemini {
         cvm.viewType = ViewType.List;
         cvm.renderList(urlManager.getRouteData().pane1);
         focusManager.focusOn(FocusTarget.Input, 0, 1);
+        cvm.executeNextChainedCommandIfAny();
     });
     app.controller("CiceroErrorController", ($scope: INakedObjectsScope, urlManager: IUrlManager, context: IContext, viewModelFactory: IViewModelFactory, commandFactory: ICommandFactory, focusManager: IFocusManager) => {
         const cvm = viewModelFactory.ciceroViewModel();
@@ -74,5 +76,6 @@ module NakedObjects.Angular.Gemini {
         //cvm.viewType = ViewType.Error;
         cvm.renderError();
         focusManager.focusOn(FocusTarget.Input, 0, 1);
+        cvm.chainedCommands == null;
     });
 }
