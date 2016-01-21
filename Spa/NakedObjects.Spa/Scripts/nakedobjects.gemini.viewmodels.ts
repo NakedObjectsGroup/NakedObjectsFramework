@@ -574,9 +574,9 @@ module NakedObjects.Angular.Gemini {
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-            const unsaved = this.isInEdit && !routeData.edit;
+            this.unsaved = this.isInEdit && !routeData.edit;
 
-            this.title = unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+            this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
@@ -619,6 +619,7 @@ module NakedObjects.Angular.Gemini {
         actions: ActionViewModel[];
         properties: PropertyViewModel[];
         collections: CollectionViewModel[];
+        unsaved : boolean;
 
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
@@ -641,11 +642,10 @@ module NakedObjects.Angular.Gemini {
             this.cancelHandler()();
         };
 
-        private saveHandler = () => this.domainObject.extensions().renderInEdit() ? this.contextService.saveObject : this.contextService.updateObject;
+        private saveHandler = () => this.unsaved ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
-
-            
+        
             this.setProperties();
             const pps = _.filter(this.properties, property => property.isEditable);
             const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;

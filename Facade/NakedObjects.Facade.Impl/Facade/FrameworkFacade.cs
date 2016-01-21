@@ -151,6 +151,10 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => CreateObject(typeName, arguments));
         }
 
+        public ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments) {
+            return MapErrors(() => PersistTransientObject(transient, arguments));
+        }
+
         public UserCredentials Validate(string user, string password) {
             return new UserCredentials(user, password, new List<string>());
         }
@@ -1012,6 +1016,13 @@ namespace NakedObjects.Facade.Impl {
 
             return SetObject(nakedObject, arguments);
         }
+
+        private ObjectContextFacade PersistTransientObject(IObjectFacade transient, ArgumentsContextFacade arguments) {
+
+            INakedObjectAdapter nakedObject = transient.WrappedAdapter();
+            return SetObject(nakedObject, arguments);
+        }
+
 
         private ITypeFacade GetSpecificationWrapper(ITypeSpec spec) {
             return new TypeFacade(spec, this, framework);
