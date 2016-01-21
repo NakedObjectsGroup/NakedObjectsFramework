@@ -38,6 +38,13 @@ namespace AdventureWorksModel {
             return CreateNewWorkOrder(product);
         }
 
+        [DescribedAs("Create workorder based on random product - to test transient creation")]
+        [QueryOnly]
+        public WorkOrder CreateNewWorkOrder3() {
+            var product = Random<Product>();
+            return CreateNewWorkOrder(product);
+        }
+
 
         #region Injected Services
 
