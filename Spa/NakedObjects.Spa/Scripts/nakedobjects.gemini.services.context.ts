@@ -26,7 +26,7 @@ module NakedObjects.Angular.Gemini {
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
-        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId : number): ng.IPromise<ErrorMap>;
+        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
@@ -372,13 +372,13 @@ module NakedObjects.Angular.Gemini {
             if (result.resultType() === "object") {
         
 
-                if (resultObject.persistLink()) {
+                if (resultObject.extensions().renderInEdit()) {
                     // transient object
                     const domainType = resultObject.extensions().domainType();
                     resultObject.wrapped().domainType = domainType;
-                    resultObject.wrapped().instanceId = "0";
+                    //resultObject.wrapped().instanceId = "0";
 
-                    resultObject.hateoasUrl = `/${domainType}/0`;
+                    //resultObject.hateoasUrl = `/${domainType}/0`;
 
                     context.setObject(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
@@ -488,7 +488,7 @@ module NakedObjects.Angular.Gemini {
             return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
 
-        context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId : number) => {
+        context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const update = object.getUpdateMap();
     
             _.each(props, (v, k) => update.setProperty(k, v));
@@ -504,7 +504,11 @@ module NakedObjects.Angular.Gemini {
 
                     dirtyCache.setDirty(updatedObject);
 
-                    urlManager.setObject(updatedObject, paneId);
+                    if (viewSavedObject) {
+                        urlManager.setObject(updatedObject, paneId);
+                    } else {
+                        urlManager.popUrlState(paneId);
+                    }
                     return $q.when(new ErrorMap({}, 0, ""));
                 }).
                 catch((error: any) => {

@@ -641,11 +641,12 @@ module NakedObjects.Angular.Gemini {
             this.cancelHandler()();
         };
 
-        private saveHandler = () => this.domainObject.extensions().renderInEdit() ? this.contextService.saveObject : this.contextService.updateObject;
+        //private saveHandler = () => this.domainObject.extensions().renderInEdit() ? this.contextService.saveObject : this.contextService.updateObject;
+
+        private saveHandler = () => this.contextService.updateObject;
 
         doSave = viewObject => {
-
-            
+        
             this.setProperties();
             const pps = _.filter(this.properties, property => property.isEditable);
             const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
