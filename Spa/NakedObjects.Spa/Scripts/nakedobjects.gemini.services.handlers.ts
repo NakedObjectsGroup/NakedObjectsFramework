@@ -202,7 +202,6 @@ module NakedObjects.Angular.Gemini {
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
 
-                    //const ovm = viewModelFactory.domainObjectViewModel($scope, object, routeData);
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
                     $scope.object = ovm;

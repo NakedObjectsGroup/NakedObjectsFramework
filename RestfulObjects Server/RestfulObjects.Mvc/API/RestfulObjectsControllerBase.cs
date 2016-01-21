@@ -256,6 +256,12 @@ namespace RestfulObjects.Mvc {
                 constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
+            routes.MapHttpRoute("PostObject",
+                routeTemplate: objects + "/{domainType}/{instanceId}",
+                defaults: new { controller = "RestfulObjects", action = "PostObject" },
+                constraints: new { httpMethod = new HttpMethodConstraint("Post") }
+                );
+
             routes.MapHttpRoute("InvalidObject",
                 routeTemplate: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
@@ -479,16 +485,6 @@ namespace RestfulObjects.Mvc {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags(arguments)));
         }
 
-        public virtual HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
-                ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
-                VerifyNoPersistError(context, args.Item2);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
-            });
-        }
-
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
@@ -541,6 +537,31 @@ namespace RestfulObjects.Mvc {
                 ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+            });
+        }
+
+
+        public virtual HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
+            return InitAndHandleErrors(() => {
+                HandleReadOnlyRequest();
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
+                ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
+                VerifyNoPersistError(context, args.Item2);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
+            });
+        }
+
+        public virtual HttpResponseMessage PostObject(string domainType, string instanceId, ArgumentMap arguments) {
+            return InitAndHandleErrors(() => {
+                HandleReadOnlyRequest();
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
+
+                var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+                var obj = GetObject(loid);
+                ObjectContextFacade context = FrameworkFacade.PersistObject(obj.Target, args.Item1);
+                VerifyNoPersistError(context, args.Item2);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
+
             });
         }
 
@@ -1107,5 +1128,7 @@ namespace RestfulObjects.Mvc {
         }
 
         #endregion
+
+       
     }
 }

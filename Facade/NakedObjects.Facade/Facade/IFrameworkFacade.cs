@@ -41,7 +41,10 @@ namespace NakedObjects.Facade {
         PropertyTypeContextFacade GetPropertyType(string typeName, string propertyName);
         ActionTypeContextFacade GetActionType(string typeName, string actionName);
         ParameterTypeContextFacade GetActionParameterType(string typeName, string actionName, string parmName);
+
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
+        ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments);
+
         UserCredentials Validate(string user, string password);
         // todo this to help the transition may be able to be removed after
 
