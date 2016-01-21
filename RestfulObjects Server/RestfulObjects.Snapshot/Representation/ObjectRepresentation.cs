@@ -100,6 +100,14 @@ namespace RestfulObjects.Snapshot.Representations {
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
+
+                if (objectContext.Target.IsTransient) {
+                    // transient but not proto-persistent so add custom link 
+                    LinkRepresentation persistLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Persist, helper) {Method = RelMethod.Post}, Flags,
+                        new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
+
+                    tempLinks.Add(persistLink);
+                }
             }
 
             if (IsProtoPersistent(objectContext.Target)) {
