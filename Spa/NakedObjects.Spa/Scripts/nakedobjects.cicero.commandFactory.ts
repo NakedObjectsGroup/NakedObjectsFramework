@@ -76,6 +76,9 @@ module NakedObjects.Angular.Gemini {
                 commandFactory.getCommand("wh").execute(null, false);
                 return;
             }
+            commandFactory.autoComplete(input, cvm);
+            cvm.input = cvm.input.trim();
+            cvm.previousInput = cvm.input;
             const commands = input.split(";");
             if (commands.length > 1) {
                 let first = commands[0];
@@ -88,13 +91,10 @@ module NakedObjects.Angular.Gemini {
         };
 
         commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
-            cvm.previousInput = input; //TODO: do this here?
             try {
                 input = input.toLowerCase().trim();
                 const firstWord = input.split(" ")[0];
                 const command: Command = commandFactory.getCommand(firstWord);
-                //TODO: Should previousInput be set here (given chained commands)
-                cvm.previousInput = command.fullCommand + input.substring(firstWord.length, input.length);
                 var argString: string = null;
                 const index = input.indexOf(" ");
                 if (index >= 0) {
@@ -108,17 +108,24 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
+        //TODO: change the name & functionality to pre-parse or somesuch as could do more than auto
+        //complete e.g. reject unrecognised action or one not available in context.
         commandFactory.autoComplete = (input: string, cvm: CiceroViewModel) => {
-            if (!input || input.length < 2 || input.indexOf(" ") > 0) return;
-            cvm.previousInput = input;
+            if (!input) return;
+            let lastInChain = _.last(input.split(";")).toLowerCase();
+            const charsTyped = lastInChain.length;
+            lastInChain = lastInChain.trim();
+            if (lastInChain.length == 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
+                cvm.input += " ";
+                return;
+            }
             try {
-                input = input.toLowerCase().trim();
-                const command: Command = commandFactory.getCommand(input);
-                cvm.input = command.fullCommand + " ";
+                const command: Command = commandFactory.getCommand(lastInChain);
+                const earlierChain = input.substr(0, input.length - charsTyped);
+                cvm.input = earlierChain + command.fullCommand + " ";
             }
             catch (Error) {
                 cvm.output = Error.message;
-                cvm.input = "";
             }
         };
 

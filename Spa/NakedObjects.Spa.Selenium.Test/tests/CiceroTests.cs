@@ -717,35 +717,43 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided");
         }
 
-        public virtual void Tab()
+        public virtual void SpaceBarAutoComplete()
         {
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
-            TypeIntoFieldWithoutClearing("input", "sel"+Keys.Tab);
+            TypeIntoFieldWithoutClearing("input", "sel"+Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
             CiceroUrl("object?object1=AdventureWorksModel.Product-968");
             WaitForOutput("Product: Touring-1000 Blue, 54");
             //Hitting Tab with no entry has no effect
-            TypeIntoFieldWithoutClearing("input", Keys.Tab);
+            TypeIntoFieldWithoutClearing("input", Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
             WaitForOutput("Product: Touring-1000 Blue, 54");
 
             //Unrecognised two chars
-            TypeIntoFieldWithoutClearing("input", "xx" + Keys.Tab);
+            TypeIntoFieldWithoutClearing("input", "xx" + Keys.Space);
             WaitForOutput("No command begins with xx");
 
-            //No effect on a single character
+            //Single character
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
-            TypeIntoFieldWithoutClearing("input", "f" + Keys.Tab);
-            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "f");
+            TypeIntoFieldWithoutClearing("input", "f" + Keys.Space);
+            WaitForOutput("Command word must have at least 2 characters");
 
-            //No effect if there's any argument specified
+            //if there's any argument specified, just adds a space
             CiceroUrl("object?object1=AdventureWorksModel.Product-968");
             WaitForOutput("Product: Touring-1000 Blue, 54");
-            TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Tab);
-            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "he menu");
+            TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Space);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
+
+            //chained commands
+            ClearFieldThenType("input", "me pr;ac rand;ok " + Keys.Space);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+
+            //Space bar before command eventually removed
+            ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Space);
+            wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
 
         }
         public virtual void UnrecognisedCommand()
@@ -774,6 +782,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
             TypeIntoFieldWithoutClearing("input", Keys.ArrowDown);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+
+            //TODO
+            //CiceroUrl("home");
+            //WaitForOutput("Welcome to Cicero");
+            //EnterCommand("me pr; act rand; ok;show 1");
+            //WaitForOutput("The command: show is not available in the current context");
+            ////Test that the up arrow produces full string
+            //Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
+            //TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
+            //wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
+            //== "menu pr;action rand;ok;show 1");
         }
         public virtual void ScenarioUsingClipboard()
         {
@@ -830,8 +849,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Try to chain a command that is not avialable in the current context
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
-            EnterCommand("menu pr; action rand; ok; show 1");
+            EnterCommand("menu pr;action rand;ok;show 1");
             WaitForOutput("The command: show is not available in the current context");
+
 
             //Error in execution -  Timing problem?
             //CiceroUrl("home");
@@ -877,7 +897,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Where() { base.Where(); }
         [TestMethod]
-        public override void Tab() { base.Tab(); }
+        public override void SpaceBarAutoComplete() { base.SpaceBarAutoComplete(); }
         [TestMethod]
         public override void UnrecognisedCommand() { base.UnrecognisedCommand(); }
         [TestMethod]
@@ -993,7 +1013,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Root();
             base.Show();
             base.Where();
-            base.Tab();
+            base.SpaceBarAutoComplete();
             base.UnrecognisedCommand();
             base.UpAndDownArrow();
             base.ScenarioUsingClipboard();

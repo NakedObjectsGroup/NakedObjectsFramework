@@ -575,11 +575,11 @@ module NakedObjects.Angular.Gemini {
         });
     });
 
-    app.directive("ciceroTab", () => (scope, element, attrs) => {
+    app.directive("ciceroSpace", () => (scope, element, attrs) => {
         element.bind("keydown keypress", event => {
-            const tabKeyCode = 9;
+            const tabKeyCode = 32;
             if (event.which === tabKeyCode) {
-                scope.$apply(() => scope.$eval(attrs.ciceroTab));
+                scope.$apply(() => scope.$eval(attrs.ciceroSpace));
                 event.preventDefault();
             }
         });
