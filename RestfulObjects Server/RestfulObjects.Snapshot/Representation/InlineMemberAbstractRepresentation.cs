@@ -16,7 +16,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class InlineMemberAbstractRepresentation : Representation {
-        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) { }
+        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) {}
 
         [DataMember(Name = JsonPropertyNames.MemberType)]
         public string MemberType { get; set; }
@@ -42,10 +42,10 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (propertyContext.Property.IsCollection) {
-                return InlineCollectionRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
+                return InlineCollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
             }
 
-            return InlinePropertyRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
+            return InlinePropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
         }
     }
 }

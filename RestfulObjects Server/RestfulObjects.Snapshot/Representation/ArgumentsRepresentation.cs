@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -26,7 +25,6 @@ namespace RestfulObjects.Snapshot.Representations {
 
         #endregion
 
-
         private static RefValueRepresentation CreateObjectRef(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, RestControlFlags flags) {
             var helper = new UriMtHelper(oidStrategy, req, no);
             ObjectRelType rt = new ObjectRelType(RelValues.Element, helper);
@@ -38,19 +36,19 @@ namespace RestfulObjects.Snapshot.Representations {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
-            if (context.Specification.IsCollection && context.ElementSpecification != null &&  !context.ElementSpecification.IsParseable) {         
-                var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);                   
+            if (context.Specification.IsCollection && context.ElementSpecification != null && !context.ElementSpecification.IsParseable) {
+                var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);
                 var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
                 value = CreateMap(context, coll);
             }
             else if (context.Specification.IsParseable ||
-                context.ProposedValue == null ||
-                context.ProposedObjectFacade == null ||
-                context.ProposedObjectFacade.Specification.IsParseable) {
+                     context.ProposedValue == null ||
+                     context.ProposedObjectFacade == null ||
+                     context.ProposedObjectFacade.Specification.IsParseable) {
                 value = CreateMap(context, context.ProposedValue);
             }
             else {
-                value = CreateMap(context, RefValueRepresentation.Create(oidStrategy ,new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req, context.ProposedObjectFacade)), flags));
+                value = CreateMap(context, RefValueRepresentation.Create(oidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context.ProposedObjectFacade)), flags));
             }
             return value;
         }
@@ -71,7 +69,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (format == Format.Full) {
                 var tempProperties = new List<OptionalProperty>();
 
-                if (contextFacade != null &&  !string.IsNullOrEmpty(contextFacade.Reason)) {
+                if (!string.IsNullOrEmpty(contextFacade?.Reason)) {
                     tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
                 }
 
@@ -87,11 +85,6 @@ namespace RestfulObjects.Snapshot.Representations {
                     });
                     tempProperties.Add(links);
                 }
-
-                if (contextFacade != null && !string.IsNullOrEmpty(contextFacade.Reason)) {
-                    tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
-                }
-
 
                 var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues.ToArray()));
                 tempProperties.Add(members);
@@ -111,16 +104,15 @@ namespace RestfulObjects.Snapshot.Representations {
             var actionResultContext = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
 
-
             if (objectContext != null) {
-                List<OptionalProperty> optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
+                List<OptionalProperty> optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
                 if (!string.IsNullOrEmpty(objectContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
                 }
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else if (actionResultContext != null) {
-                List<OptionalProperty> optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy ,req, c, flags))).ToList();
+                List<OptionalProperty> optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
 
                 if (!string.IsNullOrEmpty(actionResultContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContext.Reason));
@@ -128,18 +120,16 @@ namespace RestfulObjects.Snapshot.Representations {
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else {
-                mapRepresentation = GetMap(oidStrategy ,req, context, flags);
+                mapRepresentation = GetMap(oidStrategy, req, context, flags);
             }
 
-
             mapRepresentation.SetContentType(mt);
-
 
             return mapRepresentation;
         }
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             return Create(oidStrategy, req, null, contexts, format, flags, mt);
-        }      
+        }
     }
 }

@@ -75,10 +75,11 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        const deReg = [, new DeReg(), new DeReg()];
+        const deRegDialog = [, new DeReg(), new DeReg()];
+        const deRegObject = [, new DeReg(), new DeReg()];
 
         function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
-            deReg[routeData.paneId].deReg();
+            deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
             const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, routeData) : action as ActionViewModel;
@@ -86,8 +87,8 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.reset(actionViewModel, routeData);
             $scope.dialog = dialogViewModel; 
 
-            deReg[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void;
-            deReg[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void;
+            deRegDialog[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void;
+            deRegDialog[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void;
         }
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
@@ -201,6 +202,7 @@ module NakedObjects.Angular.Gemini {
 
             context.getObject(routeData.paneId, dt, id).
                 then((object: DomainObjectRepresentation) => {
+                    deRegObject[routeData.paneId].deReg();
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
@@ -234,6 +236,9 @@ module NakedObjects.Angular.Gemini {
                     }
 
                     focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+
+                    deRegObject[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", ovm.setProperties) as () => void;
+                    deRegObject[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void;
 
                 }).catch(error => {
                     setError(error);

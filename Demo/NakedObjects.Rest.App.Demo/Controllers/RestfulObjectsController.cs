@@ -89,9 +89,6 @@ namespace MvcTestApp.Controllers {
 
         [HttpPost]
         public override HttpResponseMessage PostObject(string domainType, string instanceId, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
-            if (ProtoPersistentObjects) {
-                InvalidMethod();
-            }
             return base.PostObject(domainType, instanceId, arguments);
         }
 

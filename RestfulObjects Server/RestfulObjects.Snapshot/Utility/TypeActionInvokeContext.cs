@@ -20,10 +20,9 @@ namespace RestfulObjects.Snapshot.Utility {
         #endregion
 
         private readonly ActionType aType;
-        private readonly string typeName;
 
         public TypeActionInvokeContext(string actionName, string typeName) {
-            this.typeName = typeName;
+            TypeName = typeName;
             if (actionName == WellKnownIds.IsSupertypeOf) {
                 aType = ActionType.IsSupertypeOf;
             }
@@ -35,21 +34,13 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        public string TypeName {
-            get { return typeName; }
-        }
+        public string TypeName { get; }
 
-        public string Id {
-            get { return aType == ActionType.IsSubtypeOf ? WellKnownIds.IsSubtypeOf : WellKnownIds.IsSupertypeOf; }
-        }
+        public string Id => aType == ActionType.IsSubtypeOf ? WellKnownIds.IsSubtypeOf : WellKnownIds.IsSupertypeOf;
 
-        public string ParameterId {
-            get { return aType == ActionType.IsSubtypeOf ? JsonPropertyNames.SuperType : JsonPropertyNames.SubType; }
-        }
+        public string ParameterId => aType == ActionType.IsSubtypeOf ? JsonPropertyNames.SuperType : JsonPropertyNames.SubType;
 
-        public bool Value {
-            get { return aType == ActionType.IsSubtypeOf ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification); }
-        }
+        public bool Value => aType == ActionType.IsSubtypeOf ? ThisSpecification.IsOfType(OtherSpecification) : OtherSpecification.IsOfType(ThisSpecification);
 
         public ITypeFacade ThisSpecification { get; set; }
         public ITypeFacade OtherSpecification { get; set; }

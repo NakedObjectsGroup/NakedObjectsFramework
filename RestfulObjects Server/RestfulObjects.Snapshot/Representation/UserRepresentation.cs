@@ -17,8 +17,8 @@ namespace RestfulObjects.Snapshot.Representations {
     public class UserRepresentation : Representation {
         private UserRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            SelfRelType = new UserRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req));
-            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy ,req)));
+            SelfRelType = new UserRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
+            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
             SetScalars(user);
             SetExtensions();
             SetHeader();
@@ -46,7 +46,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HomePageRelType homePageRelType) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags), LinkRepresentation.Create(OidStrategy ,homePageRelType, Flags)};
+            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
         }
 
         private void SetExtensions() {

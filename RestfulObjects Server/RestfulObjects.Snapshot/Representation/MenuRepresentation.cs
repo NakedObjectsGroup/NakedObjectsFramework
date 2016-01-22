@@ -55,9 +55,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinksAndMembers(HttpRequestMessage req, IMenuFacade menu) {
-            var tempLinks = new List<LinkRepresentation>();
-
-            tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
+            var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
             if (Flags.FormalDomainModel) {
                 //tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, menu.Specification)), Flags));
@@ -70,7 +68,6 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) {
-
             if (!string.IsNullOrEmpty(menuPath)) {
                 actionFacade.Action.ExtensionData[IdConstants.MenuPath] = menuPath;
             }
@@ -83,9 +80,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private Tuple<string, ActionContextFacade>[] GetMenuItem(IMenuItemFacade item, string parent = "") {
-
-            
-            var menuActionFacade= item as IMenuActionFacade;
+            var menuActionFacade = item as IMenuActionFacade;
 
             if (menuActionFacade != null) {
                 return new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))};
@@ -101,28 +96,14 @@ namespace RestfulObjects.Snapshot.Representations {
             return new Tuple<string, ActionContextFacade>[] {};
         }
 
-        private class Eq : IEqualityComparer<InlineActionRepresentation> {
-            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) {
-                return x.Id == y.Id;
-            }
-
-            public int GetHashCode(InlineActionRepresentation obj) {
-                return obj.Id.GetHashCode();
-            }
-        }
-
-
-
         private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
             var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i));
 
-            
             InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
 
             var eq = new Eq();
             // todo fix distinct
             actions = actions.Distinct(eq).ToArray();
-
 
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
@@ -144,5 +125,23 @@ namespace RestfulObjects.Snapshot.Representations {
         public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequestMessage req, RestControlFlags flags) {
             return new MenuRepresentation(oidStrategy, req, menu, flags);
         }
+
+        #region Nested type: Eq
+
+        private class Eq : IEqualityComparer<InlineActionRepresentation> {
+            #region IEqualityComparer<InlineActionRepresentation> Members
+
+            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) {
+                return x.Id == y.Id;
+            }
+
+            public int GetHashCode(InlineActionRepresentation obj) {
+                return obj.Id.GetHashCode();
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

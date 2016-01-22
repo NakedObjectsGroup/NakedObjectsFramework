@@ -9,8 +9,6 @@ namespace RestfulObjects.Mvc.Model {
     public class SingleValueArgument : ReservedArguments {
         public IValue Value { get; set; }
 
-        public override bool HasValue {
-            get { return Value != null; }
-        }
+        public override bool HasValue => Value != null;
     }
 }

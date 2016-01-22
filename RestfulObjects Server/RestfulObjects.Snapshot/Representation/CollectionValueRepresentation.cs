@@ -21,8 +21,8 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SetValue(propertyContext, req, flags);
-            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(oidStrategy,req, propertyContext));
-            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy,req, propertyContext.Target)));
+            SelfRelType = new CollectionValueRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
+            SetLinks(req, propertyContext, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, propertyContext.Target)));
             SetExtensions();
             SetHeader(propertyContext.Target);
         }
@@ -41,7 +41,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetValue(PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
             IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
-            Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy,new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy ,req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
+            Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 
         private void SetScalars(PropertyContextFacade propertyContext) {
@@ -54,18 +54,17 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, PropertyContextFacade propertyContext, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy,parentRelType, Flags),
-                LinkRepresentation.Create(OidStrategy,SelfRelType, Flags)
+                LinkRepresentation.Create(OidStrategy, parentRelType, Flags),
+                LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, propertyContext.Property)), Flags));
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, propertyContext.Property.ElementSpecification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, propertyContext.Property)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, propertyContext.Property.ElementSpecification)), Flags));
             }
 
             Links = tempLinks.ToArray();
         }
-
 
         private void SetHeader(IObjectFacade target) {
             caching = CacheType.Transactional;
@@ -73,7 +72,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new CollectionValueRepresentation(oidStrategy ,propertyContext, req, flags);
+            return new CollectionValueRepresentation(oidStrategy, propertyContext, req, flags);
         }
     }
 }

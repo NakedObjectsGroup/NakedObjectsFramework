@@ -37,7 +37,7 @@ namespace RestfulObjects.Mvc.Model {
             string[] oids = helper.GetObjectId(href);
             if (oids != null) {
                 // todo this is clunky 
-                var oid =  facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
+                var oid = facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
                 return facade.GetObject(oid).Target.GetDomainObject();
             }
             string typeName = helper.GetTypeId(href);

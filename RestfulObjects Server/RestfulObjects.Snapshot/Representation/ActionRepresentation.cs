@@ -17,7 +17,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionRepresentation : Representation {
         protected ActionRepresentation(IOidStrategy oidStrategy, ActionRepresentationStrategy strategy)
-            : base(oidStrategy ,strategy.GetFlags()) {
+            : base(oidStrategy, strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Parameters = strategy.GetParameters();
@@ -44,7 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
-            return new ActionRepresentation(oidStrategy, new ActionRepresentationStrategy(oidStrategy ,req, actionContext, flags));
+            return new ActionRepresentation(oidStrategy, new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags));
         }
     }
 }

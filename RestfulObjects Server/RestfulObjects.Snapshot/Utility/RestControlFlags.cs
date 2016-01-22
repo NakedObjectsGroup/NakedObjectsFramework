@@ -34,7 +34,6 @@ namespace RestfulObjects.Snapshot.Utility {
         public const string PageReserved = ReservedPrefix + "page";
         public const string PageSizeReserved = ReservedPrefix + "pageSize";
 
-
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
         public static DomainModelType ConfiguredDomainModelType { get; set; }
@@ -52,19 +51,18 @@ namespace RestfulObjects.Snapshot.Utility {
         public static bool ProtoPersistentObjects { get; set; }
 
         private static bool GetBool(object value) {
-            if (value == null) return false;
-            if (value is string) return Boolean.Parse((string) value);
-            if (value is bool) return (bool) value;
+            if (value == null) { return false; }
+            if (value is string) { return Boolean.Parse((string) value); }
+            if (value is bool) { return (bool) value; }
             return false;
         }
 
         private static int GetInt(object value) {
-            if (value == null) return 0;
-            if (value is string) return int.Parse((string)value);
-            if (value is int) return (int)value;
+            if (value == null) { return 0; }
+            if (value is string) { return int.Parse((string) value); }
+            if (value is int) { return (int) value; }
             return 0;
         }
-
 
         // domain mode logic if selectable 
         // no flag simple = formal = true 
@@ -76,7 +74,7 @@ namespace RestfulObjects.Snapshot.Utility {
             switch (ConfiguredDomainModelType) {
                 case DomainModelType.Selectable: {
                     var s = value as string;
-                    if (value == null) return true;
+                    if (value == null) { return true; }
                     return (s == model.ToString().ToLower());
                 }
                 case DomainModelType.None:

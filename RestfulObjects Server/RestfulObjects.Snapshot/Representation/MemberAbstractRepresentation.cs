@@ -18,7 +18,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public abstract class MemberAbstractRepresentation : Representation {
         protected MemberAbstractRepresentation(IOidStrategy oidStrategy, MemberRepresentationStrategy strategy)
-            : base(oidStrategy ,strategy.GetFlags()) {
+            : base(oidStrategy, strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Links = strategy.GetLinks(false);
@@ -52,7 +52,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return CollectionRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
             }
 
-            return PropertyRepresentation.Create(oidStrategy ,req, propertyContext, optionals, flags);
+            return PropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
         }
     }
 }

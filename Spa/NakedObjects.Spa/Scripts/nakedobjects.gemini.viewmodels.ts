@@ -627,7 +627,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
-        private setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
+        public setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
 
         private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -29,15 +28,6 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(objectContext);
         }
 
-        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
-            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
-                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.ToString("N"));
-            }
-
-            return new UriMtHelper(oidStrategy, req, objectContext.Target);
-        }
-
-
         [DataMember(Name = JsonPropertyNames.Title)]
         public string Title { get; set; }
 
@@ -49,6 +39,14 @@ namespace RestfulObjects.Snapshot.Representations {
 
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
+
+        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
+            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
+                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.ToString("N"));
+            }
+
+            return new UriMtHelper(oidStrategy, req, objectContext.Target);
+        }
 
         private static bool IsProtoPersistent(IObjectFacade objectFacade) {
             return objectFacade.IsTransient && RestControlFlags.ProtoPersistentObjects;
@@ -91,14 +89,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
             if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
-                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
-
+                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
 
                 var helper = GetHelper(OidStrategy, req, objectContext);
 
                 var method = objectContext.Target.IsTransient ? RelMethod.Post : RelMethod.Put;
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) { Method = method }, Flags,
+                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = method}, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
@@ -162,7 +159,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
             else {
                 // if get here and transient then must be non-protopersistent so add pseudo id;
-                var id = objectContext.Target.IsTransient ?  objectContext.UniqueIdForTransient.ToString("N") : oid.InstanceId;
+                var id = objectContext.Target.IsTransient ? objectContext.UniqueIdForTransient.ToString("N") : oid.InstanceId;
                 props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
                 if (flags.SimpleDomainModel) {
                     props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));

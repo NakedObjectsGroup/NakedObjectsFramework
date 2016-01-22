@@ -33,12 +33,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, PropertyTypeContextFacade propertyContext) {
             IList<LinkRepresentation> tempLinks = CreateLinks(req, propertyContext);
-            tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy ,req, propertyContext.Property.Specification)), Flags));
+            tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, propertyContext.Property.Specification)), Flags));
             Links = tempLinks.ToArray();
         }
 
         public new static PropertyTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags) {
-            return new PropertyTypeRepresentation(oidStrategy ,req, propertyContext, flags);
+            return new PropertyTypeRepresentation(oidStrategy, req, propertyContext, flags);
         }
     }
 }

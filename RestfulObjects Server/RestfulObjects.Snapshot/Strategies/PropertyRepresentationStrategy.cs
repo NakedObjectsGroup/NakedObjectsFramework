@@ -20,14 +20,13 @@ namespace RestfulObjects.Snapshot.Strategies {
     [DataContract]
     public class PropertyRepresentationStrategy : MemberRepresentationStrategy {
         public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy ,req, propertyContext, flags) {}
+            base(oidStrategy, req, propertyContext, flags) {}
 
         private void AddPrompt(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
                 links.Add(CreatePromptLink());
             }
         }
-
 
         private LinkRepresentation CreatePromptLink() {
             var opts = new List<OptionalProperty>();
@@ -41,12 +40,12 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
             else {
                 Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
-                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy ,req, pnt, Flags)).ToArray();
+                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(OidStrategy,new PromptRelType(new UriMtHelper(OidStrategy ,req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(OidStrategy, new PromptRelType(new UriMtHelper(OidStrategy, req, propertyContext)), Flags, opts.ToArray());
         }
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
@@ -60,33 +59,34 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateClearLink() {
-            return LinkRepresentation.Create(OidStrategy ,new MemberRelType(RelValues.Clear, new UriMtHelper(OidStrategy ,req, propertyContext)) {Method = RelMethod.Delete}, Flags);
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, new UriMtHelper(OidStrategy, req, propertyContext)) {Method = RelMethod.Delete}, Flags);
         }
 
         private LinkRepresentation CreateModifyLink() {
-            return LinkRepresentation.Create(OidStrategy ,new MemberRelType(RelValues.Modify, new UriMtHelper(OidStrategy ,req, propertyContext)) {Method = RelMethod.Put}, Flags,
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, new UriMtHelper(OidStrategy, req, propertyContext)) {Method = RelMethod.Put}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
         }
-
 
         public new LinkRepresentation[] GetLinks(bool inline) {
             var links = new List<LinkRepresentation>(base.GetLinks(inline));
 
             if (!propertyContext.Target.IsTransient) {
                 AddMutatorLinks(links);
+            }
+
+            if (!(RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient)) {
                 AddPrompt(links);
             }
 
             return links.ToArray();
         }
 
-
         private IDictionary<string, object> GetCustomPropertyExtensions() {
             IDictionary<string, object> custom = propertyContext.Property.ExtensionData;
 
             if (IsUnconditionalChoices()) {
                 Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy ,req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
+                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                 MapRepresentation map = MapRepresentation.Create(op);
@@ -129,7 +129,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public bool GetHasChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any();
+            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any();
         }
     }
 }

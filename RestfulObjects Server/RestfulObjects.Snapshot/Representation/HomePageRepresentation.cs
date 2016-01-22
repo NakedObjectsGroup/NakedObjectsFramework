@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
         protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Log.DebugFormat("HomePageRepresentation");
-            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req));
+            SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
             SetExtensions();
             SetHeader();
@@ -51,13 +51,13 @@ namespace RestfulObjects.Snapshot.Representations {
             };
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new TypesRelType(new UriMtHelper(OidStrategy, req)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new TypesRelType(new UriMtHelper(OidStrategy, req)), Flags));
             }
 
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(IOidStrategy oidStrategy,  HttpRequestMessage req, RestControlFlags flags) {
+        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags) {
             return new HomePageRepresentation(oidStrategy, req, flags);
         }
     }

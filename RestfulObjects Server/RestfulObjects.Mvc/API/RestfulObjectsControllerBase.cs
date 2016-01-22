@@ -552,6 +552,9 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage PostObject(string domainType, string instanceId, ArgumentMap arguments) {
+            if (ProtoPersistentObjects) {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
+            }
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
@@ -861,7 +864,10 @@ namespace RestfulObjects.Mvc {
 
 
         private void CacheTransient(ActionResultContextFacade actionResult) {
-            if (!RestControlFlags.ProtoPersistentObjects && actionResult.Result.Target.IsTransient) {
+
+            var target = actionResult?.Result?.Target;
+
+            if (!RestControlFlags.ProtoPersistentObjects && target != null && target.IsTransient) {
                 var id = Guid.NewGuid();
                 actionResult.Result.UniqueIdForTransient = id;
                 var session = HttpContext.Current.Session;
