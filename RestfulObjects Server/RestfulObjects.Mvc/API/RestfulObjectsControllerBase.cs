@@ -552,6 +552,9 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage PostObject(string domainType, string instanceId, ArgumentMap arguments) {
+            if (ProtoPersistentObjects) {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
+            }
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
