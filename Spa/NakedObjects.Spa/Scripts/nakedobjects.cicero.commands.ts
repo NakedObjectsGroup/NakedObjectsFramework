@@ -387,64 +387,6 @@ module NakedObjects.Angular.Gemini {
             }
         };
     }
-    export class Collection extends Command {
-
-        public fullCommand = "collection";
-        public helpText = "Open a view of a specific collection within an object, from which " +
-        "individual items may be read using the item command. Collection command takes one optional argument: " +
-        "the name, or partial name, of the collection.  If the partial name matches more than one " +
-        "collection, the list of matches will be returned, but none will be opened. " +
-        "If no argument is specified, collection lists the names of all collections visible on the object.";
-        protected minArguments = 0;
-        protected maxArguments = 1;
-
-        isAvailableInCurrentContext(): boolean {
-            return this.isObject();
-        }
-
-        doExecute(args: string, chained: boolean): void {
-            const match = this.argumentAsString(args, 0, true);
-            this.getObject()
-                .then((obj: DomainObjectRepresentation) => {
-                    this.processCollections(match, obj.collectionMembers());
-                });
-        };
-
-        private processCollections(match: string, collsMap: _.Dictionary<CollectionMember>) {
-
-            const allColls = _.map(collsMap, action => action);
-            let matchingColls = allColls;
-            if (matchingColls.length === 0) {
-                this.clearInputAndSetMessage("No collections visible");
-                return;
-            }
-            if (match) {
-                matchingColls = this.matchFriendlyNameAndOrMenuPath(matchingColls, match);
-            }
-            switch (matchingColls.length) {
-                case 0:
-                    this.clearInputAndSetMessage(match + " does not match any collections");
-                    break;
-                case 1:
-                    this.openCollection(matchingColls[0]);
-                    break;
-                default:
-                    let label = match ? "Matching collections:\n" : "Collections:\n";
-                    var s = _.reduce(matchingColls, (s, t) => {
-                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + "\n";
-                    }, label);
-                    this.clearInputAndSetMessage(s);
-            }
-        }
-
-
-        private openCollection(collection: CollectionMember): void {
-            this.closeAnyOpenCollections();
-            this.vm.clearInput();
-            this.urlManager.setCollectionMemberState(1, collection.collectionId(), CollectionViewState.List);
-        }
-    }
     export class Clipboard extends Command {
 
         public fullCommand = "clipboard";
@@ -743,10 +685,11 @@ module NakedObjects.Angular.Gemini {
     export class Goto extends Command {
 
         public fullCommand = "goto";
-        public helpText = "Go to an object referenced in a property, or a list." +
-        "Go takes one argument.  In the context of an object, that is the name or partial name" +
-        "of the property holding the reference. In the context of a list, it is the " +
-        "number of the item within the list (starting at 1). ";
+        public helpText = "Go to the object referenced in a property, "+
+        "or to a collection within an object, or an object within an open list or collection. " +
+        "Goto takes one argument.  In the context of an object, that is the name or partial name" +
+        "of the property or collection. In the context of an open list or collection, it is the " +
+        "number of the item within the list or collection (starting at 1). ";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -784,33 +727,43 @@ module NakedObjects.Angular.Gemini {
                             this.urlManager.setItem(link, 1);
                             return;
                         } else {
-                            const allFields = this.matchingProperties(obj, arg0);
-                            const refFields = _.filter(allFields, (p) => { return !p.isScalar() });
+                            const matchingProps = this.matchingProperties(obj, arg0);
+                            const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
+                            const matchingColls = this.matchingCollections(obj, arg0);
                             var s: string = "";
-                            switch (refFields.length) {
+                            switch (matchingRefProps.length + matchingColls.length) {
                                 case 0:
-                                    if (!arg0) {
-                                        s = "No visible fields";
-                                    } else {
-                                        s = arg0 + " does not match any reference fields";
-                                    }
+                                    s = arg0 + " does not match any reference fields or collections";
                                     break;
                                 case 1:
                                     //TODO: Check for any empty reference
-                                    let link = refFields[0].value().link();
-                                    this.urlManager.setItem(link, 1);
+                                    if (matchingRefProps.length > 0) {
+                                        let link = matchingRefProps[0].value().link();
+                                        this.urlManager.setItem(link, 1);
+                                    } else { //Must be collection
+                                        this.openCollection(matchingColls[0]);
+                                    }
                                     break;
                                 default:
-                                    var label = "Multiple reference fields match " + arg0 + ": ";
-                                    s = _.reduce(refFields, (s, prop) => {
-                                        return s + prop.extensions().friendlyName();
-                                    }, label);
+                                    const props = _.reduce(matchingRefProps, (s, prop) => {
+                                        return s + prop.extensions().friendlyName()+"\n";
+                                    }, "");
+                                    const colls = _.reduce(matchingColls, (s, coll) => {
+                                        return s + coll.extensions().friendlyName() + "\n";
+                                    }, "");
+                                    s = "Multiple matches for " + arg0 + ":\n" +props + colls;
                             }
                             this.clearInputAndSetMessage(s);
                         }
                     });
             }
         };
+
+        private openCollection(collection: CollectionMember): void {
+            this.closeAnyOpenCollections();
+            this.vm.clearInput();
+            this.urlManager.setCollectionMemberState(1, collection.collectionId(), CollectionViewState.List);
+        }
     }
     export class Help extends Command {
 

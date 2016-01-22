@@ -44,7 +44,6 @@ module NakedObjects.Angular.Gemini {
             "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "ca": new Cancel(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "co": new Collection(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "ed": new Edit(urlManager, $location, commandFactory, context, navigation, $q, $route),
             "en": new Enter(urlManager, $location, commandFactory, context, navigation, $q, $route),

@@ -214,55 +214,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
         }
-        public virtual void Collection()
-        {
-            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
-            WaitForOutput("Sales Order Header: SO60485");
-
-            //Simple case
-            EnterCommand("collection details");
-            WaitForOutput("Collection: Details on Sales Order Header: SO60485\r\n3 items");
-
-            //Multiple matches
-            CiceroUrl("object?object1=AdventureWorksModel.Product-901");
-            WaitForOutput("Product: LL Touring Frame - Yellow, 54");
-            EnterCommand("coll pr");
-            WaitForOutput("Matching collections:\r\nProduct Inventory\r\nProduct Reviews");
-
-            //No argument
-            EnterCommand("co");
-            WaitForOutput("Collections:\r\nProduct Inventory\r\nProduct Reviews\r\nSpecial Offers");
-
-            //Multi-clause match
-            EnterCommand("coll v ory");
-            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
-
-            //No matches
-            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
-            WaitForOutput("Sales Order Header: SO60485");
-            EnterCommand("co x son");
-            WaitForOutput("x son does not match any collections");
-
-            //Too many arguments
-            EnterCommand("co de,tails");
-            WaitForOutput("Too many arguments provided");
-
-            //Invalid context
-            CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
-            EnterCommand("co");
-            WaitForOutput("The command: collection is not available in the current context");
-
-            //Switching between different collections
-            CiceroUrl("object?object1=AdventureWorksModel.Product-901");
-            WaitForOutput("Product: LL Touring Frame - Yellow, 54");
-            EnterCommand("coll inventory");
-            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
-            EnterCommand("coll reviews");
-            WaitForOutput("Collection: Product Reviews on Product: LL Touring Frame - Yellow, 54\r\nempty");
-            EnterCommand("coll spec");
-            WaitForOutput("Collection: Special Offers on Product: LL Touring Frame - Yellow, 54\r\n1 item");
-        }
         public virtual void Edit()
         {
             CiceroUrl("home");
@@ -385,7 +336,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ge x");
             WaitForOutput("Too many arguments provided");
         }
-        public virtual void Go()
+        public virtual void Goto()
         {
             CiceroUrl("object?object1=AdventureWorksModel.Customer-577");
             WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
@@ -397,14 +348,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Sales Person: Pamela Ansman-Wolfe");
             //No match
             EnterCommand("go x");
-            WaitForOutput("x does not match any reference fields");
+            WaitForOutput("x does not match any reference fields or collections");
             //Matches only value fields
             EnterCommand("go bonus");
-            WaitForOutput("bonus does not match any reference fields");
+            WaitForOutput("bonus does not match any reference fields or collections");
 
             //Multiple matches
             EnterCommand("go details");
-            WaitForOutput("Multiple reference fields match details: Employee DetailsPerson Details");
+            WaitForOutput("Multiple matches for details:\r\nEmployee Details\r\nPerson Details");
             //Multiple clause match
             EnterCommand("go details pers"); //Person Details
             WaitForOutput("Person: Pamela Ansman-Wolfe");
@@ -437,12 +388,40 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("home");
             WaitForOutput("Welcome to Cicero");
             EnterCommand("go x");
-            WaitForOutput("The command: go is not available in the current context");
+            WaitForOutput("The command: goto is not available in the current context");
             CiceroUrl("home?menu1=ProductRepository&dialog1=RandomProduct");
             WaitForOutput("Products menu\r\nAction dialog: Random Product");
             EnterCommand("go x");
-            WaitForOutput("The command: go is not available in the current context");
-            
+            WaitForOutput("The command: goto is not available in the current context");
+
+            //Goto a collection within an object
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
+            WaitForOutput("Sales Order Header: SO60485");
+
+            //Simple case
+            EnterCommand("goto details");
+            WaitForOutput("Collection: Details on Sales Order Header: SO60485\r\n3 items");
+
+            //Multiple matches
+            CiceroUrl("object?object1=AdventureWorksModel.Product-901");
+            WaitForOutput("Product: LL Touring Frame - Yellow, 54");
+            EnterCommand("goto pr");
+            WaitForOutput("Multiple matches for pr:\r\nProduct Model\r\nProduct Category\r\nProduct Subcategory\r\nProduct Inventory\r\nProduct Reviews");
+
+            //Multi-clause match
+            EnterCommand("goto v ory");
+            WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
+
+            //No matches
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-60485");
+            WaitForOutput("Sales Order Header: SO60485");
+            EnterCommand("go x son");
+            WaitForOutput("x son does not match any reference fields or collections");
+
+            //Too many arguments
+            EnterCommand("go de,tails");
+            WaitForOutput("Too many arguments provided");
+
         }
         public virtual void Help()
         {
@@ -455,7 +434,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\ncollection\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command:\r\nOpen a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
@@ -818,13 +797,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Employees menu");
             EnterCommand("ac create");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
-            EnterCommand("field details, paste");
+            EnterCommand("enter details, paste");
             WaitForOutput("Contents of Clipboard are not compatible with the field");
             EnterCommand("clip show");
             WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
             EnterCommand("clip discard");
             WaitForOutput("Clipboard is empty");
-            EnterCommand("field details, paste");
+            EnterCommand("enter details, paste");
             WaitForOutput("Cannot use Clipboard as it is empty");
             CiceroUrl("object?object1=AdventureWorksModel.Person-7185");
             WaitForOutput("Person: Carmen Perez");
@@ -832,7 +811,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard contains: Person: Carmen Perez");
             EnterCommand("back");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
-            EnterCommand("field details, paste");
+            EnterCommand("enter details, paste");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
             EnterCommand("ok");
             WaitForOutput("Employee: Untitled Employee");
@@ -886,15 +865,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Clipboard() { base.Clipboard(); }
         [TestMethod]
-        public override void Collection() { base.Collection(); }
-        [TestMethod]
         public override void Edit() { base.Edit(); }
         [TestMethod]
         public override void Enter() { base.Enter(); }
         [TestMethod]
         public override void Gemini() { base.Gemini(); }
         [TestMethod]
-        public override void Go() { base.Go(); }
+        public override void Goto() { base.Goto(); }
         [TestMethod]
         public override void Help() { base.Help(); }
         [TestMethod]
@@ -950,7 +927,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1016,12 +993,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.BackAndForward();
             base.Cancel();
             base.Clipboard();
-            base.Collection();
             base.Edit();
             base.Enter();
             base.Property();
             base.Gemini();
-            base.Go();
+            base.Goto();
             base.Help();
             base.Menu();
             base.OK();
