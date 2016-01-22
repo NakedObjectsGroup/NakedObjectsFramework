@@ -568,13 +568,10 @@ namespace NakedObjects.Facade.Impl {
             return oc.ToObjectContextFacade(this, framework);
         }
 
-        private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
-            if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
-                throw new BadRequestNOSException("Malformed arguments");
-            }
+        private ObjectContextFacade SetTransientObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
 
             Dictionary<string, PropertyContext> contexts = arguments.Values.ToDictionary(kvp => kvp.Key, kvp => CanSetProperty(nakedObject, kvp.Key, kvp.Value));
-            var objectContext = new ObjectContext(contexts.First().Value.Target) {VisibleProperties = contexts.Values.ToArray()};
+            var objectContext = new ObjectContext(contexts.First().Value.Target) { VisibleProperties = contexts.Values.ToArray() };
 
             // if we fail we need to display all - if OK only those that are visible 
             PropertyContext[] propertiesToDisplay = objectContext.VisibleProperties;
@@ -590,9 +587,9 @@ namespace NakedObjects.Facade.Impl {
                         else {
                             framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
                         }
-                        propertiesToDisplay = ((IObjectSpec) nakedObject.Spec).Properties.
+                        propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
                             Where(p => p.IsVisible(nakedObject)).
-                            Select(p => new PropertyContext {Target = nakedObject, Property = p}).ToArray();
+                            Select(p => new PropertyContext { Target = nakedObject, Property = p }).ToArray();
                     }
                 }
             }
@@ -601,6 +598,15 @@ namespace NakedObjects.Facade.Impl {
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
             return oc.ToObjectContextFacade(this, framework);
+        }
+
+        private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
+            // this is for ProtoPersistents where the arguments must contain all values 
+            // for standard transients the object may already have values set so no need to check  
+            if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
+                throw new BadRequestNOSException("Malformed arguments");
+            }
+            return SetTransientObject(nakedObject, arguments);
         }
 
         private bool ValidateParameters(ActionContext actionContext, IDictionary<string, object> rawParms) {
@@ -1020,7 +1026,7 @@ namespace NakedObjects.Facade.Impl {
         private ObjectContextFacade PersistTransientObject(IObjectFacade transient, ArgumentsContextFacade arguments) {
 
             INakedObjectAdapter nakedObject = transient.WrappedAdapter();
-            return SetObject(nakedObject, arguments);
+            return SetTransientObject(nakedObject, arguments);
         }
 
 
