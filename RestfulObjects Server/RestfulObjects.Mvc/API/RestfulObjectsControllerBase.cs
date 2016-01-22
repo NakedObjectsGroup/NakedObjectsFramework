@@ -945,6 +945,7 @@ namespace RestfulObjects.Mvc {
 
         private HttpResponseMessage InitAndHandleErrors(Func<RestSnapshot> f) {
             bool success = false;
+            Exception endTransactionError = null;
             RestSnapshot ss;
             try {
                 FrameworkFacade.Start();
@@ -963,7 +964,17 @@ namespace RestfulObjects.Mvc {
                 return ErrorMsg(e);
             }
             finally {
-                FrameworkFacade.End(success);
+                try {
+                    FrameworkFacade.End(success);
+                }
+                catch (Exception e) {
+                    // can't return from finally 
+                    endTransactionError = e;
+                }
+            }
+
+            if (endTransactionError != null) {
+                return ErrorMsg(endTransactionError);
             }
 
             try {
@@ -978,7 +989,7 @@ namespace RestfulObjects.Mvc {
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
-                throw;
+                return ErrorMsg(e);
             }
         }
 

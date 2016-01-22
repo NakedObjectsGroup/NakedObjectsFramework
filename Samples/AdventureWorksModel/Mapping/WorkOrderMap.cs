@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -15,7 +16,9 @@ namespace AdventureWorksModel
             Property(t => t.WorkOrderID).HasColumnName("WorkOrderID");
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.OrderQty).HasColumnName("OrderQty");
-            Property(t => t.StockedQty).HasColumnName("StockedQty");
+            Property(t => t.StockedQty).HasColumnName("StockedQty").
+                HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
+
             Property(t => t.ScrappedQty).HasColumnName("ScrappedQty");
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
