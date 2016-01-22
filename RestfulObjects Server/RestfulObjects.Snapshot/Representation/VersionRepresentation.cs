@@ -18,9 +18,9 @@ namespace RestfulObjects.Snapshot.Representations {
     public class VersionRepresentation : Representation {
         private VersionRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(oidStrategy ,req));
+            SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetScalars();
-            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy ,req)));
+            SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
             SetOptionalCapabilities(capabilitiesMap);
             SetExtensions();
             SetHeader();
@@ -60,7 +60,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetLinks(HomePageRelType homePageRelType) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags), LinkRepresentation.Create(OidStrategy ,homePageRelType, Flags)};
+            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
         }
 
         public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilities, RestControlFlags flags) {

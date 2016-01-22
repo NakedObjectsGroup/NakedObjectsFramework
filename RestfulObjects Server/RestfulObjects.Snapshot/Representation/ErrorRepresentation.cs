@@ -16,7 +16,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     public class ErrorRepresentation : Representation {
         public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
-            : base(oidStrategy ,RestControlFlags.DefaultFlags()) {
+            : base(oidStrategy, RestControlFlags.DefaultFlags()) {
             Exception exception = GetInnermostException(e);
             Message = exception.Message;
             StackTrace = exception.StackTrace.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
@@ -42,14 +42,11 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private static Exception GetInnermostException(Exception e) {
-            if (e.InnerException == null) {
-                return e;
-            }
-            return GetInnermostException(e.InnerException);
+            return e.InnerException == null ? e : GetInnermostException(e.InnerException);
         }
 
         public static Representation Create(IOidStrategy oidStrategy, Exception exception) {
-            return new ErrorRepresentation(oidStrategy ,exception);
+            return new ErrorRepresentation(oidStrategy, exception);
         }
     }
 }

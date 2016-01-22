@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -19,15 +18,8 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PagedListRepresentation : ListRepresentation {
-
-        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
-         
-            return objectContext.Target.Page(flags.Page, flags.PageSize);
-        }
-
         protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, Page(objectContext, flags), req, flags, actionContext) {
-          
             SetPagination(objectContext.Target, flags);
             SetActions(oidStrategy, objectContext, req, flags);
         }
@@ -38,14 +30,18 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
+        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
+            return objectContext.Target.Page(flags.Page, flags.PageSize);
+        }
+
         // custom extension for pagination 
         private void SetPagination(IObjectFacade list, RestControlFlags flags) {
             Pagination = new MapRepresentation();
 
             var totalCount = list.Count();
-            var pageSize = flags.PageSize ;
+            var pageSize = flags.PageSize;
             var page = flags.Page;
-            var numPages = (int)Math.Round(totalCount / (decimal)pageSize + 0.5m);
+            var numPages = (int) Math.Round(totalCount/(decimal) pageSize + 0.5m);
             numPages = numPages == 0 ? 1 : numPages;
 
             var exts = new Dictionary<string, object> {
@@ -60,7 +56,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
             InlineActionRepresentation[] actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
-            Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
+            Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {

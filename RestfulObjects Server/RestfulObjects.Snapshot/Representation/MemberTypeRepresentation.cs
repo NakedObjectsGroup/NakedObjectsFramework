@@ -62,18 +62,17 @@ namespace RestfulObjects.Snapshot.Representations {
         protected IList<LinkRepresentation> CreateLinks(HttpRequestMessage req, PropertyTypeContextFacade propertyContext) {
             var domainTypeUri = new UriMtHelper(OidStrategy, req, propertyContext);
             return new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy ,SelfRelType, Flags),
-                LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags)
+                LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
+                LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.Up, domainTypeUri), Flags)
             };
         }
 
-
         public static MemberTypeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext, RestControlFlags flags) {
             if (propertyContext.Property.IsCollection) {
-                return CollectionTypeRepresentation.Create(oidStrategy , req, propertyContext, flags);
+                return CollectionTypeRepresentation.Create(oidStrategy, req, propertyContext, flags);
             }
 
-            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString( propertyContext.Property.Specification, oidStrategy);
+            Tuple<string, string> typeAndFormat = RestUtils.SpecToTypeAndFormatString(propertyContext.Property.Specification, oidStrategy);
 
             if (typeAndFormat.Item1 == PredefinedType.String.ToRoString()) {
                 var exts = new Dictionary<string, object>();
@@ -82,11 +81,10 @@ namespace RestfulObjects.Snapshot.Representations {
 
                 OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
 
-                return CreateWithOptionals<PropertyTypeRepresentation>(new object[] {oidStrategy ,req, propertyContext, flags}, parms);
+                return CreateWithOptionals<PropertyTypeRepresentation>(new object[] {oidStrategy, req, propertyContext, flags}, parms);
             }
 
-
-            return PropertyTypeRepresentation.Create(oidStrategy ,req, propertyContext, flags);
+            return PropertyTypeRepresentation.Create(oidStrategy, req, propertyContext, flags);
         }
     }
 }

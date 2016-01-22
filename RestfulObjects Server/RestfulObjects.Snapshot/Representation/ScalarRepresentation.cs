@@ -41,7 +41,7 @@ namespace RestfulObjects.Snapshot.Representations {
             var tempLinks = new List<LinkRepresentation>();
 
             if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy ,new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy ,req, objectContext.Specification)), Flags));
+                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, objectContext.Specification)), Flags));
             }
             Links = tempLinks.ToArray();
         }

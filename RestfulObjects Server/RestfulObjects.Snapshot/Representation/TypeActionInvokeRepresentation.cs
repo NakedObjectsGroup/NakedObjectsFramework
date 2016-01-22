@@ -53,7 +53,7 @@ namespace RestfulObjects.Snapshot.Representations {
             string uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
 
             var tempLinks = new List<LinkRepresentation> {
-                LinkRepresentation.Create(OidStrategy,SelfRelType,
+                LinkRepresentation.Create(OidStrategy, SelfRelType,
                     Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments,
                         MapRepresentation.Create(new OptionalProperty(context.ParameterId,
@@ -63,7 +63,6 @@ namespace RestfulObjects.Snapshot.Representations {
 
             Links = tempLinks.ToArray();
         }
-
 
         public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) {
             return new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);

@@ -52,15 +52,15 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetContentType(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
-            Func<string> defaultMimeType = () =>  no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
-            string mtv = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
+            Func<string> defaultMimeType = () => no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
+            string mtv = string.IsNullOrWhiteSpace(no?.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
         private void SetContentDisposition(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
-            string cd = no == null || string.IsNullOrWhiteSpace(no.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
-            string fn = no != null ? no.GetAttachment().FileName : AttachmentContextFacade.DefaultFileName;
+            string cd = string.IsNullOrWhiteSpace(no?.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
+            string fn = no?.GetAttachment().FileName ?? AttachmentContextFacade.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }
 
@@ -69,9 +69,8 @@ namespace RestfulObjects.Snapshot.Representations {
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 
-
         public static Representation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-            return new AttachmentRepresentation(oidStrategy,req, propertyContext, flags);
+            return new AttachmentRepresentation(oidStrategy, req, propertyContext, flags);
         }
     }
 }

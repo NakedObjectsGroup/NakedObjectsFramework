@@ -19,7 +19,7 @@ namespace RestfulObjects.Snapshot.Representations {
     public class InlinePropertyRepresentation : InlineMemberAbstractRepresentation {
         protected InlinePropertyRepresentation(IOidStrategy oidStrategy, PropertyRepresentationStrategy strategy)
             : base(oidStrategy, strategy
-            .GetFlags()) {
+                .GetFlags()) {
             MemberType = MemberTypes.Property;
             Id = strategy.GetId();
             HasChoices = strategy.GetHasChoices();
@@ -33,10 +33,10 @@ namespace RestfulObjects.Snapshot.Representations {
 
         public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy ,req, propertyContext.Property, propertyContext.Target, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags)));
             }
-            RestUtils.AddChoices(oidStrategy , req, propertyContext, optionals, flags);
-            return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, new PropertyRepresentationStrategy(oidStrategy ,req, propertyContext, flags)}, optionals);
+            RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
+            return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, new PropertyRepresentationStrategy(oidStrategy, req, propertyContext, flags)}, optionals);
         }
     }
 }

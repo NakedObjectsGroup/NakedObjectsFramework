@@ -15,7 +15,7 @@ namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class LinkRepresentation : RefValueRepresentation {
         protected LinkRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
-            : base(oidStrategy ,relType, flags) {
+            : base(oidStrategy, relType, flags) {
             SetScalars(relType);
         }
 

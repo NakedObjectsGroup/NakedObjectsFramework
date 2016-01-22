@@ -272,10 +272,10 @@ namespace RestfulObjects.Snapshot.Representations {
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, title)};
 
             if (property.IsEager(target)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(oidStrategy ,valueNakedObject, req, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, ObjectRepresentation.Create(oidStrategy, valueNakedObject, req, flags)));
             }
 
-            return LinkRepresentation.Create(oidStrategy ,new ValueRelType(property, helper), flags, optionals.ToArray());
+            return LinkRepresentation.Create(oidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
         }
     }
 }
