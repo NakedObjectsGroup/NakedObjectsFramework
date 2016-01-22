@@ -6,11 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Facade;
@@ -20,15 +18,14 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class UriMtHelper {
-        private readonly IOidStrategy oidStrategy;
         public static Func<HttpRequestMessage, string> GetAuthority;
         public static Func<string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly IActionFacade action;
         private readonly IAssociationFacade assoc;
         private readonly string cachedId; // cache because may not be available at writing time 
-        private  string cachedType; // cache because may not be available at writing time 
         private readonly IObjectFacade objectFacade;
+        private readonly IOidStrategy oidStrategy;
         private readonly IActionParameterFacade param;
         private readonly Uri prefix;
         private readonly ITypeFacade spec;
@@ -39,7 +36,6 @@ namespace RestfulObjects.Snapshot.Utility {
             GetAuthority = req => req.RequestUri.Authority;
             GetApplicationPath = () => HttpContext.Current.Request.ApplicationPath;
         }
-
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req) {
             this.oidStrategy = oidStrategy;
@@ -62,7 +58,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = menuFacade.Id;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy ,req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy, req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
@@ -79,7 +75,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
             spec = objectFacade.Specification;
@@ -89,7 +85,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             assoc = propertyContext.Property;
             spec = propertyContext.OwningSpecification;
             cachedId = "";
@@ -97,7 +93,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             action = actionContext.Action;
             objectFacade = actionContext.Target;
             spec = objectFacade.Specification;
@@ -107,7 +103,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextFacade actionTypeContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             action = actionTypeContext.ActionContext.Action;
             spec = actionTypeContext.OwningSpecification;
             cachedId = "";
@@ -115,7 +111,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             action = parameterTypeContext.Action;
             spec = parameterTypeContext.OwningSpecification;
             param = parameterTypeContext.Parameter;
@@ -124,7 +120,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextFacade parameterContext)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
             objectFacade = parameterContext.Target;
@@ -142,7 +138,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade assoc)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             cachedId = "";
             if (assoc.IsCollection) {
                 CachedType = assoc.IsASet ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
@@ -153,7 +149,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context)
-            : this(oidStrategy ,req) {
+            : this(oidStrategy, req) {
             typeAction = context.Id;
             cachedId = "";
             CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
@@ -166,12 +162,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
         }
 
-        private string CachedType {
-            get { return cachedType; }
-            set {
-                cachedType = value;
-            }
-        }
+        private string CachedType { get; }
 
         private static void DebugLogRequest(HttpRequestMessage req) {
             Logger.DebugFormat("AbsolutePath {0}", req.RequestUri.AbsolutePath);
@@ -217,7 +208,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         private static void CheckArgumentNotNull(string argument, string name) {
             if (string.IsNullOrEmpty(argument)) {
-                throw new ArgumentException(string.Format("Cannot build URI : {0} is null or empty", name));
+                throw new ArgumentException($"Cannot build URI : {name} is null or empty");
             }
         }
 
@@ -231,7 +222,6 @@ namespace RestfulObjects.Snapshot.Utility {
         public Uri GetDomainTypeUri() {
             return BuildDomainTypeUri(CachedType);
         }
-
 
         public Uri GetParamTypeUri() {
             CheckArgumentNotNull(CachedType, "object type");
@@ -287,7 +277,6 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType);
         }
 
-
         public Uri GetIconUri() {
             var template = new UriTemplate(SegmentValues.Images + "/{image}");
             string name = spec.GetIconName(objectFacade);
@@ -295,7 +284,6 @@ namespace RestfulObjects.Snapshot.Utility {
             CheckArgumentNotNull(iconName, "icon name");
             return template.BindByPosition(prefix, iconName);
         }
-
 
         public Uri GetInvokeUri() {
             if (action.IsQueryOnly) {
@@ -343,7 +331,6 @@ namespace RestfulObjects.Snapshot.Utility {
             return GetInvokeUri(action.Parameters.Aggregate("?", (s, t) => s + t.Id + "={" + t.Id + "}&").TrimEnd('&'));
         }
 
-
         public Uri GetHomeUri() {
             return prefix;
         }
@@ -364,7 +351,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public Uri GetRedirectUri(HttpRequestMessage req, string url) {
             CheckArgumentNotNull(url, "url");
-     
+
             return new Uri(url);
         }
 
@@ -372,7 +359,6 @@ namespace RestfulObjects.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
-
 
             var template = new UriTemplate(SegmentValues.Services + "/{id}/{memberType}/{memberId}");
             return template.BindByPosition(prefix, CachedType, memberType, member.Id);
@@ -383,7 +369,6 @@ namespace RestfulObjects.Snapshot.Utility {
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
 
-
             var template = new UriTemplate(SegmentValues.DomainTypes + "/{objectType}/{memberType}/{memberId}");
             return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
@@ -392,7 +377,6 @@ namespace RestfulObjects.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
-
 
             var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectId}/{memberType}/{memberId}");
             return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
@@ -427,7 +411,6 @@ namespace RestfulObjects.Snapshot.Utility {
             builder.Path = builder.Path + "/" + SegmentValues.CollectionValue;
             return builder.Uri;
         }
-
 
         public Uri GetDetailsUri() {
             return ByMemberType(GetMemberUri);
@@ -468,20 +451,20 @@ namespace RestfulObjects.Snapshot.Utility {
         public MediaTypeHeaderValue GetAttachmentMediaType() {
             IObjectFacade no = assoc.GetValue(objectFacade);
             var attachment = no == null ? null : no.GetAttachment();
-            string mtv = attachment == null  || string.IsNullOrWhiteSpace(attachment.MimeType) ? ""  : attachment.MimeType;
+            string mtv = string.IsNullOrWhiteSpace(attachment?.MimeType) ? "" : attachment.MimeType;
             return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? attachment.DefaultMimeType() : mtv);
         }
 
         public MediaTypeHeaderValue GetIconMediaType() {
             string name = spec.GetIconName(objectFacade);
             string mt = name.Contains(".") ? name.Split('.').Last() : "gif";
-            string mtv = string.Format("image/{0}", mt);
+            string mtv = $"image/{mt}";
 
             return new MediaTypeHeaderValue(mtv);
         }
 
         public static MediaTypeHeaderValue GetJsonMediaType(string mt) {
-            string profile = string.Format("\"urn:org.restfulobjects:repr-types/{0}\"", mt);
+            string profile = $"\"urn:org.restfulobjects:repr-types/{mt}\"";
 
             var mediaType = new MediaTypeHeaderValue("application/json");
             mediaType.Parameters.Add(new NameValueHeaderValue("profile", profile));
@@ -510,7 +493,6 @@ namespace RestfulObjects.Snapshot.Utility {
             return RepresentationTypes.Menu;
         }
 
-
         private string GetParameterValue(RestControlFlags flags, string parameterValue) {
             if (flags.SimpleDomainModel) {
                 return parameterValue;
@@ -520,7 +502,6 @@ namespace RestfulObjects.Snapshot.Utility {
             }
             return null;
         }
-
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
             if (flags.SimpleDomainModel) {
@@ -536,13 +517,13 @@ namespace RestfulObjects.Snapshot.Utility {
             ITypeFacade specToUse = param == null ? spec : param.Specification;
             string typeName = specToUse == null ? typeof (object).FullName : specToUse.DomainTypeName(oidStrategy);
             string parameterValue = GetParameterValue(flags, typeName);
-            mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
+            mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, $"\"{parameterValue}\""));
         }
 
         public void AddObjectRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
             string parameterValue = GetParameterValue(flags, spec);
             if (parameterValue != null) {
-                mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.DomainTypeReserved, string.Format("\"{0}\"", parameterValue)));
+                mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.DomainTypeReserved, $"\"{parameterValue}\""));
             }
         }
 
@@ -550,7 +531,7 @@ namespace RestfulObjects.Snapshot.Utility {
             if (assoc != null && assoc.IsCollection) {
                 string parameterValue = GetParameterValue(flags, assoc.ElementSpecification);
                 if (parameterValue != null) {
-                    mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, string.Format("\"{0}\"", parameterValue)));
+                    mediaType.Parameters.Add(new NameValueHeaderValue(RestControlFlags.ElementTypeReserved, $"\"{parameterValue}\""));
                 }
             }
         }
@@ -563,12 +544,12 @@ namespace RestfulObjects.Snapshot.Utility {
 
             if (parameterValue != null) {
                 string parameterType = isCollection ? RestControlFlags.ElementTypeReserved : RestControlFlags.DomainTypeReserved;
-                mediaType.Parameters.Add(new NameValueHeaderValue(parameterType, string.Format("\"{0}\"", parameterValue)));
+                mediaType.Parameters.Add(new NameValueHeaderValue(parameterType, $"\"{parameterValue}\""));
             }
         }
 
         public string FormatParameter(string resource, string name) {
-            return string.Format(";{0}=\"{1}\"", resource, name);
+            return $";{resource}=\"{name}\"";
         }
 
         public string GetRelParameters() {

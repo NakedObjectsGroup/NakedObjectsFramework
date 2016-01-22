@@ -53,7 +53,7 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       int? memberOrder,
                                                       IDictionary<string, object> customExtensions,
                                                       ITypeFacade returnType,
-                                                      ITypeFacade elementType, 
+                                                      ITypeFacade elementType,
                                                       IOidStrategy oidStrategy) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
@@ -112,17 +112,15 @@ namespace RestfulObjects.Snapshot.Utility {
             return CreateMap(exts);
         }
 
-
         public static MapRepresentation CreateMap(Dictionary<string, object> exts) {
             OptionalProperty[] parms = exts.Select(e => new OptionalProperty(e.Key, e.Value)).ToArray();
             return MapRepresentation.Create(parms);
         }
 
-
         public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled  && !propertyContext.Property.GetChoicesParameters().Any()) {
+            if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
                 IObjectFacade[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
-                object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy ,req, c, propertyContext.Property, flags)).ToArray();
+                object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy, req, c, propertyContext.Property, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
         }
@@ -134,7 +132,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IAssociationFacade property, RestControlFlags flags) {
-            return GetChoiceValue(oidStrategy ,item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
+            return GetChoiceValue(oidStrategy, item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IActionParameterFacade parameter, RestControlFlags flags) {
@@ -180,7 +178,6 @@ namespace RestfulObjects.Snapshot.Utility {
             if (typeof (IEnumerable).IsAssignableFrom(toMapType) && !toMapType.IsArray) {
                 return PredefinedType.List;
             }
-
 
             return PredefinedType.String;
         }
@@ -281,7 +278,7 @@ namespace RestfulObjects.Snapshot.Utility {
             var tempLinks = new List<LinkRepresentation>();
 
             if (flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(oidStrategy ,new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(oidStrategy, req, pnt.Item2)), flags));
+                tempLinks.Add(LinkRepresentation.Create(oidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(oidStrategy, req, pnt.Item2)), flags));
             }
 
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),

@@ -47,7 +47,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
             IObjectFacade objectFacade = actionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy,req, objectFacade, parameter, Flags);
+            return ParameterRepresentation.Create(OidStrategy, req, objectFacade, parameter, Flags);
         }
 
         private IEnumerable<ParameterRepresentation> GetParameterList() {
@@ -59,7 +59,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateDetailsLink() {
-            return LinkRepresentation.Create(OidStrategy,new MemberRelType(new UriMtHelper(OidStrategy,req, actionContext)), Flags);
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, req, actionContext)), Flags);
         }
 
         public LinkRepresentation[] GetLinks(bool standalone) {
@@ -124,7 +124,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateSelfLink() {
-            return LinkRepresentation.Create(OidStrategy ,self, Flags);
+            return LinkRepresentation.Create(OidStrategy, self, Flags);
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
@@ -148,7 +148,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             List<OptionalProperty> optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToList();
 
             RelMethod method = GetRelMethod();
-            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy , req, actionContext)) {Method = method}, Flags,
+            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, req, actionContext)) {Method = method}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 

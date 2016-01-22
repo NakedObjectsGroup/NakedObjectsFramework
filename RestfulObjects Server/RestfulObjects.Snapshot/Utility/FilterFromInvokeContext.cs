@@ -21,10 +21,9 @@ namespace RestfulObjects.Snapshot.Utility {
         #endregion
 
         private readonly ActionType aType;
-        private readonly string typeName;
 
         public FilterFromInvokeContext(string actionName, string typeName) {
-            this.typeName = typeName;
+            TypeName = typeName;
             if (actionName == WellKnownIds.FilterSubtypesFrom) {
                 aType = ActionType.FilterSubtypesFrom;
             }
@@ -36,17 +35,16 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        public string TypeName {
-            get { return typeName; }
-        }
+        public string TypeName { get; }
 
-        public string Id {
-            get { return aType == ActionType.FilterSubtypesFrom ? WellKnownIds.FilterSubtypesFrom : WellKnownIds.FilterSupertypesFrom; }
-        }
+        public string Id => aType == ActionType.FilterSubtypesFrom ? WellKnownIds.FilterSubtypesFrom : WellKnownIds.FilterSupertypesFrom;
 
-        public string ParameterId {
-            get { return aType == ActionType.FilterSubtypesFrom ? JsonPropertyNames.SubTypes : JsonPropertyNames.SuperTypes; }
-        }
+        public string ParameterId => aType == ActionType.FilterSubtypesFrom ? JsonPropertyNames.SubTypes : JsonPropertyNames.SuperTypes;
+
+        public ITypeFacade[] Value => aType == ActionType.FilterSubtypesFrom ? Subtypes() : Supertypes();
+
+        public ITypeFacade ThisSpecification { get; set; }
+        public ITypeFacade[] OtherSpecifications { get; set; }
 
         private ITypeFacade[] Subtypes() {
             return OtherSpecifications.Where(os => os.IsOfType(ThisSpecification)).ToArray();
@@ -55,14 +53,5 @@ namespace RestfulObjects.Snapshot.Utility {
         private ITypeFacade[] Supertypes() {
             return OtherSpecifications.Where(os => ThisSpecification.IsOfType(os)).ToArray();
         }
-
-        public ITypeFacade[] Value {
-            get {
-                return aType == ActionType.FilterSubtypesFrom ? Subtypes() : Supertypes();
-            }
-        }
-
-        public ITypeFacade ThisSpecification { get; set; }
-        public ITypeFacade[] OtherSpecifications { get; set; }
     }
 }
