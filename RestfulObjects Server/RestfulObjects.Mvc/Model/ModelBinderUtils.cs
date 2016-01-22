@@ -72,11 +72,7 @@ namespace RestfulObjects.Mvc.Model {
                 IValue[] arr = valueAsArray.Children().Select(v => ToIValue("", v)).ToArray();
                 return new ListValue(arr);
             }
-            if (value != null) {
-                return ToIValue(name, value);
-            }
-
-            return null;
+            return value != null ? ToIValue(name, value) : null;
         }
 
         private static IValue ToIValue(string name, JToken value) {
