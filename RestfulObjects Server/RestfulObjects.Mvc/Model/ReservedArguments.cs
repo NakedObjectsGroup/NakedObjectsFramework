@@ -17,8 +17,6 @@ namespace RestfulObjects.Mvc.Model {
 
         public int PageSize { get; set; }
 
-        public virtual bool HasValue {
-            get { return false; }
-        }
+        public virtual bool HasValue => false;
     }
 }

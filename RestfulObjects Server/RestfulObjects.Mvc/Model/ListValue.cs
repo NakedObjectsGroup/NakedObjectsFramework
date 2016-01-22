@@ -70,7 +70,6 @@ namespace RestfulObjects.Mvc.Model {
 
         // end clone 
 
-
         private static Type GetCommonBaseType(Type[] types, Type baseType) {
             return types.Any(type => !type.IsAssignableFrom(baseType)) ? GetCommonBaseType(types, baseType.BaseType) : baseType;
         }

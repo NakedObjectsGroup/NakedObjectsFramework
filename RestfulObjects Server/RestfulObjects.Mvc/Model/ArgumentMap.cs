@@ -12,8 +12,6 @@ namespace RestfulObjects.Mvc.Model {
     public class ArgumentMap : ReservedArguments {
         public IDictionary<string, IValue> Map { get; set; }
 
-        public override bool HasValue {
-            get { return Map.Any(); }
-        }
+        public override bool HasValue => Map.Any();
     }
 }

@@ -20,7 +20,7 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Mvc.Model {
     public static class ModelBinderUtils {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (ModelBinderUtils));
 
         private static bool IsReservedName(string name) {
             return name.StartsWith(RestControlFlags.ReservedPrefix);
@@ -48,7 +48,7 @@ namespace RestfulObjects.Mvc.Model {
         }
 
         public static Stream QueryStringToStream(string qs) {
-            string decodedQs = HttpUtility.UrlDecode(qs).Remove(0, 1); // trim '?'
+            string decodedQs = HttpUtility.UrlDecode(qs)?.Remove(0, 1); // trim '?'
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
 
@@ -95,6 +95,7 @@ namespace RestfulObjects.Mvc.Model {
             var voFlag = jObject[RestControlFlags.ValidateOnlyReserved] as JValue;
             return voFlag != null && (bool) voFlag.Value;
         }
+
         private static int GetPageValue(JObject jObject) {
             var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
             return pageValue == null ? 0 : Convert.ToInt32(pageValue.Value);
@@ -196,7 +197,6 @@ namespace RestfulObjects.Mvc.Model {
         public static ArgumentMap CreateArgumentMapForMalformedArgs() {
             return new ArgumentMap {IsMalformed = true};
         }
-
 
         private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {
             try {
