@@ -65,7 +65,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         protected mayNotBeChained(rider: string = ""): void {
-            this.clearInputAndSetMessage(this.fullCommand + " command may not be chained" + rider+ ". Use Where command to see where execution stopped.");
+            this.clearInputAndSetMessage(this.fullCommand + " command may not be chained" + rider + ". Use Where command to see where execution stopped.");
         }
 
         protected appendAsNewLineToOutput(text: string): void {
@@ -110,7 +110,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         protected parseInt(input: string): number {
-            if (!input || input ==="") {
+            if (!input || input === "") {
                 return null;
             }
             const number = parseInt(input);
@@ -520,49 +520,41 @@ module NakedObjects.Angular.Gemini {
             this.urlManager.setObjectEdit(true, 1);
         };
     }
-    export class Field extends Command {
+    export class Enter extends Command {
 
-        public fullCommand = "field";
-        public helpText = "Display the name and content of a field or fields, or enter a value into a field. " +
-        "In the context of an object, a field is a property; in the context of an action dialog a field is a parameter." +
-        "Field may take 2 arguments, both of which are optional. " +
-        "The first argument is the partial field name. " +
-        "If this matches more than one field, a list of matches is returned. " +
-        "If no argument is provided, the full list of fields is returned. " +
-        "The second optional argument applies only to fields in an action dialog, or " +
-        "in an object beign edited (not yet implemented), and specifies the value, or selection, to be entered " +
-        "into the field. If a ? is provided as the second argument, the field will not be " +
+        public fullCommand = "enter";
+        public helpText = "Enter a value into a field -  " +
+        " meaning a parameter in an action dialog, " +
+        "or  a property on an object being edited." +
+        "Enter requires 2 arguments. " +
+        "The first argument is the partial field name, which must match a single field. " +
+        "The second optional argument specifies the value, or selection, to be entered. " +
+        "If a question mark is provided as the second argument, the field will not be " +
         "updated but further details will be provided about that input field." +
         "If the word paste is used as the second argument, then, provided that the field is " +
         "a reference field, the object reference in the clipboard will be pasted into the field.";
-        protected minArguments = 0;
+        protected minArguments = 2;
         protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isObject() || this.isDialog();
+            return this.isEdit() || this.isDialog();
         }
 
         doExecute(args: string, chained: boolean): void {
             const fieldName = this.argumentAsString(args, 0);
-            const fieldEntry = this.argumentAsString(args, 1, true);
-            if (!fieldEntry) {
-                this.renderFields(fieldName);
-                return;
-            }
+            const fieldEntry = this.argumentAsString(args, 1);
             if (fieldEntry === "?") {
-                this.renderFields(fieldName, true);
+                this.renderDetails(fieldName);
                 return;
             }
             if (this.isDialog) {
                 this.fieldEntryForDialog(fieldName, fieldEntry);
                 return;
             }
-            else if (this.isEdit()) {
+            else { //Must be object edit
                 this.clearInputAndSetMessage("Modifying fields on an object in edit mode is not yet supported");
                 return;
             }
-            //Must be object but not in Edit mode
-            this.clearInputAndSetMessage("Fields may only be modified if object is in edit mode");
         };
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
@@ -651,7 +643,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        private renderFields(fieldName: string, details: boolean = false) {
+        private renderDetails(fieldName: string) {
             if (this.isDialog()) {
                 //TODO: duplication with function on ViewModelFactory for rendering dialog ???
                 this.getActionForCurrentDialog().then((action: ActionMember) => {
@@ -672,51 +664,38 @@ module NakedObjects.Angular.Gemini {
                         var s: string = "";
                         switch (fields.length) {
                             case 0:
-                                if (!fieldName) {
-                                    s = "No visible fields";
-                                } else {
-                                    s = fieldName + " does not match any fields";
-                                }
+                                s = fieldName + " does not match any fields";
                                 break;
                             case 1:
                                 const field = fields[0];
-                                if (!details) {
-                                    s = this.renderProp(field);
+                                s = "Field name: " + field.extensions().friendlyName();
+                                s += "\nValue: ";
+                                s += field.value().toString() || "empty";
+                                s += "\nType: " + Helpers.friendlyTypeName(field.extensions().returnType());
+                                if (field.disabledReason()) {
+                                    s += "\nUnmodifiable: " + field.disabledReason();
                                 } else {
-                                    s = "Field name: " + field.extensions().friendlyName();
-                                    s += "\nValue: ";
-                                    s += field.value().toString() || "empty";
-                                    s += "\nType: " + Helpers.friendlyTypeName(field.extensions().returnType());
-                                    if (field.disabledReason()) {
-                                        s += "\nUnmodifiable: " + field.disabledReason();
-                                    } else {
-                                        s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
-                                        if (field.choices()) {
-                                            var label = "\nChoices: ";
-                                            s += _.reduce(field.choices(), (s, cho) => {
-                                                return s + cho + " ";
-                                            }, label);
-                                        }
-                                        const desc = field.extensions().description()
-                                        s += desc ? "\nDescription: " + desc : "";
-                                        //TODO:  Add a Can Paste if clipboard has compatible type
+                                    s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
+                                    if (field.choices()) {
+                                        var label = "\nChoices: ";
+                                        s += _.reduce(field.choices(), (s, cho) => {
+                                            return s + cho + " ";
+                                        }, label);
                                     }
+                                    const desc = field.extensions().description()
+                                    s += desc ? "\nDescription: " + desc : "";
+                                    //TODO:  Add a Can Paste if clipboard has compatible type
+                                    break;
                                 }
-                                break;
                             default:
+                                s = fieldName + " matches multiple fields";
                                 s = _.reduce(fields, (s, prop) => {
-                                    return s + this.renderProp(prop);
+                                    return s + prop.extensions().friendlyName()+"\n";
                                 }, "");
                         }
                         this.clearInputAndSetMessage(s);
                     });
             }
-        }
-
-        private renderProp(pm: PropertyMember): string {
-            const name = pm.extensions().friendlyName();
-            let value: string = pm.value().toString() || "empty";
-            return name + ": " + value + "\n";
         }
     }
     export class Forward extends Command {
@@ -750,9 +729,9 @@ module NakedObjects.Angular.Gemini {
             this.nglocation.path(newPath);
         };
     }
-    export class Go extends Command {
+    export class Goto extends Command {
 
-        public fullCommand = "go";
+        public fullCommand = "goto";
         public helpText = "Go to an object referenced in a property, or a list." +
         "Go takes one argument.  In the context of an object, that is the name or partial name" +
         "of the property holding the reference. In the context of a list, it is the " +
@@ -909,8 +888,8 @@ module NakedObjects.Angular.Gemini {
         doExecute(args: string, chained: boolean): void {
             let fieldMap = this.routeData().dialogFields;
             this.getActionForCurrentDialog().then((action: ActionMember) => {
-                
-                if (chained && action.invokeLink().method() != "GET" ) {
+
+                if (chained && action.invokeLink().method() != "GET") {
                     this.mayNotBeChained(" unless the action is query-only");
                     return;
                 }
@@ -961,7 +940,7 @@ module NakedObjects.Angular.Gemini {
             const arg = this.argumentAsString(args, 0);
             this.getList().then((listRep: ListRepresentation) => {
                 const numPages = listRep.pagination().numPages;
-                const page = this.routeData().page;               
+                const page = this.routeData().page;
                 const pageSize = this.routeData().pageSize;
                 if ("first".indexOf(arg) === 0) {
                     this.setPage(1);
@@ -998,6 +977,57 @@ module NakedObjects.Angular.Gemini {
         private setPage(page) {
             const pageSize = this.routeData().pageSize;
             this.urlManager.setListPaging(1, page, pageSize, CollectionViewState.List);
+        }
+    }
+    export class Property extends Command {
+
+        public fullCommand = "property";
+        public helpText = "Display the name and content of one or more properties of an object." +
+        "Field may take 1 argument:  the partial field name. " +
+        "If this matches more than one property, a list of matches is returned. " +
+        "If no argument is provided, the full list of properties is returned. ";
+        protected minArguments = 0;
+        protected maxArguments = 1;
+
+        isAvailableInCurrentContext(): boolean {
+            return this.isObject();
+        }
+
+        doExecute(args: string, chained: boolean): void {
+            const fieldName = this.argumentAsString(args, 0);
+            this.renderFields(fieldName);
+        };
+
+        private renderFields(fieldName: string) {
+            this.getObject()
+                .then((obj: DomainObjectRepresentation) => {
+                    var fields = this.matchingProperties(obj, fieldName);
+                    var s: string = "";
+                    switch (fields.length) {
+                        case 0:
+                            if (!fieldName) {
+                                s = "No visible properties";
+                            } else {
+                                s = fieldName + " does not match any properties";
+                            }
+                            break;
+                        case 1:
+                            const field = fields[0];
+                            s = this.renderProp(field);
+                            break;
+                        default:
+                            s = _.reduce(fields, (s, prop) => {
+                                return s + this.renderProp(prop);
+                            }, "");
+                    }
+                    this.clearInputAndSetMessage(s);
+                });
+        }
+
+        private renderProp(pm: PropertyMember): string {
+            const name = pm.extensions().friendlyName();
+            let value: string = pm.value().toString() || "empty";
+            return name + ": " + value + "\n";
         }
     }
     export class Reload extends Command {
@@ -1080,8 +1110,8 @@ module NakedObjects.Angular.Gemini {
 
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
             let itemNo: number;
-            for (itemNo = startNo; itemNo <= endNo; itemNo++  ) {
-                this.urlManager.setListItem(1, itemNo-1, true);
+            for (itemNo = startNo; itemNo <= endNo; itemNo++) {
+                this.urlManager.setListItem(1, itemNo - 1, true);
             }
         }
     }

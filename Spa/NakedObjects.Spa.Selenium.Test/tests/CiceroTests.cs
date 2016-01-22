@@ -285,74 +285,82 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
-        public virtual void Field()
+        public virtual void Enter()
         {
-            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52");
-            EnterCommand("field num");
-            WaitForOutput("Product Number: BK-R68R-52");
-            EnterCommand("fi cat");
-            WaitForOutput("Product Category: Bikes\r\nProduct Subcategory: Road Bikes");
-            //No argument
-            EnterCommand("fi ");
-            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
-            //No match
-            EnterCommand("fi x");
-            WaitForOutput("x does not match any fields");
-
-            //Invalid context
+           //Invalid context
             CiceroUrl("home");
-            EnterCommand("field");
-            WaitForOutput("The command: field is not available in the current context");
-
-            //Multi-clause match
-            CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
-            WaitForOutput("Sales Person: Tete Mensa-Annan");
-            EnterCommand("fi sales a");
-            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
-            EnterCommand("fi ter ory");
-            WaitForOutput("Sales Territory: Northwest");
-            EnterCommand("fi sales z");
-            WaitForOutput("sales z does not match any fields");
-
-            //No fields
-            CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
-            WaitForOutput("Address Type: Home");
-            EnterCommand("field");
-            WaitForOutput("No visible fields");
-
-            //With question mark
-            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52");
-            EnterCommand("field num,?");
-            WaitForOutput("Field name: Product Number\r\nValue: BK-R68R-52\r\nType: String\r\nMandatory");
-            
-            //To many args
-            EnterCommand("field num,x,y");
-            WaitForOutput("Too many arguments provided");
-
-            //exact match takes priority over partial match
-            EnterCommand("field product category"); //which would also match product subcategory
-            WaitForOutput("Product Category: Bikes");
+            EnterCommand("enter");
+            WaitForOutput("The command: enter is not available in the current context");
 
             //Entering fields (into dialogs)
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522%2522&field1_lastName=%2522%2522");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
-            EnterCommand("field first, a");
+            EnterCommand("enter first, a");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: empty");
-            EnterCommand("field last, b");
+            EnterCommand("enter last, b");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
+
 
             //Todo: test selections
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
             WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category");
-            EnterCommand("field cat, hand");
+            EnterCommand("enter cat, hand");
             WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Handlebars");
-            EnterCommand("field cat, xx");
+            EnterCommand("enter cat, xx");
             WaitForOutput("None of the choices matches xx");
-            EnterCommand("field cat, frame");
+            EnterCommand("enter cat, frame");
             WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
+
+            //TODO: Lots more to test, even in dialogs:
+            //No match, multiple matches, invalid entry type, no entry value provided, ? for details
+
+            //Then property entries.
         }
+        public virtual void Property()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
+            WaitForOutput("Product: Road-450 Red, 52");
+            EnterCommand("prop num");
+            WaitForOutput("Product Number: BK-R68R-52");
+            EnterCommand("pr cat");
+            WaitForOutput("Product Category: Bikes\r\nProduct Subcategory: Road Bikes");
+            //No argument
+            EnterCommand("pr ");
+            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
+            //No match
+            EnterCommand("pr x");
+            WaitForOutput("x does not match any properties");
+
+            //Invalid context
+            CiceroUrl("home");
+            EnterCommand("prop");
+            WaitForOutput("The command: property is not available in the current context");
+
+            //Multi-clause match
+            CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
+            WaitForOutput("Sales Person: Tete Mensa-Annan");
+            EnterCommand("pr sales a");
+            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
+            EnterCommand("pr ter ory");
+            WaitForOutput("Sales Territory: Northwest");
+            EnterCommand("pr sales z");
+            WaitForOutput("sales z does not match any properties");
+
+            //No fields
+            CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
+            WaitForOutput("Address Type: Home");
+            EnterCommand("prop");
+            WaitForOutput("No visible properties");
+
+            //To many args
+            EnterCommand("prop num,x");
+            WaitForOutput("Too many arguments provided");
+
+            //exact match takes priority over partial match
+            //TODO: Need example from properties, not action params -  transfer this to Enter test
+            //EnterCommand("field product category"); //which would also match product subcategory
+            //WaitForOutput("Product Category: Bikes");
+     }
         public virtual void Gemini()
         {
             //home
@@ -442,7 +450,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
             EnterCommand("help");
-            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\ncollection\r\nclipboard\r\nedit\r\nfield\r\nforward\r\ngemini\r\ngo\r\nhelp\r\nmenu\r\nreload\r\nwhere");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\ncollection\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
             //Now with params
             EnterCommand("help me");
             WaitForOutput("menu command:\r\nOpen a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
@@ -456,7 +464,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0");
             WaitForOutputStarting("Result from Current Special Offers:");
             EnterCommand("help");
-            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngo\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
+            WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
         }
         public virtual void Menu()
         {   //No argument
@@ -877,7 +885,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Edit() { base.Edit(); }
         [TestMethod]
-        public override void Field() { base.Field(); }
+        public override void Enter() { base.Enter(); }
         [TestMethod]
         public override void Gemini() { base.Gemini(); }
         [TestMethod]
@@ -890,6 +898,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void OK() { base.OK(); }
         [TestMethod]
         public override void Page() { base.Page(); }
+        [TestMethod]
+        public override void Property() { base.Property(); }
         [TestMethod]
         public override void Root() { base.Root(); }
         [TestMethod]
@@ -935,7 +945,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1003,7 +1013,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Clipboard();
             base.Collection();
             base.Edit();
-            base.Field();
+            base.Enter();
+            base.Property();
             base.Gemini();
             base.Go();
             base.Help();
