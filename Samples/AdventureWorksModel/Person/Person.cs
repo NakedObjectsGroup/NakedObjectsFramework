@@ -297,6 +297,39 @@ namespace AdventureWorksModel {
         {
             Suffix = newSuffix;
         }
+
+
+        //To test a ViewModelEdit
+        public EmailTemplate CreateEmail()  {
+           return Container.NewViewModel<EmailTemplate>();
+            }
         #endregion
+    }
+
+    public class EmailTemplate : IViewModelEdit
+    {
+        #region 
+        public string[] DeriveKeys()
+        {
+            return new[] { "1" }; //We're not testing ViewModels here -  just their editability.
+        }
+
+        public void PopulateUsingKeys(string[] keys)
+        {
+            //Does nothing
+        }
+        #endregion
+
+        [MemberOrder(10)]
+        public virtual string To { get; set; }
+
+        [MemberOrder(20)]
+        public virtual string From { get; set; }
+
+        [MemberOrder(30)]
+        public virtual string Subject { get; set; }
+
+        [MemberOrder(40)]
+        public virtual string Message { get; set; }
     }
 }
