@@ -87,6 +87,14 @@ namespace MvcTestApp.Controllers {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
+        [HttpPost]
+        public override HttpResponseMessage PostObject(string domainType, string instanceId, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
+            if (ProtoPersistentObjects) {
+                InvalidMethod();
+            }
+            return base.PostObject(domainType, instanceId, arguments);
+        }
+
         [HttpGet]
         public override HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetProperty(domainType, instanceId, propertyName, arguments);

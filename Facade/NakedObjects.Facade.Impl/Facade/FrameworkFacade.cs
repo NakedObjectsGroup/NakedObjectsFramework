@@ -579,7 +579,7 @@ namespace NakedObjects.Facade.Impl {
             if (contexts.Values.All(c => string.IsNullOrEmpty(c.Reason))) {
                 if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
                     if (!arguments.ValidateOnly) {
-                        Array.ForEach(objectContext.VisibleProperties, SetProperty);
+                        Array.ForEach(objectContext.VisibleProperties.Where(p => p.Property.IsUsable(nakedObject).IsAllowed).ToArray(), SetProperty);
 
                         if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
                             framework.LifecycleManager.MakePersistent(nakedObject);
@@ -606,7 +606,34 @@ namespace NakedObjects.Facade.Impl {
             if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
                 throw new BadRequestNOSException("Malformed arguments");
             }
-            return SetTransientObject(nakedObject, arguments);
+            Dictionary<string, PropertyContext> contexts = arguments.Values.ToDictionary(kvp => kvp.Key, kvp => CanSetProperty(nakedObject, kvp.Key, kvp.Value));
+            var objectContext = new ObjectContext(contexts.First().Value.Target) { VisibleProperties = contexts.Values.ToArray() };
+
+            // if we fail we need to display all - if OK only those that are visible 
+            PropertyContext[] propertiesToDisplay = objectContext.VisibleProperties;
+
+            if (contexts.Values.All(c => string.IsNullOrEmpty(c.Reason))) {
+                if (ConsentHandler(CrossValidate(objectContext), objectContext, Cause.Other)) {
+                    if (!arguments.ValidateOnly) {
+                        Array.ForEach(objectContext.VisibleProperties, SetProperty);
+
+                        if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+                            framework.LifecycleManager.MakePersistent(nakedObject);
+                        }
+                        else {
+                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
+                        }
+                        propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
+                            Where(p => p.IsVisible(nakedObject)).
+                            Select(p => new PropertyContext { Target = nakedObject, Property = p }).ToArray();
+                    }
+                }
+            }
+
+            ObjectContext oc = GetObjectContext(objectContext.Target);
+            oc.Reason = objectContext.Reason;
+            oc.VisibleProperties = propertiesToDisplay;
+            return oc.ToObjectContextFacade(this, framework);
         }
 
         private bool ValidateParameters(ActionContext actionContext, IDictionary<string, object> rawParms) {
