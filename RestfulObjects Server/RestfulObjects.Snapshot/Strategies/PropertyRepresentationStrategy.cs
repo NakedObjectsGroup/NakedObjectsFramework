@@ -72,6 +72,9 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             if (!propertyContext.Target.IsTransient) {
                 AddMutatorLinks(links);
+            }
+
+            if (!(RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient)) {
                 AddPrompt(links);
             }
 
