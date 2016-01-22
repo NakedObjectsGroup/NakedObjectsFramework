@@ -322,8 +322,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("prop num");
             WaitForOutput("Product Number: BK-R68R-52");
-            EnterCommand("pr cat");
-            WaitForOutput("Product Category: Bikes\r\nProduct Subcategory: Road Bikes");
+            EnterCommand("pr product");                                                                                                                                
+            WaitForOutputStarting("Product Number: BK-R68R-52");
+            var actual = WaitForCss(".output").Text;
+            //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
+            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
+            Assert.AreEqual(expected, actual);
+
             //No argument
             EnterCommand("pr ");
             WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
@@ -342,7 +347,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("pr sales a");
             WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
             EnterCommand("pr ter ory");
-            WaitForOutput("Sales Territory: Northwest");
+            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
             EnterCommand("pr sales z");
             WaitForOutput("sales z does not match any properties");
 

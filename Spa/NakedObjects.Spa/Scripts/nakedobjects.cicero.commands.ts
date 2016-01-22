@@ -223,6 +223,17 @@ module NakedObjects.Angular.Gemini {
             return props;
         }
 
+        protected matchingCollections(
+            obj: DomainObjectRepresentation,
+            match: string): CollectionMember[] {
+            const allColls = _.map(obj.collectionMembers(), action => action);
+            if (match) {
+                return this.matchFriendlyNameAndOrMenuPath<CollectionMember>(allColls, match);
+            } else {
+                return allColls;
+            }
+        }
+
         protected matchingParameters(
             action: ActionMember,
             match: string): Parameter[] {
@@ -690,7 +701,7 @@ module NakedObjects.Angular.Gemini {
                             default:
                                 s = fieldName + " matches multiple fields";
                                 s = _.reduce(fields, (s, prop) => {
-                                    return s + prop.extensions().friendlyName()+"\n";
+                                    return s + prop.extensions().friendlyName() + "\n";
                                 }, "");
                         }
                         this.clearInputAndSetMessage(s);
@@ -1001,9 +1012,10 @@ module NakedObjects.Angular.Gemini {
         private renderFields(fieldName: string) {
             this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
-                    var fields = this.matchingProperties(obj, fieldName);
+                    let props = this.matchingProperties(obj, fieldName);
+                    let colls = this.matchingCollections(obj, fieldName);  //TODO -  include these
                     var s: string = "";
-                    switch (fields.length) {
+                    switch (props.length + colls.length) {
                         case 0:
                             if (!fieldName) {
                                 s = "No visible properties";
@@ -1012,12 +1024,18 @@ module NakedObjects.Angular.Gemini {
                             }
                             break;
                         case 1:
-                            const field = fields[0];
-                            s = this.renderProp(field);
+                            if (props.length > 0) {
+                                s = this.renderProp(props[0]);
+                            } else {
+                                s = this.renderColl(colls[0]);
+                            }
                             break;
                         default:
-                            s = _.reduce(fields, (s, prop) => {
+                            s = _.reduce(props, (s, prop) => {
                                 return s + this.renderProp(prop);
+                            }, "");
+                            s += _.reduce(colls, (s, coll) => {
+                                return s + this.renderColl(coll);
                             }, "");
                     }
                     this.clearInputAndSetMessage(s);
@@ -1028,6 +1046,21 @@ module NakedObjects.Angular.Gemini {
             const name = pm.extensions().friendlyName();
             let value: string = pm.value().toString() || "empty";
             return name + ": " + value + "\n";
+        }
+
+        private renderColl(coll: CollectionMember): string {
+            let output = coll.extensions().friendlyName() + " (collection): ";
+            switch (coll.size()) {
+                case 0:
+                    output += "empty";
+                    break;
+                case 1:
+                    output += "1 item";
+                    break;
+                default:
+                    output += `${coll.size() } items`;
+            }
+            return output + "\n";
         }
     }
     export class Reload extends Command {
