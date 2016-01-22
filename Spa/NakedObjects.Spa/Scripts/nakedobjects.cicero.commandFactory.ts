@@ -92,8 +92,8 @@ module NakedObjects.Angular.Gemini {
 
         commandFactory.processSingleCommand = (input: string, cvm: CiceroViewModel, chained: boolean) => {
             try {
-                input = input.toLowerCase().trim();
-                const firstWord = input.split(" ")[0];
+                input = input.trim();
+                const firstWord = input.split(" ")[0].toLowerCase();
                 const command: Command = commandFactory.getCommand(firstWord);
                 var argString: string = null;
                 const index = input.indexOf(" ");

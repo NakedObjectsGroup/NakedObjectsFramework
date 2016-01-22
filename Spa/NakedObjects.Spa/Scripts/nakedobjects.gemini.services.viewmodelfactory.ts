@@ -10,7 +10,7 @@ module NakedObjects.Angular.Gemini {
         errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
         actionViewModel(actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
-        listPlaceholderViewModel(routeData : PaneRouteData): CollectionPlaceholderViewModel;
+        listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
@@ -18,7 +18,7 @@ module NakedObjects.Angular.Gemini {
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
-        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel );
+        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel);
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
     }
 
@@ -41,7 +41,7 @@ module NakedObjects.Angular.Gemini {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route ) {
+        $route) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -217,10 +217,10 @@ module NakedObjects.Angular.Gemini {
             } else {
                 if (parmRep.extensions().returnType() === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
-                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time" ) {
+                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time") {
                     const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
                     const dateValue = Date.parse(rawValue);
-                    parmViewModel.value = dateValue ? new Date(rawValue) : null; 
+                    parmViewModel.value = dateValue ? new Date(rawValue) : null;
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
@@ -337,7 +337,7 @@ module NakedObjects.Angular.Gemini {
 
         }
 
-     
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number) => {
             const propertyViewModel = new PropertyViewModel();
 
@@ -452,7 +452,7 @@ module NakedObjects.Angular.Gemini {
             return propertyViewModel;
         };
 
-        viewModelFactory.getItems = (links: Link[], populateItems: boolean, routeData: PaneRouteData, listViewModel : ListViewModel | CollectionViewModel) => {
+        viewModelFactory.getItems = (links: Link[], populateItems: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
             const selectedItems = routeData.selectedItems;
 
             const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
@@ -516,8 +516,8 @@ module NakedObjects.Angular.Gemini {
             return collectionViewModel;
         };
 
-      
-        viewModelFactory.listPlaceholderViewModel = (routeData : PaneRouteData) => {
+
+        viewModelFactory.listPlaceholderViewModel = (routeData: PaneRouteData) => {
             const collectionPlaceholderViewModel = new CollectionPlaceholderViewModel();
 
             collectionPlaceholderViewModel.description = () => `Page ${routeData.page}`;
@@ -530,8 +530,8 @@ module NakedObjects.Angular.Gemini {
 
             collectionPlaceholderViewModel.reload = () =>
                 recreate().then(() => {
-                $route.reload();
-            });
+                    $route.reload();
+                });
             return collectionPlaceholderViewModel;
         }
 
@@ -555,13 +555,13 @@ module NakedObjects.Angular.Gemini {
             const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel( action, routeData));
+            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
         };
-  
-        
+
+
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
@@ -623,7 +623,7 @@ module NakedObjects.Angular.Gemini {
             if (cvm == null) {
                 cvm = new CiceroViewModel();
                 commandFactory.initialiseCommands(cvm);
-                cvm.parseInput = (input: string) => {                    
+                cvm.parseInput = (input: string) => {
                     commandFactory.parseInput(input, cvm);
                 };
                 cvm.executeNextChainedCommandIfAny = () => {
@@ -677,14 +677,19 @@ module NakedObjects.Angular.Gemini {
                                             output += "1 item";
                                             break;
                                         default:
-                                            output += `${coll.size()} items`;
+                                            output += `${coll.size() } items`;
                                     }
                                 } else {
                                     if (routeData.edit) {
                                         output += "Editing ";
+                                        output += Helpers.typePlusTitle(obj) + "\n";
+                                        if ( _.keys(routeData.props).length > 0) {
+                                            output += renderModifiedProperties(routeData.props);
+                                        }
+                                    } else {
+                                        output += Helpers.typePlusTitle(obj) + "\n";
+                                        output += renderActionDialogIfOpen(obj, routeData);
                                     }
-                                    output += Helpers.typePlusTitle(obj) + "\n";
-                                    output += renderActionDialogIfOpen(obj, routeData);
                                 }
                                 cvm.clearInput();
                                 cvm.output = output;
@@ -727,8 +732,23 @@ module NakedObjects.Angular.Gemini {
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
-    export function openCollectionIds(routeData: PaneRouteData ): string[] {
+    export function openCollectionIds(routeData: PaneRouteData): string[] {
         return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
+    }
+
+    function renderModifiedProperties(props: _.Dictionary<Value>): string {
+        let output = "Modified properties:\n";
+        //TODO: Must handle an empty (cleared) value;
+        _.each(props, (value, propId) => {
+            output += propId+": "; //TODO: Need to look up friendly name
+            if (value.isScalar()) {
+                output += value.toValueString();
+            } else if (value.isReference()) {
+                output += value.link().title();
+            }
+            output += "\n";
+        });
+        return output;
     }
 
     function renderActionDialogIfOpen(

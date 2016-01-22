@@ -587,7 +587,9 @@ module NakedObjects {
     // matches an action representation 18.0 
 
     // matches 18.2.1
-    export class Parameter extends NestedRepresentation<RoInterfaces.IParameterRepresentation> implements IField {
+    export class Parameter
+        extends NestedRepresentation<RoInterfaces.IParameterRepresentation>
+        implements IField {
 
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
@@ -1069,6 +1071,9 @@ module NakedObjects {
             return new Value(this.wrapped().value);
         }
 
+        isScalar(): boolean {
+            return isScalarType(this.extensions().returnType());
+        }
 
         attachmentLink(): Link {
             return linkByNamespacedRel(this.links(), "attachment");
@@ -1778,8 +1783,10 @@ module NakedObjects {
 
     //TODO: Review name (common capbilities of PropertyMember and Parameter)
     export interface IField extends IHasExtensions {
-
+        choices(): _.Dictionary<Value>;
+        isScalar(): boolean;
     }
+
     export interface IHasExtensions {
         extensions(): Extensions;
     }
