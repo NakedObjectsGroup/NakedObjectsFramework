@@ -20,14 +20,14 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
             if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(oidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.ToString("N"));
+                return new UriMtHelper(oidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
             }
             return new UriMtHelper(oidStrategy, req, propertyContext);
         }
 
         private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
             if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(oidStrategy, req, propertyContext.Target, propertyContext.UniqueIdForTransient.ToString("N"));
+                return new UriMtHelper(oidStrategy, req, propertyContext.Target, propertyContext.UniqueIdForTransient.GuidAsKey());
             }
             return new UriMtHelper(oidStrategy, req, propertyContext.Target);
         }

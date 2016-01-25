@@ -84,7 +84,6 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, string instanceId)
            : this(oidStrategy, req) {
             assoc = propertyContext.Property;

@@ -174,6 +174,8 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IObjectFacade GetObject(object domainObject) {
+            // make sure object is in sync with framework.
+            framework.DomainObjectInjector.InjectInto(domainObject);
             return ObjectFacade.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 

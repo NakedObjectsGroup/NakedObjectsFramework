@@ -50,7 +50,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private UriMtHelper GetHelper() {
             if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(OidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.ToString("N"));
+                return new UriMtHelper(OidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
             }
             return new UriMtHelper(OidStrategy, req, propertyContext);
         }
