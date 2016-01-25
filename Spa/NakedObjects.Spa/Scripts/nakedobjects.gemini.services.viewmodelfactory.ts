@@ -739,7 +739,7 @@ module NakedObjects.Angular.Gemini {
     function renderModifiedProperties(props: _.Dictionary<Value>): string {
         let output = "Modified properties:\n";
         //TODO: Must handle an empty (cleared) value;
-        _.each(props, (value, propId) => {
+        _.each(props, (value, propId) => {            
             output += propId+": "; //TODO: Need to look up friendly name
             if (value.isScalar()) {
                 output += value.toValueString();

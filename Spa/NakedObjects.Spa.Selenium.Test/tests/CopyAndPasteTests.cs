@@ -151,6 +151,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("", WaitForCss(fieldCss).Text);
 
         }
+
+        [TestMethod, Ignore] //Can't test as the drop doesn't update UI in tests
+        public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
+        {
+            GeminiUrl("home/object?menu1=EmployeeRepository&dialog1=CreateNewEmployeeFromContact&field1_contactDetails=null&object2=AdventureWorksModel.Person-10895");
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Arthur Kapoor", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+
+            string selector = "#pane1 .parameter .value";
+            var target = WaitForCss(selector);
+            Assert.AreEqual("", target.Text);
+
+            PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+            Click(FullIcon());
+            WaitUntilGone(br => br.FindElement(By.CssSelector("#pane2")));
+            var input = WaitForCss("input#contactDetails1");
+            Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
+        }
     }
 
     #region browsers specific subclasses

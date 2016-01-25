@@ -1077,12 +1077,32 @@ module NakedObjects.Angular.Gemini {
                 return;
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
-                const propMap = this.routeData().props;
+                const props = obj.propertyMembers();
+                const propValuesFromUrl = this.routeData().props;
+                const propIds = new Array<string>();
+                const newVals = new Array<Value>();
+                const empty = new Value("");
+                _.forEach(props, (propMember, propId) => {
+                    if (!propMember.disabledReason()) {
+                        propIds.push(propId);
+                        const newVal = propValuesFromUrl[propId];
+                        if (newVal) {
+                            newVals.push(newVal);
+                        } else if (!propMember.value().isNull()) {
+                            newVals.push(propMember.value());
+                        } else {
+                            newVals.push(new Value(""));
+                        }
+                    }
+                });
+                const propMap = _.zipObject(propIds, newVals) as _.Dictionary<Value>;
+
                 this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => {
                     if (err.containsError()) {
-                        //TODO: compare with OK on action
-                        //this.viewModelFactory.handleErrorResponse(err, this, this.properties);
+                        this.handleErrorResponse(err);
+                        return;
                     }
+                    this.urlManager.setObjectEdit(false, 1);
                 });
             });
         };

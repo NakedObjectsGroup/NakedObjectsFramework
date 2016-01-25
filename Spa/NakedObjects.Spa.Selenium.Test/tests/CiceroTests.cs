@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System;
 using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
@@ -251,7 +252,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter last, b");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
 
-
             //Todo: test selections
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
             WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category");
@@ -265,7 +265,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //TODO: Lots more to test, even in dialogs:
             //No match, multiple matches, invalid entry type, no entry value provided, ? for details
 
-            //Then property entries.
+            //Then property entries
+            CiceroUrl("object?object1=AdventureWorksModel.Product-871&edit1=true");
+            WaitForOutput("Editing Product: Mountain Bottle Cage");
+            EnterCommand("prop price");
+            WaitForOutput("List Price: 9.99");
+            EnterCommand("enter list price, 10.50");
+            WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nListPrice: 10.50");
         }
         public virtual void Property()
         {
@@ -816,6 +822,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Employee: Untitled Employee");
         }
+
+        public virtual void ScenarioTestEditAndSave()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-838");
+            WaitForOutput("Product: HL Road Frame - Black, 44");
+            EnterCommand("Edit");
+            WaitForOutput("Editing Product: HL Road Frame - Black, 44");
+            var rand = new Random();
+            var newPrice = rand.Next(50, 150).ToString();
+            EnterCommand("Enter list price, "+newPrice);
+            WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\nModified properties:\r\nListPrice: "+newPrice);
+            EnterCommand("Save");
+            WaitForOutput("Product: HL Road Frame - Black, 44");
+            EnterCommand("prop list price");
+            WaitForOutput("List Price: "+newPrice);
+
+        }
         public virtual void ChainedCommands()
         {
             //Happy case
@@ -896,6 +919,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
+        [TestMethod, Ignore]
+        public override void ScenarioTestEditAndSave() { base.ScenarioTestEditAndSave(); }
         [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
 
