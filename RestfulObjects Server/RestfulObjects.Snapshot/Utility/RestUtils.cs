@@ -300,5 +300,9 @@ namespace RestfulObjects.Snapshot.Utility {
                     return AttachmentContextFacade.DefaultMimeType;
             }
         }
+
+        public static string GuidAsKey(this Guid guid) {
+            return guid.ToString("N");
+        }
     }
 }

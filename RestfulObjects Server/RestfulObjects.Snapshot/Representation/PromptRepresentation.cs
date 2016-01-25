@@ -17,12 +17,27 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
+
+        private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
+                return new UriMtHelper(oidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
+            }
+            return new UriMtHelper(oidStrategy, req, propertyContext);
+        }
+
+        private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
+                return new UriMtHelper(oidStrategy, req, propertyContext.Target, propertyContext.UniqueIdForTransient.GuidAsKey());
+            }
+            return new UriMtHelper(oidStrategy, req, propertyContext.Target);
+        }
+
         protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(listContext, propertyContext, req);
-            SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
-            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, new UriMtHelper(oidStrategy, req, propertyContext.Target)));
+            SelfRelType = new PromptRelType(RelValues.Self, GetSelfHelper(oidStrategy, propertyContext, req));
+            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, GetParentHelper(oidStrategy, propertyContext, req)));
             SetExtensions();
             SetHeader(listContext.IsListOfServices);
         }

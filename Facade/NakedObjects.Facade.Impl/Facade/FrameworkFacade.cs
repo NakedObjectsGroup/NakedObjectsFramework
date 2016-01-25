@@ -174,6 +174,8 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IObjectFacade GetObject(object domainObject) {
+            // make sure object is in sync with framework.
+            framework.DomainObjectInjector.InjectInto(domainObject);
             return ObjectFacade.Wrap(framework.NakedObjectManager.CreateAdapter(domainObject, null, null), this, framework);
         }
 
@@ -191,6 +193,14 @@ namespace NakedObjects.Facade.Impl {
 
         public ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments) {
             return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextFacade(this, framework));
+        }
+
+        public PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName) {
+            return MapErrors(() => GetProperty(transient.WrappedAdapter(), propertyName).ToPropertyContextFacade(this, framework));
+        }
+
+        public ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => GetPropertyCompletions(transient.WrappedAdapter(), propertyName, arguments).ToListContextFacade(this, framework));
         }
 
         public ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {

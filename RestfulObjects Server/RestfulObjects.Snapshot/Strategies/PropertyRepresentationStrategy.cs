@@ -45,8 +45,10 @@ namespace RestfulObjects.Snapshot.Strategies {
                 opts.Add(arguments);
             }
 
-            return LinkRepresentation.Create(OidStrategy, new PromptRelType(new UriMtHelper(OidStrategy, req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()), Flags, opts.ToArray());
         }
+
+      
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
@@ -59,11 +61,11 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateClearLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, new UriMtHelper(OidStrategy, req, propertyContext)) {Method = RelMethod.Delete}, Flags);
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, GetHelper()) {Method = RelMethod.Delete}, Flags);
         }
 
         private LinkRepresentation CreateModifyLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, new UriMtHelper(OidStrategy, req, propertyContext)) {Method = RelMethod.Put}, Flags,
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
         }
 

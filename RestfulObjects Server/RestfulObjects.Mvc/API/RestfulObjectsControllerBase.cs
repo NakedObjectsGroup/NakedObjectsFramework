@@ -497,8 +497,11 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
                 // TODO enhance frameworkFacade to return property with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(link, propertyName);
-                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(link, propertyName, args.Item1);
+                var obj = GetObject(link);
+
+                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
+                propertyContext.UniqueIdForTransient = obj.UniqueIdForTransient;
+                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, args.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
             });
         }
