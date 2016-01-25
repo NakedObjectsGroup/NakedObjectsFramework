@@ -38,6 +38,13 @@ namespace RestfulObjects.Snapshot.Strategies {
             return propertyContext.Property.Id;
         }
 
+        protected UriMtHelper GetHelper() {
+            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
+                return new UriMtHelper(OidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
+            }
+            return new UriMtHelper(OidStrategy, req, propertyContext);
+        }
+
         protected string GetAttachmentFileName(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
@@ -52,7 +59,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         private LinkRepresentation CreateAttachmentLink() {
             string title = GetAttachmentFileName(propertyContext);
-            return LinkRepresentation.Create(OidStrategy, new AttachmentRelType(new UriMtHelper(OidStrategy, req, propertyContext)), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return LinkRepresentation.Create(OidStrategy, new AttachmentRelType(GetHelper()), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         private LinkRepresentation CreateSelfLink() {
@@ -95,15 +102,15 @@ namespace RestfulObjects.Snapshot.Strategies {
                 opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(OidStrategy, req, propertyContext, Flags)));
             }
 
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, req, propertyContext)), Flags, opts.ToArray());
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(GetHelper()), Flags, opts.ToArray());
         }
 
         private LinkRepresentation CreateCollectionValueLink() {
-            return LinkRepresentation.Create(OidStrategy, new CollectionValueRelType(new UriMtHelper(OidStrategy, req, propertyContext)), Flags);
+            return LinkRepresentation.Create(OidStrategy, new CollectionValueRelType(GetHelper()), Flags);
         }
 
         public RelType GetSelf() {
-            return new MemberRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, propertyContext));
+            return new MemberRelType(RelValues.Self, GetHelper());
         }
 
         public RestControlFlags GetFlags() {

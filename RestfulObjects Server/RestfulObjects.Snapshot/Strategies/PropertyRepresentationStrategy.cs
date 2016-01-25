@@ -48,12 +48,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()), Flags, opts.ToArray());
         }
 
-        private UriMtHelper GetHelper() {
-            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(OidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
-            }
-            return new UriMtHelper(OidStrategy, req, propertyContext);
-        }
+      
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
