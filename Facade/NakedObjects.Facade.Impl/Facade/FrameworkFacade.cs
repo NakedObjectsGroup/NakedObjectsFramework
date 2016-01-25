@@ -193,6 +193,14 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => GetPropertyCompletions(GetObjectAsNakedObject(objectId), propertyName, arguments).ToListContextFacade(this, framework));
         }
 
+        public PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName) {
+            return MapErrors(() => GetProperty(transient.WrappedAdapter(), propertyName).ToPropertyContextFacade(this, framework));
+        }
+
+        public ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => GetPropertyCompletions(transient.WrappedAdapter(), propertyName, arguments).ToListContextFacade(this, framework));
+        }
+
         public ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
             return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextFacade(this, framework));
         }

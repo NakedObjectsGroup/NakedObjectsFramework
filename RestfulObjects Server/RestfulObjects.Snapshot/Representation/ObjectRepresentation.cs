@@ -87,6 +87,12 @@ namespace RestfulObjects.Snapshot.Representations {
 
             PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
+            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
+                foreach (var propertyContextFacade in visibleProperties) {
+                    propertyContextFacade.UniqueIdForTransient = objectContext.UniqueIdForTransient;
+                }
+            }
+
             if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
                 OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();

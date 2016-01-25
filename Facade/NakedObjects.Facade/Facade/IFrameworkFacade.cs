@@ -26,6 +26,12 @@ namespace NakedObjects.Facade {
         ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
         PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
         ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments);
+        // for transients
+        PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName);
+        ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
+
+
+
         ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
         ListContextFacade GetServiceParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
         ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);

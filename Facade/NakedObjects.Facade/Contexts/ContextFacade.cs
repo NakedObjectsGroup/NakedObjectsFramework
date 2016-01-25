@@ -5,9 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects.Facade.Contexts {
     public abstract class ContextFacade {
         public abstract string Id { get; }
+        public Guid UniqueIdForTransient { get; set; }
         public virtual IObjectFacade Target { get; set; }
         public virtual string Reason { get; set; }
         public virtual Cause ErrorCause { get; set; }
