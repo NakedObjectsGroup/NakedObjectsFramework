@@ -550,8 +550,8 @@ module NakedObjects.Angular.Gemini {
                             }
                             break;
                         default:
-                            s = fieldName + " matches multiple fields";
-                            s = _.reduce(fields, (s, prop) => {
+                            s = fieldName + " matches multiple fields:\n";
+                            s += _.reduce(fields, (s, prop) => {
                                 return s + prop.extensions().friendlyName() + "\n";
                             }, "");
                     }

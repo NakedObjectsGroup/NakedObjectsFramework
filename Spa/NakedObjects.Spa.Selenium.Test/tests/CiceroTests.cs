@@ -262,8 +262,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter cat, frame");
             WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
 
-            //TODO: Lots more to test, even in dialogs:
-            //No match, multiple matches, invalid entry type, no entry value provided, ? for details
+
 
             //Then property entries
             CiceroUrl("object?object1=AdventureWorksModel.Product-871&edit1=true");
@@ -272,6 +271,29 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("List Price: 9.99");
             EnterCommand("enter list price, 10.50");
             WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nList Price: 10.50");
+
+            //Multiple matches
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-33787&edit1=true");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter date,1 Jan 2015");
+            WaitForOutput("date matches multiple fields:\r\n"+
+                "Start Date\r\n" +
+                "End Date\r\n"+
+                "Due Date\r\n"+
+                "Modified Date");
+
+            //No matches
+            EnterCommand("enter strt date,1 Jan 2015");
+            WaitForOutput("strt date does not match any fields");
+
+            //No entry value provided
+            EnterCommand("enter start date");
+            WaitForOutput("Too few arguments provided");
+
+            //Can enter an empty value
+            EnterCommand("enter end date,");
+            WaitForOutputContaining("End Date: empty");
+
         }
         public virtual void Property()
         {
@@ -1045,7 +1067,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
