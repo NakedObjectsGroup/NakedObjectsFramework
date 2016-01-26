@@ -919,7 +919,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ScenarioTestEditAndSave() { base.ScenarioTestEditAndSave(); }
         [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
@@ -952,7 +952,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
