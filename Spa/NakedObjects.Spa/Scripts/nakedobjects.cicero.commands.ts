@@ -269,6 +269,34 @@ module NakedObjects.Angular.Gemini {
         protected findMatchingChoices(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
             return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch) >= 0);
         }
+
+        protected handleErrorResponse(err: ErrorMap, getFriendlyName: (id: string) => string) {
+            if (err.invalidReason()) {
+                this.clearInputAndSetMessage(err.invalidReason());
+                return;
+            }
+            let msg = "Please complete or correct these fields:\n";
+            _.each(err.valuesMap(), (errorValue, fieldId) => {
+                msg += this.fieldValidationMessage(errorValue, () => getFriendlyName(fieldId));
+            });
+            this.clearInputAndSetMessage(msg);
+        }
+
+        private fieldValidationMessage(errorValue: ErrorValue, fieldFriendlyName: () => string): string {
+            let msg = "";
+            const reason = errorValue.invalidReason;
+            const value = errorValue.value;
+            if (reason) {
+                msg += fieldFriendlyName() + ": ";
+                if (reason === "Mandatory") {
+                    msg += "required";
+                } else {
+                    msg += value + " " + reason;
+                }
+                msg += "\n";
+            }
+            return msg;
+        }
     }
 
     export class Action extends Command {
@@ -862,32 +890,14 @@ module NakedObjects.Angular.Gemini {
                 this.context.invokeAction(action, 1, fieldMap)
                     .then((err: ErrorMap) => {
                         if (err.containsError()) {
-                            this.handleErrorResponse(err, action);
+                            const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
+                            this.handleErrorResponse(err, paramFriendlyName);
                         } else {
                             this.urlManager.closeDialog(1);
                         }
                     });
             });
         };
-        handleErrorResponse(err: ErrorMap, action: ActionMember) {
-            //TODO: Not currently covering co-validation errors
-            //TODO: Factor out commonality for errors on saving object
-            let msg = "Please complete or correct these fields:\n"
-            _.each(err.valuesMap(), (errorValue, paramId) => {
-                const reason = errorValue.invalidReason;
-                const value = errorValue.value;
-                if (reason) {
-                    msg += Helpers.friendlyNameForParam(action, paramId) + ": ";
-                    if (reason === "Mandatory") {
-                        msg += "required";
-                    } else {
-                        msg += value + " " + reason;
-                    }
-                    msg += "\n";
-                }
-            });
-            this.clearInputAndSetMessage(msg);
-        }
     }
     export class Page extends Command {
         public fullCommand = "page";
@@ -1078,52 +1088,34 @@ module NakedObjects.Angular.Gemini {
             }
             this.getObject().then((obj: DomainObjectRepresentation) => {
                 const props = obj.propertyMembers();
-                const propValuesFromUrl = this.routeData().props;
+                const newValsFromUrl = this.routeData().props;
                 const propIds = new Array<string>();
-                const newVals = new Array<Value>();
-                const empty = new Value("");
+                const values = new Array<Value>();
                 _.forEach(props, (propMember, propId) => {
                     if (!propMember.disabledReason()) {
                         propIds.push(propId);
-                        const newVal = propValuesFromUrl[propId];
+                        const newVal = newValsFromUrl[propId];
                         if (newVal) {
-                            newVals.push(newVal);
-                        } else if (!propMember.value().isNull()) {
-                            newVals.push(propMember.value());
+                            values.push(newVal);
+                        } else if (propMember.value().isNull() &&
+                            propMember.isScalar()) {
+                            values.push(new Value(""));
                         } else {
-                            newVals.push(new Value(""));
+                            values.push(propMember.value());
                         }
                     }
                 });
-                const propMap = _.zipObject(propIds, newVals) as _.Dictionary<Value>;
-
+                const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
                 this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => {
                     if (err.containsError()) {
-                        this.handleErrorResponse(err);
-                        return;
+                        const propFriendlyName = (propId: string) => obj.propertyMember(propId).extensions().friendlyName();
+                        this.handleErrorResponse(err, propFriendlyName);
+                    } else {
+                        this.urlManager.setObjectEdit(false, 1);
                     }
-                    this.urlManager.setObjectEdit(false, 1);
                 });
             });
         };
-        handleErrorResponse(err: ErrorMap) {
-            //TODO: Factor out commonality for errors on action OK
-            let msg = "Please complete or correct these fields:\n"
-            _.each(err.valuesMap(), (errorValue, propId) => {
-                const reason = errorValue.invalidReason;
-                const value = errorValue.value;
-                if (reason) {
-                    msg += propId; //TODO: use friendly name ";
-                    if (reason === "Mandatory") {
-                        msg += "required";
-                    } else {
-                        msg += value + " " + reason;
-                    }
-                    msg += "\n";
-                }
-            });
-            this.clearInputAndSetMessage(msg);
-        }
     }
     export class Selection extends Command {
 

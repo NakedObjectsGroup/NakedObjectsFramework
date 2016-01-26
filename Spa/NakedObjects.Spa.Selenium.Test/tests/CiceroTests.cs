@@ -8,7 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
-using System.Threading;
+using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -825,8 +825,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ScenarioTestEditAndSave()
         {
+            //happy case -  edit one property
             CiceroUrl("object?object1=AdventureWorksModel.Product-838");
             WaitForOutput("Product: HL Road Frame - Black, 44");
+            EnterCommand("prop list price");
+            WaitForOutputStarting("List Price: ");
+            var output = WaitForCss(".output").Text;
+            var oldPrice = output.Split(' ').Last();
+
             EnterCommand("Edit");
             WaitForOutput("Editing Product: HL Road Frame - Black, 44");
             var rand = new Random();
@@ -838,6 +844,49 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("prop list price");
             WaitForOutput("List Price: "+newPrice);
 
+            //Updating a date and a link
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-43132");
+            WaitForOutputStarting("Work Order:");
+            EnterCommand("edit");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter end date,31 Dec 2015");
+            WaitForOutputContaining("EndDate: 31 Dec 2015");
+            EnterCommand("enter scrap reas, gouge");
+            WaitForOutputContaining("ScrapReason: Gouge in metal");
+            EnterCommand("save");
+            WaitForOutputStarting("Work Order:");
+            EnterCommand("prop end date");
+            WaitForOutputContaining("2015"); // because Masks not being honoured
+            EnterCommand("prop scrap rea");
+            WaitForOutput("Scrap Reason: Gouge in metal");
+
+            //Field validation
+            //Order Quantity must be > 0
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-43134");
+            WaitForOutputStarting("Work Order:");
+            EnterCommand("edit");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter order qty,0");
+            WaitForOutputContaining("OrderQty: 0");
+            EnterCommand("save");
+            WaitForOutput("Please complete or correct these fields:\r\n"+
+                "Order Qty: 0 Order Quantity must be > 0");
+   
+            //Co-Validation
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-43133");
+            WaitForOutputStarting("Work Order:");
+            EnterCommand("edit");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("enter start date,17 Oct 2007"); //Seems to be necessary to clear the date fields fully
+            WaitForOutputContaining("StartDate: 17 Oct 2007");
+            EnterCommand("enter end date,15 Oct 2007");
+            WaitForOutputContaining("EndDate: 15 Oct 2007");
+            EnterCommand("save");
+            WaitForOutput("StartDate must be before EndDate");
+            EnterCommand("enter end date,15 Oct 2008");
+            WaitForOutputContaining("EndDate: 15 Oct 2008");
+            EnterCommand("save");
+            WaitForOutputStarting("Work Order:");
         }
         public virtual void ChainedCommands()
         {

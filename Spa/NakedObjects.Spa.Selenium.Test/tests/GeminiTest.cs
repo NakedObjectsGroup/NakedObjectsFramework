@@ -535,6 +535,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text.StartsWith(output));
         }
 
+        protected void WaitForOutputContaining(string output)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(".output")).Text.Contains(output));
+        }
+
         protected void EnterCommand(string command)
         {
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).Text == "");
