@@ -684,7 +684,7 @@ module NakedObjects.Angular.Gemini {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
                                         if ( _.keys(routeData.props).length > 0) {
-                                            output += renderModifiedProperties(routeData.props);
+                                            output += renderModifiedProperties(obj, routeData);
                                         }
                                     } else {
                                         output += Helpers.typePlusTitle(obj) + "\n";
@@ -736,17 +736,12 @@ module NakedObjects.Angular.Gemini {
         return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
     }
 
-    function renderModifiedProperties(props: _.Dictionary<Value>): string {
+    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData): string {
         let output = "Modified properties:\n";
-        //TODO: Must handle an empty (cleared) value;
-        _.each(props, (value, propId) => {            
-            output += propId+": "; //TODO: Need to look up friendly name
-            if (value.isScalar()) {
-                output += value.toValueString();
-            } else if (value.isReference()) {
-                output += value.link().title();
-            }
-            output += "\n";
+        _.each(routeData.props, (value, propId) => {                    
+            output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
+            output += value.toString() || "empty";
+            output +="\n";
         });
         return output;
     }

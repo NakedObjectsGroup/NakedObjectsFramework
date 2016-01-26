@@ -247,10 +247,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Entering fields (into dialogs)
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522%2522&field1_lastName=%2522%2522");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
-            EnterCommand("enter first, a");
-            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: empty");
-            EnterCommand("enter last, b");
-            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
+            EnterCommand("enter first, Arthur G");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: empty");
+            EnterCommand("enter last, Fenton-Jones III");
+            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: Fenton-Jones III");
 
             //Todo: test selections
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
@@ -271,7 +271,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("prop price");
             WaitForOutput("List Price: 9.99");
             EnterCommand("enter list price, 10.50");
-            WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nListPrice: 10.50");
+            WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nList Price: 10.50");
         }
         public virtual void Property()
         {
@@ -627,6 +627,48 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided");
         }
+        public virtual void Save() {
+            //Happy case
+            CiceroUrl("object?object1=AdventureWorksModel.Product-839&edit1=true&prop1_ListPrice=%25221500%2522");
+            WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
+                "Modified properties:\r\n" +
+                "List Price: 1500");
+            EnterCommand("save");
+            WaitForOutput("Product: HL Road Frame - Black, 48");
+
+            //Not valid once object is saved, or other contexts.
+            EnterCommand("save");
+            WaitForOutput("The command: save is not available in the current context");
+            CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
+            EnterCommand("save");
+            WaitForOutput("The command: save is not available in the current context");
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-29688&dialog1=LastOrder");
+            WaitForOutput("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
+            EnterCommand("save");
+            WaitForOutput("The command: save is not available in the current context");
+
+            //No arguments
+            CiceroUrl("object?object1=AdventureWorksModel.Product-839&edit1=true&prop1_ListPrice=%25221500%2522");
+            WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
+                "Modified properties:\r\n" +
+                "List Price: 1500");
+            EnterCommand("save x");
+            WaitForOutput("Too many arguments provided");
+
+            //Field validation
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-43134&edit1=true&prop1_OrderQty=%25220%2522");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("save");
+            WaitForOutput("Please complete or correct these fields:\r\n" +
+                "Order Qty: 0 Order Quantity must be > 0");
+
+            //Co-validation
+            CiceroUrl("object?object1=AdventureWorksModel.WorkOrder-43133&edit1=true&prop1_StartDate=%252212%2520Jan%25202015%2522");
+            WaitForOutputStarting("Editing Work Order:");
+            EnterCommand("save");
+            WaitForOutput("StartDate must be before EndDate");
+        }
         public virtual void Show()
         {
             //Applied to List
@@ -714,7 +756,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("where x");
             WaitForOutput("Too many arguments provided");
         }
-
         public virtual void SpaceBarAutoComplete()
         {
             CiceroUrl("home");
@@ -832,13 +873,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("List Price: ");
             var output = WaitForCss(".output").Text;
             var oldPrice = output.Split(' ').Last();
-
             EnterCommand("Edit");
             WaitForOutput("Editing Product: HL Road Frame - Black, 44");
             var rand = new Random();
             var newPrice = rand.Next(50, 150).ToString();
             EnterCommand("Enter list price, "+newPrice);
-            WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\nModified properties:\r\nListPrice: "+newPrice);
+            WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n"+
+                "Modified properties:\r\n"+
+                "List Price: "+newPrice);
             EnterCommand("Save");
             WaitForOutput("Product: HL Road Frame - Black, 44");
             EnterCommand("prop list price");
@@ -850,9 +892,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("enter end date,31 Dec 2015");
-            WaitForOutputContaining("EndDate: 31 Dec 2015");
+            WaitForOutputContaining("End Date: 31 Dec 2015");
             EnterCommand("enter scrap reas, gouge");
-            WaitForOutputContaining("ScrapReason: Gouge in metal");
+            WaitForOutputContaining("Scrap Reason: Gouge in metal");
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
             EnterCommand("prop end date");
@@ -867,7 +909,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("enter order qty,0");
-            WaitForOutputContaining("OrderQty: 0");
+            WaitForOutputContaining("Order Qty: 0");
             EnterCommand("save");
             WaitForOutput("Please complete or correct these fields:\r\n"+
                 "Order Qty: 0 Order Quantity must be > 0");
@@ -878,13 +920,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("enter start date,17 Oct 2007"); //Seems to be necessary to clear the date fields fully
-            WaitForOutputContaining("StartDate: 17 Oct 2007");
+            WaitForOutputContaining("Start Date: 17 Oct 2007");
             EnterCommand("enter end date,15 Oct 2007");
-            WaitForOutputContaining("EndDate: 15 Oct 2007");
+            WaitForOutputContaining("End Date: 15 Oct 2007");
             EnterCommand("save");
             WaitForOutput("StartDate must be before EndDate");
             EnterCommand("enter end date,15 Oct 2008");
-            WaitForOutputContaining("EndDate: 15 Oct 2008");
+            WaitForOutputContaining("End Date: 15 Oct 2008");
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
         }
@@ -957,6 +999,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void Root() { base.Root(); }
         [TestMethod]
+        public override void Save() { base.Save(); }
+        [TestMethod]
         public override void Show() { base.Show(); }
         [TestMethod]
         public override void Where() { base.Where(); }
@@ -1001,7 +1045,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1077,6 +1121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.OK();
             base.Page();
             base.Root();
+            base.Save();
             base.Show();
             base.Where();
             base.SpaceBarAutoComplete();

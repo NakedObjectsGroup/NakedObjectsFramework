@@ -1008,12 +1008,7 @@ module NakedObjects.Angular.Gemini {
             let value: string;
             const propInUrl = this.routeData().props[pm.propertyId()];
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
-                if (propInUrl.isScalar()) {
-                    value = propInUrl.toValueString();
-                } else if (propInUrl.isReference()) {
-                    value = propInUrl.link().title();
-                }
-                value += " (modified)";
+                value = propInUrl.toString() + " (modified)";
             } else {
                 value = pm.value().toString() || "empty";
             }
@@ -1108,7 +1103,7 @@ module NakedObjects.Angular.Gemini {
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
                 this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => {
                     if (err.containsError()) {
-                        const propFriendlyName = (propId: string) => obj.propertyMember(propId).extensions().friendlyName();
+                        const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
                         this.handleErrorResponse(err, propFriendlyName);
                     } else {
                         this.urlManager.setObjectEdit(false, 1);

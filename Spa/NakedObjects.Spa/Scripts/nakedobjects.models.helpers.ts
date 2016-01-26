@@ -37,6 +37,11 @@ module NakedObjects.Helpers {
         return param.extensions().friendlyName();
     }
 
+   export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
+       var prop = obj.propertyMember(propId);
+       return prop.extensions().friendlyName();
+   }
+
    export function typePlusTitle(obj: DomainObjectRepresentation) {
        const type = friendlyTypeName(obj.domainType());
        const title = obj.title();
