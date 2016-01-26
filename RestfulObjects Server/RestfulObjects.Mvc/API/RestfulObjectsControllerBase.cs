@@ -565,7 +565,7 @@ namespace RestfulObjects.Mvc {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = GetObject(loid);
                 ObjectContextFacade context = FrameworkFacade.PersistObject(obj.Target, args.Item1);
-                VerifyNoPersistError(context, args.Item2);
+                VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
 
             });
