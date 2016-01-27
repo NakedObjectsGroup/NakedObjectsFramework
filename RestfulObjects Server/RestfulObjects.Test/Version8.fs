@@ -24,13 +24,6 @@ let capabilities =
                   TProperty("inlinedMemberRepresentations", TObjectVal("yes"))
                   TProperty("blobsClobs", TObjectVal("attachments")) ])
 
-let capabilitiesWithoutPP = 
-    TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("no"))
-                  TProperty("deleteObjects", TObjectVal("no"))
-                  TProperty("validateOnly", TObjectVal("yes"))
-                  TProperty("domainModel", TObjectVal("selectable"))
-                  TProperty("inlinedMemberRepresentations", TObjectVal("yes"))
-                  TProperty("blobsClobs", TObjectVal("attachments")) ])
 
 let links = 
     TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.Version RepresentationTypes.Version "")
@@ -43,12 +36,6 @@ let expected =
       TProperty(JsonPropertyNames.OptionalCapabilities, capabilities)
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
-let expectedWithoutPP = 
-    [ TProperty(JsonPropertyNames.Links, links)
-      TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.1"))
-      TProperty(JsonPropertyNames.ImplVersion, TObjectVal("1.5.0"))
-      TProperty(JsonPropertyNames.OptionalCapabilities, capabilitiesWithoutPP)
-      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 let GetVersion(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Version
@@ -62,19 +49,6 @@ let GetVersion(api : RestfulObjectsControllerBase) =
     assertNonExpiringCache result
     compareObject expected parsedResult
 
-let GetVersionWithoutPP(api : RestfulObjectsControllerBase) =
-    RestfulObjectsControllerBase.ProtoPersistentObjects <- false 
-    let url = testRoot + SegmentValues.Version
-    let args = CreateReservedArgs ""
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetVersion(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    RestfulObjectsControllerBase.ProtoPersistentObjects <- true 
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.Version), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    compareObject expectedWithoutPP parsedResult
 
 let GetVersionWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Version

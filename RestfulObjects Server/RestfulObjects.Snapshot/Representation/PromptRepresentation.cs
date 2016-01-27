@@ -19,16 +19,10 @@ namespace RestfulObjects.Snapshot.Representations {
     public class PromptRepresentation : Representation {
 
         private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
-            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(oidStrategy, req, propertyContext, propertyContext.UniqueIdForTransient.GuidAsKey());
-            }
             return new UriMtHelper(oidStrategy, req, propertyContext);
         }
 
         private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
-            if (!RestControlFlags.ProtoPersistentObjects && propertyContext.Target.IsTransient) {
-                return new UriMtHelper(oidStrategy, req, propertyContext.Target, propertyContext.UniqueIdForTransient.GuidAsKey());
-            }
             return new UriMtHelper(oidStrategy, req, propertyContext.Target);
         }
 

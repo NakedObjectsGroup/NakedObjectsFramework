@@ -41,15 +41,12 @@ namespace RestfulObjects.Snapshot.Representations {
         public MapRepresentation Members { get; set; }
 
         private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
-            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
-                return new UriMtHelper(oidStrategy, req, objectContext.Target, objectContext.UniqueIdForTransient.GuidAsKey());
-            }
 
             return new UriMtHelper(oidStrategy, req, objectContext.Target);
         }
 
         private static bool IsProtoPersistent(IObjectFacade objectFacade) {
-            return objectFacade.IsTransient && RestControlFlags.ProtoPersistentObjects;
+            return objectFacade.IsTransient;
         }
 
         private void SetScalars(ObjectContextFacade objectContext) {
@@ -86,12 +83,6 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
-
-            if (objectContext.Target.IsTransient && !IsProtoPersistent(objectContext.Target)) {
-                foreach (var propertyContextFacade in visibleProperties) {
-                    propertyContextFacade.UniqueIdForTransient = objectContext.UniqueIdForTransient;
-                }
-            }
 
             if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
@@ -164,8 +155,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
             }
             else {
-                // if get here and transient then must be non-protopersistent so add pseudo id;
-                var id = objectContext.Target.IsTransient ? objectContext.UniqueIdForTransient.GuidAsKey() : oid.InstanceId;
+                var id =  oid.InstanceId;
                 props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
                 if (flags.SimpleDomainModel) {
                     props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));

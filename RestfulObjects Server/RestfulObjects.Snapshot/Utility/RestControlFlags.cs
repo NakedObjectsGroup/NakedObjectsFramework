@@ -48,7 +48,6 @@ namespace RestfulObjects.Snapshot.Utility {
         public bool FollowLinks { get; private set; }
         public bool SortBy { get; private set; }
         public bool BlobsClobs { get; private set; }
-        public static bool ProtoPersistentObjects { get; set; }
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }

@@ -155,9 +155,6 @@ type Nof4TestsDomainType() =
         member x.GetVersion() = Version8.GetVersion x.api
 
         [<Test>]
-        member x.GetVersionWithoutPP() = Version8.GetVersionWithoutPP x.api
-        
-        [<Test>]
         member x.GetVersionWithMediaType() = Version8.GetVersionWithMediaType x.api
         
         [<Test>]
