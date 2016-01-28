@@ -371,14 +371,13 @@ module NakedObjects.Angular.Gemini {
 
             if (result.resultType() === "object") {
         
-
-                if (resultObject.extensions().renderInEdit()) {
+                if (resultObject.persistLink()) {
                     // transient object
                     const domainType = resultObject.extensions().domainType();
                     resultObject.wrapped().domainType = domainType;
-                    //resultObject.wrapped().instanceId = "0";
+                    resultObject.wrapped().instanceId = "0";
 
-                    //resultObject.hateoasUrl = `/${domainType}/0`;
+                    resultObject.hateoasUrl = `/${domainType}/0`;
 
                     context.setObject(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
@@ -517,13 +516,14 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean ) => {
-            const persist = object.getUpdateMap();
+            const persist = object.getPersistMap();
 
-            _.each(props, (v, k) => persist.setProperty(k, v));
+            _.each(props, (v, k) => persist.setMember(k, v));
 
             return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
-                   context.setObject(paneId, updatedObject);
+                    context.setObject(paneId, updatedObject);
+
 
                     dirtyCache.setDirty(updatedObject);
 
