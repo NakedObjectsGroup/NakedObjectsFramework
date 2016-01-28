@@ -49,6 +49,8 @@ namespace NakedObjects.Facade {
         ParameterTypeContextFacade GetActionParameterType(string typeName, string actionName, string parmName);
 
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
+        ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
+
         ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments);
 
         UserCredentials Validate(string user, string password);
