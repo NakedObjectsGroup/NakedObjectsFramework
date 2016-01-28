@@ -576,11 +576,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutputStarting("Result from List Products By Sub Category:\r\n3 items");
 
-            //Action resuling in an error
+            //Action resulting in an error
             CiceroUrl("home?menu1=CustomerRepository&dialog1=ThrowDomainException");
             WaitForOutput("Customers menu\r\nAction dialog: Throw Domain Exception");
             EnterCommand("ok");
             WaitForOutput("Sorry, an application error has occurred. Foo");
+
+            //Co-validation error
+            CiceroUrl("object?object1=AdventureWorksModel.Vendor-1668&actions1=open&dialog1=ListPurchaseOrders&field1_fromDate=%25222016-01-06T00%253A00%253A00.000Z%2522&field1_toDate=%25222016-01-05T00%253A00%253A00.000Z%2522");
+            WaitForOutputStarting("Vendor: Touring Equipment Center\r\n"+
+                "Action dialog: List Purchase Orders");
+            EnterCommand("ok");
+            WaitForOutput("To Date cannot be before From Date");
         }
         public virtual void Page()
         {
@@ -885,7 +892,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Employee: Untitled Employee");
         }
-
         public virtual void ScenarioTestEditAndSave()
         {
             //happy case -  edit one property

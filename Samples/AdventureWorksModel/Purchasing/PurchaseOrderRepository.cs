@@ -80,6 +80,11 @@ namespace AdventureWorksModel {
             return Container.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         }
 
+        public string ValidateListPurchaseOrders(Vendor vendor,DateTime? fromDate, DateTime? toDate)
+        {
+           return toDate.IsAtLeastOneDayBefore(fromDate) ? "To Date cannot be before From Date": null;
+        }
+
         #endregion
 
         #region OpenPurchaseOrdersForProduct
