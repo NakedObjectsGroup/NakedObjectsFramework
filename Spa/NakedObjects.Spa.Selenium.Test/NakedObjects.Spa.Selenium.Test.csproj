@@ -64,11 +64,13 @@
   <ItemGroup>
     <Compile Include="helpers\SafeWebDriverWait.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tests\NewTestFrameworkExample.cs" />
     <Compile Include="tests\GeminiTest.cs" />
     <Compile Include="tests\CopyAndPasteTests.cs" />
     <Compile Include="tests\CiceroTests.cs" />
     <Compile Include="tests\KeyboardNavigationTests.cs" />
     <Compile Include="tests\CCAtests.cs" />
+    <Compile Include="tests\NewTestFramework.cs" />
     <Compile Include="tests\TransientObjectTests.cs" />
     <Compile Include="tests\SplitPaneTests.cs" />
     <Compile Include="tests\ListTests.cs" />
