@@ -374,9 +374,61 @@ module NakedObjects.Angular.Gemini {
         private openActionDialog(action: ActionMember) {
             this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
             _.forEach(action.parameters(), (p) => {
-                let pVal = p.default();
+                //const pVal = p.default();
+                //TODO: problem here. For ref values (links) much too much is going in.
+                const pVal = this.valueForUrl(p.default(), p);
                 this.urlManager.setFieldValue(action.actionId(), p, pVal, 1, false);
             });
+        }
+
+        protected valueForUrl(val: Value, p: Parameter): Value {
+            //TODO: Code copied from ValueViewModel#getValue()
+            const hasChoices = _.countBy(p.choices());
+            const hasPrompt = !!p.promptLink() && !!p.promptLink().arguments()["x-ro-searchTerm"];
+            const hasConditionalChoices = !!p.promptLink() && !p.hasPrompt;
+            const isMultipleChoices = (hasChoices || hasConditionalChoices) && p.extensions().returnType() === "list";
+            const hasAutoAutoComplete = val.isReference && !hasPrompt && !hasChoices && !hasConditionalChoices;
+            const isCollectionContributed = p.isCollectionContributed();
+
+            if (hasChoices || hasPrompt || hasConditionalChoices || hasAutoAutoComplete || isCollectionContributed) {
+
+                if (isMultipleChoices || isCollectionContributed) {
+                    //TODO:
+                    //const selections = val.multiChoices || [];
+                    //if (val.isScalar) {
+                    //    const selValues = _.map(selections, cvm => cvm.value);
+                    //    return new Value(selValues);
+                    //}
+                    //const selRefs = _.map(selections, cvm => ({ href: cvm.value, title: cvm.name })); // reference 
+                    //return new Value(selRefs);
+                    const hrefsAndTitles = _.map(val.list(), v => ({ href: v.link().href(), title: v.link().title() }));
+                    return new Value(hrefsAndTitles);
+                }
+
+
+                if (val.isScalar()) {
+                    return val;
+                }
+
+                // reference 
+                return new Value({ href: val.link().href(), title: val.link().title() });
+            }
+
+            if (val.isScalar()) {
+                if (val.isNull()) {
+                    return new Value("");
+                }
+                return val;
+                //TODO: consider these options:
+            //    if (from.value instanceof Date) {
+            //        return new Value((from.value as Date).toISOString());
+            //    }
+
+            //    return new Value(from.value as number | string | boolean);
+            }
+
+            // reference
+            return new Value(val.isReference() ? { href: val.link().href(), title: val.link().title() } : null);
         }
     }
     export class Back extends Command {
