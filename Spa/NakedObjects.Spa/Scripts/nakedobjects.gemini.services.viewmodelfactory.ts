@@ -15,7 +15,7 @@ module NakedObjects.Angular.Gemini {
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number): PropertyViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues : () => _.Dictionary<Value> ): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
         getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel);
@@ -174,12 +174,12 @@ module NakedObjects.Angular.Gemini {
 
                 const promptRep = parmRep.getPrompts();
                 if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id);
+                    parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
                     parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
                 }
 
                 if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id);
+                    parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
                     parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -336,7 +336,7 @@ module NakedObjects.Angular.Gemini {
             vm.message = msg;
         }
 
-        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number) => {
+        viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
 
@@ -411,12 +411,12 @@ module NakedObjects.Angular.Gemini {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 if (propertyViewModel.hasPrompt) {
-                    propertyViewModel.prompt = _.partial(context.prompt, promptRep, id);
+                    propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
                     propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
                 }
 
                 if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id);
+                    propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
                     propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
                 }
             }
@@ -563,7 +563,7 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
-            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId));
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>> {}));
 
             return tableRowViewModel;
         };

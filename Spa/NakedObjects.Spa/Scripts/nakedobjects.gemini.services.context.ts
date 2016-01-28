@@ -21,8 +21,8 @@ module NakedObjects.Angular.Gemini {
         getError: () => ErrorRepresentation;
         getPreviousUrl: () => string;
 
-        prompt(promptRep: PromptRepresentation, id: string, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
-        conditionalChoices(promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
+        prompt(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
@@ -348,18 +348,19 @@ module NakedObjects.Angular.Gemini {
         const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
             $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
-        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map : PromptMap) => void) => {
+        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
             const map = promptRep.getPromptMap();
+            map.setMembers(objectValues);
             setupPrompt(map);
             const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
             return repLoader.populate(map, true, promptRep).then(createcvm);
         };
 
-        context.prompt = (promptRep: PromptRepresentation, id: string, searchTerm: string) =>
-            doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm));
+        context.prompt = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
+            doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm), objectValues);
 
-        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, args: _.Dictionary<Value>) =>
-            doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args));
+        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
+            doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 

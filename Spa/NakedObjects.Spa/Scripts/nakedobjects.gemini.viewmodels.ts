@@ -564,6 +564,11 @@ module NakedObjects.Angular.Gemini {
             super();
         }
 
+        propertyMap = () => {
+            const pps = _.filter(this.properties, property => property.isEditable);
+            return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+        }
+
         reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
@@ -571,7 +576,7 @@ module NakedObjects.Angular.Gemini {
             this.isInEdit = routeData.edit || this.domainObject.extensions().renderInEdit();
             this.props = routeData.edit ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
-            this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId));
+            this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
             this.unsaved = this.isInEdit && !routeData.edit;
@@ -642,13 +647,14 @@ module NakedObjects.Angular.Gemini {
             this.cancelHandler()();
         };
 
+  
+
         private saveHandler = () => this.unsaved ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
         
             this.setProperties();
-            const pps = _.filter(this.properties, property => property.isEditable);
-            const propMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
+            const propMap = this.propertyMap();
 
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).then((err: ErrorMap) => {
                 if (err.containsError()) {

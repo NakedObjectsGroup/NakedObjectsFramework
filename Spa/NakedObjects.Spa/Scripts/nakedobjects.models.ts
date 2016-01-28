@@ -743,6 +743,17 @@ module NakedObjects {
         setArguments(args: _.Dictionary<Value>) {
             _.each(args, (arg, key) => this.setArgument(key, arg));
         }
+
+        setMember(name: string, value: Value) {
+            // todo fix types
+            value.set( (<any> this.map)["members"], name);
+        }    
+
+        setMembers(objectValues: () => _.Dictionary<Value>) {
+            if (this.map["members"]) {
+                _.forEach(objectValues(), (v, k) => this.setMember(k, v));
+            }
+        }
     }
 
     export class PromptRepresentation extends ResourceRepresentation<RoInterfaces.IPromptRepresentation> {
