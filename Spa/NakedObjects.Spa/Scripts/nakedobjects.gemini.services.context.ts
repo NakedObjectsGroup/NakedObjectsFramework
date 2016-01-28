@@ -524,7 +524,6 @@ module NakedObjects.Angular.Gemini {
                 then((updatedObject: DomainObjectRepresentation) => {
                     context.setObject(paneId, updatedObject);
 
-
                     dirtyCache.setDirty(updatedObject);
 
                     if (viewSavedObject) {

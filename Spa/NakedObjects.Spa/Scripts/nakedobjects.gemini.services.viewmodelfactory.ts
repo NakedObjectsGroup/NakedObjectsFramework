@@ -328,15 +328,13 @@ module NakedObjects.Angular.Gemini {
                 }
             });
 
-            let msg = "";
-            if (err.invalidReason()) msg += err.invalidReason();
-            if (requiredFieldsMissing) msg += "Please complete REQUIRED fields. ";
-            if (fieldValidationErrors) msg += "See field validation message(s). ";
+            let msg = err.invalidReason() ||  "";
+            if (requiredFieldsMissing) msg =  `${msg} Please complete REQUIRED fields. `;
+            if (fieldValidationErrors) msg =  `${msg} See field validation message(s). `;
+
             if (!msg) msg = err.warningMessage;
             vm.message = msg;
-
         }
-
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number) => {
             const propertyViewModel = new PropertyViewModel();

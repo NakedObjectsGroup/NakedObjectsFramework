@@ -427,6 +427,12 @@ module NakedObjects {
         }
 
         invalidReason() {
+            
+            const temp = this.map;
+            if (isIObjectOfType(temp)) {
+                return temp["x-ro-invalidReason"];
+            }
+
             return this.wrapped()["x-ro-invalidReason"] as string;
         }
 
