@@ -340,11 +340,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("prop num,x");
             WaitForOutput("Too many arguments provided");
 
+            //Reading properties in edit mode
+            CiceroUrl("object?object1=AdventureWorksModel.Product-369&edit1=true&prop1_Style=%2522U%2520%2522&prop1_ListPrice=%2522500%2522");
+            WaitForOutputStarting("Editing");
+            EnterCommand("prop");
+            WaitForOutputContaining("List Price: 500 (modified)");
+            WaitForOutputContaining("Style: U  (modified)");
+
             //exact match takes priority over partial match
             //TODO: Need example from properties, not action params -  transfer this to Enter test
             //EnterCommand("field product category"); //which would also match product subcategory
             //WaitForOutput("Product Category: Bikes");
-     }
+        }
         public virtual void Gemini()
         {
             //home
@@ -1073,7 +1080,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+   // [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1141,15 +1148,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Clipboard();
             base.Edit();
             base.Enter();
-            base.Property();
             base.Gemini();
             base.Goto();
             base.Help();
             base.Menu();
             base.OK();
             base.Page();
+            base.Property();
             base.Root();
-            base.Save();
+           // base.Save(); //TODO
             base.Show();
             base.Where();
             base.SpaceBarAutoComplete();
