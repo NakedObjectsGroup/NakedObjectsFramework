@@ -22,9 +22,9 @@ namespace RestfulObjects.Snapshot.Strategies {
         public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
-        private void AddPrompt(List<LinkRepresentation> links) {
+        private void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
             if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
-                links.Add(CreatePromptLink());
+                links.Add(createPrompt());
             }
         }
 
@@ -48,7 +48,25 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()), Flags, opts.ToArray());
         }
 
-      
+        private LinkRepresentation CreatePersistPromptLink() {
+            var opts = new List<OptionalProperty>();
+
+            if (propertyContext.Property.IsAutoCompleteEnabled) {
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength)));
+
+                opts.Add(arguments);
+                opts.Add(extensions);
+            }
+            else {
+                Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
+                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags)).ToArray();
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
+                opts.Add(arguments);
+            }
+
+            return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()) {Method = RelMethod.Put}  , Flags, opts.ToArray());
+        }
 
         private void AddMutatorLinks(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
@@ -76,9 +94,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 AddMutatorLinks(links);
             }
 
-            if (!propertyContext.Target.IsTransient) {
-                AddPrompt(links);
-            }
+            AddPrompt(links, propertyContext.Target.IsTransient ? (Func<LinkRepresentation>)CreatePersistPromptLink : CreatePromptLink);
 
             return links.ToArray();
         }

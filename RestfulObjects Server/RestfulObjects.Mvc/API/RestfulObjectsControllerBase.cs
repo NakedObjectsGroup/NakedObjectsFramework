@@ -250,15 +250,20 @@ namespace RestfulObjects.Mvc {
                 constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("PostObject",
-                routeTemplate: objects + "/{domainType}/{instanceId}",
-                defaults: new { controller = "RestfulObjects", action = "PostObject" },
-                constraints: new { httpMethod = new HttpMethodConstraint("Post") }
-                );
-
             routes.MapHttpRoute("InvalidObject",
                 routeTemplate: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
+
+
+            routes.MapHttpRoute("PutPersistPropertyPrompt",
+               routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+               defaults: new { controller = "RestfulObjects", action = "PutPersistPropertyPrompt" },
+               constraints: new { httpMethod = new HttpMethodConstraint("PUT") }
+               );
+
+            routes.MapHttpRoute("InvalidPersistPropertyPrompt",
+                routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
 
             routes.MapHttpRoute("GetPropertyPrompt",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
@@ -496,6 +501,12 @@ namespace RestfulObjects.Mvc {
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
                 ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, args.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
+            });
+        }
+
+        public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName,  ArgumentMap arguments) {
+            return InitAndHandleErrors(() => {
+                return null;
             });
         }
 

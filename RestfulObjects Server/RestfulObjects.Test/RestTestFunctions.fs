@@ -770,11 +770,25 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
       let disabled = mName.Contains("Disabled")         
       let autocomplete = mName.Contains("AutoComplete")
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
-     
+      let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
+
+      let acLink = 
+        if conditionalChoices then 
+           
+            let dbl = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")) RepresentationTypes.DomainType ""
+            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl)]))]))]))
+            
+            TObjectJson(argP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName  mName) RepresentationTypes.Prompt "" "" true); 
+        else   
+            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty(JsonPropertyNames.XRoSearchTerm, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
+            let extP = TProperty(JsonPropertyNames.Extensions, TObjectJson( [TProperty(JsonPropertyNames.MinLength, TObjectVal(2))]))
+            TObjectJson(argP :: extP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName mName) RepresentationTypes.Prompt "" "" true);
+
+
       let links = [ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "")]
-
-
-      
+      let links = if autocomplete || conditionalChoices then (Seq.append links [acLink]).ToList() else links.ToList()
+  
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
                     TProperty(JsonPropertyNames.Id, TObjectVal(mName));

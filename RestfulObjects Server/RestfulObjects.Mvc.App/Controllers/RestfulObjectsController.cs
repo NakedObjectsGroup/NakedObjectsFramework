@@ -87,11 +87,6 @@ namespace MvcTestApp.Controllers {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
-        //[HttpPost]
-        //public override HttpResponseMessage PostObject(string domainType, string instanceId, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
-        //    return base.PostObject(domainType, instanceId, arguments);
-        //}
-
         [HttpGet]
         public override HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetProperty(domainType, instanceId, propertyName, arguments);
@@ -180,6 +175,11 @@ namespace MvcTestApp.Controllers {
         [HttpGet]
         public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, [ModelBinder(typeof(ArgumentMapUrlBinder))] ArgumentMap arguments) {
             return base.GetInvokeTypeActions(typeName, actionName, arguments);
+        }
+
+        [HttpPut]
+        public override HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
+            return base.PutPersistPropertyPrompt(domainType, propertyName, arguments);
         }
 
         [HttpGet]
