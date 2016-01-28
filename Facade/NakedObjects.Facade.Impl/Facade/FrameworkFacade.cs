@@ -148,7 +148,11 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => CreateObject(typeName, arguments));
+            return MapErrors(() => CreateObject(typeName, arguments, true));
+        }
+
+        public ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => CreateObject(typeName, arguments, false));
         }
 
         public ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments) {
@@ -610,7 +614,7 @@ namespace NakedObjects.Facade.Impl {
             return oc.ToObjectContextFacade(this, framework);
         }
 
-        private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
+        private ObjectContextFacade SetObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments, bool save) {
             // this is for ProtoPersistents where the arguments must contain all values 
             // for standard transients the object may already have values set so no need to check  
             if (((IObjectSpec) nakedObject.Spec).Properties.OfType<IOneToOneAssociationSpec>().Any(p => !arguments.Values.Keys.Contains(p.Id))) {
@@ -627,11 +631,13 @@ namespace NakedObjects.Facade.Impl {
                     if (!arguments.ValidateOnly) {
                         Array.ForEach(objectContext.VisibleProperties, SetProperty);
 
-                        if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
-                            framework.LifecycleManager.MakePersistent(nakedObject);
-                        }
-                        else {
-                            framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
+                        if (save) {
+                            if (nakedObject.Spec.Persistable == PersistableType.UserPersistable) {
+                                framework.LifecycleManager.MakePersistent(nakedObject);
+                            }
+                            else {
+                                framework.Persistor.ObjectChanged(nakedObject, framework.LifecycleManager, framework.MetamodelManager);
+                            }
                         }
                         propertiesToDisplay = ((IObjectSpec)nakedObject.Spec).Properties.
                             Where(p => p.IsVisible(nakedObject)).
@@ -1049,7 +1055,7 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        private ObjectContextFacade CreateObject(string typeName, ArgumentsContextFacade arguments) {
+        private ObjectContextFacade CreateObject(string typeName, ArgumentsContextFacade arguments, bool save) {
             if (string.IsNullOrWhiteSpace(typeName)) {
                 throw new BadRequestNOSException();
             }
@@ -1057,7 +1063,7 @@ namespace NakedObjects.Facade.Impl {
             var spec = (IObjectSpec) GetDomainTypeInternal(typeName);
             INakedObjectAdapter nakedObject = framework.LifecycleManager.CreateInstance(spec);
 
-            return SetObject(nakedObject, arguments);
+            return SetObject(nakedObject, arguments, save);
         }
 
         private ObjectContextFacade PersistTransientObject(IObjectFacade transient, ArgumentsContextFacade arguments) {

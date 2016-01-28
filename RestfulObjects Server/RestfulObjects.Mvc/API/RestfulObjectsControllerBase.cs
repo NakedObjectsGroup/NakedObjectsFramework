@@ -19,6 +19,7 @@ using System.Web.Routing;
 using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Translation;
 using RestfulObjects.Mvc.Media;
 using RestfulObjects.Mvc.Model;
 using RestfulObjects.Snapshot.Constants;
@@ -250,15 +251,20 @@ namespace RestfulObjects.Mvc {
                 constraints: new {httpMethod = new HttpMethodConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("PostObject",
-                routeTemplate: objects + "/{domainType}/{instanceId}",
-                defaults: new { controller = "RestfulObjects", action = "PostObject" },
-                constraints: new { httpMethod = new HttpMethodConstraint("Post") }
-                );
-
             routes.MapHttpRoute("InvalidObject",
                 routeTemplate: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
+
+
+            routes.MapHttpRoute("PutPersistPropertyPrompt",
+               routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+               defaults: new { controller = "RestfulObjects", action = "PutPersistPropertyPrompt" },
+               constraints: new { httpMethod = new HttpMethodConstraint("PUT") }
+               );
+
+            routes.MapHttpRoute("InvalidPersistPropertyPrompt",
+                routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
 
             routes.MapHttpRoute("GetPropertyPrompt",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
@@ -482,7 +488,7 @@ namespace RestfulObjects.Mvc {
         public virtual HttpResponseMessage GetObject(string domainType, string instanceId, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                return new RestSnapshot(OidStrategy, GetObject(loid), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
             });
         }
 
@@ -491,11 +497,23 @@ namespace RestfulObjects.Mvc {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
                 // TODO enhance frameworkFacade to return property with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                var obj = GetObject(link);
+                var obj = FrameworkFacade.GetObject(link);
 
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
                 ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, args.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
+            });
+        }
+
+        public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, ArgumentMap persistArguments, ArgumentMap arguments) {
+            return InitAndHandleErrors(() => {
+                Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPersistArguments(persistArguments);
+                Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(arguments, false);
+                var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
+                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
+                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, promptArgs.Item1);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, promptArgs.Item2), false);
+
             });
         }
 
@@ -546,23 +564,6 @@ namespace RestfulObjects.Mvc {
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
             });
         }
-
-        //public virtual HttpResponseMessage PostObject(string domainType, string instanceId, ArgumentMap arguments) {
-        //    if (ProtoPersistentObjects) {
-        //        throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
-        //    }
-        //    return InitAndHandleErrors(() => {
-        //        HandleReadOnlyRequest();
-        //        Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
-
-        //        var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-        //        var obj = GetObject(loid);
-        //        ObjectContextFacade context = FrameworkFacade.PersistObject(obj.Target, args.Item1);
-        //        VerifyNoError(context);
-        //        return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
-
-        //    });
-        //}
 
         public virtual HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
@@ -847,76 +848,6 @@ namespace RestfulObjects.Mvc {
 
                 throw new BadArgumentsNOSException("Arguments invalid", objectContext);
             }
-        }
-
-        //private void ClearOldest(Dictionary<string, TransientSlot> dict) {
-        //    while (dict.Count >= 2) {
-        //        var ordered = dict.OrderBy(kvp => kvp.Value.TimeAdded);
-        //        dict.Remove(ordered.First().Key);
-        //    }
-        //}
-
-        //private const string  NofTransients = "nof-transients";
-
-
-        //private void CacheTransient(ActionResultContextFacade actionResult) {
-
-        //    var target = actionResult?.Result?.Target;
-
-        //    if (!RestControlFlags.ProtoPersistentObjects && target != null && target.IsTransient) {
-        //        var id = Guid.NewGuid();
-        //        actionResult.Result.UniqueIdForTransient = id;
-        //        var session = HttpContext.Current.Session;
-        //        var transientDict = session[NofTransients] as Dictionary<string, TransientSlot> ?? new Dictionary<string, TransientSlot>();
-        //        var index = id.ToString();
-        //        var transient = actionResult.Result.Target.Object;
-
-        //        if (transientDict.ContainsKey(index)) {
-        //            transientDict[index].Transient = transient;
-        //            transientDict[index].TimeAdded = DateTime.UtcNow;
-        //        }
-        //        else {
-        //            // clear oldest
-        //            ClearOldest(transientDict);
-        //            transientDict[index] = new TransientSlot {Transient = transient, TimeAdded = DateTime.UtcNow};
-        //        }
-        //        session[NofTransients] =  transientDict;
-        //    }
-        //}
-
-        //private class TransientSlot {
-        //    public DateTime TimeAdded { get; set; }
-        //    public object Transient { get; set; }
-
-        //}
-
-        //private object CheckForTransient(NakedObjects.Facade.Translation.IOidTranslation loid, out Guid idAsGuid) {
-        //    var id = loid.InstanceId;
-
-        //    if (Guid.TryParse(id, out idAsGuid)) {
-        //        var index = idAsGuid.ToString();
-        //        var session = HttpContext.Current.Session;
-        //        if (session != null) {
-        //            var transientDict = session[NofTransients] as Dictionary<string, TransientSlot>;
-        //            return transientDict != null && transientDict.ContainsKey(index) ? transientDict[index].Transient : null;
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        private ObjectContextFacade GetObject(NakedObjects.Facade.Translation.IOidTranslation loid) {
-            //Guid idAsGuid;
-            //var transient = CheckForTransient(loid, out idAsGuid);
-
-            //if (transient != null) {
-            //    var obj = FrameworkFacade.GetObject(transient);
-            //    var objectContext = FrameworkFacade.GetObject(obj);
-            //    objectContext.UniqueIdForTransient = idAsGuid;
-            //    return objectContext;
-            //}
-
-            return FrameworkFacade.GetObject(loid);
         }
 
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {

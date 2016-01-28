@@ -80,7 +80,7 @@ namespace RestfulObjects.Snapshot.Utility {
             objectFacade = propertyContext.Target;
             spec = objectFacade.Specification;
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
-            cachedId = oid.InstanceId;
+            cachedId = propertyContext.Target.IsTransient ? "" : oid.InstanceId;
             CachedType = oid.DomainType;
         }
 
@@ -383,7 +383,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType, memberType, member.Id);
         }
 
-        private Uri GetObjectMemberUri(IMemberFacade member, string memberType) {
+        private Uri GetPersistentObjectMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
@@ -391,6 +391,19 @@ namespace RestfulObjects.Snapshot.Utility {
             var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectId}/{memberType}/{memberId}");
             return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
         }
+
+        private Uri GetTransientObjectMemberUri(IMemberFacade member, string memberType) {
+            CheckArgumentNotNull(CachedType, "object type");
+            CheckArgumentNotNull(memberType, "member type");
+
+            var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{memberType}/{memberId}");
+            return template.BindByPosition(prefix, CachedType, memberType, member.Id);
+        }
+
+        private Uri GetObjectMemberUri(IMemberFacade member, string memberType) {
+            return string.IsNullOrEmpty(cachedId) ? GetTransientObjectMemberUri(member, memberType) : GetPersistentObjectMemberUri(member, memberType);
+        }
+
 
         private Uri GetMemberUri(IMemberFacade member, string memberType) {
             return spec.IsService ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
@@ -408,8 +421,12 @@ namespace RestfulObjects.Snapshot.Utility {
             return getUri(assoc, SegmentValues.Properties);
         }
 
+        private Uri GetMemberUri() {
+            return param == null ? ByMemberType(GetMemberUri) : GetParamUri();
+        }
+
         public Uri GetPromptUri() {
-            Uri memberUri = param == null ? ByMemberType(GetMemberUri) : GetParamUri();
+            Uri memberUri = GetMemberUri();
             var builder = new UriBuilder(memberUri);
             builder.Path = builder.Path + "/" + SegmentValues.Prompt;
             return builder.Uri;

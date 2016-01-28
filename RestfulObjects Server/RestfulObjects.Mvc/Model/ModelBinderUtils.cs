@@ -107,8 +107,16 @@ namespace RestfulObjects.Mvc.Model {
             return domainModel == null ? null : (string) domainModel.Value;
         }
 
+        private static IEnumerable<JProperty> FilterProperties(JToken jToken, Func<JProperty, bool> filter) {
+            return jToken.Children().Cast<JProperty>().Where(filter);
+        }
+
+        private static IEnumerable<JProperty> GetNonReservedAndNonMemberProperties(JToken jToken) {
+            return FilterProperties(jToken, c => !IsReservedName(c.Name) && c.Name != JsonPropertyNames.Members);
+        }
+
         private static IEnumerable<JProperty> GetNonReservedProperties(JToken jToken) {
-            return jToken.Children().Cast<JProperty>().Where(c => !IsReservedName(c.Name));
+            return FilterProperties(jToken, c => !IsReservedName(c.Name));
         }
 
         public static SingleValueArgument CreateSingleValueArgument(object obj) {
@@ -168,7 +176,7 @@ namespace RestfulObjects.Mvc.Model {
         }
 
         private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
-            arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
         private static void PopulatePersistArgumentMap(JToken jObject, ArgumentMap arg) {

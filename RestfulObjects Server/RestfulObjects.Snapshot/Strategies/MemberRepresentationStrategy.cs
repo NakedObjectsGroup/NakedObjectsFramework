@@ -39,6 +39,10 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected UriMtHelper GetHelper() {
+            //if (propertyContext.Target.IsTransient) {
+            //    return new UriMtHelper(OidStrategy, req, propertyContext.Target.Specification);
+            //}
+
             return new UriMtHelper(OidStrategy, req, propertyContext);
         }
 

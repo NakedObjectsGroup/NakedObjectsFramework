@@ -384,6 +384,17 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
     
+    let autoRel = RelValues.Prompt + makeParm RelParamValues.Property "AConditionalChoicesValue"
+    let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
+    let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
+    let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+                                                                                                         TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl1)]))]));
+                                                                    TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+                                                                                                         TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl2)]))]))
+                                                                                                         ]))
+    
+
+
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
@@ -435,7 +446,12 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                           ([ TObjectJson
                                                                                  (makeGetLinkProp RelValues.DescribedBy 
                                                                                       (sprintf "domain-types/%s/properties/%s" roType "AConditionalChoicesValue") 
-                                                                                      RepresentationTypes.PropertyDescription "") ]))
+                                                                                      RepresentationTypes.PropertyDescription "")
+                                                                             TObjectJson
+                                                                                  (argP :: makeLinkPropWithMethodAndTypes "PUT" autoRel 
+                                                                                      (sprintf "objects/%s/properties/%s/prompt" roType  "AConditionalChoicesValue") 
+                                                                                      RepresentationTypes.Prompt "" "" true)
+                                                                           ]))
                                                                  TProperty(JsonPropertyNames.Extensions, 
                                                                            TObjectJson([ TProperty
                                                                                              (JsonPropertyNames.FriendlyName, 
