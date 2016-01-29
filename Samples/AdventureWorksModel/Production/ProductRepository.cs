@@ -124,6 +124,31 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region ListProducts
+
+        [FinderAction]
+        [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
+        public IQueryable<Product> ListProducts(ProductCategory category, ProductSubcategory subCategory)
+        {
+            return from obj in Instances<Product>()
+                   where obj.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID
+                   orderby obj.Name
+                   select obj;
+        }
+
+        public IList<ProductSubcategory> Choices1ListProducts(ProductCategory category)
+        {
+            if (category != null)
+            {
+                return category.ProductSubcategory.ToList();
+            } else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
         #region ListProductsBySubcategories
 
         [FinderAction]
