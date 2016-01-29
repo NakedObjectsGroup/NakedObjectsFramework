@@ -150,9 +150,23 @@ namespace RestfulObjects.Mvc.Model {
             return new SingleValueArgument {IsMalformed = true};
         }
 
+        private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
+            var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
+
+            InitArgumentMap(jObject, populate, arg);
+         
+            return arg;
+        }
+
         private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
             var arg = new ArgumentMap();
 
+            InitArgumentMap(jObject, populate, arg);
+
+            return arg;
+        }
+
+        private static void InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg) {
             if (jObject != null) {
                 try {
                     populate(jObject, arg);
@@ -171,12 +185,10 @@ namespace RestfulObjects.Mvc.Model {
             else {
                 arg.Map = new Dictionary<string, IValue>();
             }
-
-            return arg;
         }
 
         private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
-            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+            arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
         private static void PopulatePersistArgumentMap(JToken jObject, ArgumentMap arg) {
@@ -188,6 +200,21 @@ namespace RestfulObjects.Mvc.Model {
             else {
                 arg.Map = new Dictionary<string, IValue>();
             }
+        }   
+
+        private static void PopulatePromptArgumentMap(JToken jObject, ArgumentMap arg) {
+            JToken members = jObject[JsonPropertyNames.Members];
+            var promptArgumentMap = arg as PromptArgumentMap;
+
+            if (promptArgumentMap != null) {
+                if (members != null) {
+                    promptArgumentMap.MemberMap = GetNonReservedProperties(members).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+                }
+                else {
+                    promptArgumentMap.MemberMap = new Dictionary<string, IValue>();
+                }
+            }
+            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject)jt.Value, jt.Name));
         }
 
         public static ArgumentMap CreateArgumentMap(JObject jObject) {
@@ -196,6 +223,10 @@ namespace RestfulObjects.Mvc.Model {
 
         public static ArgumentMap CreatePersistArgMap(JObject jObject) {
             return CreateArgumentMap(jObject, PopulatePersistArgumentMap);
+        }
+
+        public static ArgumentMap CreatePromptArgMap(JObject jObject) {
+            return CreatePromptArgumentMap(jObject, PopulatePromptArgumentMap);
         }
 
         public static ArgumentMap CreateArgumentMapForMalformedArgs() {

@@ -183,8 +183,8 @@ namespace MvcTestApp.Controllers {
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, [ModelBinder(typeof(PersistArgumentMapBinder))] ArgumentMap persistArguments, [ModelBinder(typeof(ArgumentMapBinder))] ArgumentMap arguments) {
-            return base.PutPersistPropertyPrompt(domainType, propertyName, persistArguments, arguments);
+        public override HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, [ModelBinder(typeof(PromptArgumentMapBinder))] PromptArgumentMap promptArguments) {
+            return base.PutPersistPropertyPrompt(domainType, propertyName, promptArguments);
         }
 
         [HttpGet]
