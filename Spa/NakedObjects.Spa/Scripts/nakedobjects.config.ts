@@ -15,8 +15,8 @@ module NakedObjects {
     // custom configuration for a particular implementation 
 
     // path to Restful Objects server 
-    //export var appPath = "http://nakedobjectsrodemo.azurewebsites.net";
-    export var appPath = "http://localhost:61546";
+    export var appPath = "http://nakedobjectsrodemo.azurewebsites.net";
+    //export var appPath = "http://localhost:61546";
 
     // path local server (ie ~) only needed if you want to hard code paths for some reason
     export var svrPath = "";
