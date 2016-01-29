@@ -51,8 +51,15 @@ namespace RestfulObjects.Snapshot.Strategies {
         private LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
+            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p =>  Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true)).ToArray();
+            OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
+
+            var objectMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
+
             if (propertyContext.Property.IsAutoCompleteEnabled) {
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))));
+                var searchTerm = new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))));
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(objectMembers, searchTerm));
+
                 var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength)));
 
                 opts.Add(arguments);
@@ -60,8 +67,10 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
             else {
                 Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
-                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags)).ToArray();
-                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
+                var conditionalArguments = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags));
+                var args = new List<OptionalProperty> {objectMembers};
+                args.AddRange(conditionalArguments);
+                var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray()));
                 opts.Add(arguments);
             }
 

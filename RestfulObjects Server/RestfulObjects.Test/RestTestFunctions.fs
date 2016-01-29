@@ -763,7 +763,7 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
       else
         props; 
 
-let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string) fName desc rType opt (oValue : TObject) =
+let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string) fName desc rType opt (oValue : TObject) args =
       let order = if desc = "" then 0 else 2 
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
@@ -776,12 +776,14 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
         if conditionalChoices then 
            
             let dbl = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")) RepresentationTypes.DomainType ""
-            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [ args
+                                                                             TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                                  TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl)]))]))]))
             
             TObjectJson(argP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName  mName) RepresentationTypes.Prompt "" "" true); 
         else   
-            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty(JsonPropertyNames.XRoSearchTerm, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
+            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [args
+                                                                            TProperty(JsonPropertyNames.XRoSearchTerm, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
             let extP = TProperty(JsonPropertyNames.Extensions, TObjectJson( [TProperty(JsonPropertyNames.MinLength, TObjectVal(2))]))
             TObjectJson(argP :: extP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName mName) RepresentationTypes.Prompt "" "" true);
 

@@ -387,7 +387,8 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let autoRel = RelValues.Prompt + makeParm RelParamValues.Property "AConditionalChoicesValue"
     let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
     let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
-    let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+    let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [argsMembers
+                                                                    TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                          TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl1)]))]));
                                                                     TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                          TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl2)]))]))
@@ -756,14 +757,14 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                              ("AChoicesReference", 
                                               
                                               TObjectJson
-                                                  (makePropertyMemberShortNoDetails "objects" "AChoicesReference" roType "A Choices Reference" "" mst false val1))
+                                                  (makePropertyMemberShortNoDetails "objects" "AChoicesReference" roType "A Choices Reference" "" mst false val1 argsMembers))
                                          
                                          TProperty
                                              ("AConditionalChoicesReference", 
                                               
                                               TObjectJson
                                                   (makePropertyMemberShortNoDetails "objects" "AConditionalChoicesReference" roType 
-                                                       "A Conditional Choices Reference" "" mst false val6))
+                                                       "A Conditional Choices Reference" "" mst false val6 argsMembers))
                                          
                                          TProperty
                                              ("ADisabledReference", 
@@ -771,31 +772,31 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                               TObjectJson
                                                   (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
                                                    :: (makePropertyMemberShortNoDetails "objects" "ADisabledReference" roType "A Disabled Reference" "" mst 
-                                                           false val2)))
+                                                           false val2 argsMembers)))
                                          
                                          TProperty
                                              ("ANullReference", 
                                               
                                               TObjectJson
                                                   (makePropertyMemberShortNoDetails "objects" "ANullReference" roType "A Null Reference" "" mst true 
-                                                       (TObjectVal(null))))
+                                                       (TObjectVal(null)) argsMembers))
                                          
                                          TProperty
                                              ("AReference", 
-                                              TObjectJson(makePropertyMemberShortNoDetails "objects" "AReference" roType "A Reference" "" mst false val3))
+                                              TObjectJson(makePropertyMemberShortNoDetails "objects" "AReference" roType "A Reference" "" mst false val3 argsMembers))
                                          
                                          TProperty
                                              ("AnAutoCompleteReference", 
                                               
                                               TObjectJson
                                                   (makePropertyMemberShortNoDetails "objects" "AnAutoCompleteReference" roType "An Auto Complete Reference" "" 
-                                                       mst false val5))
+                                                       mst false val5 argsMembers))
                                          
                                          TProperty
                                              ("AnEagerReference", 
                                               
                                               TObjectJson
-                                                  (makePropertyMemberShortNoDetails "objects" "AnEagerReference" roType "An Eager Reference" "" mst false val4))
+                                                  (makePropertyMemberShortNoDetails "objects" "AnEagerReference" roType "An Eager Reference" "" mst false val4 argsMembers))
                                          TProperty("Id", TObjectJson(makePropertyMemberFullNoDetails "objects" "Id" roType "Id" "" false (TObjectVal(0)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))

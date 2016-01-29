@@ -126,12 +126,11 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions(IObjectFacade objectFacade) {
-            if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy);
-            }
-            else {
-                Extensions = MapRepresentation.Create();
-            }
+            Extensions = Flags.SimpleDomainModel ? GetExtensions(objectFacade) : MapRepresentation.Create();
+        }
+
+        private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
+            return RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy);
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
