@@ -507,7 +507,7 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, PromptArgumentMap promptArguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPersistArguments(promptArguments);
+                Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPromptArguments(promptArguments);
                 Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
@@ -1040,7 +1040,7 @@ namespace RestfulObjects.Mvc {
         }
 
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPromptArguments(PromptArgumentMap promptArgumentMap) {
-            Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(promptArgumentMap, true);
+            Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(promptArgumentMap, false);
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
                 Digest = null,

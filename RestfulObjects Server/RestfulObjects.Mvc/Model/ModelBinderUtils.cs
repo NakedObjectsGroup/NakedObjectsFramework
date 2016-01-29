@@ -13,7 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Common.Logging;
-using NakedObjects.Facade.Utility.Restricted;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestfulObjects.Snapshot.Constants;
@@ -152,9 +151,8 @@ namespace RestfulObjects.Mvc.Model {
         }
 
         private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
-            var arg = new PromptArgumentMap();
+            var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
 
-            arg.MemberMap = new Dictionary<string, IValue>();
             InitArgumentMap(jObject, populate, arg);
          
             return arg;
