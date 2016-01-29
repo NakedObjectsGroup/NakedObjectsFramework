@@ -654,7 +654,7 @@ module NakedObjects {
 
         hasPrompt(): boolean {
             //TODO: I think should be: !!this.promptLink() && !!this.promptLink().arguments()["x-ro-searchTerm"];
-            return !!this.promptLink();
+            return !!this.promptLink() && !!this.promptLink().arguments()["x-ro-searchTerm"];
         }
 
         isCollectionContributed(): boolean {

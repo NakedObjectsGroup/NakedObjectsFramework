@@ -1161,16 +1161,22 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
-                this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => {
-                    if (err.containsError()) {
-                        const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
-                        this.handleErrorResponse(err, propFriendlyName);
-                    } else {
-                        this.urlManager.setObjectEdit(false, 1);
-                    }
-                });
+                if (obj.extensions().renderInEdit()) { //i.e. it is a transient or a viewmodel
+                    this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => this.handleError(err, obj));
+                } else { //It is a persistent object being updated
+                    this.context.updateObject(obj, propMap, 1, true).then((err: ErrorMap) => this.handleError(err, obj));
+                }
             });
         };
+
+        private handleError(err: ErrorMap, obj: DomainObjectRepresentation) {
+            if (err.containsError()) {
+                const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
+                this.handleErrorResponse(err, propFriendlyName);
+            } else {
+                this.urlManager.setObjectEdit(false, 1);
+            }
+        }
     }
     export class Selection extends Command {
 

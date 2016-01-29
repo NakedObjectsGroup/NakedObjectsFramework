@@ -136,6 +136,13 @@ namespace AdventureWorksModel {
                    select obj;
         }
 
+
+        public ProductCategory Default0ListProducts()
+        {
+            return Container.Instances<ProductCategory>().First();
+        }
+
+
         public IList<ProductSubcategory> Choices1ListProducts(ProductCategory category)
         {
             if (category != null)

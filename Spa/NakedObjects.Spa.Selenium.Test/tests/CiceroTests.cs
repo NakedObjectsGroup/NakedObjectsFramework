@@ -21,7 +21,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu");
             //First, without paramsd
             EnterCommand("Action");
-            WaitForOutput("Actions:\r\nFind Product By Name\r\nFind Product By Number\r\nList Products By Sub Category\r\nList Products By Sub Categories\r\nFind By Product Line And Class\r\nFind By Product Lines And Classes\r\nFind Product\r\nFind Products By Category\r\nNew Product\r\nRandom Product\r\nFind Product By Key\r\nStock Report");
+            WaitForOutputStarting("Actions:\r\n"+
+                "Find Product By Name\r\n" +
+                "Find Product By Number\r\n");
 
             //Filtered list
             EnterCommand("act cateGory  ");
@@ -303,8 +305,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid context
             CiceroUrl("home");
+            WaitForOutput("Welcome to Cicero");
             EnterCommand("enter");
             WaitForOutput("The command: enter is not available in the current context");
+
+            //Multi-select and deselect
+            CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategories&field1_subCategories=%255B%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F1%2522%252C%2522title%2522%253A%2522Mountain%2520Bikes%2522%257D%252C%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F3%2522%252C%2522title%2522%253A%2522Touring%2520Bikes%2522%257D%255D");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            EnterCommand("enter sub, handlebars");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            EnterCommand("enter sub, touring bikes");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
+
+
         }
         public virtual void Gemini()
         {
@@ -1167,7 +1180,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Page();
             base.Property();
             base.Root();
-           // base.Save(); //TODO
+            base.Save(); 
             base.Show();
             base.Where();
             base.SpaceBarAutoComplete();

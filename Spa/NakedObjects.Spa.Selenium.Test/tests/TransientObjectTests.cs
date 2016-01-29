@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class TransientObjectTests : AWTest {
 
-        [TestMethod, Ignore] //Stef: transients with refs to persisted objects broken
+        [TestMethod]
         public void CreateAndSaveTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -29,7 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
 
-        [TestMethod, Ignore] //Stef: transients with refs to persisted objects broken
+        [TestMethod]
         public void SaveAndClose()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -78,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForMessage("See field validation message(s).");
         }
 
-        [TestMethod, Ignore] //cross-field validation not displaying correct message on saving transient
+        [TestMethod]
         public void MultiFieldValidation()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");

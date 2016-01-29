@@ -26,7 +26,7 @@ module NakedObjects.Angular.Gemini {
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
-        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
+        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;     
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
