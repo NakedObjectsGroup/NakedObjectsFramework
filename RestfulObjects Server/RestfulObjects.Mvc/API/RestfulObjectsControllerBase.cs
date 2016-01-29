@@ -505,10 +505,10 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-        public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, ArgumentMap persistArguments, ArgumentMap arguments) {
+        public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, PromptArgumentMap promptArguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPersistArguments(persistArguments);
-                Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(arguments, false);
+                Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPersistArguments(promptArguments);
+                Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
                 ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, promptArgs.Item1);
@@ -989,6 +989,14 @@ namespace RestfulObjects.Mvc {
             });
         }
 
+        private Tuple<IDictionary<string, object>, RestControlFlags> ExtractValuesAndFlags(PromptArgumentMap arguments, bool errorIfNone) {
+            return HandleMalformed(() => {
+                ValidateArguments(arguments, errorIfNone);
+                Dictionary<string, object> dictionary = arguments.MemberMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
+                return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags(arguments));
+            });
+        }
+
         private TypeActionInvokeContext GetIsTypeOf(TypeActionInvokeContext context, ArgumentMap arguments) {
             ValidateArguments(arguments);
 
@@ -1023,6 +1031,16 @@ namespace RestfulObjects.Mvc {
 
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
             Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(persistArgumentMap, true);
+
+            return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
+                Digest = null,
+                Values = tuple.Item1,
+                ValidateOnly = tuple.Item2.ValidateOnly
+            }, tuple.Item2);
+        }
+
+        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPromptArguments(PromptArgumentMap promptArgumentMap) {
+            Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(promptArgumentMap, true);
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
                 Digest = null,

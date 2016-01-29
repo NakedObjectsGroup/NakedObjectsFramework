@@ -79,6 +79,10 @@
         members: IValueMap;
     }
 
+    export interface IPromptMap {
+        [index: string]: IValue | string | IValueMap;
+    }
+
     export interface IErrorDetailsRepresentation {
         message: string;
         stackTrace?: string[];

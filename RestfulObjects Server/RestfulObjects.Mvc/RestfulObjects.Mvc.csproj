@@ -61,12 +61,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API\RestfulObjectsControllerBase.cs" />
+    <Compile Include="Model\PromptArgumentMap.cs" />
     <Compile Include="Model\ArgumentMap.cs" />
     <Compile Include="Model\ArgumentMapBinder.cs" />
     <Compile Include="Model\ArgumentMapUrlBinder.cs" />
     <Compile Include="Model\AttachmentValue.cs" />
     <Compile Include="Model\ListValue.cs" />
     <Compile Include="Model\ModelBinderUtils.cs" />
+    <Compile Include="Model\PromptArgumentMapBinder.cs" />
     <Compile Include="Model\PersistArgumentMapBinder.cs">
       <SubType>Code</SubType>
     </Compile>

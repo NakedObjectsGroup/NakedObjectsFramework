@@ -48,6 +48,10 @@ module NakedObjects {
         return object && object instanceof Object && "members" in object;
     }
 
+    function isIPromptMap(object: any): object is RoInterfaces.IPromptMap {
+        return object && object instanceof Object && "members" in object;
+    }
+
     function isIValue(object: any): object is RoInterfaces.IValue {
         return object && object instanceof Object && "value" in object;
     }
@@ -629,7 +633,7 @@ module NakedObjects {
 
         getPrompts(): PromptRepresentation {
             const pr = <PromptRepresentation>this.promptLink().getTarget();
-            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
+            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IPromptMap);
             return pr;
         }
 
@@ -724,8 +728,8 @@ module NakedObjects {
     // new in 1.1 15.0 in spec 
 
     export class PromptMap extends ArgumentMap implements IHateoasModel {
-        constructor(private prompt: PromptRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, prompt.instanceId());
+        constructor(private prompt: PromptRepresentation, private promptMap: RoInterfaces.IPromptMap) {
+            super(promptMap as RoInterfaces.IValueMap, prompt.instanceId());
 
             // todo must be better way
             this.hateoasUrl = prompt.hateoasUrl;
@@ -745,12 +749,11 @@ module NakedObjects {
         }
 
         setMember(name: string, value: Value) {
-            // todo fix types
-            value.set( (<any> this.map)["members"], name);
+            value.set(this.promptMap["members"] as RoInterfaces.IValueMap, name);
         }    
 
         setMembers(objectValues: () => _.Dictionary<Value>) {
-            if (this.map["members"]) {
+            if (this.promptMap["members"]) {
                 _.forEach(objectValues(), (v, k) => this.setMember(k, v));
             }
         }
@@ -1743,7 +1746,7 @@ module NakedObjects {
             this.wrapped.title = title;
         }
 
-        arguments(): IValue | RoInterfaces.IValueMap | RoInterfaces.IObjectOfType {
+        arguments(): IValue | RoInterfaces.IValueMap | RoInterfaces.IObjectOfType | RoInterfaces.IPromptMap {
             return this.wrapped.arguments;
         }
 
