@@ -239,11 +239,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void Enter()
         {
-           //Invalid context
-            CiceroUrl("home");
-            EnterCommand("enter");
-            WaitForOutput("The command: enter is not available in the current context");
-
             //Entering fields (into dialogs)
             CiceroUrl("home?menu1=CustomerRepository&dialog1=FindIndividualCustomerByName&field1_firstName=%2522%2522&field1_lastName=%2522%2522");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: empty\r\nLast Name: empty");
@@ -251,6 +246,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: empty");
             EnterCommand("enter last, Fenton-Jones III");
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: Fenton-Jones III");
+
+            //Different types (bool, date, number)
+            CiceroUrl("object?object1=AdventureWorksModel.Product-897&actions1=open&dialog1=BestSpecialOffer&field1_quantity=%2522%2522");
+            WaitForOutputContaining("Action dialog: Best Special Offer");
+            EnterCommand("enter quantity,25");
+            WaitForOutputContaining("Quantity: 25");
+            CiceroUrl("home?menu1=PurchaseOrderRepository&dialog1=ListPurchaseOrders&field1_vendor=null&field1_fromDate=%2522%2522&field1_toDate=%2522%2522");
+            WaitForOutputContaining("Action dialog: List Purchase Orders");
+            EnterCommand("enter from, 1 Jan 2016");
+            WaitForOutputContaining("From Date: 1 Jan 2016");
+            CiceroUrl("object?object1=AdventureWorksModel.Customer-140&actions1=open&dialog1=CreateNewOrder&field1_copyHeaderFromLastOrder=false");
+            WaitForOutputContaining("Action dialog: Create New Order");
+            EnterCommand("enter copy,true");
+            WaitForOutputContaining("Copy Header From Last Order: true");
 
             //Todo: test selections
             CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategory");
@@ -261,8 +270,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("None of the choices matches xx");
             EnterCommand("enter cat, frame");
             WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
-
-
 
             //Then property entries
             CiceroUrl("object?object1=AdventureWorksModel.Product-871&edit1=true");
@@ -294,63 +301,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter end date,");
             WaitForOutputContaining("End Date: empty");
 
-        }
-        public virtual void Property()
-        {
-            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
-            WaitForOutput("Product: Road-450 Red, 52");
-            EnterCommand("prop num");
-            WaitForOutput("Product Number: BK-R68R-52");
-            EnterCommand("pr product");                                                                                                                                
-            WaitForOutputStarting("Product Number: BK-R68R-52");
-            var actual = WaitForCss(".output").Text;
-            //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
-            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
-            Assert.AreEqual(expected, actual);
-
-            //No argument
-            EnterCommand("pr ");
-            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
-            //No match
-            EnterCommand("pr x");
-            WaitForOutput("x does not match any properties");
-
             //Invalid context
             CiceroUrl("home");
-            EnterCommand("prop");
-            WaitForOutput("The command: property is not available in the current context");
-
-            //Multi-clause match
-            CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
-            WaitForOutput("Sales Person: Tete Mensa-Annan");
-            EnterCommand("pr sales a");
-            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
-            EnterCommand("pr ter ory");
-            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
-            EnterCommand("pr sales z");
-            WaitForOutput("sales z does not match any properties");
-
-            //No fields
-            CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
-            WaitForOutput("Address Type: Home");
-            EnterCommand("prop");
-            WaitForOutput("No visible properties");
-
-            //To many args
-            EnterCommand("prop num,x");
-            WaitForOutput("Too many arguments provided");
-
-            //Reading properties in edit mode
-            CiceroUrl("object?object1=AdventureWorksModel.Product-369&edit1=true&prop1_Style=%2522U%2520%2522&prop1_ListPrice=%2522500%2522");
-            WaitForOutputStarting("Editing");
-            EnterCommand("prop");
-            WaitForOutputContaining("List Price: 500 (modified)");
-            WaitForOutputContaining("Style: U  (modified)");
-
-            //exact match takes priority over partial match
-            //TODO: Need example from properties, not action params -  transfer this to Enter test
-            //EnterCommand("field product category"); //which would also match product subcategory
-            //WaitForOutput("Product Category: Bikes");
+            EnterCommand("enter");
+            WaitForOutput("The command: enter is not available in the current context");
         }
         public virtual void Gemini()
         {
@@ -638,6 +592,63 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Sales Order Header: SO51131");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
+        }
+        public virtual void Property()
+        {
+            CiceroUrl("object?object1=AdventureWorksModel.Product-758");
+            WaitForOutput("Product: Road-450 Red, 52");
+            EnterCommand("prop num");
+            WaitForOutput("Product Number: BK-R68R-52");
+            EnterCommand("pr product");
+            WaitForOutputStarting("Product Number: BK-R68R-52");
+            var actual = WaitForCss(".output").Text;
+            //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
+            var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
+            Assert.AreEqual(expected, actual);
+
+            //No argument
+            EnterCommand("pr ");
+            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
+            //No match
+            EnterCommand("pr x");
+            WaitForOutput("x does not match any properties");
+
+            //Invalid context
+            CiceroUrl("home");
+            EnterCommand("prop");
+            WaitForOutput("The command: property is not available in the current context");
+
+            //Multi-clause match
+            CiceroUrl("object?object1=AdventureWorksModel.SalesPerson-284");
+            WaitForOutput("Sales Person: Tete Mensa-Annan");
+            EnterCommand("pr sales a");
+            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
+            EnterCommand("pr ter ory");
+            WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
+            EnterCommand("pr sales z");
+            WaitForOutput("sales z does not match any properties");
+
+            //No fields
+            CiceroUrl("object?object1=AdventureWorksModel.AddressType-2");
+            WaitForOutput("Address Type: Home");
+            EnterCommand("prop");
+            WaitForOutput("No visible properties");
+
+            //To many args
+            EnterCommand("prop num,x");
+            WaitForOutput("Too many arguments provided");
+
+            //Reading properties in edit mode
+            CiceroUrl("object?object1=AdventureWorksModel.Product-369&edit1=true&prop1_Style=%2522U%2520%2522&prop1_ListPrice=%2522500%2522");
+            WaitForOutputStarting("Editing");
+            EnterCommand("prop");
+            WaitForOutputContaining("List Price: 500 (modified)");
+            WaitForOutputContaining("Style: U  (modified)");
+
+            //exact match takes priority over partial match
+            //TODO: Need example from properties, not action params -  transfer this to Enter test
+            //EnterCommand("field product category"); //which would also match product subcategory
+            //WaitForOutput("Product Category: Bikes");
         }
         public virtual void Root()
         {
@@ -1080,7 +1091,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
