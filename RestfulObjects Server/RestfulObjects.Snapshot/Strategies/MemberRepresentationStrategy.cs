@@ -85,7 +85,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 tempLinks.Add(CreateDetailsLink());
             }
 
-            if (RestUtils.IsAttachment(propertyContext.Specification)) {
+            if (!propertyContext.Target.IsTransient && RestUtils.IsAttachment(propertyContext.Specification)) {
                 tempLinks.Add(CreateAttachmentLink());
             }
 
