@@ -13,8 +13,7 @@ module NakedObjects.Angular.Gemini {
             protected navigation: INavigation,
             protected $q: ng.IQService,
             protected $route: ng.route.IRouteService
-        ) {
-        }
+        ) { }
 
         public fullCommand: string;
         public helpText: string;
@@ -297,6 +296,67 @@ module NakedObjects.Angular.Gemini {
             }
             return msg;
         }
+
+        protected valueForUrl(val: Value, field: IField): Value {
+
+            if (field.hasChoices() ||
+                field.hasPrompt() ||
+                field.hasConditionalChoices() ||
+                field.isCollectionContributed()) {
+
+                if (field.isMultipleChoices() || field.isCollectionContributed()) {
+
+                    //Original code from ValueViewModel#getValue(): 
+                    //const selections = this.multiChoices || [];
+                    //if (val.isScalar()) {
+                    //    //TODO: Have to get values from the routeData
+                    //    const selValues = _.map(selections, cvm => cvm.value);
+                    //    return new Value(selValues);
+                    //}
+
+                    //TODO: Reference only -  not multi-select scalars - see above
+
+                    const newVal = new  Value({ href: val.link().href(), title: val.link().title() });
+                    let values: Value[];
+                    if (field instanceof Parameter) {
+                        values = this.routeData().dialogFields[field.parameterId()].list();
+                    } else if (field instanceof PropertyMember) {
+                        values = this.routeData().props[field.propertyId()].list();
+                    }
+                    const index = _.findIndex(values, v => v.link().href() === newVal.link().href());
+                    if (index > -1) {
+                        values.splice(index, 1);
+                    } else {
+                        values.push(newVal);
+                    }
+                    const hrefsAndTitles = _.map(values, v => ({ href: v.link().href(), title: v.link().title() }));
+                    return new Value(hrefsAndTitles);
+                }
+
+                //Single values ...
+                if (val.isScalar()) {
+                    return val;
+                }
+                // reference 
+                return new Value({ href: val.link().href(), title: val.link().title() });
+            }
+
+            if (val.isScalar()) {
+                if (val.isNull()) {
+                    return new Value("");
+                }
+                return val;
+                //TODO: consider these options:
+                //    if (from.value instanceof Date) {
+                //        return new Value((from.value as Date).toISOString());
+                //    }
+
+                //    return new Value(from.value as number | string | boolean);
+            }
+
+            // reference
+            return new Value(val.isReference() ? { href: val.link().href(), title: val.link().title() } : null);
+        }
     }
 
     export class Action extends Command {
@@ -374,61 +434,9 @@ module NakedObjects.Angular.Gemini {
         private openActionDialog(action: ActionMember) {
             this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
             _.forEach(action.parameters(), (p) => {
-                //const pVal = p.default();
-                //TODO: problem here. For ref values (links) much too much is going in.
                 const pVal = this.valueForUrl(p.default(), p);
                 this.urlManager.setFieldValue(action.actionId(), p, pVal, 1, false);
             });
-        }
-
-        protected valueForUrl(val: Value, p: Parameter): Value {
-            //TODO: Code copied from ValueViewModel#getValue()
-            const hasChoices = _.countBy(p.choices());
-            const hasPrompt = !!p.promptLink() && !!p.promptLink().arguments()["x-ro-searchTerm"];
-            const hasConditionalChoices = !!p.promptLink() && !p.hasPrompt;
-            const isMultipleChoices = (hasChoices || hasConditionalChoices) && p.extensions().returnType() === "list";
-            const hasAutoAutoComplete = val.isReference && !hasPrompt && !hasChoices && !hasConditionalChoices;
-            const isCollectionContributed = p.isCollectionContributed();
-
-            if (hasChoices || hasPrompt || hasConditionalChoices || hasAutoAutoComplete || isCollectionContributed) {
-
-                if (isMultipleChoices || isCollectionContributed) {
-                    //TODO:
-                    //const selections = val.multiChoices || [];
-                    //if (val.isScalar) {
-                    //    const selValues = _.map(selections, cvm => cvm.value);
-                    //    return new Value(selValues);
-                    //}
-                    //const selRefs = _.map(selections, cvm => ({ href: cvm.value, title: cvm.name })); // reference 
-                    //return new Value(selRefs);
-                    const hrefsAndTitles = _.map(val.list(), v => ({ href: v.link().href(), title: v.link().title() }));
-                    return new Value(hrefsAndTitles);
-                }
-
-
-                if (val.isScalar()) {
-                    return val;
-                }
-
-                // reference 
-                return new Value({ href: val.link().href(), title: val.link().title() });
-            }
-
-            if (val.isScalar()) {
-                if (val.isNull()) {
-                    return new Value("");
-                }
-                return val;
-                //TODO: consider these options:
-            //    if (from.value instanceof Date) {
-            //        return new Value((from.value as Date).toISOString());
-            //    }
-
-            //    return new Value(from.value as number | string | boolean);
-            }
-
-            // reference
-            return new Value(val.isReference() ? { href: val.link().href(), title: val.link().title() } : null);
         }
     }
     export class Back extends Command {
@@ -631,7 +639,7 @@ module NakedObjects.Angular.Gemini {
 
         private setField(field: IField, fieldEntry: string): void {
             //TODO: Handle '?' e.g.  this.renderDetails(fieldName);
-            if (_.any(field.choices())) {
+            if (field.hasChoices() || field.hasConditionalChoices()) {
                 this.handleChoices(field, fieldEntry);
                 return;
             }
@@ -643,12 +651,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         private setFieldValue(field: IField, value: Value) {
+            const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.urlManager.setFieldValue(this.routeData().dialogId, field, value, 1);
+                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal, 1);
             } else if (field instanceof PropertyMember) {
                 const parent = <DomainObjectRepresentation>field.parent;
-                this.urlManager.setPropertyValue(parent, field, value, 1);
-                //TODO
+                this.urlManager.setPropertyValue(parent, field, urlVal, 1);
             }
         }
 

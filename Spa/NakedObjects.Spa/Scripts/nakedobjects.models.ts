@@ -649,6 +649,7 @@ module NakedObjects {
         }
 
         hasPrompt(): boolean {
+            //TODO: I think should be: !!this.promptLink() && !!this.promptLink().arguments()["x-ro-searchTerm"];
             return !!this.promptLink();
         }
 
@@ -659,6 +660,15 @@ module NakedObjects {
             // todo also need to check element types and ordering perhaps ?
 
             return isList && isOnList;
+        }
+
+        hasChoices(): boolean { return _.any(this.choices()); }
+        isMultipleChoices(): boolean {
+            //TODO: Make literal a constant
+            return (this.hasChoices() || this.hasConditionalChoices()) && this.extensions().returnType() === "list";
+        }
+        hasConditionalChoices(): boolean {
+            return !!this.promptLink() && !this.hasPrompt();
         }
     }
 
@@ -1109,7 +1119,8 @@ module NakedObjects {
         }
 
         hasPrompt(): boolean {
-            return !!this.promptLink();
+            //TODO: I think this is wrong, and should have: && !!this.promptLink().arguments()["x-ro-searchTerm"];
+            return !!this.promptLink();             
         }
 
         choices(): _.Dictionary<Value> {
@@ -1126,6 +1137,17 @@ module NakedObjects {
             return null;
         }
 
+        hasConditionalChoices(): boolean {
+            return !!this.promptLink() && !this.hasPrompt();
+        }
+        //This is actually not relevant to a property. Slight smell here!
+        isMultipleChoices(): boolean {
+            return false;
+        }
+        //Same as for isMultipleChoices
+        isCollectionContributed(): boolean {
+            return false; 
+        }
     }
 
     // matches 14.4.2 
@@ -1802,6 +1824,12 @@ module NakedObjects {
     export interface IField extends IHasExtensions {
         choices(): _.Dictionary<Value>;
         isScalar(): boolean;
+
+        hasChoices(): boolean;
+        hasPrompt(): boolean;
+        isMultipleChoices(): boolean;
+        hasConditionalChoices(): boolean;
+        isCollectionContributed(): boolean;
     }
 
     export interface IHasExtensions {
