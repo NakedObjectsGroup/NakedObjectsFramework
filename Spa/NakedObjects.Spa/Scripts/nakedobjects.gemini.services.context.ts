@@ -383,6 +383,7 @@ module NakedObjects.Angular.Gemini {
                     context.setObject(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
                     urlManager.setObject(resultObject, paneId);
+                    urlManager.setTransient(paneId);
                 }
                 else {
 

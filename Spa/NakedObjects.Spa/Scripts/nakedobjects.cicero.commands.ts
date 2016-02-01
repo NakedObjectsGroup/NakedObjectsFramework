@@ -210,6 +210,9 @@ module NakedObjects.Angular.Gemini {
         protected isEdit(): boolean {
             return this.routeData().edit;
         }
+        protected isTransient(): boolean {
+            return this.routeData().transient;
+        }
 
         protected matchingProperties(
             obj: DomainObjectRepresentation,
@@ -266,7 +269,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         protected findMatchingChoices(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
-            return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch) >= 0);
+            return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         }
 
         protected handleErrorResponse(err: ErrorMap, getFriendlyName: (id: string) => string) {
@@ -577,7 +580,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isEdit() || this.isDialog();
+            return this.isDialog() || this.isEdit() || this.isTransient();
         }
 
         doExecute(args: string, chained: boolean): void {
@@ -655,8 +658,10 @@ module NakedObjects.Angular.Gemini {
             if (field instanceof Parameter) {
                 this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal, 1);
             } else if (field instanceof PropertyMember) {
-                const parent = <DomainObjectRepresentation>field.parent;
-                this.urlManager.setPropertyValue(parent, field, urlVal, 1);
+                const parent = field.parent
+                if (parent instanceof DomainObjectRepresentation) {
+                    this.urlManager.setPropertyValue(parent, field, urlVal, 1);
+                }
             }
         }
 
@@ -1134,7 +1139,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 0;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isEdit();
+            return this.isEdit() || this.isTransient();
         }
         doExecute(args: string, chained: boolean): void {
             if (chained) {

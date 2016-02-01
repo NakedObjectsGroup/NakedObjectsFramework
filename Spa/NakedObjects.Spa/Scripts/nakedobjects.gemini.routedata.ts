@@ -39,6 +39,7 @@ module NakedObjects.Angular.Gemini {
         menuId: string;
         collections: _.Dictionary<CollectionViewState>;
         edit: boolean;
+        transient: boolean;
         actionsOpen: string;
         actionId: string;
         //Note that actionParams applies to executed actions. For dialogs see dialogFields

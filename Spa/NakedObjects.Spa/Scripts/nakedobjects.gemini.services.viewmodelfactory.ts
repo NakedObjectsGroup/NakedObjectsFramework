@@ -15,7 +15,7 @@ module NakedObjects.Angular.Gemini {
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
-        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues : () => _.Dictionary<Value> ): PropertyViewModel;
+        propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
         getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel);
@@ -328,9 +328,9 @@ module NakedObjects.Angular.Gemini {
                 }
             });
 
-            let msg = err.invalidReason() ||  "";
-            if (requiredFieldsMissing) msg =  `${msg} Please complete REQUIRED fields. `;
-            if (fieldValidationErrors) msg =  `${msg} See field validation message(s). `;
+            let msg = err.invalidReason() || "";
+            if (requiredFieldsMissing) msg = `${msg} Please complete REQUIRED fields. `;
+            if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
 
             if (!msg) msg = err.warningMessage;
             vm.message = msg;
@@ -563,7 +563,7 @@ module NakedObjects.Angular.Gemini {
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = objectRep.propertyMembers();
-            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>> {}));
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
 
             return tableRowViewModel;
         };
@@ -678,12 +678,14 @@ module NakedObjects.Angular.Gemini {
                                             output += `${coll.size() } items`;
                                     }
                                 } else {
-                                    if (routeData.edit) {
+                                    if (obj.isTransient()) {
+                                        output += "Unsaved ";
+                                        output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
+                                        output += renderModifiedProperties(obj, routeData);
+                                    } else if (routeData.edit) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                        if ( _.keys(routeData.props).length > 0) {
                                             output += renderModifiedProperties(obj, routeData);
-                                        }
                                     } else {
                                         output += Helpers.typePlusTitle(obj) + "\n";
                                         output += renderActionDialogIfOpen(obj, routeData);
@@ -735,12 +737,15 @@ module NakedObjects.Angular.Gemini {
     }
 
     function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData): string {
-        let output = "Modified properties:\n";
-        _.each(routeData.props, (value, propId) => {                    
-            output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
-            output += value.toString() || "empty";
-            output +="\n";
-        });
+        let output = "";
+        if (_.keys(routeData.props).length > 0) {
+            output += "Modified properties:\n";
+            _.each(routeData.props, (value, propId) => {
+                output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
+                output += value.toString() || "empty";
+                output += "\n";
+            });
+        }
         return output;
     }
 

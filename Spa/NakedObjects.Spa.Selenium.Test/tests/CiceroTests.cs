@@ -316,8 +316,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
             EnterCommand("enter sub, touring bikes");
             WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
-
-
         }
         public virtual void Gemini()
         {
@@ -921,9 +919,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter details, paste");
             WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
             EnterCommand("ok");
-            WaitForOutput("Employee: Untitled Employee");
+            WaitForOutput("Unsaved Employee");
         }
-        public virtual void ScenarioTestEditAndSave()
+        public virtual void ScenarioEditAndSave()
         {
             //happy case -  edit one property
             CiceroUrl("object?object1=AdventureWorksModel.Product-838");
@@ -988,6 +986,36 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("End Date: 15 Oct 2008");
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
+        }
+        public virtual void ScenarioTransientObject() {
+            //Happy case
+            CiceroUrl("object?object1=AdventureWorksModel.Person-12044");
+            WaitForOutput("Person: Gail Moore");
+            EnterCommand("action Create New Credit Card");
+            WaitForOutputContaining("Action dialog: Create New Credit Card");
+            EnterCommand("ok");
+            WaitForOutputStarting("Unsaved Credit Card");
+            EnterCommand("enter card type, Vista");
+            WaitForOutputContaining("Card Type: Vista");
+            string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
+            var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+            EnterCommand(" enter number,"+number);
+            WaitForOutputContaining("Card Number: " + number);
+            EnterCommand("enter month,12");
+            WaitForOutputContaining("Exp Month: 12");
+            EnterCommand("enter year,2020");
+            WaitForOutputContaining("Exp Year: 2020");
+            EnterCommand("save");
+            WaitForOutput("Credit Card: "+obfuscated);
+            //Incomplete fields
+            CiceroUrl("object?object1=AdventureWorksModel.Person-12045");
+            WaitForOutput("Person: Rakesh Tangirala");
+            EnterCommand("action Create New Credit Card");
+            WaitForOutputContaining("Action dialog: Create New Credit Card");
+            EnterCommand("ok");
+            WaitForOutput("Unsaved Credit Card");
+            EnterCommand("save");
+            WaitForOutputStarting("Please complete or correct these fields:");
         }
         public virtual void ChainedCommands()
         {
@@ -1072,7 +1100,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
         [TestMethod]
-        public override void ScenarioTestEditAndSave() { base.ScenarioTestEditAndSave(); }
+        public override void ScenarioEditAndSave() { base.ScenarioEditAndSave(); }
+        [TestMethod]
+        public override void ScenarioTransientObject() { base.ScenarioTransientObject(); }
+
         [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
 

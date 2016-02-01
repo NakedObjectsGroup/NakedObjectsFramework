@@ -24,7 +24,7 @@ module NakedObjects.Angular.Gemini {
         setListState(paneId: number, state: CollectionViewState): void;
         setListPaging(paneId: number, newPage: number, newPageSize: number, state : CollectionViewState): void;
         setListItem(paneId: number, item : number, selected : boolean): void;
-
+        setTransient(paneId: number);
         setObjectEdit(edit: boolean, paneId: number);
         setHome(paneId: number, mode? : ApplicationMode);
 
@@ -56,6 +56,7 @@ module NakedObjects.Angular.Gemini {
         const object = "object";
         const collection = "collection";
         const selected = "selected";
+        const transient = "transient";
         const edit = "edit";
         const list = "list";
         const action = "action";
@@ -122,6 +123,7 @@ module NakedObjects.Angular.Gemini {
 
             paneRouteData.objectId = $routeParams[object + paneId];
             paneRouteData.actionsOpen = $routeParams[actions + paneId];
+            paneRouteData.transient = $routeParams[transient + paneId] === "true";
             paneRouteData.edit = $routeParams[edit + paneId] === "true";
 
             const rawCollectionState: string = $routeParams[collection + paneId];
@@ -375,7 +377,8 @@ module NakedObjects.Angular.Gemini {
 
             // only add parm if matching object (to catch case when swapping panes) 
             // and only add to edit url
-            if (search[`${object}${paneId}`] === oid && search[`${edit}${paneId}`] === "true" ) {
+            if (search[`${object}${paneId}`] === oid &&
+                (search[`${edit}${paneId}`] === "true" || search[`${transient}${paneId}`] === "true")) {
 
                 search[`${prop}${paneId}_${p.propertyId()}`] = encodeURIComponent(pv.toJsonString());
 
@@ -461,7 +464,12 @@ module NakedObjects.Angular.Gemini {
 
             $location.search(search);
         };
-
+        helper.setTransient = (paneId: number) => {
+            currentPaneId = paneId;
+            let search = $location.search();
+            search[`${transient}${paneId}`] = "true";
+            $location.search(search);
+        }
         helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
             currentPaneId = paneId;
             let search = $location.search();

@@ -1321,6 +1321,10 @@ module NakedObjects {
             return linkByNamespacedRel(this.links(), "update");
         }
 
+        isTransient(): boolean {
+            return !!this.persistLink();
+        }
+
         persistLink(): Link {
             return linkByNamespacedRel(this.links(), "persist");
         }
