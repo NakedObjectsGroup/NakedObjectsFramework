@@ -191,7 +191,7 @@ module NakedObjects.Angular.Gemini {
                     // todo replace with _.mapValue 
                     if (dialog) {
                         _.forEach(pArgs, (v, n) => {
-                            const parm = _.find(dialog.actionViewModel.parameters, p => p.argId === n);
+                            const parm = _.find(dialog.parameters, p => p.argId === n);
                             const newValue = parm.getValue();
                             nArgs[n] = newValue;
                         });
@@ -232,7 +232,7 @@ module NakedObjects.Angular.Gemini {
 
                         currentOptions = cvms;
 
-                        if (viewModel.isMultipleChoices && viewModel.multiChoices) {
+                        if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
                             const vals = _.map(viewModel.multiChoices, c => c.value);
                             $(element).val(vals);
                         } else if (viewModel.choice) {
@@ -248,7 +248,7 @@ module NakedObjects.Angular.Gemini {
 
                 function optionChanged() {
 
-                    if (viewModel.isMultipleChoices) {
+                    if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
                         const options = $(element).find("option:selected");
                         const kvps = [];
 

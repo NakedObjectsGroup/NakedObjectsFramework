@@ -99,15 +99,25 @@ module NakedObjects.Angular.Gemini {
     }
 
     export class ValueViewModel extends MessageViewModel {
+
+        // todo - these are just still here for the templates 
+        // rewrite templates and remove 
+        
+        hasChoices: boolean;
+        hasPrompt: boolean; 
+        hasConditionalChoices: boolean;
+        isMultipleChoices: boolean; 
+        hasAutoAutoComplete: boolean;
+
+        // end remove 
+
         formattedValue: string;
         value: number | string | boolean | Date;    
         id: string; 
         argId: string; 
         paneArgId: string;
         choices: ChoiceViewModel[];
-        hasChoices: boolean;
-        hasPrompt: boolean; 
-        hasConditionalChoices: boolean;
+     
         type: string;
         reference: string;
         choice: ChoiceViewModel; 
@@ -117,14 +127,16 @@ module NakedObjects.Angular.Gemini {
         format: string;
         arguments: _.Dictionary<Value>; 
         mask: string;
-        isMultipleChoices: boolean; 
+        
         minLength: number;
-        hasAutoAutoComplete: boolean;
+       
         color: string;
         description: string;
         optional: boolean;
         isCollectionContributed: boolean;
-        onPaneId : number;
+        onPaneId: number;
+
+        entryType : EntryType;
 
         //setSelectedChoice() {}
 
@@ -137,23 +149,23 @@ module NakedObjects.Angular.Gemini {
         }
 
         getMemento(): string {
-            if (this.hasChoices) {
-                if (this.isMultipleChoices) {
-                    const ss = _.map(this.multiChoices, (c) => {
-                        return c.search;
-                    });
-
-                    if (ss.length === 0) {
-                        return "";
-                    }
-
-                    return _.reduce(ss, (m: string, s) => {
-                        return m + "-" + s;
-                    });
-                } 
-
+            if (this.entryType === EntryType.Choices) {
                 return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString(); 
             }
+
+            if (this.entryType === EntryType.MultipleChoices) {
+                const ss = _.map(this.multiChoices, (c) => {
+                    return c.search;
+                });
+
+                if (ss.length === 0) {
+                    return "";
+                }
+
+                return _.reduce(ss, (m: string, s) => {
+                    return m + "-" + s;
+                });
+            } 
 
             return this.getValue().toString();
         }
@@ -176,9 +188,9 @@ module NakedObjects.Angular.Gemini {
 
         getValue(): Value {
            
-            if (this.hasChoices || this.hasPrompt || this.hasConditionalChoices || this.hasAutoAutoComplete || this.isCollectionContributed) {
+            if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
 
-                if (this.isMultipleChoices || this.isCollectionContributed) {
+                if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                     const selections = this.multiChoices || [];
                     if (this.type === "scalar") {
                         const selValues = _.map(selections, cvm => cvm.value);
@@ -216,8 +228,7 @@ module NakedObjects.Angular.Gemini {
 
     export class ParameterViewModel extends ValueViewModel{
         parameterRep : Parameter;
-        dflt: string;
-        
+        dflt: string;     
     } 
 
     export class ActionViewModel {

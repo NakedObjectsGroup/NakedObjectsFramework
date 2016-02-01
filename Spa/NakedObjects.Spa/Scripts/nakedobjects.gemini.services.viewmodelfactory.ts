@@ -100,33 +100,33 @@ module NakedObjects.Angular.Gemini {
             return itemViewModel;
         };
 
-        function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice: ChoiceViewModel, id: string, currentValue: Value) {
-            valueViewModel.hasAutoAutoComplete = true;
+        //function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice: ChoiceViewModel, id: string, currentValue: Value) {
+        //    valueViewModel.hasAutoAutoComplete = true;
 
-            const cache = $cacheFactory.get("recentlyViewed");
+        //    const cache = $cacheFactory.get("recentlyViewed");
 
-            valueViewModel.choice = currentChoice;
+        //    valueViewModel.choice = currentChoice;
 
-            // make sure current value is cached so can be recovered ! 
+        //    // make sure current value is cached so can be recovered ! 
 
-            const { returnType: key, reference: subKey } = valueViewModel;
-            const dict = cache.get(key) || {}; // todo fix type !
-            dict[subKey] = { value: currentValue, name: currentValue.toString() };
-            cache.put(key, dict);
+        //    const { returnType: key, reference: subKey } = valueViewModel;
+        //    const dict = cache.get(key) || {}; // todo fix type !
+        //    dict[subKey] = { value: currentValue, name: currentValue.toString() };
+        //    cache.put(key, dict);
 
-            // bind in autoautocomplete into prompt 
+        //    // bind in autoautocomplete into prompt 
 
-            valueViewModel.prompt = (st: string) => {
-                const defer = $q.defer<ChoiceViewModel[]>();
-                const filtered = _.filter(dict, (i: { value: Value, name: string }) =>
-                    i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
-                const ccs = _.map(filtered, (i: { value: Value, name: string }) => ChoiceViewModel.create(i.value, id, i.name));
+        //    valueViewModel.prompt = (st: string) => {
+        //        const defer = $q.defer<ChoiceViewModel[]>();
+        //        const filtered = _.filter(dict, (i: { value: Value, name: string }) =>
+        //            i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
+        //        const ccs = _.map(filtered, (i: { value: Value, name: string }) => ChoiceViewModel.create(i.value, id, i.name));
 
-                defer.resolve(ccs);
+        //        defer.resolve(ccs);
 
-                return defer.promise;
-            };
-        }
+        //        return defer.promise;
+        //    };
+        //}
 
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
@@ -164,51 +164,59 @@ module NakedObjects.Angular.Gemini {
                     );
             };
 
-            parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
-            parmViewModel.hasChoices = parmViewModel.choices.length > 0;
-            parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
-            parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
-            parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType() === "list";
+            const fieldEntryType = parmRep.entryType();
+            parmViewModel.entryType = fieldEntryType;
 
-            if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
+            parmViewModel.choices = [];
 
-                const promptRep = parmRep.getPrompts();
-                if (parmViewModel.hasPrompt) {
-                    parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
-                    parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
-                }
+            //parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
+           // parmViewModel.hasChoices = parmViewModel.choices.length > 0;
+            //parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
+           // parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
+           // parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType() === "list";
 
-                if (parmViewModel.hasConditionalChoices) {
-                    parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
-                    parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
-                }
+            if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
+                parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
             }
 
-            if (parmViewModel.hasChoices || parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices || parmViewModel.isCollectionContributed) {
+            if (fieldEntryType === EntryType.AutoComplete) {
+                const promptRep = parmRep.getPrompts();
+                parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
+                parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
+            }
+
+            if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
+                const promptRep = parmRep.getPrompts();
+                parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
+                parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+            }
+
+            if (fieldEntryType !== EntryType.FreeForm  || parmViewModel.isCollectionContributed) {
 
                 function setCurrentChoices(vals: Value) {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
-                    if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices || parmViewModel.isCollectionContributed) {
-                        parmViewModel.multiChoices = choicesToSet;
-                    } else {
+                    if (fieldEntryType === EntryType.Choices) {
                         parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
+                    } else {
+                        parmViewModel.multiChoices = choicesToSet;
                     }
                 }
 
                 function setCurrentChoice(val: Value) {
                     const choiceToSet = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
 
-                    if (parmViewModel.hasPrompt || parmViewModel.hasConditionalChoices) {
-                        parmViewModel.choice = choiceToSet;
-                    } else {
+                    if (fieldEntryType === EntryType.Choices) {
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
+                    } else {
+                        parmViewModel.choice = choiceToSet;
                     }
                 }
+
                 if (previousValue || parmViewModel.dflt) {
                     const toSet = previousValue || parmRep.default();
-                    if (parmViewModel.isMultipleChoices || parmViewModel.isCollectionContributed) {
+                    if (fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices || parmViewModel.isCollectionContributed) {
                         setCurrentChoices(toSet);
                     } else {
                         setCurrentChoice(toSet);
@@ -238,7 +246,7 @@ module NakedObjects.Angular.Gemini {
                 }
             }
 
-            if (parmViewModel.type === "ref" && !parmViewModel.hasPrompt && !parmViewModel.hasChoices && !parmViewModel.hasConditionalChoices) {
+            if (parmViewModel.type === "ref" && fieldEntryType === EntryType.FreeForm) {
 
                 let currentChoice: ChoiceViewModel = null;
 
@@ -250,12 +258,23 @@ module NakedObjects.Angular.Gemini {
                     currentChoice = ChoiceViewModel.create(dflt, parmViewModel.id, dflt.link().title());
                 }
 
-                const currentValue = new Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
+                //const currentValue = new Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
 
-                addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
+                //addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
             }
 
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
+
+            
+            // todo - these are just still here for the templates 
+            // rewrite templates and remove 
+
+            parmViewModel.hasChoices = fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices;
+            parmViewModel.hasPrompt = fieldEntryType === EntryType.AutoComplete || fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
+            parmViewModel.hasConditionalChoices = fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
+            parmViewModel.isMultipleChoices = fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
+            parmViewModel.hasAutoAutoComplete = fieldEntryType === EntryType.AutoComplete;
+
 
             return parmViewModel;
         };
@@ -392,43 +411,59 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.choices = [];
-            propertyViewModel.hasPrompt = propertyRep.hasPrompt();
 
-            if (propertyRep.hasChoices()) {
+            const fieldEntryType = propertyRep.entryType();
+            propertyViewModel.entryType = fieldEntryType;
 
+            //propertyViewModel.hasPrompt = propertyRep.hasPrompt();
+
+            if (fieldEntryType === EntryType.Choices) {
                 const choices = propertyRep.choices();
-
-                if (choices) {
-                    propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
-                }
+                propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
             }
 
-            propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
-            propertyViewModel.hasPrompt = !!propertyRep.promptLink() && !!propertyRep.promptLink().arguments()["x-ro-searchTerm"];
-            propertyViewModel.hasConditionalChoices = !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
+            //propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
+            //propertyViewModel.hasPrompt = !!propertyRep.promptLink() && !!propertyRep.promptLink().arguments()["x-ro-searchTerm"];
+            //propertyViewModel.hasConditionalChoices = !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
 
-            if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
+
+            if (fieldEntryType === EntryType.AutoComplete) {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
-                if (propertyViewModel.hasPrompt) {
-                    propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
-                    propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-                }
-
-                if (propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
-                    propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
-                }
+                propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
+                propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
             }
 
-            if (propertyViewModel.hasChoices || propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
+            if (fieldEntryType === EntryType.ConditionalChoices) {
+                const promptRep: PromptRepresentation = propertyRep.getPrompts();
+
+                propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
+                propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+            }
+
+
+            //if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
+            //    const promptRep: PromptRepresentation = propertyRep.getPrompts();
+
+            //    if (propertyViewModel.hasPrompt) {
+            //        propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
+            //        propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
+            //    }
+
+            //    if (propertyViewModel.hasConditionalChoices) {
+            //        propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
+            //        propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+            //    }
+            //}
+
+            if (fieldEntryType !== EntryType.FreeForm) {
 
                 var currentChoice: ChoiceViewModel = ChoiceViewModel.create(value, id);
 
-                if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-                    propertyViewModel.choice = currentChoice;
-                } else {
+                if (fieldEntryType === EntryType.Choices) {
                     propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                } else {
+                    propertyViewModel.choice = currentChoice;
                 }
             }
 
@@ -443,9 +478,19 @@ module NakedObjects.Angular.Gemini {
             }
 
             // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
-            if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-                addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);
-            }
+            //if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
+            //    addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);
+            //}
+
+            // todo - these are just still here for the templates 
+            // rewrite templates and remove 
+
+            propertyViewModel.hasChoices = fieldEntryType === EntryType.Choices;
+            propertyViewModel.hasPrompt = fieldEntryType === EntryType.AutoComplete || fieldEntryType === EntryType.ConditionalChoices;
+            propertyViewModel.hasConditionalChoices = fieldEntryType === EntryType.ConditionalChoices;
+            propertyViewModel.isMultipleChoices = false;
+            propertyViewModel.hasAutoAutoComplete = fieldEntryType === EntryType.AutoComplete;
+
 
             return propertyViewModel;
         };
