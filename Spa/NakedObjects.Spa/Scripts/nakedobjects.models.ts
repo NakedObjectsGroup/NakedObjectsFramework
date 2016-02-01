@@ -604,7 +604,7 @@ module NakedObjects {
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
         // fix parent type
-        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private id : string) {
+        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private id: string) {
             super(wrapped);
         }
 
@@ -617,7 +617,7 @@ module NakedObjects {
             const customExtensions = this.extensions();
             // use custom choices extension by preference 
             if (customExtensions.choices()) {
-                return _.mapValues(customExtensions.choices(), v  => new Value(v));
+                return _.mapValues(customExtensions.choices(), v => new Value(v));
             }
 
             if (this.wrapped().choices) {
@@ -645,38 +645,64 @@ module NakedObjects {
         // helper
         isScalar(): boolean {
             return isScalarType(this.extensions().returnType()) ||
-                   (isListType(this.extensions().returnType()) && isScalarType(this.extensions().elementType()));
+            (isListType(this.extensions().returnType()) && isScalarType(this.extensions().elementType()));
         }
 
         isList(): boolean {
             return isListType(this.extensions().returnType());
         }
 
-        hasPrompt(): boolean {
-            //TODO: I think should be: !!this.promptLink() && !!this.promptLink().arguments()["x-ro-searchTerm"];
-            return !!this.promptLink() && !!this.promptLink().arguments()["x-ro-searchTerm"];
+        private hasPrompt(): boolean {
+            return !!this.promptLink();
         }
 
         isCollectionContributed(): boolean {
             const myparent = this.parent;
-            const isOnList = myparent instanceof ActionMember &&  myparent.parent  instanceof ListRepresentation;
-            const isList = this.isList(); 
+            const isOnList = myparent instanceof ActionMember && myparent.parent instanceof ListRepresentation;
+            const isList = this.isList();
             // todo also need to check element types and ordering perhaps ?
 
             return isList && isOnList;
         }
 
-        hasChoices(): boolean { return _.any(this.choices()); }
-        isMultipleChoices(): boolean {
-            //TODO: Make literal a constant
-            return (this.hasChoices() || this.hasConditionalChoices()) && this.extensions().returnType() === "list";
-        }
-        hasConditionalChoices(): boolean {
-            return !!this.promptLink() && !this.hasPrompt();
+        private hasChoices(): boolean { return _.any(this.choices()); }
+
+        //isMultipleChoices(): boolean {
+         
+        //    return (this.hasChoices() || this.hasConditionalChoices()) && this.extensions().returnType() === "list";
+        //}
+
+        //hasConditionalChoices(): boolean {
+        //    return !!this.promptLink() && !this.hasPrompt();
+        //}
+
+        entryType(): EntryType {
+            if (this.hasPrompt()) {
+                // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
+
+                if (!!this.promptLink().arguments()["x-ro-searchTerm"]) {
+                    // autocomplete 
+                    return EntryType.AutoComplete;
+                }
+
+                if (isListType(this.extensions().returnType())) {
+                    return EntryType.MultipleConditionalChoices;
+                }
+                return EntryType.ConditionalChoices;
+            }
+
+            if (this.choices()) {
+                if (isListType(this.extensions().returnType())) {
+                    return EntryType.MultipleChoices;
+                }
+                return EntryType.Choices;
+            }
+
+            return EntryType.FreeForm;
         }
     }
 
-   export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
+    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
@@ -1117,12 +1143,11 @@ module NakedObjects {
             return <PropertyRepresentation> this.detailsLink().getTarget();
         }
 
-        hasChoices(): boolean {
+        private hasChoices(): boolean {
             return this.wrapped().hasChoices;
         }
 
-        hasPrompt(): boolean {
-            //TODO: I think this is wrong, and should have: && !!this.promptLink().arguments()["x-ro-searchTerm"];
+        private hasPrompt(): boolean {
             return !!this.promptLink();             
         }
 
@@ -1140,16 +1165,32 @@ module NakedObjects {
             return null;
         }
 
-        hasConditionalChoices(): boolean {
+        private hasConditionalChoices(): boolean {
             return !!this.promptLink() && !this.hasPrompt();
         }
-        //This is actually not relevant to a property. Slight smell here!
-        isMultipleChoices(): boolean {
-            return false;
-        }
-        //Same as for isMultipleChoices
+      
+          //This is actually not relevant to a property. Slight smell here!
+          
         isCollectionContributed(): boolean {
             return false; 
+        }
+
+        entryType(): EntryType {
+            if (this.hasPrompt()) {
+                // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
+
+                if (!!this.promptLink().arguments()["x-ro-searchTerm"]) {
+                    // autocomplete 
+                    return EntryType.AutoComplete;
+                }
+                return EntryType.ConditionalChoices;
+            }
+
+            if (this.choices()) {
+                return EntryType.Choices;
+            }
+
+            return EntryType.FreeForm;
         }
     }
 
@@ -1823,16 +1864,20 @@ module NakedObjects {
         value(): Link[];
     }
 
+    export enum EntryType {FreeForm, Choices, MultipleChoices, ConditionalChoices, MultipleConditionalChoices, AutoComplete}
+
     //TODO: Review name (common capbilities of PropertyMember and Parameter)
     export interface IField extends IHasExtensions {
         choices(): _.Dictionary<Value>;
         isScalar(): boolean;
 
-        hasChoices(): boolean;
-        hasPrompt(): boolean;
-        isMultipleChoices(): boolean;
-        hasConditionalChoices(): boolean;
+        //hasChoices(): boolean;
+        //hasPrompt(): boolean;
+        //isMultipleChoices(): boolean;
+        //hasConditionalChoices(): boolean;
         isCollectionContributed(): boolean;
+
+        entryType() : EntryType;
     }
 
     export interface IHasExtensions {

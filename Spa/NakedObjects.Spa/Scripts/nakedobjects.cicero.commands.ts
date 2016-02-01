@@ -299,12 +299,11 @@ module NakedObjects.Angular.Gemini {
 
         protected valueForUrl(val: Value, field: IField): Value {
 
-            if (field.hasChoices() ||
-                field.hasPrompt() ||
-                field.hasConditionalChoices() ||
-                field.isCollectionContributed()) {
+            const fieldEntryType = field.entryType();
 
-                if (field.isMultipleChoices() || field.isCollectionContributed()) {
+            if (fieldEntryType !== EntryType.FreeForm  || field.isCollectionContributed()) {
+
+                if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
 
                     //Original code from ValueViewModel#getValue(): 
                     //const selections = this.multiChoices || [];
@@ -639,7 +638,8 @@ module NakedObjects.Angular.Gemini {
 
         private setField(field: IField, fieldEntry: string): void {
             //TODO: Handle '?' e.g.  this.renderDetails(fieldName);
-            if (field.hasChoices() || field.hasConditionalChoices()) {
+            const fieldEntryType = field.entryType();
+            if ( fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices ) {
                 this.handleChoices(field, fieldEntry);
                 return;
             }
