@@ -163,7 +163,7 @@ module NakedObjects.Angular.Gemini {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
-                    if (fieldEntryType === EntryType.Choices) {
+                    if (fieldEntryType === EntryType.MultipleChoices) {
                         parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
                     } else {
                         parmViewModel.multiChoices = choicesToSet;
