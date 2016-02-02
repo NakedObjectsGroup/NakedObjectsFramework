@@ -646,7 +646,7 @@ module NakedObjects.Angular.Gemini {
             this.cancelHandler()();
         };
 
-        private saveHandler = () => this.unsaved ? this.contextService.saveObject : this.contextService.updateObject;
+        private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
         
