@@ -33,12 +33,12 @@
 
                         <!--"EntryType.ConditionalChoices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices>
-                            <option value="" disabled selected>{{property.description}}</option>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
                         </select>
 
                         <!--"EntryType.Choices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="1" ng-model="property.choice" ng-options="c as c.name for c in property.choices">
-                            <option value="" disabled>{{property.description}}</option>
+                            <option value="" ng-disabled="!property.optional">{{property.description}}</option>
                         </select>
 
                         <!--"EntryType.FreeForm"-->
@@ -59,7 +59,7 @@
                         </div>
 
                         <div ng-switch-when="boolean">
-                            <input id="{{property.paneArgId}}" type="checkbox" onclick=" return false " ng-checked="property.value" disabled="disabled" />
+                            <input id="{{property.paneArgId}}" type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />
                         </div>
 
                         <div ng-switch-default>
@@ -71,12 +71,12 @@
            
                         <!--"EntryType.ConditionalChoices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices>
-                            <option value="" disabled selected>{{property.description}}</option>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
                         </select>
 
                         <!--"EntryType.Choices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="1" ng-model="property.choice" ng-options="c as c.name for c in property.choices">
-                            <option value="" disabled selected>{{property.description}}</option>
+                            <option value="" ng-disabled="!property.optional" selected>{{property.description}}</option>
                         </select>
 
                         <!--"EntryType.FreeForm"-->
