@@ -170,7 +170,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function allSearchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, edit, action, parm, prop, actions, page, pageSize, selected];
+            const raw = [menu, dialog, object, collection, transient, edit, action, parm, prop, actions, page, pageSize, selected];
             return searchKeysForPane(search, paneId, raw);
         }
 
