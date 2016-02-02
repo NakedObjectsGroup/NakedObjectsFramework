@@ -100,35 +100,6 @@ module NakedObjects.Angular.Gemini {
             return itemViewModel;
         };
 
-        //function addAutoAutoComplete(valueViewModel: ValueViewModel, currentChoice: ChoiceViewModel, id: string, currentValue: Value) {
-        //    valueViewModel.hasAutoAutoComplete = true;
-
-        //    const cache = $cacheFactory.get("recentlyViewed");
-
-        //    valueViewModel.choice = currentChoice;
-
-        //    // make sure current value is cached so can be recovered ! 
-
-        //    const { returnType: key, reference: subKey } = valueViewModel;
-        //    const dict = cache.get(key) || {}; // todo fix type !
-        //    dict[subKey] = { value: currentValue, name: currentValue.toString() };
-        //    cache.put(key, dict);
-
-        //    // bind in autoautocomplete into prompt 
-
-        //    valueViewModel.prompt = (st: string) => {
-        //        const defer = $q.defer<ChoiceViewModel[]>();
-        //        const filtered = _.filter(dict, (i: { value: Value, name: string }) =>
-        //            i.name.toString().toLowerCase().indexOf(st.toLowerCase()) > -1);
-        //        const ccs = _.map(filtered, (i: { value: Value, name: string }) => ChoiceViewModel.create(i.value, id, i.name));
-
-        //        defer.resolve(ccs);
-
-        //        return defer.promise;
-        //    };
-        //}
-
-
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             var parmViewModel = new ParameterViewModel();
 
@@ -169,11 +140,6 @@ module NakedObjects.Angular.Gemini {
 
             parmViewModel.choices = [];
 
-            //parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
-           // parmViewModel.hasChoices = parmViewModel.choices.length > 0;
-            //parmViewModel.hasPrompt = !!parmRep.promptLink() && !!parmRep.promptLink().arguments()["x-ro-searchTerm"];
-           // parmViewModel.hasConditionalChoices = !!parmRep.promptLink() && !parmViewModel.hasPrompt;
-           // parmViewModel.isMultipleChoices = (parmViewModel.hasChoices || parmViewModel.hasConditionalChoices) && parmRep.extensions().returnType() === "list";
 
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
                 parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
@@ -245,36 +211,7 @@ module NakedObjects.Angular.Gemini {
 
                 }
             }
-
-            if (parmViewModel.type === "ref" && fieldEntryType === EntryType.FreeForm) {
-
-                let currentChoice: ChoiceViewModel = null;
-
-                if (previousValue) {
-                    currentChoice = ChoiceViewModel.create(previousValue, parmViewModel.id, previousValue.link() ? previousValue.link().title() : null);
-                }
-                else if (parmViewModel.dflt) {
-                    let dflt = parmRep.default();
-                    currentChoice = ChoiceViewModel.create(dflt, parmViewModel.id, dflt.link().title());
-                }
-
-                //const currentValue = new Value(currentChoice ? { href: currentChoice.value, title: currentChoice.name } : "");
-
-                //addAutoAutoComplete(parmViewModel, currentChoice, parmViewModel.id, currentValue);
-            }
-
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
-
-            
-            // todo - these are just still here for the templates 
-            // rewrite templates and remove 
-
-            parmViewModel.hasChoices = fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices;
-            parmViewModel.hasPrompt = fieldEntryType === EntryType.AutoComplete || fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
-            parmViewModel.hasConditionalChoices = fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
-            parmViewModel.isMultipleChoices = fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices;
-            parmViewModel.hasAutoAutoComplete = fieldEntryType === EntryType.AutoComplete;
-
 
             return parmViewModel;
         };
@@ -415,17 +352,10 @@ module NakedObjects.Angular.Gemini {
             const fieldEntryType = propertyRep.entryType();
             propertyViewModel.entryType = fieldEntryType;
 
-            //propertyViewModel.hasPrompt = propertyRep.hasPrompt();
-
             if (fieldEntryType === EntryType.Choices) {
                 const choices = propertyRep.choices();
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
             }
-
-            //propertyViewModel.hasChoices = propertyViewModel.choices.length > 0;
-            //propertyViewModel.hasPrompt = !!propertyRep.promptLink() && !!propertyRep.promptLink().arguments()["x-ro-searchTerm"];
-            //propertyViewModel.hasConditionalChoices = !!propertyRep.promptLink() && !propertyViewModel.hasPrompt;
-
 
             if (fieldEntryType === EntryType.AutoComplete) {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
@@ -440,21 +370,6 @@ module NakedObjects.Angular.Gemini {
                 propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
                 propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
-
-
-            //if (propertyViewModel.hasPrompt || propertyViewModel.hasConditionalChoices) {
-            //    const promptRep: PromptRepresentation = propertyRep.getPrompts();
-
-            //    if (propertyViewModel.hasPrompt) {
-            //        propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
-            //        propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
-            //    }
-
-            //    if (propertyViewModel.hasConditionalChoices) {
-            //        propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
-            //        propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
-            //    }
-            //}
 
             if (fieldEntryType !== EntryType.FreeForm) {
 
@@ -476,21 +391,6 @@ module NakedObjects.Angular.Gemini {
                     propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
                 }
             }
-
-            // if a reference and no way to set (ie not choices or autocomplete) use autoautocomplete
-            //if (propertyViewModel.type === "ref" && !propertyViewModel.hasPrompt && !propertyViewModel.hasChoices && !propertyViewModel.hasConditionalChoices) {
-            //    addAutoAutoComplete(propertyViewModel, ChoiceViewModel.create(value, id), id, value);
-            //}
-
-            // todo - these are just still here for the templates 
-            // rewrite templates and remove 
-
-            propertyViewModel.hasChoices = fieldEntryType === EntryType.Choices;
-            propertyViewModel.hasPrompt = fieldEntryType === EntryType.AutoComplete || fieldEntryType === EntryType.ConditionalChoices;
-            propertyViewModel.hasConditionalChoices = fieldEntryType === EntryType.ConditionalChoices;
-            propertyViewModel.isMultipleChoices = false;
-            propertyViewModel.hasAutoAutoComplete = fieldEntryType === EntryType.AutoComplete;
-
 
             return propertyViewModel;
         };
@@ -630,7 +530,11 @@ module NakedObjects.Angular.Gemini {
                     focusManager.focusOverrideOff();
                     navigation.forward();
                 };
-                tvm.swapPanes = () => urlManager.swapPanes();
+                tvm.swapPanes = () => {
+                    $rootScope.$broadcast("pane-swap");
+                    context.swapCurrentObjects();
+                    urlManager.swapPanes();
+                };
                 tvm.singlePane = (right?: boolean) => {
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);

@@ -100,17 +100,6 @@ module NakedObjects.Angular.Gemini {
 
     export class ValueViewModel extends MessageViewModel {
 
-        // todo - these are just still here for the templates 
-        // rewrite templates and remove 
-        
-        hasChoices: boolean;
-        hasPrompt: boolean; 
-        hasConditionalChoices: boolean;
-        isMultipleChoices: boolean; 
-        hasAutoAutoComplete: boolean;
-
-        // end remove 
-
         formattedValue: string;
         value: number | string | boolean | Date;    
         id: string; 
@@ -137,8 +126,6 @@ module NakedObjects.Angular.Gemini {
         onPaneId: number;
 
         entryType : EntryType;
-
-        //setSelectedChoice() {}
 
         prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
             return null;
@@ -584,8 +571,8 @@ module NakedObjects.Angular.Gemini {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
-            this.isInEdit = routeData.edit || this.domainObject.extensions().renderInEdit();
-            this.props = routeData.edit ? routeData.props : {};
+            this.isInEdit = routeData.edit || routeData.transient || this.domainObject.extensions().renderInEdit();
+            this.props = routeData.edit || routeData.transient ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
@@ -643,7 +630,8 @@ module NakedObjects.Angular.Gemini {
         };
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
-        public setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
+        public setProperties = () =>
+            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
 
         private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :
@@ -657,8 +645,6 @@ module NakedObjects.Angular.Gemini {
             this.editComplete();
             this.cancelHandler()();
         };
-
-  
 
         private saveHandler = () => this.unsaved ? this.contextService.saveObject : this.contextService.updateObject;
 
@@ -698,11 +684,6 @@ module NakedObjects.Angular.Gemini {
         }
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
-
-        isSameEditView(paneId: number, otherObject: DomainObjectRepresentation, editing: boolean) {
-            const bothEditing = this.isInEdit && editing;
-            return bothEditing && this.onPaneId === paneId && this.domainObject.selfLink().href() === otherObject.selfLink().href();
-        }
     }
 
     export class ToolBarViewModel {
