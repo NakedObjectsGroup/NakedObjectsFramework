@@ -17,6 +17,7 @@ namespace AdventureWorksModel {
     public class PurchaseOrderRepository : AbstractFactoryAndRepository {
         #region RandomPurchaseOrder
 
+        [Description("For demonstration purposes only")]
         [FinderAction]
         [QueryOnly]
         public PurchaseOrderHeader RandomPurchaseOrder() {
@@ -126,6 +127,5 @@ namespace AdventureWorksModel {
       return query.FirstOrDefault();
       }
       #endregion
-          
     }
 }

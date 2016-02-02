@@ -421,16 +421,33 @@ module NakedObjects.Angular.Gemini {
                     this.clearInputAndSetMessage(match + " does not match any actions");
                     break;
                 case 1:
-                    this.openActionDialog(actions[0]);
+                    const action = actions[0];
+                    if (action.disabledReason()) {
+                        this.disabledAction(action);
+                    } else {
+                        this.openActionDialog(action);
+                    }
                     break;
                 default:
-                    let label = match ? "Matching actions:\n" : "Actions:\n";
-                    var s = _.reduce(actions, (s, t) => {
-                        const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                        return s + menupath + t.extensions().friendlyName() + "\n";
-                    }, label);
-                    this.clearInputAndSetMessage(s);
+                    let output = match ? "Matching actions:\n" : "Actions:\n";
+                    output += this.listActions(actions);
+                    this.clearInputAndSetMessage(output);
             }
+        }
+
+        private disabledAction(action: ActionMember) {
+            let output = "Action: ";
+            output += action.extensions().friendlyName() + " is disabled. ";
+            output += action.disabledReason();
+            this.clearInputAndSetMessage(output);
+        }
+
+        private listActions(actions: ActionMember[] ): string {
+            return _.reduce(actions, (s, t) => {
+                const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
+                const disabled = t.disabledReason() ? " (disabled: " + t.disabledReason() + ")" : "";
+                return s + menupath + t.extensions().friendlyName() + disabled + "\n";
+            }, "");
         }
 
         private openActionDialog(action: ActionMember) {

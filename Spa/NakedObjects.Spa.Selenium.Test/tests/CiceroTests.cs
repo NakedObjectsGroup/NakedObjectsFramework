@@ -97,6 +97,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Special Offer: No Discount");
             EnterCommand("ac");
             WaitForOutput("Special Offer: No Discount\r\nAction dialog: Associate Special Offer With Product\r\nProduct: empty");
+
+            //Disabled action - listed as such
+            CiceroUrl("object?object1=AdventureWorksModel.Vendor-1644");
+            WaitForOutput("Vendor: International Sport Assoc.");
+            EnterCommand("ac");
+            WaitForOutputContaining("Check Credit (disabled: Not yet implemented)");
+
+            //Disabled action -  cannot open dialog
+            EnterCommand("ac check credit");
+            WaitForOutput("Action: Check Credit is disabled. Not yet implemented");
         }
         public virtual void BackAndForward() //Tested together for simplicity
         {
@@ -1135,7 +1145,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

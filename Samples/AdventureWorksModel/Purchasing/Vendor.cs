@@ -92,5 +92,18 @@ namespace AdventureWorksModel {
 
             return _Contact;
         }
+
+        [Description("Get report from credit agency")]
+        public void CheckCredit()
+        {
+            //Not implemented.  Action is to test disable function only.
+        }
+
+        public string DisableCheckCredit()
+        {
+            var rb = new ReasonBuilder();
+            rb.AppendOnCondition(true, "Not yet implemented");
+            return rb.Reason;
+        }
     }
 }
