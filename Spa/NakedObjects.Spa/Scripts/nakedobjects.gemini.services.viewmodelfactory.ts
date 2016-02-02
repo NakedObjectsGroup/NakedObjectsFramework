@@ -163,7 +163,7 @@ module NakedObjects.Angular.Gemini {
 
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
-                    if (fieldEntryType === EntryType.Choices) {
+                    if (fieldEntryType === EntryType.MultipleChoices) {
                         parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
                     } else {
                         parmViewModel.multiChoices = choicesToSet;
@@ -387,6 +387,9 @@ module NakedObjects.Angular.Gemini {
                 const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
                 if (localFilter) {
                     propertyViewModel.formattedValue = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
+                }
+                else if (propertyViewModel.choice) {
+                    propertyViewModel.value = propertyViewModel.choice.name;
                 } else {
                     propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
                 }

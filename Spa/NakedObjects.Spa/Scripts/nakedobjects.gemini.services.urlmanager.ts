@@ -272,7 +272,15 @@ module NakedObjects.Angular.Gemini {
 
         helper.setDialog = (dialogId: string, paneId: number) => {
             currentPaneId = paneId;
-            setSearch(`${dialog}${paneId}`, dialogId, false);
+            let search = $location.search();
+            const dialogKey = `${dialog}${paneId}`;
+            const clearFields = search[dialogKey] !== dialogId;
+            search[dialogKey] = dialogId;
+            if (clearFields) {
+                const ids = _.filter(_.keys($location.search()), k => k.indexOf(`${field}${paneId}`) === 0);
+                search = _.omit(search, ids);
+            }
+            $location.search(search);
         };
 
         helper.closeDialog = (paneId: number) => {
