@@ -37,6 +37,8 @@ module NakedObjects.Angular.Gemini {
 
         getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
         getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
+
+        swapCurrentObjects();
     }
 
     interface IContextInternal extends IContext {
@@ -333,6 +335,13 @@ module NakedObjects.Angular.Gemini {
 
         context.setObject = (paneId: number, co) => currentObjects[paneId] = co;
 
+        context.swapCurrentObjects = () => {
+            const [, p1, p2] = currentObjects;
+            currentObjects[1] = p2;
+            currentObjects[2] = p1;
+        }
+
+
         let currentError: ErrorRepresentation = null;
 
         context.getError = () => currentError;
@@ -362,6 +371,8 @@ module NakedObjects.Angular.Gemini {
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
             doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
 
+        let nextTransientId = 0;
+
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 
             if (result.result().isNull() && result.resultType() !== "void") {
@@ -376,9 +387,9 @@ module NakedObjects.Angular.Gemini {
                     // transient object
                     const domainType = resultObject.extensions().domainType();
                     resultObject.wrapped().domainType = domainType;
-                    resultObject.wrapped().instanceId = "0";
+                    resultObject.wrapped().instanceId = (nextTransientId++).toString();
 
-                    resultObject.hateoasUrl = `/${domainType}/0`;
+                    resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
 
                     context.setObject(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
