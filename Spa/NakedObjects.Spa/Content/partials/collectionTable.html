@@ -21,7 +21,7 @@
 
                     <div ng-switch-when="scalar" ng-switch="property.returnType">
                         <div ng-switch-when="string" ng-switch="property.format">
-                            <div ng-switch-when="date-time" class="clickable-area">{{property.value}}</div>
+                            <div ng-switch-when="date-time" class="clickable-area">{{property.formattedValue}}</div>
                             <div ng-switch-default class="clickable-area">{{property.value}}</div>
                         </div>
                         <div ng-switch-when="boolean" class="clickable-area">
