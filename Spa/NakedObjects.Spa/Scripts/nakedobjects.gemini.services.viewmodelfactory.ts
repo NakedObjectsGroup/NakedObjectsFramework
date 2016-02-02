@@ -531,6 +531,7 @@ module NakedObjects.Angular.Gemini {
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
+                    $rootScope.$broadcast("pane-swap");
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };

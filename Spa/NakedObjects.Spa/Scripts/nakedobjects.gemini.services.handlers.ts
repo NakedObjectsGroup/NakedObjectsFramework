@@ -66,9 +66,11 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
+        // todo just make array of functions ?
         class DeReg {
             deRegLocation: () => void = () => { };
             deRegSearch: () => void = () => { };
+            deRegSwap: () => void = () => { };
             deReg() {
                 this.deRegLocation();
                 this.deRegSearch();
@@ -239,6 +241,7 @@ module NakedObjects.Angular.Gemini {
 
                     deRegObject[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", ovm.setProperties) as () => void;
                     deRegObject[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void;
+                    deRegObject[routeData.paneId].deRegSwap = $scope.$on("pane-swap", ovm.setProperties) as () => void;
 
                 }).catch(error => {
                     setError(error);

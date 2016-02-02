@@ -572,7 +572,7 @@ module NakedObjects.Angular.Gemini {
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
             this.isInEdit = routeData.edit || routeData.transient || this.domainObject.extensions().renderInEdit();
-            this.props = routeData.edit ? routeData.props : {};
+            this.props = routeData.edit || routeData.transient ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
@@ -630,7 +630,8 @@ module NakedObjects.Angular.Gemini {
         };
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
-        public setProperties = () => _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
+        public setProperties = () =>
+            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
 
         private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :
@@ -644,8 +645,6 @@ module NakedObjects.Angular.Gemini {
             this.editComplete();
             this.cancelHandler()();
         };
-
-  
 
         private saveHandler = () => this.unsaved ? this.contextService.saveObject : this.contextService.updateObject;
 
