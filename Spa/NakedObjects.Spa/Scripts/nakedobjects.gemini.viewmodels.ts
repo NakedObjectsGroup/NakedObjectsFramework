@@ -222,7 +222,7 @@ module NakedObjects.Angular.Gemini {
             }
 
             // reference
-            return new Value(this.reference ? { href: this.reference } : null);
+            return new Value(this.reference ? { href: this.reference, title : this.value.toString() } : null);
         }
     }
 
