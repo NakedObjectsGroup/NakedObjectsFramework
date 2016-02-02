@@ -387,27 +387,27 @@ module NakedObjects.Angular.Gemini {
 
         doExecute(args: string, chained: boolean): void {
             const match = this.argumentAsString(args, 0);
-            const p1 = this.argumentAsString(args, 1, true);
-            if (p1) {
-                this.clearInputAndSetMessage("Second argument for action is not yet supported");
+            const details = this.argumentAsString(args, 1, true);
+            if (details && details != "?") {
+                this.clearInputAndSetMessage("Second argument may only be a question mark -  to get action details");
                 return;
             }
             if (this.isObject()) {
                 this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
-                        this.processActions(match, obj.actionMembers());
+                        this.processActions(match, obj.actionMembers(), details);
                     });
             }
             else if (this.isMenu()) {
                 this.getMenu()
                     .then((menu: MenuRepresentation) => {
-                        this.processActions(match, menu.actionMembers());
+                        this.processActions(match, menu.actionMembers(), details);
                     });
             }
-            //TODO: handle list
+            //TODO: handle list - CCAs
         }
 
-        private processActions(match: string, actionsMap: _.Dictionary<ActionMember>) {
+        private processActions(match: string, actionsMap: _.Dictionary<ActionMember>, details: string) {
             var actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
                 this.clearInputAndSetMessage("No actions available");
@@ -422,7 +422,9 @@ module NakedObjects.Angular.Gemini {
                     break;
                 case 1:
                     const action = actions[0];
-                    if (action.disabledReason()) {
+                    if (details) {
+                        this.renderActionDetails(action);
+                    } else if (action.disabledReason()) {
                         this.disabledAction(action);
                     } else {
                         this.openActionDialog(action);
@@ -456,6 +458,12 @@ module NakedObjects.Angular.Gemini {
                 const pVal = this.valueForUrl(p.default(), p);
                 this.urlManager.setFieldValue(action.actionId(), p, pVal, 1, false);
             });
+        }
+
+        private renderActionDetails(action: ActionMember) {
+            let s = "Description for action: " + action.extensions().friendlyName();
+            s += "\n"+action.extensions().description();
+            this.clearInputAndSetMessage(s);
         }
     }
     export class Back extends Command {

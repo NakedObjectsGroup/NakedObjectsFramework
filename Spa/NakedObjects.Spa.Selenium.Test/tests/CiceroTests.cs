@@ -76,12 +76,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ac");
             WaitForOutput("No actions available");
 
-            //second arg
-            CiceroUrl("home?menu1=CustomerRepository");
-            WaitForOutput("Customers menu");
-            EnterCommand("ac name find by, ?");
-            WaitForOutput("Second argument for action is not yet supported");
-
             //To many args
             EnterCommand("ac name find by, x, y");
             WaitForOutput("Too many arguments provided");
@@ -107,6 +101,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Disabled action -  cannot open dialog
             EnterCommand("ac check credit");
             WaitForOutput("Action: Check Credit is disabled. Not yet implemented");
+
+            //Question mark to get details
+            CiceroUrl("home?menu1=PurchaseOrderRepository");
+            WaitForOutput("Purchase Orders menu");
+            EnterCommand("ac random,?");
+            WaitForOutput("Description for action: Random Purchase Order\r\n"+
+                    "For demonstration purposes only");
+
+            //Invalid second param
+            EnterCommand("ac random,x");
+            WaitForOutput("Second argument may only be a question mark -  to get action details");
         }
         public virtual void BackAndForward() //Tested together for simplicity
         {
