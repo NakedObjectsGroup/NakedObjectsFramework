@@ -530,26 +530,30 @@ module NakedObjects.Angular.Gemini {
 
                 ngModel.$render = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
-                    const url = attachment.href;
-                    const mt = attachment.mimeType;
-                    const title = attachment.title;
-                    const link = `<a href='${url}'><span></span></a>`;
-                    element.append(link);
 
-                    const anchor = element.find("a");
-                    if (displayInline(mt)) {
+                    if (attachment) {
+                        const url = attachment.href;
+                        const mt = attachment.mimeType;
+                        const title = attachment.title;
+                        const link = `<a href='${url}'><span></span></a>`;
+                        element.append(link);
 
-                        downloadFile(url, mt, resp => {
-                            const reader = new FileReader();
-                            reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
-                            reader.readAsDataURL(resp);
-                        });
+                        const anchor = element.find("a");
+                        if (displayInline(mt)) {
+
+                            downloadFile(url, mt, resp => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
+                                reader.readAsDataURL(resp);
+                            });
+                        } else {
+                            anchor.html(title);
+                        }
+
+                        anchor.on("click", clickHandler);
+                    } else {
+                        element.append("<div>Attachment not yet supported on transient</div>");
                     }
-                    else {
-                        anchor.html(title); 
-                    }
-                  
-                    anchor.on("click", clickHandler);                 
                 };
             }
         };
