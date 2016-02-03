@@ -97,12 +97,12 @@ module NakedObjects.Angular.Gemini {
     app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
+        focusManager: IFocusManager,
         $cacheFactory: ng.ICacheFactoryService) {
         const context = <IContextInternal>this;
 
         // cached values
        
-        const currentDialogs: DialogViewModel[] = [,null,null]; // per pane 
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
         const currentMenuList: _.Dictionary<MenuRepresentation> = {};
         let currentServices: DomainServicesRepresentation = null;
@@ -453,6 +453,9 @@ module NakedObjects.Angular.Gemini {
         };
 
         function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void) {
+
+            focusManager.setCurrentPane(paneId);
+
             return repLoader.populate(invokeMap, true, invoke).
                 then((result: ActionResultRepresentation) => {
                     setDirty();

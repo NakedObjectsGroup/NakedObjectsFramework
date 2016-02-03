@@ -267,6 +267,7 @@ module NakedObjects.Angular.Gemini {
         setParms = () =>   _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
 
         private executeInvoke = (right?: boolean) => {
+
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
             return this.actionViewModel.executeInvoke(pps, right);

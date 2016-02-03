@@ -26,6 +26,8 @@ module NakedObjects.Angular.Gemini {
         focusOverrideOn(target: FocusTarget, index: number, paneId: number): void;
         focusOverrideOff(): void;
 
+        setCurrentPane(paneId : number);
+
         refresh(paneId: number): void;
     }
 
@@ -34,24 +36,34 @@ module NakedObjects.Angular.Gemini {
         let currentTarget: FocusTarget;
         let currentIndex: number;
         let override = false;
+        let focusedPane = 1; 
+
+        helper.setCurrentPane = (paneId: number) => {
+            focusedPane = paneId;
+        }
 
         helper.focusOn = (target: FocusTarget, index: number, paneId: number, count = 0) => {
 
-            if (!override) {
-                currentTarget = target;
-                currentIndex = index;
-            }
+            if (paneId === focusedPane) {
+                if (!override) {
+                    currentTarget = target;
+                    currentIndex = index;
+                }
 
-            $timeout(() => {
-                $rootScope.$broadcast(geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
-            }, 0, false);
+                $timeout(() => {
+                    $rootScope.$broadcast(geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
+                }, 0, false);
+            }
         }
 
 
-        helper.refresh = (paneId: number) =>
+        helper.refresh = (paneId: number) => {
+            focusedPane = paneId;
             helper.focusOn(currentTarget, currentIndex, paneId);
+        }
 
         helper.focusOverrideOn = (target: FocusTarget, index: number, paneId: number) => {
+            focusedPane = paneId;
             override = true;
             currentTarget = target;
             currentIndex = index;

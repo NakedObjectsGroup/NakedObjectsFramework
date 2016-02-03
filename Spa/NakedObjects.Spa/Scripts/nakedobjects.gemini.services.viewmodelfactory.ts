@@ -77,6 +77,7 @@ module NakedObjects.Angular.Gemini {
             linkViewModel.doClick = () => {
                 // because may be clicking on menu already open so want to reset focus             
                 urlManager.setMenu(linkRep.rel().parms[0].value, paneId);
+                focusManager.setCurrentPane(paneId);
                 focusManager.focusOverrideOff();
                 focusManager.focusOn(FocusTarget.SubAction, 0, paneId);
             };
@@ -86,7 +87,11 @@ module NakedObjects.Angular.Gemini {
 
         viewModelFactory.itemViewModel = (linkRep: Link, paneId: number, selected: boolean) => {
             const itemViewModel = new ItemViewModel();
-            itemViewModel.doClick = (right?: boolean) => urlManager.setItem(linkRep, clickHandler.pane(paneId, right));
+            itemViewModel.doClick = (right?: boolean) => {
+                const currentPane = clickHandler.pane(paneId, right);
+                focusManager.setCurrentPane(currentPane);
+                urlManager.setItem(linkRep, currentPane);
+            }
             initLinkViewModel(itemViewModel, linkRep);
 
             itemViewModel.selected = selected;
@@ -131,8 +136,7 @@ module NakedObjects.Angular.Gemini {
                         if (canDrop) {
                             parmViewModel.setNewValue(newValue);
                         }
-                    }
-                    );
+                    });
             };
 
             const fieldEntryType = parmRep.entryType();
@@ -245,8 +249,10 @@ module NakedObjects.Angular.Gemini {
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
                 (right?: boolean) => {
+                    focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
                     urlManager.setDialog(actionRep.actionId(), paneId);
+                    focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
                 (right?: boolean) => {
                     focusManager.focusOverrideOff();
@@ -416,7 +422,7 @@ module NakedObjects.Angular.Gemini {
                             if (!listViewModel.header) {
                                 listViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
                                 focusManager.focusOverrideOff();
-                                focusManager.focusOn(FocusTarget.TableItem, 0, urlManager.currentpane());
+                                focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
                             }
 
                         });

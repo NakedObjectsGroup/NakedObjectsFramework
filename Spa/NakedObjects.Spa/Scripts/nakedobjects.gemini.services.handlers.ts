@@ -136,12 +136,12 @@ module NakedObjects.Angular.Gemini {
                                     setDialog($scope, action, routeData);
                                 }
 
-                                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+                                focusManager.focusOn(focusTarget, 0, routeData.paneId);
                             }).catch(error => {
                                 setError(error);
                             });
                     } else {
-                        focusManager.focusOn(FocusTarget.Menu, 0, urlManager.currentpane());
+                        focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch(error => {
                     setError(error);
@@ -170,13 +170,13 @@ module NakedObjects.Angular.Gemini {
                     focusTarget = FocusTarget.Dialog;
                 }
 
-                focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+                focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 getFriendlyName().then((name: string) => $scope.title = name);
             } else {
                 $scope.listTemplate = ListPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
                 getFriendlyName().then((name: string) => $scope.title = name);
-                focusManager.focusOn(FocusTarget.Action, 0, urlManager.currentpane());       
+                focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);       
             }
         };
 
@@ -237,7 +237,7 @@ module NakedObjects.Angular.Gemini {
                         focusTarget = FocusTarget.ObjectTitle;
                     }
 
-                    focusManager.focusOn(focusTarget, 0, urlManager.currentpane());
+                    focusManager.focusOn(focusTarget, 0, routeData.paneId);
 
                     deRegObject[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", ovm.setProperties) as () => void;
                     deRegObject[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void;
