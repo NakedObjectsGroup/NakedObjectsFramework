@@ -710,15 +710,16 @@ module NakedObjects.Angular.Gemini {
 
     //Handles empty values, and also enum conversion
     export function renderFieldValue(field: IField, value: Value): string {
-        if (field.isScalar()) {
-            //This is to handle an enum: render it as text, not a number:
-            const inverted = _.invert(field.choices());
+        if (field.isScalar() && value.toString()) { //i.e. not empty
+            //This is to handle an enum: render it as text, not a number:           
             if (field.entryType() == EntryType.Choices) {
+                const inverted = _.invert(field.choices());
                 return inverted[value.toValueString()];
             }
-            else if (field.entryType() == EntryType.MultipleChoices) {
-                const values = value.list();
+            else if (field.entryType() == EntryType.MultipleChoices && value.isList()) {
+                const inverted = _.invert(field.choices());
                 let output = "";
+                const values = value.list();
                 _.forEach(values, v => output += inverted[v.toValueString()] + ",");
                 return output;
             }

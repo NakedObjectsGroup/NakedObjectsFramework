@@ -275,7 +275,7 @@ module NakedObjects.Angular.Gemini {
         protected findMatchingChoicesForEnum(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
             const labels = _.keys(choices);
             const matchingLabels = _.filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
-            const result =  new Array<Value>();
+            const result = new Array<Value>();
             switch (matchingLabels.length) {
                 case 0:
                     break;//leave result empty
@@ -320,45 +320,44 @@ module NakedObjects.Angular.Gemini {
         }
 
         protected valueForUrl(val: Value, field: IField): Value {
-
+            if (val.isNull()) return val;
             const fieldEntryType = field.entryType();
 
-            if (fieldEntryType !== EntryType.FreeForm  || field.isCollectionContributed()) {
+            if (fieldEntryType !== EntryType.FreeForm || field.isCollectionContributed()) {
 
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
-
-                    //Original code from ValueViewModel#getValue(): 
-                    //const selections = this.multiChoices || [];
-                    //if (val.isScalar()) {
-                    //    //TODO: Have to get values from the routeData
-                    //    const selValues = _.map(selections, cvm => cvm.value);
-                    //    return new Value(selValues);
-                    //}
-
-                    //TODO: Reference only -  not multi-select scalars - see above
-                      const   newVal = new Value({ href: val.link().href(), title: val.link().title() });
-                    let values: Value[];
+                    let valuesFromRouteData= new Array<Value>();
                     if (field instanceof Parameter) {
-                        values = this.routeData().dialogFields[field.parameterId()].list();
+                        const rd = this.routeData().dialogFields[field.parameterId()];
+                        if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
-                        values = this.routeData().props[field.propertyId()].list();
+                        const rd = this.routeData().props[field.propertyId()];
+                        if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
-                    const index = _.findIndex(values, v => v.link().href() === newVal.link().href());
-                    if (index > -1) {
-                        values.splice(index, 1);
-                    } else {
-                        values.push(newVal);
+                    let vals: Value[];
+                    if (val.isReference()|| val.isScalar()) {
+                        vals = new Array<Value>(val);
+                    } else if (val.isList()) { //Should be!
+                        vals = val.list();
                     }
-                    const hrefsAndTitles = _.map(values, v => ({ href: v.link().href(), title: v.link().title() }));
-                    return new Value(hrefsAndTitles);
+                    _.forEach(vals, v => {
+                        this.addOrRemoveValue(valuesFromRouteData, v);
+                    });
+                    if (vals[0].isScalar()) { //then all must be scalar
+                        const scalars = _.map(valuesFromRouteData, v => v.scalar());
+                        return new Value(scalars);
+                    } else { //assumed to be links
+                        const links = _.map(valuesFromRouteData, v => (
+                            { href: v.link().href(), title: v.link().title() }
+                        ));
+                        return new Value(links);                       
+                    }
                 }
-
-                //Single values ...
                 if (val.isScalar()) {
                     return val;
                 }
                 // reference 
-                return new Value({ href: val.link().href(), title: val.link().title() });
+                return this.leanLink(val);
             }
 
             if (val.isScalar()) {
@@ -373,9 +372,31 @@ module NakedObjects.Angular.Gemini {
 
                 //    return new Value(from.value as number | string | boolean);
             }
+            if (val.isReference()) {
+                return this.leanLink(val);
+            }
+            return null;
+        }
 
-            // reference
-            return new Value(val.isReference() ? { href: val.link().href(), title: val.link().title() } : null);
+        private leanLink(val: Value): Value {
+            return new Value({ href: val.link().href(), title: val.link().title() });
+        }
+
+        private addOrRemoveValue(valuesFromRouteData: Value[], val: Value) {
+            let index: number;
+            let valToAdd: Value;
+            if (val.isScalar()) {
+                valToAdd = val;
+                index = _.findIndex(valuesFromRouteData, v => v.scalar() === val.scalar());
+            } else { //Must be reference
+                valToAdd = this.leanLink(val);
+                index = _.findIndex(valuesFromRouteData, v => v.link().href() === valToAdd.link().href());
+            }
+            if (index > -1) {
+                valuesFromRouteData.splice(index, 1);
+            } else {
+                valuesFromRouteData.push(valToAdd);
+            }
         }
     }
 
@@ -462,7 +483,7 @@ module NakedObjects.Angular.Gemini {
             this.clearInputAndSetMessage(output);
         }
 
-        private listActions(actions: ActionMember[] ): string {
+        private listActions(actions: ActionMember[]): string {
             return _.reduce(actions, (s, t) => {
                 const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
                 const disabled = t.disabledReason() ? " (disabled: " + t.disabledReason() + ")" : "";
@@ -480,7 +501,7 @@ module NakedObjects.Angular.Gemini {
 
         private renderActionDetails(action: ActionMember) {
             let s = "Description for action: " + action.extensions().friendlyName();
-            s += "\n"+action.extensions().description();
+            s += "\n" + action.extensions().description();
             this.clearInputAndSetMessage(s);
         }
     }
@@ -685,7 +706,7 @@ module NakedObjects.Angular.Gemini {
         private setField(field: IField, fieldEntry: string): void {
             //TODO: Handle '?' e.g.  this.renderDetails(fieldName);
             const fieldEntryType = field.entryType();
-            if ( fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices ) {
+            if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
                 this.handleChoices(field, fieldEntry);
                 return;
             }
@@ -742,7 +763,7 @@ module NakedObjects.Angular.Gemini {
         private handleChoices(field: IField, fieldEntry: string): void {
             let matches;
             if (field.isScalar()) {
-               matches = this.findMatchingChoicesForEnum(field.choices(), fieldEntry);
+                matches = this.findMatchingChoicesForEnum(field.choices(), fieldEntry);
             } else {
                 matches = this.findMatchingChoices(field.choices(), fieldEntry);
             }
