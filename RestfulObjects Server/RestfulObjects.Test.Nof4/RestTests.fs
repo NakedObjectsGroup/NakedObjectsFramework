@@ -28,6 +28,8 @@ open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
 open NakedObjects.Facade.Impl
+open NakedObjects.Architecture.Menu
+open NakedObjects.Menu
 
 [<TestFixture>]
 type Nof4Tests() = 
@@ -70,8 +72,17 @@ type Nof4Tests() =
                    typeof<TestEnum>                   
                    typeof<MostSimple[]>                 
                    typeof<SetWrapper<MostSimple>> |]
+
+            let mm(factory : IMenuFactory) = 
+                let menu1 = factory.NewMenu<RestDataRepository>(true);
+                let menu2 = factory.NewMenu<WithActionService>(true);
+                let menu3 = factory.NewMenu<ContributorService>(true);
+           
+                [| menu1; menu2;  menu3 |];
+
+
             let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService> |]
-            let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|])
+            let reflectorConfig = new ReflectorConfiguration(types, services,[|"RestfulObjects.Test.Data"|], Func<IMenuFactory, IMenu[]>  mm)
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
@@ -100,7 +111,14 @@ type Nof4Tests() =
            [| typeof<RestDataRepository>
               typeof<WithActionService>
               typeof<ContributorService> |]
-        
+
+        override x.MainMenus(factory) = 
+            let menu1 = factory.NewMenu<RestDataRepository>(true);
+            let menu2 = factory.NewMenu<WithActionService>(true);
+            let menu3 = factory.NewMenu<ContributorService>(true);
+           
+            [| menu1; menu2;  menu3 |];
+            
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
         [<Test>]
@@ -142,6 +160,20 @@ type Nof4Tests() =
         [<Test>]
         member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api
         
+        [<Test>]
+        member x.GetMenus() = Menus7.GetMenus x.api
+        
+        [<Test>]
+        member x.GetMenusFormal() = Menus7.GetMenusFormal x.api
+        
+        [<Test>]
+        member x.GetMenusWithMediaType() = Menus7.GetMenusWithMediaType x.api
+        
+        [<Test>]
+        member x.NotAcceptableGetMenus() = Menus7.NotAcceptableGetMenus x.api
+
+
+
         [<Test>]
         member x.GetVersion() = Version8.GetVersion x.api
         

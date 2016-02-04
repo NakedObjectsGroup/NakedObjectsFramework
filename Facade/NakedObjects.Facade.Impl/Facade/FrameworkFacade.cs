@@ -97,9 +97,8 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => GetServicesInternal().ToListContextFacade(this, framework));
         }
 
-        public IMenuFacade[] GetMainMenus() {
-            var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
-            return menus.Select(m => new MenuFacade(m, this, framework)).Cast<IMenuFacade>().ToArray();
+        public MenuContextFacade GetMainMenus() {
+            return MapErrors(() => GetMenusInternal().ToMenuContextFacade(this, framework));
         }
 
         public ObjectContextFacade GetObject(IObjectFacade objectFacade) {
@@ -403,6 +402,17 @@ namespace NakedObjects.Facade.Impl {
                 IsListOfServices = true
             };
         }
+
+        private MenuContext GetMenusInternal() {
+            var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
+            var elementType = (IObjectSpec)framework.MetamodelManager.GetSpecification(typeof(object));
+
+            return new MenuContext {
+                ElementType = elementType,
+                List = menus.ToArray()
+            };
+        }
+
 
         private ListContext GetCompletions(PropParmAdapter propParm, INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
             INakedObjectAdapter[] list = propParm.GetList(nakedObject, arguments);

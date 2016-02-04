@@ -70,6 +70,7 @@
     <Compile Include="Contexts\Cause.cs" />
     <Compile Include="Contexts\ActionTypeContextFacade.cs" />
     <Compile Include="Contexts\ChoiceContextFacade.cs" />
+    <Compile Include="Contexts\MenuContextFacade.cs" />
     <Compile Include="Contexts\ListContextFacade.cs" />
     <Compile Include="Contexts\ParameterTypeContextFacade.cs" />
     <Compile Include="Contexts\PropertyTypeContextFacade.cs" />

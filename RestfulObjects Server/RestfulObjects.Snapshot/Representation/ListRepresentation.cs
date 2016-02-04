@@ -26,10 +26,10 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected ListRepresentation(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags)
+        protected ListRepresentation(IOidStrategy oidStrategy, MenuContextFacade menus,  HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Value = menus.Where(m => m.MenuItems.Any()).Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
-            SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req));
+            Value = menus.List.Where(m => m.MenuItems.Any()).Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
+            SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Menus, new UriMtHelper(oidStrategy, req, menus.ElementType));
             SetLinks(req);
             SetExtensions();
             SetHeader(true);
@@ -118,7 +118,8 @@ namespace RestfulObjects.Snapshot.Representations {
             return new ListRepresentation(oidStrategy, specs, req, flags);
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags) {
+           
             return new ListRepresentation(oidStrategy, menus, req, flags);
         }
     }
