@@ -31,8 +31,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //No match
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
-            //EnterCommand("act foo, bar  ");  //TODO: needs updating when 2nd param is implemented
-            //WaitForOutput("Wrong number of arguments provided");
             //single match
             EnterCommand("act rand");
             WaitForOutput("Products menu\r\nAction dialog: Random Product");
@@ -275,6 +273,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("From Date: 1 Jan 2016");
             CiceroUrl("object?object1=AdventureWorksModel.Customer-140&actions1=open&dialog1=CreateNewOrder&field1_copyHeaderFromLastOrder=false");
             WaitForOutputContaining("Action dialog: Create New Order");
+            EnterCommand("enter copy,false");
+            WaitForOutputContaining("Copy Header From Last Order: false");
             EnterCommand("enter copy,true");
             WaitForOutputContaining("Copy Header From Last Order: true");
 
@@ -324,13 +324,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter");
             WaitForOutput("The command: enter is not available in the current context");
 
-            //Multi-select and deselect
-            CiceroUrl("home?menu1=ProductRepository&dialog1=ListProductsBySubCategories&field1_subCategories=%255B%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F1%2522%252C%2522title%2522%253A%2522Mountain%2520Bikes%2522%257D%252C%257B%2522href%2522%253A%2522http%253A%252F%252Flocalhost%253A61546%252Fobjects%252FAdventureWorksModel.ProductSubcategory%252F3%2522%252C%2522title%2522%253A%2522Touring%2520Bikes%2522%257D%255D");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
-            EnterCommand("enter sub, handlebars");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
-            EnterCommand("enter sub, touring bikes");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
+            //Finish somewhere other than home!
+            EnterCommand("menu products");
+            WaitForOutput("Products menu");
         }
         public virtual void Gemini()
         {
@@ -675,6 +671,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //TODO: Need example from properties, not action params -  transfer this to Enter test
             //EnterCommand("field product category"); //which would also match product subcategory
             //WaitForOutput("Product Category: Bikes");
+
+            //Check that enum property renders as text, not number
+            CiceroUrl("object?object1=AdventureWorksModel.SalesOrderHeader-70996");
+            WaitForOutput("Sales Order Header: SO70996");
+            EnterCommand("pr status");
+            WaitForOutput("Status: Shipped");
         }
         public virtual void Root()
         {
@@ -1031,6 +1033,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Unsaved Credit Card");
             EnterCommand("save");
             WaitForOutputStarting("Please complete or correct these fields:");
+        }
+
+        public virtual void ScenarioMultiSelect()
+        {
+            //Multi-select and deselect
+            CiceroUrl("home?menu1=ProductRepository");
+            WaitForOutput("Products menu");
+            EnterCommand("action List Products By Sub Categories");
+            WaitForOutputContaining("Action dialog: List Products By Sub Categories");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            EnterCommand("enter sub, handlebars");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            EnterCommand("enter sub, touring bikes");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
+
+            //TODO: Test this for multi-select enums (Find Products by Lines and Categories)
+
         }
         public virtual void ChainedCommands()
         {

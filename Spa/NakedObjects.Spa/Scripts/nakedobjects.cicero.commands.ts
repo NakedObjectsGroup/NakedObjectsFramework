@@ -272,6 +272,25 @@ module NakedObjects.Angular.Gemini {
             return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         }
 
+        protected findMatchingChoicesForEnum(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
+            const labels = _.keys(choices);
+            const matchingLabels = _.filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
+            const result =  new Array<Value>();
+            switch (matchingLabels.length) {
+                case 0:
+                    break;//leave result empty
+                case 1: 
+                    //Push the VALUE from the key
+                    result.push(choices[matchingLabels[0]]);
+                    break;
+                default:
+                    //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
+                    _.forEach(matchingLabels, label => result.push(new Value(label)));
+                    break;
+            }
+            return result;
+        }
+
         protected handleErrorResponse(err: ErrorMap, getFriendlyName: (id: string) => string) {
             if (err.invalidReason()) {
                 this.clearInputAndSetMessage(err.invalidReason());
@@ -317,8 +336,7 @@ module NakedObjects.Angular.Gemini {
                     //}
 
                     //TODO: Reference only -  not multi-select scalars - see above
-
-                    const newVal = new  Value({ href: val.link().href(), title: val.link().title() });
+                      const   newVal = new Value({ href: val.link().href(), title: val.link().title() });
                     let values: Value[];
                     if (field instanceof Parameter) {
                         values = this.routeData().dialogFields[field.parameterId()].list();
@@ -722,7 +740,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleChoices(field: IField, fieldEntry: string): void {
-            const matches = this.findMatchingChoices(field.choices(), fieldEntry);
+            let matches;
+            if (field.isScalar()) {
+               matches = this.findMatchingChoicesForEnum(field.choices(), fieldEntry);
+            } else {
+                matches = this.findMatchingChoices(field.choices(), fieldEntry);
+            }
             switch (matches.length) {
                 case 0:
                     this.clearInputAndSetMessage("None of the choices matches " + fieldEntry);
@@ -1100,7 +1123,7 @@ module NakedObjects.Angular.Gemini {
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
                 value = propInUrl.toString() + " (modified)";
             } else {
-                value = pm.value().toString() || "empty";
+                value = renderFieldValue(pm, pm.value());
             }
             return name + ": " + value + "\n";
         }

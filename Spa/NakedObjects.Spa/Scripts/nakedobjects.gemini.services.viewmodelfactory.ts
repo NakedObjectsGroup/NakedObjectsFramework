@@ -161,7 +161,7 @@ module NakedObjects.Angular.Gemini {
                 parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
-            if (fieldEntryType !== EntryType.FreeForm  || parmViewModel.isCollectionContributed) {
+            if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
 
                 function setCurrentChoices(vals: Value) {
 
@@ -643,7 +643,7 @@ module NakedObjects.Angular.Gemini {
                                     } else if (routeData.edit) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                            output += renderModifiedProperties(obj, routeData);
+                                        output += renderModifiedProperties(obj, routeData);
                                     } else {
                                         output += Helpers.typePlusTitle(obj) + "\n";
                                         output += renderActionDialogIfOpen(obj, routeData);
@@ -700,11 +700,30 @@ module NakedObjects.Angular.Gemini {
             output += "Modified properties:\n";
             _.each(routeData.props, (value, propId) => {
                 output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
-                output += value.toString() || "empty";
+                const pm = obj.propertyMember(propId);
+                output += renderFieldValue(pm, value);
                 output += "\n";
             });
         }
         return output;
+    }
+
+    //Handles empty values, and also enum conversion
+    export function renderFieldValue(field: IField, value: Value): string {
+        if (field.isScalar()) {
+            //This is to handle an enum: render it as text, not a number:
+            const inverted = _.invert(field.choices());
+            if (field.entryType() == EntryType.Choices) {
+                return inverted[value.toValueString()];
+            }
+            else if (field.entryType() == EntryType.MultipleChoices) {
+                const values = value.list();
+                let output = "";
+                _.forEach(values, v => output += inverted[v.toValueString()] + ",");
+                return output;
+            }
+        }
+        return value.toString() || "empty";
     }
 
     function renderActionDialogIfOpen(
@@ -715,9 +734,10 @@ module NakedObjects.Angular.Gemini {
             const actionMember = repWithActions.actionMember(routeData.dialogId);
             const actionName = actionMember.extensions().friendlyName();
             output += `Action dialog: ${actionName}\n`;
-            _.forEach(routeData.dialogFields, (value, key) => {
-                output += Helpers.friendlyNameForParam(actionMember, key) + ": ";
-                output += value.toString() || "empty";
+            _.forEach(routeData.dialogFields, (value, paramId) => {
+                output += Helpers.friendlyNameForParam(actionMember, paramId) + ": ";
+                const param = actionMember.parameters()[paramId];
+                output += renderFieldValue(param, value);
                 output += "\n";
             });
         }
