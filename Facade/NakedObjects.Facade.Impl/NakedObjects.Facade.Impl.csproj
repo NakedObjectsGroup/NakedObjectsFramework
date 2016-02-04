@@ -149,6 +149,7 @@
   <ItemGroup>
     <Compile Include="Contexts\ActionContext.cs" />
     <Compile Include="Contexts\Context.cs" />
+    <Compile Include="Contexts\MenuContext.cs" />
     <Compile Include="Contexts\ListContext.cs" />
     <Compile Include="Contexts\ObjectContext.cs" />
     <Compile Include="Contexts\ParameterContext.cs" />

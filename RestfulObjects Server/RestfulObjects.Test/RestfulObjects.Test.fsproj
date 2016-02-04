@@ -86,7 +86,7 @@
     <Compile Include="RestTestFunctions.fs" />
     <Compile Include="HomePage5.fs" />
     <Compile Include="User6.fs" />
-    <Compile Include="DomainServices7.fs" />
+    <Compile Include="Menus7.fs" />
     <Compile Include="Version8.fs" />
     <Compile Include="Objects9.fs" />
     <Compile Include="Error10.fs" />
@@ -105,6 +105,7 @@
     <Compile Include="DomainTypeActionInvoke26.fs" />
     <None Include="packages.config" />
     <Content Include="app.config" />
+    <Compile Include="DomainServices7.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj">

@@ -28,8 +28,8 @@ open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
 open NakedObjects.Facade.Impl
-
-
+open NakedObjects.Architecture.Menu
+open NakedObjects.Menu
 
 
 [<TestFixture>]
@@ -74,7 +74,17 @@ type Nof4TestsDomainType() =
                    typeof<MostSimple[]>                 
                    typeof<SetWrapper<MostSimple>> |]
             let services = [| typeof<RestDataRepository>;  typeof<WithActionService>; typeof<ContributorService>; typeof<TestTypeCodeMapper>; typeof<TestKeyCodeMapper> |]
-            let reflectorConfig = new ReflectorConfiguration(types, services, [|"RestfulObjects.Test.Data"|])
+            
+            let mm(factory : IMenuFactory) = 
+                let menu1 = factory.NewMenu<RestDataRepository>(true);
+                let menu2 = factory.NewMenu<WithActionService>(true);
+                let menu3 = factory.NewMenu<ContributorService>(true);
+                let menu4 = factory.NewMenu<TestTypeCodeMapper>(true);
+                let menu5 = factory.NewMenu<TestKeyCodeMapper>(true);
+                [| menu1; menu2;  menu3; menu4; menu5 |];
+            
+            
+            let reflectorConfig = new ReflectorConfiguration(types, services, [|"RestfulObjects.Test.Data"|], Func<IMenuFactory, IMenu[]>  mm)
             container.RegisterInstance(typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) |> ignore
             ()
         
@@ -109,6 +119,7 @@ type Nof4TestsDomainType() =
              typeof<ContributorService> 
              typeof<TestTypeCodeMapper>
              typeof<TestKeyCodeMapper> |]
+         
                
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
@@ -151,6 +162,19 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api
         
+        [<Test>]
+        member x.GetMenus() = Menus7.GetMenusWithTTC x.api
+        
+        [<Test>]
+        member x.GetMenusFormal() = Menus7.GetMenusFormalWithTTC x.api
+        
+        [<Test>]
+        member x.GetMenusWithMediaType() = Menus7.GetMenusWithMediaTypeWithTTC x.api
+        
+        [<Test>]
+        member x.NotAcceptableGetMenus() = Menus7.NotAcceptableGetMenus x.api
+
+
         [<Test>]
         member x.GetVersion() = Version8.GetVersion x.api
 

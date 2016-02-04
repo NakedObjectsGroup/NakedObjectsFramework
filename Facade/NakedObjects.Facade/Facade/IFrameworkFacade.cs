@@ -19,7 +19,7 @@ namespace NakedObjects.Facade {
         IPrincipal GetUser();
         ObjectContextFacade GetService(IOidTranslation serviceName);
         ListContextFacade GetServices();
-        IMenuFacade[] GetMainMenus();
+        MenuContextFacade GetMainMenus();
         ObjectContextFacade GetObject(IObjectFacade objectFacade);
         ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments);
         ObjectContextFacade GetObject(IOidTranslation objectId);

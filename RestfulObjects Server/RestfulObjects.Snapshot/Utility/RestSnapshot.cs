@@ -82,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade[] menus, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus,  HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             logger.DebugFormat("RestSnapshot:MenuList");
             populator = () => {
