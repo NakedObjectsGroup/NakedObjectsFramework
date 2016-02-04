@@ -81,6 +81,7 @@
     <Compile Include="Exception\CollectionResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\DataUpdateNOSException.cs" />
     <Compile Include="Exception\PreconditionFailedNOSException.cs" />
+    <Compile Include="Exception\MenuResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\TypeActionParameterResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\TypeActionResourceNotFoundNOSException.cs" />
     <Compile Include="Exception\TypeCollectionResourceNotFoundNOSException.cs" />

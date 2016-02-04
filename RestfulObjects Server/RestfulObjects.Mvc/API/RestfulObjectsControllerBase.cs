@@ -471,7 +471,17 @@ namespace RestfulObjects.Mvc {
         }
 
         public virtual HttpResponseMessage GetMenu(string menuName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => { return new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus().List.Single(m => m.Id == menuName), Request, GetFlags(arguments)); });
+            return InitAndHandleErrors(() => {
+                if (string.IsNullOrEmpty(menuName)) {
+                    throw new BadRequestNOSException();
+                }
+
+                var menu = FrameworkFacade.GetMainMenus().List.SingleOrDefault(m => m.Id == menuName);
+                if (menu == null) {
+                    throw new MenuResourceNotFoundNOSException(menuName);
+                }
+                return new RestSnapshot(OidStrategy, menu, Request, GetFlags(arguments));
+            });
         }
 
         public virtual HttpResponseMessage GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
