@@ -58,11 +58,6 @@ namespace RestfulObjects.Snapshot.Representations {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
             };
 
-            if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, propertyContext.Property)), Flags));
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, propertyContext.Property.ElementSpecification)), Flags));
-            }
-
             Links = tempLinks.ToArray();
         }
 

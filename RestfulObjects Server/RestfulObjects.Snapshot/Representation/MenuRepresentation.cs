@@ -51,18 +51,11 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetHeader(IMenuFacade menu) {
             caching = CacheType.NonExpiring;
-            //SetEtag(objectContext.Target);
         }
 
         private void SetLinksAndMembers(HttpRequestMessage req, IMenuFacade menu) {
             var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
-            if (Flags.FormalDomainModel) {
-                //tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, menu.Specification)), Flags));
-            }
-
-            // temp disable icons 
-            //tempLinks.Add(LinkRepresentation.Create(new IconRelType(objectUri), Flags));
             SetMembers(menu, req, tempLinks);
             Links = tempLinks.ToArray();
         }
@@ -108,18 +101,8 @@ namespace RestfulObjects.Snapshot.Representations {
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
-            return objectFacade.ExtensionData == null ? null : objectFacade.ExtensionData.ToDictionary(kvp => kvp.Key, kvp => (object) kvp.Value.ToString().ToLower());
-        }
-
         private void SetExtensions(IMenuFacade menu) {
-            if (Flags.SimpleDomainModel) {
-                //Extensions = RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy);
-                Extensions = MapRepresentation.Create();
-            }
-            else {
-                Extensions = MapRepresentation.Create();
-            }
+            Extensions = MapRepresentation.Create();
         }
 
         public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequestMessage req, RestControlFlags flags) {

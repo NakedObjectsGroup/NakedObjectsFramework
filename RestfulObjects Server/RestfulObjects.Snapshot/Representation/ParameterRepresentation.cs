@@ -72,16 +72,6 @@ namespace RestfulObjects.Snapshot.Representations {
         private void SetLinks(HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter) {
             var tempLinks = new List<LinkRepresentation>();
 
-            if (Flags.FormalDomainModel) {
-                var parameterTypeContext = new ParameterTypeContextFacade {
-                    Action = parameter.Action,
-                    OwningSpecification = objectFacade.Specification,
-                    Parameter = parameter
-                };
-                LinkRepresentation describedBy = LinkRepresentation.Create(OidStrategy, new ParamTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, parameterTypeContext)), Flags);
-                tempLinks.Add(describedBy);
-            }
-
             if (parameter.IsAutoCompleteEnabled || parameter.GetChoicesParameters().Any()) {
                 tempLinks.Add(CreatePromptLink(req, objectFacade, parameter));
             }
@@ -109,12 +99,9 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMask] = mask;
             }
 
-            if (Flags.SimpleDomainModel) {
-                Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
-            }
-            else {
-                Extensions = MapRepresentation.Create();
-            }
+           
+            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
+          
         }
 
         private static bool IsUnconditionalChoices(IActionParameterFacade parameter) {

@@ -23,29 +23,6 @@ let simpleLinks =
       TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
       TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "") ]
 
-let formalLinks = 
-    [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
-      TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" false)
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" false)
-      TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "")
-      TObjectJson(makeGetLinkProp RelValues.DomainTypes SegmentValues.DomainTypes RepresentationTypes.TypeList "") ]
-
-let bothLinks = 
-    [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
-      TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" true)
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
-      TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "")
-      TObjectJson(makeGetLinkProp RelValues.DomainTypes SegmentValues.DomainTypes RepresentationTypes.TypeList "") ]
-
-let expectedBoth = 
-    [ TProperty(JsonPropertyNames.Links, TArray(bothLinks))
-      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-
-let expectedFormal = 
-    [ TProperty(JsonPropertyNames.Links, TArray(formalLinks))
-      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 let expectedSimple = 
     [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
@@ -61,33 +38,8 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    compareObject expectedBoth parsedResult
-
-let GetHomePageFormal(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" testRoot argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetHome(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    compareObject expectedFormal parsedResult
-
-let GetHomePageSimple(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=simple"
-    let url = sprintf "%s?%s" testRoot argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetHome(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
     compareObject expectedSimple parsedResult
+
 
 let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot
@@ -101,7 +53,7 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    compareObject expectedBoth parsedResult
+    compareObject expectedSimple parsedResult
 
 // 406   
 let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 

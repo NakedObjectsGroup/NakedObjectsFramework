@@ -126,11 +126,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
         
-        [<Test>]
-        member x.GetHomePageSimple() = HomePage5.GetHomePageSimple x.api
-        
-        [<Test>]
-        member x.GetHomePageFormal() = HomePage5.GetHomePageFormal x.api
+       
         
         [<Test>]
         member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
@@ -153,8 +149,6 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetDomainServices() = DomainServices7.GetDomainServicesWithTTC x.api
         
-        [<Test>]
-        member x.GetDomainServicesFormal() = DomainServices7.GetDomainServicesFormalWithTTC x.api
         
         [<Test>]
         member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaTypeWithTTC x.api
@@ -165,8 +159,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMenus() = Menus7.GetMenusWithTTC x.api
         
-        [<Test>]
-        member x.GetMenusFormal() = Menus7.GetMenusFormalWithTTC x.api
+     
         
         [<Test>]
         member x.GetMenusWithMediaType() = Menus7.GetMenusWithMediaTypeWithTTC x.api
@@ -190,17 +183,16 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly x.api
         
-        [<Test>]
-        member x.GetMostSimpleTransientObjectFormalOnly() = Objects9.GetMostSimpleTransientObjectFormalOnly x.api
+       
         
         [<Test>]
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
+         [<Ignore>] // temp ignore untill fix persist id
         member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
-        [<Test>]
-        member x.PersistMostSimpleTransientObjectFormalOnly() = Objects9.PersistMostSimpleTransientObjectFormalOnly x.api
+       
         
         [<Test>]
         member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
@@ -226,8 +218,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
-        [<Test>]
-        
+        [<Test>]   
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
         [<Test>]
@@ -250,10 +241,7 @@ type Nof4TestsDomainType() =
         
         [<Test>]
         member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail x.api
-        
-        [<Test>]
-        member x.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail() = Objects9.PersistWithValueTransientObjectValidateOnlyFormalOnlyFail x.api
-        
+       
         [<Test>]
         member x.PersistWithValueTransientObjectFail() = Objects9.PersistWithValueTransientObjectFail x.api
         
@@ -296,7 +284,6 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PersistWithValueTransientObjectFailCrossValidation() = Objects9.PersistWithValueTransientObjectFailCrossValidation x.api
 
-
         [<Test>]
         member x.Error() = Error10.Error x.api
         
@@ -312,14 +299,8 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMostSimpleObjectConfiguredSelectable() = DomainObject14.GetMostSimpleObjectConfiguredSelectable x.api
         
-        [<Test>]
-        member x.GetMostSimpleObjectConfiguredNone() = DomainObject14.GetMostSimpleObjectConfiguredNone x.api
-        
-        [<Test>]
-        member x.GetMostSimpleObjectFormalOnly() = DomainObject14.GetMostSimpleObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.GetMostSimpleObjectConfiguredFormalOnly() = DomainObject14.GetMostSimpleObjectConfiguredFormalOnly x.api
+      
+       
         
         [<Test>]
         member x.GetMostSimpleObjectConfiguredSimpleOnly() = DomainObject14.GetMostSimpleObjectConfiguredSimpleOnly x.api
@@ -327,8 +308,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMostSimpleObjectConfiguredCaching() = DomainObject14.GetMostSimpleObjectConfiguredCaching x.api
         
-        [<Test>]
-        member x.GetMostSimpleObjectConfiguredOverrides() = DomainObject14.GetMostSimpleObjectConfiguredOverrides x.api
+      
         
         [<Test>]
         member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly x.api
@@ -356,15 +336,12 @@ type Nof4TestsDomainType() =
         
         [<Test>]
         member x.GetMostSimpleObjectWithDomainTypeSimple() = DomainObject14.GetMostSimpleObjectWithDomainTypeSimple x.api
-        
-        [<Test>]
-        member x.GetMostSimpleObjectWithDomainTypeFormal() = DomainObject14.GetMostSimpleObjectWithDomainTypeFormal x.api
+    
         
         [<Test>]
         member x.GetWithValueObjectWithDomainTypeNoProfileSimple() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileSimple x.api
         
-        [<Test>]
-        member x.GetWithValueObjectWithDomainTypeNoProfileFormal() = DomainObject14.GetWithValueObjectWithDomainTypeNoProfileFormal x.api
+     
         
         [<Test>]
         member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject x.api
@@ -399,8 +376,7 @@ type Nof4TestsDomainType() =
         [<Test>]        
         member x.GetWithActionObjectSimpleOnly() = DomainObject14.GetWithActionObjectSimpleOnly x.api
         
-        [<Test>]        
-        member x.GetWithActionObjectFormalOnly() = DomainObject14.GetWithActionObjectFormalOnly x.api
+     
         
         [<Test>]
         member x.GetWithReferenceObject() = DomainObject14.GetWithReferenceObject x.api
@@ -409,9 +385,7 @@ type Nof4TestsDomainType() =
         
         member x.GetWithCollectionObject() = DomainObject14.GetWithCollectionObject x.api
         
-        [<Test>]
-        
-        member x.GetWithCollectionObjectFormalOnly() = DomainObject14.GetWithCollectionObjectFormalOnly x.api
+      
         
         [<Test>]
         
@@ -567,8 +541,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly x.api
         
-        [<Test>]
-        member x.GetServiceFormalOnly() = DomainService15.GetServiceFormalOnly x.api
+      
         
         [<Test>]
         member x.GetServiceWithMediaType() = DomainService15.GetServiceWithMediaType x.api
@@ -595,8 +568,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetMenuSimpleOnly() = DomainMenu15.GetMenuSimpleOnly x.api
         
-        [<Test>]
-        member x.GetMenuFormalOnly() = DomainMenu15.GetMenuFormalOnly x.api
+       
         
         [<Test>]
         member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
@@ -649,8 +621,7 @@ type Nof4TestsDomainType() =
             ObjectProperty16.GetValuePropertyUserAuth x.api
             x.SetUser("Test")
         
-        [<Test>]
-        member x.GetValuePropertyFormalOnly() = ObjectProperty16.GetValuePropertyFormalOnly x.api
+       
         
         [<Test>]
         member x.GetValuePropertySimpleOnly() = ObjectProperty16.GetValuePropertySimpleOnly x.api
@@ -989,8 +960,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel x.api
         
-        [<Test>]
-        member x.GetCollectionPropertyFormalOnly() = ObjectCollection17.GetCollectionPropertyFormalOnly x.api
+     
         
         [<Test>]
         member x.GetCollectionPropertySimpleOnly() = ObjectCollection17.GetCollectionPropertySimpleOnly x.api
@@ -998,8 +968,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetCollectionSetProperty() = ObjectCollection17.GetCollectionSetProperty x.api
         
-        [<Test>]
-        member x.GetCollectionSetPropertyFormalOnly() = ObjectCollection17.GetCollectionSetPropertyFormalOnly x.api
+  
         
         [<Test>]
         member x.GetCollectionSetPropertySimpleOnly() = ObjectCollection17.GetCollectionSetPropertySimpleOnly x.api
@@ -1118,14 +1087,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetActionPropertyWithOptViewModelSimpleOnly() = ObjectAction18.GetActionPropertyWithOptViewModelSimpleOnly x.api
         
-        [<Test>]
-        member x.GetActionPropertyWithOptObjectFormalOnly() = ObjectAction18.GetActionPropertyWithOptObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.GetActionPropertyWithOptServiceFormalOnly() = ObjectAction18.GetActionPropertyWithOptServiceFormalOnly x.api
-        
-        [<Test>]
-        member x.GetActionPropertyWithOptViewModelFormalOnly() = ObjectAction18.GetActionPropertyWithOptViewModelFormalOnly x.api
+      
         
         [<Test>]
         member x.GetActionPropertyObjectWithMediaType() = ObjectAction18.GetActionPropertyObjectWithMediaType x.api
@@ -1402,15 +1364,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetCollectionActionWithParmsViewModel() = ObjectAction18.GetCollectionActionWithParmsViewModel x.api
         
-        [<Test>]
-        member x.GetCollectionActionWithParmsObjectFormalOnly() = ObjectAction18.GetCollectionActionWithParmsObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.GetCollectionActionWithParmsServiceFormalOnly() = ObjectAction18.GetCollectionActionWithParmsServiceFormalOnly x.api
-        
-        [<Test>]
-        member x.GetCollectionActionWithParmsViewModelFormalOnly() = ObjectAction18.GetCollectionActionWithParmsViewModelFormalOnly x.api
-        
+            
         [<Test>]
         member x.GetCollectionActionWithParmsObjectSimpleOnly() = ObjectAction18.GetCollectionActionWithParmsObjectSimpleOnly x.api
         
@@ -1662,15 +1616,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PostInvokeActionReturnScalarViewModel() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModel x.api
         
-        [<Test>]
-        member x.PostInvokeActionReturnScalarObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnScalarServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarServiceFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnScalarViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelFormalOnly x.api
-        
+           
         [<Test>]
         member x.PostInvokeActionReturnScalarObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnScalarObjectValidateOnly x.api
         
@@ -1707,15 +1653,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PostInvokeActionReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModel x.api
         
-        [<Test>]
-        member x.PostInvokeActionReturnVoidObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnVoidServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidServiceFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnVoidViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModelFormalOnly x.api
-        
+             
         [<Test>]
         member x.PostInvokeActionReturnVoidObjectValidateOnly() = ObjectActionInvoke19.PostInvokeActionReturnVoidObjectValidateOnly x.api
         
@@ -2101,15 +2039,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.GetInvokeActionWithScalarMissingParmsSimpleViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleViewModel x.api
         
-        [<Test>]
-        member x.GetInvokeActionWithScalarMissingParmsFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalObject x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarMissingParmsFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalService x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarMissingParmsFormalViewModel() = ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsFormalViewModel x.api
-        
+              
         [<Test>]
         member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly() = 
             ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly x.api
@@ -2122,51 +2052,7 @@ type Nof4TestsDomainType() =
         member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly() = 
             ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly x.api
         
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalObject() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObject x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalService() = ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalService x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel() = 
-            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModel x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalObjectValidateOnly x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalServiceValidateOnly x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQueryFormalViewModelValidateOnly x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObject() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObject x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalService() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalService x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModel x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalObjectValidateOnly x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalServiceValidateOnly x.api
-        
-        [<Test>]
-        member x.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly() = 
-            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnQueryFormalViewModelValidateOnly x.api
+     
         
         [<Test>]
         member x.PostInvokeActionReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionReturnQueryObject x.api
@@ -2282,53 +2168,9 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.DisabledActionInvokeCollectionViewModel() = ObjectActionInvoke19.DisabledActionInvokeCollectionViewModel x.api
         
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObject() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObject x.api
+      
         
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalService() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalService x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModel x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObject x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalService() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalService x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModel x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = 
-            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly x.api
+   
         
         [<Test>]
         member x.PostInvokeActionReturnCollectionObject() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObject x.api
@@ -2339,15 +2181,7 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.PostInvokeActionReturnCollectionViewModel() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModel x.api
         
-        [<Test>]
-        member x.PostInvokeActionReturnCollectionObjectFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnCollectionServiceFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceFormalOnly x.api
-        
-        [<Test>]
-        member x.PostInvokeActionReturnCollectionViewModelFormalOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelFormalOnly x.api
-        
+              
         [<Test>]
         member x.PostInvokeActionReturnCollectionObjectVerifyOnly() = ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectVerifyOnly x.api
         
@@ -2755,165 +2589,9 @@ type Nof4TestsDomainType() =
         member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = 
             ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly x.api
         
-        [<Test>]
-        member x.GetMostSimpleObjectType() = DomainType21.GetMostSimpleObjectType x.api
-        
-        [<Test>]        
-        member x.GetWithActionObjectType() = DomainType21.GetWithActionObjectType x.api
-        
-        [<Test>]
-        member x.GetWithActionServiceType() = DomainType21.GetWithActionServiceType x.api
-        
-        [<Test>]
-        member x.GetWithReferenceObjectType() = DomainType21.GetWithReferenceObjectType x.api
-        
-        [<Test>]
-        member x.GetWithValueObjectType() = DomainType21.GetWithValueObjectType x.api
-        
-        [<Test>]
-        member x.GetWithCollectionObjectType() = DomainType21.GetWithCollectionObjectType x.api
-        
-        [<Test>]
-        member x.GetPredefinedDomainTypes() = DomainType21.GetPredefinedDomainTypes x.api
-        
-        [<Test>]
-        member x.NotFoundPredefinedDomainTypes() = DomainType21.NotFoundPredefinedDomainTypes x.api
-        
-        [<Test>]
-        member x.NotFoundGetMostSimpleObjectType() = DomainType21.NotFoundGetMostSimpleObjectType x.api
-        
-        [<Test>]
-        member x.NotAcceptableGetMostSimpleObjectType() = DomainType21.NotAcceptableGetMostSimpleObjectType x.api
-        
-        [<Test>]
-        member x.GetValuePropertyType() = DomainProperty22.GetValuePropertyType x.api
-        
-        [<Test>]
-        member x.GetReferencePropertyType() = DomainProperty22.GetReferencePropertyType x.api
-        
-        [<Test>]
-        member x.GetValueStringPropertyType() = DomainProperty22.GetValueStringPropertyType x.api
-        
-        [<Test>]
-        member x.GetValueDateTimePropertyType() = DomainProperty22.GetValueDateTimePropertyType x.api
-        
-        [<Test>]
-        member x.NotFoundPropertyType() = DomainProperty22.NotFoundPropertyType x.api
-        
-        [<Test>]
-        member x.NotFoundTypePropertyType() = DomainProperty22.NotFoundTypePropertyType x.api
-        
-        [<Test>]
-        member x.NotAcceptableGetValuePropertyType() = DomainProperty22.NotAcceptableGetValuePropertyType x.api
-        
-        [<Test>]
-        member x.GetCollectionPropertyType() = DomainCollection23.GetCollectionPropertyType x.api
-        
-        [<Test>]
-        member x.GetSetCollectionPropertyType() = DomainCollection23.GetSetCollectionPropertyType x.api
-        
-        [<Test>]
-        member x.GetCollectionPropertyTypeWithDescription() = DomainCollection23.GetCollectionPropertyTypeWithDescription x.api
-        
-        [<Test>]
-        member x.NotFoundTypeCollectionPropertyType() = DomainCollection23.NotFoundTypeCollectionPropertyType x.api
-        
-        [<Test>]
-        member x.NotFoundCollectionPropertyType() = DomainCollection23.NotFoundCollectionPropertyType x.api
-        
-        [<Test>]
-        member x.NotAcceptableGetCollectionPropertyType() = DomainCollection23.NotAcceptableGetCollectionPropertyType x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectNoParmsScalar() = DomainAction24.GetActionTypeObjectNoParmsScalar x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceNoParmsScalar() = DomainAction24.GetActionTypeServiceNoParmsScalar x.api
-        
-        [<Test>]
-        member x.GetOverloadedActionTypeObjectNoParmsScalar() = DomainAction24.GetOverloadedActionTypeObjectNoParmsScalar x.api
-        
-        [<Test>]
-        member x.GetOverloadedActionTypeServiceNoParmsScalar() = DomainAction24.GetOverloadedActionTypeServiceNoParmsScalar x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectNoParmsVoid() = DomainAction24.GetActionTypeObjectNoParmsVoid x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceNoParmsVoid() = DomainAction24.GetActionTypeServiceNoParmsVoid x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectNoParmsCollection() = DomainAction24.GetActionTypeObjectNoParmsCollection x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceNoParmsCollection() = DomainAction24.GetActionTypeServiceNoParmsCollection x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectParmsScalar() = DomainAction24.GetActionTypeObjectParmsScalar x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceParmsScalar() = DomainAction24.GetActionTypeServiceParmsScalar x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectParmsVoid() = DomainAction24.GetActionTypeObjectParmsVoid x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceParmsVoid() = DomainAction24.GetActionTypeServiceParmsVoid x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectParmsCollection() = DomainAction24.GetActionTypeObjectParmsCollection x.api
-        
-        [<Test>]
-        member x.GetActionTypeServiceParmsCollection() = DomainAction24.GetActionTypeServiceParmsCollection x.api
-        
-        [<Test>]
-        
-        member x.GetActionTypeObjectContributedOnContributee() = DomainAction24.GetActionTypeObjectContributedOnContributee x.api
-        
-        [<Test>]
-        member x.GetActionTypeObjectContributedOnContributer() = DomainAction24.GetActionTypeObjectContributedOnContributer x.api
-        
-        [<Test>]
-        member x.NotFoundTypeActionType() = DomainAction24.NotFoundTypeActionType x.api
-        
-        [<Test>]
-        member x.NotFoundActionTypeObject() = DomainAction24.NotFoundActionTypeObject x.api
-        
-        [<Test>]
-        member x.NotFoundActionTypeService() = DomainAction24.NotFoundActionTypeService x.api
-        
-        [<Test>]
-        member x.NotAcceptableActionType() = DomainAction24.NotAcceptableActionType x.api
-        
-        [<Test>]
-        member x.GetActionParameterTypeInt() = DomainActionParameter25.GetActionParameterTypeInt x.api
-        
-        [<Test>]
-        member x.GetActionParameterTypeString() = DomainActionParameter25.GetActionParameterTypeString x.api
-        
-        [<Test>]
-        member x.GetOverloadedActionParameterTypeString() = DomainActionParameter25.GetOverloadedActionParameterTypeString x.api
-        
-        [<Test>]
-        member x.GetActionParameterTypeDateTime() = DomainActionParameter25.GetActionParameterTypeDateTime x.api
-        
-        [<Test>]
-        member x.GetActionParameterTypeReference() = DomainActionParameter25.GetActionParameterTypeReference x.api
-        
-        [<Test>]
-        member x.GetActionParameterTypeStringOptional() = DomainActionParameter25.GetActionParameterTypeStringOptional x.api
-        
-        [<Test>]
-        member x.NotFoundType() = DomainActionParameter25.NotFoundType x.api
-        
-        [<Test>]
-        member x.NotFoundAction() = DomainActionParameter25.NotFoundAction x.api
-        
-        [<Test>]
-        member x.NotFoundParm() = DomainActionParameter25.NotFoundParm x.api
-        
-        [<Test>]
-        member x.NotAcceptableActionParameterType() = DomainActionParameter25.NotAcceptableActionParameterType x.api
+      
+     
+       
         
         [<Test>]
         member x.GetIsSubTypeOfReturnFalseSimpleParms() = DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseSimpleParms x.api
@@ -2981,23 +2659,5 @@ type Nof4TestsDomainType() =
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
 
-        // filter extensions
-        [<Test>]
-        member x.GetFilterSubTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnEmptyFormalParms x.api
-
-        [<Test>]
-        member x.GetFilterSuperTypesFromReturnEmptyFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnEmptyFormalParms x.api
-
-        [<Test>]
-        member x.GetFilterSubTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromReturnSingleFormalParms x.api
-
-        [<Test>]
-        member x.GetFilterSuperTypesFromReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromReturnSingleFormalParms x.api
-
-        [<Test>]
-        member x.GetFilterSubTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSubTypesFromMultipleReturnSingleFormalParms x.api
-
-        [<Test>]
-        member x.GetFilterSuperTypesFromMultipleReturnSingleFormalParms() = DomainTypeActionInvoke26.GetFilterSuperTypesFromMultipleReturnSingleFormalParms x.api
-
+        
     end

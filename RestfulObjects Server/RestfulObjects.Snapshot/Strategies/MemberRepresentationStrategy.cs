@@ -39,23 +39,13 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected UriMtHelper GetHelper() {
-            //if (propertyContext.Target.IsTransient) {
-            //    return new UriMtHelper(OidStrategy, req, propertyContext.Target.Specification);
-            //}
-
+ 
             return new UriMtHelper(OidStrategy, req, propertyContext);
         }
 
         protected string GetAttachmentFileName(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
-        }
-
-        private LinkRepresentation CreateDescribedByLink() {
-            return LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, new PropertyTypeContextFacade {
-                Property = propertyContext.Property,
-                OwningSpecification = propertyContext.Target.Specification
-            })), Flags);
         }
 
         private LinkRepresentation CreateAttachmentLink() {
@@ -87,10 +77,6 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             if (!propertyContext.Target.IsTransient && RestUtils.IsAttachment(propertyContext.Specification)) {
                 tempLinks.Add(CreateAttachmentLink());
-            }
-
-            if (Flags.FormalDomainModel) {
-                tempLinks.Add(CreateDescribedByLink());
             }
 
             return tempLinks.ToArray();

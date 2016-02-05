@@ -82,22 +82,11 @@ namespace RestfulObjects.Snapshot.Representations {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
             };
 
-            if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
-            }
-
             Links = tempLinks.ToArray();
         }
 
         private void SetHeader(bool isListOfServices) {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
-        }
-
-        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no) {
-            var helper = new UriMtHelper(oidStrategy, req, no);
-            var rt = new ObjectRelType(RelValues.Element, helper);
-
-            return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
         public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {

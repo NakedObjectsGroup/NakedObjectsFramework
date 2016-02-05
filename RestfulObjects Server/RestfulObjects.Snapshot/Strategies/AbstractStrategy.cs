@@ -20,7 +20,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         public RestControlFlags Flags { get; private set; }
 
         public MapRepresentation GetExtensions() {
-            return Flags.SimpleDomainModel ? GetExtensionsForSimple() : MapRepresentation.Create();
+            return GetExtensionsForSimple();
         }
 
         protected abstract MapRepresentation GetExtensionsForSimple();

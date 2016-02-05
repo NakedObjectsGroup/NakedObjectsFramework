@@ -32,11 +32,7 @@ let getExpected() =
     let simpleLinks = 
         TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Menus RepresentationTypes.List "" (ttc "System.Object") true)
                  TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
-    
-    let formalLinks = 
-        TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Menus RepresentationTypes.List "" (ttc "System.Object") false)
-                 TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
-    
+        
     let value = 
         TArray
             ([ TObjectJson
@@ -74,53 +70,9 @@ let getExpected() =
                    (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
                     :: makeGetLinkProp srvRel5 (sprintf "menus/%s" sName5) RepresentationTypes.Menu "") ])
     
-    let formalValue = 
-        TArray
-            ([ TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel1 (sprintf "menus/%s" sName1) RepresentationTypes.Menu "" "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel2 (sprintf "menus/%s" sName2) RepresentationTypes.Menu "" "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel3 (sprintf "menus/%s" sName3) RepresentationTypes.Menu "" "" false) ])
-                    
-    
-    let formalValueWithTTC = 
-        TArray
-            ([ TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel1 (sprintf "menus/%s" sName1) RepresentationTypes.Menu "" "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel2 (sprintf "menus/%s" sName2) RepresentationTypes.Menu "" "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel3 (sprintf "menus/%s" sName3) RepresentationTypes.Menu "" "" false) 
-                    
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Type Code Mapper")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel4 (sprintf "menus/%s" sName4) RepresentationTypes.Menu "" "" false)
-                    
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel5 (sprintf "menus/%s" sName5) RepresentationTypes.Menu "" "" false) ])
-
-
-
     let simpleExpected = 
         [ TProperty(JsonPropertyNames.Links, simpleLinks)
           TProperty(JsonPropertyNames.Value, value)
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    
-    let formalExpected = 
-        [ TProperty(JsonPropertyNames.Links, formalLinks)
-          TProperty(JsonPropertyNames.Value, formalValue)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
     let simpleExpectedWithTTC = 
@@ -128,13 +80,9 @@ let getExpected() =
           TProperty(JsonPropertyNames.Value, valueWithTTC)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    let formalExpectedWithTTC = 
-        [ TProperty(JsonPropertyNames.Links, formalLinks)
-          TProperty(JsonPropertyNames.Value, formalValueWithTTC)
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-
     
-    ((simpleExpected, formalExpected), (simpleExpectedWithTTC, formalExpectedWithTTC))
+    
+    (simpleExpected, simpleExpectedWithTTC)
 
 let GetMenus(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
@@ -146,22 +94,10 @@ let GetMenus(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (fst (getExpected()))
+    let expected = fst (getExpected())
     compareObject expected parsedResult
 
-let GetMenusFormal(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" (testRoot + SegmentValues.Menus) argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetMenus(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    let expected = snd (fst (getExpected()))
-    compareObject expected parsedResult
+
 
 let GetMenusWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
@@ -173,22 +109,9 @@ let GetMenusWithTTC(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (snd (getExpected()))
+    let expected =  snd (getExpected())
     compareObject expected parsedResult
 
-let GetMenusFormalWithTTC(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" (testRoot + SegmentValues.Menus) argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetMenus(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    let expected = snd (snd (getExpected()))
-    compareObject expected parsedResult
 
 
 let GetMenusWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -203,7 +126,7 @@ let GetMenusWithMediaType(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (fst (getExpected()))
+    let expected =  fst (getExpected())
     compareObject expected parsedResult
 
 let GetMenusWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) = 
@@ -218,7 +141,7 @@ let GetMenusWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (snd (getExpected()))
+    let expected =  snd (getExpected())
     compareObject expected parsedResult
 
 

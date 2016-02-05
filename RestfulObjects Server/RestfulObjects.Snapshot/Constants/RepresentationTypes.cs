@@ -29,8 +29,6 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string BadArguments = "bad-arguments";
 
         // custom 
-
-        public const string TypeActionFilterResult = "type-action-filter-result";
         public const string Menu = "menu";
     }
 }

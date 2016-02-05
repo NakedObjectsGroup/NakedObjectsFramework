@@ -346,52 +346,6 @@ let makeArgs parms =
     let getArg pmid = TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]));
     let argVals = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> getArg s)
     TObjectJson(argVals) 
-
-let makeActionParams oName mName parms = 
-    let makeActionParm pmid =
-         let dburl = sprintf "domain-types/%s/actions/%s" oName mName
-         let pmurl = sprintf "%s/params/%s" dburl pmid
-         TObjectJson(TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "")
-         
-    let pps = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> makeActionParm s)
-    pps
-
-
-let makeActionMemberFormal oType  mName (oName : string) rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
-        let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName     
-        let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
-
-        let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
-        [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
-          TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
-          TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
-          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
-                                                      TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
-
-let makeActionMemberVoidFormal oType  mName (oName : string) parms=
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)  
-        let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
-        let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
-   
-        let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
-
-        [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));          
-          TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
-          TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
-          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
-                                                      TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
-
-
     
 let makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let index = oName.IndexOf("/")
@@ -419,9 +373,8 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
           TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
-                                                      TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                      TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");                                                      
+                                                       ]))]
 
 let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
@@ -478,8 +431,8 @@ let makeActionMemberString oType mName (oName : string) fName desc rType parms =
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                      
+                                                      ]))]
 
 let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
@@ -503,8 +456,8 @@ let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                      
+                                                       ]))]
 
 
 let makeActionMemberStringSimple oType mName (oName : string) fName desc rType parms =
@@ -578,8 +531,8 @@ let makeActionMemberWithType oType mName (oName : string) fName desc rType parms
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                      
+                                                       ]))]
 
 let makeVoidActionMember oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
@@ -601,7 +554,7 @@ let makeVoidActionMember oType mName (oName : string) fName desc parms =
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");                                     
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                       ]))]
 
 let makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
@@ -649,9 +602,8 @@ let makeActionMemberCollection oType  mName (oName : string)  fName desc rType e
                                                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" eType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
+                                                      
+                                                       ]))]
 
 let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc rType eType parms =
         let index = oName.IndexOf("/")
@@ -679,24 +631,7 @@ let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc r
  ]))]
 
 
-let makeActionMemberCollectionFormal oType  mName (oName : string)  fName desc rType eType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
-        let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName 
-        let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
-        let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
-        let hParms = Seq.length parms > 0         
-        [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
-          TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
-          TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
-          TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
-                                                      TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ReturnType (sprintf "domain-types/%s" rType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" eType ) RepresentationTypes.DomainType "");
-                                                      TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/actions/%s" oTypeName mName) RepresentationTypes.ActionDescription "") ].Union(makeActionParams oTypeName mName parms)))]
 
 
 
@@ -719,16 +654,14 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
       let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
 
-      let links = [ TObjectJson( detailsLink);
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "");
-                    ]
+      let links = [ TObjectJson( detailsLink) ]
 
       let acLink = 
         if conditionalChoices then 
            
-            let dbl = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")) RepresentationTypes.DomainType ""
+            
             let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl)]))]))]))
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([]))]))]))
             
             TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oName mName) RepresentationTypes.Prompt "" "" true); 
         else   
@@ -775,10 +708,10 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
       let acLink = 
         if conditionalChoices then 
            
-            let dbl = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")) RepresentationTypes.DomainType ""
+            
             let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [ args
                                                                              TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl)]))]))]))
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([]))]))]))
             
             TObjectJson(argP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName  mName) RepresentationTypes.Prompt "" "" true); 
         else   
@@ -788,7 +721,7 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
             TObjectJson(argP :: extP :: makeLinkPropWithMethodAndTypes "PUT" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oTypeName mName) RepresentationTypes.Prompt "" "" true);
 
 
-      let links = [ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "")]
+      let links = [ ]
       let links = if autocomplete || conditionalChoices then (Seq.append links [acLink]).ToList() else links.ToList()
   
 
@@ -841,7 +774,7 @@ let makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
                     TObjectJson( attLink);
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "");]
+                   ]
 
   
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
@@ -882,12 +815,11 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
       let acLink = 
         if conditionalChoices then 
            
-            let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
-            let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
+            
             let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl1)]))]));
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([]))]));
                                                                             TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl2)]))]))
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([]))]))
                                                                                                                  ]))
             
             TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oName mName) RepresentationTypes.Prompt "" "" true); 
@@ -898,7 +830,7 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
 
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "");]
+                    ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()                             
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -940,7 +872,7 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
         TProperty(JsonPropertyNames.HasChoices, TObjectVal(choices));
       
         TProperty(JsonPropertyNames.Extensions, exts);
-        TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]))]
+        TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
 
 
@@ -953,7 +885,7 @@ let makePropertyMemberDateTime oType (mName : string) (oName : string) fName des
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]
+                     ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -988,8 +920,7 @@ let makePropertyMemberString oType (mName : string) (oName : string) fName desc 
             else 
                 makeLinkPropWithMethodValue "GET" detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "" (TObjectJson(dValue))
 
-      let links = [ TObjectJson( detailsLink);
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "")]
+      let links = [ TObjectJson( detailsLink)  ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1018,7 +949,7 @@ let makePropertyMemberWithType oType (mName : string) (oName : string) fName des
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]
+                    ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1057,7 +988,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]
+                     ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1087,7 +1018,7 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]
+                    ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1117,8 +1048,7 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
 
-      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                                                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "") ]
+      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "") ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()                                                                                  
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1138,57 +1068,7 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberFormal oType (mName : string) (oName : string) (oValue : TObject) opt =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
-      let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
-      let conditionalChoices = mName.Contains("ConditionalChoices")
-      let choices = mName.Contains("Choices") && not conditionalChoices
-      let disabled = mName.Contains("Disabled")         
-      let autocomplete = mName.Contains("AutoComplete")
-      let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
-      let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
-      let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
 
-      let acLink = 
-        if conditionalChoices then 
-           
-            let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
-            let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
-            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl1)]))]));
-                                                                            TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([TObjectJson(dbl2)]))]))
-                                                                                                                 ]))
-            
-            TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oName mName) RepresentationTypes.Prompt "" "" true); 
-        else   
-            let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty(JsonPropertyNames.XRoSearchTerm, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]))]))
-            let extP = TProperty(JsonPropertyNames.Extensions, TObjectJson( [TProperty(JsonPropertyNames.MinLength, TObjectVal(0))]))
-            TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oName mName) RepresentationTypes.Prompt "" "" true);
-
-
-
-
-      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oTypeName mName) RepresentationTypes.PropertyDescription "")  ]
-
-      let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
-      let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
-      let links = if autocomplete || conditionalChoices then (Seq.append links [acLink]).ToList() else links.ToList()
-
-      let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
-                    TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-                    TProperty(JsonPropertyNames.Value, oValue);
-                    TProperty(JsonPropertyNames.HasChoices, TObjectVal(choices));
-                   
-                    TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
-                    TProperty(JsonPropertyNames.Links, TArray(links))]
-
-      if choices then 
-       
-        TProperty(JsonPropertyNames.Choices, TArray([ TObjectVal(1); TObjectVal(2); TObjectVal(3); ])) :: props;
-      else
-        props; 
 
 
 
@@ -1288,7 +1168,7 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
         TProperty(JsonPropertyNames.Links, TArray ([
                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
                                                      TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true);
-                                                     TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]))]
+                                                      ]))]
 
 let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
@@ -1309,7 +1189,7 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
                                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
                                                              TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( detailsLink);
-                                                     TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]))]
+                                                      ]))]
 
 
 
@@ -1364,37 +1244,6 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
 
 let makeCollectionMemberSimple mName (oName : string) fName desc rType size value = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
 
-let makeCollectionMemberFormalTypeValue mName  (oName : string) size cType cValue (dValue : TProp list) =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
-      let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
-      
-      let detailsLink = makeLinkPropWithMethodAndTypesValue "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType false (TObjectJson(dValue))
-
-      [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
-        TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
-        TProperty(JsonPropertyNames.Size, TObjectVal( size) );
-        TProperty(JsonPropertyNames.Value, cValue );
-        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
-        TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( detailsLink);
-                                                     TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]));
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([ ]))]
-
-
-let makeCollectionMemberFormalType mName  (oName : string) size cType value =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
-      let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
-      let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
-      [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
-        TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
-        TProperty(JsonPropertyNames.Size, TObjectVal( size) );
-        TProperty(JsonPropertyNames.Value, value );
-        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
-        TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true);
-                                                     TObjectJson( makeLinkPropWithMethodAndTypes "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType false);
-                                                     TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]));
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([ ]))]
-
-let makeCollectionMemberFormal mName  (oName : string) size value = makeCollectionMemberFormalType mName  oName size (ttc "RestfulObjects.Test.Data.MostSimple") value
 
 let makeCollectionMemberNoDetails mName oName fName desc =
       let order = if desc = "" then 0 else 2
@@ -1432,7 +1281,7 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
         TProperty(JsonPropertyNames.Value, values);
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
         TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
-        TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]))]
+        TProperty(JsonPropertyNames.Links, TArray ([  ]))]
 
 let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cType cText =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
@@ -1455,7 +1304,7 @@ let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cTy
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
         TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
-        TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/collections/%s" oTypeName mName) RepresentationTypes.CollectionDescription "") ]))]
+        TProperty(JsonPropertyNames.Links, TArray ([  ]))]
 
 
 
@@ -1475,8 +1324,6 @@ let makeObjectActionCollectionMemberSimple mName oName eType parms  = makeAction
 let makeObjectActionCollectionMemberNoParms mName oName eType  = makeActionMemberCollection "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
 
 let makeObjectActionCollectionMemberNoParmsSimple mName oName eType  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
-
-let makeObjectActionCollectionMemberFormal mName oName eType parms = makeActionMemberCollectionFormal "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
 
 let makeObjectActionVoidMember mName oName  = makeVoidActionMember "objects" mName oName (makeFriendly(mName)) ""  []
 

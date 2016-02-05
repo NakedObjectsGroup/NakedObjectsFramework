@@ -44,14 +44,6 @@ namespace RestfulObjects.Snapshot.Representations {
             SetHeader(false);
         }
 
-        private ListRepresentation(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags)
-            : base(oidStrategy, flags) {
-            Value = specs.Select(s => CreateDomainLink(oidStrategy, req, s)).ToArray();
-            SelfRelType = new TypesRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
-            SetLinks(req);
-            SetExtensions();
-            SetHeader(true);
-        }
 
         [DataMember(Name = JsonPropertyNames.Links)]
         public LinkRepresentation[] Links { get; set; }
@@ -72,10 +64,6 @@ namespace RestfulObjects.Snapshot.Representations {
 
         private void SetLinks(HttpRequestMessage req, ITypeFacade spec) {
             var tempLinks = new List<LinkRepresentation>();
-
-            if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, spec)), Flags));
-            }
 
             Links = tempLinks.ToArray();
         }
@@ -102,21 +90,13 @@ namespace RestfulObjects.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
-        private LinkRepresentation CreateDomainLink(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec) {
-            return LinkRepresentation.Create(oidStrategy, new DomainTypeRelType(new UriMtHelper(oidStrategy, req, spec)), Flags);
-        }
+      
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
             return new ListRepresentation(oidStrategy, listContext, req, flags);
         }
 
-        internal static Representation Create(IOidStrategy oidStrategy, ITypeFacade[] specs, HttpRequestMessage req, RestControlFlags flags) {
-            // filter out System types
-            specs = specs.Where(s => !s.FullName.StartsWith("System.") && !s.FullName.StartsWith("Microsoft.")).ToArray();
-            // filter out predefined types
-            specs = specs.Where(s => !RestUtils.IsPredefined(s)).ToArray();
-            return new ListRepresentation(oidStrategy, specs, req, flags);
-        }
+       
 
         public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags) {
            

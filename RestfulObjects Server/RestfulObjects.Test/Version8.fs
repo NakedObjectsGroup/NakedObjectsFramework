@@ -20,7 +20,7 @@ let capabilities =
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))
                   TProperty("deleteObjects", TObjectVal("no"))
                   TProperty("validateOnly", TObjectVal("yes"))
-                  TProperty("domainModel", TObjectVal("selectable"))
+                  TProperty("domainModel", TObjectVal("simple"))
                   TProperty("inlinedMemberRepresentations", TObjectVal("yes"))
                   TProperty("blobsClobs", TObjectVal("attachments")) ])
 

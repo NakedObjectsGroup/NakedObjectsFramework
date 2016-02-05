@@ -32,10 +32,7 @@ let getExpected() =
     let simpleLinks = 
         TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Services RepresentationTypes.List "" (ttc "System.Object") true)
                  TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
-    
-    let formalLinks = 
-        TArray([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self SegmentValues.Services RepresentationTypes.List "" (ttc "System.Object") false)
-                 TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
+   
     
     let value = 
         TArray
@@ -117,24 +114,15 @@ let getExpected() =
         [ TProperty(JsonPropertyNames.Links, simpleLinks)
           TProperty(JsonPropertyNames.Value, value)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    
-    let formalExpected = 
-        [ TProperty(JsonPropertyNames.Links, formalLinks)
-          TProperty(JsonPropertyNames.Value, formalValue)
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+   
 
     let simpleExpectedWithTTC = 
         [ TProperty(JsonPropertyNames.Links, simpleLinks)
           TProperty(JsonPropertyNames.Value, valueWithTTC)
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-    let formalExpectedWithTTC = 
-        [ TProperty(JsonPropertyNames.Links, formalLinks)
-          TProperty(JsonPropertyNames.Value, formalValueWithTTC)
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-
     
-    ((simpleExpected, formalExpected), (simpleExpectedWithTTC, formalExpectedWithTTC))
+    (simpleExpected, simpleExpectedWithTTC)
 
 let GetDomainServices(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
@@ -146,22 +134,9 @@ let GetDomainServices(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (fst (getExpected()))
+    let expected = fst (getExpected())
     compareObject expected parsedResult
 
-let GetDomainServicesFormal(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" (testRoot + SegmentValues.Services) argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetServices(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    let expected = snd (fst (getExpected()))
-    compareObject expected parsedResult
 
 let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
@@ -173,21 +148,7 @@ let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (snd (getExpected()))
-    compareObject expected parsedResult
-
-let GetDomainServicesFormalWithTTC(api : RestfulObjectsControllerBase) = 
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" (testRoot + SegmentValues.Services) argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetServices(args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", false), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    let expected = snd (snd (getExpected()))
+    let expected = snd (getExpected())
     compareObject expected parsedResult
 
 
@@ -203,7 +164,7 @@ let GetDomainServicesWithMediaType(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (fst (getExpected()))
+    let expected = fst (getExpected())
     compareObject expected parsedResult
 
 let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) = 
@@ -218,7 +179,7 @@ let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), result.Content.Headers.ContentType)
     assertNonExpiringCache result
-    let expected = fst (snd (getExpected()))
+    let expected = snd (getExpected())
     compareObject expected parsedResult
 
 

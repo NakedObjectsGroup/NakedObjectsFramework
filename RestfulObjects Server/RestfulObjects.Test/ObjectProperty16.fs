@@ -44,9 +44,7 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                 
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -101,8 +99,7 @@ let GetFileAttachmentProperty(api : RestfulObjectsControllerBase) =
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       TObjectJson(attLink)
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("File Attachment"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -184,8 +181,7 @@ let GetImageAttachmentProperty(api : RestfulObjectsControllerBase) =
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       TObjectJson(attLink)
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Image"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -265,8 +261,7 @@ let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                     
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -312,8 +307,7 @@ let GetValuePropertyUserAuth(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                      
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -331,45 +325,7 @@ let GetValuePropertyUserAuth(api : RestfulObjectsControllerBase) =
     Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let GetValuePropertyFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-    let oid = ktc "1"
-    let pid = "AValue"
-    let ourl = sprintf "objects/%s/%s" oType oid
-    let purl = sprintf "%s/properties/%s" ourl pid
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" purl argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" url)
-    let result = api.GetProperty(oType, oid, pid, args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AValue"
-    
-    let expected = 
-        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-          TProperty(JsonPropertyNames.Value, TObjectVal(100))
-          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
-          TProperty
-              (JsonPropertyNames.Links, 
-               
-               TArray
-                   ([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Up ourl RepresentationTypes.Object oType "" false)
-                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
-    assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-    compareObject expected parsedResult
+
 
 let GetValuePropertySimpleOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -443,8 +399,7 @@ let GetEnumValueProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                      
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -487,9 +442,7 @@ let GetStringValueProperty(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                              
-                             TObjectJson
-                                 (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) 
-                                      RepresentationTypes.PropertyDescription "")
+                           
                              
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -565,8 +518,7 @@ let GetValuePropertyWithMediaType(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                      
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -614,8 +566,7 @@ let GetChoicesValueProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                     
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -662,8 +613,7 @@ let GetDisabledValueProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -702,8 +652,7 @@ let GetUserDisabledValueProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A User Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -742,8 +691,7 @@ let GetUserDisabledValuePropertyAuthorised(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
+                      
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -790,8 +738,6 @@ let GetReferenceProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -840,9 +786,6 @@ let GetAutoCompleteProperty(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                              
-                             TObjectJson
-                                 (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) 
-                                      RepresentationTypes.PropertyDescription "")
                              
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -888,7 +831,7 @@ let InvokeAutoComplete(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
@@ -980,7 +923,7 @@ let InvokeConditionalChoicesReference(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                             ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectJson(obj2)
                              TObjectJson(obj3) ]))
@@ -1041,7 +984,7 @@ let InvokeConditionalChoicesReferenceErrorNoParm(api : RestfulObjectsControllerB
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1090,7 +1033,7 @@ let InvokeConditionalChoicesValue(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectVal(100)
                              TObjectVal(2) ]))
@@ -1147,7 +1090,7 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectVal(100)
                              TObjectVal(0) ]))
@@ -1186,9 +1129,7 @@ let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                     
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1233,8 +1174,7 @@ let GetDisabledReferenceProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Disabled Reference"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1284,9 +1224,7 @@ let GetChoicesReferenceProperty(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                    
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1451,9 +1389,7 @@ let PutValuePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                             
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1537,9 +1473,7 @@ let PutDateTimeValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                              
-                             TObjectJson
-                                 (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) 
-                                      RepresentationTypes.PropertyDescription "")
+                          
                              
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
@@ -1596,9 +1530,7 @@ let PutValuePropertyConcurrencySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                  
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1645,9 +1577,7 @@ let PutUserDisabledValuePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                         
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1709,9 +1639,7 @@ let DeleteValuePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (ttc "RestfulObjects.Test.Data.WithValue"))
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                  
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1774,9 +1702,7 @@ let PutNullValuePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                               
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1845,9 +1771,7 @@ let PutReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                    
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1912,9 +1836,7 @@ let DeleteReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (ttc "RestfulObjects.Test.Data.WithReference"))
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                 
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
@@ -1977,9 +1899,7 @@ let PutNullReferencePropertySuccess(api : RestfulObjectsControllerBase) =
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
                       
-                      TObjectJson
-                          (makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s/properties/%s" oType pid) RepresentationTypes.PropertyDescription "")
-                      
+                                  
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
                            :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))

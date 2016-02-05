@@ -22,8 +22,7 @@ let VerifyActionProperty refType oType oid f (api : RestfulObjectsControllerBase
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+  
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -48,8 +47,8 @@ let VerifyActionProperty refType oType oid f (api : RestfulObjectsControllerBase
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -76,8 +75,8 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
     let pmid = "parm"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+   
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -87,7 +86,7 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -119,12 +118,10 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      // TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType ""); 
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -152,8 +149,8 @@ let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjects
     let pmid = "parm"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+   
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -171,7 +168,7 @@ let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjects
                       
                       TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -205,12 +202,10 @@ let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjects
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      // TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType ""); 
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      
+                      
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -237,8 +232,7 @@ let VerifyOverloadedActionProperty refType oType oid f (api : RestfulObjectsCont
     let pid = "AnOverloadedAction0"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -262,8 +256,8 @@ let VerifyOverloadedActionProperty refType oType oid f (api : RestfulObjectsCont
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -290,8 +284,7 @@ let VerifyContributedServiceAction refType oType oid f (api : RestfulObjectsCont
     let pid = "ANonContributedAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -315,8 +308,8 @@ let VerifyContributedServiceAction refType oType oid f (api : RestfulObjectsCont
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                            
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -333,8 +326,7 @@ let VerifyUserDisabledActionProperty refType oType oid f (api : RestfulObjectsCo
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let p = new GenericPrincipal(new GenericIdentity("editUser"), [||])
     System.Threading.Thread.CurrentPrincipal <- p
     let args = CreateReservedArgs ""
@@ -361,8 +353,8 @@ let VerifyUserDisabledActionProperty refType oType oid f (api : RestfulObjectsCo
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                            
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -388,8 +380,7 @@ let VerifyActionPropertyQueryOnly refType oType oid f (api : RestfulObjectsContr
     let pid = "AnActionAnnotatedQueryOnly"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -413,8 +404,8 @@ let VerifyActionPropertyQueryOnly refType oType oid f (api : RestfulObjectsContr
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -440,8 +431,7 @@ let VerifyActionPropertyIdempotent refType oType oid f (api : RestfulObjectsCont
     let pid = "AnActionAnnotatedIdempotent"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -465,8 +455,8 @@ let VerifyActionPropertyIdempotent refType oType oid f (api : RestfulObjectsCont
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePutLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -493,9 +483,8 @@ let VerifyActionPropertyWithOptParm refType oType oid f (api : RestfulObjectsCon
     let pmid = "parm"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+  
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -505,7 +494,7 @@ let VerifyActionPropertyWithOptParm refType oType oid f (api : RestfulObjectsCon
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Optional Parm"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal("an optional parm"))
@@ -537,12 +526,10 @@ let VerifyActionPropertyWithOptParm refType oType oid f (api : RestfulObjectsCon
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      
+                      
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -631,78 +618,14 @@ let GetActionPropertyWithOptViewModelSimpleOnly(api : RestfulObjectsControllerBa
     let oid = oType + "/" + ktc "1"
     VerifyActionPropertyWithOptParmSimpleOnly "objects" oType oid api.GetAction api
 
-let VerifyActionPropertyWithOptParmFormalOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
-    let pid = "AnActionWithOptionalParm"
-    let pmid = "parm"
-    let ourl = sprintf "%s/%s" refType oid
-    let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" purl argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" url)
-    let result = f (oType, ktc "1", pid, args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    
-    let parm1 = 
-        TObjectJson([ TProperty
-                          (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
-                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
-    
-    let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
-    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
-    
-    let expected = 
-        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-          TProperty(JsonPropertyNames.Parameters, TObjectJson([ TProperty(pmid, parm1) ]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
-          
-          TProperty
-              (JsonPropertyNames.Links, 
-               
-               TArray
-                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-                      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Up ourl RepresentationTypes.Object oType "" false)
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-    assertTransactionalCache result
-    Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-    compareObject expected parsedResult
 
-let GetActionPropertyWithOptObjectFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-    let oid = oType + "/" + ktc "1"
-    VerifyActionPropertyWithOptParmFormalOnly "objects" oType oid api.GetAction api
 
-let GetActionPropertyWithOptServiceFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-    let oid = oType
-    VerifyActionPropertyWithOptParmFormalOnly "services" oType oid (wrap api.GetServiceAction) api
-
-let GetActionPropertyWithOptViewModelFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-    let oid = oType + "/" + ktc "1"
-    VerifyActionPropertyWithOptParmFormalOnly "objects" oType oid api.GetAction api
 
 let VerifyActionPropertyWithMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let msg = jsonGetMsg (sprintf "http://localhost/%s" purl)
     msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ObjectAction)))
     api.Request <- msg
@@ -729,8 +652,8 @@ let VerifyActionPropertyWithMediaType refType oType oid f (api : RestfulObjectsC
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -758,8 +681,7 @@ let VerifyScalarAction refType oType oid f (api : RestfulObjectsControllerBase) 
     let pid = "AnActionReturnsScalar"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" eType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -784,8 +706,8 @@ let VerifyScalarAction refType oType oid f (api : RestfulObjectsControllerBase) 
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -812,9 +734,7 @@ let VerifyQueryAction refType oType oid f (api : RestfulObjectsControllerBase) =
     let pid = "AnActionReturnsQueryable"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" ResultTypes.List
-    let eturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -840,9 +760,8 @@ let VerifyQueryAction refType oType oid f (api : RestfulObjectsControllerBase) =
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                            
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -868,9 +787,7 @@ let VerifyCollectionAction refType oType oid f (api : RestfulObjectsControllerBa
     let pid = "AnActionReturnsCollection"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let eturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let rturl = sprintf "domain-types/%s" ResultTypes.List
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -896,9 +813,8 @@ let VerifyCollectionAction refType oType oid f (api : RestfulObjectsControllerBa
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                            
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -927,11 +843,8 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
     let pmid2 = "parm2"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let eturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let rturl = sprintf "domain-types/%s" ResultTypes.List
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
+   
+  
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -941,7 +854,7 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -952,7 +865,7 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm2"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -988,17 +901,9 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
+                                       
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1026,11 +931,8 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
     let pmid2 = "parm2"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let eturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let rturl = sprintf "domain-types/%s" ResultTypes.List
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
+  
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1040,7 +942,7 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1051,7 +953,7 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm2"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1087,17 +989,10 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
+                    
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1200,90 +1095,9 @@ let GetCollectionActionWithParmsViewModelSimpleOnly(api : RestfulObjectsControll
     let oid = oType + "/" + ktc "1"
     VerifyCollectionActionWithParmsSimpleOnly "objects" oType oid api.GetAction api
 
-let VerifyCollectionActionWithParmsFormalOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
-    let pid = "AnActionReturnsCollectionWithParameters"
-    let pmid1 = "parm1"
-    let pmid2 = "parm2"
-    let ourl = sprintf "%s/%s" refType oid
-    let purl = sprintf "%s/actions/%s" ourl pid
-    let eturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let rturl = sprintf "domain-types/%s" ResultTypes.List
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "%s?%s" purl argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" url)
-    let result = f (oType, ktc "1", pid, args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    
-    let parm1 = 
-        TObjectJson([ TProperty
-                          (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
-                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
-    
-    let parm2 = 
-        TObjectJson([ TProperty
-                          (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
-                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
-    
-    let args = 
-        TObjectJson([ TProperty(pmid1, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                      TProperty(pmid2, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
-    
-    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
-    
-    let expected = 
-        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-          TProperty(JsonPropertyNames.Parameters, 
-                    TObjectJson([ TProperty(pmid1, parm1)
-                                  TProperty(pmid2, parm2) ]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))
-          
-          TProperty
-              (JsonPropertyNames.Links, 
-               
-               TArray
-                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-                      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Up ourl RepresentationTypes.Object oType "" false)
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.ElementType eturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-    assertTransactionalCache result
-    Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-    compareObject expected parsedResult
 
-let GetCollectionActionWithParmsObjectFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-    let oid = oType + "/" + ktc "1"
-    VerifyCollectionActionWithParmsFormalOnly "objects" oType oid api.GetAction api
 
-let GetCollectionActionWithParmsServiceFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-    let oid = oType
-    VerifyCollectionActionWithParmsFormalOnly "services" oType oid (wrap api.GetServiceAction) api
 
-let GetCollectionActionWithParmsViewModelFormalOnly(api : RestfulObjectsControllerBase) = 
-    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-    let oid = oType + "/" + ktc "1"
-    VerifyCollectionActionWithParmsFormalOnly "objects" oType oid api.GetAction api
 
 // 18.2 get action  with scalar parm 
 let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControllerBase) = 
@@ -1291,9 +1105,8 @@ let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControlle
     let pmid = "parm1"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+  
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1303,7 +1116,7 @@ let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControlle
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([ ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1333,12 +1146,10 @@ let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControlle
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
+                     
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1366,9 +1177,8 @@ let VerifyActionWithValueParmWithChoices refType oType oid f (api : RestfulObjec
     let pmid = "parm3"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+  
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1378,7 +1188,7 @@ let VerifyActionWithValueParmWithChoices refType oType oid f (api : RestfulObjec
     let parm3 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm3"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1416,12 +1226,10 @@ let VerifyActionWithValueParmWithChoices refType oType oid f (api : RestfulObjec
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1449,9 +1257,8 @@ let VerifyActionWithValueParmWithDefault refType oType oid f (api : RestfulObjec
     let pmid = "parm5"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+   
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1461,7 +1268,7 @@ let VerifyActionWithValueParmWithDefault refType oType oid f (api : RestfulObjec
     let parm5 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm5"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1492,12 +1299,10 @@ let VerifyActionWithValueParmWithDefault refType oType oid f (api : RestfulObjec
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                    
+                      
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1525,9 +1330,8 @@ let VerifyActionWithReferenceParm refType oType oid f (api : RestfulObjectsContr
     let pmid = "parm2"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+    
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1537,7 +1341,7 @@ let VerifyActionWithReferenceParm refType oType oid f (api : RestfulObjectsContr
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm2"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1562,16 +1366,9 @@ let VerifyActionWithReferenceParm refType oType oid f (api : RestfulObjectsContr
                
                TArray
                    ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                 
+                      TObjectJson(TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                      
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1600,9 +1397,8 @@ let VerifyActionWithReferenceParmWithChoices refType oType oid f (api : RestfulO
     let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" mst
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+  
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1617,7 +1413,7 @@ let VerifyActionWithReferenceParmWithChoices refType oType oid f (api : RestfulO
     let parm4 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm4"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1649,12 +1445,10 @@ let VerifyActionWithReferenceParmWithChoices refType oType oid f (api : RestfulO
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
+                     
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                    ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1683,10 +1477,8 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
     let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" mst
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let dburl0 = sprintf "%s/params/%s" dburl pmid0
-    let dburl1 = sprintf "%s/params/%s" dburl pmid1
+  
+   
     let pmurl = sprintf "%s/%s/actions/%s" refType oid pid
     let pmurl0 = sprintf "%s/params/%s" pmurl pmid0
     let pmurl1 = sprintf "%s/params/%s" pmurl pmid1
@@ -1709,8 +1501,7 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
     
     let parm0 = 
         TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl0 RepresentationTypes.ActionParamDescription "")
-                                         ac0 ]))
+                                TArray([  ac0 ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm0"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1719,8 +1510,7 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
     
     let parm1 = 
         TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl1 RepresentationTypes.ActionParamDescription "")
-                                         ac1 ]))
+                                TArray([ ac1 ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1754,16 +1544,10 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oid f (api : Re
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid0)) 
-                           :: makeGetLinkProp RelValues.ActionParam dburl0 RepresentationTypes.ActionParamDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam dburl1 RepresentationTypes.ActionParamDescription "") ])) ]
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -1810,7 +1594,7 @@ let VerifyInvokeParmWithAutoComplete refType oType oid f (api : RestfulObjectsCo
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" mst) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
@@ -1947,7 +1731,7 @@ let VerifyInvokeParmWithConditionalChoices refType oType oid f (api : RestfulObj
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" mst) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectJson(obj1)
                              TObjectJson(obj2) ]))
@@ -2035,7 +1819,7 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType1) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectVal(100)
                              TObjectVal(33) ]))
@@ -2058,7 +1842,7 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : Restf
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType2) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectVal("100")
                              TObjectVal("33") ]))
@@ -2102,7 +1886,7 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                              TObjectJson(makeGetLinkProp RelValues.Self prurl RepresentationTypes.Prompt "")
-                             TObjectJson(makeGetLinkProp RelValues.ElementType (sprintf "domain-types/%s" roType1) RepresentationTypes.DomainType "") ]))
+                              ]))
           TProperty(JsonPropertyNames.Choices, 
                     TArray([ TObjectVal(100)
                              TObjectVal(0) ]))
@@ -2135,9 +1919,8 @@ let VerifyActionWithReferenceParmWithDefault refType oType oid f (api : RestfulO
     let mst = (ttc "RestfulObjects.Test.Data.MostSimple")
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" mst
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+   
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -2150,7 +1933,7 @@ let VerifyActionWithReferenceParmWithDefault refType oType oid f (api : RestfulO
     let parm6 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm6"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2180,12 +1963,10 @@ let VerifyActionWithReferenceParmWithDefault refType oType oid f (api : RestfulO
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                     
+                      
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2217,12 +1998,8 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" mst
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
-    let pmurl7 = sprintf "%s/params/%s" dburl pmid7
-    let pmurl8 = sprintf "%s/params/%s" dburl pmid8
+   
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -2241,7 +2018,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2258,7 +2035,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                       
                       TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl7 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm7"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2273,7 +2050,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm2"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2288,7 +2065,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                       
                       TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl8 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm8"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2326,24 +2103,8 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid7)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl7 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid8)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl8 RepresentationTypes.ActionParamDescription "") ])) ]
+                                                             
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2373,8 +2134,7 @@ let GetContributedActionOnContributee(api : RestfulObjectsControllerBase) =
     let pid = "AzContributedAction"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetAction(oType, oid, pid, args)
@@ -2399,8 +2159,8 @@ let GetContributedActionOnContributee(api : RestfulObjectsControllerBase) =
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, args) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                             ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2414,8 +2174,7 @@ let GetContributedActionOnContributeeBaseClass(api : RestfulObjectsControllerBas
     let pid = "AzContributedActionOnBaseClass"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetAction(oType, oid, pid, args)
@@ -2440,8 +2199,8 @@ let GetContributedActionOnContributeeBaseClass(api : RestfulObjectsControllerBas
                              TObjectJson
                                  (TProperty(JsonPropertyNames.Arguments, args) 
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                             TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "") ])) ]
+                             
+                              ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2456,9 +2215,8 @@ let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase)
     let pid = "AzContributedActionWithRefParm"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+    
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetAction(oType, oid, pid, args)
@@ -2468,7 +2226,7 @@ let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase)
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Other Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2497,12 +2255,10 @@ let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase)
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                     
+                      
+                      ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2517,9 +2273,8 @@ let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBas
     let pmid = "parm"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+    
+   
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetAction(oType, oid, pid, args)
@@ -2529,7 +2284,7 @@ let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBas
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2561,12 +2316,10 @@ let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBas
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                     
+                      
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2582,9 +2335,8 @@ let GetContributedActionOnContributer(api : RestfulObjectsControllerBase) =
     let pid = "AzContributedAction"
     let ourl = sprintf "services/%s" oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+  
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetServiceAction(oType, pid, args)
@@ -2594,7 +2346,7 @@ let GetContributedActionOnContributer(api : RestfulObjectsControllerBase) =
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([ ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2623,12 +2375,10 @@ let GetContributedActionOnContributer(api : RestfulObjectsControllerBase) =
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
+                     
+                    
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2642,9 +2392,8 @@ let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBas
     let pid = "AzContributedActionOnBaseClass"
     let ourl = sprintf "services/%s" oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl = sprintf "%s/params/%s" dburl pmid
+ 
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetServiceAction(oType, pid, args)
@@ -2654,7 +2403,7 @@ let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBas
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2679,16 +2428,9 @@ let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBas
                
                TArray
                    ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl RepresentationTypes.ActionParamDescription "") ])) ]
+                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                    
+                      TObjectJson  (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                   
+                    ]))]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2703,10 +2445,8 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
     let pmid2 = "withOtherAction"
     let ourl = sprintf "services/%s" oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
+   
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetServiceAction(oType, pid, args)
@@ -2716,7 +2456,7 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2726,7 +2466,7 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Other Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2756,20 +2496,9 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
                
                TArray
                    ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
+                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                  
+                      TObjectJson  (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result
@@ -2785,10 +2514,8 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
     let pmid2 = "parm"
     let ourl = sprintf "services/%s" oid
     let purl = sprintf "%s/actions/%s" ourl pid
-    let rturl = sprintf "domain-types/%s" rType
-    let dburl = sprintf "domain-types/%s/actions/%s" oType pid
-    let pmurl1 = sprintf "%s/params/%s" dburl pmid1
-    let pmurl2 = sprintf "%s/params/%s" dburl pmid2
+   
+    
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = api.GetServiceAction(oType, pid, args)
@@ -2798,7 +2525,7 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
     let parm1 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl1 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2808,7 +2535,7 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
     let parm2 = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl2 RepresentationTypes.ActionParamDescription "") ]))
+                           TArray([ ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -2845,16 +2572,9 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
                       
                       TObjectJson
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      TObjectJson(makeGetLinkProp RelValues.ReturnType rturl RepresentationTypes.DomainType "")
-                      TObjectJson(makeGetLinkProp RelValues.DescribedBy dburl RepresentationTypes.ActionDescription "")
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid1)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl1 RepresentationTypes.ActionParamDescription "")
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Id, TObjectVal(pmid2)) 
-                           :: makeGetLinkProp RelValues.ActionParam pmurl2 RepresentationTypes.ActionParamDescription "") ])) ]
+                                         
+                       ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
     assertTransactionalCache result

@@ -64,12 +64,6 @@ namespace RestfulObjects.Snapshot.Representations {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
             }
 
-            if (Flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(OidStrategy, req, objectContext.Specification)), Flags));
-            }
-
-            // temp disable icons 
-            //tempLinks.Add(LinkRepresentation.Create(new IconRelType(objectUri), Flags));
             SetMembers(objectContext, req, tempLinks);
             Links = tempLinks.ToArray();
         }
@@ -126,7 +120,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions(IObjectFacade objectFacade) {
-            Extensions = Flags.SimpleDomainModel ? GetExtensions(objectFacade) : MapRepresentation.Create();
+            Extensions =  GetExtensions(objectFacade);
         }
 
         private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
@@ -156,9 +150,9 @@ namespace RestfulObjects.Snapshot.Representations {
             else {
                 var id =  oid.InstanceId;
                 props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
-                if (flags.SimpleDomainModel) {
-                    props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
-                }
+              
+                props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
+              
             }
 
             return CreateWithOptionals<ObjectRepresentation>(new object[] {oidStrategy, req, objectContext, flags}, props);

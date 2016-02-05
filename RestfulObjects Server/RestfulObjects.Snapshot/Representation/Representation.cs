@@ -36,7 +36,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         protected IOidStrategy OidStrategy { get; set; }
-        protected RestControlFlags Flags { get; private set; }
+        protected RestControlFlags Flags { get; }
 
         private static ModuleBuilder ModuleBuilder { get; set; }
 
