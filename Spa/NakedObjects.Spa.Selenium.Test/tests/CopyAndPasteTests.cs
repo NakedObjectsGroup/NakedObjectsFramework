@@ -12,10 +12,8 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-
-    public abstract class CopyAndPasteTests : AWTest
+    public abstract class CopyAndPasteTestsRoot : AWTest
     {
-        [TestMethod]
         public virtual void CopyTitleOrPropertyIntoClipboard()
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.Product-990&object2=AdventureWorksModel.Customer-652");
@@ -44,7 +42,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Southeast", target.Text);
             CopyToClipboard(target);
         }
-        [TestMethod]
         public virtual void CopyListItemIntoClipboard()
         {
             GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&menu2=PersonRepository&action2=ValidCountries&page2=1&pageSize2=20");
@@ -55,13 +52,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Copy item from list, right pane
             Reload(Pane.Right);
-             item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[3]);
+            item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[3]);
             Assert.AreEqual("Australia", item.Text);
             CopyToClipboard(item);
 
         }
-
-        [TestMethod]
         public virtual void PasteIntoReferenceField()
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Employee-161");
@@ -73,8 +68,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CopyToClipboard(title);
             PasteIntoReferenceField("#pane1 .property:nth-child(4) .value.droppable");
         }
-
-        [TestMethod]
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu()
         {
             GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true");
@@ -92,8 +85,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".ui-menu-item"));
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
         }
-
-        [TestMethod] 
         public virtual void PasteIntoDialog()
         {
             GeminiUrl("home/object?menu1=SalesRepository&dialog1=CreateNewSalesPerson&object2=AdventureWorksModel.Employee-206");
@@ -107,24 +98,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
-
-        [TestMethod]
-        public void DroppableReferenceFieldWithoutAutoComplete()
+        public virtual void DroppableReferenceFieldWithoutAutoComplete()
         {
             GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
+            CancelDatePicker("#orderdate1");
             var prop = wait.Until(dr => dr.FindElements(By.CssSelector(".property"))
         .Where(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
         we.FindElement(By.CssSelector(".value.droppable")).Text == "Sheela Word").Single()
 );
         }
-
-        [TestMethod]
         public virtual void CannotPasteWrongTypeIntoReferenceField()
         {
             GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Product-771");
             WaitForView(Pane.Left, PaneType.Object);
+            CancelDatePicker("#orderdate1");
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text);
             var title = WaitForCss("#pane2 .header .title");
@@ -138,8 +127,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             target.SendKeys(Keys.Control + "v");
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text); //i.e. no change
         }
-
-        [TestMethod]
         public virtual void CanClearADroppableReferenceField()
         {
             GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-561&edit1=true");
@@ -151,8 +138,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("", WaitForCss(fieldCss).Text);
 
         }
-
-        [TestMethod, Ignore] //Can't test as the drop doesn't update UI in tests
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
         {
             GeminiUrl("home/object?menu1=EmployeeRepository&dialog1=CreateNewEmployeeFromContact&field1_contactDetails=null&object2=AdventureWorksModel.Person-10895");
@@ -171,6 +156,27 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var input = WaitForCss("input#contactDetails1");
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
         }
+    }
+    public abstract class CopyAndPasteTests : CopyAndPasteTestsRoot
+    {
+        [TestMethod]
+        public override void CopyTitleOrPropertyIntoClipboard() { base.CopyTitleOrPropertyIntoClipboard(); }
+        [TestMethod]
+        public override void CopyListItemIntoClipboard() { base.CopyListItemIntoClipboard(); }
+        [TestMethod]
+        public override void PasteIntoReferenceField() { base.PasteIntoReferenceField(); }
+        [TestMethod]
+        public override void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() { base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu(); }
+        [TestMethod]
+        public override void PasteIntoDialog() { base.PasteIntoDialog(); }
+        [TestMethod]
+        public override void DroppableReferenceFieldWithoutAutoComplete() { base.DroppableReferenceFieldWithoutAutoComplete(); }
+        [TestMethod]
+        public override void CannotPasteWrongTypeIntoReferenceField() { base.CannotPasteWrongTypeIntoReferenceField(); }
+        [TestMethod]
+        public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
+        [TestMethod, Ignore] //Can't test as the drop doesn't update UI in tests
+        public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() { base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed(); }
     }
 
     #region browsers specific subclasses
@@ -199,7 +205,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class CopyAndPasteTestsFirefox : CopyAndPasteTests
     {
         [ClassInitialize]
@@ -250,5 +256,45 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
+    #endregion
+    #region Mega tests
+    public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot
+    {
+        [TestMethod]
+        public void MegaCopyAndPasteTest()
+        {
+            base.CopyTitleOrPropertyIntoClipboard();
+            base.CopyListItemIntoClipboard();
+            base.PasteIntoReferenceField();
+            base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
+            base.PasteIntoDialog();
+            base.DroppableReferenceFieldWithoutAutoComplete();
+            base.CannotPasteWrongTypeIntoReferenceField();
+            base.CanClearADroppableReferenceField();
+            //base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
+        }
+    }
+    [TestClass]
+    public class MegaCopyAndPasteTestsFirefox : MegaCopyAndPasteTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }

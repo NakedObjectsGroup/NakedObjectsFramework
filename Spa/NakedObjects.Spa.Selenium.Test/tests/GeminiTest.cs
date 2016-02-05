@@ -455,6 +455,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetButton("Reload", pane));
         }
         
+        protected void CancelDatePicker(string cssForInput)
+        {
+            WaitForCss(cssForInput).SendKeys(Keys.Escape);
+        }
         #endregion
 
         #region ToolBar icons
