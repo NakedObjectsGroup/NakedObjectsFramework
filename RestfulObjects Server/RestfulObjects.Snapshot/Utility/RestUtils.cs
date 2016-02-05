@@ -277,10 +277,6 @@ namespace RestfulObjects.Snapshot.Utility {
         public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
             var tempLinks = new List<LinkRepresentation>();
 
-            if (flags.FormalDomainModel) {
-                tempLinks.Add(LinkRepresentation.Create(oidStrategy, new DomainTypeRelType(RelValues.DescribedBy, new UriMtHelper(oidStrategy, req, pnt.Item2)), flags));
-            }
-
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
                 new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
         }

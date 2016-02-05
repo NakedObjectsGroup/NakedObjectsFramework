@@ -98,12 +98,6 @@
     <Compile Include="ObjectCollection17.fs" />
     <Compile Include="ObjectAction18.fs" />
     <Compile Include="ObjectActionInvoke19.fs" />
-    <Compile Include="DomainTypes20.fs" />
-    <Compile Include="DomainType21.fs" />
-    <Compile Include="DomainProperty22.fs" />
-    <Compile Include="DomainCollection23.fs" />
-    <Compile Include="DomainAction24.fs" />
-    <Compile Include="DomainActionParameter25.fs" />
     <Compile Include="DomainTypeActionInvoke26.fs" />
     <None Include="packages.config" />
     <Content Include="app.config" />

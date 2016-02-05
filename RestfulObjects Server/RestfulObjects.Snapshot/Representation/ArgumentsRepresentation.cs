@@ -73,18 +73,8 @@ namespace RestfulObjects.Snapshot.Representations {
                     tempProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, contextFacade.Reason));
                 }
 
-                if (flags.SimpleDomainModel) {
-                    var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
-                    tempProperties.Add(dt);
-                }
-
-                if (flags.FormalDomainModel) {
-                    var links = new OptionalProperty(JsonPropertyNames.Links, new[] {
-                        Create(new OptionalProperty(JsonPropertyNames.Rel, RelValues.DescribedBy),
-                            new OptionalProperty(JsonPropertyNames.Href, new UriMtHelper(oidStrategy, req, target.Specification).GetDomainTypeUri()))
-                    });
-                    tempProperties.Add(links);
-                }
+                var dt = new OptionalProperty(JsonPropertyNames.DomainType, target.Specification.DomainTypeName(oidStrategy));
+                tempProperties.Add(dt);
 
                 var members = new OptionalProperty(JsonPropertyNames.Members, Create(memberValues.ToArray()));
                 tempProperties.Add(members);

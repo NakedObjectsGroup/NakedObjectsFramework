@@ -28,13 +28,12 @@ let GetMenu(api : RestfulObjectsControllerBase) =
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     
     let makeParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+     
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -43,13 +42,12 @@ let GetMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeValueParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+     
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -116,13 +114,12 @@ let GetContributorMenu(api : RestfulObjectsControllerBase) =
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     
     let makeCollectionParm  contribName pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s"  contribName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([ ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -133,13 +130,12 @@ let GetContributorMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
 
     let makeValueParm  contribName pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" contribName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -179,92 +175,7 @@ let GetContributorMenu(api : RestfulObjectsControllerBase) =
     Assert.IsNull(result.Headers.ETag)
     compareObject expected parsedResult
 
-let GetMenuFormalOnly(api : RestfulObjectsControllerBase) = 
-    let sName =  ttc "RestfulObjects.Test.Data.RestDataRepository" 
-    let mName =  "RestDataRepository"
-    let argS = "x-ro-domain-model=formal"
-    let url = sprintf "http://localhost/menus/%s?%s" mName argS
-    let args = CreateReservedArgs argS
-    api.Request <- jsonGetMsg (url)
-    let result = api.GetMenu(mName, args)
-    let jsonResult = readSnapshotToJson result
-    let parsedResult = JObject.Parse(jsonResult)
-    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
-    
-    let makeParm pmid pid = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
-                          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
-        TProperty(pmid, p)
-    
-    let makeValueParm pmid pid = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
-        
-        let p = 
-            TObjectJson([ TProperty
-                              (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
-                          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
-        TProperty(pmid, p)
-    
-    let p1 = makeParm "withAction" "AzContributedAction"
-    let p2 = makeParm "withAction" "AzContributedActionOnBaseClass"
-    let p3 = makeParm "withAction" "AzContributedActionWithRefParm"
-    let p4 = makeParm "withOtherAction" "AzContributedActionWithRefParm"
-    let p5 = makeParm "withAction" "AzContributedActionWithValueParm"
-    let p6 = makeValueParm "parm" "AzContributedActionWithValueParm"
-    
-    let expected = 
-        [ TProperty(JsonPropertyNames.MenuId, TObjectVal(mName))
-          TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"))
-          TProperty(JsonPropertyNames.Links, 
-                    TArray([ TObjectJson
-                                 (makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "menus/%s" mName) RepresentationTypes.Menu "" "" false)
-                              ]))
-          
-          TProperty
-              (JsonPropertyNames.Members, 
-               
-               TObjectJson
-                   ([ TProperty("AzContributedAction", TObjectJson(makeActionMemberFormal "services" "AzContributedAction" sName mst [ p1 ]))
-                      
-                      TProperty
-                          ("AzContributedActionOnBaseClass", TObjectJson(makeActionMemberFormal "services" "AzContributedActionOnBaseClass" sName mst [ p2 ]))
-                      
-                      TProperty
-                          ("AzContributedActionWithRefParm", 
-                           TObjectJson(makeActionMemberFormal "services" "AzContributedActionWithRefParm" sName mst [ p3; p4 ]))
-                      
-                      TProperty
-                          ("AzContributedActionWithValueParm", 
-                           TObjectJson(makeActionMemberFormal "services" "AzContributedActionWithValueParm" sName mst [ p5; p6 ]))
-                      TProperty("CreateTransientMostSimple", TObjectJson(makeActionMemberFormal "services" "CreateTransientMostSimple" sName mst []))
-                      
-                      TProperty
-                          ("CreateTransientWithValue", 
-                           TObjectJson(makeActionMemberFormal "services" "CreateTransientWithValue" sName (ttc "RestfulObjects.Test.Data.WithValue") []))
-                      
-                      TProperty
-                          ("CreateTransientWithReference", 
-                           TObjectJson(makeActionMemberFormal "services" "CreateTransientWithReference" sName (ttc "RestfulObjects.Test.Data.WithReference") []))
-                      
-                      TProperty
-                          ("CreateTransientWithCollection", 
-                           
-                           TObjectJson
-                               (makeActionMemberFormal "services" "CreateTransientWithCollection" sName (ttc "RestfulObjects.Test.Data.WithCollection") [])) ]))
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-    Assert.AreEqual(new typeType(RepresentationTypes.Menu, "", "", false), result.Content.Headers.ContentType)
-    assertNonExpiringCache result
-    Assert.IsNull(result.Headers.ETag)
-    compareObject expected parsedResult
+
 
 let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) = 
     let sName =  ttc "RestfulObjects.Test.Data.RestDataRepository" 
@@ -279,7 +190,7 @@ let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) =
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     
     let makeParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
+       
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -291,7 +202,7 @@ let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeValueParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
+       
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -369,13 +280,12 @@ let GetMenuWithMediaType(api : RestfulObjectsControllerBase) =
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     
     let makeParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -384,13 +294,12 @@ let GetMenuWithMediaType(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeValueParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -459,13 +368,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
     let mp r n = sprintf ";%s=\"%s\"" r n
     
     let makeParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -474,8 +382,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithAC pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+    
         let autoRel = RelValues.Prompt + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let acurl = sprintf "services/%s/actions/%s/params/%s/prompt" sName pid pmid
         let argP = 
@@ -487,7 +394,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                    TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "")
+                                    TArray([ 
                                              ac ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
@@ -497,8 +404,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithChoicesAndDefault pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         let choiceRel = RelValues.Choice + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let defaultRel = RelValues.Default + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let choice1 = 
@@ -519,7 +425,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -528,8 +434,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithChoices pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+        
         let choiceRel = RelValues.Choice + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let choice1 = 
             TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
@@ -545,7 +450,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -554,8 +459,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithDefault pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         let defaultRel = RelValues.Default + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let obj1 = 
             TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
@@ -566,7 +470,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -575,8 +479,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeStringParmWithDefaults pmid pid fid rt et = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Choices, 
@@ -589,7 +492,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -604,8 +507,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithDefaults pmid pid fid rt et = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         let defaultRel = RelValues.Default + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let choiceRel = RelValues.Choice + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let c1 = 
@@ -633,7 +535,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -644,13 +546,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeValueParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+     
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -662,13 +563,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParm pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -678,13 +578,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParmWithHint pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -695,8 +594,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParmWithChoicesAndDefault pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
@@ -707,7 +605,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -721,8 +619,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParmWithChoices pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Choices, 
@@ -732,7 +629,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([ ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -746,15 +643,14 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParmWithDefault pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
                           
                           TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -764,13 +660,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeOptParm pmid pid fid rt d ml p = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([ ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(d))
@@ -782,13 +677,12 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeDTParm pmid pid = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
-                               TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "") ]))
+                               TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -801,24 +695,22 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeParmWithConditionalChoices pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         let autoRel = RelValues.Prompt + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let acurl = sprintf "services/%s/actions/%s/params/%s/prompt" sName pid pmid
-        let dbl = 
-            makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "RestfulObjects.Test.Data.MostSimple")) RepresentationTypes.DomainType ""
+    
         
         let argP = 
             TProperty(JsonPropertyNames.Arguments, 
                       TObjectJson([ TProperty("parm4", 
                                               TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-                                                            TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(dbl) ])) ])) ]))
+                                                            TProperty(JsonPropertyNames.Links, TArray([  ])) ])) ]))
         
         let ac = TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel acurl RepresentationTypes.Prompt "" "" true)
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                    TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "")
+                                    TArray([ 
                                              ac ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
@@ -828,27 +720,25 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeIntParmWithConditionalChoices pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+      
         let autoRel = RelValues.Prompt + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let acurl = sprintf "services/%s/actions/%s/params/%s/prompt" sName pid pmid
-        let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
-        let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
+     
         
         let argP = 
             TProperty(JsonPropertyNames.Arguments, 
                       TObjectJson([ TProperty("parm3", 
                                               TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-                                                            TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(dbl1) ])) ]))
+                                                            TProperty(JsonPropertyNames.Links, TArray([  ])) ]))
                                     TProperty("parm4", 
                                               TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-                                                            TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(dbl2) ])) ])) ]))
+                                                            TProperty(JsonPropertyNames.Links, TArray([  ])) ])) ]))
         
         let ac = TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel acurl RepresentationTypes.Prompt "" "" true)
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                    TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "")
+                                    TArray([ 
                                              ac ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
@@ -859,27 +749,24 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
         TProperty(pmid, p)
     
     let makeStringParmWithConditionalChoices pmid pid fid rt = 
-        let dburl = sprintf "domain-types/%s/actions/%s" sName pid
-        let pmurl = sprintf "%s/params/%s" dburl pmid
+       
         let autoRel = RelValues.Prompt + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
         let acurl = sprintf "services/%s/actions/%s/params/%s/prompt" sName pid pmid
-        let dbl1 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "integer")) RepresentationTypes.DomainType ""
-        let dbl2 = makeGetLinkProp RelValues.DescribedBy (sprintf "domain-types/%s" (ttc "string")) RepresentationTypes.DomainType ""
-        
+      
         let argP = 
             TProperty(JsonPropertyNames.Arguments, 
                       TObjectJson([ TProperty("parm3", 
                                               TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-                                                            TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(dbl1) ])) ]))
+                                                            TProperty(JsonPropertyNames.Links, TArray([  ])) ]))
                                     TProperty("parm4", 
                                               TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-                                                            TProperty(JsonPropertyNames.Links, TArray([ TObjectJson(dbl2) ])) ])) ]))
+                                                            TProperty(JsonPropertyNames.Links, TArray([  ])) ])) ]))
         
         let ac = TObjectJson(argP :: makeLinkPropWithMethodAndTypes "GET" autoRel acurl RepresentationTypes.Prompt "" "" true)
         
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, 
-                                    TArray([ TObjectJson(makeGetLinkProp RelValues.DescribedBy pmurl RepresentationTypes.ActionParamDescription "")
+                                    TArray([ 
                                              ac ]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))

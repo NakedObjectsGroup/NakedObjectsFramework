@@ -51,10 +51,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menuFacade) : this(oidStrategy, req) {
-            //this.objectFacade = objectFacade;
-            //spec = objectFacade.Specification;
-            //IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
-            //cachedId = oid.InstanceId;
+          
             CachedType = menuFacade.Id;
         }
 
@@ -94,13 +91,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyTypeContextFacade propertyContext)
-            : this(oidStrategy, req) {
-            assoc = propertyContext.Property;
-            spec = propertyContext.OwningSpecification;
-            cachedId = "";
-            CachedType = spec.DomainTypeName(oidStrategy);
-        }
+      
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
             : this(oidStrategy, req) {
@@ -112,22 +103,9 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionTypeContextFacade actionTypeContext)
-            : this(oidStrategy, req) {
-            action = actionTypeContext.ActionContext.Action;
-            spec = actionTypeContext.OwningSpecification;
-            cachedId = "";
-            CachedType = spec.DomainTypeName(oidStrategy);
-        }
+      
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterTypeContextFacade parameterTypeContext)
-            : this(oidStrategy, req) {
-            action = parameterTypeContext.Action;
-            spec = parameterTypeContext.OwningSpecification;
-            param = parameterTypeContext.Parameter;
-            cachedId = "";
-            CachedType = spec.DomainTypeName(oidStrategy);
-        }
+      
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextFacade parameterContext)
             : this(oidStrategy, req) {
@@ -165,12 +143,7 @@ namespace RestfulObjects.Snapshot.Utility {
             CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, FilterFromInvokeContext context)
-            : this(oidStrategy, req) {
-            typeAction = context.Id;
-            cachedId = "";
-            CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
-        }
+     
 
         private string CachedType { get; }
 
@@ -523,23 +496,15 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private string GetParameterValue(RestControlFlags flags, string parameterValue) {
-            if (flags.SimpleDomainModel) {
+        
                 return parameterValue;
-            }
-            if (flags.FormalDomainModel) {
-                return BuildDomainTypeUri(parameterValue).ToString();
-            }
-            return null;
+       
         }
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
-            if (flags.SimpleDomainModel) {
+          
                 return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
-            }
-            if (flags.FormalDomainModel) {
-                return BuildDomainTypeUri(RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy)).ToString();
-            }
-            return null;
+          
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {

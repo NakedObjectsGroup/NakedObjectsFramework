@@ -6,20 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.ServiceModel;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Translation;
 using RestfulObjects.Mvc.Media;
 using RestfulObjects.Mvc.Model;
 using RestfulObjects.Snapshot.Constants;
@@ -145,21 +142,13 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetActionParameterType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}",
-                defaults: new {controller = "RestfulObjects", action = "GetActionParameterType"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
-                );
+   
 
             routes.MapHttpRoute("InvalidActionParameterType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetActionType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}",
-                defaults: new {controller = "RestfulObjects", action = "GetActionType"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
-                );
+    
 
             routes.MapHttpRoute("InvalidActionType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}",
@@ -175,11 +164,7 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetCollectionType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
-                defaults: new {controller = "RestfulObjects", action = "GetCollectionType"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
-                );
+     
 
             routes.MapHttpRoute("InvalidCollectionType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
@@ -207,11 +192,7 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetPropertyType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Properties + "/{propertyName}",
-                defaults: new {controller = "RestfulObjects", action = "GetPropertyType"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
-                );
+         
 
             routes.MapHttpRoute("InvalidPropertyType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Properties + "/{propertyName}",
@@ -356,11 +337,7 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: menus + "/{menuName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("DomainType",
-                routeTemplate: domainTypes + "/{typeName}",
-                defaults: new {controller = "RestfulObjects", action = "GetDomainType"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
-                );
+   
 
             routes.MapHttpRoute("InvalidDomainType",
                 routeTemplate: domainTypes + "/{typeName}",
@@ -450,17 +427,6 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetVersion(ReservedArguments arguments) {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
-        }
-
-        public virtual HttpResponseMessage GetDomainTypes(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetDomainTypes().OrderBy(s => s.DomainTypeName(OidStrategy)).ToArray(), Request, GetFlags(arguments)));
-        }
-
-        public virtual HttpResponseMessage GetDomainType(string typeName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => {
-                HandlePredefinedTypes(typeName);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetDomainType(typeName), Request, GetFlags(arguments));
-            });
         }
 
         public virtual HttpResponseMessage GetService(string serviceName, ReservedArguments arguments) {
@@ -588,9 +554,7 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-        public virtual HttpResponseMessage GetPropertyType(string typeName, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments)));
-        }
+      
 
         public virtual HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
@@ -626,28 +590,13 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-        public virtual HttpResponseMessage GetCollectionType(string typeName, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => {
-                try {
-                    return new RestSnapshot(OidStrategy, FrameworkFacade.GetPropertyType(typeName, propertyName), Request, GetFlags(arguments));
-                }
-                catch (TypePropertyResourceNotFoundNOSException e) {
-                    throw new TypeCollectionResourceNotFoundNOSException(e.ResourceId, e.DomainId);
-                }
-            });
-        }
+      
 
         public virtual HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
 
-        public virtual HttpResponseMessage GetActionType(string typeName, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetActionType(typeName, actionName), Request, GetFlags(arguments)));
-        }
-
-        public virtual HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetActionParameterType(typeName, actionName, parmName), Request, GetFlags(arguments)));
-        }
+      
 
         public virtual HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
@@ -751,9 +700,6 @@ namespace RestfulObjects.Mvc {
                     case WellKnownIds.IsSubtypeOf:
                     case WellKnownIds.IsSupertypeOf:
                         return GetInvokeIsTypeOf(typeName, actionName, arguments);
-                    case WellKnownIds.FilterSubtypesFrom:
-                    case WellKnownIds.FilterSupertypesFrom:
-                        return GetInvokeFilterFrom(typeName, actionName, arguments);
                 }
                 throw new TypeActionResourceNotFoundException(actionName, typeName);
             });
@@ -763,10 +709,7 @@ namespace RestfulObjects.Mvc {
             return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }
 
-        private RestSnapshot GetInvokeFilterFrom(string typeName, string actionName, ArgumentMap arguments) {
-            return new RestSnapshot(OidStrategy, GetFilterFrom(new FilterFromInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
-        }
-
+      
         #endregion
 
         #region helpers
@@ -796,21 +739,6 @@ namespace RestfulObjects.Mvc {
             }
 
             return null;
-        }
-
-        private void HandlePredefinedTypes(string typeName) {
-            var regExBigInteger = new Regex(PredefinedType.Big_integer.ToRoString() + @"\(\d+\)");
-            var regExBigDecimal = new Regex(PredefinedType.Big_decimal.ToRoString() + @"\(\d+,\d+\)");
-
-            if (regExBigInteger.IsMatch(typeName) || regExBigDecimal.IsMatch(typeName)) {
-                throw new NoContentNOSException();
-            }
-
-            if (!typeName.StartsWith(PredefinedType.Big_integer.ToRoString()) && !typeName.StartsWith(PredefinedType.Big_decimal.ToRoString())) {
-                if (PredefinedTypeExtensions.PredefinedTypeValues().Contains(typeName)) {
-                    throw new NoContentNOSException();
-                }
-            }
         }
 
         private void VerifyNoError(ActionResultContextFacade result) {
@@ -1023,21 +951,7 @@ namespace RestfulObjects.Mvc {
             return context;
         }
 
-        private FilterFromInvokeContext GetFilterFrom(FilterFromInvokeContext context, ArgumentMap arguments) {
-            ValidateArguments(arguments);
-
-            if (!arguments.Map.ContainsKey(context.ParameterId)) {
-                throw new BadRequestNOSException("Malformed arguments");
-            }
-
-            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
-            IValue parameter = arguments.Map[context.ParameterId];
-            var values = ((IEnumerable) parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy)).Cast<object>();
-            var otherSpecifications = values.Select(value => (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value))).ToArray();
-            context.ThisSpecification = thisSpecification;
-            context.OtherSpecifications = otherSpecifications;
-            return context;
-        }
+       
 
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
             Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(persistArgumentMap, true);
@@ -1093,7 +1007,7 @@ namespace RestfulObjects.Mvc {
                 {"protoPersistentObjects",   "yes"},
                 {"deleteObjects", "no"},
                 {"validateOnly", "yes"},
-                {"domainModel", DomainModel.ToString().ToLower()},
+                {"domainModel", "simple"},
                 {"blobsClobs", "attachments"},
                 {"inlinedMemberRepresentations", "yes"}
             };

@@ -10,15 +10,15 @@ using System.Net.Http.Headers;
 using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
-    public class TypeActionFilterInvokeRelType : RelType {
-        public TypeActionFilterInvokeRelType(string name, UriMtHelper helper) : base(name, helper) {}
+    public class TypeActionInvokeRelType : RelType {
+        public TypeActionInvokeRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
             return helper.GetTypeActionInvokeUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.TypeActionFilterResult);
+            return UriMtHelper.GetJsonMediaType(RepresentationTypes.TypeActionResult);
         }
     }
 }

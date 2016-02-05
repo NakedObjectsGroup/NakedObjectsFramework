@@ -75,46 +75,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             tempLinks.Add(CreateActionLink());
 
-            if (Flags.FormalDomainModel) {
-                if (!actionContext.Specification.IsVoid) {
-                    tempLinks.Add(CreateReturnTypeLink());
-
-                    if (actionContext.Specification.IsCollection && !actionContext.Specification.IsParseable) {
-                        tempLinks.Add(CreateElementTypeLink());
-                    }
-                }
-                tempLinks.Add(CreateDescribedByLink());
-                tempLinks.AddRange(actionContext.VisibleParameters.Select(CreateActionParamLink));
-            }
-
             return tempLinks.ToArray();
-        }
-
-        private LinkRepresentation CreateActionParamLink(ParameterContextFacade p) {
-            return LinkRepresentation.Create(OidStrategy, new ParamTypeRelType(new UriMtHelper(OidStrategy, req,
-                new ParameterTypeContextFacade {
-                    Action = actionContext.Action,
-                    OwningSpecification = actionContext.Target.Specification,
-                    Parameter = p.Parameter
-                })), Flags,
-                new OptionalProperty(JsonPropertyNames.Id, p.Id));
-        }
-
-        private LinkRepresentation CreateDescribedByLink() {
-            return LinkRepresentation.Create(OidStrategy, new TypeMemberRelType(RelValues.DescribedBy,
-                new UriMtHelper(OidStrategy, req,
-                    new ActionTypeContextFacade {
-                        ActionContext = actionContext,
-                        OwningSpecification = actionContext.Target.Specification
-                    })), Flags);
-        }
-
-        private LinkRepresentation CreateElementTypeLink() {
-            return LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ElementType, new UriMtHelper(OidStrategy, req, actionContext.ElementSpecification)), Flags);
-        }
-
-        private LinkRepresentation CreateReturnTypeLink() {
-            return LinkRepresentation.Create(OidStrategy, new DomainTypeRelType(RelValues.ReturnType, new UriMtHelper(OidStrategy, req, actionContext.Specification)), Flags);
         }
 
         private LinkRepresentation CreateUpLink() {
