@@ -605,11 +605,13 @@ namespace NakedObjects.SystemTest.Attributes {
         [TestMethod]
         public virtual void NakedObjectsIgnore_OnIndividualMembers() {
             var obj = NewTestObject<NakedObjectsIgnore1>();
-            Assert.AreEqual(3, obj.Properties.Count());
-            Assert.AreEqual(1, obj.Actions.Count());
+            //Note: numbers will change to 3 & 1 when NakedObjectsType
+            //is re-introduced and commented back in
+            Assert.AreEqual(5, obj.Properties.Count());
+            Assert.AreEqual(3, obj.Actions.Count());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
         public virtual void NakedObjectsType_ReflectOver_All() {
             var obj = NewTestObject<NakedObjectsIgnore3>();
             //results should be same as for NakedObjectsIgnore1:
@@ -617,28 +619,28 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(1, obj.Actions.Count());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
         public virtual void NakedObjectsType_ReflectOver_TypeOnly() {
             var obj = NewTestObject<NakedObjectsIgnore4>();
             Assert.AreEqual(0, obj.Actions.Count());
             Assert.AreEqual(0, obj.Properties.Count());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
         public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly() {
             var obj = NewTestObject<NakedObjectsIgnore5>();
             Assert.AreEqual(1, obj.Actions.Count());
             Assert.AreEqual(2, obj.Properties.Count());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
         public virtual void NakedObjectsType_ReflectOver_TypeOnly_OnSubClass() {
             var obj = NewTestObject<NakedObjectsIgnore6>();
             Assert.AreEqual(0, obj.Actions.Count());
             Assert.AreEqual(0, obj.Properties.Count());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
         public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly_OnSubClass() {
             var obj = NewTestObject<NakedObjectsIgnore7>();
             Assert.AreEqual(2, obj.Actions.Count());
@@ -1476,14 +1478,14 @@ namespace NakedObjects.SystemTest.Attributes {
         public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
-    [NakedObjectsType(ReflectOver.None)]
+    //[NakedObjectsType(ReflectOver.None)]
     public class NakedObjectsIgnore2 {
         public virtual int Id { get; set; }
 
         public virtual int ValueProp1 { get; set; }
     }
 
-    [NakedObjectsType(ReflectOver.All)]
+    //[NakedObjectsType(ReflectOver.All)]
     public class NakedObjectsIgnore3 {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
@@ -1516,7 +1518,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
-    [NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
+    //[NakedObjectsType(ReflectOver.TypeOnlyNoMembers)]
     public class NakedObjectsIgnore4 {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
@@ -1549,31 +1551,31 @@ namespace NakedObjects.SystemTest.Attributes {
         public void ActionWithIgnoredTypeParam(NakedObjectsIgnore2 param1) {}
     }
 
-    [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
+    //[NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)]
     public class NakedObjectsIgnore5 {
         public virtual int Id { get; set; }
 
         public virtual NakedObjectsIgnore1 RefProp { get; set; }
 
-        [NakedObjectsInclude]
+        //[NakedObjectsInclude]
         public virtual NakedObjectsIgnore1 RefProp2 { get; set; }
 
-        [NakedObjectsInclude] //Should have no impact if scope is AllMembers
+        //[NakedObjectsInclude] //Should have no impact if scope is AllMembers
         public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
 
         public ICollection<NakedObjectsIgnore1> Coll { get; set; }
 
-        [NakedObjectsInclude]
+        //[NakedObjectsInclude]
         public ICollection<NakedObjectsIgnore1> Coll2 { get; set; }
 
         public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
 
-        [NakedObjectsInclude]
+        //[NakedObjectsInclude]
         public void Action() {}
 
         public void Action2() {}
 
-        [NakedObjectsInclude] //Should still be ignored, because return type is ignored
+        //[NakedObjectsInclude] //Should still be ignored, because return type is ignored
         public NakedObjectsIgnore2 ActionReturningIgnoredType() {
             return null;
         }
@@ -1592,10 +1594,10 @@ namespace NakedObjects.SystemTest.Attributes {
     public class NakedObjectsIgnore7 : NakedObjectsIgnore5 {
         public virtual string Prop3 { get; set; }
 
-        [NakedObjectsInclude]
+        //[NakedObjectsInclude]
         public virtual string Prop4 { get; set; }
 
-        [NakedObjectsInclude]
+        //[NakedObjectsInclude]
         public void Action3() {}
 
         public void Action4() {}

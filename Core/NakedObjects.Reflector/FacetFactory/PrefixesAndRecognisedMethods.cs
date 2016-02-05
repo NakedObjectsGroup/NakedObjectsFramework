@@ -13,7 +13,7 @@ namespace NakedObjects.Reflect.FacetFactory
     /// for backwards-compatibility only. Each constant delegates to the newer implementation 
     /// in NakedObjects.Types
     /// </summary>
-    [Obsolete("Use NakedObjects.ReccognisedMethodsAndPrefixes in NakedObjects.Types assembly")]
+    [Obsolete("Use NakedObjects.RecognisedMethodsAndPrefixes")]
     public static class PrefixesAndRecognisedMethods
     {
         public static readonly string AutoCompletePrefix;

@@ -78,8 +78,9 @@ namespace NakedObjects.Reflect.Component {
         #endregion
 
         private bool IsTypeMarkedUpToBeIgnored(Type type) {
-            var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
-            return attr != null && attr.ReflectionScope == ReflectOver.None;
+            return false;
+            //var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
+            //return attr != null && attr.ReflectionScope == ReflectOver.None;
         }
 
         private bool IsNamespaceMatch(Type type) {

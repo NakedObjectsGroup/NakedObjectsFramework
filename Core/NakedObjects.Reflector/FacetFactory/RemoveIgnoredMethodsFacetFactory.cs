@@ -25,32 +25,32 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec) {
-            var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
-            if (attr == null) {
+            //var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
+            //if (attr == null) {
                 RemoveExplicitlyIgnoredMembers(type, methodRemover);
-            } else {
-                switch (attr.ReflectionScope) {
-                    case ReflectOver.All:
-                        RemoveExplicitlyIgnoredMembers(type, methodRemover);
-                    break;
-                    case ReflectOver.TypeOnlyNoMembers:
-                        foreach (MethodInfo method in type.GetMethods()) {
-                            methodRemover.RemoveMethod(method);
-                        }
-                        break;
-                    case ReflectOver.ExplicitlyIncludedMembersOnly:
-                        foreach (MethodInfo method in type.GetMethods()) {
-                            if (method.GetCustomAttribute<NakedObjectsIncludeAttribute>() == null) {
-                                methodRemover.RemoveMethod(method);
-                            }
-                        }
-                        break;
-                    case ReflectOver.None:
-                        throw new ReflectionException("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None");
-                    default:
-                        throw new ReflectionException(String.Format("Unhandled value for ReflectOver: {0}", attr.ReflectionScope));
-                }
-            }
+            //} else {
+            //    switch (attr.ReflectionScope) {
+            //        case ReflectOver.All:
+            //            RemoveExplicitlyIgnoredMembers(type, methodRemover);
+            //        break;
+            //        case ReflectOver.TypeOnlyNoMembers:
+            //            foreach (MethodInfo method in type.GetMethods()) {
+            //                methodRemover.RemoveMethod(method);
+            //            }
+            //            break;
+            //        case ReflectOver.ExplicitlyIncludedMembersOnly:
+            //            foreach (MethodInfo method in type.GetMethods()) {
+            //                if (method.GetCustomAttribute<NakedObjectsIncludeAttribute>() == null) {
+            //                    methodRemover.RemoveMethod(method);
+            //                }
+            //            }
+            //            break;
+            //        case ReflectOver.None:
+            //            throw new ReflectionException("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None");
+            //        default:
+            //            throw new ReflectionException(String.Format("Unhandled value for ReflectOver: {0}", attr.ReflectionScope));
+            //    }
+            //}
         }
 
         private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {

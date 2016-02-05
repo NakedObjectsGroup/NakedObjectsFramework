@@ -26,20 +26,21 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         protected bool IsPropertyIncluded(PropertyInfo property) {
             if (property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) return false;
-            var attr = property.DeclaringType.GetCustomAttribute<NakedObjectsTypeAttribute>();
-            if (attr == null) return true;
-            switch (attr.ReflectionScope) {
-                case ReflectOver.All:
-                    return true; //Because we checked for NakedObjectsIgnore earlier.
-                case ReflectOver.TypeOnlyNoMembers:
-                    return false;
-                case ReflectOver.ExplicitlyIncludedMembersOnly:
-                    return property.GetCustomAttribute<NakedObjectsIncludeAttribute>() != null;
-                case ReflectOver.None:
-                    throw new ReflectionException("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None");
-                default:
-                    throw new ReflectionException(String.Format("Unhandled value for ReflectOver: {0}", attr.ReflectionScope));
-            }
+            return true;
+            //var attr = property.DeclaringType.GetCustomAttribute<NakedObjectsTypeAttribute>();
+            //if (attr == null) return true;
+            //switch (attr.ReflectionScope) {
+            //    case ReflectOver.All:
+            //        return true; //Because we checked for NakedObjectsIgnore earlier.
+            //    case ReflectOver.TypeOnlyNoMembers:
+            //        return false;
+            //    case ReflectOver.ExplicitlyIncludedMembersOnly:
+            //        return property.GetCustomAttribute<NakedObjectsIncludeAttribute>() != null;
+            //    case ReflectOver.None:
+            //        throw new ReflectionException("Attempting to introspect a class that has been marked with NakedObjectsType with ReflectOver.None");
+            //    default:
+            //        throw new ReflectionException(String.Format("Unhandled value for ReflectOver: {0}", attr.ReflectionScope));
+            //}
         }
 
         protected IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {

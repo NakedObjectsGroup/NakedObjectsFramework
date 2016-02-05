@@ -282,14 +282,16 @@ namespace RestfulObjects.Snapshot.Utility {
             return msg;
         }
 
-        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
+        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req)
+        {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
-            string url = ocs?.RedirectedUrl ?? arcs?.Result?.RedirectedUrl;
+            Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.Redirected : null);
 
-            if (url != null) {
-                Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, url);
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) {Headers = {Location = redirectAddress}});
+            if (redirected != null)
+            {
+                Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) { Headers = { Location = redirectAddress } });
             }
         }
 
