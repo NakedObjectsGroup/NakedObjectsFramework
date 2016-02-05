@@ -41,6 +41,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             target = Tab(3);
             Assert.AreEqual("Southeast", target.Text);
             CopyToClipboard(target);
+
+            //Finish somewhere else
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
         }
         public virtual void CopyListItemIntoClipboard()
         {
@@ -108,6 +112,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         .Where(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
         we.FindElement(By.CssSelector(".value.droppable")).Text == "Sheela Word").Single()
 );
+            //Finish somewhere else
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
         }
         public virtual void CannotPasteWrongTypeIntoReferenceField()
         {
@@ -126,6 +133,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             target.Click();
             target.SendKeys(Keys.Control + "v");
             Assert.AreEqual("Annette Hill", WaitForCss(fieldCss).Text); //i.e. no change
+            //Finish somewhere else
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
         }
         public virtual void CanClearADroppableReferenceField()
         {
