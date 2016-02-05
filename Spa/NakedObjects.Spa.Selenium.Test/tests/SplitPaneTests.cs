@@ -173,13 +173,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
 
-        public virtual void RightClickIsSameAsLeftClickForDialogActions()
+        public virtual void RightClickIsSameAsLeftClickForOpeningDialog()
         {
             Url(twoObjects);
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitForView(Pane.Right, PaneType.Object, "SO71926");
 
-            RightClick(GetObjectAction("Search For Orders", Pane.Left));
+            RightClick(GetObjectAction("Create New Order", Pane.Left));
             var selector = CssSelectorFor(Pane.Left) + " .dialog ";
             var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
         }
@@ -312,9 +312,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         [TestMethod]
-        public override void RightClickIsSameAsLeftClickForDialogActions()
+        public override void RightClickIsSameAsLeftClickForOpeningDialog()
         {
-            base.RightClickIsSameAsLeftClickForDialogActions();
+            base.RightClickIsSameAsLeftClickForOpeningDialog();
         }
 
         [TestMethod]
@@ -459,7 +459,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             LeftClickHomeIconFromSplitObjectObject();
             RightClickHomeIconFromSplitObjectObject();
             ActionDialogOpensInCorrectPane();
-            RightClickIsSameAsLeftClickForDialogActions();
+            RightClickIsSameAsLeftClickForOpeningDialog();
             SwapPanes();
             FullPaneFromLeft();
             FullPaneFromRight();

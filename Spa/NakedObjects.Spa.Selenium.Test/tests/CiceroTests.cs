@@ -994,7 +994,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Multi-select enums
             CiceroUrl("home?menu1=ProductRepository");
             WaitForOutput("Products menu");
-            EnterCommand("action Find Products by Lines and Categories");
+            EnterCommand("action Find By Product Lines And Classes");
             WaitForOutputContaining("Product Line: M,S,");
             WaitForOutputContaining("Product Class: H,");
             EnterCommand("enter line, r");
