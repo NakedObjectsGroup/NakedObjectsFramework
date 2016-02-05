@@ -166,7 +166,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitForView(Pane.Right, PaneType.Object, "SO71926");
 
-            OpenActionDialog("Search For Orders", Pane.Left);
+            OpenActionDialog("Create New Order", Pane.Left);
             CancelDialog(Pane.Left);
             OpenActionDialog("Add New Sales Reasons", Pane.Right);
             CancelDialog(Pane.Right);
@@ -363,7 +363,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+   // [TestClass]
     public class SplitPaneTestsFirefox : SplitPaneTests
     {
         [ClassInitialize]
@@ -416,7 +416,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #endregion
     #region Mega tests
-    //[TestClass]
+    [TestClass]
     public class SplitPaneMegaTestFirefox : SplitPaneTestsRoot
     {
         [ClassInitialize]

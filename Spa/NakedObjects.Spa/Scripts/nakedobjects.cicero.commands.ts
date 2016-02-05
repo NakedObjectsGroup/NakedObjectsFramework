@@ -403,19 +403,19 @@ module NakedObjects.Angular.Gemini {
     export class Action extends Command {
 
         public fullCommand = "action";
-        public helpText = "Open the dialog for action from a menu, or from object actions. " +
-        "Note that a dialog is always opened for an action, even if it has no fields (parameters) - " +
-        "this is a safety mechanism, allowing the user to confirm that the action is the one intended." +
-        "Once any fields have been completed, using the Field command, the action may then be invoked " +
-        "with the OK command." +
-        "The action command takes two optional arguments. " +
-        "The first is the name, or partial name, of the action. " +
-        "If the partial name matches more than one action, a list of matches is returned," +
-        "but none opened. If no argument is provided, a full list of available action names is returned. " +
-        "The partial name may have more than one clause, separated by spaces, and these may match either " +
-        "part(s) of the action name or the sub-menu name if one exists. " +
-        "Not yet implemented: if the action name matches a single action, then a question-mark may be added as a second "
-        "parameter - which will generate a more detailed description of the Action.";
+        public helpText = "Open the dialog for action from a menu, or from object actions.\n" +
+        "A dialog is always opened for an action, even if it has no fields (parameters):\n" +
+        "This is a safety mechanism, allowing the user to confirm that the action is the one intended.\n" +
+        "Once the dialog fields have been completed, using the Enter command,\n" +
+        "the action may then be invoked  with the OK command.\n" +
+        "The action command takes two optional arguments.\n" +
+        "The first is the name, or partial name, of the action.\n" +
+        "If the partial name matches more than one action, a list of matches is returned but none opened.\n"+
+        "If no argument is provided, a full list of available action names is returned.\n" +
+        "The partial name may have more than one clause, separated by spaces.\n" +
+        "these may match either parts of the action name or the sub-menu name if one exists.\n" +
+        "If the action name matches a single action, then a question-mark may be added as a second\n"
+        "parameter, which will generate a more detailed description of the Action.";
 
         protected minArguments = 0;
         protected maxArguments = 2;

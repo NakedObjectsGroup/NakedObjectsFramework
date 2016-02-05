@@ -908,36 +908,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
             //== "menu pr;action rand;ok;show 1");
         }
-        public virtual void ScenarioUsingClipboard()
-        {
-            //Copy a Product to clipboard
-            CiceroUrl("object?object1=AdventureWorksModel.Product-980");
-            WaitForOutput("Product: Mountain-400-W Silver, 38");
-            EnterCommand("clip copy");
-            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
-            EnterCommand("menu emp");
-            WaitForOutput("Employees menu");
-            EnterCommand("ac create");
-            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
-            EnterCommand("enter details, paste");
-            WaitForOutput("Contents of Clipboard are not compatible with the field");
-            EnterCommand("clip show");
-            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
-            EnterCommand("clip discard");
-            WaitForOutput("Clipboard is empty");
-            EnterCommand("enter details, paste");
-            WaitForOutput("Cannot use Clipboard as it is empty");
-            CiceroUrl("object?object1=AdventureWorksModel.Person-7185");
-            WaitForOutput("Person: Carmen Perez");
-            EnterCommand("clip copy");
-            WaitForOutput("Clipboard contains: Person: Carmen Perez");
-            EnterCommand("back");
-            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
-            EnterCommand("enter details, paste");
-            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
-            EnterCommand("ok");
-            WaitForOutput("Unsaved Employee");
-        }
         public virtual void ScenarioEditAndSave()
         {
             //happy case -  edit one property
@@ -1004,6 +974,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
         }
+        public virtual void ScenarioMultiSelect()
+        {
+            //Multi-select and deselect - reference objects
+            CiceroUrl("home?menu1=ProductRepository");
+            WaitForOutput("Products menu");
+            EnterCommand("action List Products By Sub Categories");
+            WaitForOutputContaining("Action dialog: List Products By Sub Categories");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            EnterCommand("enter sub, handlebars");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            EnterCommand("enter sub, touring bikes");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
+            EnterCommand("enter sub, frames");
+            WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
+            EnterCommand("enter sub, x");
+            WaitForOutput("None of the choices matches x");
+
+            //Multi-select enums
+            CiceroUrl("home?menu1=ProductRepository");
+            WaitForOutput("Products menu");
+            EnterCommand("action Find Products by Lines and Categories");
+            WaitForOutputContaining("Product Line: M,S,");
+            WaitForOutputContaining("Product Class: H,");
+            EnterCommand("enter line, r");
+            WaitForOutputContaining("Product Line: M,S,R");
+            EnterCommand("enter line, m");
+            WaitForOutputContaining("Product Line: S,R");
+            EnterCommand("enter line, x");
+            WaitForOutputContaining("None of the choices matches x");
+            EnterCommand("enter line,");
+            WaitForOutputContaining("Multiple matches:\r\nM\r\nR\r\nS\r\nT");
+        }
         public virtual void ScenarioTransientObject() {
             //Happy case
             CiceroUrl("object?object1=AdventureWorksModel.Person-12044");
@@ -1034,22 +1036,35 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutputStarting("Please complete or correct these fields:");
         }
-
-        public virtual void ScenarioMultiSelect()
+        public virtual void ScenarioUsingClipboard()
         {
-            //Multi-select and deselect
-            CiceroUrl("home?menu1=ProductRepository");
-            WaitForOutput("Products menu");
-            EnterCommand("action List Products By Sub Categories");
-            WaitForOutputContaining("Action dialog: List Products By Sub Categories");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
-            EnterCommand("enter sub, handlebars");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
-            EnterCommand("enter sub, touring bikes");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Handlebars");
-
-            //TODO: Test this for multi-select enums (Find Products by Lines and Categories)
-
+            //Copy a Product to clipboard
+            CiceroUrl("object?object1=AdventureWorksModel.Product-980");
+            WaitForOutput("Product: Mountain-400-W Silver, 38");
+            EnterCommand("clip copy");
+            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
+            EnterCommand("menu emp");
+            WaitForOutput("Employees menu");
+            EnterCommand("ac create");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
+            EnterCommand("enter details, paste");
+            WaitForOutput("Contents of Clipboard are not compatible with the field");
+            EnterCommand("clip show");
+            WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
+            EnterCommand("clip discard");
+            WaitForOutput("Clipboard is empty");
+            EnterCommand("enter details, paste");
+            WaitForOutput("Cannot use Clipboard as it is empty");
+            CiceroUrl("object?object1=AdventureWorksModel.Person-7185");
+            WaitForOutput("Person: Carmen Perez");
+            EnterCommand("clip copy");
+            WaitForOutput("Clipboard contains: Person: Carmen Perez");
+            EnterCommand("back");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: empty");
+            EnterCommand("enter details, paste");
+            WaitForOutput("Employees menu\r\nAction dialog: Create New Employee From Contact\r\nContact Details: Carmen Perez");
+            EnterCommand("ok");
+            WaitForOutput("Unsaved Employee");
         }
         public virtual void ChainedCommands()
         {
@@ -1132,15 +1147,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
         [TestMethod]
-        public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
-        [TestMethod]
         public override void ScenarioEditAndSave() { base.ScenarioEditAndSave(); }
         [TestMethod]
+        public override void ScenarioMultiSelect() { base.ScenarioMultiSelect(); }
+        [TestMethod]
         public override void ScenarioTransientObject() { base.ScenarioTransientObject(); }
-
+        [TestMethod]
+        public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
         [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
-
     }
 
     #region Individual tests - browser specific 
@@ -1251,6 +1266,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.SpaceBarAutoComplete();
             base.UnrecognisedCommand();
             base.UpAndDownArrow();
+            base.ScenarioEditAndSave();
+            base.ScenarioMultiSelect();
+            base.ScenarioTransientObject();
             base.ScenarioUsingClipboard();
             base.ChainedCommands();
         }
