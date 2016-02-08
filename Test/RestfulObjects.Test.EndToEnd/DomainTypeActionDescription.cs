@@ -8,7 +8,7 @@ namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
     public class DomainTypeActionDescriptionTests {
         private const string dt = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject/actions/AnAction";
-
+        [Ignore]
         [TestMethod]
         public void DomainTypeResource() {
             Helpers.TestResponse(dt, "DomainTypeActionDescription");
