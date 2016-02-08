@@ -16,9 +16,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void CopyTitleOrPropertyIntoClipboard()
         {
-            GeminiUrl("object/object?object1=AdventureWorksModel.Product-990&object2=AdventureWorksModel.Customer-652");
+            GeminiUrl("object/object?object1=AdventureWorksModel.Product-990&object2=AdventureWorksModel.Customer-13179");
             WaitForView(Pane.Left, PaneType.Object, "Mountain-500 Black, 42");
-            WaitForView(Pane.Right, PaneType.Object, "Selected Distributors, AW00000652");
+            WaitForView(Pane.Right, PaneType.Object, "Adrian Sanchez, AW00013179");
 
             //Copy title from left pane
             var title = WaitForCss("#pane1 .header .title");
@@ -38,8 +38,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Copy embedded reference from right pane
             WaitForCss("#pane2 .header .title").Click();
-            target = Tab(3);
-            Assert.AreEqual("Southeast", target.Text);
+            target = Tab(4);
+            Assert.AreEqual("Canada", target.Text);
             CopyToClipboard(target);
 
             //Finish somewhere else
