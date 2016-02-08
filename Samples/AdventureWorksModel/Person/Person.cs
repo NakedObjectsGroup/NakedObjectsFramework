@@ -282,6 +282,12 @@ namespace AdventureWorksModel {
             return Container.Instances<PersonCreditCard>().Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).ToList();
         }
 
+        public IQueryable<CreditCard> RecentCreditCards()
+        {
+            int id = this.BusinessEntityID;
+            return Container.Instances<PersonCreditCard>().Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).OrderByDescending(cc => cc.ModifiedDate);
+        }
+
         #endregion
 
         #region Actions for test purposes only

@@ -85,10 +85,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
             Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
-            ClearFieldThenType("#fromdate1", "1 Sep 2007" + Keys.Escape);
-            ClearFieldThenType("#todate1", "1 Apr 2008" + Keys.Escape);
-
-            Thread.Sleep(1000); // need to wait for datepicker :-(
+            ClearFieldThenType("#fromdate1", "1 Sep 2007");
+            CancelDatePicker("#fromdate1");
+            ClearFieldThenType("#todate1", "1 Apr 2008");
+            CancelDatePicker("#todate1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
@@ -172,6 +172,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
 
+        public virtual void ConditionalChoices() {
+            GeminiUrl("home?menu1=ProductRepository");
+            WaitForView(Pane.Single, PaneType.Home);
+            OpenActionDialog("List Products");
+            SelectDropDownOnField("#category1", "Clothing");
+                var x = new SelectElement(WaitForCss("#subcategory1")).Options;
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
+
+            SelectDropDownOnField("#category1", "Accessories");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
+
+        }
 
         public virtual void ConditionalChoicesDefaults()
         {
@@ -194,8 +206,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
 
-
-        public virtual void ConditionalChoicesChangeDefaults()
+        public virtual void ConditionalChoicesMultiple()
         {
             Url(ProductServiceUrl);
 
@@ -355,9 +366,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ChoicesChangeDefaults() { base.ChoicesChangeDefaults(); }
         [TestMethod]
+        public override void ConditionalChoices() { base.ConditionalChoices(); }
+        [TestMethod]
         public override void ConditionalChoicesDefaults() { base.ConditionalChoicesDefaults(); }
         [TestMethod]
-        public override void ConditionalChoicesChangeDefaults() { base.ConditionalChoicesChangeDefaults(); }
+        public override void ConditionalChoicesMultiple() { base.ConditionalChoicesMultiple(); }
 
         #region Auto Complete
         [TestMethod]
@@ -475,10 +488,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.RefChoicesParmKeepsValue();
             base.MultipleRefChoicesDefaults();
             base.MultipleRefChoicesChangeDefaults();
+            ConditionalChoices();
             base.ChoicesDefaults();
             base.ChoicesChangeDefaults();
             base.ConditionalChoicesDefaults();
-            base.ConditionalChoicesChangeDefaults();
+            base.ConditionalChoicesMultiple();
             base.AutoCompleteParm();
             base.AutoCompleteParmDefault();
             base.AutoCompleteParmShowSingleItem();

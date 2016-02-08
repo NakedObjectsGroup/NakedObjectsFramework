@@ -194,8 +194,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Left, PaneType.Object, "SO71926");
             WaitForView(Pane.Right, PaneType.Object, "Twin Cycles, AW00000555");
         }
-
-
         public virtual void FullPaneFromLeft()
         {
             Url(twoObjects);

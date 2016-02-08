@@ -78,6 +78,23 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
+        public virtual void CanSetAndClearAnOptionalDropDown()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-54064");
+            WaitForView(Pane.Single, PaneType.Object);
+            EditObject();
+            SelectDropDownOnField("#scrapreason1", "Color incorrect");
+            SaveObject();
+            var prop = WaitForCssNo(".property", 4);
+            Assert.AreEqual("Scrap Reason:\r\nColor incorrect", prop.Text);
+            EditObject();
+            SelectDropDownOnField("#scrapreason1", "");
+            SaveObject();
+            prop = WaitForCssNo(".property", 4);
+            Assert.AreEqual("Scrap Reason:", prop.Text);
+        }
+
+        [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices() {
             GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
             EditObject();
