@@ -41,7 +41,6 @@ namespace RestfulObjects.Snapshot.Representations {
         public MapRepresentation Members { get; set; }
 
         private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
-
             return new UriMtHelper(oidStrategy, req, objectContext.Target);
         }
 
@@ -120,7 +119,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions(IObjectFacade objectFacade) {
-            Extensions =  GetExtensions(objectFacade);
+            Extensions = GetExtensions(objectFacade);
         }
 
         private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
@@ -148,11 +147,8 @@ namespace RestfulObjects.Snapshot.Representations {
                 props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
             }
             else {
-                var id =  oid.InstanceId;
-                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
-              
+                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, oid.InstanceId));
                 props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
-              
             }
 
             return CreateWithOptionals<ObjectRepresentation>(new object[] {oidStrategy, req, objectContext, flags}, props);

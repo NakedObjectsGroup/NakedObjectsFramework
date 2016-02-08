@@ -189,7 +189,7 @@ type Nof4TestsDomainType() =
         member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
         
         [<Test>]
-         [<Ignore>] // temp ignore untill fix persist id
+        [<Ignore>] // temp ignore untill fix persist id
         member x.PersistMostSimpleTransientObjectSimpleOnly() = Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
         
        
@@ -574,7 +574,7 @@ type Nof4TestsDomainType() =
         member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
         
         [<Test>]
-        [<Ignore>]
+        //[<Ignore>]
         member x.GetWithActionMenu() = DomainMenu15.GetWithActionMenu x.api
         
         [<Test>]

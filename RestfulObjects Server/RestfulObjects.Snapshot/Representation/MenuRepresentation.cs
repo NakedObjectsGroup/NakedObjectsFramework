@@ -89,8 +89,13 @@ namespace RestfulObjects.Snapshot.Representations {
             return new Tuple<string, ActionContextFacade>[] {};
         }
 
+        private bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) {
+            return actionContextFacade.Action.IsVisible(actionContextFacade.Target) && 
+                   actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
+        }
+
         private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i));
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.Item2));
 
             InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
 

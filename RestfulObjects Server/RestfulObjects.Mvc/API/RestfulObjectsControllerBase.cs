@@ -142,13 +142,9 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-   
-
             routes.MapHttpRoute("InvalidActionParameterType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
-
-    
 
             routes.MapHttpRoute("InvalidActionType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}",
@@ -163,8 +159,6 @@ namespace RestfulObjects.Mvc {
             routes.MapHttpRoute("InvalidAction",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
-
-     
 
             routes.MapHttpRoute("InvalidCollectionType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
@@ -191,8 +185,6 @@ namespace RestfulObjects.Mvc {
             routes.MapHttpRoute("InvalidCollection",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
-
-         
 
             routes.MapHttpRoute("InvalidPropertyType",
                 routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Properties + "/{propertyName}",
@@ -236,16 +228,15 @@ namespace RestfulObjects.Mvc {
                 routeTemplate: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-
             routes.MapHttpRoute("PutPersistPropertyPrompt",
-               routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
-               defaults: new { controller = "RestfulObjects", action = "PutPersistPropertyPrompt" },
-               constraints: new { httpMethod = new HttpMethodConstraint("PUT") }
-               );
+                routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+                defaults: new {controller = "RestfulObjects", action = "PutPersistPropertyPrompt"},
+                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                );
 
             routes.MapHttpRoute("InvalidPersistPropertyPrompt",
                 routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
-                defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
+                defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
             routes.MapHttpRoute("GetPropertyPrompt",
                 routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
@@ -336,8 +327,6 @@ namespace RestfulObjects.Mvc {
             routes.MapHttpRoute("InvalidMenu",
                 routeTemplate: menus + "/{menuName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
-
-   
 
             routes.MapHttpRoute("InvalidDomainType",
                 routeTemplate: domainTypes + "/{typeName}",
@@ -489,7 +478,6 @@ namespace RestfulObjects.Mvc {
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
                 ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, promptArgs.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, promptArgs.Item2), false);
-
             });
         }
 
@@ -530,7 +518,6 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-
         public virtual HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
@@ -553,8 +540,6 @@ namespace RestfulObjects.Mvc {
                 return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
             });
         }
-
-      
 
         public virtual HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => {
@@ -590,13 +575,9 @@ namespace RestfulObjects.Mvc {
             });
         }
 
-      
-
         public virtual HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
             return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
-
-      
 
         public virtual HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
@@ -709,7 +690,6 @@ namespace RestfulObjects.Mvc {
             return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }
 
-      
         #endregion
 
         #region helpers
@@ -951,8 +931,6 @@ namespace RestfulObjects.Mvc {
             return context;
         }
 
-       
-
         private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
             Tuple<IDictionary<string, object>, RestControlFlags> tuple = ExtractValuesAndFlags(persistArgumentMap, true);
 
@@ -1004,7 +982,7 @@ namespace RestfulObjects.Mvc {
 
         private static IDictionary<string, string> GetOptionalCapabilities() {
             return new Dictionary<string, string> {
-                {"protoPersistentObjects",   "yes"},
+                {"protoPersistentObjects", "yes"},
                 {"deleteObjects", "no"},
                 {"validateOnly", "yes"},
                 {"domainModel", "simple"},
@@ -1014,7 +992,5 @@ namespace RestfulObjects.Mvc {
         }
 
         #endregion
-
-       
     }
 }

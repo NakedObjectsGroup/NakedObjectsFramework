@@ -39,7 +39,6 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected UriMtHelper GetHelper() {
- 
             return new UriMtHelper(OidStrategy, req, propertyContext);
         }
 

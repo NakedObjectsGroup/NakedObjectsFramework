@@ -45,10 +45,10 @@ namespace RestfulObjects.Snapshot.Representations {
             numPages = numPages == 0 ? 1 : numPages;
 
             var exts = new Dictionary<string, object> {
-                {"page", page},
-                {"pageSize", pageSize},
-                {"numPages", numPages},
-                {"totalCount", totalCount}
+                {JsonPropertyNames.Page, page},
+                {JsonPropertyNames.PageSize, pageSize},
+                {JsonPropertyNames.NumPages, numPages},
+                {JsonPropertyNames.TotalCount, totalCount}
             };
 
             Pagination = RestUtils.CreateMap(exts);

@@ -154,7 +154,7 @@ namespace RestfulObjects.Mvc.Model {
             var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
 
             InitArgumentMap(jObject, populate, arg);
-         
+
             return arg;
         }
 
@@ -200,7 +200,7 @@ namespace RestfulObjects.Mvc.Model {
             else {
                 arg.Map = new Dictionary<string, IValue>();
             }
-        }   
+        }
 
         private static void PopulatePromptArgumentMap(JToken jObject, ArgumentMap arg) {
             JToken members = jObject[JsonPropertyNames.Members];
@@ -214,7 +214,7 @@ namespace RestfulObjects.Mvc.Model {
                     promptArgumentMap.MemberMap = new Dictionary<string, IValue>();
                 }
             }
-            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject)jt.Value, jt.Name));
+            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
         public static ArgumentMap CreateArgumentMap(JObject jObject) {

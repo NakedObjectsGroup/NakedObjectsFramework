@@ -50,6 +50,5 @@ namespace RestfulObjects.Snapshot.Constants {
         // custom extension 
         public const string Menus = Prfx + "menus";
         public const string Menu = Prfx + "menu";
-
     }
 }

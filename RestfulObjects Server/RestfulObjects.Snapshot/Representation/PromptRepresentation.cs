@@ -17,15 +17,6 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
-
-        private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
-            return new UriMtHelper(oidStrategy, req, propertyContext);
-        }
-
-        private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
-            return new UriMtHelper(oidStrategy, req, propertyContext.Target);
-        }
-
         protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
@@ -59,6 +50,14 @@ namespace RestfulObjects.Snapshot.Representations {
 
         [DataMember(Name = JsonPropertyNames.Choices)]
         public object[] Choices { get; set; }
+
+        private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+            return new UriMtHelper(oidStrategy, req, propertyContext);
+        }
+
+        private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+            return new UriMtHelper(oidStrategy, req, propertyContext.Target);
+        }
 
         private void SetChoices(ListContextFacade listContext, PropertyContextFacade propertyContext, HttpRequestMessage req) {
             Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();

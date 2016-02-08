@@ -51,7 +51,6 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menuFacade) : this(oidStrategy, req) {
-          
             CachedType = menuFacade.Id;
         }
 
@@ -82,7 +81,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, string instanceId)
-           : this(oidStrategy, req) {
+            : this(oidStrategy, req) {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
             spec = objectFacade.Specification;
@@ -90,8 +89,6 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedId = instanceId;
             CachedType = oid.DomainType;
         }
-
-      
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
             : this(oidStrategy, req) {
@@ -102,10 +99,6 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
-
-      
-
-      
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextFacade parameterContext)
             : this(oidStrategy, req) {
@@ -142,8 +135,6 @@ namespace RestfulObjects.Snapshot.Utility {
             cachedId = "";
             CachedType = oidStrategy.GetLinkDomainTypeBySpecification(context.ThisSpecification);
         }
-
-     
 
         private string CachedType { get; }
 
@@ -332,8 +323,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return template.BindByPosition(prefix, CachedType);
         }
 
-        public Uri GetRedirectUri(HttpRequestMessage req, string server, string oid)
-        {
+        public Uri GetRedirectUri(HttpRequestMessage req, string server, string oid) {
             CheckArgumentNotNull(oid, "object oid");
             var redirectPrefix = new Uri("http://" + server);
             var template = new UriTemplate("objects/{oid}");
@@ -378,7 +368,6 @@ namespace RestfulObjects.Snapshot.Utility {
         private Uri GetObjectMemberUri(IMemberFacade member, string memberType) {
             return string.IsNullOrEmpty(cachedId) ? GetTransientObjectMemberUri(member, memberType) : GetPersistentObjectMemberUri(member, memberType);
         }
-
 
         private Uri GetMemberUri(IMemberFacade member, string memberType) {
             return spec.IsService ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
@@ -496,15 +485,11 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private string GetParameterValue(RestControlFlags flags, string parameterValue) {
-        
-                return parameterValue;
-       
+            return parameterValue;
         }
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
-          
-                return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
-          
+            return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {

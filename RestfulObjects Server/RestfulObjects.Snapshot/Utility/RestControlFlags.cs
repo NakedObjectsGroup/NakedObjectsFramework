@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Facade;
+using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class RestControlFlags {
@@ -31,8 +32,8 @@ namespace RestfulObjects.Snapshot.Utility {
         public const string SortByReserved = ReservedPrefix + "sort-by";
         public const string SearchTermReserved = ReservedPrefix + "searchTerm";
         // custom extensions 
-        public const string PageReserved = ReservedPrefix + "page";
-        public const string PageSizeReserved = ReservedPrefix + "pageSize";
+        public const string PageReserved = ReservedPrefix + JsonPropertyNames.Page;
+        public const string PageSizeReserved = ReservedPrefix + JsonPropertyNames.PageSize;
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
