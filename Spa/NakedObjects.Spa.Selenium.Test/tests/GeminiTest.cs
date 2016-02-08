@@ -322,9 +322,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected virtual void AssertFooterExists()
         {
             wait.Until(d => d.FindElement(By.CssSelector(".footer")));
-            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-home")).Displayed);
-            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-back")).Displayed);
-            Assert.IsTrue(br.FindElement(By.CssSelector(".footer .icon-forward")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-home")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-back")).Displayed);
+            wait.Until(d => d.FindElement(By.CssSelector(".footer .icon-forward")).Displayed);
         }
 
         protected void AssertTopItemInListIs(string title)
