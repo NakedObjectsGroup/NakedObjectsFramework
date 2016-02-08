@@ -242,7 +242,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(6)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(5)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
