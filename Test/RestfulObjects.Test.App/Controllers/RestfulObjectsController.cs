@@ -43,16 +43,6 @@ namespace MvcTestApp.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetDomainTypes([ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetDomainTypes(arguments);
-        }
-
-        [HttpGet]
-        public override HttpResponseMessage GetDomainType(string typeName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetDomainType(typeName, arguments);
-        }
-
-        [HttpGet]
         public override HttpResponseMessage GetService(string serviceName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetService(serviceName, arguments);
         }
@@ -93,33 +83,13 @@ namespace MvcTestApp.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetPropertyType(string typeName, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetPropertyType(typeName, propertyName, arguments);
-        }
-
-        [HttpGet]
         public override HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetCollection(domainType, instanceId, propertyName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetCollectionType(string typeName, string propertyName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetCollectionType(typeName, propertyName, arguments);
-        }
-
-        [HttpGet]
         public override HttpResponseMessage GetAction(string domainType, string instanceId, string actionName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
             return base.GetAction(domainType, instanceId, actionName, arguments);
-        }
-
-        [HttpGet]
-        public override HttpResponseMessage GetActionType(string typeName, string actionName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetActionType(typeName, actionName, arguments);
-        }
-
-        [HttpGet]
-        public override HttpResponseMessage GetActionParameterType(string typeName, string actionName, string parmName, [ModelBinder(typeof (ReservedArgumentsBinder))] ReservedArguments arguments) {
-            return base.GetActionParameterType(typeName, actionName, parmName, arguments);
         }
 
         [HttpPut]
@@ -175,6 +145,11 @@ namespace MvcTestApp.Controllers {
         [HttpGet]
         public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, [ModelBinder(typeof(ArgumentMapUrlBinder))] ArgumentMap arguments) {
             return base.GetInvokeTypeActions(typeName, actionName, arguments);
+        }
+
+        [HttpPut]
+        public override HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, [ModelBinder(typeof(PromptArgumentMapBinder))] PromptArgumentMap promptArguments) {
+            return base.PutPersistPropertyPrompt(domainType, propertyName, promptArguments);
         }
 
         [HttpGet]
