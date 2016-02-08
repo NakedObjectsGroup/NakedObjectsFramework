@@ -10,27 +10,25 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
+namespace NakedObjects.Web.UnitTests.Selenium
+{
 
-    public abstract class TransientObjectTests : AWTest {
-
-        [TestMethod]
-        public void CreateAndSaveTransientObject()
+    public abstract class TransientObjectTestsRoot : AWTest
+    {
+        public virtual void CreateAndSaveTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
-            var obfuscated  = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+            var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
             ClearFieldThenType("#cardnumber1", number);
-            SelectDropDownOnField("#expmonth1","12");
-            SelectDropDownOnField("#expyear1","2020");
-            Click(SaveButton()); 
+            SelectDropDownOnField("#expmonth1", "12");
+            SelectDropDownOnField("#expyear1", "2020");
+            Click(SaveButton());
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
-
-        [TestMethod]
-        public void SaveAndClose()
+        public virtual void SaveAndClose()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -43,13 +41,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
-            GetObjectAction("List Credit Cards").Click();
-            WaitForView(Pane.Single, PaneType.List, "List Credit Cards");
-            wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Last().Text == obfuscated);
+            GetObjectAction("Recent Credit Cards").Click();
+            WaitForView(Pane.Single, PaneType.List, "Recent Credit Cards");
+             wait.Until(dr => dr.FindElements(By.CssSelector(".collection table tbody tr td.reference")).First().Text == obfuscated);
         }
-
-        [TestMethod]
-        public void MissingMandatoryFieldsNotified()
+        public virtual void MissingMandatoryFieldsNotified()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -59,12 +55,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             wait.Until(dr => dr.FindElement(
                 By.CssSelector("input#cardnumber1")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
             wait.Until(dr => dr.FindElement(
-                By.CssSelector("select#expmonth1 option[selected='selected']")).Text =="REQUIRED *");
+                By.CssSelector("select#expmonth1 option[selected='selected']")).Text == "REQUIRED *");
             WaitForMessage("Please complete REQUIRED fields.");
         }
-
-        [TestMethod]
-        public void IndividualFieldValidation()
+        public virtual void IndividualFieldValidation()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -77,9 +71,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
                 By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
             WaitForMessage("See field validation message(s).");
         }
-
-        [TestMethod]
-        public void MultiFieldValidation()
+        public virtual void MultiFieldValidation()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             Click(GetObjectAction("Create New Credit Card"));
@@ -90,8 +82,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(SaveButton());
             WaitForMessage("Expiry date must be in the future");
         }
-
-        [TestMethod]
         public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
@@ -99,9 +89,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var name = WaitForCss("input#cardnumber1");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
-
-        [TestMethod]
-        public void CancelTransientObject()
+        public virtual void CancelTransientObject()
         {
             GeminiUrl("object?object1=AdventureWorksModel.Person-12043&actions1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
@@ -109,52 +97,100 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(GetCancelEditButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         }
+        public virtual void SwapPanesWithTransients()
+        {
+            GeminiUrl("object/object?object1=AdventureWorksModel.Product-738&actions1=open&object2=AdventureWorksModel.Person-20774&actions2=open");
+            WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
+            WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
+
+            Click(GetObjectAction("Create New Work Order", Pane.Left));
+            WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#orderqty1", "4");
+
+            Click(GetObjectAction("Create New Credit Card", Pane.Right));
+            WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Credit Card");
+            ClearFieldThenType("#cardnumber2", "1111222233334444");
+
+            Click(SwapIcon());
+            WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Credit Card");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#cardnumber1")).GetAttribute("value") == "1111222233334444");
+            WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Work Order");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
+
+
+        }
     }
 
+    public abstract class TransientObjectTests : TransientObjectTestsRoot
+    {
+        [TestMethod]
+        public override void CreateAndSaveTransientObject() { base.CreateAndSaveTransientObject(); }
+        [TestMethod]
+        public override void SaveAndClose() { base.SaveAndClose(); }
+        [TestMethod]
+        public override void MissingMandatoryFieldsNotified() { base.MissingMandatoryFieldsNotified(); }
+        [TestMethod]
+        public override void IndividualFieldValidation() { base.IndividualFieldValidation(); }
+        [TestMethod]
+        public override void MultiFieldValidation() { base.MultiFieldValidation(); }
+        [TestMethod]
+        public override void PropertyDescriptionAndRequiredRenderedAsPlaceholder() { base.PropertyDescriptionAndRequiredRenderedAsPlaceholder(); }
+        [TestMethod]
+        public override void CancelTransientObject() { base.CancelTransientObject(); }
+        [TestMethod]
+        public override void SwapPanesWithTransients() { base.SwapPanesWithTransients(); }
+    }
     #region browsers specific subclasses
 
     //[TestClass, Ignore]
     public class TransientObjectTestsIe : TransientObjectTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitIeDriver();
             Url(BaseUrl);
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element) {
+        protected override void ScrollTo(IWebElement element)
+        {
             string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
@@ -162,21 +198,64 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     public class TransientObjectTestsChrome : TransientObjectTests
     {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
+    #endregion
+
+    #region Mega tests
+    public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot
+    {
+        [TestMethod]
+        public void MegaTestTransientObjectTests()
+        {
+            base.CreateAndSaveTransientObject();
+            base.SaveAndClose();
+            base.MissingMandatoryFieldsNotified();
+            base.IndividualFieldValidation();
+            base.MultiFieldValidation();
+            base.PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            base.CancelTransientObject();
+            base.SwapPanesWithTransients();
+        }
+    }
+    [TestClass]
+    public class MegaTransientObjectTestsFirefox : MegaTransientObjectTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }

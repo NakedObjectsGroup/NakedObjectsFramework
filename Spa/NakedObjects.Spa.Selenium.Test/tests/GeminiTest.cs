@@ -454,10 +454,12 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             Click(GetButton("Reload", pane));
         }
-        
+
         protected void CancelDatePicker(string cssForInput)
         {
+            wait.Until(br => br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
             WaitForCss(cssForInput).SendKeys(Keys.Escape);
+            wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
         }
         #endregion
 

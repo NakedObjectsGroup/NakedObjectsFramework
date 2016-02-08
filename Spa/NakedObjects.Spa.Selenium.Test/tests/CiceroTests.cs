@@ -1240,10 +1240,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     #region Mega tests
-    public abstract class CiceroMegaTestRoot : CiceroTestRoot
+    public abstract class MegaCiceroTestsRoot : CiceroTestRoot
     {
         [TestMethod]
-        public void CiceroMegaTest()
+        public void MegaCiceroTests()
         {
 
             base.Action();
@@ -1274,7 +1274,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
     [TestClass]
-    public class CiceroMegaTestFirefox : CiceroMegaTestRoot
+    public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
