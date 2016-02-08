@@ -9,6 +9,5 @@ namespace RestfulObjects.Snapshot.Constants {
     public class WellKnownIds {
         public const string IsSubtypeOf = "isSubtypeOf";
         public const string IsSupertypeOf = "isSupertypeOf";
-       
     }
 }

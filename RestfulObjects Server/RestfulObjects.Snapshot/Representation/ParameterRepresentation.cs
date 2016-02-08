@@ -99,9 +99,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMask] = mask;
             }
 
-           
             Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
-          
         }
 
         private static bool IsUnconditionalChoices(IActionParameterFacade parameter) {

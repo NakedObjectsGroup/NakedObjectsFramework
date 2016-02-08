@@ -12,7 +12,7 @@ using RestfulObjects.Snapshot.Constants;
 namespace RestfulObjects.Snapshot.Utility {
     public class MenuRelType : RelType {
         public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) {}
-        public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
+        public MenuRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override string Name {
             get { return base.Name + (HasRelParameter ? helper.GetMenuRelParameter() : ""); }
@@ -24,7 +24,7 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
             MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(helper.GetMenuMediaType());
-           // helper.AddObjectRepresentationParameter(mediaType, flags);
+            // helper.AddObjectRepresentationParameter(mediaType, flags);
             return mediaType;
         }
     }

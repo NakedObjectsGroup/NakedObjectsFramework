@@ -82,7 +82,7 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus,  HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             logger.DebugFormat("RestSnapshot:MenuList");
             populator = () => {
@@ -124,8 +124,6 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-     
-
         public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, actionContext, req, true) {
             populator = () => {
@@ -133,9 +131,6 @@ namespace RestfulObjects.Snapshot.Utility {
                 SetHeaders();
             };
         }
-
-      
-
 
         public RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
@@ -167,8 +162,6 @@ namespace RestfulObjects.Snapshot.Utility {
             };
         }
 
-      
-
         public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             logger.DebugFormat("RestSnapshot:{0}", typeActionInvokeContext.GetType().FullName);
@@ -178,8 +171,6 @@ namespace RestfulObjects.Snapshot.Utility {
                 SetHeaders();
             };
         }
-
-      
 
         public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequestMessage req)
             : this(oidStrategy, req, true) {
@@ -232,16 +223,14 @@ namespace RestfulObjects.Snapshot.Utility {
             return msg;
         }
 
-        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req)
-        {
+        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
             Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.Redirected : null);
 
-            if (redirected != null)
-            {
+            if (redirected != null) {
                 Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) { Headers = { Location = redirectAddress } });
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) {Headers = {Location = redirectAddress}});
             }
         }
 

@@ -25,7 +25,5 @@ namespace RestfulObjects.Snapshot.Constants {
 
         // custom extension
         public const string Menus = "menus";
-
-
     }
 }
