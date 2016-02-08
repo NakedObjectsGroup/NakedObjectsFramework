@@ -1,17 +1,1 @@
-{
-  "result": {
-    "value": "",
-    "links": [
-      {
-        "rel": "urn:org.restfulobjects:rels/return-type",
-        "method": "GET",
-        "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
-        "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/string"
-      }
-    ],
-    "extensions": {}
-  },
-  "links": [],
-  "extensions": {},
-  "resultType": "scalar"
-}
+{  "result": {    "value": "",    "links": [],    "extensions": {}  },  "links": [],  "extensions": {},  "resultType": "scalar"}
