@@ -218,14 +218,6 @@ let xmlPostMsg url content =
     message.Method <- HttpMethod.Post
     message
 
-//type selector() =
-// 
-//    interface Formatting.IFormatterSelector with
-//        member x.SelectWriteFormatter (typ, formatterContext, formatters, mediaType) =
-//            formatters |> Seq.head
-//        member x.SelectReadFormatter (typ, formatterContext, formatters) = 
-//            formatters |> Seq.head
-
 let readSnapshotToJson (ss : HttpResponseMessage) = 
     // ReasAsStringAsync seems to hang so need to do this ......
     use s = ss.Content.ReadAsStreamAsync().Result
@@ -233,7 +225,6 @@ let readSnapshotToJson (ss : HttpResponseMessage) =
     use sr = new StreamReader(s)
     sr.ReadToEnd()
   
-
 let comp (a : obj) (b : obj) e = 
     Assert.AreEqual(a, b, e)   
 

@@ -229,13 +229,13 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
     let jsonPersist = readSnapshotToJson persistResult
     let parsedPersist = JObject.Parse(jsonPersist)
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let oid = oType + "/" + ktc "6"
+    let oid = oType + "/" + ktc "5"
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "6"))
-          TProperty(JsonPropertyNames.Title, TObjectVal("6"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "5"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("5"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))

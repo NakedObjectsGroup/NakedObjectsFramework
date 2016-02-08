@@ -67,9 +67,13 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string PresentationHint = "x-ro-nof-presentationHint";
         public const string RenderInEdit = "x-ro-nof-renderInEditMode";
         // extensions
-        public const string SubTypes = "subtypes";
-        public const string SuperTypes = "supertypes";
         public const string MenuId = "menuId";
         public const string Pagination = "pagination";
+
+        public const string Page = "page";
+        public const string PageSize = "pageSize";
+        public const string NumPages = "numPages";
+        public const string TotalCount = "totalCount";
+        
     }
 }

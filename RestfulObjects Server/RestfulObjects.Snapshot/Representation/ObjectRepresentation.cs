@@ -147,9 +147,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 props.Add(new OptionalProperty(JsonPropertyNames.ServiceId, oid.DomainType));
             }
             else {
-                var id = oid.InstanceId;
-                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, id));
-
+                props.Add(new OptionalProperty(JsonPropertyNames.InstanceId, oid.InstanceId));
                 props.Add(new OptionalProperty(JsonPropertyNames.DomainType, oid.DomainType));
             }
 

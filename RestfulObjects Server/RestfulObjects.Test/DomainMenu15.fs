@@ -823,31 +823,32 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.MenuId, TObjectVal(mName))
-          TProperty(JsonPropertyNames.Title, TObjectVal("With Action Menu"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "menus/%s" mName) RepresentationTypes.Menu "")
                               ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty
-                                      ("ADisabledAction", 
-                                       
-                                       TObjectJson
-                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
-                                            :: makeServiceActionMemberNoParms "ADisabledAction" sName mst))
-                                  
-                                  TProperty
-                                      ("ADisabledCollectionAction", 
-                                       
-                                       TObjectJson
-                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
-                                            :: makeServiceActionCollectionMemberNoParms "ADisabledCollectionAction" sName mst))
-                                  
-                                  TProperty
-                                      ("ADisabledQueryAction", 
-                                       
-                                       TObjectJson
-                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
-                                            :: makeServiceActionCollectionMemberNoParms "ADisabledQueryAction" sName mst))
+                    TObjectJson([ 
+//                                 TProperty
+//                                      ("ADisabledAction", 
+//                                       
+//                                       TObjectJson
+//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
+//                                            :: makeServiceActionMemberNoParms "ADisabledAction" sName mst))
+//                                  
+//                                  TProperty
+//                                      ("ADisabledCollectionAction", 
+//                                       
+//                                       TObjectJson
+//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
+//                                            :: makeServiceActionCollectionMemberNoParms "ADisabledCollectionAction" sName mst))
+//                                  
+//                                  TProperty
+//                                      ("ADisabledQueryAction", 
+//                                       
+//                                       TObjectJson
+//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Always disabled")) 
+//                                            :: makeServiceActionCollectionMemberNoParms "ADisabledQueryAction" sName mst))
                                   TProperty("AnAction", TObjectJson(makeServiceActionMemberNoParms "AnAction" sName mst))
                                   
                                   TProperty
@@ -1033,11 +1034,11 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                   
                                   TProperty
                                       ("AnOverloadedAction", 
-                                       TObjectJson(makeActionMember "services" "AnOverloadedAction0" sName "An Overloaded Action" "" mst []))
+                                       TObjectJson(makeActionMember "services" "AnOverloadedAction" sName "An Overloaded Action" "" mst []))
                                   
-                                  TProperty
-                                      ("AnOverloadedAction1", 
-                                       TObjectJson(makeActionMember "services" "AnOverloadedAction1" sName "An Overloaded Action" "" mst [ p19 ]))
+//                                  TProperty
+//                                      ("AnOverloadedAction1", 
+//                                       TObjectJson(makeActionMember "services" "AnOverloadedAction1" sName "An Overloaded Action" "" mst [ p19 ]))
                                   TProperty("AnActionWithValueParameter", TObjectJson(makeServiceActionMember "AnActionWithValueParameter" sName mst [ p20 ]))
                                   
                                   TProperty

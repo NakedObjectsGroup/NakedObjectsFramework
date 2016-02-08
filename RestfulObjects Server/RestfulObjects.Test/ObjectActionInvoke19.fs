@@ -1753,7 +1753,7 @@ let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjec
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
                                TProperty("pageSize", TObjectVal(20)) 
                                TProperty("numPages", TObjectVal(1)) 
                                TProperty("totalCount", TObjectVal(2))]))
@@ -1837,10 +1837,10 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : Re
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(2)) 
-                               TProperty("pageSize", TObjectVal(1)) 
-                               TProperty("numPages", TObjectVal(2)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(2)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(2)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
     
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
@@ -1939,10 +1939,10 @@ let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObj
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
     
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
@@ -2010,10 +2010,10 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : Restf
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(0))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(0))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2155,10 +2155,10 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (a
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
     
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2345,10 +2345,10 @@ let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsC
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2462,10 +2462,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : 
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2631,10 +2631,10 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (a
 
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2748,10 +2748,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
@@ -2858,10 +2858,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f
     
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
-                  TObjectJson([TProperty("page", TObjectVal(1)) 
-                               TProperty("pageSize", TObjectVal(20)) 
-                               TProperty("numPages", TObjectVal(1)) 
-                               TProperty("totalCount", TObjectVal(2))]))
+                  TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
+                               TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
+                               TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
