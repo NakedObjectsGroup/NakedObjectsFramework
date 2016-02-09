@@ -111,7 +111,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function getMappedValues(mappedIds: _.Dictionary<string>) {
-            return _.mapValues(mappedIds, v => Value.fromJsonString(decodeURIComponent(v)));
+            return _.mapValues(mappedIds, v => Value.fromJsonString(v));
         }
 
         function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
@@ -252,7 +252,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setFieldOrParameter(paneId: number, search: any, p: Parameter, pv: Value, fieldOrParameter : string) {
-            search[`${fieldOrParameter}${paneId}_${p.id()}`] = encodeURIComponent(pv.toJsonString());
+            search[`${fieldOrParameter}${paneId}_${p.id()}`] = pv.toJsonString();
         }
 
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
@@ -392,7 +392,7 @@ module NakedObjects.Angular.Gemini {
             if (search[`${object}${paneId}`] === oid &&
                 (search[`${edit}${paneId}`] === "true" || search[`${transient}${paneId}`] === "true")) {
 
-                search[`${prop}${paneId}_${p.id()}`] = encodeURIComponent(pv.toJsonString());
+                search[`${prop}${paneId}_${p.id()}`] = pv.toJsonString();
 
                 $location.search(search);
 
