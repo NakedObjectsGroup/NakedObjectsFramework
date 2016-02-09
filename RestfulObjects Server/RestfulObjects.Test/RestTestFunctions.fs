@@ -1395,5 +1395,27 @@ let GetDomainType (m : JObject) =
     else 
         ""
                
+let invokeRelTypeSb = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSubtypeOf"
+let invokeRelTypeSp = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSupertypeOf"
 
+let sb (oType : string) = 
+    TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
+    :: (TProperty
+           (JsonPropertyNames.Arguments, 
+            TObjectJson
+                ([ TProperty
+                       (JsonPropertyNames.SuperType, 
+                        TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])) 
+       :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
+              RepresentationTypes.TypeActionResult "")
+
+let sp (oType : string) = 
+    TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
+    :: (TProperty
+           (JsonPropertyNames.Arguments, 
+            TObjectJson
+                ([ TProperty
+                       (JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])) 
+       :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
+              RepresentationTypes.TypeActionResult "")
    

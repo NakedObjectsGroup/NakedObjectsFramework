@@ -69,6 +69,7 @@ let GetService(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName)
+                             TObjectJson(sb(sName)); TObjectJson(sp(sName))
                               ]))
           
           TProperty
@@ -166,6 +167,7 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName)
+                             TObjectJson(sb(sName)); TObjectJson(sp(sName))
                              ]))
           
           membersProp
@@ -234,7 +236,8 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"))
           
           TProperty
-              (JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName) ]))
+              (JsonPropertyNames.Links, TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName)
+                                                 TObjectJson(sb(sName)); TObjectJson(sp(sName)) ]))
           
           TProperty
               (JsonPropertyNames.Members, 
@@ -331,6 +334,7 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" sName) RepresentationTypes.Object sName)
+                             TObjectJson(sb(sName)); TObjectJson(sp(sName))
                               ]))
           
           TProperty
@@ -839,6 +843,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "services/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                               ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty

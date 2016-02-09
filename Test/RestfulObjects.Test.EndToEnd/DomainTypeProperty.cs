@@ -8,7 +8,7 @@ namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
     public class DomainTypePropertyTests {
         private const string dtp = Urls.DomainTypes + Urls.NameSpace + @"MostSimple/properties/Id";
-
+        [Ignore]
         [TestMethod]
         public void DomainTypeProperty() {
             Helpers.TestResponse(dtp, "DomainTypeProperty");

@@ -33,7 +33,7 @@ let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
-                                TArray([ 
+                                TArray([ TObjectJson(sb(roType)); TObjectJson(sp(roType))
                                          TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
                       
                       TProperty
@@ -95,7 +95,8 @@ let GetMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           (JsonPropertyNames.Links, 
-                           TArray([ TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
+                           TArray([ TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                                    TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
                       
                       TProperty
                           (JsonPropertyNames.Members, 
@@ -145,9 +146,9 @@ let PersistMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -164,7 +165,7 @@ let PersistMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("4"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(4)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -192,10 +193,10 @@ let PersistMostSimpleTransientObjectValidateOnly(api : RestfulObjectsControllerB
     let voProp = new JProperty("x-ro-validate-only", true)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -218,10 +219,10 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     args.First.Last.AddAfterSelf(simpleProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -238,6 +239,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
           TProperty(JsonPropertyNames.Title, TObjectVal("5"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -301,7 +303,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
-                                TArray([ 
+                                TArray([ TObjectJson(sb(roType)); TObjectJson(sp(roType))
                                          TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
                       
                       TProperty
@@ -585,7 +587,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self oid RepresentationTypes.Object mst)
-                             
+                             TObjectJson(sb(mst)); TObjectJson(sp(mst))
                              TObjectJson(args1 :: makePutLinkProp RelValues.Update oid RepresentationTypes.Object mst) ]))
           
           TProperty
@@ -626,7 +628,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
-                                TArray([ 
+                                TArray([ TObjectJson(sb(roType)); TObjectJson(sp(roType))
                                          TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
                       
                       TProperty
@@ -776,7 +778,7 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Title, TObjectVal("0"))
                       TProperty(JsonPropertyNames.Links, 
-                                TArray([ 
+                                TArray([ TObjectJson(sb(roType)); TObjectJson(sp(roType))
                                          TObjectJson(args :: makePostLinkProp RelValues.Persist (sprintf "objects/%s" roType) RepresentationTypes.Object "") ]))
                       
                       TProperty
@@ -852,9 +854,9 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -882,7 +884,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("2"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(3))))
@@ -942,9 +944,9 @@ let PersistWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -966,7 +968,7 @@ let PersistWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -1048,7 +1050,7 @@ let PersistWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("3"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -1111,9 +1113,9 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1187,7 +1189,7 @@ let PersistWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("2"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" ResultTypes.List 0 emptyValue))
@@ -1243,11 +1245,11 @@ let PersistWithValueTransientObjectValidateOnly(api : RestfulObjectsControllerBa
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1268,11 +1270,11 @@ let PersistWithReferenceTransientObjectValidateOnly(api : RestfulObjectsControll
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1293,11 +1295,11 @@ let PersistWithCollectionTransientObjectValidateOnly(api : RestfulObjectsControl
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1318,7 +1320,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControll
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
@@ -1328,7 +1330,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControll
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1375,7 +1377,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api : RestfulObjec
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
@@ -1386,7 +1388,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api : RestfulObjec
     args.First.Last.AddAfterSelf(voProp)
     args.First.Last.AddAfterSelf(simpleProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1432,7 +1434,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api : RestfulObjectsCont
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesReference")
@@ -1442,7 +1444,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api : RestfulObjectsCont
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1487,7 +1489,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api : RestfulObjectsCon
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let idValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First |> Seq.find (fun i -> (i :?> JProperty).Name = "Id")
     let m = idValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
@@ -1496,7 +1498,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api : RestfulObjectsCon
     let voProp = new JProperty("x-ro-validate-only", true)
     args.First.Last.AddAfterSelf(voProp)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1532,7 +1534,7 @@ let PersistWithValueTransientObjectFail(api : RestfulObjectsControllerBase) =
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
@@ -1540,7 +1542,7 @@ let PersistWithValueTransientObjectFail(api : RestfulObjectsControllerBase) =
     m.Remove()
     (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1585,7 +1587,7 @@ let PersistWithValueTransientObjectFailInvalid(api : RestfulObjectsControllerBas
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
@@ -1593,7 +1595,7 @@ let PersistWithValueTransientObjectFailInvalid(api : RestfulObjectsControllerBas
     m.Remove()
     (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, JValue("invalid"))
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1638,7 +1640,7 @@ let PersistWithReferenceTransientObjectFail(api : RestfulObjectsControllerBase) 
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesReference")
@@ -1646,7 +1648,7 @@ let PersistWithReferenceTransientObjectFail(api : RestfulObjectsControllerBase) 
     m.Remove()
     (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1697,7 +1699,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api : RestfulObjectsControlle
     let eoid = sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.WithValue") (ktc "1")
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let choiceValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesReference")
@@ -1706,7 +1708,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api : RestfulObjectsControlle
     (choiceValue.First :?> JObject)
         .Add(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, new JValue((new hrefType(eoid)).ToString()))))
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1751,14 +1753,14 @@ let PersistWithCollectionTransientObjectFail(api : RestfulObjectsControllerBase)
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let idValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First |> Seq.find (fun i -> (i :?> JProperty).Name = "Id")
     let m = idValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
     m.Remove()
     (idValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())
@@ -1927,7 +1929,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api : RestfulObjectsContr
     let parsedTransient = JObject.Parse(jsonTransient)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-    let args = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
     let aValue = 
         (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
         |> Seq.find (fun i -> (i :?> JProperty).Name = "AValue")
@@ -1935,7 +1937,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api : RestfulObjectsContr
     m.Remove()
     (aValue.First :?> JObject).Add(JsonPropertyNames.Value, JToken.Parse("101"))
     let pArgs = CreatePersistArgMap(args.First :?> JObject)
-    let href = links.First.[0] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
     let link = (href :?> JProperty).Value.ToString()
     let dt = link.Split('/').Last()
     api.Request <- jsonPostMsg link (args.First.ToString())

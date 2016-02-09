@@ -120,6 +120,7 @@
     <Compile Include="RelTypes\AttachmentRelType.cs" />
     <Compile Include="RelTypes\ServiceRelType.cs" />
     <Compile Include="RelTypes\TypeActionInvokeRelType.cs" />
+    <Compile Include="RelTypes\TypeActionRelType.cs" />
     <Compile Include="RelTypes\ValueRelType.cs" />
     <Compile Include="RelTypes\DefaultRelType.cs" />
     <Compile Include="Representation\PagedListRepresentation.cs" />
