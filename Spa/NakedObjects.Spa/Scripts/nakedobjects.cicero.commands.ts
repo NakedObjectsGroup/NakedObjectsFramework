@@ -207,10 +207,11 @@ module NakedObjects.Angular.Gemini {
             return false; //TODO
         }
         protected isEdit(): boolean {
-            return this.routeData().edit;
+            return this.routeData().interactionMode === InteractionMode.Edit;
         }
+
         protected isTransient(): boolean {
-            return this.routeData().transient;
+            return this.routeData().interactionMode === InteractionMode.Transient;
         }
 
         protected matchingProperties(
@@ -534,7 +535,7 @@ module NakedObjects.Angular.Gemini {
 
         doExecute(args: string, chained: boolean): void {
             if (this.isEdit()) {
-                this.urlManager.setObjectEdit(false, 1);
+                this.urlManager.setInteractionMode(1, InteractionMode.View);
             }
             if (this.isDialog()) {
                 this.urlManager.closeDialog(1);
@@ -624,7 +625,7 @@ module NakedObjects.Angular.Gemini {
                 this.mayNotBeChained();
                 return;
             }
-            this.urlManager.setObjectEdit(true, 1);
+            this.urlManager.setInteractionMode(1, InteractionMode.Edit);
         };
     }
     export class Enter extends Command {
@@ -1299,7 +1300,7 @@ module NakedObjects.Angular.Gemini {
                 const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
                 this.handleErrorResponse(err, propFriendlyName);
             } else {
-                this.urlManager.setObjectEdit(false, 1);
+                this.urlManager.setInteractionMode(1, InteractionMode.View);
             }
         }
     }

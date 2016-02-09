@@ -273,25 +273,23 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        viewModelFactory.handleErrorResponse = (err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) => {
+        viewModelFactory.handleErrorResponse = (err: ErrorMap, messageViewModel: MessageViewModel, valueViewModels: ValueViewModel[]) => {
 
             let requiredFieldsMissing = false; // only show warning message if we have nothing else 
             let fieldValidationErrors = false;
 
-            _.each(vms, vmi => {
-                const errorValue = err.valuesMap()[vmi.id];
+            _.each(valueViewModels, valueViewModel => {
+                const errorValue = err.valuesMap()[valueViewModel.id];
 
                 if (errorValue) {
-                    vmi.value = errorValue.value.toValueString();
-
                     const reason = errorValue.invalidReason;
                     if (reason) {
                         if (reason === "Mandatory") {
                             const r = "REQUIRED";
                             requiredFieldsMissing = true;
-                            vmi.description = vmi.description.indexOf(r) === 0 ? vmi.description : `${r} ${vmi.description}`;
+                            valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : `${r} ${valueViewModel.description}`;
                         } else {
-                            vmi.message = reason;
+                            valueViewModel.message = reason;
                             fieldValidationErrors = true;
                         }
                     }
@@ -303,7 +301,7 @@ module NakedObjects.Angular.Gemini {
             if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
 
             if (!msg) msg = err.warningMessage;
-            vm.message = msg;
+            messageViewModel.message = msg;
         }
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
@@ -328,7 +326,6 @@ module NakedObjects.Angular.Gemini {
             } else {
                 propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
             }
-
 
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = propertyRep.extensions().returnType();
@@ -658,7 +655,7 @@ module NakedObjects.Angular.Gemini {
                                         output += "Unsaved ";
                                         output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
                                         output += renderModifiedProperties(obj, routeData);
-                                    } else if (routeData.edit) {
+                                    } else if (routeData.interactionMode === InteractionMode.Edit) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
                                         output += renderModifiedProperties(obj, routeData);

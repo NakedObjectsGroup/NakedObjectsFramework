@@ -572,13 +572,13 @@ module NakedObjects.Angular.Gemini {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
-            this.isInEdit = routeData.edit || routeData.transient || this.domainObject.extensions().renderInEdit();
-            this.props = routeData.edit || routeData.transient ? routeData.props : {};
+            this.isInEdit = routeData.interactionMode !== InteractionMode.View || this.domainObject.extensions().renderInEdit();
+            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-            this.unsaved = this.isInEdit && !routeData.edit;
+            this.unsaved = routeData.interactionMode === InteractionMode.Transient || routeData.interactionMode === InteractionMode.Form;
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
             this.domainType = this.domainObject.domainType();
@@ -636,7 +636,7 @@ module NakedObjects.Angular.Gemini {
 
         private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :
-            () => this.urlManager.setObjectEdit(false, this.onPaneId);
+            () => this.urlManager.setInteractionMode(1, InteractionMode.View);
 
         editComplete = () => {
             this.setProperties();
@@ -667,7 +667,7 @@ module NakedObjects.Angular.Gemini {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
-                    this.urlManager.setObjectEdit(true, this.onPaneId);
+                    this.urlManager.setInteractionMode(1, InteractionMode.Edit);
                 });
         }
 
