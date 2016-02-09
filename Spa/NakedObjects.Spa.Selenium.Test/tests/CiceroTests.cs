@@ -324,6 +324,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter");
             WaitForOutput("The command: enter is not available in the current context");
 
+            //TODO: Entering fields on an editable view model
+
             //Finish somewhere other than home!
             EnterCommand("menu products");
             WaitForOutput("Products menu");

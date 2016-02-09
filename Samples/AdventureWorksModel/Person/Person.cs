@@ -306,9 +306,12 @@ namespace AdventureWorksModel {
 
 
         //To test a ViewModelEdit
-        public EmailTemplate CreateEmail()  {
-           return Container.NewViewModel<EmailTemplate>();
-            }
+        public EmailTemplate CreateEmail()
+        {
+            var email = Container.NewViewModel<EmailTemplate>();
+            email.Status = EmailStatus.New;
+            return email;
+        }
         #endregion
     }
 
@@ -317,12 +320,12 @@ namespace AdventureWorksModel {
         #region 
         public string[] DeriveKeys()
         {
-            return new[] { "1" }; //We're not testing ViewModels here -  just their editability.
+            return new[] { Status.ToString() }; //We're not testing ViewModels here -  just their editability.
         }
 
         public void PopulateUsingKeys(string[] keys)
         {
-            //Does nothing
+            this.Status =  (EmailStatus)Enum.Parse(typeof(EmailStatus), keys[0]);
         }
         #endregion
 
@@ -337,5 +340,18 @@ namespace AdventureWorksModel {
 
         [MemberOrder(40)]
         public virtual string Message { get; set; }
+
+        [Disabled]
+        public virtual EmailStatus Status { get; set; }
+
+        public EmailTemplate Send()
+        {
+            this.Status = EmailStatus.Sent;
+            return this;
+        }
+    }
+    public enum EmailStatus
+    {
+        New, Sent, Failed
     }
 }

@@ -459,7 +459,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             wait.Until(br => br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
             WaitForCss(cssForInput).SendKeys(Keys.Escape);
-            wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
+           wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
         }
         #endregion
 

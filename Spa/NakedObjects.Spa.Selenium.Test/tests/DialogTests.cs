@@ -93,7 +93,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
-        }
+            //TODO: Horrible kludge to lose the 'hanging' datepicker
+            //Should get fixed with new approach to datepicker
+            var datePicker = br.FindElement(By.CssSelector(".ui-datepicker"));
+            if (br.FindElement(By.CssSelector(".ui-datepicker")).Displayed)
+            {
+                Click(WaitForCss(".menu"));
+                wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
+            }
+       }
 
 
         public virtual void RefChoicesParmKeepsValue()
@@ -488,7 +496,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.RefChoicesParmKeepsValue();
             base.MultipleRefChoicesDefaults();
             base.MultipleRefChoicesChangeDefaults();
-            ConditionalChoices();
+            base.ConditionalChoices();
             base.ChoicesDefaults();
             base.ChoicesChangeDefaults();
             base.ConditionalChoicesDefaults();

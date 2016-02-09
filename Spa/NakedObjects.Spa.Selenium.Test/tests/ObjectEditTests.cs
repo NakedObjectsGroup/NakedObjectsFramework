@@ -192,6 +192,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(SaveButton());
             WaitForMessage("StartDate must be before EndDate");
         }
+
+        [TestMethod]
+        public void ViewModelEditOpensInEditMode()
+        {
+            GeminiUrl("object?object1=AdventureWorksModel.EmailTemplate-1");
+            WaitForCss("input#to1");
+            WaitForCss("input#from1");
+            //TODO: Check that actions are rendered e.g. Send
+            //as individual buttons, and NO generic Save button
+        }
     }
 
     #region browsers specific subclasses

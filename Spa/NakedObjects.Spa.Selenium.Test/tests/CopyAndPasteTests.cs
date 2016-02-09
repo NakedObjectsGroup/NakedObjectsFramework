@@ -88,6 +88,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => d.FindElement(By.CssSelector(".ui-menu-item")));
             Click(WaitForCss(".ui-menu-item"));
             wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
+            //Finish somewhere else
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
         }
         public virtual void PasteIntoDialog()
         {

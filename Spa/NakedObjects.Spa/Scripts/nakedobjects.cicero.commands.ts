@@ -54,7 +54,6 @@ module NakedObjects.Angular.Gemini {
         abstract doExecute(args: string, chained: boolean): void;
 
         public abstract isAvailableInCurrentContext(): boolean;
-
        
         //Helper methods follow
         protected clearInputAndSetMessage(text: string): void {
@@ -268,11 +267,11 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
-        protected findMatchingChoices(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
+        protected findMatchingChoicesForRef(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
             return _.filter(choices, v => v.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
         }
 
-        protected findMatchingChoicesForEnum(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
+        protected findMatchingChoicesForScalar(choices: _.Dictionary<Value>, titleMatch: string): Value[] {
             const labels = _.keys(choices);
             const matchingLabels = _.filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
             const result = new Array<Value>();
@@ -280,11 +279,13 @@ module NakedObjects.Angular.Gemini {
                 case 0:
                     break;//leave result empty
                 case 1: 
-                    //Push the VALUE from the key
+                    //Push the VALUE for the key
+                    //For simple scalars they are the same, but not for Enums
                     result.push(choices[matchingLabels[0]]);
                     break;
                 default:
                     //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
+                    //For simple scalars the values would also be OK, but not for Enums
                     _.forEach(matchingLabels, label => result.push(new Value(label)));
                     break;
             }
@@ -664,7 +665,7 @@ module NakedObjects.Angular.Gemini {
                     var s: string = "";
                     switch (fields.length) {
                         case 0:
-                            s = fieldName + " does not match any fields";
+                            s = fieldName + " does not match any properties";
                             break;
                         case 1:
                             const field = fields[0];
@@ -690,11 +691,15 @@ module NakedObjects.Angular.Gemini {
                 let params = _.map(action.parameters(), param => param);
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
-                    case 0: //TODO: Reword messages to refer specifically to dialog fields? (search for wrong use of 'parameter' elsewhere)
-                        this.clearInputAndSetMessage("No fields in the current context match " + fieldName);
+                    case 0: 
+                        this.clearInputAndSetMessage(fieldName + " does not match any fields in the dialog");
                         break;
                     case 1:
-                        this.setField(params[0], fieldEntry);
+                        if (fieldEntry === "?") {
+                            this.renderParameterDetails(fieldName, action);
+                        } else {
+                            this.setField(params[0], fieldEntry);
+                        }
                         break;
                     default:
                         this.clearInputAndSetMessage("Multiple fields match " + fieldName); //TODO: list them
@@ -704,12 +709,30 @@ module NakedObjects.Angular.Gemini {
         }
 
         private setField(field: IField, fieldEntry: string): void {
-            //TODO: Handle '?' e.g.  this.renderDetails(fieldName);
-            const fieldEntryType = field.entryType();
-            if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
-                this.handleChoices(field, fieldEntry);
-                return;
+            const entryType = field.entryType();
+            switch (entryType) {
+                case EntryType.FreeForm:
+                    this.handleFreeForm(field, fieldEntry); 
+                case EntryType.AutoComplete:
+                    this.handleAutoComplete(field, fieldEntry);
+                case EntryType.Choices:
+                    this.handleChoices(field, fieldEntry);
+                    return;
+                case EntryType.MultipleChoices:
+                    this.handleChoices(field, fieldEntry);
+                    return;
+                case EntryType.ConditionalChoices:
+                    this.handleConditionalChoices(field, fieldEntry);
+                    return;
+                case EntryType.MultipleConditionalChoices:
+                    this.handleConditionalChoices(field, fieldEntry);
+                    return;
+                default:
+                    throw new Error("Invalid case");
             }
+        }
+
+        private handleFreeForm(field: IField, fieldEntry: string): void {
             if (field.isScalar()) {
                 this.setFieldValue(field, new Value(fieldEntry));
             } else {
@@ -717,7 +740,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        private setFieldValue(field: IField, value: Value) {
+        private setFieldValue(field: IField, value: Value): void {
             const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
                 this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal, 1);
@@ -729,7 +752,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        private handleReferenceField(field: IField, fieldEntry: string) {
+        private handleReferenceField(field: IField, fieldEntry: string): void {
             if ("paste".indexOf(fieldEntry) === 0) {
                 this.handleClipboard(field);
             } else {
@@ -737,7 +760,7 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        private handleClipboard(field: IField) {
+        private handleClipboard(field: IField): void {
             const ref = this.vm.clipboard;
             if (!ref) {
                 this.clearInputAndSetMessage("Cannot use Clipboard as it is empty");
@@ -760,19 +783,32 @@ module NakedObjects.Angular.Gemini {
                 });
         }
 
+        private handleAutoComplete(field: IField, searchTerm: string): void {
+            const promptRep = field.getPrompts();
+        //Awaiting refector to return values, not ChoiceViewModels
+            this.context.autoComplete(promptRep, field.id, null, searchTerm);
+            //TODO: to be continued
+            //TODO: handle transients/editableVms -  must supply object props
+            //TODO: Refactor to use switching logic in current handleChoices
+        }
+
         private handleChoices(field: IField, fieldEntry: string): void {
             let matches;
             if (field.isScalar()) {
-                matches = this.findMatchingChoicesForEnum(field.choices(), fieldEntry);
+                matches = this.findMatchingChoicesForScalar(field.choices(), fieldEntry);
             } else {
-                matches = this.findMatchingChoices(field.choices(), fieldEntry);
+                matches = this.findMatchingChoicesForRef(field.choices(), fieldEntry);
             }
+            this.switchOnMatches(field, fieldEntry, matches);
+        }
+
+        private switchOnMatches(field: IField, fieldEntry: string, matches: Value[]) {
             switch (matches.length) {
                 case 0:
                     this.clearInputAndSetMessage("None of the choices matches " + fieldEntry);
                     break;
                 case 1:
-                    this.setFieldValue(field, matches[0]);
+                    this.setFieldValue(field, matches[0]); 
                     break;
                 default:
                     let msg = "Multiple matches:\n";
@@ -780,6 +816,16 @@ module NakedObjects.Angular.Gemini {
                     this.clearInputAndSetMessage(msg);
                     break;
             }
+        }
+
+        private handleConditionalChoices(field: IField, fieldEntry: string): void {
+            const promptRep = field.getPrompts();
+            const map = promptRep.getPromptMap();
+            //const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+
+            //Awaiting refector to return values, not ChoiceViewModels
+            //this.context.conditionalChoices(promptRep, field.id, null, args);
+            //TODO: to be continued
         }
 
         private renderParameterDetails(fieldName: string, action: ActionMember) {
