@@ -20,12 +20,13 @@ module NakedObjects.Angular.Gemini {
 
         toggleObjectMenu(paneId: number): void;
 
+        setInteractionMode(paneId : number, mode : InteractionMode);
+
         setCollectionMemberState(paneId: number, collectionMemberId: string, state: CollectionViewState): void;
         setListState(paneId: number, state: CollectionViewState): void;
         setListPaging(paneId: number, newPage: number, newPageSize: number, state : CollectionViewState): void;
         setListItem(paneId: number, item : number, selected : boolean): void;
-        setTransient(paneId: number);
-        setObjectEdit(edit: boolean, paneId: number);
+       
         setHome(paneId: number, mode? : ApplicationMode);
 
         setFieldsToParms(paneId : number);
@@ -67,6 +68,7 @@ module NakedObjects.Angular.Gemini {
         const actions = "actions";
         const page = "page";
         const pageSize = "pageSize";
+        const interactionMode = "interactionMode";
 
 
         const gemini = "gemini";
@@ -123,11 +125,12 @@ module NakedObjects.Angular.Gemini {
 
             paneRouteData.objectId = $routeParams[object + paneId];
             paneRouteData.actionsOpen = $routeParams[actions + paneId];
-            paneRouteData.transient = $routeParams[transient + paneId] === "true";
-            paneRouteData.edit = $routeParams[edit + paneId] === "true";
 
             const rawCollectionState: string = $routeParams[collection + paneId];
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
+
+            const rawInteractionMode: string = $routeParams[interactionMode + paneId];
+            paneRouteData.interactionMode = rawInteractionMode ? InteractionMode[rawInteractionMode] : InteractionMode.View;
 
             const collKeyMap = getAndMapIds(collection, paneId);
             paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
@@ -170,7 +173,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function allSearchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, transient, edit, action, parm, prop, actions, page, pageSize, selected];
+            const raw = [menu, dialog, object, collection, transient, edit, action, parm, prop, actions, page, pageSize, selected, interactionMode];
             return searchKeysForPane(search, paneId, raw);
         }
 
@@ -243,6 +246,7 @@ module NakedObjects.Angular.Gemini {
 
             const search = clearPane($location.search(), paneId);
             search[object + paneId] = oid;
+            search[interactionMode + paneId] = InteractionMode[InteractionMode.View];
             
             $location.search(search);
         }
@@ -445,6 +449,25 @@ module NakedObjects.Angular.Gemini {
             setSearch(collectionPrefix, CollectionViewState[state], false);
         };
 
+        helper.setInteractionMode = (paneId: number, mode: InteractionMode) => {
+            currentPaneId = paneId;
+
+            const modePrefix = `${interactionMode}${paneId}`;
+            let search = $location.search();
+
+            const rawInteractionMode: string = $routeParams[modePrefix];
+            const currentMode = rawInteractionMode ? InteractionMode[rawInteractionMode] : null;
+
+            if (currentMode === InteractionMode.Edit && mode !== InteractionMode.Edit) {
+                search = clearSearchKeys(search, paneId, [prop]);
+            }
+
+            search[modePrefix] = InteractionMode[mode];
+
+            $location.search(search);
+        };
+
+
         helper.setListItem = (paneId: number, item : number, isSelected : boolean) => {
             currentPaneId = paneId;
 
@@ -469,23 +492,6 @@ module NakedObjects.Angular.Gemini {
             search[`${pageSize}${paneId}`] = newPageSize;
             search[`${collection}${paneId}`] = CollectionViewState[state];
             search[`${selected}${paneId}`] = 0; // clear selection 
-
-            $location.search(search);
-        };
-        helper.setTransient = (paneId: number) => {
-            currentPaneId = paneId;
-            let search = $location.search();
-            search[`${transient}${paneId}`] = "true";
-            $location.search(search);
-        }
-        helper.setObjectEdit = (editFlag: boolean, paneId: number) => {
-            currentPaneId = paneId;
-            let search = $location.search();
-
-            if (!editFlag) {
-                search = clearSearchKeys(search, paneId, [prop]);
-            }
-            search[`${edit}${paneId}`] = editFlag.toString();
 
             $location.search(search);
         };

@@ -29,7 +29,7 @@ module NakedObjects.Gemini.Test {
     import DomainObjectViewModel = Angular.Gemini.DomainObjectViewModel;
     import CollectionViewState = Angular.Gemini.CollectionViewState;
     import IContext = Angular.Gemini.IContext;
-
+    import InteractionMode = NakedObjects.Angular.Gemini.InteractionMode;
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -212,6 +212,7 @@ module NakedObjects.Gemini.Test {
             describe("View with closed actions no dialog", () => {
 
                 beforeEach(inject(() => {
+                    testRouteData.interactionMode = InteractionMode.View;
                     testEventSpy = setupEventSpy(testScope, FocusTarget.ObjectTitle, 0, 1, 1);
                 }));
 
@@ -229,6 +230,7 @@ module NakedObjects.Gemini.Test {
             describe("View with open actions no dialog", () => {
 
                 beforeEach(inject(() => {
+                    testRouteData.interactionMode = InteractionMode.View;
                     testRouteData.actionsOpen = "true";
                     testEventSpy = setupEventSpy(testScope, FocusTarget.SubAction, 0, 1, 1);
                 }));
@@ -247,6 +249,7 @@ module NakedObjects.Gemini.Test {
             describe("View with open actions and dialog", () => {
 
                 beforeEach(inject(() => {
+                    testRouteData.interactionMode = InteractionMode.View;
                     testRouteData.actionsOpen = "true";
                     testRouteData.dialogId = "ListPurchaseOrders";
                     testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
@@ -267,6 +270,7 @@ module NakedObjects.Gemini.Test {
             describe("View with closed actions and dialog", () => {
 
                 beforeEach(inject(() => {
+                    testRouteData.interactionMode = InteractionMode.View;
                     testRouteData.dialogId = "ListPurchaseOrders";
                     testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
                 }));
@@ -286,7 +290,7 @@ module NakedObjects.Gemini.Test {
             describe("Edit", () => {
 
                 beforeEach(inject(() => {
-                    testRouteData.edit = true;
+                    testRouteData.interactionMode = InteractionMode.Edit;
                     testEventSpy = setupEventSpy(testScope, FocusTarget.Property, 0, 1, 1);
                 }));
 

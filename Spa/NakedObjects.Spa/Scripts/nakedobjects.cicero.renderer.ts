@@ -52,7 +52,7 @@
                                 output += coll.size() + " items";
                         }
                     } else {
-                        if (routeData.edit) {
+                        if (routeData.interactionMode === InteractionMode.Edit) {
                             output += "Editing ";
                         }
                         output += Helpers.typePlusTitle(obj) + ". ";

@@ -655,7 +655,7 @@ module NakedObjects.Angular.Gemini {
                                         output += "Unsaved ";
                                         output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
                                         output += renderModifiedProperties(obj, routeData);
-                                    } else if (routeData.edit) {
+                                    } else if (routeData.interactionMode === InteractionMode.Edit) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
                                         output += renderModifiedProperties(obj, routeData);

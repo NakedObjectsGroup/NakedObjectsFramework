@@ -20,6 +20,14 @@ module NakedObjects.Angular.Gemini {
         Cicero
     }
 
+    export enum InteractionMode {
+        View,
+        Edit,
+        Transient,
+        Form
+    }
+
+
     export class RouteData {
         constructor() {
             this.pane1 = new PaneRouteData(1);
@@ -38,8 +46,6 @@ module NakedObjects.Angular.Gemini {
         objectId: string;
         menuId: string;
         collections: _.Dictionary<CollectionViewState>;
-        edit: boolean;
-        transient: boolean;
         actionsOpen: string;
         actionId: string;
         //Note that actionParams applies to executed actions. For dialogs see dialogFields
@@ -51,5 +57,7 @@ module NakedObjects.Angular.Gemini {
         page: number;
         pageSize : number;
         selectedItems: boolean[];
+
+        interactionMode : InteractionMode;
     }
 }
