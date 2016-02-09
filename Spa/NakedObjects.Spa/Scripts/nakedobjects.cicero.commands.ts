@@ -785,8 +785,11 @@ module NakedObjects.Angular.Gemini {
                 });
         }
 
-        private handleAutoComplete(field: IField, searchTerm: string): void {
-            const promptRep = field.getPrompts();
+        private handleAutoComplete(field: IField, fieldEntry: string): void {
+            //TODO: Temporary, pending implementation of auto-complete:
+            this.handleFreeForm(field, fieldEntry);
+
+            //const promptRep = field.getPrompts();
         //Awaiting refector to return values, not ChoiceViewModels
            // this.context.autoComplete(promptRep, field.id, null, searchTerm);
             //TODO: to be continued
