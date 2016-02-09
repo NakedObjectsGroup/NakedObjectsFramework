@@ -329,10 +329,10 @@ module NakedObjects.Angular.Gemini {
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
                     let valuesFromRouteData= new Array<Value>();
                     if (field instanceof Parameter) {
-                        const rd = this.routeData().dialogFields[field.parameterId()];
+                        const rd = this.routeData().dialogFields[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
-                        const rd = this.routeData().props[field.propertyId()];
+                        const rd = this.routeData().props[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
                     let vals: Value[];
@@ -712,9 +712,11 @@ module NakedObjects.Angular.Gemini {
             const entryType = field.entryType();
             switch (entryType) {
                 case EntryType.FreeForm:
-                    this.handleFreeForm(field, fieldEntry); 
+                    this.handleFreeForm(field, fieldEntry);
+                    return; 
                 case EntryType.AutoComplete:
                     this.handleAutoComplete(field, fieldEntry);
+                    return; 
                 case EntryType.Choices:
                     this.handleChoices(field, fieldEntry);
                     return;
@@ -784,7 +786,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleAutoComplete(field: IField, searchTerm: string): void {
-            //const promptRep = field.getPrompts();
+            const promptRep = field.getPrompts();
         //Awaiting refector to return values, not ChoiceViewModels
            // this.context.autoComplete(promptRep, field.id, null, searchTerm);
             //TODO: to be continued
@@ -819,9 +821,9 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
-            //const promptRep = field.getPrompts();
-            //const map = promptRep.getPromptMap();
-            //const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+            const promptRep = field.getPrompts();
+            const map = promptRep.getPromptMap();
+            const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
 
             //Awaiting refector to return values, not ChoiceViewModels
             //this.context.conditionalChoices(promptRep, field.id, null, args);
@@ -1186,7 +1188,7 @@ module NakedObjects.Angular.Gemini {
         private renderProp(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();
             let value: string;
-            const propInUrl = this.routeData().props[pm.propertyId()];
+            const propInUrl = this.routeData().props[pm.id()];
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
                 value = propInUrl.toString() + " (modified)";
             } else {

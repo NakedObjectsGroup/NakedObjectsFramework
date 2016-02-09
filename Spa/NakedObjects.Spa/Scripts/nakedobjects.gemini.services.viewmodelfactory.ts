@@ -117,7 +117,7 @@ module NakedObjects.Angular.Gemini {
             const required = parmViewModel.optional ?  "" : "* ";
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
-            parmViewModel.id = parmRep.parameterId();
+            parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase() }`;
             parmViewModel.paneArgId = `${parmViewModel.argId}${paneId}`;
             parmViewModel.reference = "";
@@ -145,7 +145,7 @@ module NakedObjects.Angular.Gemini {
 
 
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
-                parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.parameterId(), n));
+                parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
             }
 
             if (fieldEntryType === EntryType.AutoComplete) {
@@ -246,7 +246,7 @@ module NakedObjects.Angular.Gemini {
             }
 
             const parameters = _.pick(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
-            actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.parameterId()], paneId));
+            actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;

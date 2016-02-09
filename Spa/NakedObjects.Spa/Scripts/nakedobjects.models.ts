@@ -60,7 +60,7 @@ module NakedObjects {
         if (prop instanceof PropertyRepresentation) {
             return prop.instanceId();
         } else {
-            return (prop as PropertyMember).propertyId();
+            return (prop as PropertyMember).id();
         }
     }
 
@@ -604,12 +604,12 @@ module NakedObjects {
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
         // fix parent type
-        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private id: string) {
+        constructor(wrapped: RoInterfaces.IParameterRepresentation, public parent: ActionMember | ActionRepresentation, private paramId: string) {
             super(wrapped);
         }
 
-        parameterId() {
-            return this.id;
+        id() {
+            return this.paramId;
         }
 
         // properties 
@@ -1075,14 +1075,14 @@ module NakedObjects {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
-        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private id : string) {
+        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private propId : string) {
             super(wrapped, parent);
         }
 
         // inlined 
 
-        propertyId(): string {
-            return this.id;
+        id(): string {
+            return this.propId;
         }
 
         modifyLink(): Link {
@@ -1872,6 +1872,7 @@ module NakedObjects {
 
     //TODO: Review name (common capbilities of PropertyMember and Parameter)
     export interface IField extends IHasExtensions {
+        id(): string;
         choices(): _.Dictionary<Value>;
         isScalar(): boolean;
 
@@ -1881,7 +1882,9 @@ module NakedObjects {
         //hasConditionalChoices(): boolean;
         isCollectionContributed(): boolean;
 
-        entryType() : EntryType;
+        entryType(): EntryType;
+        getPrompts(): PromptRepresentation;
+        promptLink(): Link;
     }
 
     export interface IHasExtensions {

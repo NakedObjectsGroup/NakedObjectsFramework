@@ -248,7 +248,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setFieldOrParameter(paneId: number, search: any, p: Parameter, pv: Value, fieldOrParameter : string) {
-            search[`${fieldOrParameter}${paneId}_${p.parameterId()}`] = encodeURIComponent(pv.toJsonString());
+            search[`${fieldOrParameter}${paneId}_${p.id()}`] = encodeURIComponent(pv.toJsonString());
         }
 
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
@@ -388,7 +388,7 @@ module NakedObjects.Angular.Gemini {
             if (search[`${object}${paneId}`] === oid &&
                 (search[`${edit}${paneId}`] === "true" || search[`${transient}${paneId}`] === "true")) {
 
-                search[`${prop}${paneId}_${p.propertyId()}`] = encodeURIComponent(pv.toJsonString());
+                search[`${prop}${paneId}_${p.id()}`] = encodeURIComponent(pv.toJsonString());
 
                 $location.search(search);
 

@@ -308,7 +308,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No matches
             EnterCommand("enter strt date,1 Jan 2015");
-            WaitForOutput("strt date does not match any fields");
+            WaitForOutput("strt date does not match any properties");
 
             //No entry value provided
             EnterCommand("enter start date");

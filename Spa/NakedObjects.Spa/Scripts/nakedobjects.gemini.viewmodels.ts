@@ -247,7 +247,7 @@ module NakedObjects.Angular.Gemini {
          
             const fields = routeData.dialogFields;
             const parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
-            this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.parameterId()], this.onPaneId));
+            this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], this.onPaneId));
 
             this.title = this.actionMember.extensions().friendlyName();
             this.isQueryOnly = this.actionMember.invokeLink().method() === "GET";

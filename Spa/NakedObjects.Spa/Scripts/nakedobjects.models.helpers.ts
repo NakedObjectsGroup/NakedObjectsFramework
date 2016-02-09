@@ -33,7 +33,7 @@ module NakedObjects.Helpers {
     }
 
    export function friendlyNameForParam(action: ActionMember, parmId: string) {
-        var param = _.find(action.parameters(), (p) => p.parameterId() == parmId);
+        var param = _.find(action.parameters(), (p) => p.id() == parmId);
         return param.extensions().friendlyName();
     }
 
