@@ -71,6 +71,8 @@ module NakedObjects.Angular.Gemini {
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
         }
 
+        const createChoiceViewModels = (id: string, searchTerm: string, choices :_.Dictionary<Value>) =>
+            $q.when(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
             const linkViewModel = new LinkViewModel();
@@ -106,16 +108,13 @@ module NakedObjects.Angular.Gemini {
         };
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
-            var parmViewModel = new ParameterViewModel();
+            const parmViewModel = new ParameterViewModel();
 
             parmViewModel.parameterRep = parmRep;
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
-            var required = "";
-            if (!parmViewModel.optional) {
-                required = "* ";
-            }
+            const required = parmViewModel.optional ?  "" : "* ";
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.parameterId();
@@ -151,13 +150,22 @@ module NakedObjects.Angular.Gemini {
 
             if (fieldEntryType === EntryType.AutoComplete) {
                 const promptRep = parmRep.getPrompts();
-                parmViewModel.prompt = _.partial(context.prompt, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
+                parmViewModel.prompt = (searchTerm: string) => {
+                    const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
+                    return context.prompt(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
+                        then(createcvm);
+                }
+
                 parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
                 const promptRep = parmRep.getPrompts();
-                parmViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{});
+                parmViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
+                    const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, null);
+                    return context.conditionalChoices(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
+                        then(createcvm);
+                }
                 parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
@@ -204,7 +212,7 @@ module NakedObjects.Angular.Gemini {
                 }
             }
 
-            var remoteMask = parmRep.extensions().mask();
+            const remoteMask = parmRep.extensions().mask();
 
             if (remoteMask && parmRep.isScalar()) {
                 const localFilter = mask.toLocalFilter(remoteMask);
@@ -221,7 +229,7 @@ module NakedObjects.Angular.Gemini {
         };
 
         viewModelFactory.actionViewModel = (actionRep: ActionMember, routeData: PaneRouteData) => {
-            var actionViewModel = new ActionViewModel();
+            const actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
             const paneId = routeData.paneId;
@@ -366,20 +374,30 @@ module NakedObjects.Angular.Gemini {
             if (fieldEntryType === EntryType.AutoComplete) {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
-                propertyViewModel.prompt = _.partial(context.prompt, promptRep, id, parentValues);
+                propertyViewModel.prompt = (searchTerm: string) => {
+                    const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
+                    return context.prompt(promptRep, id, parentValues, searchTerm).
+                        then(createcvm);
+                }
+
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices) {
                 const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
-                propertyViewModel.conditionalChoices = _.partial(context.conditionalChoices, promptRep, id, parentValues);
+                propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
+                    const createcvm = _.partial(createChoiceViewModels, id, null);
+                    return context.conditionalChoices(promptRep, id, () => <_.Dictionary<Value>>{}, args).
+                        then(createcvm);
+                }
+
                 propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm) {
 
-                var currentChoice: ChoiceViewModel = ChoiceViewModel.create(value, id);
+                const currentChoice: ChoiceViewModel = ChoiceViewModel.create(value, id);
 
                 if (fieldEntryType === EntryType.Choices) {
                     propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));

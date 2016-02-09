@@ -21,8 +21,8 @@ module NakedObjects.Angular.Gemini {
         getError: () => ErrorRepresentation;
         getPreviousUrl: () => string;
 
-        prompt(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<ChoiceViewModel[]>;
-        conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<ChoiceViewModel[]>;
+        prompt(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
+        conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
 
@@ -354,15 +354,11 @@ module NakedObjects.Angular.Gemini {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        const createChoiceViewModels = (id: string, searchTerm: string, p: PromptRepresentation) =>
-            $q.when(_.map(p.choices(), (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
-
         const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
             const map = promptRep.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
-            return repLoader.populate(map, true, promptRep).then(createcvm);
+            return repLoader.populate(map, true, promptRep).then((p: PromptRepresentation) =>  p.choices());
         };
 
         context.prompt = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
