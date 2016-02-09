@@ -152,7 +152,7 @@ module NakedObjects.Angular.Gemini {
                 const promptRep = parmRep.getPrompts();
                 parmViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
-                    return context.prompt(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
+                    return context.autoComplete(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
                         then(createcvm);
                 }
 
@@ -376,7 +376,7 @@ module NakedObjects.Angular.Gemini {
 
                 propertyViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
-                    return context.prompt(promptRep, id, parentValues, searchTerm).
+                    return context.autoComplete(promptRep, id, parentValues, searchTerm).
                         then(createcvm);
                 }
 

@@ -784,9 +784,9 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleAutoComplete(field: IField, searchTerm: string): void {
-            const promptRep = field.getPrompts();
+            //const promptRep = field.getPrompts();
         //Awaiting refector to return values, not ChoiceViewModels
-            this.context.autoComplete(promptRep, field.id, null, searchTerm);
+           // this.context.autoComplete(promptRep, field.id, null, searchTerm);
             //TODO: to be continued
             //TODO: handle transients/editableVms -  must supply object props
             //TODO: Refactor to use switching logic in current handleChoices
@@ -819,8 +819,8 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
-            const promptRep = field.getPrompts();
-            const map = promptRep.getPromptMap();
+            //const promptRep = field.getPrompts();
+            //const map = promptRep.getPromptMap();
             //const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
 
             //Awaiting refector to return values, not ChoiceViewModels

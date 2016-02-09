@@ -21,7 +21,9 @@ module NakedObjects.Angular.Gemini {
         getError: () => ErrorRepresentation;
         getPreviousUrl: () => string;
 
-        prompt(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
+        //The object values are only needed on a transient object / editable view model
+        autoComplete(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
+        //The object values are only needed on a transient object / editable view model
         conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
@@ -361,7 +363,7 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate(map, true, promptRep).then((p: PromptRepresentation) =>  p.choices());
         };
 
-        context.prompt = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
+        context.autoComplete = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
             doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm), objectValues);
 
         context.conditionalChoices = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
