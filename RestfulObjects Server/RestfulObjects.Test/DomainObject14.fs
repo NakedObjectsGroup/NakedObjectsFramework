@@ -18,6 +18,9 @@ open System.Linq
 open RestTestFunctions
 open Newtonsoft.Json.Linq
 
+
+
+
 let GetMostSimpleObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = oType + "/" + ktc "1"
@@ -34,8 +37,8 @@ let GetMostSimpleObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType) 
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))                           
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -68,6 +71,7 @@ let GetWithAttachmentsObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType)) 
                              
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
@@ -107,7 +111,7 @@ let GetMostSimpleObjectConfiguredSelectable(api : RestfulObjectsControllerBase) 
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -141,6 +145,7 @@ let GetMostSimpleObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -176,6 +181,7 @@ let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) 
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -211,7 +217,7 @@ let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -247,7 +253,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal(title))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -399,7 +405,7 @@ let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("Untitled Very Simple Eager"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -460,7 +466,7 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
@@ -549,7 +555,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -627,7 +633,7 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
@@ -706,7 +712,7 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
@@ -773,6 +779,7 @@ let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) 
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -812,6 +819,7 @@ let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControll
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -872,7 +880,7 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(333))))
@@ -967,7 +975,7 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(555))))
@@ -1069,7 +1077,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -1151,7 +1159,7 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("2"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(2)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -1227,7 +1235,8 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([  TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))  
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
                                       ("AChoicesReference", 
@@ -1768,7 +1777,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -2374,6 +2383,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           
           TProperty
@@ -2633,7 +2643,7 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -2706,7 +2716,7 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -2867,7 +2877,7 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                            
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMember "ACollection" oid "A Collection" "" "list" 2 value))
@@ -3019,6 +3029,7 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("ACollection", TObjectJson(makeCollectionMemberSimple "ACollection" oid "A Collection" "" ResultTypes.List 2 value))
@@ -3081,7 +3092,7 @@ let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -3125,7 +3136,7 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
@@ -3192,7 +3203,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -3259,7 +3270,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -3331,7 +3342,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-                             
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val1 []))
@@ -3383,7 +3394,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("2"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" rooid) RepresentationTypes.Object roType)
-                             
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
                              TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rooid) RepresentationTypes.Object roType) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rooid "Id" (TObjectVal(2)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
@@ -3452,7 +3463,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-1-1-2"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -3531,7 +3542,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-2-1-1-2"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
@@ -3589,7 +3600,7 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(rKey))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
                              TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" rOid "A Choices Value" (TObjectVal(333))))

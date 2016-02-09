@@ -57,11 +57,30 @@ namespace RestfulObjects.Snapshot.Representations {
             SetEtag(objectContext.Target);
         }
 
+
+        private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {
+            var spec = objectContext.Target.Specification;
+
+            return new[] {
+                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
+                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))))),
+                LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
+                    new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))))))
+            };
+        }
+
+
         private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
             if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
             }
+
+            // custom isSub/SupertypeOf links 
+
+            tempLinks.AddRange(CreateIsOfTypeLinks(req, objectContext));
 
             SetMembers(objectContext, req, tempLinks);
             Links = tempLinks.ToArray();
