@@ -200,7 +200,7 @@ module NakedObjects.Angular.Gemini {
         protected closeAnyOpenCollections() {
             const open = openCollectionIds(this.routeData());
             _.forEach(open, id => {
-                this.urlManager.setCollectionMemberState(1, id, CollectionViewState.Summary);
+                this.urlManager.setCollectionMemberState(id, CollectionViewState.Summary);
             });
         }
         protected isTable(): boolean {
@@ -494,10 +494,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         private openActionDialog(action: ActionMember) {
-            this.urlManager.setDialog(action.actionId(), 1);  //1 = pane 1
+            this.urlManager.setDialog(action.actionId());  
             _.forEach(action.parameters(), (p) => {
                 const pVal = this.valueForUrl(p.default(), p);
-                this.urlManager.setFieldValue(action.actionId(), p, pVal, 1, false);
+                this.urlManager.setFieldValue(action.actionId(), p, pVal, false);
             });
         }
 
@@ -535,10 +535,10 @@ module NakedObjects.Angular.Gemini {
 
         doExecute(args: string, chained: boolean): void {
             if (this.isEdit()) {
-                this.urlManager.setInteractionMode(1, InteractionMode.View);
+                this.urlManager.setInteractionMode(InteractionMode.View);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog(1);
+                this.urlManager.closeDialog();
             }
         };
     }
@@ -598,7 +598,7 @@ module NakedObjects.Angular.Gemini {
         private go(): void {
             const link = this.vm.clipboard.selfLink();
             if (link) {
-                this.urlManager.setItem(link, 1);
+                this.urlManager.setItem(link);
             } else {
                 this.show();
             }
@@ -625,7 +625,7 @@ module NakedObjects.Angular.Gemini {
                 this.mayNotBeChained();
                 return;
             }
-            this.urlManager.setInteractionMode(1, InteractionMode.Edit);
+            this.urlManager.setInteractionMode(InteractionMode.Edit);
         };
     }
     export class Enter extends Command {
@@ -746,11 +746,11 @@ module NakedObjects.Angular.Gemini {
         private setFieldValue(field: IField, value: Value): void {
             const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal, 1);
+                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal);
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent
                 if (parent instanceof DomainObjectRepresentation) {
-                    this.urlManager.setPropertyValue(parent, field, urlVal, 1);
+                    this.urlManager.setPropertyValue(parent, field, urlVal);
                 }
             }
         }
@@ -927,7 +927,7 @@ module NakedObjects.Angular.Gemini {
                         return;
                     }
                     const link = list.value()[itemNo - 1]; // On UI, first item is '1'
-                    this.urlManager.setItem(link, 1);
+                    this.urlManager.setItem(link);
                 });
                 return;
             }
@@ -940,7 +940,7 @@ module NakedObjects.Angular.Gemini {
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
                             const link = coll.value()[item - 1];
-                            this.urlManager.setItem(link, 1);
+                            this.urlManager.setItem(link);
                             return;
                         } else {
                             const matchingProps = this.matchingProperties(obj, arg0);
@@ -955,7 +955,7 @@ module NakedObjects.Angular.Gemini {
                                     //TODO: Check for any empty reference
                                     if (matchingRefProps.length > 0) {
                                         let link = matchingRefProps[0].value().link();
-                                        this.urlManager.setItem(link, 1);
+                                        this.urlManager.setItem(link);
                                     } else { //Must be collection
                                         this.openCollection(matchingColls[0]);
                                     }
@@ -978,7 +978,7 @@ module NakedObjects.Angular.Gemini {
         private openCollection(collection: CollectionMember): void {
             this.closeAnyOpenCollections();
             this.vm.clearInput();
-            this.urlManager.setCollectionMemberState(1, collection.collectionId(), CollectionViewState.List);
+            this.urlManager.setCollectionMemberState(collection.collectionId(), CollectionViewState.List);
         }
     }
     export class Help extends Command {
@@ -1041,9 +1041,9 @@ module NakedObjects.Angular.Gemini {
                             break;
                         case 1:
                             const menuId = links[0].rel().parms[0].value;
-                            this.urlManager.setHome(1);
-                            this.urlManager.clearUrlState(1);
-                            this.urlManager.setMenu(menuId, 1);
+                            this.urlManager.setHome();
+                            this.urlManager.clearUrlState();
+                            this.urlManager.setMenu(menuId);
                             break;
                         default:
                             var label = name ? "Matching menus:\n" : "Menus:\n";
@@ -1079,7 +1079,7 @@ module NakedObjects.Angular.Gemini {
                             const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
                             this.handleErrorResponse(err, paramFriendlyName);
                         } else {
-                            this.urlManager.closeDialog(1);
+                            this.urlManager.closeDialog();
                         }
                     });
             });
@@ -1138,7 +1138,7 @@ module NakedObjects.Angular.Gemini {
 
         private setPage(page) {
             const pageSize = this.routeData().pageSize;
-            this.urlManager.setListPaging(1, page, pageSize, CollectionViewState.List);
+            this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
         }
     }
     export class Property extends Command {
@@ -1300,7 +1300,7 @@ module NakedObjects.Angular.Gemini {
                 const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
                 this.handleErrorResponse(err, propFriendlyName);
             } else {
-                this.urlManager.setInteractionMode(1, InteractionMode.View);
+                this.urlManager.setInteractionMode(InteractionMode.View);
             }
         }
     }
@@ -1331,7 +1331,7 @@ module NakedObjects.Angular.Gemini {
         private selectItems(list: ListRepresentation, startNo: number, endNo: number): void {
             let itemNo: number;
             for (itemNo = startNo; itemNo <= endNo; itemNo++) {
-                this.urlManager.setListItem(1, itemNo - 1, true);
+                this.urlManager.setListItem(itemNo - 1, true);
             }
         }
     }

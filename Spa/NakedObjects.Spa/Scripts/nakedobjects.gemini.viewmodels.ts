@@ -264,12 +264,12 @@ module NakedObjects.Angular.Gemini {
         actionMember : ActionMember;
         actionViewModel: ActionViewModel;
 
-        setParms = () =>   _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), false, this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId, false));
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), false, this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         }
 
@@ -408,7 +408,7 @@ module NakedObjects.Angular.Gemini {
                 this.recreate(newPage, newPageSize).then((list: ListRepresentation) => {
                     this.routeData.state = newState || this.routeData.state;
                     this.reset(list, this.routeData);
-                    this.urlManager.setListPaging(this.onPaneId, newPage, newPageSize, this.routeData.state);
+                    this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).catch(error => {
                     //setError(error);
                 });
@@ -450,14 +450,11 @@ module NakedObjects.Angular.Gemini {
         private pageNextDisabled = this.laterDisabled;
         private pagePreviousDisabled = this.earlierDisabled;
 
-        private setState = _.partial(this.urlManager.setListState, this.onPaneId);
+        doSummary = () => this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
+        doList = () => this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
+        doTable = () => this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
 
-        doSummary = () => this.setState(CollectionViewState.Summary);
-        doList = () => this.setPage(this.page, CollectionViewState.List);
-        doTable = () => this.setPage(this.page, CollectionViewState.Table);
-
-        reload = () => {
-           
+        reload = () => {          
             this.contextService.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
             this.setPage(this.page, this.state);
         };
@@ -469,8 +466,6 @@ module NakedObjects.Angular.Gemini {
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
         }
-
-        //toggleActionMenu(): void { }
 
         actions: ActionViewModel[];
         messages: string;
@@ -632,11 +627,11 @@ module NakedObjects.Angular.Gemini {
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable);
         public setProperties = () =>
-            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId, false));
+            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
             () => this.urlManager.popUrlState(this.onPaneId) :
-            () => this.urlManager.setInteractionMode(1, InteractionMode.View);
+            () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
             this.setProperties();
@@ -667,7 +662,7 @@ module NakedObjects.Angular.Gemini {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
-                    this.urlManager.setInteractionMode(1, InteractionMode.Edit);
+                    this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
                 });
         }
 

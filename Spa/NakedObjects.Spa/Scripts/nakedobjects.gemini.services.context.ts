@@ -392,7 +392,7 @@ module NakedObjects.Angular.Gemini {
                     context.setObject(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
                     urlManager.setObject(resultObject, paneId);
-                    urlManager.setInteractionMode(paneId, InteractionMode.Transient);
+                    urlManager.setInteractionMode(InteractionMode.Transient, paneId);
                 }
                 else {
 
@@ -408,7 +408,6 @@ module NakedObjects.Angular.Gemini {
 
                 const resultList = result.result().list();
 
-                urlManager.setFieldsToParms(paneId);
                 urlManager.setList(action, paneId);
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);

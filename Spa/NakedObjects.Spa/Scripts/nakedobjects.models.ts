@@ -1287,6 +1287,10 @@ module NakedObjects {
             super();
         }
 
+        id(): string {
+            return `${this.domainType() || this.serviceId()}${this.instanceId() ? `-${this.instanceId()}` : ""}`;
+        }
+
         title(): string {
             return this.wrapped().title;
         }
