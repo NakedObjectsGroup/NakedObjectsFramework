@@ -38,6 +38,7 @@ namespace AdventureWorksModel {
                 .AddAction("RandomIndividual");
             menu.AddAction("CustomerDashboard");
             menu.AddAction("ThrowDomainException");
+            menu.AddAction("FindCustomer");
             menu.AddRemainingNativeActions();
         }
 
@@ -72,6 +73,17 @@ namespace AdventureWorksModel {
             return rb.Reason;
         }
 
+        //Method exists to test auto-complete
+        public Customer FindCustomer([Description("Enter Account Number")] Customer customer)
+        {
+            return customer;
+        }
+
+        [PageSize(10)]
+        public IQueryable<Customer> AutoComplete0FindCustomer([MinLength(3)] string matching)
+        {
+            return Container.Instances<Customer>().Where(c => c.AccountNumber.Contains(matching));
+        }
         #endregion
 
         #region Stores Menu

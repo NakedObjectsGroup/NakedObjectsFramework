@@ -787,15 +787,13 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleAutoComplete(field: IField, fieldEntry: string): void {
-            //TODO: Temporary, pending implementation of auto-complete:
-            this.handleFreeForm(field, fieldEntry);
-
-            //const promptRep = field.getPrompts();
-        //Awaiting refector to return values, not ChoiceViewModels
-           // this.context.autoComplete(promptRep, field.id, null, searchTerm);
-            //TODO: to be continued
-            //TODO: handle transients/editableVms -  must supply object props
-            //TODO: Refactor to use switching logic in current handleChoices
+            //TODO: Need to check that the minimum number of characters has been entered or fail validation
+            const promptRep = field.getPrompts();
+            this.context.autoComplete(promptRep, field.id(), null, fieldEntry).then(
+                (choices: _.Dictionary<Value>) => {
+                    const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
+                    this.switchOnMatches(field, fieldEntry, matches);
+                });
         }
 
         private handleChoices(field: IField, fieldEntry: string): void {
