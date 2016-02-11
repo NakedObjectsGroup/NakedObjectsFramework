@@ -202,9 +202,11 @@ module NakedObjects.Angular.Gemini {
             $scope.actionsTemplate = nullTemplate;
             $scope.object = { color: color.toColorFromType(dt) }; 
 
+            deRegObject[routeData.paneId].deReg();
+
             context.getObject(routeData.paneId, dt, id, routeData.interactionMode === InteractionMode.Transient).
                 then((object: DomainObjectRepresentation) => {
-                    deRegObject[routeData.paneId].deReg();
+                    
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
@@ -244,6 +246,7 @@ module NakedObjects.Angular.Gemini {
                     deRegObject[routeData.paneId].deRegSwap = $scope.$on("pane-swap", ovm.setProperties) as () => void;
 
                 }).catch(error => {
+                    // todo create a proper error wrapper for this 
                     if (error === "expired transient") {
                         $scope.objectTemplate = expiredTransientTemplate;
                     } else {

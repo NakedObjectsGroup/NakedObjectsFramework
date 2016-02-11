@@ -317,7 +317,7 @@ module NakedObjects.Angular.Gemini {
             return search; 
         }
 
-        function executeTransition(newValues: _.Dictionary<any>, paneId: number, transition: Transition, condition: (search) => boolean) {
+        function executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search) => boolean) {
             currentPaneId = paneId;
             let search = getSearch();
             if (condition(search)) {
@@ -340,23 +340,27 @@ module NakedObjects.Angular.Gemini {
 
         helper.setMenu = (menuId: string, paneId = 1) => {
             const key = `${menu}${paneId}`;
-            executeTransition(_.zipObject([key], [menuId]), paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
+            const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
         };
 
         helper.setDialog = (dialogId: string, paneId = 1) => {
             const key = `${dialog}${paneId}`;
-            executeTransition(_.zipObject([key], [dialogId]), paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
+            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
 
         helper.closeDialog = (paneId = 1) => {
             const key = `${dialog}${paneId}`;
-            executeTransition(_.zipObject([key], [null]), paneId, Transition.FromDialog, () => true);
+            const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.FromDialog, () => true);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
             const oid = resultObject.id();
             const key = `${object}${paneId}`;
-            executeTransition(_.zipObject([key], [oid]), paneId, Transition.ToObjectView, () => true);
+            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
 
         helper.setList = (actionMember: ActionMember, paneId = 1) => {
@@ -383,20 +387,23 @@ module NakedObjects.Angular.Gemini {
             const href = propertyMember.value().link().href();
             const oid = getOidFromHref(href);
             const key = `${object}${paneId}`;
-            executeTransition(_.zipObject([key], [oid]), paneId, Transition.ToObjectView, () => true);
+            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
 
         helper.setItem = (link: Link, paneId = 1) => {
             const href = link.href();
             const oid = getOidFromHref(href);
             const key = `${object}${paneId}`;
-            executeTransition(_.zipObject([key], [oid]), paneId, Transition.ToObjectView, () => true);
+            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         }
 
         helper.toggleObjectMenu = (paneId = 1) => {      
             const key = actions + paneId;
             const actionsId = getSearch()[key] ? null : "open";
-            executeTransition(_.zipObject([key], [actionsId]), paneId, Transition.Null, () => true);
+            const newValues = _.zipObject([key], [actionsId]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
         function checkAndSetValue(paneId : number,  check: (search : any) => boolean, set: (search : any) => void, reload : boolean) {
@@ -446,31 +453,34 @@ module NakedObjects.Angular.Gemini {
      
         helper.setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = 1) => {
             const key = `${collection}${paneId}_${collectionMemberId}`;
-            executeTransition(_.zipObject([key], [CollectionViewState[state]]), paneId, Transition.Null, () => true);
+            const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
         helper.setListState = (state: CollectionViewState, paneId = 1) => {
             const key = `${collection}${paneId}`;
-            executeTransition(_.zipObject([key], [CollectionViewState[state]]), paneId, Transition.Null, () => true);
+            const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
         helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {         
             const key = `${interactionMode}${paneId}`;
             const currentMode = getInteractionMode(getId(key, $routeParams));
             const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
-            executeTransition(_.zipObject([key], [InteractionMode[newMode]]), paneId, transition, () => true);
+            const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, transition, () => true);
         };
 
 
         helper.setListItem = (item: number, isSelected: boolean, paneId = 1) => {
          
             const key = `${selected}${paneId}`;
-            let currentSelected : number = getSearch()[key] || 0;
+            const currentSelected: number = parseInt(getSearch()[key] || 0);
             const selectedArray : boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
-            currentSelected = createMask(selectedArray); 
-        
-            executeTransition(_.zipObject([key], [currentSelected]), paneId, Transition.Null, () => true);
+            const currentSelectedAsString = (createMask(selectedArray)).toString();
+            const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.Null, () => true);
 
             $location.replace();
         }
