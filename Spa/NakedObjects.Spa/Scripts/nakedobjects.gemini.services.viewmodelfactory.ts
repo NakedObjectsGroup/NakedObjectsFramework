@@ -99,7 +99,7 @@ module NakedObjects.Angular.Gemini {
             itemViewModel.selected = selected;
 
             itemViewModel.checkboxChange = (index) => {
-                urlManager.setListItem(paneId, index, itemViewModel.selected);
+                urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             }
 
@@ -250,7 +250,7 @@ module NakedObjects.Angular.Gemini {
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
-                _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId, false));
+                _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), false, paneId));
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
@@ -475,10 +475,9 @@ module NakedObjects.Angular.Gemini {
                     collectionViewModel.template = collectionSummaryTemplate;
             }
 
-            const setState = _.partial(urlManager.setCollectionMemberState, paneId, collectionRep.collectionId());
-            collectionViewModel.doSummary = () => setState(CollectionViewState.Summary);
-            collectionViewModel.doList = () => setState(CollectionViewState.List);
-            collectionViewModel.doTable = () => setState(CollectionViewState.Table);
+            collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
+            collectionViewModel.doList = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);
+            collectionViewModel.doTable = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Table, paneId);
 
             return collectionViewModel;
         };
