@@ -338,7 +338,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter cus, 456x");
             WaitForOutput("None of the choices matches 456x");
 
+            //Auto-complete on an object edit
+            CiceroUrl("object?i1=Edit&o1=___1.Product-415");
+            WaitForOutput("Editing Product: Internal Lock Washer 5");
+            EnterCommand("enter model,HL Road Frame");
+            WaitForOutputContaining("Product Model: HL Road Frame");
+
             //TODO: Entering fields on an editable view model
+            //CiceroUrl("object?o1=___1.EmailTemplate-1");
+            //WaitForOutput("Email Template: Untitled Email Template");
+            //EnterCommand("enter to,info@nakedobjects.net");
+            //WaitForOutputContaining("To: info@nakedobjects.net");
+
+            //Cannot use enter on a non-modifable property
+            CiceroUrl("object?i1=Edit&o1=___1.WorkOrder-37879");
+            WaitForOutput("Editing Work Order: HL Crankset 18/07/2007");
+            EnterCommand("enter stocked,3");
+            WaitForOutput("Stocked Qty is not modifiable");
 
             //Finish somewhere other than home!
             EnterCommand("menu products");

@@ -710,6 +710,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         private setField(field: IField, fieldEntry: string): void {
+            if (field instanceof PropertyMember && field.disabledReason()) {
+                this.clearInputAndSetMessage(field.extensions().friendlyName() + " is not modifiable");
+                return;
+            }
             const entryType = field.entryType();
             switch (entryType) {
                 case EntryType.FreeForm:

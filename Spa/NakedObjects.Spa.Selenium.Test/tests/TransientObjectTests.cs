@@ -129,6 +129,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(br.FindElement(By.CssSelector(".icon-forward")));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
         }
+
+        public virtual void RequestForExpiredTransient()
+        {
+            GeminiUrl("object?i1=Transient&o1=___1.CreditCard-100");
+            string title = WaitForCss(".title").Text;
+            Assert.AreEqual(
+                "The requested view of unsaved object details has expired.",
+                title);
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot
@@ -151,6 +160,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void SwapPanesWithTransients() { base.SwapPanesWithTransients(); }
         [TestMethod]
         public override void BackAndForwardOverTransient() { base.BackAndForwardOverTransient(); }
+        [TestMethod]
+        public override void RequestForExpiredTransient() { base.RequestForExpiredTransient(); }
     }
     #region browsers specific subclasses
 
@@ -178,7 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
@@ -245,6 +256,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PropertyDescriptionAndRequiredRenderedAsPlaceholder();
             base.CancelTransientObject();
             base.SwapPanesWithTransients();
+            base.BackAndForwardOverTransient();
+            base.RequestForExpiredTransient();
         }
     }
     [TestClass]
