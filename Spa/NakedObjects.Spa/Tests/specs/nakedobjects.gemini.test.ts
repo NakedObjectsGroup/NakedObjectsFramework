@@ -314,14 +314,14 @@ module NakedObjects.Gemini.Test {
         
             function verifyListPlaceholderPageState(ts: INakedObjectsScope) {
                 expect(ts.title).toBe("All Vendors With Web Addresses");
-                expect(ts.listTemplate).toBe(Angular.ListPlaceholderTemplate);
+                expect(ts.listTemplate).toBe(Angular.listPlaceholderTemplate);
                 const collectionPlaceholderViewModel = ts.collectionPlaceholder;
                 expect(collectionPlaceholderViewModel).not.toBeNull();
                 expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
             }
 
             function verifyListPageState(ts: INakedObjectsScope) {
-                expect(ts.listTemplate).toBe(Angular.ListTemplate);
+                expect(ts.listTemplate).toBe(Angular.listTemplate);
             }
 
             function verifyListClosedActionsPageState(ts: INakedObjectsScope) {
