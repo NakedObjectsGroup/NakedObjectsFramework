@@ -16,7 +16,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void CopyTitleOrPropertyIntoClipboard()
         {
-            GeminiUrl("object/object?object1=AdventureWorksModel.Product-990&object2=AdventureWorksModel.Customer-13179");
+            GeminiUrl("object/object?o1=AdventureWorksModel.Product-990&o2=AdventureWorksModel.Customer-13179");
             WaitForView(Pane.Left, PaneType.Object, "Mountain-500 Black, 42");
             WaitForView(Pane.Right, PaneType.Object, "Adrian Sanchez, AW00013179");
 
@@ -48,7 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void CopyListItemIntoClipboard()
         {
-            GeminiUrl("list/list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&menu2=PersonRepository&action2=ValidCountries&page2=1&pageSize2=20");
+            GeminiUrl("list/list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&m2=PersonRepository&a2=ValidCountries&p2=1&ps2=20");
             Reload(Pane.Left);
             var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
             Assert.AreEqual("No Discount", item.Text);
@@ -63,7 +63,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoReferenceField()
         {
-            GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Employee-161");
+            GeminiUrl("object/object?o1=AdventureWorksModel.PurchaseOrderHeader-1372&i1=Edit&o2=AdventureWorksModel.Employee-161");
             WaitForView(Pane.Left, PaneType.Object);
             Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
             var title = WaitForCss("#pane2 .header .title");
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu()
         {
-            GeminiUrl("object/object?object2=AdventureWorksModel.SalesPerson-284&object1=AdventureWorksModel.Store-740&edit1=true");
+            GeminiUrl("object/object?o2=AdventureWorksModel.SalesPerson-284&o1=AdventureWorksModel.Store-740&i1=Edit");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
             Assert.AreEqual("Tsvi Reiter", WaitForCss("input#salesperson1").GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoDialog()
         {
-            GeminiUrl("home/object?menu1=SalesRepository&dialog1=CreateNewSalesPerson&object2=AdventureWorksModel.Employee-206");
+            GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=AdventureWorksModel.Employee-206");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Stuart Munson", title.Text);
             title.Click();
@@ -107,7 +107,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DroppableReferenceFieldWithoutAutoComplete()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-121");
+            GeminiUrl("object?o1=AdventureWorksModel.PurchaseOrderHeader-121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
             CancelDatePicker("#orderdate1");
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void CannotPasteWrongTypeIntoReferenceField()
         {
-            GeminiUrl("object/object?object1=AdventureWorksModel.PurchaseOrderHeader-1372&edit1=true&object2=AdventureWorksModel.Product-771");
+            GeminiUrl("object/object?o1=AdventureWorksModel.PurchaseOrderHeader-1372&i1=Edit&o2=AdventureWorksModel.Product-771");
             WaitForView(Pane.Left, PaneType.Object);
             CancelDatePicker("#orderdate1");
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
@@ -142,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void CanClearADroppableReferenceField()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderHeader-561&edit1=true");
+            GeminiUrl("object?o1=AdventureWorksModel.PurchaseOrderHeader-561&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             var fieldCss = ".property:nth-child(4) .value.droppable";
             var field = WaitForCss(fieldCss);
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
         {
-            GeminiUrl("home/object?menu1=EmployeeRepository&dialog1=CreateNewEmployeeFromContact&field1_contactDetails=null&object2=AdventureWorksModel.Person-10895");
+            GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=AdventureWorksModel.Person-10895");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Arthur Kapoor", title.Text);
             title.Click();

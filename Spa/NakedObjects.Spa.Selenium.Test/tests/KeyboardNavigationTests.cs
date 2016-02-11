@@ -28,7 +28,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void EnterEquivalentToLeftClick()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             reference.SendKeys(Keys.Enter);

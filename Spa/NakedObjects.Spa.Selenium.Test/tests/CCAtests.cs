@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void ListViewWithParmDialogAlreadyOpen()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open&dialog1=ChangeMaxQuantity&field1_newMax=%2522%2522");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22");
             Reload();
             var rand = new Random();
             var newMax = rand.Next(10, 10000).ToString();
@@ -44,7 +44,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void ListViewWithParmDialogNotOpen()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open");
             Reload();
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
@@ -64,7 +64,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         private void CheckIndividualItem(int itemNo, string value, bool equal = true)
         {
-            GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-"+(itemNo+1));
+            GeminiUrl("object?o1=AdventureWorksModel.SpecialOffer-"+(itemNo+1));
             wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
             var properties = br.FindElements(By.CssSelector(".property"));
             var html = "Max Qty:\r\n" + value;
@@ -80,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void TableViewWithParmDialogAlreadyOpen()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open&dialog1=ChangeMaxQuantity&field1_newMax=%2522%2522&collection1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22&c1=Table");
             Reload();
             var rand = new Random();
             var newMax = rand.Next(1000, 10000).ToString();
@@ -98,7 +98,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void TableViewWithParmDialogNotOpen()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open&collection1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
             Reload();
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
@@ -117,7 +117,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod, Ignore] //Pending fix to date issues (date recorded is one day off date entered)
         public void DateParamAndZeroParam()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=CurrentSpecialOffers&page1=1&pageSize1=20&selected1=0&actions1=open&collection1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
             Reload();
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-9");

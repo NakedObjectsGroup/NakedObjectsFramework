@@ -32,7 +32,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Query only action
             OpenActionDialog("Orders By Value");
             Assert.AreEqual("OK", OKButton().GetAttribute("value"));
-            GeminiUrl("home?menu1=SalesRepository");
+            GeminiUrl("home?m1=SalesRepository");
             //Other action
             OpenActionDialog("Create New Sales Person");
             Assert.AreEqual("OK", OKButton().GetAttribute("value"));
@@ -81,7 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void DateTimeParmKeepsValue()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Customer-29923&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Customer-29923&as1=open");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
             Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
@@ -181,7 +181,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         public virtual void ConditionalChoices() {
-            GeminiUrl("home?menu1=ProductRepository");
+            GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
             OpenActionDialog("List Products");
             SelectDropDownOnField("#category1", "Clothing");
@@ -285,7 +285,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void MandatoryParameterEnforced()
         {
-            GeminiUrl("home?menu1=SalesRepository&dialog1=FindSalesPersonByName");
+            GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
             Click(OKButton());
@@ -298,7 +298,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleValueParameter()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Product-342&actions1=open&dialog1=BestSpecialOffer");
+            GeminiUrl("object?o1=AdventureWorksModel.Product-342&as1=open&d1=BestSpecialOffer");
             var qty = WaitForCss("input#quantity1");
             qty.SendKeys("0");
             Click(OKButton());
@@ -314,7 +314,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleRefParamFromChoices()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.SalesOrderHeader-71742&collection1_SalesOrderHeaderSalesReason=List&actions1=open&dialog1=AddNewSalesReason");
+            GeminiUrl("object?o1=AdventureWorksModel.SalesOrderHeader-71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
@@ -326,7 +326,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CoValidationOfMultipleParameters()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&actions1=open&dialog1=ReceiveGoods");
+            GeminiUrl("object?o1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&as1=open&d1=ReceiveGoods");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");
@@ -340,7 +340,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ParameterDescriptionRenderedAsPlacholder()
         {
-            GeminiUrl("home?menu1=CustomerRepository&dialog1=FindStoreByName");
+            GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }

@@ -756,11 +756,15 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleReferenceField(field: IField, fieldEntry: string): void {
-            if ("paste".indexOf(fieldEntry) === 0) {
+            if (this.isPaste(fieldEntry)) {
                 this.handleClipboard(field);
             } else {
                 this.clearInputAndSetMessage("Invalid entry for a reference field. Use clipboard or clip");
             }
+        }
+
+        private isPaste(fieldEntry: string) {
+            return "paste".indexOf(fieldEntry) === 0;
         }
 
         private handleClipboard(field: IField): void {
@@ -788,12 +792,16 @@ module NakedObjects.Angular.Gemini {
 
         private handleAutoComplete(field: IField, fieldEntry: string): void {
             //TODO: Need to check that the minimum number of characters has been entered or fail validation
-            const promptRep = field.getPrompts();
-            this.context.autoComplete(promptRep, field.id(), null, fieldEntry).then(
-                (choices: _.Dictionary<Value>) => {
-                    const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-                    this.switchOnMatches(field, fieldEntry, matches);
-                });
+            if (!field.isScalar() && this.isPaste(fieldEntry)) {
+                this.handleClipboard(field);
+            } else {
+                const promptRep = field.getPrompts();
+                this.context.autoComplete(promptRep, field.id(), null, fieldEntry).then(
+                    (choices: _.Dictionary<Value>) => {
+                        const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
+                        this.switchOnMatches(field, fieldEntry, matches);
+                    });
+            }
         }
 
         private handleChoices(field: IField, fieldEntry: string): void {

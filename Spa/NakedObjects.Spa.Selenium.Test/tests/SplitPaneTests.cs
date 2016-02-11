@@ -46,7 +46,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickReferencePropertyFromObjectSingle()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             RightClick(reference);
@@ -57,7 +57,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickActionFromObjectSingle()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Customer-30116&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Customer-30116&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             RightClick(GetObjectAction("Last Order"));
             WaitForView(Pane.Left, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
@@ -67,7 +67,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickHomeIconFromObjectSingle()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             RightClick(HomeIcon());
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
@@ -77,7 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Store-350&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             Click(SwapIcon());
             WaitForView(Pane.Left, PaneType.Home, "Home");
@@ -86,8 +86,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = GeminiBaseUrl + "object/object?object1=AdventureWorksModel.Customer-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
-        private const string twoObjectsB = GeminiBaseUrl + "object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = GeminiBaseUrl + "object/object?o1=AdventureWorksModel.Customer-555&as1=open&o2=AdventureWorksModel.SalesOrderHeader-71926&as2=open";
+        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=AdventureWorksModel.Store-350&as1=open&o2=AdventureWorksModel.SalesOrderHeader-71926&as2=open";
 
 
         public virtual void RightClickReferenceInLeftPaneObject()
@@ -264,8 +264,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = GeminiBaseUrl + "object/object?object1=AdventureWorksModel.Customer-555&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
-        private const string twoObjectsB = GeminiBaseUrl + "object/object?object1=AdventureWorksModel.Store-350&actions1=open&object2=AdventureWorksModel.SalesOrderHeader-71926&actions2=open";
+        private const string twoObjects = GeminiBaseUrl + "object/object?o1=AdventureWorksModel.Customer-555&as1=open&o2=AdventureWorksModel.SalesOrderHeader-71926&as2=open";
+        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=AdventureWorksModel.Store-350&as1=open&o2=AdventureWorksModel.SalesOrderHeader-71926&as2=open";
 
         [TestMethod]
         public override void RightClickReferenceInLeftPaneObject()
@@ -442,7 +442,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         [TestMethod]
-        public virtual void MegaTest()
+        public virtual void MegaSplitPaneTest()
         {
             RightClickActionReturningObjectFromHomeSingle();
             RightClickActionReturningListFromHomeSingle();
