@@ -179,6 +179,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
         [TestMethod]
+        public void SinglePropertyValidationError()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.Product-817");
+            WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
+            ClearFieldThenType("#daystomanufacture1", "0");
+            Click(SaveButton());
+            WaitForMessage("See field validation message(s).");
+
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+
+            //Test for an earlier bug, that references still rendered correctly
+            var field = WaitForCss("#productmodel1");
+            Assert.AreEqual("HL Mountain Front Wheel", field.GetAttribute("value"));
+        }
+
+
+        [TestMethod]
         public void CoValidationOnSavingChanges()
         {
             GeminiUrl("object?o1=___1.WorkOrder-43134&i1=Edit");

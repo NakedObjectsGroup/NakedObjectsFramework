@@ -277,7 +277,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     [TestClass]
-    public class HomeMegaTestFirefox : HomeTestsRoot
+    public class MegaHomeTestFirefox : HomeTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -299,7 +299,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         [TestMethod]
-        public virtual void MegaTest()
+        public virtual void MegaHomeTest()
         {
             WaitForSingleHome();
             ClickOnVariousMenus();

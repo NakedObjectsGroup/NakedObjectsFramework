@@ -324,6 +324,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter");
             WaitForOutput("The command: enter is not available in the current context");
 
+            //Auto-complete on dialog - single match
+            CiceroUrl("home?m1=CustomerRepository&d1=FindCustomer&f1_customer=null");
+            WaitForOutputContaining("Action dialog: Find Customer");
+            EnterCommand("enter cus, 00456");
+            WaitForOutputContaining("Action dialog: Find Customer\r\n" +
+                    "Customer: Riding Excursions, AW00000456");
+            //Auto-complete on dialog - multi match
+            EnterCommand("enter cus, 456");
+            WaitForOutputContaining("Multiple matches:");
+            WaitForOutputContaining("Fernando Carter, AW00014563");
+            //Auto-complete on dialog - no match
+            EnterCommand("enter cus, 456x");
+            WaitForOutput("None of the choices matches 456x");
+
             //TODO: Entering fields on an editable view model
 
             //Finish somewhere other than home!
