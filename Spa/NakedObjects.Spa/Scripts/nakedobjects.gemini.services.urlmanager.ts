@@ -52,25 +52,23 @@ module NakedObjects.Angular.Gemini {
     app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
-        const home = "home";
-        const menu = "menu";
-        const object = "object";
-        const collection = "collection";
-        const selected = "selected";
-        const list = "list";
-        const action = "action";
-        const dialog = "dialog";
-        const parm = "parm";
-        const field = "field";
-        const prop = "prop";
-        const actions = "actions";
-        const page = "page";
-        const pageSize = "pageSize";
-        const interactionMode = "interactionMode";
+        // keep in alphabetic order to help avoid name collisions 
 
-        const gemini = "gemini";
-        const cicero = "cicero";
-
+        const action = "a";
+        const actions = "as";
+        const collection = "c";
+        const dialog = "d";
+        const field = "f";
+        const home = "h";
+        const interactionMode = "i";        
+        const menu = "m";
+        const object = "o";
+        const page = "pg";
+        const pageSize = "ps";
+        const parm = "pm";  
+        const prop = "pp";
+        const selected = "s";
+      
         const capturedPanes = [];
 
         let currentPaneId = 1;
@@ -289,7 +287,7 @@ module NakedObjects.Angular.Gemini {
 
             switch (transition) {
                 case (Transition.ToHome):
-                    setupPaneNumberAndTypes(paneId, home);
+                    setupPaneNumberAndTypes(paneId, homePath);
                     search = clearPane(search, paneId);
                     break;
                 case (Transition.ToMenu):
@@ -301,13 +299,13 @@ module NakedObjects.Angular.Gemini {
                     search = _.omit(search, ids);
                     break;
                 case (Transition.ToObjectView):
-                    setupPaneNumberAndTypes(paneId, object);
+                    setupPaneNumberAndTypes(paneId, objectPath);
                     search = clearPane(search, paneId);
                     search[interactionMode + paneId] = InteractionMode[InteractionMode.View];
                     break;
                 case (Transition.ToList):
                     search = setFieldsToParms(paneId, search);          
-                    setupPaneNumberAndTypes(paneId, list);
+                    setupPaneNumberAndTypes(paneId, listPath);
                     clearId(menu + paneId, search);
                     clearId(object + paneId, search);
                     break;
@@ -589,7 +587,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.cicero = () => {
-            const newPath = `/${cicero}/${$location.path().split("/")[2]}`;
+            const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
             $location.path(newPath);
         }
 

@@ -101,83 +101,95 @@ module NakedObjects.Angular {
     //Cicero
     export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
 
+
+    // routing constants 
+
+    export const geminiPath = "gemini";
+    export const ciceroPath = "cicero";
+    export const homePath = "home";
+    export const objectPath = "object";
+    export const listPath = "list";
+    export const errorPath = "error";
+        
     Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
+    
+
         $routeProvider.
             
             //Gemini2 Urls below:
-            when("/gemini/home", {
+            when(`/${geminiPath}/${homePath}`, {
                 templateUrl: singleHomeTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/object", {
+            when(`/${geminiPath}/${objectPath}`, {
                 templateUrl: singleObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/list", {
+            when(`/${geminiPath}/${listPath}`, {
                 templateUrl: singleListTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/home/home", {
+            when(`/${geminiPath}/${homePath}/${homePath}`, {
                 templateUrl: splitHomeHomeTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/home/object", {
+            when(`/${geminiPath}/${homePath}/${objectPath}`, {
                 templateUrl: splitHomeObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/home/list", {
+            when(`/${geminiPath}/${homePath}/${listPath}`, {
                 templateUrl: splitHomeListTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/object/home", {
+            when(`/${geminiPath}/${objectPath}/${homePath}`, {
                 templateUrl: splitObjectHomeTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/object/object", {
+            when(`/${geminiPath}/${objectPath}/${objectPath}`, {
                 templateUrl: splitObjectObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/object/list", {
+            when(`/${geminiPath}/${objectPath}/${listPath}`, {
                 templateUrl: splitObjectListTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/list/home", {
+            when(`/${geminiPath}/${listPath}/${homePath}`, {
                 templateUrl: splitListHomeTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/list/object", {
+            when(`/${geminiPath}/${listPath}/${objectPath}`, {
                 templateUrl: splitListObjectTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/list/list", {
+            when(`/${geminiPath}/${listPath}/${listPath}`, {
                 templateUrl: splitListListTemplate,
                 controller: "BackgroundController"
             }).
-            when("/gemini/error", {
+            when(`/${geminiPath}/${errorPath}`, {
                 templateUrl: singleErrorTemplate,
                 controller: "ErrorController"
             }).
             //Cicero
-            when("/cicero/home", {
+            when(`/${ciceroPath}/${homePath}`, {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroHomeController"
             }).
-            when("/cicero/object", {
+            when(`/${ciceroPath}/${objectPath}`, {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroObjectController"
             }).
-            when("/cicero/list", {
+            when(`/${ciceroPath}/${listPath}`, {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroListController"
             }).
-            when("/cicero/error", {
+            when(`/${ciceroPath}/${errorPath}`, {
                 templateUrl: ciceroTemplate,
                 controller: "CiceroErrorController"
             }).
             otherwise({
-            redirectTo: "/gemini/home"
+            redirectTo: `/${geminiPath}/${homePath}`
             });
-       
+
     });
 
     app.run((color: IColor, mask: IMask, $cacheFactory) => {
