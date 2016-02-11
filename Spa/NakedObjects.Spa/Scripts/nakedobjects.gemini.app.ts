@@ -13,6 +13,7 @@ module NakedObjects.Angular {
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
+    export const shortCutMarker = "___";
     export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 
     export interface INakedObjectsScope extends ng.IScope {
