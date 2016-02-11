@@ -96,6 +96,42 @@ module NakedObjects.Angular.Gemini {
         }
     }
 
+    function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
+        if (object) {
+            const sid = object.serviceId();
+            return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
+        }
+        return false;
+    }
+
+    class TransientCache {
+        private transientCache: DomainObjectRepresentation[][] = [,[],[]]; // per pane 
+
+        private depth = 4;
+
+        add(paneId: number, obj: DomainObjectRepresentation) {
+            let paneObjects = this.transientCache[paneId];
+            if (paneObjects.length >= this.depth) {
+                paneObjects = paneObjects.slice(-(this.depth - 1));               
+            }
+            paneObjects.push(obj);
+            this.transientCache[paneId] = paneObjects;
+        }
+
+        get(paneId: number, type: string, id: string) : DomainObjectRepresentation {
+            const paneObjects = this.transientCache[paneId];
+            return _.find(paneObjects, o => isSameObject(o, type, id));
+        }
+
+        remove(paneId: number, type: string, id: string) {
+            let paneObjects = this.transientCache[paneId];
+            paneObjects = _.remove(paneObjects, o => isSameObject(o, type, id));
+            this.transientCache[paneId] = paneObjects;
+        }
+
+    }
+
+
     app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
@@ -106,6 +142,8 @@ module NakedObjects.Angular.Gemini {
         // cached values
        
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
+        const transientCache = new TransientCache();
+
         const currentMenuList: _.Dictionary<MenuRepresentation> = {};
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
@@ -121,13 +159,7 @@ module NakedObjects.Angular.Gemini {
             return appPath;
         }
 
-        function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
-            if (object) {
-                const sid = object.serviceId();
-                return sid ? sid === type : (object.domainType() === type && object.instanceId() === id);
-            }
-            return false;
-        }
+        
 
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, transient : boolean): ng.IPromise<DomainObjectRepresentation> => {
@@ -138,8 +170,10 @@ module NakedObjects.Angular.Gemini {
                 return $q.when(currentObjects[paneId]);
             }
 
+            // deeper cache for transients
             if (transient) {
-                return $q.reject("expired transient");
+                const transientObj = transientCache.get(paneId, type, id);
+                return transientObj ? $q.when(transientObj) : $q.reject("expired transient");
             }
 
             const object = new DomainObjectRepresentation();
@@ -394,6 +428,7 @@ module NakedObjects.Angular.Gemini {
                     resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
 
                     context.setObject(paneId, resultObject);
+                    transientCache.add(paneId, resultObject);
                     urlManager.pushUrlState(paneId);
                     urlManager.setObject(resultObject, paneId);
                     urlManager.setInteractionMode(InteractionMode.Transient, paneId);
@@ -540,6 +575,7 @@ module NakedObjects.Angular.Gemini {
             return repLoader.populate(persist, true, new DomainObjectRepresentation()).
                 then((updatedObject: DomainObjectRepresentation) => {
                     context.setObject(paneId, updatedObject);
+                    transientCache.remove(paneId, object.domainType(), object.id());
 
                     dirtyCache.setDirty(updatedObject);
 
