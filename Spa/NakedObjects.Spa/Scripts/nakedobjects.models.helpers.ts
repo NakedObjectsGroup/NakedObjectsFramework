@@ -12,20 +12,16 @@
 
 module NakedObjects.Helpers {
 
-    "use strict";
-
-    const uid = "___";
-
     export function compress(toCompress: string) {
         if (toCompress) {
-            _.forEach(Angular.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${uid}${i}`));
+            _.forEach(Angular.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Angular.shortCutMarker}${i}`));
         }
         return toCompress;
     }
 
     export function decompress(toDecompress: string) {
         if (toDecompress) {
-            _.forEach(Angular.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${uid}${i}`, sc));
+            _.forEach(Angular.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${Angular.shortCutMarker}${i}`, sc));
         }
         return toDecompress;
     }
