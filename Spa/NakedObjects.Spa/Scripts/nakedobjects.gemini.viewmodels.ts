@@ -100,6 +100,10 @@ module NakedObjects.Angular.Gemini {
 
     export class ValueViewModel extends MessageViewModel {
 
+        isDirty = () => false;
+
+        originalValue : Value; 
+
         formattedValue: string;
         value: number | string | boolean | Date;    
         id: string; 
@@ -625,7 +629,7 @@ module NakedObjects.Angular.Gemini {
             this.urlManager.toggleObjectMenu(this.onPaneId);
         };
 
-        private editProperties = () => _.filter(this.properties, p => p.isEditable);
+        private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
         public setProperties = () =>
             _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
