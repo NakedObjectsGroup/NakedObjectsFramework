@@ -416,6 +416,15 @@ module NakedObjects.Angular.Gemini {
                 }
             }
 
+            if (!previousValue) {
+                propertyViewModel.originalValue = propertyViewModel.getValue();
+            }
+
+            propertyViewModel.isDirty = () => {
+                return !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
+            }
+
+
             return propertyViewModel;
         };
 
