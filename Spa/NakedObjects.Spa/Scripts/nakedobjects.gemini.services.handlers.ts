@@ -157,7 +157,7 @@ module NakedObjects.Angular.Gemini {
                 () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
        
             if (cachedList) {
-                $scope.listTemplate = routeData.state === CollectionViewState.List ? ListTemplate : ListAsTableTemplate;
+                $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const collectionViewModel = perPaneListViews[routeData.paneId];
                 collectionViewModel.reset(cachedList, routeData);
                 $scope.collection = collectionViewModel;
@@ -173,7 +173,7 @@ module NakedObjects.Angular.Gemini {
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 getFriendlyName().then((name: string) => $scope.title = name);
             } else {
-                $scope.listTemplate = ListPlaceholderTemplate;
+                $scope.listTemplate = listPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
                 getFriendlyName().then((name: string) => $scope.title = name);
                 focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);       
@@ -202,7 +202,7 @@ module NakedObjects.Angular.Gemini {
             $scope.actionsTemplate = nullTemplate;
             $scope.object = { color: color.toColorFromType(dt) }; 
 
-            context.getObject(routeData.paneId, dt, id).
+            context.getObject(routeData.paneId, dt, id, routeData.interactionMode === InteractionMode.Transient).
                 then((object: DomainObjectRepresentation) => {
                     deRegObject[routeData.paneId].deReg();
 
@@ -244,7 +244,11 @@ module NakedObjects.Angular.Gemini {
                     deRegObject[routeData.paneId].deRegSwap = $scope.$on("pane-swap", ovm.setProperties) as () => void;
 
                 }).catch(error => {
-                    setError(error);
+                    if (error === "expired transient") {
+                        $scope.objectTemplate = expiredTransientTemplate;
+                    } else {
+                        setError(error);
+                    }
                 });
 
         };

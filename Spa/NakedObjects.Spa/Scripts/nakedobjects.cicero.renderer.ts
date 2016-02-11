@@ -32,7 +32,7 @@
         };
         renderer.renderObject = (routeData: PaneRouteData, cvm: CiceroViewModel) => {
             const [domainType, ...id] = routeData.objectId.split("-");
-            context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+            context.getObject(1, domainType, id, false) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                 .then((obj: DomainObjectRepresentation) => {
                     let output = "";
                     const openCollIds = openCollectionIds(routeData);

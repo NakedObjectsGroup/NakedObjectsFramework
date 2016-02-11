@@ -12,7 +12,7 @@ module NakedObjects.Angular.Gemini {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, type: string, id?: string[]) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId: number, type: string, id: string[], isTransient : boolean) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId: string) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
@@ -45,7 +45,7 @@ module NakedObjects.Angular.Gemini {
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
-        getDomainObject: (paneId: number, type: string, id: string) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId: number, type: string, id: string, transient : boolean) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
@@ -130,12 +130,16 @@ module NakedObjects.Angular.Gemini {
         }
 
         // exposed for test mocking
-        context.getDomainObject = (paneId: number, type: string, id: string): ng.IPromise<DomainObjectRepresentation> => {
+        context.getDomainObject = (paneId: number, type: string, id: string, transient : boolean): ng.IPromise<DomainObjectRepresentation> => {
 
             const isDirty = dirtyCache.getDirty(type, id);
 
             if (!isDirty && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
+            }
+
+            if (transient) {
+                return $q.reject("expired transient");
             }
 
             const object = new DomainObjectRepresentation();
@@ -253,14 +257,14 @@ module NakedObjects.Angular.Gemini {
                 });
         };
 
-        context.getObject = (paneId: number, type: string, id?: string[]) => {
+        context.getObject = (paneId: number, type: string, id: string[], transient : boolean) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
-            return oid ? context.getDomainObject(paneId, type, oid) : context.getService(paneId, type);
+            return oid ? context.getDomainObject(paneId, type, oid, transient) : context.getService(paneId, type);
         };
 
         context.getObjectByOid = (paneId: number, objectId: string) => {
             const [dt, ...id] = objectId.split("-");
-            return context.getObject(paneId, dt, id);
+            return context.getObject(paneId, dt, id, false);
         };
 
         context.getCachedList = (paneId: number, page: number, pageSize: number) => {

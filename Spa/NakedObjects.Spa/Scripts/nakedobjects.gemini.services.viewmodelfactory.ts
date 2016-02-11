@@ -429,7 +429,7 @@ module NakedObjects.Angular.Gemini {
                 _.forEach(items, itemViewModel => {
                     const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
 
-                    context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id).
+                    context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, false).
                         then((obj: DomainObjectRepresentation) => {
 
                             itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData);
@@ -631,7 +631,7 @@ module NakedObjects.Angular.Gemini {
                         cvm.outputMessageThenClearIt();
                     } else {
                         const [domainType, ...id] = routeData.objectId.split("-");
-                        context.getObject(1, domainType, id) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                        context.getObject(1, domainType, id, false) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
                                 const openCollIds = openCollectionIds(routeData);
