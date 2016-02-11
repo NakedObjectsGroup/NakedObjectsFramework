@@ -269,7 +269,7 @@ module NakedObjects {
                     const profileValue = (this.profile.split("=")[1].replace(/\"/g, "")).trim();
                     this.representationType = (profileValue.split("/")[1]).trim();
                 }
-                if (parms[i].trim().substring(0, 16) === "x-ro-domain-type") {
+                if (parms[i].trim().substring(0, 16) === Angular.roDomainType) {
                     this.xRoDomainType = (parms[i]).trim();
                     this.domainType = (this.xRoDomainType.split("=")[1].replace(/\"/g, "")).trim();
                 }
@@ -465,10 +465,10 @@ module NakedObjects {
             
             const temp = this.map;
             if (isIObjectOfType(temp)) {
-                return temp["x-ro-invalidReason"];
+                return temp[Angular.roInvalidReason];
             }
 
-            return this.wrapped()["x-ro-invalidReason"] as string;
+            return this.wrapped()[Angular.roInvalidReason] as string;
         }
 
         containsError() {
@@ -566,9 +566,9 @@ module NakedObjects {
         minLength(): number { return this.wrapped.minLength; }
         //Nof custom:
         choices(): { [index: string]: (string | number | boolean | ILink)[]; } { return this.wrapped["x-ro-nof-choices"]  ; }
-        menuPath(): string { return this.wrapped["x-ro-nof-menuPath"]  ;}
-        mask(): string { return this.wrapped["x-ro-nof-mask"];}
-        renderInEdit(): boolean { return this.wrapped["x-ro-nof-renderInEditMode"]; }
+        menuPath(): string { return this.wrapped[Angular.nofMenuPath]  ;}
+        mask(): string { return this.wrapped[Angular.nofMask];}
+        renderInEdit(): boolean { return this.wrapped[Angular.nofRenderInEditMode]; }
     } 
 
     // matches a action invoke resource 19.0 representation 
@@ -711,7 +711,7 @@ module NakedObjects {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()["x-ro-searchTerm"]) {
+                if (!!this.promptLink().arguments()[Angular.roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }
@@ -804,7 +804,7 @@ module NakedObjects {
         } 
 
         setSearchTerm(term: string) {
-            this.setArgument("x-ro-searchTerm", new Value(term));
+            this.setArgument(Angular.roSearchTerm, new Value(term));
         }
 
         setArgument(name: string, val: Value) {
@@ -1210,7 +1210,7 @@ module NakedObjects {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()["x-ro-searchTerm"]) {
+                if (!!this.promptLink().arguments()[Angular.roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }

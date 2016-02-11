@@ -358,7 +358,7 @@ module NakedObjects.Angular.Gemini {
             context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions().friendlyName()));
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<string> {
-            return (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
+            return (page && pageSize) ? { roPage: page.toString(), roPageSize: pageSize.toString() } : {};
         }
 
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {

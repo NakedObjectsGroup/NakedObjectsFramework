@@ -105,6 +105,19 @@ module NakedObjects.Angular {
     export const objectPath = "object";
     export const listPath = "list";
     export const errorPath = "error";
+
+    //Restful Objects constants
+    export const roDomainType = "x-ro-domain-type";
+    export const roInvalidReason = "x-ro-invalidReason";
+    export const roSearchTerm = "x-ro-searchTerm";
+    export const roPage = "x-ro-page";
+    export const roPageSize = "x-ro-pageSize";
+
+    //NOF custom RO constants
+    export const nofChoices ="x-ro-nof-choices";
+    export const nofMenuPath = "x-ro-nof-menuPath";
+    export const nofMask = "x-ro-nof-mask";
+    export const nofRenderInEditMode = "x-ro-nof-renderInEditMode";
         
     Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
     
