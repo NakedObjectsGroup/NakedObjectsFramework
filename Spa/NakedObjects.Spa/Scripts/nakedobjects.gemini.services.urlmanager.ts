@@ -4,6 +4,8 @@
 
 
 module NakedObjects.Angular.Gemini {
+    import Decompress = Helpers.decompress;
+    import Compress = Helpers.compress;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -24,9 +26,7 @@ module NakedObjects.Angular.Gemini {
         setListState(state: CollectionViewState, paneId?: number): void;
         setListPaging(newPage: number, newPageSize: number, state: CollectionViewState, paneId?: number): void;
         setListItem(item: number, selected: boolean, paneId?: number ): void;
-       
-        
-
+          
         pushUrlState(paneId?: number): void;
         clearUrlState(paneId?: number): void;
         popUrlState(onPaneId?: number): void;
@@ -49,7 +49,7 @@ module NakedObjects.Angular.Gemini {
         cicero(): void;
     }
 
-    app.service("urlManager", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService) {
+    app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
         // keep in alphabetic order to help avoid name collisions 
@@ -125,17 +125,17 @@ module NakedObjects.Angular.Gemini {
             // todo validate url data - eg cannot have dialog or actions open while editing.
             // consider either cleaning up url or just erroring if unexpected url combination
 
-            paneRouteData.menuId = $routeParams[menu + paneId];
-            paneRouteData.actionId = $routeParams[action + paneId];
-            paneRouteData.dialogId = $routeParams[dialog + paneId];
+            paneRouteData.menuId = getId(menu + paneId, $routeParams);
+            paneRouteData.actionId = getId(action + paneId, $routeParams);
+            paneRouteData.dialogId = getId(dialog + paneId, $routeParams);
 
-            paneRouteData.objectId = $routeParams[object + paneId];
-            paneRouteData.actionsOpen = $routeParams[actions + paneId];
+            paneRouteData.objectId = getId(object + paneId, $routeParams);
+            paneRouteData.actionsOpen = getId(actions + paneId, $routeParams);
 
-            const rawCollectionState: string = $routeParams[collection + paneId];
+            const rawCollectionState: string = getId(collection + paneId, $routeParams);
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
-            const rawInteractionMode: string = $routeParams[interactionMode + paneId];
+            const rawInteractionMode: string = getId(interactionMode + paneId, $routeParams);
             paneRouteData.interactionMode = getInteractionMode(rawInteractionMode);
 
             const collKeyMap = getAndMapIds(collection, paneId);
@@ -150,10 +150,10 @@ module NakedObjects.Angular.Gemini {
             const propKeyMap = getAndMapIds(prop, paneId);
             paneRouteData.props = getMappedValues(propKeyMap);
 
-            paneRouteData.page = $routeParams[page + paneId];
-            paneRouteData.pageSize = $routeParams[pageSize + paneId];
+            paneRouteData.page = parseInt(getId(page + paneId, $routeParams));
+            paneRouteData.pageSize = parseInt(getId(pageSize + paneId, $routeParams));
 
-            paneRouteData.selectedItems = arrayFromMask($routeParams[selected + paneId] || 0);
+            paneRouteData.selectedItems = arrayFromMask(getId(selected + paneId, $routeParams) || 0);
 
         }
 
@@ -233,7 +233,7 @@ module NakedObjects.Angular.Gemini {
 
       
         function setValue(paneId: number, search: any, p: {id : () => string}, pv: Value, valueType : string) {
-            search[`${valueType}${paneId}_${p.id()}`] = pv.toJsonString();
+            setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(), search);
         }
 
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
@@ -261,11 +261,11 @@ module NakedObjects.Angular.Gemini {
         }
 
         function getId(key: string, search: any) {
-            return search[key];
+            return Decompress(search[key]);
         }
 
         function setId(key: string, id: string, search: any) {
-            search[key] = id;
+            search[key] = Compress(id);
         }
 
         function clearId(key: string, search: any) {
@@ -301,7 +301,7 @@ module NakedObjects.Angular.Gemini {
                 case (Transition.ToObjectView):
                     setupPaneNumberAndTypes(paneId, objectPath);
                     search = clearPane(search, paneId);
-                    search[interactionMode + paneId] = InteractionMode[InteractionMode.View];
+                    setId(interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                     break;
                 case (Transition.ToList):
                     search = setFieldsToParms(paneId, search);          
@@ -420,14 +420,14 @@ module NakedObjects.Angular.Gemini {
         helper.setFieldValue = (dialogId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
 
             checkAndSetValue(paneId,
-                search => search[`${dialog}${paneId}`] === dialogId,
+                search => getId(`${dialog}${paneId}`, search) === dialogId,
                 search => setField(paneId, search, p, pv),
                 reload);
 
         helper.setParameterValue = (actionId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
       
             checkAndSetValue(paneId,
-                search => search[`${action}${paneId}`] === actionId,
+                search => getId(`${action}${paneId}`, search) === actionId,
                 search => setParameter(paneId, search, p, pv),
                 reload);
        
@@ -439,8 +439,8 @@ module NakedObjects.Angular.Gemini {
                     // only add value if matching object (to catch case when swapping panes) 
                     // and only add to edit url
                     const oid = obj.id();
-                    const currentOid = search[`${object}${paneId}`];
-                    const currentMode = getInteractionMode(search[`${interactionMode}${paneId}`]);
+                    const currentOid = getId(`${object}${paneId}`, search);
+                    const currentMode = getInteractionMode(getId(`${interactionMode}${paneId}`, search));
                     return currentOid === oid && currentMode !== InteractionMode.View;
                 },
                 search => setProperty(paneId, search, p, pv),
@@ -459,7 +459,7 @@ module NakedObjects.Angular.Gemini {
 
         helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {         
             const key = `${interactionMode}${paneId}`;
-            const currentMode = getInteractionMode($routeParams[key]);
+            const currentMode = getInteractionMode(getId(key, $routeParams));
             const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
             executeTransition(_.zipObject([key], [InteractionMode[newMode]]), paneId, transition, () => true);
         };
@@ -526,12 +526,12 @@ module NakedObjects.Angular.Gemini {
         helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format? : CollectionViewState) => {
             const search = getSearch();
        
-            const s1 = search[`${menu}${paneId}`] || "";
-            const s2 = search[`${object}${paneId}`] || "";
-            const s3 = search[`${action}${paneId}`] || "";
+            const s1 = getId(`${menu}${paneId}`, search) || "";
+            const s2 = getId(`${object}${paneId}`, search) || "";
+            const s3 = getId(`${action}${paneId}`, search) || "";
 
             const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(parm + paneId) === 0);
-            const mappedParms = _.mapValues(parms, v => decodeURIComponent(v));
+            const mappedParms = _.mapValues(parms, v => decodeURIComponent( Decompress(v)));
 
             const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
 

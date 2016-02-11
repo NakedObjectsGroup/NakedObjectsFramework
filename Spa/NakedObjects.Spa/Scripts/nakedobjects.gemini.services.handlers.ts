@@ -15,7 +15,7 @@ module NakedObjects.Angular.Gemini {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function ($routeParams: INakedObjectsRouteParams, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager, $timeout: ng.ITimeoutService) {
+    app.service("handlers", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager, $timeout: ng.ITimeoutService) {
         const handlers = <IHandlers>this;
 
         const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),

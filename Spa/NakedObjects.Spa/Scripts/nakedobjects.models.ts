@@ -24,7 +24,8 @@ module NakedObjects {
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
-
+    import Compress = Helpers.compress;
+    import Decompress = Helpers.decompress;
 
     // helper functions 
 
@@ -335,8 +336,36 @@ module NakedObjects {
             return (this.wrapped == null) ? "" : this.wrapped.toString();
         }
 
+        compress() {
+            if (this.isReference()) {
+                this.link().compress();
+            }
+            if (this.isList()) {
+                _.forEach(this.list(), i => i.compress());
+            };
+
+            if (this.scalar() && this.wrapped instanceof String) {
+                this.wrapped = Compress(this.wrapped as string);
+            }
+        }
+
+        decompress() {
+            if (this.isReference()) {
+                this.link().decompress();
+            }
+            if (this.isList()) {
+                _.forEach(this.list(), i => i.decompress());
+            };
+
+            if (this.scalar() && this.wrapped instanceof String) {
+                this.wrapped = Decompress(this.wrapped as string);
+            }
+        }
+
         static fromJsonString(jsonString: string): Value {
-            return new Value(JSON.parse(jsonString));
+            const value = new Value(JSON.parse(jsonString));
+            value.decompress();
+            return value;
         }
 
         toValueString(): string {
@@ -347,7 +376,9 @@ module NakedObjects {
         }
 
         toJsonString(): string {
-            const raw = (this.wrapped instanceof  Link) ?  (<Link>this.wrapped).wrapped : this.wrapped; 
+            this.compress();
+            const value = this.wrapped;
+            const raw = (value instanceof Link) ? value.wrapped :          value;
             return JSON.stringify(raw);
         }
 
@@ -1787,10 +1818,21 @@ module NakedObjects {
 
     }
 
+   
+
+
     // matches the Link representation 2.7
     export class Link  {
 
         constructor(public wrapped : RoInterfaces.ILink) { }
+
+        compress() {
+            this.wrapped.href = Compress(this.wrapped.href);
+        }
+
+        decompress() {
+            this.wrapped.href = Decompress(this.wrapped.href);
+        }
 
         href(): string {
             return decodeURIComponent(this.wrapped.href);

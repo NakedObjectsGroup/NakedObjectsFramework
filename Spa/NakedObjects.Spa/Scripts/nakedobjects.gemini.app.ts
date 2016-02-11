@@ -13,14 +13,7 @@ module NakedObjects.Angular {
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
-    export interface INakedObjectsRouteParams extends ng.route.IRouteParamsService {
-        menu1: string;
-        dialog1: string;
-        object1: string;
-        action1: string;
-        collection1: string;
-        edit1 : string;
-    }
+    export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 
     export interface INakedObjectsScope extends ng.IScope {
         backgroundColor: string;

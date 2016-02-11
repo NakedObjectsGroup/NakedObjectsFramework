@@ -14,6 +14,22 @@ module NakedObjects.Helpers {
 
     "use strict";
 
+    const uid = "x-ro-nof-";
+
+    export function compress(toCompress: string) {
+        if (toCompress) {
+            _.forEach(Angular.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${uid}${i}`));
+        }
+        return toCompress;
+    }
+
+    export function decompress(toDecompress: string) {
+        if (toDecompress) {
+            _.forEach(Angular.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${uid}${i}`, sc));
+        }
+        return toDecompress;
+    }
+
     export function getClassName(obj: any) {
         var funcNameRegex = /function (.{1,})\(/;
         var results = (funcNameRegex).exec(obj.constructor.toString());
