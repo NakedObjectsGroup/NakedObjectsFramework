@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void ObjectEditChangeScalar() {
             var rand = new Random();
-            GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
+            GeminiUrl( "object?o1=AdventureWorksModel.Product-870");
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
             var newPrice = rand.Next(50, 150).ToString();
@@ -39,7 +39,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod, Ignore] //Pending fix for date localization
         public virtual void ObjectEditChangeDateTime() {
-            GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
+            GeminiUrl( "object?o1=AdventureWorksModel.Product-870");
             EditObject();
 
             // set price and days to mfctr
@@ -62,7 +62,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeChoices() {
-            GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
+            GeminiUrl( "object?o1=AdventureWorksModel.Product-870");
             EditObject();
 
             // set product line 
@@ -80,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void CanSetAndClearAnOptionalDropDown()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-54064");
+            GeminiUrl("object?o1=AdventureWorksModel.WorkOrder-54064");
             WaitForView(Pane.Single, PaneType.Object);
             EditObject();
             SelectDropDownOnField("#scrapreason1", "Color incorrect");
@@ -96,7 +96,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void ObjectEditChangeConditionalChoices() {
-            GeminiUrl( "object?object1=AdventureWorksModel.Product-870");
+            GeminiUrl( "object?o1=AdventureWorksModel.Product-870");
             EditObject();
             // set product category and sub category
             SelectDropDownOnField("#productcategory1", "Clothing");
@@ -162,7 +162,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void ObjectEditPicksUpLatestServerVersion()
         {
 
-            GeminiUrl("object?object1=AdventureWorksModel.Person-8410&actions1=open");
+            GeminiUrl("object?o1=AdventureWorksModel.Person-8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
@@ -181,7 +181,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void CoValidationOnSavingChanges()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.WorkOrder-43134&edit1=true");
+            GeminiUrl("object?o1=AdventureWorksModel.WorkOrder-43134&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
             ClearFieldThenType("input#startdate1", "");
@@ -196,7 +196,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void ViewModelEditOpensInEditMode()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.EmailTemplate-1");
+            GeminiUrl("object?o1=AdventureWorksModel.EmailTemplate-1");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
             //TODO: Check that actions are rendered e.g. Send

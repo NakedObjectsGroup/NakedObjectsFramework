@@ -22,16 +22,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class AWTest : GeminiTest {
 
-        protected const string CustomersMenuUrl = GeminiBaseUrl + "home?menu1=CustomerRepository";
-        protected const string OrdersMenuUrl = GeminiBaseUrl + "home?menu1=OrderRepository";
-        protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?menu1=SpecialOfferRepository";
-        protected const string ProductServiceUrl = GeminiBaseUrl + "home?menu1=ProductRepository";
-        protected const string SalesServiceUrl = GeminiBaseUrl + "home?menu1=SalesRepository";
-
+        protected const string CustomersMenuUrl = GeminiBaseUrl + "home?m1=CustomerRepository";
+        protected const string OrdersMenuUrl = GeminiBaseUrl + "home?m1=OrderRepository";
+        protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?m1=SpecialOfferRepository";
+        protected const string ProductServiceUrl = GeminiBaseUrl + "home?m1=ProductRepository";
+        protected const string SalesServiceUrl = GeminiBaseUrl + "home?m1=SalesRepository";
         protected const int MainMenusCount = 10; //'Empty' menu should not show
-
-        protected const int CustomerServiceActions = 9;
+        protected const int CustomerServiceActions = 10;
         protected const int OrderServiceActions = 6;
-
     }
 }

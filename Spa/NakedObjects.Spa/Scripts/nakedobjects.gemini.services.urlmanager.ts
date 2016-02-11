@@ -9,9 +9,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IUrlManager {
         getRouteData(): RouteData;
-
         setError();
-
         setHome(paneId?: number);
         setMenu(menuId: string, paneId? : number);
         setDialog(dialogId: string, paneId?: number);
@@ -59,7 +57,6 @@ module NakedObjects.Angular.Gemini {
         const collection = "c";
         const dialog = "d";
         const field = "f";
-        const home = "h";
         const interactionMode = "i";        
         const menu = "m";
         const object = "o";
@@ -517,7 +514,7 @@ module NakedObjects.Angular.Gemini {
             const path = $location.path();
             const segments = path.split("/");
 
-            const paneType = segments[paneId + 1] || home;
+            const paneType = segments[paneId + 1] || homePath;
             const paneSearch = capturePane(paneId);
 
             return { paneType: paneType, search: paneSearch };
@@ -578,7 +575,7 @@ module NakedObjects.Angular.Gemini {
         helper.swapPanes = () => {
             const path = $location.path();
             const segments = path.split("/");
-            const [, mode, oldPane1, oldPane2 = home] = segments;
+            const [, mode, oldPane1, oldPane2 = homePath] = segments;
             const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
             const search = swapSearchIds(getSearch());
             currentPaneId = currentPaneId === 1 ? 2 : 1;
@@ -627,7 +624,7 @@ module NakedObjects.Angular.Gemini {
         helper.isHome = (paneId = 1) => {
             const path = $location.path();
             const segments = path.split("/");
-            return segments[paneId+1] === home; // e.g. segments 0=~/1=cicero/2=home/3=home
+            return segments[paneId+1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
         }
     });
 }

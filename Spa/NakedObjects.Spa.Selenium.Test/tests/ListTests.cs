@@ -78,7 +78,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void Paging()
         {
-            GeminiUrl("list?menu1=CustomerRepository&action1=FindIndividualCustomerByName&page1=1&pageSize1=20&parm1_firstName=%2522%2522&parm1_lastName=%2522a%2522");
+            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22");
             Reload();
 
             //Test content of collection
@@ -116,7 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PagingTableView()
         {
-            GeminiUrl("list?menu1=CustomerRepository&action1=FindIndividualCustomerByName&page1=1&pageSize1=20&parm1_firstName=%2522%2522&parm1_lastName=%2522a%2522&collection1=Table");
+            GeminiUrl("list?m1=CustomerRepository&a1=FindIndividualCustomerByName&p1=1&ps1=20&pm1_firstName=%22%22&pm1_lastName=%22a%22&c1=Table");
             Reload();
             //Confirm in Table view
             WaitForCss("thead tr th");
@@ -175,15 +175,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ListDoesNotRefreshWithoutReload()
         {
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 .StartsWith("Page 1 of 1;"));
-            GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
+            GeminiUrl("object?o1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
             ClearFieldThenType("#minqty1", "10");
             SaveObject();
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 == "Page 1 of 1; viewing 11 of 11 items");
@@ -192,11 +192,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 == "Page 1 of 1; viewing 10 of 10 items");
 
             //Undo to leave in original state
-            GeminiUrl("object?object1=AdventureWorksModel.SpecialOffer-7");
+            GeminiUrl("object?o1=AdventureWorksModel.SpecialOffer-7");
             EditObject();
             ClearFieldThenType("#minqty1", Keys.Backspace + Keys.Backspace + "0");
             SaveObject();
-            GeminiUrl("list?menu1=SpecialOfferRepository&action1=SpecialOffersWithNoMinimumQty&page1=1&pageSize1=20");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
             WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text

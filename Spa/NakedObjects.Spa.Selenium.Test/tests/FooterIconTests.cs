@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod]
         public virtual void Home() {
-            GeminiUrl( "object?object1=AdventureWorksModel.Product-968");
+            GeminiUrl( "object?o1=AdventureWorksModel.Product-968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -35,16 +35,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public virtual void Cicero()
         {
-            GeminiUrl("object?object1=AdventureWorksModel.Product-968");
+            GeminiUrl("object?o1=AdventureWorksModel.Product-968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
-            GeminiUrl("object/list?object1=AdventureWorksModel.Store-350&menu2=OrderRepository&action2=HighestValueOrders");
+            GeminiUrl("object/list?o1=AdventureWorksModel.Store-350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Store: Twin Cycles"); //Cicero
 
-            GeminiUrl("object?object1=AdventureWorksModel.Product-968&actions1=open&dialog1=BestSpecialOffer&parm1_quantity=%2522%2522");
+            GeminiUrl("object?o1=AdventureWorksModel.Product-968&as1=open&d1=BestSpecialOffer&pm1_quantity=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
             Click(WaitForCss(".icon-speech"));
