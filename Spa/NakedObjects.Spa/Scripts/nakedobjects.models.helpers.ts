@@ -14,7 +14,7 @@ module NakedObjects.Helpers {
 
     "use strict";
 
-    const uid = "x-ro-nof-";
+    const uid = "___";
 
     export function compress(toCompress: string) {
         if (toCompress) {

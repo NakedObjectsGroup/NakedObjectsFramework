@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void Actions()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer-555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             var actions = GetObjectActions(6);
 
@@ -34,7 +34,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PropertiesAndCollections()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store-350&as1=open");
             wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
             wait.Until(dr => dr.FindElement(By.CssSelector(".view")).Displayed == true);
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
@@ -53,7 +53,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ClickReferenceProperty()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             Click(reference);
@@ -61,7 +61,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void OpenCollectionAsList()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store-350&as1=open");
             WaitForCss(".collection", 2);
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
-            var testUrl = GeminiBaseUrl + "object?o1=AdventureWorksModel.Store-350&as1=open" + "&c1_Addresses=List";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store-350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
             var row = WaitForCss("table .reference");
             Click(row);
@@ -82,7 +82,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
-            var testUrl = GeminiBaseUrl + "object?o1=AdventureWorksModel.Store-350&as1=open" + "&c1_Addresses=Table";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store-350&as1=open" + "&c1_Addresses=Table";
             Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void AttachmentProperty()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Product-968");
+            GeminiUrl("object?o1=___1.Product-968");
             wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
             wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
             Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0);
@@ -102,12 +102,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #region Actions
         public virtual void DialogAction()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer-555&as1=open");
             OpenActionDialog("Search For Orders");
         }
         public virtual void DialogActionOk()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer-555&as1=open");
 
             var dialog = OpenActionDialog("Search For Orders");
 
@@ -120,13 +120,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ObjectAction()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer-555&as1=open");
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
         public virtual void CollectionAction()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer-555&as1=open");
             Click(GetObjectAction("Recent Orders"));
             WaitForView(Pane.Single, PaneType.List, "Recent Orders");
         }
@@ -138,7 +138,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DisabledAction()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.SalesOrderHeader-43893&as1=open");
+            GeminiUrl("object?o1=___1.SalesOrderHeader-43893&as1=open");
             //First the control test
             GetObjectAction("Add New Sales Reason").AssertIsEnabled();
 
@@ -147,7 +147,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ActionsMenuDisabledOnObjectWithNoActions()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Address-21467");
+            GeminiUrl("object?o1=___1.Address-21467");
             WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
             var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
@@ -155,7 +155,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
         public virtual void QueryOnlyActionDoesNotReloadAutomatically()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Person-8410&as1=open");
+            GeminiUrl("object?o1=___1.Person-8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
@@ -175,7 +175,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PotentActionDoesReloadAutomatically()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Person-8410&as1=open");
+            GeminiUrl("object?o1=___1.Person-8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(3) .value").Text;
             var dialog = OpenActionDialog("Update Middle Name"); //This is deliberately wrongly marked up as QueryOnly

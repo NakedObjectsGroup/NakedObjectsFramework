@@ -64,7 +64,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         private void CheckIndividualItem(int itemNo, string value, bool equal = true)
         {
-            GeminiUrl("object?o1=AdventureWorksModel.SpecialOffer-"+(itemNo+1));
+            GeminiUrl("object?o1=___1.SpecialOffer-"+(itemNo+1));
             wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
             var properties = br.FindElements(By.CssSelector(".property"));
             var html = "Max Qty:\r\n" + value;

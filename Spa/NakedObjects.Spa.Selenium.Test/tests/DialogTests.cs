@@ -81,7 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void DateTimeParmKeepsValue()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Customer-29923&as1=open");
+            GeminiUrl("object?o1=___1.Customer-29923&as1=open");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
             Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value
@@ -298,7 +298,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleValueParameter()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.Product-342&as1=open&d1=BestSpecialOffer");
+            GeminiUrl("object?o1=___1.Product-342&as1=open&d1=BestSpecialOffer");
             var qty = WaitForCss("input#quantity1");
             qty.SendKeys("0");
             Click(OKButton());
@@ -314,7 +314,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleRefParamFromChoices()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.SalesOrderHeader-71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
+            GeminiUrl("object?o1=___1.SalesOrderHeader-71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
@@ -326,7 +326,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CoValidationOfMultipleParameters()
         {
-            GeminiUrl("object?o1=AdventureWorksModel.PurchaseOrderDetail-1632-3660&as1=open&d1=ReceiveGoods");
+            GeminiUrl("object?o1=___1.PurchaseOrderDetail-1632-3660&as1=open&d1=ReceiveGoods");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");
