@@ -116,8 +116,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("#cardnumber1")).GetAttribute("value") == "1111222233334444");
             WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Work Order");
             wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
+        }
 
-
+        public virtual void BackAndForwardOverTransient()
+        {
+            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
+            Click(GetObjectAction("Create New Credit Card"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+            WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
+            Click(br.FindElement(By.CssSelector(".icon-forward")));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
         }
     }
 
@@ -139,6 +149,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CancelTransientObject() { base.CancelTransientObject(); }
         [TestMethod]
         public override void SwapPanesWithTransients() { base.SwapPanesWithTransients(); }
+        [TestMethod]
+        public override void BackAndForwardOverTransient() { base.BackAndForwardOverTransient(); }
     }
     #region browsers specific subclasses
 
@@ -166,7 +178,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
