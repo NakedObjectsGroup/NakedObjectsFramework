@@ -99,6 +99,13 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMask] = mask;
             }
 
+            var multipleLines = parameter.NumberOfLines;
+
+            if (multipleLines > 1) {
+                custom = custom ?? new Dictionary<string, object>();
+                custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
+            }
+
             Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
         }
 
