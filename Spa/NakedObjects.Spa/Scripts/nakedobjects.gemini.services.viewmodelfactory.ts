@@ -13,7 +13,7 @@ module NakedObjects.Angular.Gemini {
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
-        tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData): TableRowViewModel;
+        tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData, idsToShow?: string[]): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
@@ -435,21 +435,29 @@ module NakedObjects.Angular.Gemini {
 
             if (populateItems) {
 
-                _.forEach(items, itemViewModel => {
-                    const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
+                const getActionExtensions = routeData.objectId ?
+                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                    () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
-                    context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, false).
-                        then((obj: DomainObjectRepresentation) => {
+                const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
-                            itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData);
+                getExtensions().then((ext: Extensions) => {
+                    _.forEach(items, itemViewModel => {
+                        const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
 
-                            if (!listViewModel.header) {
-                                listViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
-                                focusManager.focusOverrideOff();
-                                focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
-                            }
+                        context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, false).
+                            then((obj: DomainObjectRepresentation) => {
 
-                        });
+                                itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData, ext.tableViewColumns());
+
+                                if (!listViewModel.header) {
+                                    listViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
+                                    focusManager.focusOverrideOff();
+                                    focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                                }
+
+                            });
+                    });
                 });
             }
 
@@ -537,9 +545,9 @@ module NakedObjects.Angular.Gemini {
         };
 
 
-        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData): TableRowViewModel => {
+        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow? : string[]): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
-            const properties = objectRep.propertyMembers();
+            const properties = idsToShow ?  _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
             tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
 
             return tableRowViewModel;

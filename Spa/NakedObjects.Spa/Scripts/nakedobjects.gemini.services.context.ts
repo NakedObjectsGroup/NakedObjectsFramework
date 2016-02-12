@@ -37,8 +37,8 @@ module NakedObjects.Angular.Gemini {
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
-        getActionFriendlyNameFromMenu: (menuId: string, actionId: string) => angular.IPromise<string>;
-        getActionFriendlyNameFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<string>;
+        getActionExtensionsFromMenu: (menuId: string, actionId: string) => angular.IPromise<Extensions>;
+        getActionExtensionsFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<Extensions>;
 
         swapCurrentObjects();
     }
@@ -351,11 +351,11 @@ module NakedObjects.Angular.Gemini {
             return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };
 
-        context.getActionFriendlyNameFromMenu = (menuId: string, actionId: string) =>
-            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions().friendlyName()));
+        context.getActionExtensionsFromMenu = (menuId: string, actionId: string) =>
+            context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions()));
 
-        context.getActionFriendlyNameFromObject = (paneId: number, objectId: string, actionId: string) =>
-            context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions().friendlyName()));
+        context.getActionExtensionsFromObject = (paneId: number, objectId: string, actionId: string) =>
+            context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions()));
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<string> {
             return (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};

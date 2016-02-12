@@ -152,10 +152,11 @@ module NakedObjects.Angular.Gemini {
 
             const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
-            const getFriendlyName = routeData.objectId ?
-                () => context.getActionFriendlyNameFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                () => context.getActionFriendlyNameFromMenu(routeData.menuId, routeData.actionId);
-       
+            const getActionExtensions = routeData.objectId ?
+                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+            
+
             if (cachedList) {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const collectionViewModel = perPaneListViews[routeData.paneId];
@@ -171,11 +172,11 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                getFriendlyName().then((name: string) => $scope.title = name);
+                getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
             } else {
                 $scope.listTemplate = listPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-                getFriendlyName().then((name: string) => $scope.title = name);
+                getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
                 focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);       
             }
         };

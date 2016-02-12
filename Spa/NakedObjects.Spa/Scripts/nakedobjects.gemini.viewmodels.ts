@@ -330,6 +330,9 @@ module NakedObjects.Angular.Gemini {
             private $q : ng.IQService) {
         }
 
+       
+
+
         reset(list : ListRepresentation, routeData : PaneRouteData) {
             this.listRep = list;
             this.routeData = routeData; 
@@ -356,6 +359,8 @@ module NakedObjects.Angular.Gemini {
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
+
+          
 
             // todo do more elegantly 
 
