@@ -352,9 +352,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Cannot use enter on a non-modifable property
             CiceroUrl("object?i1=Edit&o1=___1.WorkOrder-37879");
-            WaitForOutput("Editing Work Order: HL Crankset 18/07/2007");
+            WaitForOutputStarting("Editing Work Order: HL Crankset");
             EnterCommand("enter stocked,3");
             WaitForOutput("Stocked Qty is not modifiable");
+
+            // '?' to get details on param
+            CiceroUrl("home?m1=CustomerRepository&d1=FindStoreByName&f1_name=%22%22");
+            WaitForOutputContaining("Action dialog: Find Store By Name");
+            EnterCommand("enter name,?");
+            WaitForOutput("Field name: Name\r\n"+
+                            "Description: partial match\r\n"+
+                            "Type: String\r\n"+
+                            "Mandatory");
+            // '?' to get details on editable prop
+            CiceroUrl("object?i1=Edit&o1=___1.Person-4463&as1=open");
+            WaitForOutput("Editing Person: Nina Nath");
+            EnterCommand("enter mid,?");
+            WaitForOutput("Field name: Middle Name\r\n" +
+                            "Type: String\r\n"+
+                            "Optional");
 
             //Finish somewhere other than home!
             EnterCommand("menu products");
@@ -480,7 +496,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
             //Now with params
             EnterCommand("help me");
-            WaitForOutput("menu command:\r\nOpen a named main menu, from any context. Menu takes one optional argument: the name, or partial name, of the menu. If the partial name matches more than one menu, a list of matches is returned but no menu is opened; if no argument is provided a list of all the menus is returned.");
+            WaitForOutputContaining("menu command:\r\nOpen a named main menu");
             EnterCommand("help menux");
             WaitForOutput("No such command: menux");
             EnterCommand("help menu back");
@@ -1220,7 +1236,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

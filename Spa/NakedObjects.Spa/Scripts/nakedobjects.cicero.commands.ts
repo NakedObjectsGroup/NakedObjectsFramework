@@ -503,7 +503,7 @@ module NakedObjects.Angular.Gemini {
 
         private renderActionDetails(action: ActionMember) {
             let s = "Description for action: " + action.extensions().friendlyName();
-            s += "\n" + action.extensions().description();
+            s += "\n" + (action.extensions().description() || "No description provided");
             this.clearInputAndSetMessage(s);
         }
     }
@@ -545,15 +545,18 @@ module NakedObjects.Angular.Gemini {
     export class Clipboard extends Command {
 
         public fullCommand = "clipboard";
-        public helpText = "The clipboard command is used for temporarily " +
-        "holding a reference to an object, so that it may be used later to enter into a field. " +
-        "Clipboard requires one argument, which may take one of four values: " +
-        "copy, show, go, or discard, each of which may be abbreviated down to one character. " +
-        "Copy copies a reference to the object being viewed into the clipboard, overwriting any existing reference." +
-        "Show displays the content of the clipboard without using it or changing context." +
-        "Go takes you directly to the object held in the clipboard."
-        "Discard removes any existing reference from the clipboard."
-        "The reference held in the clipboard may be used within the Field command.";
+        public helpText = "The clipboard command is used for temporarily\n" +
+        "holding a reference to an object, so that it may be used later\n" +
+        "to enter into a field.\n" +
+        "Clipboard requires one argument, which may take one of four values:\n" +
+        "copy, show, go, or discard\n" +
+        "each of which may be abbreviated down to one character.\n" +
+        "Copy copies a reference to the object being viewed into the clipboard,\n" +
+        "overwriting any existing reference.\n" +
+        "Show displays the content of the clipboard without using it.\n" +
+        "Go takes you directly to the object held in the clipboard.\n"
+        "Discard removes any existing reference from the clipboard.\n"
+        "The reference held in the clipboard may be used within the Enter command.";
 
         protected minArguments = 1;
         protected maxArguments = 1;
@@ -631,16 +634,16 @@ module NakedObjects.Angular.Gemini {
     export class Enter extends Command {
 
         public fullCommand = "enter";
-        public helpText = "Enter a value into a field -  " +
-        " meaning a parameter in an action dialog, " +
-        "or  a property on an object being edited." +
-        "Enter requires 2 arguments. " +
-        "The first argument is the partial field name, which must match a single field. " +
-        "The second optional argument specifies the value, or selection, to be entered. " +
-        "If a question mark is provided as the second argument, the field will not be " +
-        "updated but further details will be provided about that input field." +
-        "If the word paste is used as the second argument, then, provided that the field is " +
-        "a reference field, the object reference in the clipboard will be pasted into the field.";
+        public helpText = "Enter a value into a field,\n" +
+        "meaning a parameter in an action dialog,\n" +
+        "or  a property on an object being edited.\n" +
+        "Enter requires 2 arguments.\n" +
+        "The first argument is the partial field name, which must match a single field.\n" +
+        "The second optional argument specifies the value, or selection, to be entered.\n" +
+        "If a question mark is provided as the second argument, the field will not be\n" +
+        "updated but further details will be provided about that input field.\n" +
+        "If the word paste is used as the second argument, then, provided that the field is\n" +
+        "a reference field, the object reference in the clipboard will be pasted into the field.\n";
         protected minArguments = 2;
         protected maxArguments = 2;
 
@@ -671,7 +674,8 @@ module NakedObjects.Angular.Gemini {
                         case 1:
                             const field = fields[0];
                             if (fieldEntry === "?") {
-                                s = this.renderPropertyDetails(field);
+                                //TODO: does this work in edit mode i.e. show entered value
+                                s = this.renderFieldDetails(field, field.value());
                             } else {
                                 this.setField(field, fieldEntry);
                                 return;
@@ -697,7 +701,10 @@ module NakedObjects.Angular.Gemini {
                         break;
                     case 1:
                         if (fieldEntry === "?") {
-                            this.renderParameterDetails(fieldName, action);
+                            const p = params[0];
+                            const value = this.routeData().dialogFields[p.id()];
+                            const s = this.renderFieldDetails(p, value);
+                            this.clearInputAndSetMessage(s);
                         } else {
                             this.setField(params[0], fieldEntry);
                         }
@@ -850,23 +857,12 @@ module NakedObjects.Angular.Gemini {
             });
         }
 
-        private renderParameterDetails(fieldName: string, action: ActionMember) {
-            let output = "";
-            _.forEach(this.routeData().dialogFields, (value, key) => {
-                output += Helpers.friendlyNameForParam(action, key) + ": ";
-                output += value.toValueString() || "empty";
-                output += "\n";
-            });
-            this.clearInputAndSetMessage(output);
-            return;
-        }
-
-        private renderPropertyDetails(field: PropertyMember) {
+        private renderFieldDetails(field: IField, value: Value): string {
             let s = "Field name: " + field.extensions().friendlyName();
-            s += "\nValue: ";
-            s += field.value().toString() || "empty";
+            const desc = field.extensions().description();
+            s += desc ? "\nDescription: " + desc : "";
             s += "\nType: " + Helpers.friendlyTypeName(field.extensions().returnType());
-            if (field.disabledReason()) {
+            if (field instanceof PropertyMember && field.disabledReason()) {
                 s += "\nUnmodifiable: " + field.disabledReason();
             } else {
                 s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
@@ -876,9 +872,6 @@ module NakedObjects.Angular.Gemini {
                         return s + cho + " ";
                     }, label);
                 }
-                const desc = field.extensions().description()
-                s += desc ? "\nDescription: " + desc : "";
-                //TODO:  Add a Can Paste if clipboard has compatible type
             }
             return s;
         }
@@ -886,7 +879,8 @@ module NakedObjects.Angular.Gemini {
     export class Forward extends Command {
 
         public fullCommand = "forward";
-        public helpText = "Move forward to next context in the history (if you have previously moved back).";
+        public helpText = "Move forward to next context in the history\n" +
+        "(if you have previously moved back).";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -901,8 +895,8 @@ module NakedObjects.Angular.Gemini {
     export class Gemini extends Command {
 
         public fullCommand = "gemini";
-        public helpText = "Switch to the Gemini (graphical) user interface preserving " +
-        "the current context.";
+        public helpText = "Switch to the Gemini (graphical) user interface\n" +
+        "preserving the current context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -917,10 +911,12 @@ module NakedObjects.Angular.Gemini {
     export class Goto extends Command {
 
         public fullCommand = "goto";
-        public helpText = "Go to the object referenced in a property, " +
-        "or to a collection within an object, or an object within an open list or collection. " +
-        "Goto takes one argument.  In the context of an object, that is the name or partial name" +
-        "of the property or collection. In the context of an open list or collection, it is the " +
+        public helpText = "Go to the object referenced in a property,\n" +
+        "or to a collection within an object,\n" +
+        "or to an object within an open list or collection.\n" +
+        "Goto takes one argument.  In the context of an object\n"+
+        "that is the name or partial name of the property or collection.\n"+
+        "In the context of an open list or collection, it is the\n" +
         "number of the item within the list or collection (starting at 1). ";
         protected minArguments = 1;
         protected maxArguments = 1;
@@ -1000,9 +996,9 @@ module NakedObjects.Angular.Gemini {
     export class Help extends Command {
 
         public fullCommand = "help";
-        public helpText = "If no argument specified, help lists the commands available in the current context." +
-        "If help is followed by another command word as an argument (or an abbreviation of it), a description of that " +
-        "specified Command will be returned.";
+        public helpText = "If no argument is specified, help lists the commands available\n" +
+        "in the current context. If help is followed by another command word as an argument\n" +
+        "(or an abbreviation of it), a description of the specified Command is returned.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1028,10 +1024,10 @@ module NakedObjects.Angular.Gemini {
     export class Menu extends Command {
 
         public fullCommand = "menu";
-        public helpText = "Open a named main menu, from any context. " +
-        "Menu takes one optional argument: the name, or partial name, of the menu. " +
-        "If the partial name matches more than one menu, a list of matches is returned " +
-        "but no menu is opened; if no argument is provided a list of all the menus " +
+        public helpText = "Open a named main menu, from any context.\n" +
+        "Menu takes one optional argument: the name, or partial name, of the menu.\n" +
+        "If the partial name matches more than one menu, a list of matches is returned\n" +
+        "but no menu is opened; if no argument is provided a list of all the menus\n" +
         "is returned.";
         protected minArguments = 0;
         protected maxArguments = 1;
@@ -1072,7 +1068,7 @@ module NakedObjects.Angular.Gemini {
     export class OK extends Command {
 
         public fullCommand = "ok";
-        public helpText = "Invoke the action currently open as a dialog. " +
+        public helpText = "Invoke the action currently open as a dialog.\n" +
         "Fields in the dialog should be completed before this.";
         protected minArguments = 0;
         protected maxArguments = 0;
@@ -1103,9 +1099,10 @@ module NakedObjects.Angular.Gemini {
     }
     export class Page extends Command {
         public fullCommand = "page";
-        public helpText = "Supports paging of returned lists." +
-        "The page command takes a single argument, which may be one of these four words: " +
-        "first, previous, next, or last, which may be abbreviated down to the one character. " +
+        public helpText = "Supports paging of returned lists.\n" +
+        "The page command takes a single argument, which may be one of these four words:\n" +
+        "first, previous, next, or last, \n" +
+        "which may be abbreviated down to the first character.\n" +
         "Alternative, the argument may be a specific page number.";
         protected minArguments = 1;
         protected maxArguments = 1;
@@ -1160,9 +1157,9 @@ module NakedObjects.Angular.Gemini {
     export class Property extends Command {
 
         public fullCommand = "property";
-        public helpText = "Display the name and content of one or more properties of an object." +
-        "Field may take 1 argument:  the partial field name. " +
-        "If this matches more than one property, a list of matches is returned. " +
+        public helpText = "Display the name and content of one or more properties of an object.\n" +
+        "Field may take 1 argument:  the partial field name.\n" +
+        "If this matches more than one property, a list of matches is returned.\n" +
         "If no argument is provided, the full list of properties is returned. ";
         protected minArguments = 0;
         protected maxArguments = 1;
@@ -1188,14 +1185,14 @@ module NakedObjects.Angular.Gemini {
                             break;
                         case 1:
                             if (props.length > 0) {
-                                s = this.renderProp(props[0]);
+                                s = this.renderPropNameAndValue(props[0]);
                             } else {
                                 s = this.renderColl(colls[0]);
                             }
                             break;
                         default:
                             s = _.reduce(props, (s, prop) => {
-                                return s + this.renderProp(prop);
+                                return s + this.renderPropNameAndValue(prop);
                             }, "");
                             s += _.reduce(colls, (s, coll) => {
                                 return s + this.renderColl(coll);
@@ -1205,7 +1202,7 @@ module NakedObjects.Angular.Gemini {
                 });
         }
 
-        private renderProp(pm: PropertyMember): string {
+        private renderPropNameAndValue(pm: PropertyMember): string {
             const name = pm.extensions().friendlyName();
             let value: string;
             const propInUrl = this.routeData().props[pm.id()];
@@ -1235,10 +1232,10 @@ module NakedObjects.Angular.Gemini {
     export class Reload extends Command {
 
         public fullCommand = "reload";
-        public helpText = "Not yet implemented. Reload the data from the server for an object or a list. " +
-        "Note that for a list, which was generated by an action, reload runs the action again - " +
-        "thus ensuring that the list is up to date. However, reloading a list does not reload the " +
-        "individual objects in that list, which may still be cached. Invoking Reload on an " +
+        public helpText = "Not yet implemented. Reload the data from the server for an object or a list.\n" +
+        "Note that for a list, which was generated by an action, reload runs the action again, \n" +
+        "thus ensuring that the list is up to date. However, reloading a list does not reload the\n" +
+        "individual objects in that list, which may still be cached. Invoking Reload on an\n" +
         "individual object, however, will ensure that its fields show the latest server data."
         protected minArguments = 0;
         protected maxArguments = 0;
@@ -1254,8 +1251,8 @@ module NakedObjects.Angular.Gemini {
     export class Root extends Command {
 
         public fullCommand = "root";
-        public helpText = "From within an opend collection context, the root command returns" +
-        " to the root object that owns the collection. Does not take any arguments";
+        public helpText = "From within an opend collection context, the root command returns\n" +
+        " to the root object that owns the collection. Does not take any arguments.\n";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1270,8 +1267,8 @@ module NakedObjects.Angular.Gemini {
     export class Save extends Command {
 
         public fullCommand = "save";
-        public helpText = "Not yet implemented. Save the updated fields on an object that is being edited, and return " +
-        "from edit mode to a normal view of that object";
+        public helpText = "Save the updated fields on an object that is being edited,\n" +
+        "and return from edit mode to a normal view of that object";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1323,12 +1320,12 @@ module NakedObjects.Angular.Gemini {
     export class Selection extends Command {
 
         public fullCommand = "selection";
-        public helpText = "Not yet implemented. Select one or more items from" +
-        "a list, prior to invoking an action on the selection." +
-        "Selection has one mandatory argument, which must be one of these words, " +
-        "though it may be abbreviated: add, remove, all, clear, show. " +
-        "The Add and Remove options must be followed by a second argument specifying " +
-        "the item number, or range, to be added or removed.";
+        public helpText = "Not fully implemented. Select one or more items from a list,\n" +
+        "prior to invoking an action on the selection.\n" +
+        "Selection has one mandatory argument, which must be one of these words,\n" +
+        "add, remove, all, clear, show.\n" +
+        "The Add and Remove options must be followed by a second argument specifying\n" +
+        "the item number, or range, to be added or removed.\n";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -1354,12 +1351,12 @@ module NakedObjects.Angular.Gemini {
     export class Show extends Command {
 
         public fullCommand = "show";
-        public helpText = "Show one or more of the items from or a list view, or " +
-        "an opened object collection. If no arguments are specified, show will list all of the " +
-        "the items in the opened object collection, or the first page of items if in a list view. " +
-        "Alternatively, the command may be specified with an item number, or a range such as 3-5. " +
-        "Not yet implemented: Show can take additional parameters to specify table view, and/or to " +
-        "specify logical matches for items to be shown e.g. status='pending'"
+        public helpText = "Show one or more of the items from or a list view,\n" +
+        "or an opened object collection. If no arguments are specified, \n" +
+        "show will list all of the the items in the opened object collection,\n" +
+        "or the first page of items if in a list view.\n" +
+        "Alternatively, the command may be specified with an item number,\n" +
+        "or a range such as 3-5."
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1412,7 +1409,8 @@ module NakedObjects.Angular.Gemini {
     export class Where extends Command {
 
         public fullCommand = "where";
-        public helpText = "Display a reminder of the current context.";
+        public helpText = "Display a reminder of the current context.\n" +
+        "The same can also be achieved by hitting the Return key on the empty input field.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
