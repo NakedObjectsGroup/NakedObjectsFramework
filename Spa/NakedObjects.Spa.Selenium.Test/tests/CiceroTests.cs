@@ -372,6 +372,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
                             "Type: String\r\n"+
                             "Optional");
 
+            //Conditional choices
+            CiceroUrl("home?m1=ProductRepository&d1=ListProducts");
+            WaitForOutputContaining("Action dialog: List Products");
+            EnterCommand("enter category,cloth");
+            WaitForOutputContaining("Category: Clothing");
+            EnterCommand("enter sub, glove");
+            WaitForOutputContaining("Sub Category: Gloves");
+            EnterCommand("enter sub, bike");
+            WaitForOutput("None of the choices matches bike");
+            EnterCommand("enter category,bike");
+            WaitForOutputContaining("Category: Bikes");
+            EnterCommand("enter sub, bike");
+            WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
+
+            //Multiple choices
+            CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            EnterCommand("enter sub, handle");
+            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            EnterCommand("enter sub, mountain bikes");
+            WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
+
+            //TODO: Conditional multi-choices
+            //CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");
+            //WaitForOutputStarting("Action dialog: Find Products By Category");
+            //EnterCommand("enter Categories,cloth");
+            //WaitForOutputContaining("Categories: -Bikes-Clothing");
+            //EnterCommand("enter sub, glove");
+            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Road Bikes-Gloves");
+            //EnterCommand("enter sub, mount");
+            //WaitForOutputContaining("Sub Categories: -Road Bikes-Gloves");
+
             //Finish somewhere other than home!
             EnterCommand("menu products");
             WaitForOutput("Products menu");
