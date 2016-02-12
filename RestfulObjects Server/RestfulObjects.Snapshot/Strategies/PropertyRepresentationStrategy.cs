@@ -129,6 +129,13 @@ namespace RestfulObjects.Snapshot.Strategies {
                 custom[JsonPropertyNames.CustomMask] = mask;
             }
 
+            var multipleLines = propertyContext.Property.NumberOfLines;
+
+            if (multipleLines > 1) {
+                custom = custom ?? new Dictionary<string, object>();
+                custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
+            }
+
             return custom;
         }
 

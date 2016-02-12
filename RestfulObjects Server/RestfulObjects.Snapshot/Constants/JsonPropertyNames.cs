@@ -71,6 +71,7 @@ namespace RestfulObjects.Snapshot.Constants {
 
         public const string CustomTableViewTitle = "x-ro-nof-tableViewTitle";
         public const string CustomTableViewColumns = "x-ro-nof-tableViewColumns";
+        public const string CustomMultipleLines = "x-ro-nof-multipleLines";
 
         // extensions
         public const string MenuId = "menuId";
