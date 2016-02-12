@@ -54,7 +54,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true)).ToArray();
             OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
-            var objectMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
+            var objectMembers = new OptionalProperty(JsonPropertyNames.PromptMembers, MapRepresentation.Create(props));
 
             if (propertyContext.Property.IsAutoCompleteEnabled) {
                 var searchTerm = new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))));

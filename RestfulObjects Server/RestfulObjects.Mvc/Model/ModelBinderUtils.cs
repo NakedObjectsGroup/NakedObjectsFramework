@@ -111,10 +111,6 @@ namespace RestfulObjects.Mvc.Model {
             return jToken.Children().Cast<JProperty>().Where(filter);
         }
 
-        private static IEnumerable<JProperty> GetNonReservedAndNonMemberProperties(JToken jToken) {
-            return FilterProperties(jToken, c => !IsReservedName(c.Name) && c.Name != JsonPropertyNames.Members);
-        }
-
         private static IEnumerable<JProperty> GetNonReservedProperties(JToken jToken) {
             return FilterProperties(jToken, c => !IsReservedName(c.Name));
         }
@@ -203,7 +199,7 @@ namespace RestfulObjects.Mvc.Model {
         }
 
         private static void PopulatePromptArgumentMap(JToken jObject, ArgumentMap arg) {
-            JToken members = jObject[JsonPropertyNames.Members];
+            JToken members = jObject[JsonPropertyNames.PromptMembers];
             var promptArgumentMap = arg as PromptArgumentMap;
 
             if (promptArgumentMap != null) {
@@ -214,7 +210,7 @@ namespace RestfulObjects.Mvc.Model {
                     promptArgumentMap.MemberMap = new Dictionary<string, IValue>();
                 }
             }
-            arg.Map = GetNonReservedAndNonMemberProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+            arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
         public static ArgumentMap CreateArgumentMap(JObject jObject) {
