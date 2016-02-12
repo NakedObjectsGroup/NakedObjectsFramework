@@ -129,6 +129,8 @@ module NakedObjects.Angular.Gemini {
         isCollectionContributed: boolean;
         onPaneId: number;
 
+        multipleLines : number; 
+
         entryType : EntryType;
 
         prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
