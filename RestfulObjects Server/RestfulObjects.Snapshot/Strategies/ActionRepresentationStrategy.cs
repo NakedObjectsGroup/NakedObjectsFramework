@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -99,10 +100,14 @@ namespace RestfulObjects.Snapshot.Strategies {
                 maxLength: null,
                 pattern: null,
                 memberOrder: actionContext.Action.MemberOrder,
-                customExtensions: actionContext.Action.ExtensionData,
+                customExtensions: GetCustomPropertyExtensions(),
                 returnType: actionContext.Action.ReturnType,
                 elementType: actionContext.Action.ElementType,
                 oidStrategy: OidStrategy);
+        }
+
+        private IDictionary<string, object> GetCustomPropertyExtensions() {
+            return GetTableViewCustomExtensions(actionContext.Action.ExtensionData, actionContext.Action.TableViewData);
         }
 
         private LinkRepresentation CreateActionLink() {

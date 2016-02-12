@@ -5,7 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using NakedObjects.Facade;
+using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
@@ -21,6 +24,16 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         public MapRepresentation GetExtensions() {
             return GetExtensionsForSimple();
+        }
+
+        protected IDictionary<string, object> GetTableViewCustomExtensions(IDictionary<string, object> custom, Tuple<bool, string[]> tableViewData) {
+
+            if (tableViewData != null) {
+                custom = custom ?? new Dictionary<string, object>();
+                custom[JsonPropertyNames.CustomTableViewTitle] = tableViewData.Item1;
+                custom[JsonPropertyNames.CustomTableViewColumns] = tableViewData.Item2;
+            }
+            return custom;
         }
 
         protected abstract MapRepresentation GetExtensionsForSimple();

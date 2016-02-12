@@ -68,6 +68,10 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string PresentationHint = "x-ro-nof-presentationHint";
         public const string RenderInEdit = "x-ro-nof-renderInEditMode";
         public const string PromptMembers = "x-ro-nof-members";
+
+        public const string CustomTableViewTitle = "x-ro-nof-tableViewTitle";
+        public const string CustomTableViewColumns = "x-ro-nof-tableViewColumns";
+
         // extensions
         public const string MenuId = "menuId";
         public const string Pagination = "pagination";
