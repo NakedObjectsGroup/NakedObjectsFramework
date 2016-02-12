@@ -553,7 +553,9 @@ module NakedObjects.Angular.Gemini {
         color: string;
     } 
 
-    export class TableRowViewModel {     
+    export class TableRowViewModel {
+        title: string; 
+        hasTitle: boolean;     
         properties: PropertyViewModel[];
     }
 

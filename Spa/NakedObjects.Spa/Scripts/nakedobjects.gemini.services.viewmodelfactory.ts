@@ -449,9 +449,19 @@ module NakedObjects.Angular.Gemini {
                             then((obj: DomainObjectRepresentation) => {
 
                                 itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData, ext.tableViewColumns());
+                                itemViewModel.target.hasTitle = ext.tableViewTitle();
+                                itemViewModel.target.title = obj.title();
 
                                 if (!listViewModel.header) {
-                                    listViewModel.header = _.map(itemViewModel.target.properties, property => property.title);
+
+                                    const propertiesHeader = _.map(itemViewModel.target.properties, property => property.title);
+
+                                    if (itemViewModel.target.hasTitle) {
+                                        listViewModel.header = [""].concat(propertiesHeader);
+                                    } else {
+                                        listViewModel.header = propertiesHeader;
+                                    }
+
                                     focusManager.focusOverrideOff();
                                     focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
                                 }

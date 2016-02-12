@@ -40,10 +40,13 @@
             </tr>
             </thead>
             <tbody>
-                <tr tabindex="0" ng-repeat="item in collection.items"  class="clickable-area"  gemini-drag  gemini-enter="item.doClick()"  gemini-rightclick="item.doClick(true)">
+                <tr ng-switch="item.target.hasTitle" tabindex="0" ng-repeat="item in collection.items"  class="clickable-area"  gemini-drag  gemini-enter="item.doClick()"  gemini-rightclick="item.doClick(true)">
                     <td class="checkbox">
                         <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.checkboxChange($index)">
-                    </td>
+                    </td>                  
+                    <td ng-click="item.doClick()" ng-switch-when="true" ng-class="item.color" class="cell">
+                         {{item.target.title}}
+                    </td>                   
                     <td  ng-click="item.doClick()" ng-class="item.color" class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
                         <div ng-switch-when="ref" class="clickable-area">
                             {{property.value}}
