@@ -17,5 +17,7 @@ namespace NakedObjects.Facade.Contexts {
         public virtual object ProposedValue { get; set; }
         public abstract ITypeFacade Specification { get; }
         public abstract ITypeFacade ElementSpecification { get; }
+        public virtual string[] Warnings { get; set; }
+        public virtual string[] Messages { get; set; }
     }
 }

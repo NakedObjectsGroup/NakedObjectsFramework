@@ -26,5 +26,7 @@ namespace NakedObjects.Facade.Contexts {
         public override ITypeFacade ElementSpecification {
             get { return Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification; }
         }
+
+      
     }
 }
