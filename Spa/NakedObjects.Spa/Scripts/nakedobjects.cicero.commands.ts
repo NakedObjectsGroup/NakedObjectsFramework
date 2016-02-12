@@ -835,13 +835,19 @@ module NakedObjects.Angular.Gemini {
         }
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
+            //TODO: need to cover both dialog fields and editable properties!
+            const enteredFields = this.routeData().dialogFields;
             const promptRep = field.getPrompts();
             const map = promptRep.getPromptMap();
             const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
-
-            //Awaiting refector to return values, not ChoiceViewModels
-            //this.context.conditionalChoices(promptRep, field.id, null, args);
-            //TODO: to be continued
+            _.forEach(_.keys(args), key => {
+                args[key] = enteredFields[key];
+            });
+            this.context.conditionalChoices(promptRep, field.id(), null, args)
+                .then((choices: _.Dictionary<Value>) => {
+                const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
+                this.switchOnMatches(field, fieldEntry, matches);
+            });
         }
 
         private renderParameterDetails(fieldName: string, action: ActionMember) {
