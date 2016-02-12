@@ -1067,6 +1067,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Unsaved Credit Card");
             EnterCommand("save");
             WaitForOutputStarting("Please complete or correct these fields:");
+            //Request for an expired transient
+            CiceroUrl("object?i1=Transient&o1=___1.CreditCard-37");
+            WaitForOutput("The requested view of unsaved object details has expired");
+        
         }
         public virtual void ScenarioUsingClipboard()
         {
@@ -1216,7 +1220,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+   // [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
