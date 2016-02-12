@@ -49,10 +49,6 @@ module NakedObjects {
         return object && object instanceof Object && "members" in object;
     }
 
-    function isIPromptMap(object: any): object is RoInterfaces.IPromptMap {
-        return object && object instanceof Object && "members" in object;
-    }
-
     function isIValue(object: any): object is RoInterfaces.IValue {
         return object && object instanceof Object && "value" in object;
     }
@@ -816,11 +812,11 @@ module NakedObjects {
         }
 
         setMember(name: string, value: Value) {
-            value.set(this.promptMap["members"] as RoInterfaces.IValueMap, name);
+            value.set(this.promptMap["x-ro-nof-members"] as RoInterfaces.IValueMap, name);
         }    
 
         setMembers(objectValues: () => _.Dictionary<Value>) {
-            if (this.promptMap["members"]) {
+            if (this.promptMap["x-ro-nof-members"]) {
                 _.forEach(objectValues(), (v, k) => this.setMember(k, v));
             }
         }
