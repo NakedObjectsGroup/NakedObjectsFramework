@@ -271,9 +271,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     let roType = ttc "RestfulObjects.Test.Data.WithValue"
     
-    let argsMembers = 
-        TProperty(JsonPropertyNames.Members, 
-                  TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+    let argsObj = TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
                                 
                                 TProperty
@@ -285,7 +283,12 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                 TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
                                 TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
-                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ])
+
+
+    let argsMembers = TProperty(JsonPropertyNames.Members, argsObj )
+
+    let promptArgsMembers = TProperty(JsonPropertyNames.PromptMembers, argsObj )
     
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
     
@@ -298,6 +301,12 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                                          TProperty(JsonPropertyNames.Links, TArray([]))]))
                                                                                                          ]))
     
+    let promptArgP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [promptArgsMembers
+                                                                          TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+                                                                                                           TProperty(JsonPropertyNames.Links, TArray([]))]));
+                                                                          TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
+                                                                                                                 TProperty(JsonPropertyNames.Links, TArray([]))]))
+                                                                                                                 ]))
 
 
     let resultObject = 
@@ -347,7 +356,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                       TArray
                                                                           ([ 
                                                                              TObjectJson
-                                                                                  (argP :: makeLinkPropWithMethodAndTypes "PUT" autoRel 
+                                                                                  (promptArgP :: makeLinkPropWithMethodAndTypes "PUT" autoRel 
                                                                                       (sprintf "objects/%s/properties/%s/prompt" roType  "AConditionalChoicesValue") 
                                                                                       RepresentationTypes.Prompt "" "" true)
                                                                            ]))
@@ -525,9 +534,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
     let roType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = (sprintf "objects/%s/%s" mst (ktc "1"))
     
-    let argsMembers = 
-        TProperty(JsonPropertyNames.Members, 
-                  TObjectJson([ TProperty
+    let argsObj = TObjectJson([ TProperty
                                     ("AChoicesReference", 
                                      
                                      TObjectJson
@@ -570,9 +577,15 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                      TObjectJson
                                          ([ TProperty
                                                 (JsonPropertyNames.Value, TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(oid))) ])) ]))
-                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ])
+
+
+    let argsMembers =   TProperty(JsonPropertyNames.Members, argsObj)
+    let promptArgsMembers =   TProperty(JsonPropertyNames.PromptMembers, argsObj)
     
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
+    let promptArgs = TProperty(JsonPropertyNames.Arguments, TObjectJson([ promptArgsMembers ]))
+
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
     let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
     let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "AReference"
@@ -644,7 +657,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                               
                                               TObjectJson
                                                   (makePropertyMemberShortNoDetails "objects" "AConditionalChoicesReference" roType 
-                                                       "A Conditional Choices Reference" "" mst false val6 argsMembers))
+                                                       "A Conditional Choices Reference" "" mst false val6 promptArgsMembers))
                                          
                                          TProperty
                                              ("ADisabledReference", 
@@ -670,7 +683,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                               
                                               TObjectJson
                                                   (makePropertyMemberShortNoDetails "objects" "AnAutoCompleteReference" roType "An Auto Complete Reference" "" 
-                                                       mst false val5 argsMembers))
+                                                       mst false val5 promptArgsMembers))
                                          
                                          TProperty
                                              ("AnEagerReference", 

@@ -174,7 +174,7 @@ module NakedObjects.Angular.Gemini {
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-                const pArgs = _.omit(viewModel.arguments, "members") as _.Dictionary<Value>;
+                const pArgs = _.omit(viewModel.arguments, "x-ro-nof-members") as _.Dictionary<Value>;
                 const paneId = viewModel.onPaneId;
                 let currentOptions: ChoiceViewModel[] = [];
 
