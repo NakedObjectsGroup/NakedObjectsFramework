@@ -73,6 +73,9 @@ namespace RestfulObjects.Snapshot.Constants {
         public const string CustomTableViewColumns = "x-ro-nof-tableViewColumns";
         public const string CustomMultipleLines = "x-ro-nof-multipleLines";
 
+        public const string CustomWarnings = "x-ro-nof-warnings";
+        public const string CustomMessages = "x-ro-nof-messages";
+
         // extensions
         public const string MenuId = "menuId";
         public const string Pagination = "pagination";

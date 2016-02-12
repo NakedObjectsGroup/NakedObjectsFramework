@@ -24,7 +24,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, actionResult.ActionContext));
             SetResultType(actionResult);
             SetLinks(req, actionResult);
-            SetExtensions();
+            SetExtensions(actionResult);
             SetHeader();
         }
 
@@ -41,8 +41,20 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = CacheType.Transactional;
         }
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
+        private static void AddIfPresent(Dictionary<string, object> exts, string[] warningOrMessage, string type) {
+            if (warningOrMessage?.Length > 0) {
+                exts.Add(type, warningOrMessage);
+            }
+        }
+
+        private void SetExtensions(ActionResultContextFacade actionResult) {
+
+            var exts = new Dictionary<string, object>();
+
+            AddIfPresent(exts, actionResult.Warnings, JsonPropertyNames.CustomWarnings);
+            AddIfPresent(exts, actionResult.Messages, JsonPropertyNames.CustomMessages);
+
+            Extensions = exts.Count > 0 ? RestUtils.CreateMap(exts) : new MapRepresentation();
         }
 
         private void SetLinks(HttpRequestMessage req, ActionResultContextFacade actionResult) {
