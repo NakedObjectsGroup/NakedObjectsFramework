@@ -122,7 +122,8 @@ module NakedObjects.Angular {
     export const nofTableViewTitle = "x-ro-nof-tableViewTitle";
     export const nofTableViewColumns = "x-ro-nof-tableViewColumns";
     export const nofMultipleLines = "x-ro-nof-multipleLines";
-
+    export const nofWarnings = "x-ro-nof-warnings";
+    export const nofMessages = "x-ro-nof-messages";
         
     Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
     

@@ -568,6 +568,8 @@ module NakedObjects {
         tableViewTitle = () => this.wrapped[Angular.nofTableViewTitle] as boolean;
         tableViewColumns = () => this.wrapped[Angular.nofTableViewColumns] as string[];
         multipleLines = () => this.wrapped[Angular.nofMultipleLines] as number;
+        warnings = () => this.wrapped[Angular.nofWarnings] as string[];
+        messages = () => this.wrapped[Angular.nofMessages] as string[];
     } 
 
     // matches a action invoke resource 19.0 representation 
