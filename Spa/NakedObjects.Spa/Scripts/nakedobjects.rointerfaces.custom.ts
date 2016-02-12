@@ -1,10 +1,15 @@
 ﻿module NakedObjects.RoInterfaces.Custom {
  
+    
+
     export interface ICustomExtensions extends RoInterfaces.IExtensions {
         nofChoices?: { [index: string]: (string | number | boolean | ILink)[];}
         nofMenuPath?: string;
         nofMask?: string;
-        nofRenderInEditMode? : boolean;
+        nofRenderInEditMode?: boolean;
+        nofTableViewTitle?: boolean;
+        nofTableViewColumns?: string[];
+        nofMultipleLines? : number; 
     }  
 
     export interface IPagination {

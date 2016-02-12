@@ -545,26 +545,29 @@ module NakedObjects {
 
     export class Extensions {
 
-        constructor(private wrapped: ICustomExtensions) {
-        }
+        constructor(private wrapped: ICustomExtensions) { }
+
         //Standard RO:
-        friendlyName(): string{return this.wrapped.friendlyName; }
-        description(): string { return this.wrapped.description  ;}
-        returnType(): string { return this.wrapped.returnType  ;}
-        optional(): boolean { return this.wrapped.optional  ;}
-        hasParams(): boolean { return this.wrapped.hasParams  ;}
-        elementType(): string { return this.wrapped.elementType  ;}
-        domainType(): string { return this.wrapped.domainType  ;}
-        pluralName(): string { return this.wrapped.pluralName  ;}
-        format(): string { return this.wrapped.format  ;}
-        memberOrder(): number { return this.wrapped.memberOrder  ;}
-        isService(): boolean { return this.wrapped.isService  ;}
-        minLength(): number { return this.wrapped.minLength; }
+        friendlyName = () => this.wrapped.friendlyName;
+        description = () => this.wrapped.description;
+        returnType = () => this.wrapped.returnType;
+        optional = () => this.wrapped.optional;
+        hasParams = () => this.wrapped.hasParams;
+        elementType = () => this.wrapped.elementType;
+        domainType = () => this.wrapped.domainType;
+        pluralName = () => this.wrapped.pluralName;
+        format = () => this.wrapped.format;
+        memberOrder = () => this.wrapped.memberOrder;
+        isService = () => this.wrapped.isService;
+        minLength = () => this.wrapped.minLength; 
         //Nof custom:
-        choices(): { [index: string]: (string | number | boolean | ILink)[]; } { return this.wrapped["x-ro-nof-choices"]  ; }
-        menuPath(): string { return this.wrapped[Angular.nofMenuPath]  ;}
-        mask(): string { return this.wrapped[Angular.nofMask];}
-        renderInEdit(): boolean { return this.wrapped[Angular.nofRenderInEditMode]; }
+        choices = () => this.wrapped[Angular.nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; }
+        menuPath = () => this.wrapped[Angular.nofMenuPath] as string;
+        mask = () => this.wrapped[Angular.nofMask] as string;
+        renderInEdit = () => this.wrapped[Angular.nofRenderInEditMode] as boolean;
+        tableViewTitle = () => this.wrapped[Angular.nofTableViewTitle] as boolean;
+        tableViewColumns = () => this.wrapped[Angular.nofTableViewColumns] as string[];
+        multipleLines = () => this.wrapped[Angular.nofMultipleLines] as number;
     } 
 
     // matches a action invoke resource 19.0 representation 

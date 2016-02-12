@@ -118,6 +118,11 @@ module NakedObjects.Angular {
     export const nofMenuPath = "x-ro-nof-menuPath";
     export const nofMask = "x-ro-nof-mask";
     export const nofRenderInEditMode = "x-ro-nof-renderInEditMode";
+
+    export const nofTableViewTitle = "x-ro-nof-tableViewTitle";
+    export const nofTableViewColumns = "x-ro-nof-tableViewColumns";
+    export const nofMultipleLines = "x-ro-nof-multipleLines";
+
         
     Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
     
