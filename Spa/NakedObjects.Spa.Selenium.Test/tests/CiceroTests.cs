@@ -387,12 +387,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Multiple matches:\r\nMountain Bikes");
 
             //Multiple choices
-            CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
-            EnterCommand("enter sub, handle");
-            WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
-            EnterCommand("enter sub, mountain bikes");
-            WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
+            //CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategories&f1_subCategories=%5B%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F1%22,%22title%22:%22Mountain%20Bikes%22%7D,%7B%22href%22:%22http:%2F%2Flocalhost:61546%2Fobjects%2F___1.ProductSubcategory%2F3%22,%22title%22:%22Touring%20Bikes%22%7D%5D");
+            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            //EnterCommand("enter sub, handle");
+            //WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
+            //EnterCommand("enter sub, mountain bikes");
+            //WaitForOutputContaining("Sub Categories: -Touring Bikes-Handlebars");
 
             //TODO: Conditional multi-choices
             //CiceroUrl("home?m1=ProductRepository&d1=FindProductsByCategory");

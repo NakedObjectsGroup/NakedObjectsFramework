@@ -80,11 +80,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void TableViewWithParmDialogAlreadyOpen()
         {
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22&c1=Table");
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeDiscount&f1_newDiscount=%22%22&c1=Table");
             Reload();
             var rand = new Random();
-            var newMax = rand.Next(1000, 10000).ToString();
-            TypeIntoFieldWithoutClearing("#newmax1", newMax);
+            var newPct = rand.NextDouble().ToString().Substring(0, 4);
+            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             //Now select items
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-8");
@@ -92,7 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitUntilElementDoesNotExist(".dialog");
             Reload();
             //Check that exactly two rows were updated
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(9)")).Count(el => el.Text == newMax) == 2);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 2);
         }
 
         [TestMethod]
@@ -103,15 +103,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             SelectCheckBox("#item1-4");
-            OpenActionDialog("Change Max Quantity");
+            OpenActionDialog("Change Discount");
             var rand = new Random();
-            var newMax = rand.Next(10, 10000).ToString();
-            TypeIntoFieldWithoutClearing("#newmax1", newMax);
+            var newPct = rand.NextDouble().ToString().Substring(0,4);
+            TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
             Reload();
             //Check that exactly three rows were updated
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(9)")).Count(el => el.Text == newMax)==3);
+
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct)==3);
         }
 
         [TestMethod, Ignore] //Pending fix to date issues (date recorded is one day off date entered)
