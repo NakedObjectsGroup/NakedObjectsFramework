@@ -699,12 +699,15 @@ module NakedObjects.Angular.Gemini {
         loading: string;
         template: string;
         footerTemplate: string;
-        goHome: (right? : boolean) => void;
+        goHome: (right?: boolean) => void;
         goBack: () => void;
         goForward: () => void;
         swapPanes: () => void;
         singlePane: (right?: boolean) => void;
         cicero: () => void;
+
+        warnings: string[];
+        messages: string[];
     }
 
     export class CiceroViewModel {

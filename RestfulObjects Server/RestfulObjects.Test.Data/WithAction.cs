@@ -23,6 +23,17 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
+        [QueryOnly]
+        public virtual MostSimple AnActionWithWarningsAndMessages() {
+            Container.WarnUser("warn1");
+            Container.WarnUser("warn2");
+            Container.InformUser("message1");
+            Container.InformUser("message2");
+
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
+
         public virtual MostSimpleViewModel AnActionReturnsViewModel() {
             var vm = Container.NewViewModel<MostSimpleViewModel>();
             vm.Id = 1;

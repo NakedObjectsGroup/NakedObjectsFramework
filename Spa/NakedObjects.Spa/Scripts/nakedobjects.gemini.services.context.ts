@@ -136,7 +136,8 @@ module NakedObjects.Angular.Gemini {
         repLoader: IRepLoader,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
-        $cacheFactory: ng.ICacheFactoryService) {
+        $cacheFactory: ng.ICacheFactoryService,
+        $rootScope : ng.IRootScopeService) {
         const context = <IContextInternal>this;
 
         // cached values
@@ -410,6 +411,12 @@ module NakedObjects.Angular.Gemini {
         let nextTransientId = 0;
 
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
+
+            const warnings = result.extensions().warnings() || [];
+            const messages = result.extensions().messages() || []; 
+
+            $rootScope.$broadcast("nof-warning", warnings);
+            $rootScope.$broadcast("nof-message", messages);
 
             if (result.result().isNull() && result.resultType() !== "void") {
                 return new ErrorMap({}, 0, "no result found");

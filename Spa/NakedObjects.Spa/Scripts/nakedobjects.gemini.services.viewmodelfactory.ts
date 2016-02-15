@@ -601,6 +601,13 @@ module NakedObjects.Angular.Gemini {
 
                 $rootScope.$on("ajax-change", (event, count) =>
                     tvm.loading = count > 0 ? "Loading..." : "");
+
+                $rootScope.$on("nof-warning", (event, warnings) =>
+                    tvm.warnings = warnings);
+
+                $rootScope.$on("nof-message", (event, messages) =>
+                    tvm.messages = messages);
+
                 $rootScope.$on("back", () => {
                     focusManager.focusOverrideOff();
                     navigation.back();

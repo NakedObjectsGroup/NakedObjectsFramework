@@ -6,5 +6,15 @@
 <a class="icon-swap" title="Swap panes (Alt-s)" tabindex="0" gemini-enter="toolBar.swapPanes()" ng-click="toolBar.swapPanes()" accesskey="s"></a>
 <a class="icon-speech" title="Cicero - Speech Interface (Alt-c)" gemini-enter="toolBar.cicero()" ng-click="toolBar.cicero()" tabindex="0" accesskey="c"></a>
 <span>{{toolBar.loading}}</span>
+
+<div class="warnings" ng-repeat="warning in toolBar.warnings">
+    <div>{{warning}}</div>
+</div>
+
+<div class="messages" ng-repeat="message in toolBar.messages">
+    <div>{{message}}</div>
+</div>
+
+
 <div class="currentcopy"></div>
 <a style="display: none"></a> 

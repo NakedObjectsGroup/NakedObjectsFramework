@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Component {
         public string[] Messages {
             get {
                 string[] messageArray = messages.ToArray();
-                ClearMessages();
+                //ClearMessages();
                 return messageArray;
             }
         }
@@ -35,7 +35,7 @@ namespace NakedObjects.Core.Component {
         public string[] Warnings {
             get {
                 string[] warningArray = warnings.ToArray();
-                ClearWarnings();
+                //ClearWarnings();
                 return warningArray;
             }
         }

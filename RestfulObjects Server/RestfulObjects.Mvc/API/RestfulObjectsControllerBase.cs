@@ -646,6 +646,9 @@ namespace RestfulObjects.Mvc {
                 VerifyActionType(serviceName, actionName, "GET");
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
+                result.Warnings = FrameworkFacade.MessageBroker.Warnings;
+                result.Messages = FrameworkFacade.MessageBroker.Messages;
+
                 VerifyNoError(result);
                 //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
