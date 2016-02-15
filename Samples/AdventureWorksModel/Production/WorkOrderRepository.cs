@@ -51,6 +51,14 @@ namespace AdventureWorksModel {
         [QueryOnly]
         public WorkOrder CreateNewWorkOrder3() {
             var product = Random<Product>();
+
+            Container.WarnUser("Creating new work order");
+            Container.WarnUser("For product" + product.Name);
+
+            Container.InformUser("Information message 1");
+            Container.InformUser("Information message 2");
+
+
             return CreateNewWorkOrder(product);
         }
 
