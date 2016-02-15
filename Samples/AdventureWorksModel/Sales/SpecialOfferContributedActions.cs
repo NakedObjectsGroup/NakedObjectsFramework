@@ -47,5 +47,13 @@ namespace AdventureWorksModel.Sales
             }
         }
 
+        public void ChangeDiscount([ContributedAction] IQueryable<SpecialOffer> offers, decimal newDiscount)
+        {
+            foreach (SpecialOffer offer in offers)
+            {
+                offer.DiscountPct = newDiscount;
+            }
+        }
+
     }
 }
