@@ -117,6 +117,9 @@ module NakedObjects.Angular.Gemini {
 
         handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
+            context.clearWarnings();
+            context.clearMessages();
+
             context.getMenus().
                 then((menus: MenusRepresentation) => {
                     $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);

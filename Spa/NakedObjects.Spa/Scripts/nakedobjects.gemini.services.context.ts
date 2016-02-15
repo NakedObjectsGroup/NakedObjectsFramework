@@ -41,6 +41,9 @@ module NakedObjects.Angular.Gemini {
         getActionExtensionsFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<Extensions>;
 
         swapCurrentObjects();
+
+        clearMessages();
+        clearWarnings();
     }
 
     interface IContextInternal extends IContext {
@@ -235,6 +238,15 @@ module NakedObjects.Angular.Gemini {
                     return $q.when(menu);
                 });
         };
+
+        context.clearMessages = () => {         
+            $rootScope.$broadcast("nof-message", []);
+        };
+
+        context.clearWarnings = () => {
+            $rootScope.$broadcast("nof-warning", []);
+        };
+
 
         context.getHome = () => {
             // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 

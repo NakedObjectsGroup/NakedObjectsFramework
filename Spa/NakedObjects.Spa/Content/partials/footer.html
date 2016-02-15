@@ -7,11 +7,11 @@
 <a class="icon-speech" title="Cicero - Speech Interface (Alt-c)" gemini-enter="toolBar.cicero()" ng-click="toolBar.cicero()" tabindex="0" accesskey="c"></a>
 <span>{{toolBar.loading}}</span>
 
-<div class="warnings" ng-repeat="warning in toolBar.warnings">
+<div class="warnings" ng-repeat="warning in toolBar.warnings track by $index">
     <div>{{warning}}</div>
 </div>
 
-<div class="messages" ng-repeat="message in toolBar.messages">
+<div class="messages" ng-repeat="message in toolBar.messages track by $index">
     <div>{{message}}</div>
 </div>
 
