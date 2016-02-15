@@ -25,6 +25,15 @@ namespace AdventureWorksModel {
             var wo = NewTransientInstance<WorkOrder>();
             wo.Product = product;
 
+            // for testing 
+
+            Container.WarnUser("Creating new work order");
+            Container.WarnUser("For product" + product.Name);
+
+            Container.InformUser("Information message 1");
+            Container.InformUser("Information message 2");
+
+
             return wo;
         }
 
