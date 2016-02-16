@@ -208,7 +208,14 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 if (this.value instanceof Date) {
-                    return new Value((this.value as Date).toISOString());
+                    let isoString = (this.value as Date).toISOString();
+
+                    if (this.format === "date") {
+                        // truncate time;
+                        isoString = isoString.substring(0, 10);
+                    }
+                    // date-time
+                    return new Value(isoString);
                 }
 
                 return new Value(this.value as number | string | boolean);

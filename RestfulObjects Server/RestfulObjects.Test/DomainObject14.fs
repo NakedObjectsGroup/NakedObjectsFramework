@@ -1635,7 +1635,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
        
         
         let p = 
-            TObjectJson([ TProperty
+            TObjectJson([ 
+                          TProperty
                               (JsonPropertyNames.Links, 
                                TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
@@ -1652,7 +1653,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     
         
         let p = 
-            TObjectJson([ TProperty
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
+                          TProperty
                               (JsonPropertyNames.Links, 
                                TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
@@ -2268,7 +2270,8 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     
     let makeDTParm pmid = 
         let p = 
-            TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
+                          TProperty(JsonPropertyNames.Links, TArray([]))
                           TProperty(JsonPropertyNames.Extensions, 
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))

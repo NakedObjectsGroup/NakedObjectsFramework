@@ -155,6 +155,10 @@ namespace RestfulObjects.Test.Data {
 
         public virtual void AnActionWithDateTimeParm([Mask("d")] DateTime parm) {}
 
+        public DateTime Default0AnActionWithDateTimeParm() {
+            return new DateTime(2016, 2, 16);
+        }
+
         public virtual IQueryable<MostSimple> AnActionReturnsQueryableWithScalarParameters(int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
             Assert.AreEqual("fred", parm2);

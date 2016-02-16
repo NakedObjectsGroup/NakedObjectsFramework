@@ -84,7 +84,8 @@ let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsCo
     let parsedResult = JObject.Parse(jsonResult)
     
     let parm1 = 
-        TObjectJson([ TProperty
+        TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
+                      TProperty
                           (JsonPropertyNames.Links, 
                            TArray([  ]))
                       TProperty(JsonPropertyNames.Extensions, 

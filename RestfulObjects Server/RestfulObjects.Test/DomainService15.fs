@@ -696,7 +696,8 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
       
         
         let p = 
-            TObjectJson([ TProperty
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
+                          TProperty
                               (JsonPropertyNames.Links, 
                                TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 

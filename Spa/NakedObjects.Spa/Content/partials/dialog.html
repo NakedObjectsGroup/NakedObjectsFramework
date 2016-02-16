@@ -90,7 +90,7 @@
                     <div ng-switch-when="0">
                         <div ng-switch="parameter.returnType">
                             <div ng-switch-when="string" ng-switch="parameter.format">
-                                <div ng-switch-when="date-time">
+                                <div ng-switch-when="date">
                                     <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker />
                                 </div>
                                 <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-switch-default type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" />
