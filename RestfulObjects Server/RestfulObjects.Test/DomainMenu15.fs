@@ -687,7 +687,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("date-time"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("date"))
                                                   TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
                                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))

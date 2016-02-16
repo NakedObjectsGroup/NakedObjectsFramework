@@ -106,7 +106,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
-            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy);
+            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy, true);
         }
 
         private static bool IsUnconditionalChoices(IActionParameterFacade parameter) {
@@ -139,7 +139,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     string title = defaultNakedObject.TitleString;
-                    object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject());
+                    object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject(), true);
                     var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
                     object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, parameter, defaultNakedObject, title, flags);
 

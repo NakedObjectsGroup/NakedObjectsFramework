@@ -159,7 +159,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
                 elementType: propertyContext.ElementSpecification,
-                oidStrategy: OidStrategy);
+                oidStrategy: OidStrategy,
+                useDateOverDateTime: false);
         }
 
         public bool GetHasChoices() {

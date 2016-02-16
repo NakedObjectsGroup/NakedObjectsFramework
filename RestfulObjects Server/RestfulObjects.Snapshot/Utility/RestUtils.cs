@@ -54,7 +54,8 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       IDictionary<string, object> customExtensions,
                                                       ITypeFacade returnType,
                                                       ITypeFacade elementType,
-                                                      IOidStrategy oidStrategy) {
+                                                      IOidStrategy oidStrategy,
+                                                      bool useDateOverDateTime) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -85,7 +86,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
 
             if (returnType != null && !returnType.IsVoid) {
-                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy);
+                Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
                 exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
 
                 // blob and clobs are arrays so do this check first so they are not caught be the collection test after. 
@@ -98,7 +99,7 @@ namespace RestfulObjects.Snapshot.Utility {
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
                 else if (returnType.IsCollection) {
-                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy).Item1);
+                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy, useDateOverDateTime).Item1);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName);
                 }
             }
@@ -147,7 +148,7 @@ namespace RestfulObjects.Snapshot.Utility {
             return valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
         }
 
-        public static PredefinedType TypeToPredefinedType(Type toMapType) {
+        public static PredefinedType TypeToPredefinedType(Type toMapType, bool useDateOverDateTime = false) {
             if (SimpleTypeMap.ContainsKey(toMapType)) {
                 return SimpleTypeMap[toMapType];
             }
@@ -158,7 +159,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
 
             if (typeof (DateTime).IsAssignableFrom(toMapType)) {
-                return PredefinedType.Date_time;
+                return useDateOverDateTime ?  PredefinedType.Date : PredefinedType.Date_time;
             }
 
             if (IsGenericType(toMapType, typeof (ISet<>))) {
@@ -189,10 +190,10 @@ namespace RestfulObjects.Snapshot.Utility {
             return false;
         }
 
-        public static object ObjectToPredefinedType(object toMap) {
-            PredefinedType predefinedType = TypeToPredefinedType(toMap.GetType());
+        public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
+            PredefinedType predefinedType = TypeToPredefinedType(toMap.GetType(), useDateOverDateTime);
             if (predefinedType == PredefinedType.Date_time) {
-                var dt = ((DateTime) toMap);
+                var dt = (DateTime) toMap;
                 if (dt.Kind == DateTimeKind.Unspecified) {
                     // default datetimes to utc
                     dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
@@ -200,23 +201,30 @@ namespace RestfulObjects.Snapshot.Utility {
 
                 return dt.ToUniversalTime();
             }
+            if (predefinedType == PredefinedType.Date) {
+                var dt = ((DateTime) toMap).Date;
+
+                return dt.ToString("yyyy-MM-dd");
+            }
+
+
             return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
         }
 
-        public static PredefinedType? SpecToPredefinedType(ITypeFacade spec) {
+        public static PredefinedType? SpecToPredefinedType(ITypeFacade spec, bool useDateOverDateTime = false) {
             if (spec.IsFileAttachment || spec.IsImage) {
                 return PredefinedType.Blob;
             }
 
             if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
                 Type underlyingType = spec.GetUnderlyingType();
-                return TypeToPredefinedType(underlyingType);
+                return TypeToPredefinedType(underlyingType, useDateOverDateTime);
             }
             return null;
         }
 
-        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy) {
-            PredefinedType? pdt = SpecToPredefinedType(spec);
+        public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime = false) {
+            PredefinedType? pdt = SpecToPredefinedType(spec, useDateOverDateTime);
             return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName(oidStrategy);
         }
 
@@ -225,8 +233,8 @@ namespace RestfulObjects.Snapshot.Utility {
             return pdt.HasValue;
         }
 
-        public static Tuple<string, string> SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy) {
-            PredefinedType? pdt = SpecToPredefinedType(spec);
+        public static Tuple<string, string> SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
+            PredefinedType? pdt = SpecToPredefinedType(spec, useDateOverDateTime);
 
             if (pdt.HasValue) {
                 switch (pdt.Value) {

@@ -87,7 +87,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
                         var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject())).Cast<object>();
-                        var valueObjs = proposedCollection.Select(RestUtils.ObjectToPredefinedType).ToArray();
+                        var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }
                     else {

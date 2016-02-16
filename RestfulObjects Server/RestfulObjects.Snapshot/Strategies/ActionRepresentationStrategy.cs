@@ -103,7 +103,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: actionContext.Action.ReturnType,
                 elementType: actionContext.Action.ElementType,
-                oidStrategy: OidStrategy);
+                oidStrategy: OidStrategy,
+                useDateOverDateTime: false);
         }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {

@@ -489,7 +489,7 @@ namespace RestfulObjects.Snapshot.Utility {
         }
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
-            return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy).Item1;
+            return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy, true).Item1;
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {
