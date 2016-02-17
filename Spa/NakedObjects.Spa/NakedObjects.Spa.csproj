@@ -46,6 +46,7 @@
     <Content Include="Content\partials\singleObject.html" />
     <Content Include="Content\partials\collections.html" />
     <Content Include="Content\gemini.css" />
+    <Content Include="images\calendar.gif" />
     <Content Include="karma.conf.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />

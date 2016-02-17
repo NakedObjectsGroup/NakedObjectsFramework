@@ -74,7 +74,11 @@ module NakedObjects.Angular.Gemini {
                 
                     const optionsObj = {
                         dateFormat: "d M yy", // datepicker format
-                        onSelect: onSelect
+                        onSelect: onSelect,
+                        showOn: "button",
+                        buttonImage: "images/calendar.gif",
+                        buttonImageOnly: true,
+                        buttonText: "Select date"
                     };
 
                     element.datepicker(optionsObj);
