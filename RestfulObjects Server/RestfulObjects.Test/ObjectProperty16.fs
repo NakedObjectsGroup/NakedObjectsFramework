@@ -1467,7 +1467,7 @@ let PutDateTimeValuePropertySuccess(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-          TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-03-21T14:32:16Z").ToUniversalTime()))
+          TProperty(JsonPropertyNames.Value, TObjectVal("2012-03-21"))
           TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
@@ -1483,7 +1483,7 @@ let PutDateTimeValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Date Time Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal("A datetime value for testing"))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("date-time"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("date"))
                                   TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
                                   TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(4))

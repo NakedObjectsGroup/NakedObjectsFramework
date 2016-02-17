@@ -867,7 +867,7 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
 
 
 
-let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) =
+let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 4
       let disabled = mName.Contains("Disabled")       
@@ -890,7 +890,7 @@ let makePropertyMemberDateTime oType (mName : string) (oName : string) fName des
                                                              TProperty(JsonPropertyNames.Description, TObjectVal(desc));
                                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"));
                                                              TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
-                                                             TProperty(JsonPropertyNames.Format, TObjectVal("date-time"));
+                                                             TProperty(JsonPropertyNames.Format, TObjectVal(format));
                                                              TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
                                                              TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
                                                              TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"));

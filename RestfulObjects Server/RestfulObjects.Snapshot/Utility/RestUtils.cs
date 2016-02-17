@@ -203,10 +203,8 @@ namespace RestfulObjects.Snapshot.Utility {
             }
             if (predefinedType == PredefinedType.Date) {
                 var dt = ((DateTime) toMap).Date;
-
                 return dt.ToString("yyyy-MM-dd");
             }
-
 
             return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
         }

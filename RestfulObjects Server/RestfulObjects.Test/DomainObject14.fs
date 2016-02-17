@@ -264,7 +264,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
                           ("Id", 
                            
                            TObjectJson
-                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal((new DateTime(634835232000000000L, DateTimeKind.Utc)).ToUniversalTime())))) ]))
+                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal("2012-09-18")) "date" )) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Date Time Key"))
@@ -480,7 +480,7 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -547,7 +547,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("UShort", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     //let dt = DateTime.Parse("2012-03-27T08:42:36Z").ToUniversalTime()
-    let dt = (new DateTime(2012, 03, 27, 08, 42, 36, 0, DateTimeKind.Utc)).ToUniversalTime()
+    let dt = "2012-03-27"
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -570,7 +570,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Decimal", TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oid "Decimal" "" "decimal" false (TObjectVal(5.1))))
                       
                       TProperty
-                          ("DateTime", TObjectJson(makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date-time" false (TObjectVal(dt))))
+                          ("DateTime", TObjectJson(makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date" false (TObjectVal(dt))))
                       TProperty("Double", TObjectJson(makePropertyMemberWithNumber "objects" "Double" oid "Double" "" "decimal" false (TObjectVal(6.2))))
                       
                       TProperty
@@ -647,7 +647,7 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -726,7 +726,7 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -894,7 +894,7 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -989,7 +989,7 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -1095,8 +1095,8 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                           ("DateTime", 
                            
                            TObjectJson
-                               (makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date-time" false 
-                                    (TObjectVal(DateTime.Parse("2011-12-25T12:13:14Z").ToUniversalTime()))))
+                               (makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date" false 
+                                    (TObjectVal("2011-12-25"))))
                       TProperty("Double", TObjectJson(makePropertyMemberWithNumber "objects" "Double" oid "Double" "" "decimal" false (TObjectVal(200.8))))
                       
                       TProperty
@@ -3149,7 +3149,7 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -3613,7 +3613,7 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" rOid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty

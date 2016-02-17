@@ -253,7 +253,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly = false) {
+        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly = false, bool useDateOverDateTime = false) {
             IObjectFacade valueNakedObject = property.GetValue(target);
             string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
@@ -261,7 +261,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 return null;
             }
             if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject());
+                return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject(), useDateOverDateTime);
             }
 
             if (valueOnly) {

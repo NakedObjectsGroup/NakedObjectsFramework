@@ -13,6 +13,7 @@ using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
 using RestfulObjects.Snapshot.Constants;
+using RestfulObjects.Snapshot.Strategies;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Representations {
@@ -111,7 +112,12 @@ namespace RestfulObjects.Snapshot.Representations {
             }
 
             if (IsProtoPersistent(objectContext.Target)) {
-                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true)).ToArray();
+                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
+
+                    var useDate = p.IsUsable(objectContext.Target).IsAllowed || !string.IsNullOrWhiteSpace(p.Mask);
+
+                    return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
+                }).ToArray();
                 OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
                 var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));

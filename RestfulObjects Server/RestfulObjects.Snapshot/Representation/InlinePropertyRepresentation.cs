@@ -32,11 +32,14 @@ namespace RestfulObjects.Snapshot.Representations {
         public bool HasChoices { get; set; }
 
         public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+            var propertyRepresentationStrategy = new PropertyRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags)));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, propertyRepresentationStrategy.UseDateOverDateTime())));
             }
             RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
-            return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, new PropertyRepresentationStrategy(oidStrategy, req, propertyContext, flags)}, optionals);
+            
+            return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, propertyRepresentationStrategy}, optionals);
         }
     }
 }

@@ -22,6 +22,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
+        private IDictionary<string, object> customExtensions;
+
         private void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
             if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
                 links.Add(createPrompt());
@@ -109,34 +111,38 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-            IDictionary<string, object> custom = propertyContext.Property.ExtensionData;
 
-            if (IsUnconditionalChoices()) {
-                Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
+            if (customExtensions == null) {
 
-                OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
-                MapRepresentation map = MapRepresentation.Create(op);
+                customExtensions = propertyContext.Property.ExtensionData;
 
-                custom = custom ?? new Dictionary<string, object>();
-                custom[JsonPropertyNames.CustomChoices] = map;
+                if (IsUnconditionalChoices()) {
+                    Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
+                    Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
+
+                    OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
+                    MapRepresentation map = MapRepresentation.Create(op);
+
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                    customExtensions[JsonPropertyNames.CustomChoices] = map;
+                }
+
+                string mask = propertyContext.Property.Mask;
+
+                if (!string.IsNullOrWhiteSpace(mask)) {
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                    customExtensions[JsonPropertyNames.CustomMask] = mask;
+                }
+
+                var multipleLines = propertyContext.Property.NumberOfLines;
+
+                if (multipleLines > 1) {
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                    customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
+                }
             }
 
-            string mask = propertyContext.Property.Mask;
-
-            if (!string.IsNullOrWhiteSpace(mask)) {
-                custom = custom ?? new Dictionary<string, object>();
-                custom[JsonPropertyNames.CustomMask] = mask;
-            }
-
-            var multipleLines = propertyContext.Property.NumberOfLines;
-
-            if (multipleLines > 1) {
-                custom = custom ?? new Dictionary<string, object>();
-                custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
-            }
-
-            return custom;
+            return customExtensions;
         }
 
         private bool IsUnconditionalChoices() {
@@ -145,7 +151,13 @@ namespace RestfulObjects.Snapshot.Strategies {
                    !propertyContext.Property.GetChoicesParameters().Any();
         }
 
+        public bool UseDateOverDateTime() {
+            var hasMask = GetCustomPropertyExtensions()?.ContainsKey(JsonPropertyNames.CustomMask);
+            return propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed || hasMask.GetValueOrDefault();
+        }
+
         protected override MapRepresentation GetExtensionsForSimple() {
+
             return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name,
                 description: propertyContext.Property.Description,
                 pluralName: null,
@@ -160,7 +172,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 returnType: propertyContext.Specification,
                 elementType: propertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
-                useDateOverDateTime: false);
+                useDateOverDateTime: UseDateOverDateTime());
         }
 
         public bool GetHasChoices() {

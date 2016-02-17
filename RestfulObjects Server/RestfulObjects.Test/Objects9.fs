@@ -276,7 +276,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                 
                                 TProperty
                                     ("ADateTimeValue", 
-                                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+                                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
                                 TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
                                 TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -374,8 +374,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                  TProperty(JsonPropertyNames.Id, TObjectVal("ADateTimeValue"))
                                                                  
                                                                  TProperty
-                                                                     (JsonPropertyNames.Value, 
-                                                                      TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))
+                                                                     (JsonPropertyNames.Value,    TObjectVal("2012-02-10"))
                                                                  TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
                                                                  
                                                                  TProperty
@@ -390,7 +389,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
                                                                                          TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("date-time"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("date"))
                                                                                          
                                                                                          TProperty
                                                                                              (JsonPropertyNames.FriendlyName, TObjectVal("A Date Time Value"))
@@ -911,7 +910,7 @@ let PersistWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                        
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-                                                (TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime()))))
+                                                (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -1358,7 +1357,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControll
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
           TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
           TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
           TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
           TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -1416,7 +1415,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api : RestfulObjec
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
           TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
           TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
           TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
           TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -1570,7 +1569,7 @@ let PersistWithValueTransientObjectFail(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
           TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
           TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
           TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
           TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -1623,7 +1622,7 @@ let PersistWithValueTransientObjectFailInvalid(api : RestfulObjectsControllerBas
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalid"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
           TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
           TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
           TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
           TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
@@ -1962,7 +1961,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api : RestfulObjectsContr
     let members = 
         [ TProperty("AChoicesValue",  TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
           TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(DateTime.Parse("2012-02-10T00:00:00Z").ToUniversalTime())) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
           TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
           TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
           TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))

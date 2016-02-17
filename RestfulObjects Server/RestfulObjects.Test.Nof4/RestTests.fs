@@ -198,6 +198,7 @@ type Nof4Tests() =
         member x.PersistMostSimpleTransientObjectValidateOnly() = Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
         
         [<Test>]
+        [<Ignore>]
         member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api
         
         [<Test>]
