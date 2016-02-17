@@ -42,6 +42,10 @@ module NakedObjects.Angular.Gemini {
                  // only add datepicker if date field not supported 
                 if (element.prop("type") === "date") return;
 
+                const parent = scope.$parent as IPropertyOrParameterScope;
+                const viewModel = parent.parameter || parent.property;
+
+
                 // adding parser at the front that converts to a format angluar parsers understand
                 ngModel.$parsers.reverse();
                 ngModel.$parsers.push(val => {
@@ -56,7 +60,17 @@ module NakedObjects.Angular.Gemini {
 
                 // add our formatter that converts from date to our format
                 ngModel.$formatters = [];
-                ngModel.$formatters.push(val =>  $filter("date")(val, "d MMM yyyy"));
+
+                let filterName = "date";
+                let filterMask = "d MMM yyyy";
+
+                // use viewmodel filter if we've been given one 
+                if (viewModel && viewModel.localFilter) {
+                    filterName = viewModel.localFilter.name;
+                    filterMask = viewModel.localFilter.mask;
+                }
+
+                ngModel.$formatters.push(val => $filter(filterName)(val, filterMask));
                
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {

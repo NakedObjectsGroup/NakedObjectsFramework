@@ -31,9 +31,9 @@
                 <div ng-switch-when="scalar" ng-switch="property.returnType">
 
                     <div ng-switch-when="string" ng-switch="property.format">
-                        <div ng-switch-when="date-time" class='value'>{{property.formattedValue}}</div>
+                        <div ng-switch-when="date" class='value'>{{property.formattedValue}}</div>
                         <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                        <div ng-switch-default class='value'>{{property.value}}</div>
+                        <div ng-switch-default class='value'>{{property.formattedValue}}</div>
                     </div>
 
                     <div ng-switch-when="boolean">
@@ -41,7 +41,7 @@
                     </div>
 
                     <div ng-switch-default>
-                        <div class='value'>{{property.value}}</div>
+                        <div class='value'>{{property.formattedValue}}</div>
                     </div>
                 </div>
             </div>

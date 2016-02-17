@@ -104,6 +104,7 @@ module NakedObjects.Angular.Gemini {
 
         originalValue : Value; 
 
+        localFilter : ILocalFilter; 
         formattedValue: string;
         value: number | string | boolean | Date;    
         id: string; 

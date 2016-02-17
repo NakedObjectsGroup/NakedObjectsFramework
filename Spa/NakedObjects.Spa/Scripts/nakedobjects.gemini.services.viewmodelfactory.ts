@@ -217,12 +217,11 @@ module NakedObjects.Angular.Gemini {
             const remoteMask = parmRep.extensions().mask();
 
             if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask);
+                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(parmRep.extensions().format());
                 if (localFilter) {
-                    // todo formatting will have to happen in directive - at lesat for dates - value is now date in that case
-                    //parmViewModel.value = $filter(localFilter.name)(parmViewModel.value, localFilter.mask);
+                    parmViewModel.localFilter = localFilter;
+                    // formatting also happens in in directive - at least for dates - value is now date in that case
                     parmViewModel.formattedValue = parmViewModel.value ? $filter(localFilter.name)(parmViewModel.value.toString(), localFilter.mask) : "";
-
                 }
             }
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
@@ -409,13 +408,19 @@ module NakedObjects.Angular.Gemini {
             if (propertyRep.isScalar()) {
                 const remoteMask = propertyRep.extensions().mask();
                 const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
+                propertyViewModel.localFilter = localFilter;
+                // formatting also happens in in directive - at least for dates - value is now date in that case
                 if (localFilter) {
                     propertyViewModel.formattedValue = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
                 }
                 else if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
-                } else {
+                }
+                else if (propertyRep.extensions().returnType() === "string") {
                     propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
+                }
+                else {
+                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "0";
                 }
             }
 
