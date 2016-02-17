@@ -129,8 +129,7 @@ module NakedObjects.Angular.Gemini {
                         context.getMenu(routeData.menuId).
                             then((menu: MenuRepresentation) => {
                                 $scope.actionsTemplate = actionsTemplate;
-                                const actions = { actions: _.map(menu.actionMembers(), am => viewModelFactory.actionViewModel( am, routeData)) };
-                                $scope.object = actions;
+                                $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
 
                                 const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.SubAction;
 
@@ -204,7 +203,7 @@ module NakedObjects.Angular.Gemini {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.object = { color: color.toColorFromType(dt) }; 
+            $scope.backgroundColor =  color.toColorFromType(dt); 
 
             deRegObject[routeData.paneId].deReg();
 

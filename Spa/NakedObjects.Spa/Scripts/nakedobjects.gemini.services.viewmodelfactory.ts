@@ -13,6 +13,9 @@ module NakedObjects.Angular.Gemini {
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
         serviceViewModel(serviceRep: DomainObjectRepresentation, routeData: PaneRouteData): ServiceViewModel;
+
+        menuViewModel(menuRep: MenuRepresentation, routeData: PaneRouteData): MenuViewModel;
+
         tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData, idsToShow?: string[]): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
@@ -561,6 +564,16 @@ module NakedObjects.Angular.Gemini {
 
             return serviceViewModel;
         };
+
+        viewModelFactory.menuViewModel = (menuRep: MenuRepresentation, routeData: PaneRouteData) => {
+            const menuViewModel = new MenuViewModel();
+            const actions = menuRep.actionMembers();      
+            menuViewModel.title = menuRep.title();
+            menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
+       
+            return menuViewModel;
+        };
+
 
 
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow? : string[]): TableRowViewModel => {
