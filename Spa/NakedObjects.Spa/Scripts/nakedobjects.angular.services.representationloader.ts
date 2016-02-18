@@ -6,7 +6,8 @@
 module NakedObjects.Angular {
 
     export interface IRepLoader {
-        retrieve : <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }) => ng.IPromise<T>;
+        retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }) => ng.IPromise<T>;
+        retrieveFromLink: <T extends IHateoasModel>(link : Link) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
         invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
@@ -95,6 +96,22 @@ module NakedObjects.Angular {
         };
 
        
+        repLoader.retrieveFromLink = <T extends IHateoasModel>(link : Link): ng.IPromise<T> => {
+
+            const response = link.getTarget();
+
+            const config = {
+                withCredentials: true,
+                url: link.href(),
+                method: link.method(),
+                cache: false
+            };
+
+            return httpPopulate(config, true, response);
+        };
+
+
+
         repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
             const invokeMap = action.getInvoke().getInvokeMap();
             _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));                                      

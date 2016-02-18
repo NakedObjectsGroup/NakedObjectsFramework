@@ -418,6 +418,7 @@ module NakedObjects.Angular.Gemini {
                 }
                 else if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
+                    propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 }
                 else if (propertyRep.extensions().returnType() === "string") {
                     propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
