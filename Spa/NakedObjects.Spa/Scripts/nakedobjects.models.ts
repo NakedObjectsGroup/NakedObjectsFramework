@@ -169,9 +169,7 @@ module NakedObjects {
             const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
 
             return urlParmString !== "" ? url + "?" + urlParmString : url;
-        }
-
-    
+        }   
     }
 
     export abstract class ArgumentMap extends HateosModel {

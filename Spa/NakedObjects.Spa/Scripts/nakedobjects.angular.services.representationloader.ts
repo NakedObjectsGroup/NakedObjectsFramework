@@ -11,7 +11,6 @@ module NakedObjects.Angular {
         invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
 
-    // TODO investigate using transformations to transform results 
     app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService, $cacheFactory : ng.ICacheFactoryService ) {
 
         const repLoader = this as IRepLoader;
