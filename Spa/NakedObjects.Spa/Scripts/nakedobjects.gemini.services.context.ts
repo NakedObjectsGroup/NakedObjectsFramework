@@ -411,7 +411,7 @@ module NakedObjects.Angular.Gemini {
             const map = promptRep.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            return repLoader.populate(map, true, promptRep).then((p: PromptRepresentation) =>  p.choices());
+            return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) =>  p.choices());
         };
 
         context.autoComplete = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
@@ -511,7 +511,7 @@ module NakedObjects.Angular.Gemini {
 
             focusManager.setCurrentPane(paneId);
 
-            return repLoader.populate(invokeMap, true, invoke).
+            return repLoader.retrieve(invokeMap, ActionResultRepresentation).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
                     return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
@@ -563,7 +563,7 @@ module NakedObjects.Angular.Gemini {
     
             _.each(props, (v, k) => update.setProperty(k, v));
 
-            return repLoader.populate(update, true, new DomainObjectRepresentation()).
+            return repLoader.retrieve(update, DomainObjectRepresentation).
                 then((updatedObject: DomainObjectRepresentation) => {
              
                     // This is a kludge because updated object has no self link.
@@ -591,7 +591,7 @@ module NakedObjects.Angular.Gemini {
 
             _.each(props, (v, k) => persist.setMember(k, v));
 
-            return repLoader.populate(persist, true, new DomainObjectRepresentation()).
+            return repLoader.retrieve(persist, DomainObjectRepresentation).
                 then((updatedObject: DomainObjectRepresentation) => {
                     context.setObject(paneId, updatedObject);
                     transientCache.remove(paneId, object.domainType(), object.id());

@@ -6,8 +6,8 @@
 module NakedObjects.Angular {
 
     export interface IRepLoader {
-        retrieve : <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, ignoreCache?: boolean) => ng.IPromise<T>;
-        populate: <T>(m: IHateoasModel, ignoreCache?: boolean, r?: IHateoasModel) => ng.IPromise<T>;
+        retrieve : <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }) => ng.IPromise<T>;
+        populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
         invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
 
@@ -52,11 +52,9 @@ module NakedObjects.Angular {
 
         }
 
+        repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
 
-        // todo change this - make T an IHateosModel create a new and return 
-        repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
-
-            const response = expected || model;
+            const response =  model;
             const useCache = !ignoreCache;
 
             const config = {
@@ -70,29 +68,27 @@ module NakedObjects.Angular {
             return httpPopulate(config, ignoreCache, response);
         };
 
-        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }, ignoreCache?: boolean): ng.IPromise<T> => {
+        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }): ng.IPromise<T> => {
 
             const response = new rc();
-            const useCache = !ignoreCache;
 
             const config = {
                 withCredentials: true,
                 url: map.getUrl(),
                 method: map.method,
-                cache: useCache,
+                cache: false,
                 data: map.getBody()
             };
 
-            return httpPopulate(config, ignoreCache, response);
+            return httpPopulate(config, true, response);
         };
 
        
         repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
-            const invoke = action.getInvoke();
-            const invokeMap = invoke.getInvokeMap();
+            const invokeMap = action.getInvoke().getInvokeMap();
             _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));                                      
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
-            return this.populate (invokeMap, true, invoke);
+            return this.retrieve (invokeMap, ActionResultRepresentation);
         }
     });
 
