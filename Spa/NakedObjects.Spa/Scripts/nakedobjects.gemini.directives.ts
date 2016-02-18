@@ -136,8 +136,6 @@ module NakedObjects.Angular.Gemini {
              
                 const updateModel = (cvm: ChoiceViewModel) => {
 
-                    //context.setSelectedChoice(cvm.id, cvm.search, cvm);
-
                     scope.$apply(() => {
                         ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
@@ -200,30 +198,34 @@ module NakedObjects.Angular.Gemini {
                     return object && "properties" in object;
                 }
 
+                function mapValues(args : _.Dictionary<Value>, parmsOrProps : { argId : string, getValue : () => Value  }[]  ) {
+                    return _.mapValues(pArgs, (v, n) => {
+                        const pop = _.find(parmsOrProps, p => p.argId === n);
+                        return pop.getValue();
+                    });
+                }
+
+
                 function populateArguments() {
-                    const nArgs = <_.Dictionary<Value>>{};
 
                     const dialog = parent.dialog;
                     const object = parent.object;
 
-                    // todo replace with _.mapValue 
+                    if (!dialog && !object) {
+                        throw { message: "Expect dialog or object in geminiConditionalchoices", stack: "" };
+                    }
+
+                    let parmsOrProps: { argId: string, getValue: () => Value }[] = [];
+
                     if (dialog) {
-                        _.forEach(pArgs, (v, n) => {
-                            const parm = _.find(dialog.parameters, p => p.argId === n);
-                            const newValue = parm.getValue();
-                            nArgs[n] = newValue;
-                        });
+                        parmsOrProps = dialog.parameters;
                     }
 
                     if (isDomainObjectViewModel(object)) {
-                        _.forEach(pArgs, (v, n) => {
-                            const property = _.find(object.properties, p => p.argId === n);
-                            const newValue = property.getValue();
-                            nArgs[n] = newValue;
-                        });
+                        parmsOrProps = object.properties;
                     }
 
-                    return nArgs;
+                    return mapValues(pArgs, parmsOrProps);
                 }
 
                 function populateDropdown() {
@@ -293,10 +295,7 @@ module NakedObjects.Angular.Gemini {
                     $(element).on("change", optionChanged);
                 }
 
-                ngModel.$render = () => {
-                    // initial populate
-                    //populateDropdown();
-                }; // do on the next event loop,
+                ngModel.$render = () => {}; // do on the next event loop,
 
                 setTimeout(() => {
                     setListeners();

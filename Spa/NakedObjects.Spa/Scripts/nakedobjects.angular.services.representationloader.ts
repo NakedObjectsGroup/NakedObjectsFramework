@@ -6,6 +6,7 @@
 module NakedObjects.Angular {
 
     export interface IRepLoader {
+        retrieve : <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, ignoreCache?: boolean) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean, r?: IHateoasModel) => ng.IPromise<T>;
         invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
@@ -14,21 +15,9 @@ module NakedObjects.Angular {
     app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService, $cacheFactory : ng.ICacheFactoryService ) {
 
         const repLoader = this as IRepLoader;
-        let loadingCount = 0; 
+        let loadingCount = 0;
 
-        repLoader.populate = <T>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
-
-            const response = expected || model;
-            const useCache = !ignoreCache;
-
-            const config = {
-                withCredentials : true,
-                url: model.getUrl(),
-                method: model.method,
-                cache: useCache,
-                data: model.getBody()
-            };
-
+        function httpPopulate(config : ng.IRequestConfig, ignoreCache : boolean, response : IHateoasModel) : ng.IPromise<IHateoasModel> {
             $rootScope.$broadcast("ajax-change", ++loadingCount);
 
             if (ignoreCache) {
@@ -44,10 +33,10 @@ module NakedObjects.Angular {
                 }).
                 catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
 
-                    let reason: ErrorRepresentation | ErrorMap | string; 
+                    let reason: ErrorRepresentation | ErrorMap | string;
 
                     if (promiseCallback.status === 500) {
-                        const error  = new ErrorRepresentation();  
+                        const error = new ErrorRepresentation();
                         error.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
                         reason = error;
                     }
@@ -60,6 +49,41 @@ module NakedObjects.Angular {
                     $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.reject(reason);
                 });
+
+        }
+
+
+        // todo change this - make T an IHateosModel create a new and return 
+        repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean, expected?: IHateoasModel): ng.IPromise<T> => {
+
+            const response = expected || model;
+            const useCache = !ignoreCache;
+
+            const config = {
+                withCredentials : true,
+                url: model.getUrl(),
+                method: model.method,
+                cache: useCache,
+                data: model.getBody()
+            };
+
+            return httpPopulate(config, ignoreCache, response);
+        };
+
+        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }, ignoreCache?: boolean): ng.IPromise<T> => {
+
+            const response = new rc();
+            const useCache = !ignoreCache;
+
+            const config = {
+                withCredentials: true,
+                url: map.getUrl(),
+                method: map.method,
+                cache: useCache,
+                data: map.getBody()
+            };
+
+            return httpPopulate(config, ignoreCache, response);
         };
 
        
@@ -70,7 +94,6 @@ module NakedObjects.Angular {
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
             return this.populate (invokeMap, true, invoke);
         }
-
     });
 
 }

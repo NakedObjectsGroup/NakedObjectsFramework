@@ -109,7 +109,7 @@ module NakedObjects.Gemini.Test {
 
             function verifyOpenMenuHomePageState(ts: INakedObjectsScope) {
                 expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);
-                expect((<{ actions: ActionViewModel[] }>ts.object).actions.length).toBe(4);
+                expect(ts.menu.actions.length).toBe(4);
             }
 
             function verifyOpenDialogHomePageState(ts: INakedObjectsScope) {          
