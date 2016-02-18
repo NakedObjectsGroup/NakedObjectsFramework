@@ -721,9 +721,8 @@ module NakedObjects.Angular.Gemini {
                                 }
                                 cvm.clearInput();
                                 cvm.output = output;
-                            }).catch(error => {
-                                //TODO: refactor to use a safer error (or at minimum a constant instead of literal)
-                                if (error == "expired transient") {
+                            }).catch((reject: RejectedPromise) => {
+                                if (reject.rejectReason === RejectReason.ExpiredTransient) {
                                     cvm.output = "The requested view of unsaved object details has expired";
                                 }
                             });

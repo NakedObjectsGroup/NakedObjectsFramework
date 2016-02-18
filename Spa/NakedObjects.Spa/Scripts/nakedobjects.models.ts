@@ -65,10 +65,6 @@ module NakedObjects {
         return _.map(links, l => new Link(l));
     }
 
-    function wrapExtensions(links: ILink[]) {
-        return _.map(links, l => new Link(l));
-    }
-
     function getLinkByRel(links: Link[], rel: Rel) {
         return _.find(links, i => i.rel().uniqueValue === rel.uniqueValue);
     }
@@ -90,6 +86,28 @@ module NakedObjects {
         populate(wrapped: RoInterfaces.IRepresentation);
         getBody(): RoInterfaces.IRepresentation;
         getUrl() : string;
+    }
+
+   
+    export enum RejectReason {
+        ExpiredTransient, 
+        WrongType, 
+        NotImplemented,
+        SoftwareError,
+        RequestError,
+        UnknownError
+    }
+
+    export class RejectedPromise {
+        constructor(rr : RejectReason, msg : string, err? : ErrorMap | ErrorRepresentation) {
+            this.rejectReason = rr;
+            this.message = msg;
+            this.error = err;
+        }
+
+        rejectReason: RejectReason;
+        message: string;
+        error : ErrorMap | ErrorRepresentation;
     }
 
     // abstract classes 

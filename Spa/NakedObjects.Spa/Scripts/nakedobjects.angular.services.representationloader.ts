@@ -32,22 +32,34 @@ module NakedObjects.Angular {
                     return $q.when(response);
                 }).
                 catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
-
-                    let reason: ErrorRepresentation | ErrorMap | string;
+                    
+                    let message: string;
+                    let reason: RejectReason;
+                    let error: ErrorRepresentation | ErrorMap;
 
                     if (promiseCallback.status === 500) {
-                        const error = new ErrorRepresentation();
-                        error.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
-                        reason = error;
+                        const errorRep = new ErrorRepresentation();
+                        errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
+                        reason = RejectReason.SoftwareError;
+                        error = errorRep;
+                        message = "";
                     }
                     else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
-                        reason = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, promiseCallback.headers("warning"));
+                        reason = RejectReason.RequestError;
+                        message = promiseCallback.headers("warning");
+                        error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
                     }
                     else {
-                        reason = promiseCallback.headers("warning") || "unknown server error";
+                        reason = RejectReason.UnknownError;
+                        message = promiseCallback.headers("warning") || "unknown server error";
+                        error = null;
                     }
+
                     $rootScope.$broadcast("ajax-change", --loadingCount);
-                    return $q.reject(reason);
+
+                    const rr = new RejectedPromise(reason, message, error);
+
+                    return $q.reject(rr);
                 });
 
         }

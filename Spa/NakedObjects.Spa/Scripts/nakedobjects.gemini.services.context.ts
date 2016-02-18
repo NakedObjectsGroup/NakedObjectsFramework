@@ -53,7 +53,7 @@ module NakedObjects.Angular.Gemini {
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
         setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ErrorMap;
-        setInvokeUpdateError(error: ErrorMap | ErrorRepresentation | string) : ErrorMap;
+        setInvokeUpdateError(reject: RejectedPromise): ErrorMap;
         setPreviousUrl: (url: string) => void;
     }
 
@@ -177,7 +177,7 @@ module NakedObjects.Angular.Gemini {
             // deeper cache for transients
             if (transient) {
                 const transientObj = transientCache.get(paneId, type, id);
-                return transientObj ? $q.when(transientObj) : $q.reject("expired transient");
+                return transientObj ? $q.when(transientObj) : $q.reject(new RejectedPromise(RejectReason.ExpiredTransient, ""));
             }
 
             const object = new DomainObjectRepresentation();
@@ -355,7 +355,7 @@ module NakedObjects.Angular.Gemini {
                 cacheList(resultList, index);
                 return $q.when(resultList);
             } else {
-                return $q.reject("expect list");
+                return $q.reject(new RejectedPromise(RejectReason.WrongType, "expect list"));
             }
         }
 
@@ -491,21 +491,23 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        context.setInvokeUpdateError = (error: ErrorMap | ErrorRepresentation | string) => {
-            const err = error as ErrorMap | ErrorRepresentation | string;
-         
+        context.setInvokeUpdateError = (reject : RejectedPromise) => {
+            const err = reject.error as ErrorMap | ErrorRepresentation;
+
             if (err instanceof ErrorMap) {
-                return err;
+                return err as ErrorMap;
             }
             else if (err instanceof ErrorRepresentation) {
-                setErrorRep(err);
+                setErrorRep(err as ErrorRepresentation);
             }
             else {
-                setError(err as string);
+                setError(reject.message);
             }
 
             return new ErrorMap({}, 0, "");
         };
+
+
 
         function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void) {
 
@@ -516,8 +518,8 @@ module NakedObjects.Angular.Gemini {
                     setDirty();
                     return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
                 }).
-                catch((error: any) => {
-                    return $q.when(context.setInvokeUpdateError(error));
+                catch((reject: RejectedPromise) => {
+                    return $q.when(context.setInvokeUpdateError(reject));
                 });
         }
 
@@ -581,8 +583,8 @@ module NakedObjects.Angular.Gemini {
                     }
                     return $q.when(new ErrorMap({}, 0, ""));
                 }).
-                catch((error: any) => {
-                    return $q.when(context.setInvokeUpdateError(error));
+                catch((reject: RejectedPromise) => {
+                    return $q.when(context.setInvokeUpdateError(reject));
                 });
         };
 
@@ -606,8 +608,8 @@ module NakedObjects.Angular.Gemini {
 
                     return $q.when(new ErrorMap({}, 0, ""));
                 }).
-                catch((error: any) => {
-                    return $q.when(context.setInvokeUpdateError(error));
+                catch((reject: RejectedPromise) => {
+                    return $q.when(context.setInvokeUpdateError(reject));
                 });
         };
 
@@ -629,7 +631,7 @@ module NakedObjects.Angular.Gemini {
                     subTypeCache[toCheckType] = entry;
                     return is;
                 }).
-                catch((error: any) => {
+                catch((reject: RejectedPromise) => {
                     return false;
                 });
         }

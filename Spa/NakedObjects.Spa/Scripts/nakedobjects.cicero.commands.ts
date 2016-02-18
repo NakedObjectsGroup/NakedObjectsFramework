@@ -182,16 +182,13 @@ module NakedObjects.Angular.Gemini {
         protected getActionForCurrentDialog(): ng.IPromise<ActionMember> {
             const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
-                return this.getObject().then((obj: DomainObjectRepresentation) => {
-                    return this.$q.when(obj.actionMember(dialogId));
-                });
+                return this.getObject().then((obj: DomainObjectRepresentation) => this.$q.when(obj.actionMember(dialogId)));
             } else if (this.isMenu()) {
-                return this.getMenu().then((menu: MenuRepresentation) => {
-                    return this.$q.when(menu.actionMember(dialogId)); //i.e. return a promise
-                });
+                return this.getMenu().then((menu: MenuRepresentation) => this.$q.when(menu.actionMember(dialogId))); //i.e. return a promise
             }
-            return this.$q.reject("List actions not implemented yet");
+            return this.$q.reject(new RejectedPromise(RejectReason.NotImplemented, "List actions not implemented yet"));
         }
+
         //Tests that at least one collection is open (should only be one). 
         //TODO: assumes that closing collection removes it from routeData NOT sets it to Summary
         protected isCollection(): boolean {

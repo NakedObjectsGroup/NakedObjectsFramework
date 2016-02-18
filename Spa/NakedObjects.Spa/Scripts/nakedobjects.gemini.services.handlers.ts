@@ -4,8 +4,6 @@
 
 module NakedObjects.Angular.Gemini {
 
-    // todo improve error handling
-
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
         handleError($scope: INakedObjectsScope): void;
@@ -15,7 +13,7 @@ module NakedObjects.Angular.Gemini {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager, $timeout: ng.ITimeoutService) {
+    app.service("handlers", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
         const handlers = <IHandlers>this;
 
         const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
@@ -35,23 +33,23 @@ module NakedObjects.Angular.Gemini {
             context.setError(errorRep);
             urlManager.setError();
         }
-
-        function setError(error: ErrorRepresentation);
-        function setError(error: ErrorMap);
-        function setError(error: any) {
+  
+        function setError(error: ErrorMap | ErrorRepresentation, msg: string) {
             if (error instanceof ErrorRepresentation) {
-                context.setError(error);
+                context.setError(error as ErrorRepresentation);
             } else if (error instanceof ErrorMap) {
-                const em = <ErrorMap>error;
-                const errorRep = ErrorRepresentation.create(`unexpected error map: ${em.warningMessage}`);
+                const errorRep = ErrorRepresentation.create(`unexpected error map: ${error.warningMessage}`);
                 context.setError(errorRep);
             } else {
-                error = error || "unknown";
-                const errorRep = ErrorRepresentation.create(`unexpected error: ${error.toString()}`);
+                const errorRep = ErrorRepresentation.create(`unexpected error: ${msg}`);
                 context.setError(errorRep);
             }
 
             urlManager.setError();
+        }
+
+        function setRejection(reject: RejectedPromise) {
+            setError(reject.error, reject.message);
         }
 
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
@@ -66,14 +64,16 @@ module NakedObjects.Angular.Gemini {
             }
         }
 
-        // todo just make array of functions ?
         class DeReg {
-            deRegLocation: () => void = () => { };
-            deRegSearch: () => void = () => { };
-            deRegSwap: () => void = () => { };
-            deReg() {
-                this.deRegLocation();
-                this.deRegSearch();
+
+            private deRegers : (() =>void)[];
+
+            add(newF: () => void) {
+                this.deRegers.push(newF);
+            }
+            deReg() {   
+                _.forEach(this.deRegers, d => d());
+                this.deRegers = [];
             }
         }
 
@@ -89,8 +89,8 @@ module NakedObjects.Angular.Gemini {
             dialogViewModel.reset(actionViewModel, routeData);
             $scope.dialog = dialogViewModel; 
 
-            deRegDialog[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void;
-            deRegDialog[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void;
+            deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
+            deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
         }
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
@@ -139,14 +139,14 @@ module NakedObjects.Angular.Gemini {
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                            }).catch(error => {
-                                setError(error);
+                            }).catch((reject : RejectedPromise) => {
+                                setRejection(reject);
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
-                }).catch(error => {
-                    setError(error);
+                }).catch((reject: RejectedPromise) => {
+                    setRejection(reject);
                 });
         };       
 
@@ -210,7 +210,6 @@ module NakedObjects.Angular.Gemini {
             context.getObject(routeData.paneId, dt, id, routeData.interactionMode === InteractionMode.Transient).
                 then((object: DomainObjectRepresentation) => {
                     
-
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
                     $scope.object = ovm;
@@ -244,17 +243,16 @@ module NakedObjects.Angular.Gemini {
 
                     focusManager.focusOn(focusTarget, 0, routeData.paneId);
 
-                    deRegObject[routeData.paneId].deRegLocation = $scope.$on("$locationChangeStart", ovm.setProperties) as () => void;
-                    deRegObject[routeData.paneId].deRegSearch = $scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void;
-                    deRegObject[routeData.paneId].deRegSwap = $scope.$on("pane-swap", ovm.setProperties) as () => void;
+                    deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
+                    deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
+                    deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
 
-                }).catch(error => {
-                    // todo create a proper error wrapper for this 
-                    if (error === "expired transient") {
+                }).catch((reject : RejectedPromise) => {
+                    if (reject.rejectReason === RejectReason.ExpiredTransient) {
                         $scope.objectTemplate = expiredTransientTemplate;
                     } else {
-                        setError(error);
-                    }
+                        setRejection(reject); 
+                    }                              
                 });
 
         };
