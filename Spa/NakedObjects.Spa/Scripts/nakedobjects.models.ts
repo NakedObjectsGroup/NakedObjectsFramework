@@ -715,15 +715,6 @@ module NakedObjects {
 
         private hasChoices(): boolean { return _.any(this.choices()); }
 
-        //isMultipleChoices(): boolean {
-         
-        //    return (this.hasChoices() || this.hasConditionalChoices()) && this.extensions().returnType() === "list";
-        //}
-
-        //hasConditionalChoices(): boolean {
-        //    return !!this.promptLink() && !this.hasPrompt();
-        //}
-
         entryType(): EntryType {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 

@@ -192,14 +192,8 @@ module NakedObjects.Angular.Gemini {
         };
 
         context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => {
-
-            const reloadedObject = new DomainObjectRepresentation();
-
-            // todo should be in view model
-            reloadedObject.hateoasUrl = getAppPath() + "/objects/" + object.domainType() + "/" + object.instanceId();
-
-            return repLoader.populate<DomainObjectRepresentation>(reloadedObject, true).
-                then((obj: DomainObjectRepresentation) => {
+            return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink()).
+                then(obj => {
                     currentObjects[paneId] = obj;
                     return $q.when(obj);
                 });
@@ -523,25 +517,30 @@ module NakedObjects.Angular.Gemini {
                 });
         }
 
-        function getSetDirtyFunction(action: ActionMember, parms: Value[]) {
+        function getSetDirtyFunction(action: ActionMember, parms: _.Dictionary<Value>) {
             const parent = action.parent;
             const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
-            if (parent instanceof DomainObjectRepresentation) {
-                if (actionIsNotQueryOnly) {
-                    return () => dirtyCache.setDirty(parent);
-                }
-            }
-            else if (parent instanceof ListRepresentation && parms) {
-                if (actionIsNotQueryOnly) {
-                    // todo can we optimize this ? 
-                    // todo match parm id of cca parm with passed in id - make values map ?
-                    const list = _.filter(parms, v => v.isList());
-                    const lists = _.map(list, v => v.list());
-                    const values = _.flatten(lists);
-                    const objs = _.filter(values, v => v.isReference());
-                    const links = _.map(objs, v => v.link()); 
 
-                    return () =>  _.forEach(links, l => dirtyCache.setDirty(l));
+            if (actionIsNotQueryOnly) {
+                if (parent instanceof DomainObjectRepresentation) {
+                    return () => dirtyCache.setDirty(parent);
+                } else if (parent instanceof ListRepresentation && parms) {
+
+                    const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
+                    const ccaId = ccaParm ? ccaParm.id() : null;
+                    const ccaValue = ccaId ? parms[ccaId] : null;
+
+                    // this should always be true 
+                    if (ccaValue && ccaValue.isList()) {
+
+                        const links = _
+                            .chain(ccaValue.list())
+                            .filter(v => v.isReference())
+                            .map(v => v.link())
+                            .value();
+
+                        return () => _.forEach(links, l => dirtyCache.setDirty(l));
+                    }
                 }
             }
 
@@ -555,7 +554,7 @@ module NakedObjects.Angular.Gemini {
          
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
-            const setDirty = getSetDirtyFunction(action, _.values<Value>(parms));
+            const setDirty = getSetDirtyFunction(action, parms);
 
             return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
