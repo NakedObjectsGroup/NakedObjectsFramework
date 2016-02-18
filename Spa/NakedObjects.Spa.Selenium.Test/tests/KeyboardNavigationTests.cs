@@ -135,13 +135,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public void MegaKeyboardTest()
         {
             base.EnterEquivalentToLeftClick();
-            base.SelectFooterIconsWithAccessKeys();
+            //base.SelectFooterIconsWithAccessKeys();
             base.ShiftEnterEquivalentToRightClick();
         }
     }
 
     [TestClass]
-    public class MegaKeyboardTestsFirefox : MegaDialogTestsRoot
+    public class MegaKeyboardTestsFirefox : MegaKeyboardTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
