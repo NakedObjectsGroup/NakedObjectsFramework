@@ -3,6 +3,7 @@
 
 
 module NakedObjects.Angular.Gemini {
+    import toDateString = Helpers.toDateString;
 
     export interface IDraggableViewModel {
         canDropOn:  (targetType: string) => ng.IPromise<boolean>;
@@ -209,14 +210,13 @@ module NakedObjects.Angular.Gemini {
                 }
 
                 if (this.value instanceof Date) {
-                    let isoString = (this.value as Date).toISOString();
-
+                
                     if (this.format === "date") {
                         // truncate time;
-                        isoString = isoString.substring(0, 10);
+                        return new Value(toDateString(this.value as Date));
                     }
                     // date-time
-                    return new Value(isoString);
+                    return new Value((this.value as Date).toISOString());
                 }
 
                 return new Value(this.value as number | string | boolean);

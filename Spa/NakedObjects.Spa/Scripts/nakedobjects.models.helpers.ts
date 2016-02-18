@@ -12,6 +12,18 @@
 
 module NakedObjects.Helpers {
 
+    export function toDateString(dt: Date) {
+
+        const year = dt.getFullYear().toString();
+        let month = (dt.getMonth() + 1).toString();
+        let day = dt.getDate().toString();
+
+        month = month.length === 1 ? `0${month}` : month;
+        day = day.length === 1 ? `0${day}` : day;
+
+        return `${year}-${month}-${day}`;
+    }
+
     export function compress(toCompress: string) {
         if (toCompress) {
             _.forEach(Angular.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Angular.shortCutMarker}${i}`));

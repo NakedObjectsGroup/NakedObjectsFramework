@@ -2,7 +2,7 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects.Angular.Gemini {
-   
+    import toDateString = Helpers.toDateString;
 
     interface ISelectObj {
         request?: string;
@@ -51,7 +51,8 @@ module NakedObjects.Angular.Gemini {
                 ngModel.$parsers.push(val => {
 
                     if (Date.parse(val)) {
-                        return new Date(val).toISOString().substring(0, 10);
+                        const dt = new Date(val);
+                        return toDateString(dt);
                     }
 
                     return undefined;
