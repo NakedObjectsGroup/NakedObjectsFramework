@@ -601,6 +601,15 @@ input[type=submit] {
         font-family: 'Segoe UI';
         font-size: 10pt;
     }
+/*Warnings & Messages in footer*/
+ .footer .messages, .footer .warnings {
+     background-color: black;
+    font-size: 11pt;
+    color: white;
+}
+.footer .warnings {
+    color: red;
+}
 
 /*Cicero*/
 .cicero, .cicero input {

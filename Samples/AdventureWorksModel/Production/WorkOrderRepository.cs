@@ -24,16 +24,6 @@ namespace AdventureWorksModel {
         public WorkOrder CreateNewWorkOrder([ContributedAction("Work Orders"), FindMenu, Description("product partial name")] Product product) {
             var wo = NewTransientInstance<WorkOrder>();
             wo.Product = product;
-
-            // for testing 
-
-            Container.WarnUser("Creating new work order");
-            Container.WarnUser("For product" + product.Name);
-
-            Container.InformUser("Information message 1");
-            Container.InformUser("Information message 2");
-
-
             return wo;
         }
 
@@ -47,19 +37,10 @@ namespace AdventureWorksModel {
             return CreateNewWorkOrder(product);
         }
 
-        [DescribedAs("Create workorder based on random product - to test transient creation")]
         [QueryOnly]
-        public WorkOrder CreateNewWorkOrder3() {
-            var product = Random<Product>();
-
-            Container.WarnUser("Creating new work order");
-            Container.WarnUser("For product" + product.Name);
-
-            Container.InformUser("Information message 1");
-            Container.InformUser("Information message 2");
-
-
-            return CreateNewWorkOrder(product);
+        public void GenerateInfoAndWarning() {
+            Container.InformUser("Inform User of something");
+            Container.WarnUser("Warn User of something else ");
         }
 
 
