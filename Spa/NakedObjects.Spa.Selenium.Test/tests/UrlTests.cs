@@ -152,6 +152,8 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void SplitObjectList()
         {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("object/list?o1=___1.Store-350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             Reload(Pane.Right);
@@ -380,7 +382,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region Running all tests in one go
     [TestClass]
-    public class UrlMegaTestFirefox : UrlTestsRoot
+    public class MegaUrlTestFirefox : UrlTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)

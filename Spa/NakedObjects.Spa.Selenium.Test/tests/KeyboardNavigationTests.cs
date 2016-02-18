@@ -10,11 +10,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium {
-
-    public abstract class KeyboardNavigationTests : AWTest {
-
-        [TestMethod, Ignore] //Doesn't work with Firefox
-        public void SelectFooterIconsWithAccessKeys()
+    public abstract class KeyboardNavigationTestsRoot : AWTest
+    {
+        public virtual void SelectFooterIconsWithAccessKeys()
         {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -25,8 +23,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Home (Alt-h)", element.GetAttribute("title"));
         }
 
-        [TestMethod]
-        public void EnterEquivalentToLeftClick()
+        public virtual void EnterEquivalentToLeftClick()
         {
             GeminiUrl("object?o1=___1.Store-350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
@@ -35,20 +32,29 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
         }
 
-        [TestMethod] 
         public virtual void ShiftEnterEquivalentToRightClick()
         {
             Url(CustomersMenuUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            ClearFieldThenType(".value  input","AW00022262");
+            ClearFieldThenType(".value  input", "AW00022262");
             OKButton().SendKeys(Keys.Shift + Keys.Enter);
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Object, "Marcus Collins, AW00022262");
         }
+    }
+    public abstract class KeyboardNavigationTests : KeyboardNavigationTestsRoot
+    {
 
+        [TestMethod, Ignore] //Doesn't work with Firefox
+        public override void SelectFooterIconsWithAccessKeys() { base.SelectFooterIconsWithAccessKeys(); }
 
+        [TestMethod]
+        public override void EnterEquivalentToLeftClick() { base.EnterEquivalentToLeftClick(); }
+
+        [TestMethod] 
+        public override void ShiftEnterEquivalentToRightClick() { base.ShiftEnterEquivalentToRightClick(); }
     }
 
     #region browsers specific subclasses 
@@ -74,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   [TestClass]
+   //[TestClass]
     public class KeyboardNavigationTestsFirefox : KeyboardNavigationTests
     {
         [ClassInitialize]
@@ -120,5 +126,41 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
+    #endregion
+
+    #region Mega tests
+    public abstract class MegaKeyboardTestsRoot : KeyboardNavigationTestsRoot
+    {
+        [TestMethod]
+        public void MegaKeyboardTest()
+        {
+            base.EnterEquivalentToLeftClick();
+            base.SelectFooterIconsWithAccessKeys();
+            base.ShiftEnterEquivalentToRightClick();
+        }
+    }
+
+    [TestClass]
+    public class MegaKeyboardTestsFirefox : MegaDialogTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }

@@ -181,7 +181,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         protected void SelectCheckBox(string css)
         {
             var checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
+            Assert.IsFalse(checkbox.Selected);
             checkbox.Click();
+            checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
+            Assert.IsTrue(checkbox.Selected);
         }
 
         /// <summary>
@@ -457,9 +460,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         protected void CancelDatePicker(string cssForInput)
         {
-            wait.Until(br => br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
-            WaitForCss(cssForInput).SendKeys(Keys.Escape);
-           wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
+            var dp = br.FindElement(By.CssSelector(".ui-datepicker"));
+            if  (dp.Displayed) {
+                WaitForCss(cssForInput).SendKeys(Keys.Escape);
+                wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
+            }
         }
         #endregion
 

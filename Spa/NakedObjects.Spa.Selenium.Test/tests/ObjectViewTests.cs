@@ -113,8 +113,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
             dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
-
-            Thread.Sleep(2000); // need to wait for datepicker :-(
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
         }
