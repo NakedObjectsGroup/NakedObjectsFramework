@@ -53,7 +53,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         private LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
-            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true)).ToArray();
+            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
             OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
             var objectMembers = new OptionalProperty(JsonPropertyNames.PromptMembers, MapRepresentation.Create(props));
@@ -152,8 +152,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public bool UseDateOverDateTime() {
-            var hasMask = GetCustomPropertyExtensions()?.ContainsKey(JsonPropertyNames.CustomMask);
-            return propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed || hasMask.GetValueOrDefault();
+            return propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed || propertyContext.Property.IsDateOnly;
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {

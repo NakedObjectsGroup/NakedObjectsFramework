@@ -154,6 +154,7 @@
       <SubType>
       </SubType>
     </Compile>
+    <Compile Include="Facet\IDateOnlyFacet.cs" />
     <Compile Include="Facet\IMarkerFacet.cs" />
     <Compile Include="Facet\IMemberOrderFacet.cs" />
     <Compile Include="Interactions\IInteractionBuffer.cs" />

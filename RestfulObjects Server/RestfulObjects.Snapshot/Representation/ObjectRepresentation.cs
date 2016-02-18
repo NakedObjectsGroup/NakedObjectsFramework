@@ -114,7 +114,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (IsProtoPersistent(objectContext.Target)) {
                 KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
 
-                    var useDate = p.IsUsable(objectContext.Target).IsAllowed || !string.IsNullOrWhiteSpace(p.Mask);
+                    var useDate = p.IsUsable(objectContext.Target).IsAllowed || p.IsDateOnly;
 
                     return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
                 }).ToArray();

@@ -17,6 +17,7 @@ namespace NakedObjects.Facade {
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         bool IsFile { get; }
+        bool IsDateOnly { get; }
         bool IsEnum { get; }
         Tuple<Regex, string> RegEx { get; }
         Tuple<IConvertible, IConvertible, bool> Range { get; }

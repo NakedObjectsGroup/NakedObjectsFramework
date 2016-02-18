@@ -227,6 +227,12 @@ namespace NakedObjects.Facade.Impl {
             get { return assoc.IsFile(framework); }
         }
 
+        public bool IsDateOnly {
+            get {
+                return assoc.ContainsFacet<IDateOnlyFacet>();
+            }
+        }
+
         public bool IsEnum {
             get { return assoc.ContainsFacet<IEnumFacet>(); }
         }

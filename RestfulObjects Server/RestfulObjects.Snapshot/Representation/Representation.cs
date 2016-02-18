@@ -253,7 +253,7 @@ namespace RestfulObjects.Snapshot.Representations {
             }
         }
 
-        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly = false, bool useDateOverDateTime = false) {
+        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             IObjectFacade valueNakedObject = property.GetValue(target);
             string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
