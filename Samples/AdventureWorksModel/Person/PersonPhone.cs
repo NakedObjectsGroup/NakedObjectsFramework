@@ -1,6 +1,7 @@
 using NakedObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {   
@@ -23,7 +24,8 @@ namespace AdventureWorksModel
         public virtual string PhoneNumber { get; set; }
         [NakedObjectsIgnore]
         public virtual int PhoneNumberTypeID { get; set; }
-        
+
+        [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     
         [NakedObjectsIgnore]

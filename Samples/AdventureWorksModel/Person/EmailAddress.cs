@@ -7,29 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdventureWorksModel
-{
+using System.ComponentModel.DataAnnotations;
+
+namespace AdventureWorksModel {
     using NakedObjects;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    
-    public partial class EmailAddress
-    {
+
+    public partial class EmailAddress {
         [NakedObjectsIgnore]
         public virtual int BusinessEntityID { get; set; }
-         [NakedObjectsIgnore]
+        [NakedObjectsIgnore]
         public virtual int EmailAddressID { get; set; }
 
-        [Title][DisplayName("Email Address")]
-         public virtual string EmailAddress1 { get; set; }
+        [Title]
+        [DisplayName("Email Address")]
+        public virtual string EmailAddress1 { get; set; }
 
-         [NakedObjectsIgnore]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
-         [NakedObjectsIgnore]
-         public virtual DateTime ModifiedDate { get; set; }
+        [NakedObjectsIgnore]
+        [ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; set; }
 
-         [NakedObjectsIgnore]
+        [NakedObjectsIgnore]
         public virtual Person Person { get; set; }
     }
 }

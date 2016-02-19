@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -35,6 +36,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
+        [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #region Title

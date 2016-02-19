@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {
@@ -9,6 +10,7 @@ namespace AdventureWorksModel
         public virtual string PasswordHash { get; set; }
         public virtual string PasswordSalt { get; set; }
         public virtual Guid rowguid { get; set; }
+        [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }
 }

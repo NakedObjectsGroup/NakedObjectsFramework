@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -35,6 +36,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
+        [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion

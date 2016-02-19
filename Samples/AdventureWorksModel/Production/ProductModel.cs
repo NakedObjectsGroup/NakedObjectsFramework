@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -104,6 +105,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
+        [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
