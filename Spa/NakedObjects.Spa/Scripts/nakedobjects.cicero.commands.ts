@@ -408,7 +408,7 @@ module NakedObjects.Angular.Gemini {
         "If no argument is provided, a full list of available action names is returned.\n" +
         "The partial name may have more than one clause, separated by spaces.\n" +
         "these may match either parts of the action name or the sub-menu name if one exists.\n" +
-        "If the action name matches a single action, then a question-mark may be added as a second\n";
+        "If the action name matches a single action, then a question-mark may be added as a second\n" +
         "parameter, which will generate a more detailed description of the Action.";
 
         protected minArguments = 0;

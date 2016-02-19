@@ -95,7 +95,8 @@ module NakedObjects {
         NotImplemented,
         SoftwareError,
         RequestError,
-        UnknownError
+        UnknownError, 
+        Concurrency
     }
 
     export class RejectedPromise {

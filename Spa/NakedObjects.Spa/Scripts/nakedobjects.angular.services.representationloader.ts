@@ -49,6 +49,11 @@ module NakedObjects.Angular {
                         message = promiseCallback.headers("warning");
                         error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
                     }
+                    else if (promiseCallback.status === 412) {
+                        reason = RejectReason.Concurrency;
+                        message = promiseCallback.headers("warning");
+                        error = null;
+                    }
                     else {
                         reason = RejectReason.UnknownError;
                         message = promiseCallback.headers("warning") || "unknown server error";
