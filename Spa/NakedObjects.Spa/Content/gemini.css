@@ -169,7 +169,16 @@
     .input-control input:not([type='checkbox'])  {
         width: 245px;
     }
-
+    /* date fields*/
+   .input-control input.hasDatepicker  {
+        width: 225px;
+    }
+    .parameter  .input-control input.hasDatepicker  {
+        width: 210px;
+    }
+   img.ui-datepicker-trigger {
+       margin-left: 5px;
+   }
     select {
         width: 245px; 
         margin-left: 1px;
@@ -583,6 +592,23 @@ input[type=submit] {
     outline: solid;
     outline-color: lightgrey;
     outline-width: 1px;
+}
+/*auto-complete*/
+.ui-autocomplete {
+    width: 245px;
+}
+    .ui-autocomplete .ui-menu-item {
+        font-family: 'Segoe UI';
+        font-size: 10pt;
+    }
+/*Warnings & Messages in footer*/
+ .footer .messages, .footer .warnings {
+     background-color: black;
+    font-size: 11pt;
+    color: white;
+}
+.footer .warnings {
+    color: red;
 }
 
 /*Cicero*/

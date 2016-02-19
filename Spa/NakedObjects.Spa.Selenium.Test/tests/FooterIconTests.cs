@@ -8,20 +8,19 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Web.UnitTests.Selenium {
-
-    public abstract class FooterIconTests : AWTest {
-
-        [TestMethod]
-        public virtual void Home() {
-            GeminiUrl( "object?o1=___1.Product-968");
+namespace NakedObjects.Web.UnitTests.Selenium
+{
+    public abstract class FooterIconTestsRoot : AWTest
+    {
+        public virtual void Home()
+        {
+            GeminiUrl("object?o1=___1.Product-968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
         }
-
-        [TestMethod]
-        public virtual void BackAndForward() {
+        public virtual void BackAndForward()
+        {
             Url(BaseUrl);
             wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
             GoToMenuFromHomePage("Customers");
@@ -31,8 +30,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Click(br.FindElement(By.CssSelector(".icon-forward")));
             wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
         }
-
-        [TestMethod]
         public virtual void Cicero()
         {
             GeminiUrl("object?o1=___1.Product-968");
@@ -52,69 +49,130 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
 
     }
+    public abstract class FooterIconTests : FooterIconTestsRoot
+    {
+
+        [TestMethod]
+        public override void Home() { base.Home(); }
+
+        [TestMethod]
+        public override void BackAndForward() { base.BackAndForward(); }
+
+        [TestMethod]
+        public override void Cicero() { base.Cicero(); }
+    }
 
     #region browsers specific subclasses 
 
-   // [TestClass, Ignore]
-    public class FooterIconTestsIe : FooterIconTests {
+    // [TestClass, Ignore]
+    public class FooterIconTestsIe : FooterIconTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.IEDriverServer.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitIeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
-    [TestClass]
-    public class FooterIconTestsFirefox : FooterIconTests {
+    //[TestClass]
+    public class FooterIconTestsFirefox : FooterIconTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitFirefoxDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
     }
 
     //[TestClass, Ignore]
-    public class FooterIconTestsChrome : FooterIconTests {
+    public class FooterIconTestsChrome : FooterIconTests
+    {
         [ClassInitialize]
-        public new static void InitialiseClass(TestContext context) {
+        public new static void InitialiseClass(TestContext context)
+        {
             FilePath(@"drivers.chromedriver.exe");
             AWTest.InitialiseClass(context);
         }
 
         [TestInitialize]
-        public virtual void InitializeTest() {
+        public virtual void InitializeTest()
+        {
             InitChromeDriver();
         }
 
         [TestCleanup]
-        public virtual void CleanupTest() {
+        public virtual void CleanupTest()
+        {
             base.CleanUpTest();
         }
 
-        protected override void ScrollTo(IWebElement element) {
+        protected override void ScrollTo(IWebElement element)
+        {
             string script = string.Format("window.scrollTo(0, {0})", element.Location.Y);
-            ((IJavaScriptExecutor) br).ExecuteScript(script);
+            ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
 
+    #endregion
+
+    #region Mega tests
+    public abstract class MegaFooterTestsRoot : FooterIconTestsRoot
+    {
+        [TestMethod]
+        public void MegaFooterTest()
+        {
+            base.Home();
+            base.BackAndForward();
+            base.Cicero();
+        }
+    }
+
+    [TestClass]
+    public class MegaFooterTestsFirefox : MegaFooterTestsRoot
+    {
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+            Url(BaseUrl);
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+    }
     #endregion
 }
