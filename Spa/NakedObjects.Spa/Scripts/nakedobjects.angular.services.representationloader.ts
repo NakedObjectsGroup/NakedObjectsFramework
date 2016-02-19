@@ -6,7 +6,7 @@
 module NakedObjects.Angular {
 
     export interface IRepLoader {
-        retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }) => ng.IPromise<T>;
+        retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, digest? : string) => ng.IPromise<T>;
         retrieveFromLink: <T extends IHateoasModel>(link : Link) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
         invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
@@ -16,6 +16,12 @@ module NakedObjects.Angular {
 
         const repLoader = this as IRepLoader;
         let loadingCount = 0;
+
+        function addIfMatchHeader(config: ng.IRequestConfig, digest : string) {
+            if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
+                config.headers = { "If-Match": digest };
+            }
+        }
 
         function httpPopulate(config : ng.IRequestConfig, ignoreCache : boolean, response : IHateoasModel) : ng.IPromise<IHateoasModel> {
             $rootScope.$broadcast("ajax-change", ++loadingCount);
@@ -28,6 +34,7 @@ module NakedObjects.Angular {
             return $http(config).
                 then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
                     response.populate(promiseCallback.data);
+                    response.etagDigest = promiseCallback.headers("ETag");
                     $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.when(response);
                 }).
@@ -85,7 +92,7 @@ module NakedObjects.Angular {
             return httpPopulate(config, ignoreCache, response);
         };
 
-        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }): ng.IPromise<T> => {
+        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }, digest? : string): ng.IPromise<T> => {
 
             const response = new rc();
 
@@ -96,6 +103,8 @@ module NakedObjects.Angular {
                 cache: false,
                 data: map.getBody()
             };
+
+            addIfMatchHeader(config, digest);
 
             return httpPopulate(config, true, response);
         };

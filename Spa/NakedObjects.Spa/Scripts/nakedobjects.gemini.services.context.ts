@@ -564,7 +564,7 @@ module NakedObjects.Angular.Gemini {
     
             _.each(props, (v, k) => update.setProperty(k, v));
 
-            return repLoader.retrieve(update, DomainObjectRepresentation).
+            return repLoader.retrieve(update, DomainObjectRepresentation, object.etagDigest).
                 then((updatedObject: DomainObjectRepresentation) => {
              
                     // This is a kludge because updated object has no self link.

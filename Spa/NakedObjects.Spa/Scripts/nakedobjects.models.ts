@@ -80,6 +80,7 @@ module NakedObjects {
     // interfaces 
 
     export interface IHateoasModel {
+        etagDigest : string;
         hateoasUrl: string;
         method: string;
         urlParms: _.Dictionary<string>;
@@ -115,6 +116,7 @@ module NakedObjects {
 
     export abstract class HateosModel implements IHateoasModel {
 
+        etagDigest: string;
         hateoasUrl: string = "";
         method: string = "GET";
         urlParms: _.Dictionary<string>;
