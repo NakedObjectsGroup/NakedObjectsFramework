@@ -33,8 +33,7 @@ module NakedObjects.Angular.Gemini {
         mask: IMask,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
-        navigation: INavigation,
-        clickHandler: IClickHandler) {
+        navigation: INavigation) {
 
         var commandFactory = <ICommandFactory>this;
 
@@ -115,7 +114,7 @@ module NakedObjects.Angular.Gemini {
             let lastInChain = _.last(input.split(";")).toLowerCase();
             const charsTyped = lastInChain.length;
             lastInChain = lastInChain.trim();
-            if (lastInChain.length == 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
+            if (lastInChain.length === 0 || lastInChain.indexOf(" ") >= 0) { //i.e. not the first word
                 cvm.input += " ";
                 return;
             }

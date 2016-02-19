@@ -2,8 +2,6 @@
 
 module NakedObjects.Angular.Gemini {
 
-    import IResourceRepresentation = NakedObjects.RoInterfaces.IResourceRepresentation;
-
     export abstract class Command {
 
         constructor(protected urlManager: IUrlManager,
@@ -71,7 +69,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         public checkMatch(matchText: string): void {
-            if (this.fullCommand.indexOf(matchText) != 0) {
+            if (this.fullCommand.indexOf(matchText) !== 0) {
                 throw new Error("No such command: " + matchText);
             }
         }
@@ -84,7 +82,7 @@ module NakedObjects.Angular.Gemini {
             if (!optional && argString.split(",").length < argNo + 1) {
                 throw new Error("Too few arguments provided");
             }
-            var args = argString.split(",");
+            const args = argString.split(",");
             if (args.length < argNo + 1) {
                 if (optional) {
                     return undefined;
@@ -98,7 +96,7 @@ module NakedObjects.Angular.Gemini {
         //argNo starts from 0.
         protected argumentAsNumber(args: string, argNo: number, optional: boolean = false): number {
             const arg = this.argumentAsString(args, argNo, optional);
-            if (!arg && optional === true) return null;
+            if (!arg && optional) return null;
             const number = parseInt(arg);
             if (isNaN(number)) {
                 throw new Error("Argument number " + (argNo + 1).toString() + " must be a number");
@@ -107,7 +105,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         protected parseInt(input: string): number {
-            if (!input || input === "") {
+            if (!input) {
                 return null;
             }
             const number = parseInt(input);
@@ -251,10 +249,7 @@ module NakedObjects.Angular.Gemini {
                 const name = rep.extensions().friendlyName().toLowerCase();
                 return match === name ||
                     (!!path && match === path.toLowerCase() + " " + name) ||
-                    _.all(clauses, clause => {
-                        name === clause ||
-                        (!!path && path.toLowerCase() === clause)
-                    });
+                    _.all(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
             });
             if (exactMatches.length > 0) return exactMatches;
             return _.filter(reps, (rep) => {
@@ -333,7 +328,7 @@ module NakedObjects.Angular.Gemini {
                         const rd = this.routeData().props[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     }
-                    let vals: Value[];
+                    let vals: Value[] = [];
                     if (val.isReference()|| val.isScalar()) {
                         vals = new Array<Value>(val);
                     } else if (val.isList()) { //Should be!
@@ -413,7 +408,7 @@ module NakedObjects.Angular.Gemini {
         "If no argument is provided, a full list of available action names is returned.\n" +
         "The partial name may have more than one clause, separated by spaces.\n" +
         "these may match either parts of the action name or the sub-menu name if one exists.\n" +
-        "If the action name matches a single action, then a question-mark may be added as a second\n"
+        "If the action name matches a single action, then a question-mark may be added as a second\n";
         "parameter, which will generate a more detailed description of the Action.";
 
         protected minArguments = 0;
@@ -446,7 +441,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         private processActions(match: string, actionsMap: _.Dictionary<ActionMember>, details: string) {
-            var actions = _.map(actionsMap, action => action);
+            let actions = _.map(actionsMap, action => action);
             if (actions.length === 0) {
                 this.clearInputAndSetMessage("No actions available");
                 return;
@@ -551,8 +546,8 @@ module NakedObjects.Angular.Gemini {
         "Copy copies a reference to the object being viewed into the clipboard,\n" +
         "overwriting any existing reference.\n" +
         "Show displays the content of the clipboard without using it.\n" +
-        "Go takes you directly to the object held in the clipboard.\n"
-        "Discard removes any existing reference from the clipboard.\n"
+        "Go takes you directly to the object held in the clipboard.\n" +
+        "Discard removes any existing reference from the clipboard.\n" +
         "The reference held in the clipboard may be used within the Enter command.";
 
         protected minArguments = 1;
@@ -655,15 +650,15 @@ module NakedObjects.Angular.Gemini {
                 this.fieldEntryForDialog(fieldName, fieldEntry);
             }
             else {
-                this.fieldEntryForEdit(fieldName, fieldEntry)
+                this.fieldEntryForEdit(fieldName, fieldEntry);
             }
         };
 
         private fieldEntryForEdit(fieldName: string, fieldEntry: string) {
             this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
-                    var fields = this.matchingProperties(obj, fieldName);
-                    var s: string = "";
+                    const fields = this.matchingProperties(obj, fieldName);
+                    let s: string;
                     switch (fields.length) {
                         case 0:
                             s = fieldName + " does not match any properties";
@@ -756,7 +751,7 @@ module NakedObjects.Angular.Gemini {
             if (field instanceof Parameter) {
                 this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal);
             } else if (field instanceof PropertyMember) {
-                const parent = field.parent
+                const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
                     this.urlManager.setPropertyValue(parent, field, urlVal);
                 }
@@ -864,7 +859,7 @@ module NakedObjects.Angular.Gemini {
             } else {
                 s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
                 if (field.choices()) {
-                    var label = "\nChoices: ";
+                    const label = "\nChoices: ";
                     s += _.reduce(field.choices(), (s, cho) => {
                         return s + cho + " ";
                     }, label);
@@ -955,7 +950,7 @@ module NakedObjects.Angular.Gemini {
                             const matchingProps = this.matchingProperties(obj, arg0);
                             const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
                             const matchingColls = this.matchingCollections(obj, arg0);
-                            var s: string = "";
+                            let s: string = "";
                             switch (matchingRefProps.length + matchingColls.length) {
                                 case 0:
                                     s = arg0 + " does not match any reference fields or collections";
@@ -963,7 +958,7 @@ module NakedObjects.Angular.Gemini {
                                 case 1:
                                     //TODO: Check for any empty reference
                                     if (matchingRefProps.length > 0) {
-                                        let link = matchingRefProps[0].value().link();
+                                        const link = matchingRefProps[0].value().link();
                                         this.urlManager.setItem(link);
                                     } else { //Must be collection
                                         this.openCollection(matchingColls[0]);
@@ -1004,7 +999,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         doExecute(args: string, chained: boolean): void {
-            var arg = this.argumentAsString(args, 0);
+            const arg = this.argumentAsString(args, 0);
             if (arg) {
                 try {
                     const c = this.commandFactory.getCommand(arg);
@@ -1055,8 +1050,8 @@ module NakedObjects.Angular.Gemini {
                             this.urlManager.setMenu(menuId);
                             break;
                         default:
-                            var label = name ? "Matching menus:\n" : "Menus:\n";
-                            var s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
+                            const label = name ? "Matching menus:\n" : "Menus:\n";
+                            const s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
                             this.clearInputAndSetMessage(s);
                     }
                 });
@@ -1075,10 +1070,10 @@ module NakedObjects.Angular.Gemini {
         }
 
         doExecute(args: string, chained: boolean): void {
-            let fieldMap = this.routeData().dialogFields;
+            const fieldMap = this.routeData().dialogFields;
             this.getActionForCurrentDialog().then((action: ActionMember) => {
 
-                if (chained && action.invokeLink().method() != "GET") {
+                if (chained && action.invokeLink().method() !== "GET") {
                     this.mayNotBeChained(" unless the action is query-only");
                     return;
                 }
@@ -1169,9 +1164,10 @@ module NakedObjects.Angular.Gemini {
             const fieldName = this.argumentAsString(args, 0);
             this.getObject()
                 .then((obj: DomainObjectRepresentation) => {
-                    let props = this.matchingProperties(obj, fieldName);
-                    let colls = this.matchingCollections(obj, fieldName);  //TODO -  include these
-                    var s: string = "";
+                    const props = this.matchingProperties(obj, fieldName);
+                    const colls = this.matchingCollections(obj, fieldName);
+                    //TODO -  include these
+                    let s: string;
                     switch (props.length + colls.length) {
                         case 0:
                             if (!fieldName) {
@@ -1233,7 +1229,7 @@ module NakedObjects.Angular.Gemini {
         "Note that for a list, which was generated by an action, reload runs the action again, \n" +
         "thus ensuring that the list is up to date. However, reloading a list does not reload the\n" +
         "individual objects in that list, which may still be cached. Invoking Reload on an\n" +
-        "individual object, however, will ensure that its fields show the latest server data."
+        "individual object, however, will ensure that its fields show the latest server data.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1353,7 +1349,7 @@ module NakedObjects.Angular.Gemini {
         "show will list all of the the items in the opened object collection,\n" +
         "or the first page of items if in a list view.\n" +
         "Alternatively, the command may be specified with an item number,\n" +
-        "or a range such as 3-5."
+        "or a range such as 3-5.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1362,7 +1358,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         doExecute(args: string, chained: boolean): void {
-            let arg = this.argumentAsString(args, 0, true);
+            const arg = this.argumentAsString(args, 0, true);
             const {start, end} = this.parseRange(arg);
             if (this.isCollection()) {
                 this.getObject().then((obj: DomainObjectRepresentation) => {
