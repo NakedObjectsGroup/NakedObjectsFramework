@@ -52,8 +52,7 @@ module NakedObjects.Angular.Gemini {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ActionResultRepresentation;
-        setInvokeUpdateError(reject: RejectedPromise): ErrorMap;
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number);
         setPreviousUrl: (url: string) => void;
     }
 
@@ -424,85 +423,47 @@ module NakedObjects.Angular.Gemini {
             $rootScope.$broadcast("nof-warning", warnings);
             $rootScope.$broadcast("nof-message", messages);
 
-            if (result.result().isNull() && result.resultType() !== "void") {
-               // return new ErrorMap({}, 0, "no result found");
-                return result;
-            }
+            if (!result.result().isNull()) {
+                if (result.resultType() === "object") {
 
-            const resultObject = result.result().object();
+                    const resultObject = result.result().object();
 
-            if (result.resultType() === "object") {
-        
-                if (resultObject.persistLink()) {
-                    // transient object
-                    const domainType = resultObject.extensions().domainType();
-                    resultObject.wrapped().domainType = domainType;
-                    resultObject.wrapped().instanceId = (nextTransientId++).toString();
+                    if (resultObject.persistLink()) {
+                        // transient object
+                        const domainType = resultObject.extensions().domainType();
+                        resultObject.wrapped().domainType = domainType;
+                        resultObject.wrapped().instanceId = (nextTransientId++).toString();
 
-                    resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
+                        resultObject.hateoasUrl = `/${domainType}/${nextTransientId}`;
 
-                    context.setObject(paneId, resultObject);
-                    transientCache.add(paneId, resultObject);
-                    urlManager.pushUrlState(paneId);
-                    urlManager.setObject(resultObject, paneId);
-                    urlManager.setInteractionMode(InteractionMode.Transient, paneId);
+                        context.setObject(paneId, resultObject);
+                        transientCache.add(paneId, resultObject);
+                        urlManager.pushUrlState(paneId);
+                        urlManager.setObject(resultObject, paneId);
+                        urlManager.setInteractionMode(InteractionMode.Transient, paneId);
+                    } else {
+
+                        // persistent object
+                        // set the object here and then update the url. That should reload the page but pick up this object 
+                        // so we don't hit the server again. 
+                        
+                        // copy the etag down into the object
+                        resultObject.etagDigest = result.etagDigest;
+
+                        context.setObject(paneId, resultObject);
+                        urlManager.setObject(resultObject, paneId);
+                    }
+                } else if (result.resultType() === "list") {
+
+                    const resultList = result.result().list();
+
+                    urlManager.setList(action, paneId);
+  
+                    const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+                    cacheList(resultList, index);
                 }
-                else {
-
-                    // persistent object
-                    // set the object here and then update the url. That should reload the page but pick up this object 
-                    // so we don't hit the server again. 
-
-                    context.setObject(paneId, resultObject);
-                    urlManager.setObject(resultObject, paneId);
-                }
             }
-            else if (result.resultType() === "list") {
-
-                const resultList = result.result().list();
-
-                urlManager.setList(action, paneId);
-
-                const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-                cacheList(resultList, index);
-            }
-
-            return result;
         };
-
-      
-
-        function setErrorRep(errorRep: ErrorRepresentation) {
-            context.setError(errorRep);
-            urlManager.setError(ErrorType.Software);
-        }
-
-        function setError(msg: string, vm?: MessageViewModel) {
-            if (vm) {
-                vm.message = msg;
-            }
-            else {
-                setErrorRep(ErrorRepresentation.create(msg));
-            }
-        }
-
-        context.setInvokeUpdateError = (reject : RejectedPromise) => {
-            const err = reject.error as ErrorMap | ErrorRepresentation;
-
-            if (err instanceof ErrorMap) {
-                return err as ErrorMap;
-            }
-            else if (err instanceof ErrorRepresentation) {
-                setErrorRep(err as ErrorRepresentation);
-            }
-            else {
-                setError(reject.message);
-            }
-
-            return new ErrorMap({}, 0, "");
-        };
-
-
 
         function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void) {
 
@@ -511,7 +472,8 @@ module NakedObjects.Angular.Gemini {
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
-                    return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
+                    context.setResult(action, result, paneId, 1, defaultPageSize);
+                    return $q.when(result);
                 });
         }
 
@@ -545,7 +507,6 @@ module NakedObjects.Angular.Gemini {
             return () => { };
         }
 
-
         context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
@@ -553,13 +514,11 @@ module NakedObjects.Angular.Gemini {
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
             const setDirty = getSetDirtyFunction(action, parms);
-
             return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
 
         function setNewObject(updatedObject : DomainObjectRepresentation, paneId : number, viewSavedObject : Boolean) {
             context.setObject(paneId, updatedObject);
-
             dirtyCache.setDirty(updatedObject);
 
             if (viewSavedObject) {
@@ -567,7 +526,6 @@ module NakedObjects.Angular.Gemini {
             } else {
                 urlManager.popUrlState(paneId);
             }
-            return $q.when(updatedObject);
         }
 
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
@@ -580,7 +538,8 @@ module NakedObjects.Angular.Gemini {
                     // This is a kludge because updated object has no self link.
                     const rawLinks = object.wrapped().links;
                     updatedObject.wrapped().links = rawLinks;
-                    return setNewObject(updatedObject, paneId, viewSavedObject);
+                    setNewObject(updatedObject, paneId, viewSavedObject);
+                    return $q.when(updatedObject);
                 });
         };
 
@@ -592,7 +551,8 @@ module NakedObjects.Angular.Gemini {
             return repLoader.retrieve(persist, DomainObjectRepresentation).
                 then((updatedObject: DomainObjectRepresentation) => {
                     transientCache.remove(paneId, object.domainType(), object.id());
-                    return setNewObject(updatedObject, paneId, viewSavedObject);
+                    setNewObject(updatedObject, paneId, viewSavedObject);
+                    return $q.when(updatedObject);
                 });
         };
 
