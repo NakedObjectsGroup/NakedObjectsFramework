@@ -25,7 +25,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SetResultType(actionResult);
             SetLinks(req, actionResult);
             SetExtensions(actionResult);
-            SetHeader();
+            SetHeader(actionResult);
         }
 
         [DataMember(Name = JsonPropertyNames.Links)]
@@ -37,8 +37,11 @@ namespace RestfulObjects.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.ResultType)]
         public string ResultType { get; set; }
 
-        private void SetHeader() {
+        private void SetHeader(ActionResultContextFacade actionResult) {
             caching = CacheType.Transactional;
+            if (actionResult.Specification.IsObject && actionResult.Result != null) {
+                SetEtag(actionResult.Result.Target);
+            }
         }
 
         private static void AddIfPresent(Dictionary<string, object> exts, string[] warningOrMessage, string type) {

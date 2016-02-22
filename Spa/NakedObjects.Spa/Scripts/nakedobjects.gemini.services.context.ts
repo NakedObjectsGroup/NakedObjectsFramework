@@ -508,7 +508,7 @@ module NakedObjects.Angular.Gemini {
 
             focusManager.setCurrentPane(paneId);
 
-            return repLoader.retrieve(invokeMap, ActionResultRepresentation).
+            return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
                     return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
