@@ -9,7 +9,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IUrlManager {
         getRouteData(): RouteData;
-        setError();
+        setError(errorType : ErrorType);
         setHome(paneId?: number);
         setMenu(menuId: string, paneId? : number);
         setDialog(dialogId: string, paneId?: number);
@@ -56,6 +56,7 @@ module NakedObjects.Angular.Gemini {
         const actions = "as";
         const collection = "c";
         const dialog = "d";
+        const errorType = "e";
         const field = "f";
         const interactionMode = "i";        
         const menu = "m";
@@ -496,12 +497,17 @@ module NakedObjects.Angular.Gemini {
             executeTransition(pageValues, paneId, Transition.Null, () => true);
         };
 
-        helper.setError = () => {
+        helper.setError = (et : ErrorType) => {
             const path = $location.path();
             const segments = path.split("/");
             const mode = segments[1];
             const newPath = `/${mode}/error`;
-            $location.path(newPath).search({});
+           
+            const search = {}
+            search[errorType] = ErrorType[et];
+            
+            $location.path(newPath);
+            setNewSearch(search);
         };
 
 

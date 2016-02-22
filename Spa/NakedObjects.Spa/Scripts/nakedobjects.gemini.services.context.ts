@@ -474,7 +474,7 @@ module NakedObjects.Angular.Gemini {
 
         function setErrorRep(errorRep: ErrorRepresentation) {
             context.setError(errorRep);
-            urlManager.setError();
+            urlManager.setError(ErrorType.Software);
         }
 
         function setError(msg: string, vm?: MessageViewModel) {

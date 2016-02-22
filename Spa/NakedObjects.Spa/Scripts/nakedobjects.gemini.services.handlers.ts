@@ -31,7 +31,7 @@ module NakedObjects.Angular.Gemini {
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
             context.setError(errorRep);
-            urlManager.setError();
+            urlManager.setError(ErrorType.Software);
         }
   
         function setError(error: ErrorMap | ErrorRepresentation, msg: string) {
@@ -45,7 +45,7 @@ module NakedObjects.Angular.Gemini {
                 context.setError(errorRep);
             }
 
-            urlManager.setError();
+            urlManager.setError(ErrorType.Software);
         }
 
         function setRejection(reject: RejectedPromise) {

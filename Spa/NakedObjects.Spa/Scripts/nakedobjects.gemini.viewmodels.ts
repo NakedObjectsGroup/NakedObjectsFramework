@@ -297,13 +297,18 @@ module NakedObjects.Angular.Gemini {
                     }             
                 }).
                 catch((reject: RejectedPromise) => {
-                    const err = reject.error as ErrorMap;
-                    if (err.containsError()) {
-                        this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
+                    if (reject.rejectReason === RejectReason.SoftwareError) {
+                        this.context.setError(reject.error as ErrorRepresentation);
+                        this.urlManager.setError(ErrorType.Software);
                     } else {
-                        this.doClose();
+                        const err = reject.error as ErrorMap;
+                        if (err && err.containsError()) {
+                            this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
+                        } else {
+                            this.doClose();
+                        }
                     }
-                });
+            });
 
         doClose = () => {
             this.urlManager.closeDialog(this.onPaneId);
@@ -691,13 +696,23 @@ module NakedObjects.Angular.Gemini {
 
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
                 catch((reject: RejectedPromise) => {
-                    const err = reject.error as ErrorMap | ErrorRepresentation;
 
-                    if (err instanceof ErrorMap) {
-                        this.viewModelFactory.handleErrorResponse(err, this, this.properties);
-                    }
-                    else if (err instanceof ErrorRepresentation) {
-                        this.contextService.setError(err);
+                    if (reject.rejectReason === RejectReason.Concurrency) {
+                        // reload object 
+                        // rewrite url 
+                        // go to concurrency page 
+
+
+
+                    } else {
+                        const err = reject.error as ErrorMap | ErrorRepresentation;
+
+                        if (err instanceof ErrorMap) {
+                            this.viewModelFactory.handleErrorResponse(err, this, this.properties);
+                        } else if (err instanceof ErrorRepresentation) {
+                            this.contextService.setError(err);
+                            this.urlManager.setError(ErrorType.Software);
+                        }
                     }
                 });
         };

@@ -27,6 +27,11 @@ module NakedObjects.Angular.Gemini {
         Form
     }
 
+    export enum ErrorType {
+        Software, 
+        Concurrency
+    }
+
 
     export class RouteData {
         constructor() {

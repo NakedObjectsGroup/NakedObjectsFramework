@@ -269,8 +269,12 @@ module NakedObjects.Angular.Gemini {
                 (right?: boolean) => {
                     focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters;
-                    actionViewModel.executeInvoke(pps, right);
-                    // todo display error if fails on parent ?
+                    actionViewModel.executeInvoke(pps, right).catch((reject: RejectedPromise) => {
+                        if (reject.rejectReason === RejectReason.SoftwareError) {
+                            context.setError(reject.error as ErrorRepresentation);
+                            urlManager.setError(ErrorType.Software);
+                        }
+                    });
                 };
 
             return actionViewModel;

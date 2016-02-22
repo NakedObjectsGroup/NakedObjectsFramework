@@ -11,7 +11,7 @@ module NakedObjects.Angular.Gemini {
                 const error = ErrorRepresentation.create(exception.message, exception.stack.split("\n"));
 
                 context.setError(error);
-                ulrManager.setError();
+                ulrManager.setError(ErrorType.Software);
 
             };
         }

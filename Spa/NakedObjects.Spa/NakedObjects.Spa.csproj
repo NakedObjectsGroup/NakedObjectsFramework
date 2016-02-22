@@ -24,6 +24,7 @@
     <Content Include="Content\partials\collectionTable.html" />
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\cicero.html" />
+    <Content Include="Content\partials\concurrencyError.html" />
     <Content Include="Content\partials\ListPlaceholder.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
