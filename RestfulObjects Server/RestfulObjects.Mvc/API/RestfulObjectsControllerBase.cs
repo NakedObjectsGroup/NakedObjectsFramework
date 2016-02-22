@@ -459,7 +459,7 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 // TODO enhance frameworkFacade to return property with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = FrameworkFacade.GetObject(link);
@@ -483,7 +483,7 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 // TODO enhance frameworkFacade to return parameter with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 ActionContextFacade action = FrameworkFacade.GetObjectAction(link, actionName);
