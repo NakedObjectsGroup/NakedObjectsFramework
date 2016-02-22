@@ -269,6 +269,35 @@ module NakedObjects.Angular.Gemini {
             return this;
         }
 
+        private handleRejectedPromise = (reject: RejectedPromise) => {
+
+            switch (reject.rejectReason) {
+                case (RejectReason.Concurrency):
+                    const parent = this.actionMember.parent;
+
+                    if (parent instanceof DomainObjectRepresentation) {
+                        this.context.reloadObject(this.onPaneId, parent).
+                            then((updatedObject: DomainObjectRepresentation) => {
+                                //this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                                this.urlManager.setError(ErrorType.Concurrency);
+                            });
+                    }
+                    break;
+                case (RejectReason.RequestError):
+                    this.viewModelFactory.handleErrorResponse(reject.error as ErrorMap, this, this.parameters);
+                    break;
+                case (RejectReason.ExpiredTransient):
+                case (RejectReason.WrongType):
+                case (RejectReason.NotImplemented):
+                case (RejectReason.SoftwareError):
+                case (RejectReason.UnknownError):
+                default:
+                    this.context.setError(reject.error as ErrorRepresentation);
+                    this.urlManager.setError(ErrorType.Software);
+            }
+        };
+       
+
 
         title: string;
         message: string;
@@ -296,19 +325,7 @@ module NakedObjects.Angular.Gemini {
                         this.doClose();
                     }             
                 }).
-                catch((reject: RejectedPromise) => {
-                    if (reject.rejectReason === RejectReason.SoftwareError) {
-                        this.context.setError(reject.error as ErrorRepresentation);
-                        this.urlManager.setError(ErrorType.Software);
-                    } else {
-                        const err = reject.error as ErrorMap;
-                        if (err && err.containsError()) {
-                            this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
-                        } else {
-                            this.doClose();
-                        }
-                    }
-            });
+                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
 
         doClose = () => {
             this.urlManager.closeDialog(this.onPaneId);
@@ -354,6 +371,33 @@ module NakedObjects.Angular.Gemini {
             private $q : ng.IQService) {
         }
 
+        private handleRejectedPromise = (reject: RejectedPromise) => {
+
+            switch (reject.rejectReason) {
+                case (RejectReason.Concurrency):
+                    // todo
+                    //this.contextService.reloadObject(this.onPaneId, this.domainObject).
+                    //    then((updatedObject: DomainObjectRepresentation) => {
+                    //        this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                    //        this.urlManager.setError(ErrorType.Concurrency);
+                    //    });
+                    break;
+                case (RejectReason.RequestError):
+                    const errorMap = reject.error as ErrorMap;
+                    if (errorMap && errorMap.containsError()) {
+                        this.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                    }
+                    break;
+                case (RejectReason.ExpiredTransient):
+                case (RejectReason.WrongType):
+                case (RejectReason.NotImplemented):
+                case (RejectReason.SoftwareError):
+                case (RejectReason.UnknownError):
+                default:
+                    this.contextService.setError(reject.error as ErrorRepresentation);
+                    this.urlManager.setError(ErrorType.Software);
+            }
+        };
        
 
 
@@ -385,7 +429,6 @@ module NakedObjects.Angular.Gemini {
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
 
           
-
             // todo do more elegantly 
 
             _.forEach(this.actions, a => {
@@ -418,18 +461,15 @@ module NakedObjects.Angular.Gemini {
                         this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
                     } :
                     (right?: boolean) => {
-                        a.executeInvoke([], right).then((result: ActionResultRepresentation) => {
-                            if (result.result().isNull() && result.resultType() !== "void") {
-                                this.messages = "no result found";
-                            } else {
-                                this.messages = "";
-                            }
-                        }).catch((reject: RejectedPromise) => {
-                            const errorMap = reject.error as ErrorMap;
-                            if (errorMap && errorMap.containsError()) {
-                                this.messages = errorMap.invalidReason() || errorMap.warningMessage;
-                            }
-                        });
+                        a.executeInvoke([], right).
+                            then((result: ActionResultRepresentation) => {
+                                if (result.result().isNull() && result.resultType() !== "void") {
+                                    this.messages = "no result found";
+                                } else {
+                                    this.messages = "";
+                                }
+                            }).
+                            catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
                     };
             });
             return this;
@@ -447,14 +487,13 @@ module NakedObjects.Angular.Gemini {
         }
 
         private pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
-                this.recreate(newPage, newPageSize).then((list: ListRepresentation) => {
+            this.recreate(newPage, newPageSize).
+                then((list: ListRepresentation) => {
                     this.routeData.state = newState || this.routeData.state;
                     this.reset(list, this.routeData);
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
-                }).catch((reject: RejectedPromise) => {
-                    // todo work out what to do here
-                    //setError(error);
-                });
+                }).
+                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
             }
 
 
@@ -689,42 +728,38 @@ module NakedObjects.Angular.Gemini {
 
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
+        private handleRejectedPromise = (reject: RejectedPromise) => {
+
+            switch (reject.rejectReason) {
+                case (RejectReason.Concurrency):
+                    this.contextService.reloadObject(this.onPaneId, this.domainObject).
+                        then((updatedObject: DomainObjectRepresentation) => {
+                            this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                            this.urlManager.setError(ErrorType.Concurrency);
+                        });
+                    break;
+                case (RejectReason.RequestError):
+                    this.viewModelFactory.handleErrorResponse(reject.error as ErrorMap, this, this.properties);
+                    break;
+                case (RejectReason.ExpiredTransient):
+                case (RejectReason.WrongType):
+                case (RejectReason.NotImplemented):
+                case (RejectReason.SoftwareError):
+                case (RejectReason.UnknownError):
+                default:
+                    this.contextService.setError(reject.error as ErrorRepresentation);
+                    this.urlManager.setError(ErrorType.Software);
+            }
+        };
+
+
         doSave = viewObject => {
 
             this.setProperties();
             const propMap = this.propertyMap();
 
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
-                catch((reject: RejectedPromise) => {
-                    // todo extract all error handling into common function
-
-
-                    if (reject.rejectReason === RejectReason.Concurrency) {
-
-                        this.contextService.reloadObject(this.onPaneId, this.domainObject).
-                            then((updatedObject: DomainObjectRepresentation) => {
-                                this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-
-                                this.urlManager.setError(ErrorType.Concurrency);
-                            });
-
-
-                        // reload object 
-                        // rewrite url 
-                        // go to concurrency page 
-
-                        this.urlManager.setError(ErrorType.Concurrency);
-                    } else {
-                        const err = reject.error as ErrorMap | ErrorRepresentation;
-
-                        if (err instanceof ErrorMap) {
-                            this.viewModelFactory.handleErrorResponse(err, this, this.properties);
-                        } else if (err instanceof ErrorRepresentation) {
-                            this.contextService.setError(err);
-                            this.urlManager.setError(ErrorType.Software);
-                        }
-                    }
-                });
+                catch((reject: RejectedPromise) =>  this.handleRejectedPromise(reject));
         };
 
 
@@ -734,14 +769,16 @@ module NakedObjects.Angular.Gemini {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
                     this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
-                });
+                }).
+                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
         }
 
         doReload = () =>
             this.contextService.reloadObject(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                });
+                }).
+                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
 
 
         hideEdit = () => this.domainObject.extensions().renderInEdit() || _.all(this.properties, p => !p.isEditable);
