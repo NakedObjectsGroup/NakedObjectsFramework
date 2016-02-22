@@ -127,6 +127,9 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.actionId = getId(action + paneId, $routeParams);
             paneRouteData.dialogId = getId(dialog + paneId, $routeParams);
 
+            const rawErrorType = getId(errorType + paneId, $routeParams);
+            paneRouteData.errorType = rawErrorType ? ErrorType[rawErrorType] : null;
+
             paneRouteData.objectId = getId(object + paneId, $routeParams);
             paneRouteData.actionsOpen = getId(actions + paneId, $routeParams);
 
@@ -504,10 +507,16 @@ module NakedObjects.Angular.Gemini {
             const newPath = `/${mode}/error`;
            
             const search = {}
-            search[errorType] = ErrorType[et];
+            // always on pane 1
+            search[errorType + 1] = ErrorType[et];
             
             $location.path(newPath);
             setNewSearch(search);
+
+            if (et === ErrorType.Concurrency) {
+                // on concurrency fail replace url so we can't just go back
+                $location.replace();
+            }
         };
 
 

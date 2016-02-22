@@ -62,6 +62,7 @@ module NakedObjects.Angular.Gemini {
         page: number;
         pageSize : number;
         selectedItems: boolean[];
-        interactionMode : InteractionMode;
+        interactionMode: InteractionMode;
+        errorType : ErrorType;
     }
 }

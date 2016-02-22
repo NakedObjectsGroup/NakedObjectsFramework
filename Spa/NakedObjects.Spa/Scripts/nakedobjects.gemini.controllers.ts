@@ -38,8 +38,9 @@ module NakedObjects.Angular.Gemini {
         handlers.handleBackground($scope);
     });
 
-    app.controller("ErrorController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
-        handlers.handleError($scope);
+    app.controller("ErrorController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        const routeData = urlManager.getRouteData();
+        handlers.handleError($scope, routeData.pane1);
     });
 
     app.controller("ToolBarController", ($scope: INakedObjectsScope, handlers: IHandlers) => {

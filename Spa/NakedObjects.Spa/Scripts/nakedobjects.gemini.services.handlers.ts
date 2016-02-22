@@ -6,7 +6,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
-        handleError($scope: INakedObjectsScope): void;
+        handleError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHome($scope: INakedObjectsScope, routeData: PaneRouteData): void;
@@ -183,12 +183,16 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        handlers.handleError = ($scope: INakedObjectsScope) => {
-            const  error = context.getError();
-            if (error) {
-                const evm = viewModelFactory.errorViewModel(error);
-                $scope.error = evm;
-                $scope.errorTemplate = errorTemplate;
+        handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+            if (routeData.errorType === ErrorType.Concurrency) {
+                $scope.errorTemplate = concurrencyTemplate;
+            } else {
+                const error = context.getError();
+                if (error) {
+                    const evm = viewModelFactory.errorViewModel(error);
+                    $scope.error = evm;
+                    $scope.errorTemplate = errorTemplate;
+                }
             }
         };
 

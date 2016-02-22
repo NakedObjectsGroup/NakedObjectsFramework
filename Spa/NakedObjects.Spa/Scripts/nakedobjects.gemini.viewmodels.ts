@@ -696,14 +696,24 @@ module NakedObjects.Angular.Gemini {
 
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
                 catch((reject: RejectedPromise) => {
+                    // todo extract all error handling into common function
+
 
                     if (reject.rejectReason === RejectReason.Concurrency) {
+
+                        this.contextService.reloadObject(this.onPaneId, this.domainObject).
+                            then((updatedObject: DomainObjectRepresentation) => {
+                                this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+
+                                this.urlManager.setError(ErrorType.Concurrency);
+                            });
+
+
                         // reload object 
                         // rewrite url 
                         // go to concurrency page 
 
-
-
+                        this.urlManager.setError(ErrorType.Concurrency);
                     } else {
                         const err = reject.error as ErrorMap | ErrorRepresentation;
 
