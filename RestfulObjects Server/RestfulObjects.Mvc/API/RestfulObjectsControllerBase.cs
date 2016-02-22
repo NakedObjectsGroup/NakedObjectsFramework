@@ -496,7 +496,7 @@ namespace RestfulObjects.Mvc {
 
         public virtual HttpResponseMessage GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
 
                 // TODO enhance frameworkFacade to return parameter with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
