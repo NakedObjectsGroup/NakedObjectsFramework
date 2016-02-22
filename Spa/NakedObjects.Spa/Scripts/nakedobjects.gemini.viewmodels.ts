@@ -238,7 +238,7 @@ module NakedObjects.Angular.Gemini {
         title: string;
         description: string;
         doInvoke: (right?: boolean) => void;
-        executeInvoke: (pps : ParameterViewModel[], right?: boolean)  => ng.IPromise<ErrorMap>;
+        executeInvoke: (pps : ParameterViewModel[], right?: boolean)  => ng.IPromise<ActionResultRepresentation>;
         disabled(): boolean { return false; }
 
         parameters: ParameterViewModel[];
@@ -288,13 +288,22 @@ module NakedObjects.Angular.Gemini {
         }
 
         doInvoke = (right?: boolean) =>
-            this.executeInvoke(right).then((err: ErrorMap) => {
-                if (err.containsError()) {
-                    this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
-                } else {
-                    this.doClose();
-                }
-            });
+            this.executeInvoke(right).
+                then((result: ActionResultRepresentation) => {              
+                    if (result.result().isNull() && result.resultType() !== "void") {
+                        this.message = "no result found";
+                    } else {
+                        this.doClose();
+                    }             
+                }).
+                catch((reject: RejectedPromise) => {
+                    const err = reject.error as ErrorMap;
+                    if (err.containsError()) {
+                        this.viewModelFactory.handleErrorResponse(err, this, this.parameters);
+                    } else {
+                        this.doClose();
+                    }
+                });
 
         doClose = () => {
             this.urlManager.closeDialog(this.onPaneId);
@@ -381,7 +390,11 @@ module NakedObjects.Angular.Gemini {
                     const selected = _.filter(this.items, i => i.selected);
 
                     if (selected.length === 0) {
-                        return this.$q.when(new ErrorMap({}, 0, "Must select items for collection contributed action"));
+               
+                        const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
+                        const rp = new RejectedPromise(RejectReason.RequestError, em.invalidReason(), em);
+
+                        return this.$q.reject(rp);
                     }
                     const parms = _.values(a.actionRep.parameters()) as Parameter[];
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
@@ -400,12 +413,17 @@ module NakedObjects.Angular.Gemini {
                         this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
                     } :
                     (right?: boolean) => {
-                        a.executeInvoke([], right).then((errorMap: ErrorMap) => {
-                            if (errorMap.containsError()) {
-                                this.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                        a.executeInvoke([], right).then((result: ActionResultRepresentation) => {
+                            if (result.result().isNull() && result.resultType() !== "void") {
+                                this.messages = "no result found";
                             } else {
                                 this.messages = "";
-                            };
+                            }
+                        }).catch((reject: RejectedPromise) => {
+                            const errorMap = reject.error as ErrorMap;
+                            if (errorMap && errorMap.containsError()) {
+                                this.messages = errorMap.invalidReason() || errorMap.warningMessage;
+                            }
                         });
                     };
             });
@@ -428,7 +446,8 @@ module NakedObjects.Angular.Gemini {
                     this.routeData.state = newState || this.routeData.state;
                     this.reset(list, this.routeData);
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
-                }).catch(error => {
+                }).catch((reject: RejectedPromise) => {
+                    // todo work out what to do here
                     //setError(error);
                 });
             }
@@ -666,15 +685,21 @@ module NakedObjects.Angular.Gemini {
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
         doSave = viewObject => {
-        
+
             this.setProperties();
             const propMap = this.propertyMap();
 
-            this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).then((err: ErrorMap) => {
-                if (err.containsError()) {
-                    this.viewModelFactory.handleErrorResponse(err, this, this.properties);
-                }
-            });
+            this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
+                catch((reject: RejectedPromise) => {
+                    const err = reject.error as ErrorMap | ErrorRepresentation;
+
+                    if (err instanceof ErrorMap) {
+                        this.viewModelFactory.handleErrorResponse(err, this, this.properties);
+                    }
+                    else if (err instanceof ErrorRepresentation) {
+                        this.contextService.setError(err);
+                    }
+                });
         };
 
 

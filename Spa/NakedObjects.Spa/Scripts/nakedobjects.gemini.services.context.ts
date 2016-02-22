@@ -26,10 +26,10 @@ module NakedObjects.Angular.Gemini {
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ErrorMap>;
+        invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ActionResultRepresentation>;
 
-        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;     
-        saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<ErrorMap>;
+        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;     
+        saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
@@ -52,7 +52,7 @@ module NakedObjects.Angular.Gemini {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ErrorMap;
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) : ActionResultRepresentation;
         setInvokeUpdateError(reject: RejectedPromise): ErrorMap;
         setPreviousUrl: (url: string) => void;
     }
@@ -425,7 +425,8 @@ module NakedObjects.Angular.Gemini {
             $rootScope.$broadcast("nof-message", messages);
 
             if (result.result().isNull() && result.resultType() !== "void") {
-                return new ErrorMap({}, 0, "no result found");
+               // return new ErrorMap({}, 0, "no result found");
+                return result;
             }
 
             const resultObject = result.result().object();
@@ -464,9 +465,9 @@ module NakedObjects.Angular.Gemini {
 
                 const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                 cacheList(resultList, index);
-            } 
+            }
 
-            return new ErrorMap({}, 0, "");
+            return result;
         };
 
       
@@ -511,9 +512,6 @@ module NakedObjects.Angular.Gemini {
                 then((result: ActionResultRepresentation) => {
                     setDirty();
                     return $q.when(context.setResult(action, result, paneId, 1, defaultPageSize));
-                }).
-                catch((reject: RejectedPromise) => {
-                    return $q.when(context.setInvokeUpdateError(reject));
                 });
         }
 
@@ -548,16 +546,29 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        context.invokeAction = (action: ActionMember, paneId: number, parms : _.Dictionary<Value>)     => {
+        context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
             const invoke = action.getInvoke();
             const invokeMap = invoke.getInvokeMap();
-         
+
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
             const setDirty = getSetDirtyFunction(action, parms);
 
             return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
         };
+
+        function setNewObject(updatedObject : DomainObjectRepresentation, paneId : number, viewSavedObject : Boolean) {
+            context.setObject(paneId, updatedObject);
+
+            dirtyCache.setDirty(updatedObject);
+
+            if (viewSavedObject) {
+                urlManager.setObject(updatedObject, paneId);
+            } else {
+                urlManager.popUrlState(paneId);
+            }
+            return $q.when(updatedObject);
+        }
 
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const update = object.getUpdateMap();
@@ -566,24 +577,10 @@ module NakedObjects.Angular.Gemini {
 
             return repLoader.retrieve(update, DomainObjectRepresentation, object.etagDigest).
                 then((updatedObject: DomainObjectRepresentation) => {
-             
                     // This is a kludge because updated object has no self link.
                     const rawLinks = object.wrapped().links;
                     updatedObject.wrapped().links = rawLinks;
-
-                    context.setObject(paneId, updatedObject);
-
-                    dirtyCache.setDirty(updatedObject);
-
-                    if (viewSavedObject) {
-                        urlManager.setObject(updatedObject, paneId);
-                    } else {
-                        urlManager.popUrlState(paneId);
-                    }
-                    return $q.when(new ErrorMap({}, 0, ""));
-                }).
-                catch((reject: RejectedPromise) => {
-                    return $q.when(context.setInvokeUpdateError(reject));
+                    return setNewObject(updatedObject, paneId, viewSavedObject);
                 });
         };
 
@@ -594,21 +591,8 @@ module NakedObjects.Angular.Gemini {
 
             return repLoader.retrieve(persist, DomainObjectRepresentation).
                 then((updatedObject: DomainObjectRepresentation) => {
-                    context.setObject(paneId, updatedObject);
                     transientCache.remove(paneId, object.domainType(), object.id());
-
-                    dirtyCache.setDirty(updatedObject);
-
-                    if (viewSavedObject) {
-                        urlManager.setObject(updatedObject, paneId);
-                    } else {
-                        urlManager.popUrlState(paneId);
-                    }
-
-                    return $q.when(new ErrorMap({}, 0, ""));
-                }).
-                catch((reject: RejectedPromise) => {
-                    return $q.when(context.setInvokeUpdateError(reject));
+                    return setNewObject(updatedObject, paneId, viewSavedObject);
                 });
         };
 

@@ -1078,12 +1078,16 @@ module NakedObjects.Angular.Gemini {
                     return;
                 }
                 this.context.invokeAction(action, 1, fieldMap)
-                    .then((err: ErrorMap) => {
-                        if (err.containsError()) {
+                    .then((result: ActionResultRepresentation) => {
+                        // todo handle case where result is empty - this is no longer handled 
+                        // by reject below
+                        this.urlManager.closeDialog();
+                    }).
+                    catch((reject: RejectedPromise) => {
+                        const err = reject.error as ErrorMap;
+                        if (err && err.containsError()) {
                             const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
                             this.handleErrorResponse(err, paramFriendlyName);
-                        } else {
-                            this.urlManager.closeDialog();
                         }
                     });
             });
@@ -1294,9 +1298,23 @@ module NakedObjects.Angular.Gemini {
                 });
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
                 if (obj.extensions().renderInEdit()) { //i.e. it is a transient or a viewmodel
-                    this.context.saveObject(obj, propMap, 1, true).then((err: ErrorMap) => this.handleError(err, obj));
+                    this.context.saveObject(obj, propMap, 1, true).                       
+                        catch((reject: RejectedPromise) => {
+                            const err = reject.error as ErrorMap | ErrorRepresentation;
+
+                            if (err instanceof ErrorMap) {
+                                this.handleError(err, obj);
+                            }
+                        });
                 } else { //It is a persistent object being updated
-                    this.context.updateObject(obj, propMap, 1, true).then((err: ErrorMap) => this.handleError(err, obj));
+                    this.context.updateObject(obj, propMap, 1, true).
+                        catch((reject: RejectedPromise) => {
+                            const err = reject.error as ErrorMap | ErrorRepresentation;
+
+                            if (err instanceof ErrorMap) {
+                                this.handleError(err, obj);
+                            }
+                        });
                 }
             });
         };
