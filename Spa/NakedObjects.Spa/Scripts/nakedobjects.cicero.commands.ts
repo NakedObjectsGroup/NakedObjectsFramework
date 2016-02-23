@@ -1084,11 +1084,13 @@ module NakedObjects.Angular.Gemini {
                         this.urlManager.closeDialog();
                     }).
                     catch((reject: RejectedPromise) => {
-                        const err = reject.error as ErrorMap;
-                        if (err && err.containsError()) {
+
+                        const display = (em: ErrorMap) => {
                             const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
-                            this.handleErrorResponse(err, paramFriendlyName);
+                            this.handleErrorResponse(em, paramFriendlyName);
                         }
+
+                        this.context.handleRejectedPromise(reject, null, () => {}, display, () => false);
                     });
             });
         };
@@ -1299,21 +1301,15 @@ module NakedObjects.Angular.Gemini {
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
                 if (obj.extensions().renderInEdit()) { //i.e. it is a transient or a viewmodel
                     this.context.saveObject(obj, propMap, 1, true).                       
-                        catch((reject: RejectedPromise) => {
-                            const err = reject.error as ErrorMap | ErrorRepresentation;
-
-                            if (err instanceof ErrorMap) {
-                                this.handleError(err, obj);
-                            }
+                        catch((reject: RejectedPromise) => {                            
+                            const display = (em: ErrorMap) => this.handleError(em, obj);                           
+                            this.context.handleRejectedPromise(reject, null, () => { }, display, () => false);
                         });
                 } else { //It is a persistent object being updated
                     this.context.updateObject(obj, propMap, 1, true).
                         catch((reject: RejectedPromise) => {
-                            const err = reject.error as ErrorMap | ErrorRepresentation;
-
-                            if (err instanceof ErrorMap) {
-                                this.handleError(err, obj);
-                            }
+                            const display = (em: ErrorMap) => this.handleError(em, obj);
+                            this.context.handleRejectedPromise(reject, null, () => { }, display, () => false);
                         });
                 }
             });

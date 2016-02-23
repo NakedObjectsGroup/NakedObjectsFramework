@@ -124,13 +124,13 @@ module NakedObjects.Angular.Gemini {
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
                             }).catch((reject : RejectedPromise) => {
-                                context.handleRejectedPromise(reject, null, () => {}, () => {}, ()=> true);
+                                context.handleRejectedPromise(reject, null, () => {}, () => {}, ()=> false);
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch((reject: RejectedPromise) => {
-                    context.handleRejectedPromise(reject, null, () => { }, () => { }, () => true);
+                    context.handleRejectedPromise(reject, null, () => { }, () => { }, () => false);
                 });
         };       
 

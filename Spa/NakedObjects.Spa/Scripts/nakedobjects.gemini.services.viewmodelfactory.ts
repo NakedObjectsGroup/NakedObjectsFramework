@@ -277,7 +277,7 @@ module NakedObjects.Angular.Gemini {
                         const parent = actionRep.parent as DomainObjectRepresentation;
                         const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
                         const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                        context.handleRejectedPromise(reject, parent, reset, display, () => true);
+                        context.handleRejectedPromise(reject, parent, reset, display, () => false);
                     });
                 };
 
@@ -734,6 +734,16 @@ module NakedObjects.Angular.Gemini {
                                 if (reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                                     cvm.output = "The requested view of unsaved object details has expired";
                                 }
+
+                                const custom = (cc: ClientErrorCode) => {
+                                    if (cc === ClientErrorCode.ExpiredTransient) {
+                                        cvm.output = "The requested view of unsaved object details has expired";
+                                        return true;
+                                    }
+                                    return false;
+                                };
+
+                                this.context.handleRejectedPromise(reject, null, () => { }, () => {}, custom);
                             });
                     }
                 };

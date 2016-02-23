@@ -299,7 +299,7 @@ module NakedObjects.Angular.Gemini {
                 catch((reject: RejectedPromise) => {
                     const parent = this.actionMember.parent as DomainObjectRepresentation;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleRejectedPromise(reject, parent, () => { }, display, () => true);
+                    this.context.handleRejectedPromise(reject, parent, () => { }, display, () => false);
                 });
 
         doClose = () => {
@@ -417,7 +417,7 @@ module NakedObjects.Angular.Gemini {
                             }).
                             catch((reject: RejectedPromise) => {
                                 const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                                this.contextService.handleRejectedPromise(reject, null, () => {}, display, () => true);
+                                this.contextService.handleRejectedPromise(reject, null, () => {}, display, () => false);
                             });
                     };
             });
@@ -444,7 +444,7 @@ module NakedObjects.Angular.Gemini {
                 }).
                 catch((reject: RejectedPromise) => {
                     const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                    this.contextService.handleRejectedPromise(reject, null, () => { }, display, () => true);
+                    this.contextService.handleRejectedPromise(reject, null, () => { }, display, () => false);
                 });
         }
 
@@ -683,7 +683,7 @@ module NakedObjects.Angular.Gemini {
         private handleRejectedPromise = (reject: RejectedPromise) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.contextService.handleRejectedPromise(reject, this.domainObject, reset, display, () => true);
+            this.contextService.handleRejectedPromise(reject, this.domainObject, reset, display, () => false);
         };
 
 
