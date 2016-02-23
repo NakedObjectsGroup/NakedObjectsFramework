@@ -273,11 +273,11 @@ module NakedObjects.Angular.Gemini {
                 (right?: boolean) => {
                     focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters;
-                    actionViewModel.executeInvoke(pps, right).catch((reject: RejectedPromise) => {
+                    actionViewModel.executeInvoke(pps, right).catch((reject: ErrorWrapper) => {
                         const parent = actionRep.parent as DomainObjectRepresentation;
                         const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
                         const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                        context.handleRejectedPromise(reject, parent, reset, display, () => false);
+                        context.handleWrappedError(reject, parent, reset, display, () => false);
                     });
                 };
 
@@ -730,7 +730,7 @@ module NakedObjects.Angular.Gemini {
                                 }
                                 cvm.clearInput();
                                 cvm.output = output;
-                            }).catch((reject: RejectedPromise) => {
+                            }).catch((reject: ErrorWrapper) => {
                                 if (reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                                     cvm.output = "The requested view of unsaved object details has expired";
                                 }

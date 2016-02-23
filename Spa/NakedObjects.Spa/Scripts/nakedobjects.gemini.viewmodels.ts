@@ -296,10 +296,10 @@ module NakedObjects.Angular.Gemini {
                         this.doClose();
                     }
                 }).
-                catch((reject: RejectedPromise) => {
+                catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember.parent as DomainObjectRepresentation;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleRejectedPromise(reject, parent, () => { }, display, () => false);
+                    this.context.handleWrappedError(reject, parent, () => { }, display, () => false);
                 });
 
         doClose = () => {
@@ -386,7 +386,7 @@ module NakedObjects.Angular.Gemini {
                     if (selected.length === 0) {
                
                         const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
-                        const rp = new RejectedPromise(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em.invalidReason(), em);
+                        const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em.invalidReason(), em);
 
                         return this.$q.reject(rp);
                     }
@@ -415,9 +415,9 @@ module NakedObjects.Angular.Gemini {
                                     this.messages = "";
                                 }
                             }).
-                            catch((reject: RejectedPromise) => {
+                            catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                                this.contextService.handleRejectedPromise(reject, null, () => {}, display, () => false);
+                                this.contextService.handleWrappedError(reject, null, () => {}, display, () => false);
                             });
                     };
             });
@@ -442,9 +442,9 @@ module NakedObjects.Angular.Gemini {
                     this.reset(list, this.routeData);
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
-                catch((reject: RejectedPromise) => {
+                catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                    this.contextService.handleRejectedPromise(reject, null, () => { }, display, () => false);
+                    this.contextService.handleWrappedError(reject, null, () => { }, display, () => false);
                 });
         }
 
@@ -680,10 +680,10 @@ module NakedObjects.Angular.Gemini {
 
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
-        private handleRejectedPromise = (reject: RejectedPromise) => {
+        private handleWrappedError = (reject: ErrorWrapper) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.contextService.handleRejectedPromise(reject, this.domainObject, reset, display, () => false);
+            this.contextService.handleWrappedError(reject, this.domainObject, reset, display, () => false);
         };
 
 
@@ -693,7 +693,7 @@ module NakedObjects.Angular.Gemini {
             const propMap = this.propertyMap();
 
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
-                catch((reject: RejectedPromise) =>  this.handleRejectedPromise(reject));
+                catch((reject: ErrorWrapper) =>  this.handleWrappedError(reject));
         };
 
 
@@ -704,7 +704,7 @@ module NakedObjects.Angular.Gemini {
                     this.urlManager.pushUrlState(this.onPaneId);
                     this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
                 }).
-                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
+                catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         }
 
         doReload = () =>
@@ -712,7 +712,7 @@ module NakedObjects.Angular.Gemini {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                 }).
-                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
+                catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
 
 
         hideEdit = () => this.domainObject.extensions().renderInEdit() || _.all(this.properties, p => !p.isEditable);

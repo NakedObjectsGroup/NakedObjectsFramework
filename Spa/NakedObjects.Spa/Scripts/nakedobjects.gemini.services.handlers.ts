@@ -30,7 +30,7 @@ module NakedObjects.Angular.Gemini {
 
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
-            context.setError(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, "", errorRep));
+            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, "", errorRep));
             urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
         }
  
@@ -123,14 +123,14 @@ module NakedObjects.Angular.Gemini {
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                            }).catch((reject : RejectedPromise) => {
-                                context.handleRejectedPromise(reject, null, () => {}, () => {}, ()=> false);
+                            }).catch((reject : ErrorWrapper) => {
+                                context.handleWrappedError(reject, null, () => {}, () => {}, ()=> false);
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
-                }).catch((reject: RejectedPromise) => {
-                    context.handleRejectedPromise(reject, null, () => { }, () => { }, () => false);
+                }).catch((reject: ErrorWrapper) => {
+                    context.handleWrappedError(reject, null, () => { }, () => { }, () => false);
                 });
         };       
 
@@ -245,7 +245,7 @@ module NakedObjects.Angular.Gemini {
                     deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
                     deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
 
-                }).catch((reject : RejectedPromise) => {
+                }).catch((reject : ErrorWrapper) => {
                  
                     const handler =  (cc: ClientErrorCode) => {
                         if (cc === ClientErrorCode.ExpiredTransient) {
@@ -255,7 +255,7 @@ module NakedObjects.Angular.Gemini {
                         return false;
                     }
 
-                    context.handleRejectedPromise(reject, null, () => { }, () => { }, handler);                                       
+                    context.handleWrappedError(reject, null, () => { }, () => { }, handler);                                       
                 });
 
         };

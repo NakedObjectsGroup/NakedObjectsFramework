@@ -18,7 +18,7 @@ module NakedObjects.Angular.Gemini {
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionFriendlyName: (action: ActionMember) => ng.IPromise<string>;
-        getError: () => RejectedPromise;
+        getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
         //The object values are only needed on a transient object / editable view model
@@ -33,7 +33,7 @@ module NakedObjects.Angular.Gemini {
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
-        setError: (reject : RejectedPromise) => void;
+        setError: (reject : ErrorWrapper) => void;
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
@@ -45,7 +45,7 @@ module NakedObjects.Angular.Gemini {
         clearMessages();
         clearWarnings();
 
-        handleRejectedPromise(reject: RejectedPromise,
+        handleWrappedError(reject: ErrorWrapper,
             toReload: DomainObjectRepresentation,
             onReload: (updatedObject: DomainObjectRepresentation) => void,
             displayMessages: (em: ErrorMap) => void,
@@ -180,7 +180,7 @@ module NakedObjects.Angular.Gemini {
             // deeper cache for transients
             if (transient) {
                 const transientObj = transientCache.get(paneId, type, id);
-                return transientObj ? $q.when(transientObj) : $q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ""));
+                return transientObj ? $q.when(transientObj) : $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ""));
             }
 
             const object = new DomainObjectRepresentation();
@@ -352,7 +352,7 @@ module NakedObjects.Angular.Gemini {
                 cacheList(resultList, index);
                 return $q.when(resultList);
             } else {
-                return $q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
+                return $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
             }
         }
 
@@ -392,11 +392,11 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        let currentError: RejectedPromise = null;
+        let currentError: ErrorWrapper = null;
 
         context.getError = () => currentError;
 
-        context.setError = (e: RejectedPromise) => currentError = e;
+        context.setError = (e: ErrorWrapper) => currentError = e;
 
         let previousUrl: string = null;
 
@@ -578,16 +578,16 @@ module NakedObjects.Angular.Gemini {
                     subTypeCache[toCheckType] = entry;
                     return is;
                 }).
-                catch((reject: RejectedPromise) => {
+                catch((reject: ErrorWrapper) => {
                     return false;
                 });
         }
 
-        function handleHttpServerError(reject: RejectedPromise) {
+        function handleHttpServerError(reject: ErrorWrapper) {
             urlManager.setError(ErrorCategory.HttpServerError);
         }
 
-        function handleHttpClientError(reject: RejectedPromise,
+        function handleHttpClientError(reject: ErrorWrapper,
                                        toReload: DomainObjectRepresentation,
                                        onReload: (updatedObject: DomainObjectRepresentation) => void,
                                        displayMessages: (em: ErrorMap) => void) {
@@ -608,14 +608,14 @@ module NakedObjects.Angular.Gemini {
 
         }
 
-        function handleClientError(reject: RejectedPromise, customClientHandler: (ec: ClientErrorCode) => boolean) {
+        function handleClientError(reject: ErrorWrapper, customClientHandler: (ec: ClientErrorCode) => boolean) {
 
             if (!customClientHandler(reject.clientErrorCode)) {
                 urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
             }
         }
 
-        context.handleRejectedPromise = (reject: RejectedPromise,
+        context.handleWrappedError = (reject: ErrorWrapper,
                                         toReload: DomainObjectRepresentation,
                                         onReload: (updatedObject: DomainObjectRepresentation) => void,
                                         displayMessages: (em: ErrorMap) => void,

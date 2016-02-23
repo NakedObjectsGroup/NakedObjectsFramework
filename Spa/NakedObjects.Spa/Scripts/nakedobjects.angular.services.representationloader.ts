@@ -63,7 +63,7 @@ module NakedObjects.Angular {
 
                     $rootScope.$broadcast("ajax-change", --loadingCount);
 
-                    const rr = new RejectedPromise(category, promiseCallback.status, message, error);
+                    const rr = new ErrorWrapper(category, promiseCallback.status, message, error);
                     rr.httpErrorCode = promiseCallback.status;
 
                     return $q.reject(rr);

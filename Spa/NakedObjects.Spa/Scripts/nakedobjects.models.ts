@@ -115,7 +115,7 @@ module NakedObjects {
         SoftwareError
     }
 
-    export class RejectedPromise {
+    export class ErrorWrapper {
         constructor(rc : ErrorCategory, code : HttpStatusCode | ClientErrorCode,  msg : string, err? : ErrorMap | ErrorRepresentation) {
             this.category = rc;
             this.message = msg;

@@ -184,7 +184,7 @@ module NakedObjects.Angular.Gemini {
             } else if (this.isMenu()) {
                 return this.getMenu().then((menu: MenuRepresentation) => this.$q.when(menu.actionMember(dialogId))); //i.e. return a promise
             }
-            return this.$q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, "List actions not implemented yet"));
+            return this.$q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, "List actions not implemented yet"));
         }
 
         //Tests that at least one collection is open (should only be one). 
@@ -1083,14 +1083,14 @@ module NakedObjects.Angular.Gemini {
                         // by reject below
                         this.urlManager.closeDialog();
                     }).
-                    catch((reject: RejectedPromise) => {
+                    catch((reject: ErrorWrapper) => {
 
                         const display = (em: ErrorMap) => {
                             const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         }
 
-                        this.context.handleRejectedPromise(reject, null, () => {}, display, () => false);
+                        this.context.handleWrappedError(reject, null, () => {}, display, () => false);
                     });
             });
         };
@@ -1301,15 +1301,15 @@ module NakedObjects.Angular.Gemini {
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
                 if (obj.extensions().renderInEdit()) { //i.e. it is a transient or a viewmodel
                     this.context.saveObject(obj, propMap, 1, true).                       
-                        catch((reject: RejectedPromise) => {                            
+                        catch((reject: ErrorWrapper) => {                            
                             const display = (em: ErrorMap) => this.handleError(em, obj);                           
-                            this.context.handleRejectedPromise(reject, null, () => { }, display, () => false);
+                            this.context.handleWrappedError(reject, null, () => { }, display, () => false);
                         });
                 } else { //It is a persistent object being updated
                     this.context.updateObject(obj, propMap, 1, true).
-                        catch((reject: RejectedPromise) => {
+                        catch((reject: ErrorWrapper) => {
                             const display = (em: ErrorMap) => this.handleError(em, obj);
-                            this.context.handleRejectedPromise(reject, null, () => { }, display, () => false);
+                            this.context.handleWrappedError(reject, null, () => { }, display, () => false);
                         });
                 }
             });
