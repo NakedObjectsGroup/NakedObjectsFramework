@@ -773,9 +773,9 @@ module NakedObjects.Angular.Gemini {
                     }
                 };
                 cvm.renderError = () => {
-                    const err = context.getError();
+                    const err = context.getError().error as ErrorRepresentation;
                     cvm.clearInput();
-                    cvm.output = `Sorry, an application error has occurred. ${err.message }`;
+                    cvm.output = `Sorry, an application error has occurred. ${err.message() }`;
                 };
             }
             return cvm;

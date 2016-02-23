@@ -5,7 +5,8 @@ namespace AdventureWorksModel
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public class BusinessEntity : IBusinessEntity {
         #region Injected Services 
         public IDomainObjectContainer Container { set; protected get; }
@@ -36,7 +37,8 @@ namespace AdventureWorksModel
 
         #region ModifiedDate
 
-        [NakedObjectsIgnore]
+        [Hidden(WhenTo.Always)]
+        [ConcurrencyCheck]
         public virtual DateTime BusinessEntityModifiedDate { get; set; }
 
         #endregion
