@@ -30,27 +30,10 @@ module NakedObjects.Angular.Gemini {
 
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
-            context.setError(errorRep);
-            urlManager.setError(ErrorType.Software);
+            context.setError(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, "", errorRep));
+            urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
         }
-  
-        function setError(error: ErrorMap | ErrorRepresentation, msg: string) {
-            if (error instanceof ErrorRepresentation) {
-                context.setError(error as ErrorRepresentation);
-            } else if (error instanceof ErrorMap) {
-                const errorRep = ErrorRepresentation.create(`unexpected error map: ${error.warningMessage}`);
-                context.setError(errorRep);
-            } else {
-                const errorRep = ErrorRepresentation.create(`unexpected error: ${msg}`);
-                context.setError(errorRep);
-            }
-
-            urlManager.setError(ErrorType.Software);
-        }
-
-        function setRejection(reject: RejectedPromise) {
-            setError(reject.error, reject.message);
-        }
+ 
 
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
             const cache = $cacheFactory.get("recentlyViewed");
@@ -84,8 +67,9 @@ module NakedObjects.Angular.Gemini {
             deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
-            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, routeData) : action as ActionViewModel;
             const dialogViewModel = perPaneDialogViews[routeData.paneId];
+            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, dialogViewModel, routeData) : action as ActionViewModel;
+
             dialogViewModel.reset(actionViewModel, routeData);
             $scope.dialog = dialogViewModel; 
 
@@ -140,13 +124,13 @@ module NakedObjects.Angular.Gemini {
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
                             }).catch((reject : RejectedPromise) => {
-                                setRejection(reject);
+                                context.handleRejectedPromise(reject, null, () => {}, () => {}, ()=> true);
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch((reject: RejectedPromise) => {
-                    setRejection(reject);
+                    context.handleRejectedPromise(reject, null, () => { }, () => { }, () => true);
                 });
         };       
 
@@ -184,15 +168,25 @@ module NakedObjects.Angular.Gemini {
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-            if (routeData.errorType === ErrorType.Concurrency) {
+            if (routeData.errorCategory === ErrorCategory.HttpClientError && routeData.errorCode === HttpStatusCode.PreconditionFailed) {
                 $scope.errorTemplate = concurrencyTemplate;
-            } else {
-                const error = context.getError();
-                if (error) {
-                    const evm = viewModelFactory.errorViewModel(error);
-                    $scope.error = evm;
-                    $scope.errorTemplate = errorTemplate;
-                }
+            }
+            else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
+                const evm = viewModelFactory.errorViewModel();
+                evm.code = HttpStatusCode[routeData.errorCode];
+                $scope.error = evm;
+                $scope.errorTemplate = httpErrorTemplate;
+            }
+            else if (routeData.errorCategory === ErrorCategory.ClientError) {
+                const evm = viewModelFactory.errorViewModel(context.getError().error as ErrorRepresentation);
+                evm.code = ClientErrorCode[routeData.errorCode];
+                $scope.error = evm;
+                $scope.errorTemplate = errorTemplate;
+            }
+            else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
+                const evm = viewModelFactory.errorViewModel(context.getError().error as ErrorRepresentation);
+                $scope.error = evm;
+                $scope.errorTemplate = errorTemplate;
             }
         };
 
@@ -252,11 +246,16 @@ module NakedObjects.Angular.Gemini {
                     deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
 
                 }).catch((reject : RejectedPromise) => {
-                    if (reject.rejectReason === RejectReason.ExpiredTransient) {
-                        $scope.objectTemplate = expiredTransientTemplate;
-                    } else {
-                        setRejection(reject); 
-                    }                              
+                 
+                    const handler =  (cc: ClientErrorCode) => {
+                        if (cc === ClientErrorCode.ExpiredTransient) {
+                            $scope.objectTemplate = expiredTransientTemplate;
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    context.handleRejectedPromise(reject, null, () => { }, () => { }, handler);                                       
                 });
 
         };

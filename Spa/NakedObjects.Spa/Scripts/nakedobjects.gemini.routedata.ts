@@ -27,12 +27,6 @@ module NakedObjects.Angular.Gemini {
         Form
     }
 
-    export enum ErrorType {
-        Software, 
-        Concurrency
-    }
-
-
     export class RouteData {
         constructor() {
             this.pane1 = new PaneRouteData(1);
@@ -63,6 +57,7 @@ module NakedObjects.Angular.Gemini {
         pageSize : number;
         selectedItems: boolean[];
         interactionMode: InteractionMode;
-        errorType : ErrorType;
+        errorCategory: ErrorCategory;
+        errorCode: HttpStatusCode | ClientErrorCode;
     }
 }

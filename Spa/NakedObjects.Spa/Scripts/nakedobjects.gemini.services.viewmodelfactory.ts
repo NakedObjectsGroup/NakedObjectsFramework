@@ -7,8 +7,8 @@ module NakedObjects.Angular.Gemini {
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
-        errorViewModel(errorRep: ErrorRepresentation): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember, routedata: PaneRouteData): ActionViewModel;
+        errorViewModel(errorRep?: ErrorRepresentation): ErrorViewModel;
+        actionViewModel(actionRep: ActionMember, vm : MessageViewModel,  routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -48,14 +48,18 @@ module NakedObjects.Angular.Gemini {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
-        viewModelFactory.errorViewModel = (errorRep: ErrorRepresentation) => {
+        viewModelFactory.errorViewModel = (errorRep?: ErrorRepresentation) => {
             const errorViewModel = new ErrorViewModel();
-            errorViewModel.message = errorRep.message() || "An Error occurred";
-            const stackTrace = errorRep.stackTrace();
-            errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
+
+            if (errorRep) {
+                errorViewModel.message = errorRep.message() || "An Error occurred";
+                const stackTrace = errorRep.stackTrace();
+                errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
+            }
             return errorViewModel;
         };
 
+     
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());
@@ -232,7 +236,7 @@ module NakedObjects.Angular.Gemini {
             return parmViewModel;
         };
 
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, routeData: PaneRouteData) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, vm: MessageViewModel,  routeData: PaneRouteData) => {
             const actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
@@ -270,10 +274,10 @@ module NakedObjects.Angular.Gemini {
                     focusManager.focusOverrideOff();
                     const pps = actionViewModel.parameters;
                     actionViewModel.executeInvoke(pps, right).catch((reject: RejectedPromise) => {
-                        if (reject.rejectReason === RejectReason.SoftwareError) {
-                            context.setError(reject.error as ErrorRepresentation);
-                            urlManager.setError(ErrorType.Software);
-                        }
+                        const parent = actionRep.parent as DomainObjectRepresentation;
+                        const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
+                        const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
+                        context.handleRejectedPromise(reject, parent, reset, display, () => true);
                     });
                 };
 
@@ -564,7 +568,7 @@ module NakedObjects.Angular.Gemini {
             const actions = serviceRep.actionMembers();
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
-            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
+            serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
@@ -574,7 +578,7 @@ module NakedObjects.Angular.Gemini {
             const menuViewModel = new MenuViewModel();
             const actions = menuRep.actionMembers();      
             menuViewModel.title = menuRep.title();
-            menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, routeData));
+            menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, menuViewModel, routeData));
        
             return menuViewModel;
         };
@@ -727,7 +731,7 @@ module NakedObjects.Angular.Gemini {
                                 cvm.clearInput();
                                 cvm.output = output;
                             }).catch((reject: RejectedPromise) => {
-                                if (reject.rejectReason === RejectReason.ExpiredTransient) {
+                                if (reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
                                     cvm.output = "The requested view of unsaved object details has expired";
                                 }
                             });
@@ -761,7 +765,7 @@ module NakedObjects.Angular.Gemini {
                 cvm.renderError = () => {
                     const err = context.getError();
                     cvm.clearInput();
-                    cvm.output = `Sorry, an application error has occurred. ${err.message() }`;
+                    cvm.output = `Sorry, an application error has occurred. ${err.message }`;
                 };
             }
             return cvm;

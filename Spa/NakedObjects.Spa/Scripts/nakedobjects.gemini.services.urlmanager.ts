@@ -9,7 +9,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IUrlManager {
         getRouteData(): RouteData;
-        setError(errorType : ErrorType);
+        setError(errorCategory : ErrorCategory, ec? : ClientErrorCode | HttpStatusCode );
         setHome(paneId?: number);
         setMenu(menuId: string, paneId? : number);
         setDialog(dialogId: string, paneId?: number);
@@ -56,7 +56,9 @@ module NakedObjects.Angular.Gemini {
         const actions = "as";
         const collection = "c";
         const dialog = "d";
-        const errorType = "e";
+        const errorCat = "et";
+        const errorCod = "ed";
+
         const field = "f";
         const interactionMode = "i";        
         const menu = "m";
@@ -127,8 +129,11 @@ module NakedObjects.Angular.Gemini {
             paneRouteData.actionId = getId(action + paneId, $routeParams);
             paneRouteData.dialogId = getId(dialog + paneId, $routeParams);
 
-            const rawErrorType = getId(errorType + paneId, $routeParams);
-            paneRouteData.errorType = rawErrorType ? ErrorType[rawErrorType] : null;
+            const rawErrorCategory = getId(errorCat + paneId, $routeParams);
+            paneRouteData.errorCategory = rawErrorCategory ? ErrorCategory[rawErrorCategory] : null;
+
+            const rawErrorCode = getId(errorCod + paneId, $routeParams);
+            paneRouteData.errorCode = rawErrorCode ? paneRouteData.errorCategory === ErrorCategory.HttpClientError ? HttpStatusCode[rawErrorCode]  : ClientErrorCode[rawErrorCode] : null;
 
             paneRouteData.objectId = getId(object + paneId, $routeParams);
             paneRouteData.actionsOpen = getId(actions + paneId, $routeParams);
@@ -500,7 +505,7 @@ module NakedObjects.Angular.Gemini {
             executeTransition(pageValues, paneId, Transition.Null, () => true);
         };
 
-        helper.setError = (et : ErrorType) => {
+        helper.setError = (errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode) => {
             const path = $location.path();
             const segments = path.split("/");
             const mode = segments[1];
@@ -508,12 +513,21 @@ module NakedObjects.Angular.Gemini {
            
             const search = {}
             // always on pane 1
-            search[errorType + 1] = ErrorType[et];
-            
+            search[errorCat + 1] = ErrorCategory[errorCategory];
+
+            if (ec && errorCategory === ErrorCategory.HttpClientError) {
+                search[errorCod + 1] = HttpStatusCode[ec];
+            }
+            else if (ec && errorCategory === ErrorCategory.ClientError) {
+                search[errorCod + 1] = ClientErrorCode[ec];
+            }
+
+            search[errorCat + 1] = ErrorCategory[errorCategory];
+
             $location.path(newPath);
             setNewSearch(search);
 
-            if (et === ErrorType.Concurrency) {
+            if (errorCategory ===  ErrorCategory.HttpClientError && ec === HttpStatusCode.PreconditionFailed) {
                 // on concurrency fail replace url so we can't just go back
                 $location.replace();
             }

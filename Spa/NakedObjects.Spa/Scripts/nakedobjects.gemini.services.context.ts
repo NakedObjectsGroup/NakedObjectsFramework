@@ -18,7 +18,7 @@ module NakedObjects.Angular.Gemini {
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionFriendlyName: (action: ActionMember) => ng.IPromise<string>;
-        getError: () => ErrorRepresentation;
+        getError: () => RejectedPromise;
         getPreviousUrl: () => string;
 
         //The object values are only needed on a transient object / editable view model
@@ -33,7 +33,7 @@ module NakedObjects.Angular.Gemini {
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
-        setError: (object: ErrorRepresentation) => void;
+        setError: (reject : RejectedPromise) => void;
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
@@ -44,6 +44,12 @@ module NakedObjects.Angular.Gemini {
 
         clearMessages();
         clearWarnings();
+
+        handleRejectedPromise(reject: RejectedPromise,
+            toReload: DomainObjectRepresentation,
+            onReload: (updatedObject: DomainObjectRepresentation) => void,
+            displayMessages: (em: ErrorMap) => void,
+            customClientHandler : (ec : ClientErrorCode) => boolean): void;
     }
 
     interface IContextInternal extends IContext {
@@ -160,9 +166,7 @@ module NakedObjects.Angular.Gemini {
                 return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
             }
             return appPath;
-        }
-
-        
+        }   
 
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, transient : boolean): ng.IPromise<DomainObjectRepresentation> => {
@@ -176,7 +180,7 @@ module NakedObjects.Angular.Gemini {
             // deeper cache for transients
             if (transient) {
                 const transientObj = transientCache.get(paneId, type, id);
-                return transientObj ? $q.when(transientObj) : $q.reject(new RejectedPromise(RejectReason.ExpiredTransient, ""));
+                return transientObj ? $q.when(transientObj) : $q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ""));
             }
 
             const object = new DomainObjectRepresentation();
@@ -348,7 +352,7 @@ module NakedObjects.Angular.Gemini {
                 cacheList(resultList, index);
                 return $q.when(resultList);
             } else {
-                return $q.reject(new RejectedPromise(RejectReason.WrongType, "expect list"));
+                return $q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
             }
         }
 
@@ -388,11 +392,11 @@ module NakedObjects.Angular.Gemini {
         }
 
 
-        let currentError: ErrorRepresentation = null;
+        let currentError: RejectedPromise = null;
 
         context.getError = () => currentError;
 
-        context.setError = (e: ErrorRepresentation) => currentError = e;
+        context.setError = (e: RejectedPromise) => currentError = e;
 
         let previousUrl: string = null;
 
@@ -577,6 +581,58 @@ module NakedObjects.Angular.Gemini {
                 catch((reject: RejectedPromise) => {
                     return false;
                 });
+        }
+
+        function handleHttpServerError(reject: RejectedPromise) {
+            urlManager.setError(ErrorCategory.HttpServerError);
+        }
+
+        function handleHttpClientError(reject: RejectedPromise,
+                                       toReload: DomainObjectRepresentation,
+                                       onReload: (updatedObject: DomainObjectRepresentation) => void,
+                                       displayMessages: (em: ErrorMap) => void) {
+            switch (reject.httpErrorCode) {
+                case (HttpStatusCode.PreconditionFailed):
+                    context.reloadObject(1, toReload).
+                        then((updatedObject: DomainObjectRepresentation) => {
+                            onReload(updatedObject);
+                            urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                        });
+                    break;
+                case (HttpStatusCode.UnprocessableEntity):
+                    displayMessages(reject.error as ErrorMap);
+                    break;
+                default:
+                    urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+            }
+
+        }
+
+        function handleClientError(reject: RejectedPromise, customClientHandler: (ec: ClientErrorCode) => boolean) {
+
+            if (!customClientHandler(reject.clientErrorCode)) {
+                urlManager.setError(ErrorCategory.ClientError, reject.clientErrorCode);
+            }
+        }
+
+        context.handleRejectedPromise = (reject: RejectedPromise,
+                                        toReload: DomainObjectRepresentation,
+                                        onReload: (updatedObject: DomainObjectRepresentation) => void,
+                                        displayMessages: (em: ErrorMap) => void,
+                                        customClientHandler: (ec: ClientErrorCode) => boolean) => {
+
+            context.setError(reject);
+            switch (reject.category) {
+                case (ErrorCategory.HttpServerError):
+                    handleHttpServerError(reject);
+                    break;
+                case (ErrorCategory.HttpClientError):
+                    handleHttpClientError(reject, toReload, onReload, displayMessages);
+                    break;
+                case (ErrorCategory.ClientError):
+                    handleClientError(reject, customClientHandler);
+                    break;
+            }
         }
     });
 

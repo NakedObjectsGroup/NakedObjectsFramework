@@ -184,7 +184,7 @@ module NakedObjects.Angular.Gemini {
             } else if (this.isMenu()) {
                 return this.getMenu().then((menu: MenuRepresentation) => this.$q.when(menu.actionMember(dialogId))); //i.e. return a promise
             }
-            return this.$q.reject(new RejectedPromise(RejectReason.NotImplemented, "List actions not implemented yet"));
+            return this.$q.reject(new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, "List actions not implemented yet"));
         }
 
         //Tests that at least one collection is open (should only be one). 

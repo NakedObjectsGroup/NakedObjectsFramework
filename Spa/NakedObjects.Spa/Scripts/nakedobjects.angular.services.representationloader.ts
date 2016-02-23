@@ -41,35 +41,30 @@ module NakedObjects.Angular {
                 catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
                     
                     let message: string;
-                    let reason: RejectReason;
-                    let error: ErrorRepresentation | ErrorMap;
+                    let category: ErrorCategory;
+                    let error: ErrorRepresentation | ErrorMap = null;
 
-                    if (promiseCallback.status === 500) {
+                    if (promiseCallback.status === HttpStatusCode.InternalServerError) {
+                        // this error contains an error representatation 
                         const errorRep = new ErrorRepresentation();
                         errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
-                        reason = RejectReason.SoftwareError;
+                        category = ErrorCategory.HttpServerError;
                         error = errorRep;
-                        message = "";
-                    }
-                    else if (promiseCallback.status === 400 || promiseCallback.status === 422) {
-                        reason = RejectReason.RequestError;
-                        message = promiseCallback.headers("warning");
-                        error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
-                    }
-                    else if (promiseCallback.status === 412) {
-                        reason = RejectReason.Concurrency;
-                        message = promiseCallback.headers("warning");
-                        error = null;
-                    }
-                    else {
-                        reason = RejectReason.UnknownError;
-                        message = promiseCallback.headers("warning") || "unknown server error";
-                        error = null;
+                        message = promiseCallback.headers("warning") || "Unknown server HTTP error";
+                    } else {
+                        category = ErrorCategory.HttpClientError;
+                        message = promiseCallback.headers("warning") || "Unknown client HTTP error";
+
+                        if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
+                            // these errors should contain a map                            
+                            error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
+                        } 
                     }
 
                     $rootScope.$broadcast("ajax-change", --loadingCount);
 
-                    const rr = new RejectedPromise(reason, message, error);
+                    const rr = new RejectedPromise(category, promiseCallback.status, message, error);
+                    rr.httpErrorCode = promiseCallback.status;
 
                     return $q.reject(rr);
                 });

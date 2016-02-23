@@ -10,8 +10,10 @@ module NakedObjects.Angular.Gemini {
                 const context: IContext = $injector.get("context");
                 const error = ErrorRepresentation.create(exception.message, exception.stack.split("\n"));
 
-                context.setError(error);
-                ulrManager.setError(ErrorType.Software);
+                const rp = new RejectedPromise(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, "", error);
+     
+                context.setError(rp);
+                ulrManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
 
             };
         }

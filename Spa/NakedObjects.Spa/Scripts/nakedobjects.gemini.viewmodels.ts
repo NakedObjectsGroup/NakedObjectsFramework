@@ -63,10 +63,10 @@ module NakedObjects.Angular.Gemini {
 
     }
 
-
     export class ErrorViewModel {
         message: string;
-        stackTrace: string[];   
+        stackTrace: string[];
+        code : string;   
     } 
 
     export class LinkViewModel implements IDraggableViewModel{
@@ -269,35 +269,6 @@ module NakedObjects.Angular.Gemini {
             return this;
         }
 
-        private handleRejectedPromise = (reject: RejectedPromise) => {
-
-            switch (reject.rejectReason) {
-                case (RejectReason.Concurrency):
-                    const parent = this.actionMember.parent;
-
-                    if (parent instanceof DomainObjectRepresentation) {
-                        this.context.reloadObject(this.onPaneId, parent).
-                            then((updatedObject: DomainObjectRepresentation) => {
-                                //this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                                this.urlManager.setError(ErrorType.Concurrency);
-                            });
-                    }
-                    break;
-                case (RejectReason.RequestError):
-                    this.viewModelFactory.handleErrorResponse(reject.error as ErrorMap, this, this.parameters);
-                    break;
-                case (RejectReason.ExpiredTransient):
-                case (RejectReason.WrongType):
-                case (RejectReason.NotImplemented):
-                case (RejectReason.SoftwareError):
-                case (RejectReason.UnknownError):
-                default:
-                    this.context.setError(reject.error as ErrorRepresentation);
-                    this.urlManager.setError(ErrorType.Software);
-            }
-        };
-       
-
 
         title: string;
         message: string;
@@ -318,14 +289,18 @@ module NakedObjects.Angular.Gemini {
 
         doInvoke = (right?: boolean) =>
             this.executeInvoke(right).
-                then((result: ActionResultRepresentation) => {              
+                then((result: ActionResultRepresentation) => {
                     if (result.result().isNull() && result.resultType() !== "void") {
                         this.message = "no result found";
                     } else {
                         this.doClose();
-                    }             
+                    }
                 }).
-                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
+                catch((reject: RejectedPromise) => {
+                    const parent = this.actionMember.parent as DomainObjectRepresentation;
+                    const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
+                    this.context.handleRejectedPromise(reject, parent, () => { }, display, () => true);
+                });
 
         doClose = () => {
             this.urlManager.closeDialog(this.onPaneId);
@@ -361,45 +336,16 @@ module NakedObjects.Angular.Gemini {
     }
 
 
-    export class ListViewModel {
+    export class ListViewModel extends MessageViewModel {
 
         constructor(private colorService: IColor,
             private contextService: IContext,
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
-            private $q : ng.IQService) {
+            private $q: ng.IQService) {
+            super();
         }
-
-        private handleRejectedPromise = (reject: RejectedPromise) => {
-
-            switch (reject.rejectReason) {
-                case (RejectReason.Concurrency):
-                    // todo
-                    //this.contextService.reloadObject(this.onPaneId, this.domainObject).
-                    //    then((updatedObject: DomainObjectRepresentation) => {
-                    //        this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                    //        this.urlManager.setError(ErrorType.Concurrency);
-                    //    });
-                    break;
-                case (RejectReason.RequestError):
-                    const errorMap = reject.error as ErrorMap;
-                    if (errorMap && errorMap.containsError()) {
-                        this.messages = errorMap.invalidReason() || errorMap.warningMessage;
-                    }
-                    break;
-                case (RejectReason.ExpiredTransient):
-                case (RejectReason.WrongType):
-                case (RejectReason.NotImplemented):
-                case (RejectReason.SoftwareError):
-                case (RejectReason.UnknownError):
-                default:
-                    this.contextService.setError(reject.error as ErrorRepresentation);
-                    this.urlManager.setError(ErrorType.Software);
-            }
-        };
-       
-
 
         reset(list : ListRepresentation, routeData : PaneRouteData) {
             this.listRep = list;
@@ -426,7 +372,7 @@ module NakedObjects.Angular.Gemini {
             this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
 
             const actions = this.listRep.actionMembers();
-            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, routeData));
+            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
 
           
             // todo do more elegantly 
@@ -440,7 +386,7 @@ module NakedObjects.Angular.Gemini {
                     if (selected.length === 0) {
                
                         const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
-                        const rp = new RejectedPromise(RejectReason.RequestError, em.invalidReason(), em);
+                        const rp = new RejectedPromise(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em.invalidReason(), em);
 
                         return this.$q.reject(rp);
                     }
@@ -469,7 +415,10 @@ module NakedObjects.Angular.Gemini {
                                     this.messages = "";
                                 }
                             }).
-                            catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
+                            catch((reject: RejectedPromise) => {
+                                const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                                this.contextService.handleRejectedPromise(reject, null, () => {}, display, () => true);
+                            });
                     };
             });
             return this;
@@ -493,8 +442,11 @@ module NakedObjects.Angular.Gemini {
                     this.reset(list, this.routeData);
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
-                catch((reject: RejectedPromise) => this.handleRejectedPromise(reject));
-            }
+                catch((reject: RejectedPromise) => {
+                    const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                    this.contextService.handleRejectedPromise(reject, null, () => { }, display, () => true);
+                });
+        }
 
 
         listRep: ListRepresentation;
@@ -613,14 +565,14 @@ module NakedObjects.Angular.Gemini {
         items: LinkViewModel[];
     } 
 
-    export class ServiceViewModel {
+    export class ServiceViewModel extends MessageViewModel {
         title: string;
         serviceId: string;
         actions: ActionViewModel[];
         color: string; 
     } 
 
-    export class MenuViewModel {
+    export class MenuViewModel extends MessageViewModel{
         title: string;
         actions: ActionViewModel[];
         color: string;
@@ -653,7 +605,7 @@ module NakedObjects.Angular.Gemini {
             this.routeData = routeData;
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || this.domainObject.extensions().renderInEdit();
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
-            this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this.routeData));
+            this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this,  this.routeData));
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
@@ -729,27 +681,9 @@ module NakedObjects.Angular.Gemini {
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
         private handleRejectedPromise = (reject: RejectedPromise) => {
-
-            switch (reject.rejectReason) {
-                case (RejectReason.Concurrency):
-                    this.contextService.reloadObject(this.onPaneId, this.domainObject).
-                        then((updatedObject: DomainObjectRepresentation) => {
-                            this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-                            this.urlManager.setError(ErrorType.Concurrency);
-                        });
-                    break;
-                case (RejectReason.RequestError):
-                    this.viewModelFactory.handleErrorResponse(reject.error as ErrorMap, this, this.properties);
-                    break;
-                case (RejectReason.ExpiredTransient):
-                case (RejectReason.WrongType):
-                case (RejectReason.NotImplemented):
-                case (RejectReason.SoftwareError):
-                case (RejectReason.UnknownError):
-                default:
-                    this.contextService.setError(reject.error as ErrorRepresentation);
-                    this.urlManager.setError(ErrorType.Software);
-            }
+            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+            const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+            this.contextService.handleRejectedPromise(reject, this.domainObject, reset, display, () => true);
         };
 
 

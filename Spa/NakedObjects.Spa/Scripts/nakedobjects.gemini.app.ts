@@ -56,6 +56,7 @@ module NakedObjects.Angular {
     export const serviceTemplate = getSvrPath() + "Content/partials/service.html";
     export const errorTemplate = getSvrPath() + "Content/partials/error.html";
     export const concurrencyTemplate = getSvrPath() + "Content/partials/concurrencyError.html";
+    export const httpErrorTemplate = getSvrPath() + "Content/partials/httpError.html";
     export const appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
     export const nullTemplate = getSvrPath() + "Content/partials/null.html";
 

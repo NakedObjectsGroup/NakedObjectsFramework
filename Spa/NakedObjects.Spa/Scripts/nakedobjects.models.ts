@@ -89,25 +89,51 @@ module NakedObjects {
         getUrl() : string;
     }
 
-   
-    export enum RejectReason {
-        ExpiredTransient, 
-        WrongType, 
+    export enum ErrorCategory {
+        HttpClientError,
+        HttpServerError,  
+        ClientError
+    }
+
+    export enum HttpStatusCode {
+        BadRequest = 400,
+        Unauthorized = 401,
+        Forbidden = 403,
+        NotFound = 404,
+        MethodNotAllowed = 405,
+        NotAcceptable = 406,
+        PreconditionFailed = 412,
+        UnprocessableEntity = 422, 
+        PreconditionRequired = 428,
+        InternalServerError = 500
+    }
+
+    export enum ClientErrorCode {
+        ExpiredTransient,
+        WrongType,
         NotImplemented,
-        SoftwareError,
-        RequestError,
-        UnknownError, 
-        Concurrency
+        SoftwareError
     }
 
     export class RejectedPromise {
-        constructor(rr : RejectReason, msg : string, err? : ErrorMap | ErrorRepresentation) {
-            this.rejectReason = rr;
+        constructor(rc : ErrorCategory, code : HttpStatusCode | ClientErrorCode,  msg : string, err? : ErrorMap | ErrorRepresentation) {
+            this.category = rc;
             this.message = msg;
             this.error = err;
+
+            if (rc === ErrorCategory.ClientError) {
+                this.clientErrorCode = code as ClientErrorCode;
+            }
+            if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
+                this.httpErrorCode = code as HttpStatusCode;
+            }
+
         }
 
-        rejectReason: RejectReason;
+        httpErrorCode: HttpStatusCode;
+        clientErrorCode : ClientErrorCode; 
+
+        category: ErrorCategory;
         message: string;
         error : ErrorMap | ErrorRepresentation;
     }
