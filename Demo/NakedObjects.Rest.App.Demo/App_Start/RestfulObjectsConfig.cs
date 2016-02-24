@@ -43,7 +43,7 @@ namespace NakedObjects.Rest.App.Demo {
                 //RestfulObjectsControllerBase.DomainModel = RestControlFlags.DomainModelType.Selectable; //or Simple, Formal, None
 
                 //to enforce concurrency checking
-                //RestfulObjectsControllerBase.ConcurrencyChecking = true;
+                RestfulObjectsControllerBase.ConcurrencyChecking = true;
 
                 // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
                 // 0, 3600, 86400 are the defaults 
