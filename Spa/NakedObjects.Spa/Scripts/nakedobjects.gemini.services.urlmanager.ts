@@ -57,8 +57,6 @@ module NakedObjects.Angular.Gemini {
         const collection = "c";
         const dialog = "d";
         const errorCat = "et";
-        const errorCod = "ed";
-
         const field = "f";
         const interactionMode = "i";        
         const menu = "m";
@@ -131,9 +129,6 @@ module NakedObjects.Angular.Gemini {
 
             const rawErrorCategory = getId(errorCat + paneId, $routeParams);
             paneRouteData.errorCategory = rawErrorCategory ? ErrorCategory[rawErrorCategory] : null;
-
-            const rawErrorCode = getId(errorCod + paneId, $routeParams);
-            paneRouteData.errorCode = rawErrorCode ? paneRouteData.errorCategory === ErrorCategory.HttpClientError ? HttpStatusCode[rawErrorCode]  : ClientErrorCode[rawErrorCode] : null;
 
             paneRouteData.objectId = getId(object + paneId, $routeParams);
             paneRouteData.actionsOpen = getId(actions + paneId, $routeParams);
@@ -513,15 +508,6 @@ module NakedObjects.Angular.Gemini {
            
             const search = {}
             // always on pane 1
-            search[errorCat + 1] = ErrorCategory[errorCategory];
-
-            if (ec && errorCategory === ErrorCategory.HttpClientError) {
-                search[errorCod + 1] = HttpStatusCode[ec];
-            }
-            else if (ec && errorCategory === ErrorCategory.ClientError) {
-                search[errorCod + 1] = ClientErrorCode[ec];
-            }
-
             search[errorCat + 1] = ErrorCategory[errorCategory];
 
             $location.path(newPath);

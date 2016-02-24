@@ -58,6 +58,5 @@ module NakedObjects.Angular.Gemini {
         selectedItems: boolean[];
         interactionMode: InteractionMode;
         errorCategory: ErrorCategory;
-        errorCode: HttpStatusCode | ClientErrorCode;
     }
 }

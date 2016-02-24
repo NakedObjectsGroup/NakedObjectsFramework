@@ -168,24 +168,19 @@ module NakedObjects.Angular.Gemini {
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-            if (routeData.errorCategory === ErrorCategory.HttpClientError && routeData.errorCode === HttpStatusCode.PreconditionFailed) {
+            const evm = viewModelFactory.errorViewModel(context.getError());
+            $scope.error = evm;
+
+            if (evm.isConcurrencyError) {
                 $scope.errorTemplate = concurrencyTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
-                const evm = viewModelFactory.errorViewModel(context.getError());
-                evm.code = HttpStatusCode[routeData.errorCode];
-                $scope.error = evm;
                 $scope.errorTemplate = httpErrorTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.ClientError) {
-                const evm = viewModelFactory.errorViewModel(context.getError());
-                evm.code = ClientErrorCode[routeData.errorCode];
-                $scope.error = evm;
                 $scope.errorTemplate = errorTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
-                const evm = viewModelFactory.errorViewModel(context.getError());
-                $scope.error = evm;
                 $scope.errorTemplate = errorTemplate;
             }
         };

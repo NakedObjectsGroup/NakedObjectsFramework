@@ -66,7 +66,9 @@ module NakedObjects.Angular.Gemini {
     export class ErrorViewModel {
         message: string;
         stackTrace: string[];
-        code : string;   
+        code: string;
+        description : string;
+        isConcurrencyError: boolean;
     } 
 
     export class LinkViewModel implements IDraggableViewModel{
