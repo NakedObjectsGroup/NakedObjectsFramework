@@ -83,7 +83,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         [Disabled]
-        [ConcurrencyCheck]
+        //[ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion

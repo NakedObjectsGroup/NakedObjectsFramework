@@ -21,15 +21,18 @@ namespace AdventureWorksModel {
 
         #region Life Cycle Methods
         public override void Persisting() {
-            base.Persisting();
+            //base.Persisting();
             CreateSaltAndHash(InitialPassword);
             rowguid = Guid.NewGuid();
+            BusinessEntityRowguid = rowguid;
             ModifiedDate = DateTime.Now;
+            BusinessEntityModifiedDate = ModifiedDate;
         }
 
         public override void Updating() {
-            base.Updating();
+            //base.Updating();
             ModifiedDate = DateTime.Now;
+            BusinessEntityModifiedDate = ModifiedDate;
         }
         #endregion
 
