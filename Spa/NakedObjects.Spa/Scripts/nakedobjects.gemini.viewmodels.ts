@@ -376,9 +376,6 @@ module NakedObjects.Angular.Gemini {
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
 
-          
-            // todo do more elegantly 
-
             _.forEach(this.actions, a => {
 
                 const wrappedInvoke = a.executeInvoke;
@@ -412,9 +409,9 @@ module NakedObjects.Angular.Gemini {
                         a.executeInvoke([], right).
                             then((result: ActionResultRepresentation) => {
                                 if (result.result().isNull() && result.resultType() !== "void") {
-                                    this.messages = "no result found";
+                                    this.message = "no result found";
                                 } else {
-                                    this.messages = "";
+                                    this.message = "";
                                 }
                             }).
                             catch((reject: ErrorWrapper) => {
@@ -504,7 +501,6 @@ module NakedObjects.Angular.Gemini {
         }
 
         actions: ActionViewModel[];
-        messages: string;
 
         isSame(paneId: number, key: string) {
             return  this.id === key;
