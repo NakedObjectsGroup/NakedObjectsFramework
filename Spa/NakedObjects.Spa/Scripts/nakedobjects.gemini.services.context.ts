@@ -593,11 +593,16 @@ module NakedObjects.Angular.Gemini {
                                        displayMessages: (em: ErrorMap) => void) {
             switch (reject.httpErrorCode) {
                 case (HttpStatusCode.PreconditionFailed):
-                    context.reloadObject(1, toReload).
-                        then((updatedObject: DomainObjectRepresentation) => {
-                            onReload(updatedObject);
-                            urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                        });
+
+                    if (toReload.isTransient()) {
+                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                    } else {
+                        context.reloadObject(1, toReload).
+                            then((updatedObject: DomainObjectRepresentation) => {
+                                onReload(updatedObject);
+                                urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                            });
+                    }
                     break;
                 case (HttpStatusCode.UnprocessableEntity):
                     displayMessages(reject.error as ErrorMap);

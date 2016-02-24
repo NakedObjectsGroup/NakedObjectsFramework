@@ -30,7 +30,7 @@ module NakedObjects.Angular.Gemini {
 
         function setVersionError(error) {
             const errorRep = ErrorRepresentation.create(error);
-            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, "", errorRep));
+            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError,  errorRep));
             urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
         }
  
@@ -172,19 +172,19 @@ module NakedObjects.Angular.Gemini {
                 $scope.errorTemplate = concurrencyTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
-                const evm = viewModelFactory.errorViewModel();
+                const evm = viewModelFactory.errorViewModel(context.getError());
                 evm.code = HttpStatusCode[routeData.errorCode];
                 $scope.error = evm;
                 $scope.errorTemplate = httpErrorTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.ClientError) {
-                const evm = viewModelFactory.errorViewModel(context.getError().error as ErrorRepresentation);
+                const evm = viewModelFactory.errorViewModel(context.getError());
                 evm.code = ClientErrorCode[routeData.errorCode];
                 $scope.error = evm;
                 $scope.errorTemplate = errorTemplate;
             }
             else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
-                const evm = viewModelFactory.errorViewModel(context.getError().error as ErrorRepresentation);
+                const evm = viewModelFactory.errorViewModel(context.getError());
                 $scope.error = evm;
                 $scope.errorTemplate = errorTemplate;
             }

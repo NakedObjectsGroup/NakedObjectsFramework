@@ -7,7 +7,7 @@ module NakedObjects.Angular.Gemini {
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
-        errorViewModel(errorRep?: ErrorRepresentation): ErrorViewModel;
+        errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
         actionViewModel(actionRep: ActionMember, vm : MessageViewModel,  routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
@@ -48,14 +48,13 @@ module NakedObjects.Angular.Gemini {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
-        viewModelFactory.errorViewModel = (errorRep?: ErrorRepresentation) => {
+        viewModelFactory.errorViewModel = (error: ErrorWrapper) => {
             const errorViewModel = new ErrorViewModel();
 
-            if (errorRep) {
-                errorViewModel.message = errorRep.message() || "An Error occurred";
-                const stackTrace = errorRep.stackTrace();
-                errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
-            }
+            errorViewModel.message = error ? error.message : "Unknown";
+            const stackTrace = error ? error.stackTrace : null;
+            errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
+
             return errorViewModel;
         };
 
@@ -731,10 +730,7 @@ module NakedObjects.Angular.Gemini {
                                 cvm.clearInput();
                                 cvm.output = output;
                             }).catch((reject: ErrorWrapper) => {
-                                if (reject.clientErrorCode === ClientErrorCode.ExpiredTransient) {
-                                    cvm.output = "The requested view of unsaved object details has expired";
-                                }
-
+                               
                                 const custom = (cc: ClientErrorCode) => {
                                     if (cc === ClientErrorCode.ExpiredTransient) {
                                         cvm.output = "The requested view of unsaved object details has expired";
@@ -743,7 +739,7 @@ module NakedObjects.Angular.Gemini {
                                     return false;
                                 };
 
-                                this.context.handleRejectedPromise(reject, null, () => { }, () => {}, custom);
+                                context.handleWrappedError(reject, null, () => { }, () => {}, custom);
                             });
                     }
                 };

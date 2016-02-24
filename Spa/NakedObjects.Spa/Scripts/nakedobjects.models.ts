@@ -116,18 +116,33 @@ module NakedObjects {
     }
 
     export class ErrorWrapper {
-        constructor(rc : ErrorCategory, code : HttpStatusCode | ClientErrorCode,  msg : string, err? : ErrorMap | ErrorRepresentation) {
+        constructor(rc : ErrorCategory, code : HttpStatusCode | ClientErrorCode,  err : string | ErrorMap | ErrorRepresentation) {
             this.category = rc;
-            this.message = msg;
-            this.error = err;
-
+        
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
             }
+
             if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
                 this.httpErrorCode = code as HttpStatusCode;
             }
 
+            if (err instanceof ErrorMap) {
+                const em = err as ErrorMap;
+                this.message = em.invalidReason() || em.warningMessage;
+                this.error = em;
+                this.stackTrace = [];
+            }
+            else if (err instanceof ErrorRepresentation) {
+                const er = err as ErrorRepresentation;
+                this.message = er.message();
+                this.error = er;
+                this.stackTrace = err.stackTrace();
+            } else {
+                this.message = (err as string) || "No message";
+                this.error = null; 
+                this.stackTrace = [];
+            }
         }
 
         httpErrorCode: HttpStatusCode;
@@ -135,7 +150,9 @@ module NakedObjects {
 
         category: ErrorCategory;
         message: string;
-        error : ErrorMap | ErrorRepresentation;
+        error: ErrorMap | ErrorRepresentation;
+
+        stackTrace: string[];
     }
 
     // abstract classes 

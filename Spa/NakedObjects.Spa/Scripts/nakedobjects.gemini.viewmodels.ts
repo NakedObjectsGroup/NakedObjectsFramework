@@ -386,7 +386,7 @@ module NakedObjects.Angular.Gemini {
                     if (selected.length === 0) {
                
                         const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
-                        const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em.invalidReason(), em);
+                        const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
 
                         return this.$q.reject(rp);
                     }
