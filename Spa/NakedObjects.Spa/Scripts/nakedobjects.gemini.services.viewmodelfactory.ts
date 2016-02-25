@@ -218,9 +218,12 @@ module NakedObjects.Angular.Gemini {
                     }
                 }
             } else {
-                if (parmRep.extensions().returnType() === "boolean") {
+                const returnType = parmRep.extensions().returnType();
+                const format = parmRep.extensions().format();
+
+                if (returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
-                } else if (parmRep.extensions().returnType() === "string" && parmRep.extensions().format() === "date-time") {
+                } else if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
                     const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
                     const dateValue = Date.parse(rawValue);
                     parmViewModel.value = dateValue ? new Date(rawValue) : null;
@@ -339,18 +342,21 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.description = required + propertyRep.extensions().description();
 
             const value = previousValue || propertyRep.value();
+            const returnType = propertyRep.extensions().returnType();
+            const format = propertyRep.extensions().format();
 
-            if (propertyRep.extensions().returnType() === "string" && propertyRep.extensions().format() === "date-time") {
+            if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
                 const rawValue = value ? value.toString() : "";
                 const dateValue = Date.parse(rawValue);
                 propertyViewModel.value = dateValue ? new Date(rawValue) : null;
-            } else {
+            }
+            else {
                 propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
             }
 
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
-            propertyViewModel.returnType = propertyRep.extensions().returnType();
-            propertyViewModel.format = propertyRep.extensions().format();
+            propertyViewModel.returnType = returnType;
+            propertyViewModel.format = format;
             propertyViewModel.reference = propertyRep.isScalar() || value.isNull() ? "" : value.link().href();
             propertyViewModel.draggableType = propertyViewModel.returnType;
 
