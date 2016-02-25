@@ -93,7 +93,7 @@
         <div ng-switch-when="date">
          <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker />
         </div>
-        <div ng-switch-default ng-switch="property.multipleLines">
+        <div ng-switch-default ng-switch="parameter.multipleLines">
          <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="text" ng-model="parameter.value" />
          <!--TODO: Placeholder for description ?-->
          <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" placeholder="" ng-model="$parent.parameter.value" />
