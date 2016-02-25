@@ -67,6 +67,8 @@ module NakedObjects.Angular.Gemini {
         interactionMode: InteractionMode;
         errorCategory: ErrorCategory;
 
+        private validatingUrl : string;
+
         isValid(name: string) {
             if (!this.hasOwnProperty(name)) {
                 throw new Error(`${name} is not a valid property on PaneRouteData`);
@@ -96,7 +98,7 @@ module NakedObjects.Angular.Gemini {
 
             if (contextCondition.condition(this[context])) {
                 if (!valueCondition.condition(this[name])) {
-                    throw new Error(`Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name}`);
+                    throw new Error(`Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
                 }
             }
         }
@@ -117,21 +119,23 @@ module NakedObjects.Angular.Gemini {
             this.assertMustBe(context, name, this.isNotNull, this.isLength0);
         }
 
-        validate() {
+        validate(url: string) {
+
+            this.validatingUrl = url; 
+
             // todo add more conditions !
             if (this.doValidation) {
+
+                // tests
+                this.assertMustBeNullInContext("objectId", "objectId");
+
                 this.assertMustBeNullInContext("objectId", "menuId");
-                this.assertMustBeNullInContext("objectId", "page");
-                this.assertMustBeNullInContext("objectId", "pageSize");
-                this.assertMustBeZeroLengthInContext("objectId", "selectedItems");
 
                 this.assertMustBeNullInContext("menuId", "objectId");
-                //this.assertMustBeNullInContext("menuId", "page");
-                //this.assertMustBeNullInContext("menuId", "pageSize");
-                //this.assertMustBeZeroLengthInContext("menuId", "selectedItems");
 
                 this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");         
                 this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
+                this.assertMustBeEmptyOutsideContext("objectId", "props");
             }
         }
     }

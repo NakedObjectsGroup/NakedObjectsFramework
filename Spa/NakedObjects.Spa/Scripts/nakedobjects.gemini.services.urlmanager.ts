@@ -157,7 +157,7 @@ module NakedObjects.Angular.Gemini {
 
             paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams) || 0);
 
-            paneRouteData.validate();
+            paneRouteData.validate($location.url());
         }
 
         function singlePane() {
