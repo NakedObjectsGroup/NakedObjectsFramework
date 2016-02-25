@@ -288,7 +288,7 @@ module NakedObjects.Angular.Gemini {
                         const parent = actionRep.parent as DomainObjectRepresentation;
                         const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
                         const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                        context.handleWrappedError(reject, parent, reset, display, () => false);
+                        context.handleWrappedError(reject, parent, reset, display);
                     });
                 };
 

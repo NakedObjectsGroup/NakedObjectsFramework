@@ -130,13 +130,13 @@ module NakedObjects.Angular.Gemini {
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
                             }).catch((reject : ErrorWrapper) => {
-                                context.handleWrappedError(reject, null, () => {}, () => {}, ()=> false);
+                                context.handleWrappedError(reject, null, () => {}, () => {});
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch((reject: ErrorWrapper) => {
-                    context.handleWrappedError(reject, null, () => { }, () => { }, () => false);
+                    context.handleWrappedError(reject, null, () => { }, () => { });
                 });
         };       
 

@@ -1088,7 +1088,7 @@ module NakedObjects.Angular.Gemini {
                             this.handleErrorResponse(em, paramFriendlyName);
                         }
 
-                        this.context.handleWrappedError(reject, null, () => {}, display, () => false);
+                        this.context.handleWrappedError(reject, null, () => {}, display);
                     });
             });
         };
@@ -1301,13 +1301,13 @@ module NakedObjects.Angular.Gemini {
                     this.context.saveObject(obj, propMap, 1, true).                       
                         catch((reject: ErrorWrapper) => {                            
                             const display = (em: ErrorMap) => this.handleError(em, obj);                           
-                            this.context.handleWrappedError(reject, null, () => { }, display, () => false);
+                            this.context.handleWrappedError(reject, null, () => { }, display);
                         });
                 } else { //It is a persistent object being updated
                     this.context.updateObject(obj, propMap, 1, true).
                         catch((reject: ErrorWrapper) => {
                             const display = (em: ErrorMap) => this.handleError(em, obj);
-                            this.context.handleWrappedError(reject, null, () => { }, display, () => false);
+                            this.context.handleWrappedError(reject, null, () => { }, display);
                         });
                 }
             });

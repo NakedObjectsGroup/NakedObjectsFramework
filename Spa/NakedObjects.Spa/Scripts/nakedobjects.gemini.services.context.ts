@@ -49,7 +49,7 @@ module NakedObjects.Angular.Gemini {
             toReload: DomainObjectRepresentation,
             onReload: (updatedObject: DomainObjectRepresentation) => void,
             displayMessages: (em: ErrorMap) => void,
-            customClientHandler : (ec : ClientErrorCode) => boolean): void;
+            customClientHandler? : (ec : ClientErrorCode) => boolean): void;
     }
 
     interface IContextInternal extends IContext {
@@ -629,7 +629,7 @@ module NakedObjects.Angular.Gemini {
                                         toReload: DomainObjectRepresentation,
                                         onReload: (updatedObject: DomainObjectRepresentation) => void,
                                         displayMessages: (em: ErrorMap) => void,
-                                        customClientHandler: (ec: ClientErrorCode) => boolean) => {
+                                        customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
 
             context.setError(reject);
             switch (reject.category) {

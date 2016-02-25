@@ -323,7 +323,7 @@ module NakedObjects.Angular.Gemini {
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember.parent as DomainObjectRepresentation;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleWrappedError(reject, parent, () => { }, display, () => false);
+                    this.context.handleWrappedError(reject, parent, () => { }, display);
                 });
 
         doClose = () => {
@@ -438,7 +438,7 @@ module NakedObjects.Angular.Gemini {
                             }).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                                this.contextService.handleWrappedError(reject, null, () => {}, display, () => false);
+                                this.contextService.handleWrappedError(reject, null, () => {}, display);
                             });
                     };
             });
@@ -465,7 +465,7 @@ module NakedObjects.Angular.Gemini {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                    this.contextService.handleWrappedError(reject, null, () => { }, display, () => false);
+                    this.contextService.handleWrappedError(reject, null, () => { }, display);
                 });
         }
 
@@ -722,7 +722,7 @@ module NakedObjects.Angular.Gemini {
         private handleWrappedError = (reject: ErrorWrapper) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
-            this.contextService.handleWrappedError(reject, this.domainObject, reset, display, () => false);
+            this.contextService.handleWrappedError(reject, this.domainObject, reset, display);
         };
 
 
