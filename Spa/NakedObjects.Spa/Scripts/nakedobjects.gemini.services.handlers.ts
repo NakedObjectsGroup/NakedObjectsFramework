@@ -28,9 +28,8 @@ module NakedObjects.Angular.Gemini {
         const perPaneMenusViews = [, new MenusViewModel(viewModelFactory),
                                     new MenusViewModel(viewModelFactory)];
 
-        function setVersionError(error) {
-            const errorRep = ErrorRepresentation.create(error);
-            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError,  errorRep));
+        function setVersionError(error : string) {
+            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError,  error));
             urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
         }
  
@@ -77,14 +76,20 @@ module NakedObjects.Angular.Gemini {
             deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
         }
 
+        let versionValidated = false;
+
+
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
             $scope.backgroundColor = color.toColorFromHref($location.absUrl());
 
             navigation.push();
 
-            // validate version 
+            // Just do once - cached but still pointless repeating each page refresh
 
-            // todo just do once - cached but still pointless repeating each page refresh
+            if (versionValidated) {
+                return;
+            }
+
             context.getVersion().then((v: VersionRepresentation) => {
                 const specVersion = parseFloat(v.specVersion());
                 const domainModel = v.optionalCapabilities().domainModel;
@@ -92,9 +97,10 @@ module NakedObjects.Angular.Gemini {
                 if (specVersion < 1.1) {
                     setVersionError("Restful Objects server must support spec version 1.1 or greater for NakedObjects Gemini\r\n (8.2:specVersion)");
                 }
-
-                if (domainModel !== "simple" && domainModel !== "selectable") {
+                else if (domainModel !== "simple" && domainModel !== "selectable") {
                     setVersionError(`NakedObjects Gemini requires domain metadata representation to be simple or selectable not "${domainModel}"\r\n (8.2:optionalCapabilities)`);
+                } else {
+                    versionValidated = true;
                 }
             });
         };
