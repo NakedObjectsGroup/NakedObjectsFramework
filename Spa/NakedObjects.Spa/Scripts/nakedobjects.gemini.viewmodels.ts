@@ -14,6 +14,28 @@ module NakedObjects.Angular.Gemini {
         draggableType : string;
     }
 
+    export function createActionSubmenuMap(avms: ActionViewModel[], menuName: string) {
+        const actions = _.filter(avms, a => a.menuPath === menuName);
+        return { name: menuName, actions: actions };
+    }
+
+
+    export function createActionMenuMap(avms: ActionViewModel[]) {
+
+        let menus = _
+            .chain(avms)
+            .map(a => a.menuPath)
+            .filter(m => !!m)
+            .value();
+
+        menus = _.uniq(menus);
+        menus = [""].concat(menus);
+
+        return _.map(menus, m => createActionSubmenuMap(avms, m));
+    }
+
+
+
     export class AttachmentViewModel {
         href: string;
         mimeType: string;
@@ -337,7 +359,6 @@ module NakedObjects.Angular.Gemini {
         reload: () => void;  
     }
 
-
     export class ListViewModel extends MessageViewModel {
 
         constructor(private colorService: IColor,
@@ -375,6 +396,7 @@ module NakedObjects.Angular.Gemini {
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+            this.actionsMap = createActionMenuMap(this.actions);
 
             _.forEach(this.actions, a => {
 
@@ -501,13 +523,13 @@ module NakedObjects.Angular.Gemini {
         }
 
         actions: ActionViewModel[];
+        actionsMap: { name: string; actions: ActionViewModel[] }[];
 
         isSame(paneId: number, key: string) {
             return  this.id === key;
         }
        
     } 
-
 
     export class CollectionViewModel {
 
@@ -530,6 +552,7 @@ module NakedObjects.Angular.Gemini {
         template: string;
 
         actions: ActionViewModel[];
+        actionsMap: { name: string; actions: ActionViewModel[] }[];
         messages: string;
 
         collectionRep: CollectionMember;
@@ -567,12 +590,14 @@ module NakedObjects.Angular.Gemini {
         title: string;
         serviceId: string;
         actions: ActionViewModel[];
+        actionsMap: { name: string; actions: ActionViewModel[] }[];
         color: string; 
     } 
 
     export class MenuViewModel extends MessageViewModel{
         title: string;
         actions: ActionViewModel[];
+        actionsMap: { name: string; actions: ActionViewModel[] }[];
         color: string;
     } 
 
@@ -604,6 +629,8 @@ module NakedObjects.Angular.Gemini {
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || this.domainObject.extensions().renderInEdit();
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
             this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this,  this.routeData));
+            this.actionsMap = createActionMenuMap(this.actions);
+
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
@@ -652,6 +679,7 @@ module NakedObjects.Angular.Gemini {
         choice: ChoiceViewModel;
         color: string;
         actions: ActionViewModel[];
+        actionsMap: { name: string; actions: ActionViewModel[] }[];
         properties: PropertyViewModel[];
         collections: CollectionViewModel[];
         unsaved : boolean;

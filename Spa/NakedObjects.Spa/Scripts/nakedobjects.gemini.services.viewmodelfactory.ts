@@ -69,7 +69,7 @@ module NakedObjects.Angular.Gemini {
             return errorViewModel;
         };
 
-     
+
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
             linkViewModel.color = color.toColorFromHref(linkRep.href());
@@ -581,6 +581,7 @@ module NakedObjects.Angular.Gemini {
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
+            serviceViewModel.actionsMap = createActionMenuMap(serviceViewModel.actions);
             serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
 
             return serviceViewModel;
@@ -591,7 +592,10 @@ module NakedObjects.Angular.Gemini {
             const actions = menuRep.actionMembers();      
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, menuViewModel, routeData));
-       
+
+            menuViewModel.actionsMap = createActionMenuMap(menuViewModel.actions);
+
+
             return menuViewModel;
         };
 
