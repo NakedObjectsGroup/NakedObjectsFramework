@@ -47,25 +47,29 @@ module NakedObjects.Angular.Gemini {
         cicero(): void;
     }
 
-    app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) {
+    app.service("urlManager", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) {
         const helper = <IUrlManager>this;
 
         // keep in alphabetic order to help avoid name collisions 
 
-        const action = "a";
-        const actions = "as";
-        const collection = "c";
-        const dialog = "d";
-        const errorCat = "et";
-        const field = "f";
-        const interactionMode = "i";        
-        const menu = "m";
-        const object = "o";
-        const page = "pg";
-        const pageSize = "ps";
-        const parm = "pm";  
-        const prop = "pp";
-        const selected = "s";
+        // all key map
+        const akm = {
+            action: "a",
+            actions: "as",
+            collection: "c",
+            dialog: "d",
+            errorCat: "et",
+            field: "f",
+            interactionMode: "i",
+            menu: "m",
+            object: "o",
+            page: "pg",
+            pageSize: "ps",
+            parm: "pm",
+            prop: "pp",
+            selected: "s"
+        }
+
       
         const capturedPanes = [];
 
@@ -120,38 +124,38 @@ module NakedObjects.Angular.Gemini {
 
         function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
 
-            paneRouteData.menuId = getId(menu + paneId, $routeParams);
-            paneRouteData.actionId = getId(action + paneId, $routeParams);
-            paneRouteData.dialogId = getId(dialog + paneId, $routeParams);
+            paneRouteData.menuId = getId(akm.menu + paneId, $routeParams);
+            paneRouteData.actionId = getId(akm.action + paneId, $routeParams);
+            paneRouteData.dialogId = getId(akm.dialog + paneId, $routeParams);
 
-            const rawErrorCategory = getId(errorCat + paneId, $routeParams);
+            const rawErrorCategory = getId(akm.errorCat + paneId, $routeParams);
             paneRouteData.errorCategory = rawErrorCategory ? ErrorCategory[rawErrorCategory] : null;
 
-            paneRouteData.objectId = getId(object + paneId, $routeParams);
-            paneRouteData.actionsOpen = getId(actions + paneId, $routeParams);
+            paneRouteData.objectId = getId(akm.object + paneId, $routeParams);
+            paneRouteData.actionsOpen = getId(akm.actions + paneId, $routeParams);
 
-            const rawCollectionState: string = getId(collection + paneId, $routeParams);
+            const rawCollectionState: string = getId(akm.collection + paneId, $routeParams);
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
-            const rawInteractionMode: string = getId(interactionMode + paneId, $routeParams);
+            const rawInteractionMode: string = getId(akm.interactionMode + paneId, $routeParams);
             paneRouteData.interactionMode = getInteractionMode(rawInteractionMode);
 
-            const collKeyMap = getAndMapIds(collection, paneId);
+            const collKeyMap = getAndMapIds(akm.collection, paneId);
             paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
 
-            const parmKeyMap = getAndMapIds(parm, paneId);
+            const parmKeyMap = getAndMapIds(akm.parm, paneId);
             paneRouteData.actionParams = getMappedValues(parmKeyMap);
 
-            const fieldKeyMap = getAndMapIds(field, paneId);
+            const fieldKeyMap = getAndMapIds(akm.field, paneId);
             paneRouteData.dialogFields = getMappedValues(fieldKeyMap);
 
-            const propKeyMap = getAndMapIds(prop, paneId);
+            const propKeyMap = getAndMapIds(akm.prop, paneId);
             paneRouteData.props = getMappedValues(propKeyMap);
 
-            paneRouteData.page = parseInt(getId(page + paneId, $routeParams));
-            paneRouteData.pageSize = parseInt(getId(pageSize + paneId, $routeParams));
+            paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
+            paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
 
-            paneRouteData.selectedItems = arrayFromMask(getId(selected + paneId, $routeParams) || 0);
+            paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams) || 0);
 
             paneRouteData.validate();
         }
@@ -166,7 +170,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function allSearchKeysForPane(search: any, paneId: number) {
-            const raw = [menu, dialog, object, collection, action, parm, prop, actions, page, pageSize, selected, interactionMode];
+            const raw = _.values(akm) as string[];
             return searchKeysForPane(search, paneId, raw);
         }
 
@@ -178,6 +182,21 @@ module NakedObjects.Angular.Gemini {
         function clearSearchKeys(search: any, paneId: number, keys : string[]) {
             const toClear = searchKeysForPane(search, paneId, keys);
             return _.omit(search, toClear);
+        }
+
+        function clearFieldKeys(search: any, paneId: number) { 
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${paneId}`) === 0);
+            return _.omit(search, ids);
+        }
+
+        function clearParmKeys(search: any, paneId: number) {
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.parm}${paneId}`) === 0);
+            return _.omit(search, ids);
+        }
+
+        function clearPropKeys(search: any, paneId: number) {
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.prop}${paneId}`) === 0);
+            return _.omit(search, ids);
         }
 
         function setupPaneNumberAndTypes(pane: number, newPaneType: string, newMode ?: ApplicationMode) {
@@ -235,15 +254,15 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
-            setValue(paneId, search, p, pv, parm);
+            setValue(paneId, search, p, pv, akm.parm);
         }
 
         function setField(paneId: number, search: any, p: Parameter, pv: Value) {
-            setValue(paneId, search, p, pv, field);
+            setValue(paneId, search, p, pv, akm.field);
         }
 
         function setProperty(paneId: number, search: any, p: PropertyMember, pv: Value) {
-            setValue(paneId, search, p, pv, prop);           
+            setValue(paneId, search, p, pv, akm.prop);           
         }
 
 
@@ -271,9 +290,9 @@ module NakedObjects.Angular.Gemini {
         }
 
         function setFieldsToParms(paneId: number, search: any) {
-            const ids = _.filter(_.keys(search), k => k.indexOf(`${field}${paneId}`) === 0);
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${paneId}`) === 0);
             const fields = _.pick(search, ids);
-            const parms = _.mapKeys(fields, (v, k: string) => k.replace(field, parm));
+            const parms = _.mapKeys(fields, (v, k: string) => k.replace(akm.field, akm.parm));
 
             search = _.omit(search, ids);
             search = _.merge(search, parms);
@@ -293,22 +312,21 @@ module NakedObjects.Angular.Gemini {
                     break;
                 case (Transition.ToDialog):
                 case (Transition.FromDialog):
-                    const ids = _.filter(_.keys(search), k => k.indexOf(`${field}${paneId}`) === 0);
-                    search = _.omit(search, ids);
+                    search = clearFieldKeys(search, paneId);
                     break;
                 case (Transition.ToObjectView):
                     setupPaneNumberAndTypes(paneId, objectPath);
                     search = clearPane(search, paneId);
-                    setId(interactionMode + paneId, InteractionMode[InteractionMode.View], search);
+                    setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                     break;
                 case (Transition.ToList):
                     search = setFieldsToParms(paneId, search);          
                     setupPaneNumberAndTypes(paneId, listPath);
-                    clearId(menu + paneId, search);
-                    clearId(object + paneId, search);
+                    clearId(akm.menu + paneId, search);
+                    clearId(akm.object + paneId, search);
                     break;
                 case (Transition.LeaveEdit): 
-                    search = clearSearchKeys(search, paneId, [prop]);
+                    search = clearSearchKeys(search, paneId, [akm.prop]);
                     break;
                 default:
                     // null transition 
@@ -340,26 +358,26 @@ module NakedObjects.Angular.Gemini {
         }
 
         helper.setMenu = (menuId: string, paneId = 1) => {
-            const key = `${menu}${paneId}`;
+            const key = `${akm.menu}${paneId}`;
             const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
         };
 
         helper.setDialog = (dialogId: string, paneId = 1) => {
-            const key = `${dialog}${paneId}`;
+            const key = `${akm.dialog}${paneId}`;
             const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
 
         helper.closeDialog = (paneId = 1) => {
-            const key = `${dialog}${paneId}`;
+            const key = `${akm.dialog}${paneId}`;
             const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.FromDialog, () => true);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
             const oid = resultObject.id();
-            const key = `${object}${paneId}`;
+            const key = `${akm.object}${paneId}`;
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
@@ -369,17 +387,17 @@ module NakedObjects.Angular.Gemini {
             const parent = actionMember.parent;
 
             if (parent instanceof DomainObjectRepresentation) {
-                newValues[`${object}${paneId}`] = parent.id();
+                newValues[`${akm.object}${paneId}`] = parent.id();
             }
 
             if (parent instanceof MenuRepresentation) {
-                newValues[`${menu}${paneId}`] = parent.menuId();
+                newValues[`${akm.menu}${paneId}`] = parent.menuId();
             }
 
-            newValues[`${action}${paneId}`] = actionMember.actionId();
-            newValues[`${page}${paneId}`] = "1";
-            newValues[`${pageSize}${paneId}`] = defaultPageSize.toString();
-            newValues[`${selected}${paneId}`] = "0";
+            newValues[`${akm.action}${paneId}`] = actionMember.actionId();
+            newValues[`${akm.page}${paneId}`] = "1";
+            newValues[`${akm.pageSize}${paneId}`] = defaultPageSize.toString();
+            newValues[`${akm.selected}${paneId}`] = "0";
 
             executeTransition(newValues, paneId, Transition.ToList, () => true);
         };
@@ -387,7 +405,7 @@ module NakedObjects.Angular.Gemini {
         helper.setProperty = (propertyMember: PropertyMember, paneId = 1) => {
             const href = propertyMember.value().link().href();
             const oid = getOidFromHref(href);
-            const key = `${object}${paneId}`;
+            const key = `${akm.object}${paneId}`;
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
@@ -395,13 +413,13 @@ module NakedObjects.Angular.Gemini {
         helper.setItem = (link: Link, paneId = 1) => {
             const href = link.href();
             const oid = getOidFromHref(href);
-            const key = `${object}${paneId}`;
+            const key = `${akm.object}${paneId}`;
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         }
 
         helper.toggleObjectMenu = (paneId = 1) => {      
-            const key = actions + paneId;
+            const key = akm.actions + paneId;
             const actionsId = getSearch()[key] ? null : "open";
             const newValues = _.zipObject([key], [actionsId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
@@ -425,14 +443,14 @@ module NakedObjects.Angular.Gemini {
         helper.setFieldValue = (dialogId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
 
             checkAndSetValue(paneId,
-                search => getId(`${dialog}${paneId}`, search) === dialogId,
+                search => getId(`${akm.dialog}${paneId}`, search) === dialogId,
                 search => setField(paneId, search, p, pv),
                 reload);
 
         helper.setParameterValue = (actionId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
       
             checkAndSetValue(paneId,
-                search => getId(`${action}${paneId}`, search) === actionId,
+                search => getId(`${akm.action}${paneId}`, search) === actionId,
                 search => setParameter(paneId, search, p, pv),
                 reload);
        
@@ -444,8 +462,8 @@ module NakedObjects.Angular.Gemini {
                     // only add value if matching object (to catch case when swapping panes) 
                     // and only add to edit url
                     const oid = obj.id();
-                    const currentOid = getId(`${object}${paneId}`, search);
-                    const currentMode = getInteractionMode(getId(`${interactionMode}${paneId}`, search));
+                    const currentOid = getId(`${akm.object}${paneId}`, search);
+                    const currentMode = getInteractionMode(getId(`${akm.interactionMode}${paneId}`, search));
                     return currentOid === oid && currentMode !== InteractionMode.View;
                 },
                 search => setProperty(paneId, search, p, pv),
@@ -453,19 +471,19 @@ module NakedObjects.Angular.Gemini {
        
      
         helper.setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = 1) => {
-            const key = `${collection}${paneId}_${collectionMemberId}`;
+            const key = `${akm.collection}${paneId}_${collectionMemberId}`;
             const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
         helper.setListState = (state: CollectionViewState, paneId = 1) => {
-            const key = `${collection}${paneId}`;
+            const key = `${akm.collection}${paneId}`;
             const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
         helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {         
-            const key = `${interactionMode}${paneId}`;
+            const key = `${akm.interactionMode}${paneId}`;
             const currentMode = getInteractionMode(getId(key, $routeParams));
             const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
             const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
@@ -475,7 +493,7 @@ module NakedObjects.Angular.Gemini {
 
         helper.setListItem = (item: number, isSelected: boolean, paneId = 1) => {
          
-            const key = `${selected}${paneId}`;
+            const key = `${akm.selected}${paneId}`;
             const currentSelected: number = parseInt(getSearch()[key] || 0);
             const selectedArray : boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
@@ -489,10 +507,10 @@ module NakedObjects.Angular.Gemini {
         helper.setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
             const pageValues = {} as _.Dictionary<string>;
 
-            pageValues[`${page}${paneId}`] = newPage.toString();
-            pageValues[`${pageSize}${paneId}`] = newPageSize.toString();
-            pageValues[`${collection}${paneId}`] = CollectionViewState[state];
-            pageValues[`${selected}${paneId}`] = "0"; // clear selection 
+            pageValues[`${akm.page}${paneId}`] = newPage.toString();
+            pageValues[`${akm.pageSize}${paneId}`] = newPageSize.toString();
+            pageValues[`${akm.collection}${paneId}`] = CollectionViewState[state];
+            pageValues[`${akm.selected}${paneId}`] = "0"; // clear selection 
 
             executeTransition(pageValues, paneId, Transition.Null, () => true);
         };
@@ -505,7 +523,7 @@ module NakedObjects.Angular.Gemini {
            
             const search = {}
             // always on pane 1
-            search[errorCat + 1] = ErrorCategory[errorCategory];
+            search[akm.errorCat + 1] = ErrorCategory[errorCategory];
 
             $location.path(newPath);
             setNewSearch(search);
@@ -545,11 +563,11 @@ module NakedObjects.Angular.Gemini {
         helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format? : CollectionViewState) => {
             const search = getSearch();
        
-            const s1 = getId(`${menu}${paneId}`, search) || "";
-            const s2 = getId(`${object}${paneId}`, search) || "";
-            const s3 = getId(`${action}${paneId}`, search) || "";
+            const s1 = getId(`${akm.menu}${paneId}`, search) || "";
+            const s2 = getId(`${akm.object}${paneId}`, search) || "";
+            const s3 = getId(`${akm.action}${paneId}`, search) || "";
 
-            const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(parm + paneId) === 0);
+            const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
             const mappedParms = _.mapValues(parms, v => decodeURIComponent( Decompress(v)));
 
             const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
