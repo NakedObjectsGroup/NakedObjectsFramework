@@ -22,9 +22,9 @@ module NakedObjects.Angular.Gemini {
         getPreviousUrl: () => string;
 
         //The object values are only needed on a transient object / editable view model
-        autoComplete(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
+        autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
         //The object values are only needed on a transient object / editable view model
-        conditionalChoices(promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
+        conditionalChoices(field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
         invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ActionResultRepresentation>;
 
@@ -404,18 +404,18 @@ module NakedObjects.Angular.Gemini {
 
         context.setPreviousUrl = (url: string) => previousUrl = url;
 
-        const doPrompt = (promptRep: PromptRepresentation, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
-            const map = promptRep.getPromptMap();
+        const doPrompt = (field: IField, id: string, searchTerm: string, setupPrompt: (map: PromptMap) => void, objectValues: () => _.Dictionary<Value>) => {
+            const map = field.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
             return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) =>  p.choices());
         };
 
-        context.autoComplete = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
-            doPrompt(promptRep, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm), objectValues);
+        context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
+            doPrompt(field, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm), objectValues);
 
-        context.conditionalChoices = (promptRep: PromptRepresentation, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
-            doPrompt(promptRep, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
+        context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
+            doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
 
         let nextTransientId = 0;
 

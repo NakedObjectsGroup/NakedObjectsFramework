@@ -168,10 +168,9 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (fieldEntryType === EntryType.AutoComplete) {
-                const promptRep = parmRep.getPrompts();
                 parmViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
-                    return context.autoComplete(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
+                    return context.autoComplete(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
                         then(createcvm);
                 }
 
@@ -179,10 +178,9 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
-                const promptRep = parmRep.getPrompts();
                 parmViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
                     const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, null);
-                    return context.conditionalChoices(promptRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
+                    return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
                 }
                 parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
@@ -392,11 +390,10 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (fieldEntryType === EntryType.AutoComplete) {
-                const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 propertyViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
-                    return context.autoComplete(promptRep, id, parentValues, searchTerm).
+                    return context.autoComplete(propertyRep, id, parentValues, searchTerm).
                         then(createcvm);
                 }
 
@@ -404,11 +401,10 @@ module NakedObjects.Angular.Gemini {
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices) {
-                const promptRep: PromptRepresentation = propertyRep.getPrompts();
 
                 propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
                     const createcvm = _.partial(createChoiceViewModels, id, null);
-                    return context.conditionalChoices(promptRep, id, () => <_.Dictionary<Value>>{}, args).
+                    return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
                 }
 

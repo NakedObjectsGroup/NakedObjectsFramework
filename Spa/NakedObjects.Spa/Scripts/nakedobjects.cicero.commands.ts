@@ -798,8 +798,7 @@ module NakedObjects.Angular.Gemini {
             if (!field.isScalar() && this.isPaste(fieldEntry)) {
                 this.handleClipboard(field);
             } else {
-                const promptRep = field.getPrompts();
-                this.context.autoComplete(promptRep, field.id(), null, fieldEntry).then(
+                this.context.autoComplete(field, field.id(), null, fieldEntry).then(
                     (choices: _.Dictionary<Value>) => {
                         const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                         this.switchOnMatches(field, fieldEntry, matches);
@@ -836,13 +835,12 @@ module NakedObjects.Angular.Gemini {
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
             const enteredFields = this.routeData().dialogFields;
-            const promptRep = field.getPrompts();
-            const map = promptRep.getPromptMap();
+          
             const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             _.forEach(_.keys(args), key => {
                 args[key] = enteredFields[key];
             });
-            this.context.conditionalChoices(promptRep, field.id(), null, args)
+            this.context.conditionalChoices(field, field.id(), null, args)
                 .then((choices: _.Dictionary<Value>) => {
                 const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                 this.switchOnMatches(field, fieldEntry, matches);

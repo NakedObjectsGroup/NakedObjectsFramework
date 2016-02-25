@@ -639,10 +639,6 @@ module NakedObjects {
     export class InvokeMap extends ArgumentMap implements IHateoasModel {
         constructor(private link : Link) {
             super(link.arguments() as RoInterfaces.IValueMap, "");
-
-            //// todo must be better way
-            //this.hateoasUrl = invoke.hateoasUrl;
-            //this.method = invoke.method;
             link.copyToHateoasModel(this);
         }
 
@@ -726,10 +722,9 @@ module NakedObjects {
             return linkByNamespacedRel(this.links(), "prompt");
         }
 
-        getPrompts(): PromptRepresentation {
+        getPromptMap(): PromptMap {
             const pr = <PromptRepresentation>this.promptLink().getTarget();
-            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IPromptMap);
-            return pr;
+            return  new PromptMap(this.promptLink(), pr.instanceId());            
         }
 
         default(): Value {
@@ -850,13 +845,14 @@ module NakedObjects {
     // new in 1.1 15.0 in spec 
 
     export class PromptMap extends ArgumentMap implements IHateoasModel {
-        constructor(private prompt: PromptRepresentation, private promptMap: RoInterfaces.IPromptMap) {
-            super(promptMap as RoInterfaces.IValueMap, prompt.instanceId());
+        constructor(private link: Link, private promptId: string) {
+            super(link.arguments() as RoInterfaces.IValueMap, promptId);
+            link.copyToHateoasModel(this);
+        }
 
-            // todo must be better way
-            this.hateoasUrl = prompt.hateoasUrl;
-            this.method = prompt.method;
-        } 
+        private promptMap() {
+            return this.map as RoInterfaces.IPromptMap;
+        }
 
         setSearchTerm(term: string) {
             this.setArgument(Angular.roSearchTerm, new Value(term));
@@ -871,11 +867,11 @@ module NakedObjects {
         }
 
         setMember(name: string, value: Value) {
-            value.set(this.promptMap["x-ro-nof-members"] as RoInterfaces.IValueMap, name);
+            value.set(this.promptMap()["x-ro-nof-members"] as RoInterfaces.IValueMap, name);
         }    
 
         setMembers(objectValues: () => _.Dictionary<Value>) {
-            if (this.promptMap["x-ro-nof-members"]) {
+            if (this.map["x-ro-nof-members"]) {
                 _.forEach(objectValues(), (v, k) => this.setMember(k, v));
             }
         }
@@ -887,11 +883,6 @@ module NakedObjects {
 
         constructor() {
             super(emptyResource());
-        }
-
-        getPromptMap(): PromptMap {
-            // needs to be initialised 
-            throw "Prompt map function must be initialized";
         }
 
         // links 
@@ -1063,12 +1054,7 @@ module NakedObjects {
             return null;
         }
 
-        getPrompts(): PromptRepresentation {
-            const pr = <PromptRepresentation>this.promptLink().getTarget();
-            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
-            return pr;
-        }
-
+       
         // properties 
 
         instanceId(): string {
@@ -1203,12 +1189,13 @@ module NakedObjects {
             return null;
         }
 
-        getPrompts(): PromptRepresentation {
-            const pr = <PromptRepresentation>this.promptLink().getTarget();
-            pr.getPromptMap = () => new PromptMap(pr, this.promptLink().arguments() as RoInterfaces.IValueMap);
-            return pr;
-        }
         
+        getPromptMap(): PromptMap {
+            const pr = <PromptRepresentation>this.promptLink().getTarget();
+            return new PromptMap(this.promptLink(), pr.instanceId());
+        }
+
+
         value(): Value {
             return new Value(this.wrapped().value);
         }
@@ -1981,7 +1968,7 @@ module NakedObjects {
         isCollectionContributed(): boolean;
 
         entryType(): EntryType;
-        getPrompts(): PromptRepresentation;
+        getPromptMap(): PromptMap;
         promptLink(): Link;
     }
 
