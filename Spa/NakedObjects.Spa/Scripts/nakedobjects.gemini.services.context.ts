@@ -469,7 +469,7 @@ module NakedObjects.Angular.Gemini {
             }
         };
 
-        function invokeActionInternal(invokeMap : InvokeMap, invoke : ActionResultRepresentation, action : ActionMember, paneId : number, setDirty : () => void) {
+        function invokeActionInternal(invokeMap : InvokeMap, action : ActionMember, paneId : number, setDirty : () => void) {
 
             focusManager.setCurrentPane(paneId);
 
@@ -512,13 +512,12 @@ module NakedObjects.Angular.Gemini {
         }
 
         context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
-            const invoke = action.getInvoke();
-            const invokeMap = invoke.getInvokeMap();
+            const invokeMap = action.getInvokeMap();
 
             _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
 
             const setDirty = getSetDirtyFunction(action, parms);
-            return invokeActionInternal(invokeMap, invoke, action, paneId, setDirty);
+            return invokeActionInternal(invokeMap, action, paneId, setDirty);
         };
 
         function setNewObject(updatedObject : DomainObjectRepresentation, paneId : number, viewSavedObject : Boolean) {

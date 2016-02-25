@@ -121,7 +121,7 @@ module NakedObjects.Angular {
 
 
         repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
-            const invokeMap = action.getInvoke().getInvokeMap();
+            const invokeMap = action.getInvokeMap();
             _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));                                      
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
             return this.retrieve (invokeMap, ActionResultRepresentation);

@@ -126,9 +126,9 @@ module NakedObjects.Angular.Gemini {
                 this.assertMustBeZeroLengthInContext("objectId", "selectedItems");
 
                 this.assertMustBeNullInContext("menuId", "objectId");
-                this.assertMustBeNullInContext("menuId", "page");
-                this.assertMustBeNullInContext("menuId", "pageSize");
-                this.assertMustBeZeroLengthInContext("menuId", "selectedItems");
+                //this.assertMustBeNullInContext("menuId", "page");
+                //this.assertMustBeNullInContext("menuId", "pageSize");
+                //this.assertMustBeZeroLengthInContext("menuId", "selectedItems");
 
                 this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");         
                 this.assertMustBeEmptyOutsideContext("actionId", "actionParams");

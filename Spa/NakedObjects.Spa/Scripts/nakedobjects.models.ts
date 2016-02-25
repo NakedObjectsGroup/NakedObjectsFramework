@@ -637,12 +637,13 @@ module NakedObjects {
     // matches a action invoke resource 19.0 representation 
 
     export class InvokeMap extends ArgumentMap implements IHateoasModel {
-        constructor(private invoke: ActionResultRepresentation, map: RoInterfaces.IValueMap) {
-            super(map, "");
+        constructor(private link : Link) {
+            super(link.arguments() as RoInterfaces.IValueMap, "");
 
-            // todo must be better way
-            this.hateoasUrl = invoke.hateoasUrl;
-            this.method = invoke.method;
+            //// todo must be better way
+            //this.hateoasUrl = invoke.hateoasUrl;
+            //this.method = invoke.method;
+            link.copyToHateoasModel(this);
         }
 
         setParameter(name: string, value: Value) {
@@ -816,7 +817,7 @@ module NakedObjects {
         getInvoke(): ActionResultRepresentation {
          
             const ar =<ActionResultRepresentation>this.invokeLink().getTarget();
-            ar.getInvokeMap = () => new InvokeMap(ar, this.invokeLink().arguments() as RoInterfaces.IValueMap);
+            ar.getInvokeMap = () => new InvokeMap(this.invokeLink());
             return ar;
         }
 
@@ -1335,11 +1336,8 @@ module NakedObjects {
             return linkByNamespacedRel(this.links(), "invoke");
         }
 
-
-        getInvoke(): ActionResultRepresentation {
-            const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
-            ar.getInvokeMap = () => new InvokeMap(ar, this.invokeLink().arguments() as RoInterfaces.IValueMap);
-            return ar;
+        getInvokeMap(): InvokeMap {
+            return  new InvokeMap(this.invokeLink());
         }
 
         // properties 
