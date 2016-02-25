@@ -41,7 +41,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Store: Twin Cycles"); //Cicero
 
-            GeminiUrl("object?o1=___1.Product-968&as1=open&d1=BestSpecialOffer&pm1_quantity=%22%22");
+            GeminiUrl("object?o1=___1.Product-968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
             Click(WaitForCss(".icon-speech"));
