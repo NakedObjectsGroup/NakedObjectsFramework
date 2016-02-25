@@ -20,6 +20,7 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\collectionList.html" />
     <Content Include="Content\partials\collectionTable.html" />
     <Content Include="Content\partials\collectionSummary.html" />
@@ -29,6 +30,7 @@
     <Content Include="Content\partials\ListPlaceholder.html" />
     <Content Include="Content\partials\null.html" />
     <Content Include="Content\partials\footer.html" />
+    <Content Include="Content\partials\form.html" />
     <Content Include="Content\partials\objectEdit.html" />
     <Content Include="Content\partials\blank.html" />
     <Content Include="Content\partials\expiredTransient.html" />

@@ -628,7 +628,18 @@ module NakedObjects.Angular.Gemini {
             this.routeData = routeData;
             this.isInEdit = routeData.interactionMode !== InteractionMode.View || this.domainObject.extensions().renderInEdit();
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
-            this.actions = _.map(this.domainObject.actionMembers(), action => this.viewModelFactory.actionViewModel(action, this,  this.routeData));
+
+            let actions = _.values(this.domainObject.actionMembers()) as ActionMember[];
+
+            // if this is a form - ie a non-transient object with renderInEdit flag we only support 
+            // zero parameter actions 
+
+            if (routeData.interactionMode === InteractionMode.Form) {
+                actions = _.filter(actions, a => _.keys(a.parameters()).length === 0 );
+            }
+
+            this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
+
             this.actionsMap = createActionMenuMap(this.actions);
 
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));

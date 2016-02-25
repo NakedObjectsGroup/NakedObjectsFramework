@@ -213,12 +213,16 @@ module NakedObjects.Angular.Gemini {
 
                     $scope.object = ovm;
 
-                    if (ovm.isInEdit) {
-                        $scope.objectTemplate = objectEditTemplate;
-                        $scope.actionsTemplate = nullTemplate;
-                    } else {
+                    if (routeData.interactionMode === InteractionMode.Form) {
+                        $scope.objectTemplate = formTemplate;
+                        $scope.actionsTemplate = formActionsTemplate;
+                    }
+                    else if (routeData.interactionMode === InteractionMode.View) {
                         $scope.objectTemplate = objectViewTemplate;
                         $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                    } else {
+                        $scope.objectTemplate = objectEditTemplate;
+                        $scope.actionsTemplate = nullTemplate;
                     }
 
                     $scope.collectionsTemplate = collectionsTemplate;

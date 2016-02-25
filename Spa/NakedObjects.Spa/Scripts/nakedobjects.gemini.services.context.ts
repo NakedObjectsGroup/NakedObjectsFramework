@@ -456,6 +456,12 @@ module NakedObjects.Angular.Gemini {
 
                         context.setObject(paneId, resultObject);
                         urlManager.setObject(resultObject, paneId);
+
+                        // if render in edit must be  a form 
+                        if (resultObject.extensions().renderInEdit()) {
+                            urlManager.pushUrlState(paneId);
+                            urlManager.setInteractionMode(InteractionMode.Form, paneId);
+                        }
                     }
                 } else if (result.resultType() === "list") {
 

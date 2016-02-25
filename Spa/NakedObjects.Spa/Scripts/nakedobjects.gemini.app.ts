@@ -82,6 +82,7 @@ module NakedObjects.Angular {
     export const objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
     export const objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
     export const transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
+    export const formTemplate = getSvrPath() + "Content/partials/form.html";
     export const expiredTransientTemplate = getSvrPath() + "Content/partials/expiredTransient.html";
 
     export const listPlaceholderTemplate = getSvrPath() + "Content/partials/ListPlaceholder.html";
@@ -90,6 +91,7 @@ module NakedObjects.Angular {
 
     export const footerTemplate = getSvrPath() + "Content/partials/footer.html";
     export const actionsTemplate = getSvrPath() + "Content/partials/actions.html";
+    export const formActionsTemplate = getSvrPath() + "Content/partials/formActions.html";
     export const collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
     export const collectionSummaryTemplate = getSvrPath() + "Content/partials/collectionSummary.html";
     export const collectionListTemplate = getSvrPath() + "Content/partials/collectionList.html";
