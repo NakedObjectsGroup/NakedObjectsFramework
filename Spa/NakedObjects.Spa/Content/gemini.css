@@ -106,20 +106,30 @@
         cursor: pointer;
     }
 
+    /*Sub-menus*/
+
 /*Actions*/
-    .actions .action {
+    .actions .action, .actions .submenu {
         width: 150px;
-        padding: 2px 5px;
         margin-bottom: 5px;
-        /*background-color: white;
-        color: black;*/
         font-weight: bolder; /*Because black on white light looks too faint*/
     }
 
-    .submenu .name {
-        float: none;
-        margin-bottom: 5px;
-        font-size: 12pt;
+     .actions .action{
+       padding: 2px 5px;
+       margin-left: 10px;
+    }
+
+    .collapsed {
+        /*display: none;*/
+    }
+
+    .submenu {
+        padding: 5px;
+    }
+
+    .submenu .icon-expand, .submenu .icon-collapse {
+        font-size: 8pt;
     }
 
 /*Dialog*/
@@ -553,6 +563,14 @@ th, td {
 
 .icon-table:before {
     content: "\e083";
+}
+
+.icon-expand:before {
+    content: "\e099";
+}
+
+.icon-collapse:before {
+    content: "\e098";
 }
 
 .icon-swap:before {
