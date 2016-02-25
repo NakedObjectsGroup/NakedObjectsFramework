@@ -126,9 +126,6 @@ module NakedObjects.Angular.Gemini {
             // todo add more conditions !
             if (this.doValidation) {
 
-                // tests
-                this.assertMustBeNullInContext("objectId", "objectId");
-
                 this.assertMustBeNullInContext("objectId", "menuId");
 
                 this.assertMustBeNullInContext("menuId", "objectId");
