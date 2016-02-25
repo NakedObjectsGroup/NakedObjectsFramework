@@ -610,6 +610,7 @@ module NakedObjects.Angular.Gemini {
             this.unsaved = routeData.interactionMode === InteractionMode.Transient || routeData.interactionMode === InteractionMode.Form;
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+            this.friendlyName = this.domainObject.extensions().friendlyName();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
             this.draggableType = this.domainObject.domainType();
@@ -641,6 +642,7 @@ module NakedObjects.Angular.Gemini {
         props: _.Dictionary<Value> | {};
 
         title: string;
+        friendlyName : string
         domainType: string;
         instanceId: string;
         draggableType: string;

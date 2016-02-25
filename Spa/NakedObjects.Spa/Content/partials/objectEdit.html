@@ -2,6 +2,7 @@
     <div class="header" ng-switch="object.unsaved">
         <div class="type">{{object.domainType}}</div>
         <div class="title">Editing - {{object.title}}</div>
+        <div class="friendlyName" tabindex="0">{{object.friendlyName}}</div>
         <div class="action clickable-area" tabindex="0" gemini-enter="object.doSave()" ng-click="object.doSave(true)">
             Save
         </div>
