@@ -856,7 +856,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Starting item number cannot be greater than the ending item number");
 
             //Applied to collection
-            CiceroUrl("object?o1=___1.SalesOrderHeader-44518&s1=256&c1_Details=List");
+            CiceroUrl("object?o1=___1.SalesOrderHeader-44518&c1_Details=List");
             WaitForOutput("Collection: Details on Sales Order Header: SO44518\r\n20 items");
             EnterCommand("show 1");
             WaitForOutput("Item 1: 5 x Mountain-100 Black, 44");

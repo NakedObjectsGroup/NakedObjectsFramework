@@ -166,7 +166,7 @@
         margin: 1px;
     }
 
-    .input-control input:not([type='checkbox'])  {
+    .input-control input:not([type='checkbox']), textarea  {
         width: 245px;
     }
     /* date fields*/

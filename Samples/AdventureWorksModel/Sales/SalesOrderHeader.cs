@@ -434,6 +434,11 @@ namespace AdventureWorksModel {
             [DescribedAs("Auto-complete")] [MinLength(2)] string matching) {
             return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
         }
+
+        public void AddMultiLineComment([MultiLine(NumberOfLines = 3)] string comment)
+        {
+            Comment += comment + "\n";
+        }
         #endregion
 
         #region SalesPerson
