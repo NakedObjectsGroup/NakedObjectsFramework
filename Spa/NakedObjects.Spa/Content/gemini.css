@@ -121,7 +121,7 @@
     }
 
     .collapsed {
-        /*display: none;*/
+        display: none;
     }
 
     .submenu {
