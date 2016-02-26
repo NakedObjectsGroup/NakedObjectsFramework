@@ -181,14 +181,20 @@
     }
     /* date fields*/
    .input-control input.hasDatepicker  {
-        width: 225px;
+        width: 217px;
     }
     .parameter  .input-control input.hasDatepicker  {
-        width: 210px;
+        width: 207px;
+        float: left;
     }
    img.ui-datepicker-trigger {
        margin-left: 5px;
+       margin-top: 2px;
    }
+   .parameter img.ui-datepicker-trigger {
+       background-color: black;
+   }
+
     select {
         width: 245px; 
         margin-left: 1px;
