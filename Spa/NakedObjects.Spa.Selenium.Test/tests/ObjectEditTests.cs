@@ -210,7 +210,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ViewModelEditOpensInEditMode()
         {
-            GeminiUrl("object?o1=___1.EmailTemplate-1");
+            GeminiUrl("object?o1=___1.EmailTemplate-1&i1=Form");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
             //TODO: Check that actions are rendered e.g. Send
