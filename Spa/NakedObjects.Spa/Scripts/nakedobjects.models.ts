@@ -515,7 +515,7 @@ module NakedObjects {
 
         valuesMap(): _.Dictionary<ErrorValue> {
 
-            const values = _.pick(this.wrapped(), i => isIValue(i)) as _.Dictionary<IValue>;
+            const values = _.pickBy(this.wrapped(), i => isIValue(i)) as _.Dictionary<IValue>;
             return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
         }
 
@@ -530,7 +530,7 @@ module NakedObjects {
         }
 
         containsError() {
-            return !!this.invalidReason() || !!this.warningMessage ||  _.any(this.valuesMap(), ev => !!ev.invalidReason);
+            return !!this.invalidReason() || !!this.warningMessage ||  _.some(this.valuesMap(), ev => !!ev.invalidReason);
         }
 
     }
@@ -713,7 +713,8 @@ module NakedObjects {
 
             if (this.wrapped().choices) {
                 const values = _.map(this.wrapped().choices, item => new Value(item));
-                return _.object(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                // fromPairs definition faulty
+                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -755,7 +756,7 @@ module NakedObjects {
             return isList && isOnList;
         }
 
-        private hasChoices(): boolean { return _.any(this.choices()); }
+        private hasChoices(): boolean { return _.some(this.choices()); }
 
         entryType(): EntryType {
             if (this.hasPrompt()) {
@@ -913,7 +914,8 @@ module NakedObjects {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object<_.Dictionary<Value>>(_.map(values, v  => [v.toString(), v]));
+                // from pairs Definition faulty
+                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1074,7 +1076,8 @@ module NakedObjects {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, item => new Value(item));
-                return _.object(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                // fromPairs definition faulty
+                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1233,7 +1236,8 @@ module NakedObjects {
             const ch = this.wrapped().choices;
             if (ch) {
                 const values = _.map(ch, (item) => new Value(item));
-                return _.object(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
+                // fromPairs definition faulty
+                return (<any>_).fromPairs(_.map(values, v => [v.toString(), v])) as _.Dictionary<Value>;
             }
             return null;
         }
@@ -1385,9 +1389,9 @@ module NakedObjects {
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.propertyMemberMap =  _.pick(this.memberMap, m => m.memberType() === "property") as _.Dictionary<PropertyMember>;
-            this.collectionMemberMap = _.pick(this.memberMap, m => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
-            this.actionMemberMap = _.pick(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
+            this.propertyMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "property") as _.Dictionary<PropertyMember>;
+            this.collectionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
+            this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {
@@ -1493,7 +1497,7 @@ module NakedObjects {
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.actionMemberMap = _.pick(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
+            this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {

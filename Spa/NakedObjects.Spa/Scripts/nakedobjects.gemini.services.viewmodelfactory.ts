@@ -183,7 +183,8 @@ module NakedObjects.Angular.Gemini {
                     return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
                 }
-                parmViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                // fromPairs definition faulty
+                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
@@ -193,7 +194,7 @@ module NakedObjects.Angular.Gemini {
                     const choicesToSet = _.map(vals.list(), val => ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null));
 
                     if (fieldEntryType === EntryType.MultipleChoices) {
-                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.any(choicesToSet, choiceToSet => c.match(choiceToSet)));
+                        parmViewModel.multiChoices = _.filter(parmViewModel.choices, c => _.some(choicesToSet, choiceToSet => c.match(choiceToSet)));
                     } else {
                         parmViewModel.multiChoices = choicesToSet;
                     }
@@ -264,7 +265,7 @@ module NakedObjects.Angular.Gemini {
                 actionViewModel.description = actionRep.extensions().description();
             }
 
-            const parameters = _.pick(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+            const parameters = _.pickBy(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
@@ -413,8 +414,8 @@ module NakedObjects.Angular.Gemini {
                     return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
                 }
-
-                propertyViewModel.arguments = _.object<_.Dictionary<Value>>(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                // fromPairs definition faulty
+                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm) {
@@ -716,7 +717,7 @@ module NakedObjects.Angular.Gemini {
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
                                 const openCollIds = openCollectionIds(routeData);
-                                if (_.any(openCollIds)) {
+                                if (_.some(openCollIds)) {
                                     const id = openCollIds[0];
                                     const coll = obj.collectionMember(id);
                                     output += `Collection: ${coll.extensions().friendlyName() } on ${Helpers.typePlusTitle(obj) }\n`;

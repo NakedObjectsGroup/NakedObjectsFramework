@@ -102,7 +102,7 @@ module NakedObjects.Angular.Gemini {
         }
 
         function getIds(typeOfId : string,  paneId : number) {
-            return <_.Dictionary<string>> _.pick($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
+            return <_.Dictionary<string>> _.pickBy($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
         }
 
         function mapIds(ids : _.Dictionary<string>) : _.Dictionary<string>  {
@@ -166,7 +166,7 @@ module NakedObjects.Angular.Gemini {
 
         function searchKeysForPane(search: any, paneId: number, raw : string[]) {
             const ids = _.map(raw, s => s + paneId);
-            return _.filter(_.keys(search), k => _.any(ids, id => k.indexOf(id) === 0));
+            return _.filter(_.keys(search), k => _.some(ids, id => k.indexOf(id) === 0));
         }
 
         function allSearchKeysForPane(search: any, paneId: number) {
@@ -567,7 +567,7 @@ module NakedObjects.Angular.Gemini {
             const s2 = getId(`${akm.object}${paneId}`, search) || "";
             const s3 = getId(`${akm.action}${paneId}`, search) || "";
 
-            const parms = <_.Dictionary<string>>  _.pick(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
+            const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
             const mappedParms = _.mapValues(parms, v => decodeURIComponent( Decompress(v)));
 
             const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");

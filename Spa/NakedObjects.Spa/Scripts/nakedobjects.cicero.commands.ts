@@ -190,7 +190,7 @@ module NakedObjects.Angular.Gemini {
         //Tests that at least one collection is open (should only be one). 
         //TODO: assumes that closing collection removes it from routeData NOT sets it to Summary
         protected isCollection(): boolean {
-            return this.isObject() && _.any(this.routeData().collections);
+            return this.isObject() && _.some(this.routeData().collections);
         }
         protected closeAnyOpenCollections() {
             const open = openCollectionIds(this.routeData());
@@ -249,13 +249,13 @@ module NakedObjects.Angular.Gemini {
                 const name = rep.extensions().friendlyName().toLowerCase();
                 return match === name ||
                     (!!path && match === path.toLowerCase() + " " + name) ||
-                    _.all(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
+                    _.every(clauses, clause => name === clause || (!!path && path.toLowerCase() === clause));
             });
             if (exactMatches.length > 0) return exactMatches;
             return _.filter(reps, (rep) => {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
-                return _.all(clauses, clause => name.indexOf(clause) >= 0 ||
+                return _.every(clauses, clause => name.indexOf(clause) >= 0 ||
                     (!!path && path.toLowerCase().indexOf(clause) >= 0));
             });
         }
@@ -835,8 +835,9 @@ module NakedObjects.Angular.Gemini {
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
             const enteredFields = this.routeData().dialogFields;
-          
-            const args = _.object<_.Dictionary<Value>>(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+
+            // fromPairs definition is faulty
+            const args = (<any>_) .fromPairs(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)])) as _.Dictionary<Value>;
             _.forEach(_.keys(args), key => {
                 args[key] = enteredFields[key];
             });

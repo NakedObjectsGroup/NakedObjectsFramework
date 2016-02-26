@@ -234,7 +234,7 @@ module NakedObjects.Angular.Gemini {
                     const prompts = scope.select({ args: nArgs });
                     prompts.then((cvms: ChoiceViewModel[]) => {
                         // if unchanged return 
-                        if (cvms.length === currentOptions.length && _.all(cvms, (c, i) =>  c.equals(currentOptions[i]))) {
+                        if (cvms.length === currentOptions.length && _.every(cvms, (c, i) =>  c.equals(currentOptions[i]))) {
                             return;
                         }
 

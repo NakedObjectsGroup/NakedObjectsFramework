@@ -36,7 +36,7 @@
                 .then((obj: DomainObjectRepresentation) => {
                     let output = "";
                     const openCollIds = openCollectionIds(routeData);
-                    if (_.any(openCollIds)) {
+                    if (_.some(openCollIds)) {
                         const id = openCollIds[0];
                         const coll = obj.collectionMember(id);
                         output += "Collection: " + coll.extensions().friendlyName();

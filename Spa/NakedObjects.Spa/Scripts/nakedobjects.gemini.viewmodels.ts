@@ -754,7 +754,7 @@ module NakedObjects.Angular.Gemini {
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
 
 
-        hideEdit = () => this.domainObject.extensions().renderInEdit() || _.all(this.properties, p => !p.isEditable);
+        hideEdit = () => this.domainObject.extensions().renderInEdit() || _.every(this.properties, p => !p.isEditable);
 
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
