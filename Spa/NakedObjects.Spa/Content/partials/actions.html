@@ -4,7 +4,7 @@
         <div ng-switch-when="true" class="icon-expand" />
         <div ng-switch-when="false" class="icon-collapse" />
     </div>
-    <div class="" ng-class="navCollapsed ? 'collapsed' : 'open'">
+    <div class="" ng-class="{collapsed : navCollapsed, open : !navCollapsed, rootMenu : !menu.name }">
         <div ng-repeat="action in menu.actions">
             <div class="action clickable-area" title="{{action.description}}" tabindex="0" ng-click="action.doInvoke()" gemini-enter="action.doInvoke()" gemini-rightclick="action.doInvoke(true)" ng-disabled="action.disabled()">
                 {{action.title}}

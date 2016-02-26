@@ -14,23 +14,33 @@ module NakedObjects.Angular.Gemini {
         draggableType : string;
     }
 
-    export function createActionSubmenuMap(avms: ActionViewModel[], menuName: string) {
-        const actions = _.filter(avms, a => a.menuPath === menuName);
-        return { name: menuName, actions: actions };
+    export function createActionSubmenuMap(avms: ActionViewModel[], menu: { name: string, actions: ActionViewModel[] }) {
+        // if not root menu aggregate all actions with same name
+        if (menu.name) {
+            const actions = _.filter(avms, a => a.menuPath === menu.name);
+            menu.actions = actions;
+        }
+        return menu; 
     }
 
 
     export function createActionMenuMap(avms: ActionViewModel[]) {
 
+        // first create a menu for each action 
         let menus = _
             .chain(avms)
-            .map(a => a.menuPath)
-            .filter(m => !!m)
+            .map(a => ({name : a.menuPath, actions : [a] }))
             .value();
 
-        menus = _.uniq(menus);
-        menus = [""].concat(menus);
-
+        // remove non unique submenus 
+        menus = _.uniqWith(menus, (a, b) => {
+            if (a.name && b.name) {
+                return a.name === b.name;
+            }
+            return false;
+        });
+    
+        // update submenus with all actions under same submenu
         return _.map(menus, m => createActionSubmenuMap(avms, m));
     }
 
