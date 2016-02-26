@@ -117,11 +117,18 @@
 
      .actions .action{
        padding: 2px 5px;
-       margin-left: 10px;
     }
 
     .collapsed {
         display: none;
+    }
+
+    .open {
+               margin-left: 10px;
+    }
+
+    .open.rootMenu {
+        margin-left: 0px;
     }
 
     .submenu {
