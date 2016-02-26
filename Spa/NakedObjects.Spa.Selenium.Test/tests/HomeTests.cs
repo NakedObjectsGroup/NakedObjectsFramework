@@ -65,13 +65,30 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(actions[0]);
         }
 
-
+        public virtual void OpenAndCloseSubMenus()
+        {
+            GoToMenuFromHomePage("Customers");
+            AssertActionNotDisplayed("Random Store");
+            AssertActionNotDisplayed("Random Individual");
+            OpenSubMenu("Stores");
+            GetObjectAction("Random Store");
+            AssertActionNotDisplayed("Random Individual");
+            OpenSubMenu("Individuals");
+            GetObjectAction("Random Store");
+            GetObjectAction("Random Individual");
+            CloseSubMenu("Stores");
+            AssertActionNotDisplayed("Random Store");
+            GetObjectAction("Random Individual");
+            OpenActionDialog("Find Individual Customer By Name");
+            AssertActionNotDisplayed("Random Store");
+            AssertActionNotDisplayed("Random Individual");
+        }
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-            OpenActionDialog("Find Store By Name");
+            OpenActionDialog("Customer Dashboard");
             OpenActionDialog("Find Customer By Account Number");
             CancelDialog();
         }
@@ -81,13 +98,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ZeroParamReturnsObject()
         {
             Url(CustomersMenuUrl);
+            OpenSubMenu("Stores");
             Click(GetObjectAction("Random Store"));
             WaitForView(Pane.Single, PaneType.Object);
 
             var title = WaitForCss(".header .title");
             //AssertHasFocus(title);
         }
-
 
         public virtual void ZeroParamReturnsCollection()
         {
@@ -101,7 +118,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(first); //TODO: test all focus separately
         }
 
-
         public virtual void ZeroParamThrowsError()
         {
             Url(CustomersMenuUrl);
@@ -110,7 +126,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var msg = WaitForCss(".error .message");
             Assert.AreEqual("Foo", msg.Text);
         }
-
 
         public virtual void ZeroParamReturnsEmptyCollection()
         {
@@ -154,6 +169,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ClickOnVariousMenus()
         {
             base.ClickOnVariousMenus();
+        }
+        [TestMethod]
+        public override void OpenAndCloseSubMenus()
+        {
+            base.OpenAndCloseSubMenus();
         }
 
         [TestMethod]
@@ -303,6 +323,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             WaitForSingleHome();
             ClickOnVariousMenus();
+            OpenAndCloseSubMenus();
             SelectSuccessiveDialogActionsThenCancel();
             ZeroParamReturnsObject();
             ZeroParamReturnsCollection();

@@ -225,6 +225,22 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             }
         }
 
+        protected virtual void OpenSubMenu(string menuName)
+        {
+            var sub = wait.Until(dr => dr.FindElements(By.CssSelector(".submenu")).Single(el => el.Text == menuName));
+            var expand = sub.FindElement(By.CssSelector(".icon-expand"));
+            Click(expand);
+            Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-collapse")));
+        }
+
+        protected virtual void CloseSubMenu(string menuName)
+        {
+            var sub = wait.Until(dr => dr.FindElements(By.CssSelector(".submenu")).Single(el => el.Text == menuName));
+            var expand = sub.FindElement(By.CssSelector(".icon-collapse"));
+            Click(expand);
+            Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-expand")));
+        }
+       
         protected void Login() {
             Thread.Sleep(2000);
         }
@@ -401,6 +417,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             var selector = CssSelectorFor(pane)+ ".actions .action";
             wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
             return br.FindElements(By.CssSelector(selector));
+        }
+
+        protected virtual void AssertActionNotDisplayed(string action)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action")).FirstOrDefault(el => el.Text == action) == null);
         }
 
         protected IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single)
@@ -581,6 +602,11 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             return a;
         }
 
-    
+        //public static IWebElement AssertIsVisible(this IWebElement a)
+        //{
+        //    Assert.IsNull(a.GetAttribute("displayed"));
+        //    return a;
+        //}
+
     }
 }
