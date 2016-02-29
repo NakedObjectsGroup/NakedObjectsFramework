@@ -17,53 +17,58 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
     public class ActionRepresentationStrategy : AbstractStrategy {
-        private readonly ActionContextFacade actionContext;
-        private readonly IEnumerable<ParameterRepresentation> parameterList;
-        private readonly HttpRequestMessage req;
+        private IEnumerable<ParameterRepresentation> parameterList;
         private readonly RelType self;
 
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            this.req = req;
-            this.actionContext = actionContext;
-            self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, actionContext));
+            Req = req;
+            ActionContext = actionContext;
+            self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, actionContext));         
+        }
+
+        protected ActionContextFacade ActionContext { get; }
+
+        protected  HttpRequestMessage Req { get; }
+
+        public virtual void CreateParameters() {
             parameterList = GetParameterList();
         }
 
-        public RestControlFlags GetFlags() {
+        public virtual RestControlFlags GetFlags() {
             return Flags;
         }
 
-        public IObjectFacade GetTarget() {
-            return actionContext.Target;
+        public virtual IObjectFacade GetTarget() {
+            return ActionContext.Target;
         }
 
-        public RelType GetSelf() {
+        public virtual RelType GetSelf() {
             return self;
         }
 
-        public string GetId() {
-            return actionContext.Action.Id;
+        public virtual string GetId() {
+            return ActionContext.Action.Id;
         }
 
-        private ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
-            IObjectFacade objectFacade = actionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy, req, objectFacade, parameter, Flags);
+        protected ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
+            IObjectFacade objectFacade = ActionContext.Target;
+            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameter, Flags);
         }
 
-        private IEnumerable<ParameterRepresentation> GetParameterList() {
-            return actionContext.VisibleParameters.Select(p => GetParameter(p.Parameter));
+        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() {
+            return ActionContext.VisibleParameters.Select(p => GetParameter(p.Parameter));
         }
 
-        public MapRepresentation GetParameters() {
+        public virtual MapRepresentation GetParameters() {
             return RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
         }
 
-        private LinkRepresentation CreateDetailsLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, req, actionContext)), Flags);
+        protected LinkRepresentation CreateDetailsLink() {
+            return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, Req, ActionContext)), Flags);
         }
 
-        public LinkRepresentation[] GetLinks(bool standalone) {
+        public virtual LinkRepresentation[] GetLinks(bool standalone) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (standalone) {
@@ -79,51 +84,51 @@ namespace RestfulObjects.Snapshot.Strategies {
             return tempLinks.ToArray();
         }
 
-        private LinkRepresentation CreateUpLink() {
-            var helper = new UriMtHelper(OidStrategy, req, actionContext.Target);
-            ObjectRelType parentRelType = actionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+        protected LinkRepresentation CreateUpLink() {
+            var helper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
+            ObjectRelType parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 
-        private LinkRepresentation CreateSelfLink() {
+        protected LinkRepresentation CreateSelfLink() {
             return LinkRepresentation.Create(OidStrategy, self, Flags);
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: actionContext.Action.Name,
-                description: actionContext.Action.Description,
+            return RestUtils.GetExtensions(friendlyname: ActionContext.Action.Name,
+                description: ActionContext.Action.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
-                hasParams: actionContext.VisibleParameters.Any(),
+                hasParams: ActionContext.VisibleParameters.Any(),
                 optional: null,
                 maxLength: null,
                 pattern: null,
-                memberOrder: actionContext.Action.MemberOrder,
+                memberOrder: ActionContext.Action.MemberOrder,
                 customExtensions: GetCustomPropertyExtensions(),
-                returnType: actionContext.Action.ReturnType,
-                elementType: actionContext.Action.ElementType,
+                returnType: ActionContext.Action.ReturnType,
+                elementType: ActionContext.Action.ElementType,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);
         }
 
-        private IDictionary<string, object> GetCustomPropertyExtensions() {
-            return GetTableViewCustomExtensions(actionContext.Action.ExtensionData, actionContext.Action.TableViewData);
+        protected IDictionary<string, object> GetCustomPropertyExtensions() {
+            return GetTableViewCustomExtensions(ActionContext.Action.ExtensionData, ActionContext.Action.TableViewData);
         }
 
-        private LinkRepresentation CreateActionLink() {
+        protected LinkRepresentation CreateActionLink() {
             List<OptionalProperty> optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToList();
 
             RelMethod method = GetRelMethod();
-            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, req, actionContext)) {Method = method}, Flags,
+            return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, Req, ActionContext)) {Method = method}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
 
-        private RelMethod GetRelMethod() {
-            if (actionContext.Action.IsQueryOnly) {
+        protected RelMethod GetRelMethod() {
+            if (ActionContext.Action.IsQueryOnly) {
                 return RelMethod.Get;
             }
-            return actionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
+            return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
     }
 }

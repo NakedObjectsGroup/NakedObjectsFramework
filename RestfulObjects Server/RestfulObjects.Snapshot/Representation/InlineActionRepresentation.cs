@@ -33,7 +33,12 @@ namespace RestfulObjects.Snapshot.Representations {
         public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
-            var actionRepresentationStrategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+            var actionRepresentationStrategy =  actionContext.Target.IsViewModelEditView ?
+                new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
+                new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+
+            actionRepresentationStrategy.CreateParameters();
+
             if (consent.IsVetoed) {
                 var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason)};
                 return CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, actionRepresentationStrategy}, optionals);

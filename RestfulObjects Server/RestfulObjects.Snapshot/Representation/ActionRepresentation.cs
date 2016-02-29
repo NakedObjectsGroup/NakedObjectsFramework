@@ -44,7 +44,13 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
-            return new ActionRepresentation(oidStrategy, new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags));
+            var actionRepresentationStrategy = actionContext.Target.IsViewModelEditView ?
+                new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
+                new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+
+            actionRepresentationStrategy.CreateParameters();
+
+            return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);
         }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="Representation\ArgumentsRepresentation.cs" />
     <Compile Include="Representation\AttachmentRepresentation.cs" />
     <Compile Include="Representation\CollectionValueRepresentation.cs" />
+    <Compile Include="Strategies\FormActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />
     <Compile Include="Strategies\PropertyRepresentationStrategy.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Exception\BadPersistArgumentsException.cs" />
     <Compile Include="RelTypes\ObjectsRelType.cs" />
     <Compile Include="Constants\MemberTypes.cs" />
+    <Compile Include="Utility\FieldFacadeAdapter.cs" />
     <Compile Include="Utility\RestControlFlags.cs" />
     <Compile Include="Constants\ResultTypes.cs" />
     <Compile Include="Utility\TypeActionInvokeContext.cs" />
