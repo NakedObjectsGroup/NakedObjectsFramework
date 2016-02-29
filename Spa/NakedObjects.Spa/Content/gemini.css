@@ -197,6 +197,7 @@
    img.ui-datepicker-trigger {
        margin-left: 5px;
        margin-top: 2px;
+       width: 20px;
    }
    .parameter img.ui-datepicker-trigger {
        background-color: black;
@@ -566,16 +567,9 @@ th, td {
     content: "\e084";
 }
 
-.icon-summary:before {
-    content: "\e088";
-}
-
-.icon-list:before {
-    content: "\e084";
-}
-
-.icon-table:before {
-    content: "\e083";
+.icon-list, .icon-table, .icon-summary {
+    width: 20px;
+    padding-top: 5px;
 }
 
 .icon-expand:before {

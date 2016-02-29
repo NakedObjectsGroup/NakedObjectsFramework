@@ -50,7 +50,10 @@
     <Content Include="Content\partials\singleObject.html" />
     <Content Include="Content\partials\collections.html" />
     <Content Include="Content\gemini.css" />
-    <Content Include="images\calendar.gif" />
+    <Content Include="images\calendar.png" />
+    <Content Include="images\list.png" />
+    <Content Include="images\summary.png" />
+    <Content Include="images\table.png" />
     <Content Include="karma.conf.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
