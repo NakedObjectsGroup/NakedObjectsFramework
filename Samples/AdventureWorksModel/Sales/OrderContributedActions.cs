@@ -117,7 +117,7 @@ namespace AdventureWorksModel {
             return order.IsShipped() ? null : "Not shipped yet";
         }
 
-        public void ClearComments(IQueryable<SalesOrderHeader> toOrders) {
+        public void ClearComments([ContributedAction(subMenu)]IQueryable<SalesOrderHeader> toOrders) {
             foreach (SalesOrderHeader order in toOrders) {
                 order.Comment = null;
             }

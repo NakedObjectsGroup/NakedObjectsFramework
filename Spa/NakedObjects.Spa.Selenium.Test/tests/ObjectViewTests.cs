@@ -51,6 +51,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Addresses:\r\n1 Item(s)");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
         }
+        public virtual void TableViewHonouredOnCollection()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Employee-83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
+            var header = WaitForCss("thead");
+            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            Assert.AreEqual(3, cols.Length);
+            Assert.AreEqual("", cols[0].Text); //Title
+            Assert.AreEqual("Rate Change Date", cols[1].Text);
+            Assert.AreEqual("Rate", cols[2].Text);
+        }
         public virtual void ClickReferenceProperty()
         {
             GeminiUrl("object?o1=___1.Store-350&as1=open");
@@ -194,6 +204,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void PropertiesAndCollections() { base.PropertiesAndCollections(); }
 
         [TestMethod]
+        public override void TableViewHonouredOnCollection() { base.TableViewHonouredOnCollection(); }
+
+        [TestMethod]
         public override void ClickReferenceProperty() { base.ClickReferenceProperty(); }
 
         [TestMethod]
@@ -250,7 +263,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -310,6 +323,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.Actions();
             base.PropertiesAndCollections();
+            base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();
             base.OpenCollectionAsList();
             base.ClickOnLineItemWithCollectionAsList();

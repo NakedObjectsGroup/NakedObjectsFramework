@@ -5,10 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using System.Threading;
+using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -30,6 +29,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.reference")).Count);
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
+        }
+        public virtual void TableViewAttributeHonoured()
+        {
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&c1=Table");
+            Reload();
+            var header = WaitForCss("thead");
+            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            Assert.AreEqual(4, cols.Length);
+            Assert.AreEqual("Select", cols[0].Text);
+            Assert.AreEqual("Description", cols[1].Text);
+            Assert.AreEqual("Category", cols[2].Text);
+            Assert.AreEqual("Discount Pct", cols[3].Text);
         }
         public virtual void SwitchToTableViewAndBackToList()
         {
@@ -208,6 +219,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ActionReturnsListView() { base.ActionReturnsListView(); }
         [TestMethod]
+        public override void TableViewAttributeHonoured() { base.TableViewAttributeHonoured(); }
+        [TestMethod]
         public override void SwitchToTableViewAndBackToList() { base.SwitchToTableViewAndBackToList(); }
         [TestMethod]
         public override void NavigateToItemFromListView() { base.NavigateToItemFromListView(); }
@@ -246,7 +259,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    //[TestClass]
     public class ListTestsFirefox : ListTests
     {
         [ClassInitialize]

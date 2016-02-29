@@ -158,6 +158,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CheckIndividualItem(8, endDate, futureDate, false);
         }
 
+        public virtual void ZeroParamAction()
+        {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count >30);
+            SelectCheckBox("#item1-1");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            Click(GetObjectAction("Comment As Users Unhappy"));
+            Reload();
+            wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") ==3);
+            SelectCheckBox("#item1-1");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            Click(GetObjectAction("Clear Comments"));
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") == 0);
+        }
+
     }
 
     public abstract class CCAtests : CCAtestsRoot
@@ -177,6 +196,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void DateParam() { base.DateParam(); }
 
+        [TestMethod]
+        public override void ZeroParamAction() { base.ZeroParamAction(); }
     }
 
     #region browsers specific subclasses
