@@ -332,10 +332,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #endregion
     #region Mega tests
-    public abstract class ObjectViewMegaTestRoot : ObjectViewTestsRoot
+    public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot
     {
         [TestMethod]
-        public void ObjectViewMegaTest()
+        public void MegaObjectViewTest()
         {
             base.Actions();
             base.PropertiesAndCollections();
@@ -358,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
     [TestClass]
-    public class ObjectViewMegaTestFirefox : ObjectViewMegaTestRoot
+    public class MegaObjectViewTestFirefox : MegaObjectViewTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)

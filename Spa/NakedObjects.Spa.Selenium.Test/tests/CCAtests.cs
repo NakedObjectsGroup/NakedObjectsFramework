@@ -167,12 +167,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             Click(GetObjectAction("Comment As Users Unhappy"));
+            Reload();//Twice because there is no other change to wait for
             Reload();
             wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") ==3);
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             Click(GetObjectAction("Clear Comments"));
+            Reload();
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") == 0);
         }
