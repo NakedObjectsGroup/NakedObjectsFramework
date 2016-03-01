@@ -808,6 +808,7 @@ module NakedObjects.Angular.Gemini {
     export class CiceroViewModel {
         message: string;
         output: string;
+        alert: string = ""; //Alert is appended before the output
         input: string;
         parseInput: (input: string) => void;
         previousInput: string;

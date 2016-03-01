@@ -1080,6 +1080,14 @@ module NakedObjects.Angular.Gemini {
                     .then((result: ActionResultRepresentation) => {
                         // todo handle case where result is empty - this is no longer handled 
                         // by reject below
+                        const warnings = result.extensions().warnings();
+                        if (warnings) {
+                            _.forEach(warnings, w => this.vm.alert += "\nWarning: " + w);
+                        }
+                        const messages = result.extensions().messages();
+                        if (messages) {
+                            _.forEach(messages, m => this.vm.alert += "\n"+ m);
+                        }
                         this.urlManager.closeDialog();
                     }).
                     catch((reject: ErrorWrapper) => {

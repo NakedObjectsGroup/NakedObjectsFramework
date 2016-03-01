@@ -699,6 +699,7 @@ module NakedObjects.Angular.Gemini {
                                     output += renderActionDialogIfOpen(menu, routeData);
                                     cvm.clearInput();
                                     cvm.output = output;
+                                    appendAlertIfAny(cvm);
                                 });
                         }
                         else {
@@ -747,6 +748,7 @@ module NakedObjects.Angular.Gemini {
                                 }
                                 cvm.clearInput();
                                 cvm.output = output;
+                                appendAlertIfAny(cvm);
                             }).catch((reject: ErrorWrapper) => {
                                
                                 const custom = (cc: ClientErrorCode) => {
@@ -782,6 +784,7 @@ module NakedObjects.Angular.Gemini {
                                 const actionName = actionMember.extensions().friendlyName();
                                 cvm.clearInput();
                                 cvm.output = `Result from ${actionName}:\n${description}`;
+                                appendAlertIfAny(cvm);
                             });
                         });
                     }
@@ -795,6 +798,13 @@ module NakedObjects.Angular.Gemini {
             return cvm;
         };
     });
+
+    function appendAlertIfAny(cvm: CiceroViewModel) {
+        if (cvm.alert) {
+            cvm.output += cvm.alert;
+            cvm.alert = "";
+        }
+    }
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
     export function openCollectionIds(routeData: PaneRouteData): string[] {

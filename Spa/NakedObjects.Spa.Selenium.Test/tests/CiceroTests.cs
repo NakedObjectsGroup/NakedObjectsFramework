@@ -651,6 +651,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "Action dialog: List Purchase Orders");
             EnterCommand("ok");
             WaitForOutput("To Date cannot be before From Date");
+
+            //User Warnings and Info
+            CiceroUrl("home?m1=WorkOrderRepository&d1=GenerateInfoAndWarning");
+            WaitForOutputContaining("Action dialog: Generate Info And Warning");
+            EnterCommand("ok");
+            WaitForOutputContaining("Warning: Warn User of something else");
+            WaitForOutputContaining("Inform User of something");
         }
         public virtual void Page()
         {
