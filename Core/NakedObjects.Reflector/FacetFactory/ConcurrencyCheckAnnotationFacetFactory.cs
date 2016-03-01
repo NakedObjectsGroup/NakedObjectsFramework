@@ -23,11 +23,11 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
+            FacetUtils.AddFacet(Create(reflector, attribute, specification));
         }
 
-        private static IConcurrencyCheckFacet Create(Attribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ConcurrencyCheckFacet(holder);
+        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) {
+            return attribute == null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
         }
     }
 }

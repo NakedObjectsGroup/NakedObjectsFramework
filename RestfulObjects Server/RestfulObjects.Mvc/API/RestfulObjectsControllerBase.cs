@@ -41,7 +41,6 @@ namespace RestfulObjects.Mvc {
         }
 
         public static bool IsReadOnly { get; set; }
-        public static bool ConcurrencyChecking { get; set; }
 
         public static RestControlFlags.DomainModelType DomainModel {
             get { return RestControlFlags.ConfiguredDomainModelType; }
@@ -713,10 +712,8 @@ namespace RestfulObjects.Mvc {
         }
 
         private string GetIfMatchTag() {
-            if (ConcurrencyChecking) {
-                if (!Request.Headers.IfMatch.Any()) {
-                    throw new PreconditionHeaderMissingNOSException("If-Match header required with last-known value of ETag for the resource in order to modify its state"); // i18n 
-                }
+
+            if (Request.Headers.IfMatch.Any()) {
                 string quotedTag = Request.Headers.IfMatch.First().Tag;
                 return quotedTag.Replace("\"", "");
             }

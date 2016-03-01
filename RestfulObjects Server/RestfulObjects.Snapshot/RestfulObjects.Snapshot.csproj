@@ -111,7 +111,6 @@
     <Compile Include="Constants\RelParamValues.cs" />
     <Compile Include="Constants\PredefinedType.cs" />
     <Compile Include="Constants\WellKnownIds.cs" />
-    <Compile Include="Exception\PreconditionHeaderMissingNOSException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelTypes\ChoiceRelType.cs" />
     <Compile Include="RelTypes\CollectionValueRelType.cs" />

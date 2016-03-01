@@ -544,6 +544,11 @@ namespace NakedObjects.Facade.Impl {
         }
 
         private static void ValidateConcurrency(INakedObjectAdapter nakedObject, string digest) {
+            if (!string.IsNullOrEmpty(nakedObject.Version.Digest) && string.IsNullOrEmpty(digest)) {
+                // expect concurrency 
+                throw new PreconditionMissingNOSException();
+            }
+
             if (!string.IsNullOrEmpty(digest) && new VersionFacade(nakedObject.Version).IsDifferent(digest)) {
                 throw new PreconditionFailedNOSException();
             }
@@ -748,7 +753,10 @@ namespace NakedObjects.Facade.Impl {
         }
 
         private ActionResultContextFacade ExecuteAction(ActionContext actionContext, ArgumentsContextFacade arguments) {
-            ValidateConcurrency(actionContext.Target, arguments.Digest);
+
+            if (!actionContext.Action.IsQueryOnly()) {
+                ValidateConcurrency(actionContext.Target, arguments.Digest);
+            }
 
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
             if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
