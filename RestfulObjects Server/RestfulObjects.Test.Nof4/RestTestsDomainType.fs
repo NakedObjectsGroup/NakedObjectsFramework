@@ -4,7 +4,7 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module NakedObjects.Rest.Test.B
+module NakedObjects.Rest.Test.C
 
 open NUnit.Framework
 open RestfulObjects.Mvc
@@ -32,7 +32,7 @@ open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
 
 [<TestFixture>]
-type BNof4TestsDomainType() = 
+type CNof4TestsDomainType() = 
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
         
@@ -120,7 +120,7 @@ type BNof4TestsDomainType() =
         [<TearDown>]
         member x.TearDown() = 
             RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
-            //RestfulObjectsControllerBase.ConcurrencyChecking <- false
+            
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
         [<TestFixtureTearDown>]

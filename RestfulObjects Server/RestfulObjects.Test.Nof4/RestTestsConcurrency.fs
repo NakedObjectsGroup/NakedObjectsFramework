@@ -4,7 +4,7 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module NakedObjects.Rest.Test.C
+module NakedObjects.Rest.Test.B
 
 open NUnit.Framework
 open RestfulObjects.Mvc
@@ -32,9 +32,7 @@ open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
 
 [<TestFixture>]
-[<Ignore>]
- // can't get to work
- type CNof4TestsConcurrency() = 
+type BNof4TestsConcurrency() = 
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
         
@@ -43,16 +41,14 @@ open NakedObjects.Menu
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new CodeFirstContextLocal("RestTestZ") :> Data.Entity.DbContext)
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-            container.RegisterInstance
-                (typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) 
+            container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) 
             |> ignore
-            container.RegisterType
-                (typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
-            container.RegisterType
-                (typeof<IFrameworkFacade>, typeof<FrameworkFacade>, null, (new PerResolveLifetimeManager())) |> ignore
-            container.RegisterType
-                (typeof<IOidTranslator>, typeof<OidTranslatorSlashSeparatedTypeAndIds>, null, 
-                 (new PerResolveLifetimeManager())) |> ignore
+            container.RegisterType(typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager()))
+            |> ignore
+            container.RegisterType(typeof<IFrameworkFacade>, typeof<FrameworkFacade>, null, (new PerResolveLifetimeManager()))
+            |> ignore
+            container.RegisterType(typeof<IOidTranslator>, typeof<OidTranslatorSlashSeparatedTypeAndIds>, null, (new PerResolveLifetimeManager()))
+            |> ignore
             let types = 
                 [| typeof<Immutable>
                    typeof<WithActionViewModel>
@@ -80,20 +76,19 @@ open NakedObjects.Menu
                    typeof<MostSimple []>
                    typeof<SetWrapper<MostSimple>> |]
             
+            let services = 
+                [| typeof<RestDataRepository>
+                   typeof<WithActionService>
+                   typeof<ContributorService> |]
+            
             let mm (factory : IMenuFactory) = 
                 let menu1 = factory.NewMenu<RestDataRepository>(true)
                 let menu2 = factory.NewMenu<WithActionService>(true)
                 let menu3 = factory.NewMenu<ContributorService>(true)
                 [| menu1; menu2; menu3 |]
             
-            let services = 
-                [| typeof<RestDataRepository>
-                   typeof<WithActionService>
-                   typeof<ContributorService> |]
-            
             let reflectorConfig = 
-                new ReflectorConfiguration(types, services, [| "RestfulObjects.Test.Data" |], 
-                                           Func<IMenuFactory, IMenu []> mm, true)
+                new ReflectorConfiguration(types, services, [| "RestfulObjects.Test.Data" |], Func<IMenuFactory, IMenu []> mm, true)
             container.RegisterInstance
                 (typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) 
             |> ignore
@@ -114,7 +109,6 @@ open NakedObjects.Menu
         [<TearDown>]
         member x.TearDown() = 
             RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
-            //RestfulObjectsControllerBase.ConcurrencyChecking <- false
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
         [<TestFixtureTearDown>]
@@ -123,13 +117,9 @@ open NakedObjects.Menu
         override x.Services = 
             [| typeof<RestDataRepository>
                typeof<WithActionService>
-               typeof<ContributorService> |]
-        
-        override x.MainMenus(factory) = 
-            let menu1 = factory.NewMenu<RestDataRepository>(true)
-            let menu2 = factory.NewMenu<WithActionService>(true)
-            let menu3 = factory.NewMenu<ContributorService>(true)
-            [| menu1; menu2; menu3 |]
+               typeof<ContributorService>
+               typeof<TestTypeCodeMapper>
+               typeof<TestKeyCodeMapper> |]
         
         member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
         
@@ -150,6 +140,18 @@ open NakedObjects.Menu
         
         [<Test>]
         member x.PutValuePropertyMissingIfMatch() = ObjectProperty16.PutValuePropertyMissingIfMatch x.api
+        
+        [<Test>]
+        member x.PutInvokeActionReturnObjectObjectConcurrencySuccess() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectObjectConcurrencySuccess x.api
+        
+        [<Test>]
+        member x.PutInvokeActionReturnObjectServiceConcurrencySuccess() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectServiceConcurrencySuccess x.api
+        
+        [<Test>]
+        member x.PutInvokeActionReturnObjectViewModelConcurrencySuccess() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelConcurrencySuccess x.api
         
         [<Test>]
         member x.PostInvokeActionReturnObjectObjectConcurrencySuccess() = 
@@ -203,4 +205,3 @@ open NakedObjects.Menu
         member x.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch() = 
             ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch x.api
     end
-
