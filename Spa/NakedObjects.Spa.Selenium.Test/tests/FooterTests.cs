@@ -10,7 +10,7 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-    public abstract class FooterIconTestsRoot : AWTest
+    public abstract class FooterTestsRoot : AWTest
     {
         public virtual void Home()
         {
@@ -48,8 +48,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
 
+        public virtual void WarningsAndInfo()
+        {
+            GeminiUrl("home?m1=WorkOrderRepository");
+            Click(GetObjectAction("Generate Info And Warning"));
+            var warn = WaitForCss(".footer .warnings");
+            Assert.AreEqual("Warn User of something else", warn.Text);
+            var msg = WaitForCss(".footer .messages");
+            Assert.AreEqual("Inform User of something", msg.Text);
+
+            //Test that both are cleared by next action
+            Click(GetObjectAction("Random Work Order"));
+            WaitUntilElementDoesNotExist(".footer .warnings");
+            WaitUntilElementDoesNotExist(".footer .messages");
+        }
     }
-    public abstract class FooterIconTests : FooterIconTestsRoot
+    public abstract class FooterTests : FooterTestsRoot
     {
 
         [TestMethod]
@@ -60,12 +74,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void Cicero() { base.Cicero(); }
+
+        [TestMethod] 
+        public override void WarningsAndInfo() { base.WarningsAndInfo(); }
     }
 
     #region browsers specific subclasses 
 
     // [TestClass, Ignore]
-    public class FooterIconTestsIe : FooterIconTests
+    public class FooterIconTestsIe : FooterTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -88,7 +105,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     //[TestClass]
-    public class FooterIconTestsFirefox : FooterIconTests
+    public class FooterIconTestsFirefox : FooterTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -110,7 +127,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     //[TestClass, Ignore]
-    public class FooterIconTestsChrome : FooterIconTests
+    public class FooterIconTestsChrome : FooterTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -141,7 +158,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     #region Mega tests
-    public abstract class MegaFooterTestsRoot : FooterIconTestsRoot
+    public abstract class MegaFooterTestsRoot : FooterTestsRoot
     {
         [TestMethod]
         public void MegaFooterTest()
@@ -149,6 +166,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Home();
             base.BackAndForward();
             base.Cicero();
+            base.WarningsAndInfo();
         }
     }
 

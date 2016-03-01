@@ -32,6 +32,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Open Orders", actions[4].Text);
             Assert.AreEqual("Recent Orders", actions[5].Text);
         }
+
         public virtual void PropertiesAndCollections()
         {
             GeminiUrl("object?o1=___1.Store-350&as1=open");
@@ -50,6 +51,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Addresses:\r\n1 Item(s)");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
+        }
+
+        public virtual void DateProperties() {
+            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-68389");
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+            
+            //By default a read-only DateTime property is rendered as a formatted time stamp:
+            Assert.AreEqual("Modified Date:\r\n23 Apr 2008 01:00:00", properties[23].Text);
+
+            //A read-only DateTime marked up with Mask("d") shows date only:
+            Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
         }
         public virtual void TableViewHonouredOnCollection()
         {
@@ -204,6 +217,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void PropertiesAndCollections() { base.PropertiesAndCollections(); }
 
         [TestMethod]
+        public override void DateProperties() { base.DateProperties(); }
+        
+        [TestMethod]
         public override void TableViewHonouredOnCollection() { base.TableViewHonouredOnCollection(); }
 
         [TestMethod]
@@ -263,7 +279,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -291,7 +307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
+   // [TestClass, Ignore]
     public class ObjectViewTestsChrome : ObjectViewTests
     {
         [ClassInitialize]
@@ -323,6 +339,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.Actions();
             base.PropertiesAndCollections();
+            base.DateProperties();
             base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();
             base.OpenCollectionAsList();

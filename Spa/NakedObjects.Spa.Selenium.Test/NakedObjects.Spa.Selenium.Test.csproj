@@ -79,7 +79,7 @@
     <Compile Include="tests\ObjectEditTests.cs" />
     <Compile Include="tests\DialogTests.cs" />
     <Compile Include="tests\HomeTests.cs" />
-    <Compile Include="tests\FooterIconTests.cs" />
+    <Compile Include="tests\FooterTests.cs" />
     <Compile Include="tests\ObjectViewTests.cs" />
     <Compile Include="tests\AWDemoTest.cs" />
   </ItemGroup>
