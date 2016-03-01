@@ -73,7 +73,7 @@ namespace MvcTestApp {
         //}
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
+            return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus, false);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {

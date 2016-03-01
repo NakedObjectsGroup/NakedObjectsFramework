@@ -58,7 +58,7 @@ namespace RestfulObjects.Test.App {
 
 
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray());
+            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), null, false);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
