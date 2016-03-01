@@ -95,7 +95,7 @@ let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjects
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -154,7 +154,7 @@ let VerifyPostInvokeOverloadedActionReturnObject refType oType oid f (api : Rest
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeOverloadedActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -213,7 +213,7 @@ let VerifyPostInvokeContributedService refType oType oid f (api : RestfulObjects
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeActionContributedService(api : RestfulObjectsControllerBase) = 
@@ -273,7 +273,7 @@ let VerifyPostInvokeCollectionContributedActionContributedService refType oType 
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeCollectionContributedActionContributedService(api : RestfulObjectsControllerBase) = 
@@ -413,7 +413,7 @@ let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObje
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
@@ -435,7 +435,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
@@ -473,7 +473,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetTag oType oid (api : RestfulObjectsControllerBase) = 
@@ -539,7 +539,7 @@ let VerifyPostInvokeUserDisabledActionReturnObject refType oType oid f (api : Re
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeUserDisabledActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -600,7 +600,7 @@ let PostInvokeContribActionReturnObject(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeContribActionReturnObjectBaseClass(api : RestfulObjectsControllerBase) = 
@@ -646,7 +646,7 @@ let PostInvokeContribActionReturnObjectBaseClass(api : RestfulObjectsControllerB
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeContribActionReturnObjectWithRefParm(api : RestfulObjectsControllerBase) = 
@@ -694,7 +694,7 @@ let PostInvokeContribActionReturnObjectWithRefParm(api : RestfulObjectsControlle
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeContribActionReturnObjectWithValueParm(api : RestfulObjectsControllerBase) = 
@@ -741,7 +741,7 @@ let PostInvokeContribActionReturnObjectWithValueParm(api : RestfulObjectsControl
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let VerifyPostInvokeActionReturnNullObject refType oType oid f (api : RestfulObjectsControllerBase) = 
@@ -886,7 +886,7 @@ let VerifyPutInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -945,7 +945,7 @@ let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
@@ -967,7 +967,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag 
     let pid = "AnActionAnnotatedIdempotent"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPutMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
@@ -1005,7 +1005,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag 
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
@@ -1141,7 +1141,7 @@ let VerifyGetInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -1215,7 +1215,7 @@ let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
@@ -1237,7 +1237,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api
     let pid = "AnActionAnnotatedQueryOnly"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonGetMsgAndTag (sprintf "http://localhost/%s" purl) "\"any\""
     let result = f (oType, ktc "1", pid, args)
@@ -1290,7 +1290,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
@@ -1312,7 +1312,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (a
     let pid = "AnActionAnnotatedQueryOnly"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
     let result = f (oType, ktc "1", pid, args)
@@ -1365,7 +1365,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (a
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch(api : RestfulObjectsControllerBase) = 
@@ -1497,7 +1497,7 @@ let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oid f (api : R
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeActionReturnObjectObjectWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -2280,7 +2280,7 @@ let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType o
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionWithScalarMissingParmsSimpleObject(api : RestfulObjectsControllerBase) = 
@@ -2580,7 +2580,7 @@ let VerifyPostInvokeOverloadedAction refType oType oid f (api : RestfulObjectsCo
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeOverloadedActionObject(api : RestfulObjectsControllerBase) = 
@@ -3154,7 +3154,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oid f (ap
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PostInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -3248,7 +3248,7 @@ let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -3363,7 +3363,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -3440,7 +3440,7 @@ let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : Restful
     Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
     //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetInvokeActionWithParmReturnObjectObject(api : RestfulObjectsControllerBase) = 
@@ -5539,7 +5539,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (a
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPostMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
@@ -5557,7 +5557,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (ap
     let pid = "AnActionAnnotatedIdempotent"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPutMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
     let result = f (oType, ktc "1", pid, args)
@@ -5575,7 +5575,7 @@ let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (ap
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)
@@ -5595,7 +5595,7 @@ let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (api
     let pid = "AnActionAnnotatedIdempotent"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
-    RestfulObjectsControllerBase.ConcurrencyChecking <- true
+    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let args = CreateArgMap(new JObject())
     api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
     let result = f (oType, ktc "1", pid, args)

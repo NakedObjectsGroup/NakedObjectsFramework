@@ -62,7 +62,7 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
@@ -110,7 +110,7 @@ let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 
@@ -156,7 +156,7 @@ let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionSetProperty(api : RestfulObjectsControllerBase) = 
@@ -203,7 +203,7 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 
@@ -248,7 +248,7 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -298,7 +298,7 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) = 
@@ -346,7 +346,7 @@ let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionValue(api : RestfulObjectsControllerBase) = 
@@ -384,7 +384,7 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), result.Content.Headers.ContentType)
     assertTransactionalCache result
-    Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let AddToAndDeleteFromCollectionProperty(api : RestfulObjectsControllerBase) = 

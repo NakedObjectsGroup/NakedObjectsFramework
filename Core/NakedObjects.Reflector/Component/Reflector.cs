@@ -64,6 +64,11 @@ namespace NakedObjects.Reflect.Component {
 
         #region IReflector Members
 
+        public bool ConcurrencyChecking
+        {
+            get { return config.ConcurrencyChecking; }
+        }
+
         public bool IgnoreCase {
             get { return config.IgnoreCase; }
         }

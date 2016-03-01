@@ -84,14 +84,17 @@ namespace NakedObjects.Core.Configuration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] modelNamespaces,
-                                      Func<IMenuFactory, IMenu[]> mainMenus = null) {
+                                      Func<IMenuFactory, IMenu[]> mainMenus = null,
+                                      bool concurrencyChecking = true) {
             ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
+            ConcurrencyChecking = concurrencyChecking;
             MainMenus = mainMenus;
             ValidateConfig();
+
         }
 
         // for testing
@@ -101,6 +104,7 @@ namespace NakedObjects.Core.Configuration {
 
         public Type[] TypesToIntrospect { get; private set; }
         public bool IgnoreCase { get; private set; }
+        public bool ConcurrencyChecking { get; }
         public Type[] Services { get; private set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
         public string[] ModelNamespaces { get; private set; }

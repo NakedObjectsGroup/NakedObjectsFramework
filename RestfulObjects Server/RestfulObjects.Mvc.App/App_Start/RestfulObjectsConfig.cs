@@ -36,9 +36,6 @@ namespace MvcTestApp {
                 // to configure domain model options 
                 //RestfulObjectsControllerBase.DomainModel = RestControlFlags.DomainModelType.Selectable; //or Simple, Formal, None
 
-                //to enforce concurrency checking
-                //RestfulObjectsControllerBase.ConcurrencyChecking = true;
-
                 // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
                 // 0, 3600, 86400 are the defaults 
                 //RestfulObjectsControllerBase.CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);

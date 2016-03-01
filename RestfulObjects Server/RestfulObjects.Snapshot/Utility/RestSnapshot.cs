@@ -345,7 +345,7 @@ namespace RestfulObjects.Snapshot.Utility {
             else if (e is ResourceNotFoundNOSException ||
                      e is NotAllowedNOSException ||
                      e is PreconditionFailedNOSException ||
-                     e is PreconditionHeaderMissingNOSException ||
+                     e is PreconditionMissingNOSException ||
                      e is NoContentNOSException) {
                 Representation = NullRepresentation.Create();
             }
@@ -402,7 +402,7 @@ namespace RestfulObjects.Snapshot.Utility {
             else if (e is PreconditionFailedNOSException) {
                 HttpStatusCode = HttpStatusCode.PreconditionFailed;
             }
-            else if (e is PreconditionHeaderMissingNOSException) {
+            else if (e is PreconditionMissingNOSException) {
                 HttpStatusCode = preconditionHeaderMissing;
             }
             else {

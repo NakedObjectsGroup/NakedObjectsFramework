@@ -24,6 +24,7 @@ namespace NakedObjects.Architecture.Component {
         IFacetFactorySet FacetFactorySet { get; }
         ITypeSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
+        bool ConcurrencyChecking { get; }
         IMetamodel Metamodel { get; }
         ITypeSpecBuilder LoadSpecification(Type type);
 

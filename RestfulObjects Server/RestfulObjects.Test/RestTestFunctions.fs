@@ -118,6 +118,17 @@ let wrap1 f (a, b, c) = f (a, c)
 
 let wrap2 f (a, b, c, d, e) = f (a, c, d, e) 
 
+let ComputeMD5HashFromString(s : string) = 
+    let crypto = new System.Security.Cryptography.MD5CryptoServiceProvider()
+    crypto.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s))
+
+let ComputeMD5HashAsString(s : string) = 
+    let hash = ComputeMD5HashFromString(s), 0
+    let i = BitConverter.ToInt64(hash)
+    let abs = Math.Abs(i)
+    abs.ToString(System.Globalization.CultureInfo.InvariantCulture)
+
+
 let jsonGetMsgAndMediaType mt (url : string) = 
     let message = new HttpRequestMessage(HttpMethod.Get, url)
     message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mt))

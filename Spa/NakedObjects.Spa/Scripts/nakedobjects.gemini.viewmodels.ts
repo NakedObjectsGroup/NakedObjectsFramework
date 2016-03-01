@@ -644,9 +644,9 @@ module NakedObjects.Angular.Gemini {
             // if this is a form - ie a non-transient object with renderInEdit flag we only support 
             // zero parameter actions 
 
-            if (routeData.interactionMode === InteractionMode.Form) {
-                actions = _.filter(actions, a => _.keys(a.parameters()).length === 0 );
-            }
+            //if (routeData.interactionMode === InteractionMode.Form) {
+            //    actions = _.filter(actions, a => _.keys(a.parameters()).length === 0 );
+            //}
 
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
 
@@ -681,13 +681,27 @@ module NakedObjects.Angular.Gemini {
             this.color = this.colorService.toColorFromType(this.domainObject.domainType());
             this.message = "";
 
+             if (routeData.interactionMode === InteractionMode.Form) {
+            
+                 _.forEach(this.actions, a => {
+
+                     const wrappedInvoke = a.executeInvoke;
+                     a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+                         this.setProperties();
+                         const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: this.props[p.id()] }));
+                         const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
+                         return wrappedInvoke(allpps, right);
+                     }
+                 });
+             }
+
             return this;
         }
 
         routeData: PaneRouteData;
         domainObject: DomainObjectRepresentation;
         onPaneId: number;
-        props: _.Dictionary<Value> | {};
+        props: _.Dictionary<Value>;
 
         title: string;
         friendlyName : string
@@ -734,6 +748,9 @@ module NakedObjects.Angular.Gemini {
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
             this.contextService.handleWrappedError(reject, this.domainObject, reset, display);
         };
+
+     
+
 
 
         doSave = viewObject => {

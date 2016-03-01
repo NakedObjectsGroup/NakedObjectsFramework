@@ -52,5 +52,10 @@ namespace NakedObjects.Architecture.Configuration {
         ///  documented case conventions. 
         /// </summary>
         bool IgnoreCase { get; }
+
+        /// <summary>
+        ///  A convenience flag to switch concurrency checking globally off. For testing or debugging use
+        /// </summary>
+        bool ConcurrencyChecking { get; }
     }
 }
