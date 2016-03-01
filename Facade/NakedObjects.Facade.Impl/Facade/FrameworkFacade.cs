@@ -758,6 +758,13 @@ namespace NakedObjects.Facade.Impl {
                 ValidateConcurrency(actionContext.Target, arguments.Digest);
             }
 
+            if (actionContext.Target.IsViewModelEditView()) {
+                // this is a form so we expect tup update form with values in arguments 
+                // then clear so that action (which must be zero parms) does not get confused
+                actionContext.Target = ChangeObject(actionContext.Target, arguments).Target.WrappedAdapter();
+                arguments.Values = new Dictionary<string, object>();
+            }
+
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
             if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
                 if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
