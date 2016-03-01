@@ -683,7 +683,6 @@ module NakedObjects.Angular.Gemini {
             
 
             if (routeData.interactionMode === InteractionMode.Form) {
-                 const props = this.props;
                  _.forEach(this.actions, a => {
                      
                      const wrappedInvoke = a.executeInvoke;
