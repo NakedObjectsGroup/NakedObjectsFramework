@@ -131,9 +131,20 @@ namespace RestfulObjects.Snapshot.Representations {
 
             InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags)).ToArray();
 
-            InlineActionRepresentation[] actions = objectContext.Target.IsTransient ? new InlineActionRepresentation[] {}
-                : objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+            ActionContextFacade[] visibleActions;
 
+            if (objectContext.Target.IsTransient) {
+                visibleActions = new ActionContextFacade[] {};
+            }
+            else if (objectContext.Target.IsViewModelEditView) {
+                visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
+            }
+            else {
+                visibleActions = objectContext.VisibleActions;
+            }
+
+            InlineActionRepresentation[] actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+          
             IEnumerable<InlineMemberAbstractRepresentation> allMembers = properties.Union(actions);
 
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
