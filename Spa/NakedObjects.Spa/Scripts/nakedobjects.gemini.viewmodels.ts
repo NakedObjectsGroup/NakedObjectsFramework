@@ -680,15 +680,18 @@ module NakedObjects.Angular.Gemini {
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
             this.color = this.colorService.toColorFromType(this.domainObject.domainType());
             this.message = "";
-
-             if (routeData.interactionMode === InteractionMode.Form) {
             
-                 _.forEach(this.actions, a => {
 
+            if (routeData.interactionMode === InteractionMode.Form) {
+                 const props = this.props;
+                 _.forEach(this.actions, a => {
+                     
                      const wrappedInvoke = a.executeInvoke;
                      a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
-                         this.setProperties();
-                         const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: this.props[p.id()] }));
+                         const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
+                         const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
+                         
+                         const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                          const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
                          return wrappedInvoke(allpps, right);
                      }
