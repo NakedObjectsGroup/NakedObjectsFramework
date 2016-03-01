@@ -687,6 +687,7 @@ module NakedObjects.Angular.Gemini {
                      
                      const wrappedInvoke = a.executeInvoke;
                      a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+                         this.setProperties();
                          const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                          const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
                          
@@ -706,7 +707,7 @@ module NakedObjects.Angular.Gemini {
         props: _.Dictionary<Value>;
 
         title: string;
-        friendlyName : string
+        friendlyName : string;
         domainType: string;
         instanceId: string;
         draggableType: string;
