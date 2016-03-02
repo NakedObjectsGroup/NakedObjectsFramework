@@ -474,6 +474,10 @@ module NakedObjects.Angular.Gemini {
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
+
+                // clear existing header 
+                listViewModel.header = null; 
+
                 getExtensions().then((ext: Extensions) => {
                     _.forEach(items, itemViewModel => {
                         const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
