@@ -236,12 +236,10 @@ module NakedObjects.Angular.Gemini {
             const remoteMask = parmRep.extensions().mask();
 
             if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(parmRep.extensions().format());
-                if (localFilter) {
-                    parmViewModel.localFilter = localFilter;
-                    // formatting also happens in in directive - at least for dates - value is now date in that case
-                    parmViewModel.formattedValue = parmViewModel.value ? $filter(localFilter.name)(parmViewModel.value.toString(), localFilter.mask) : "";
-                }
+                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
+                parmViewModel.localFilter = localFilter;
+                // formatting also happens in in directive - at least for dates - value is now date in that case
+                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
 
@@ -431,21 +429,16 @@ module NakedObjects.Angular.Gemini {
 
             if (propertyRep.isScalar()) {
                 const remoteMask = propertyRep.extensions().mask();
-                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
+                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
-                if (localFilter) {
-                    propertyViewModel.formattedValue = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
-                }
-                else if (propertyViewModel.choice) {
+
+                if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 }
-                else if (propertyRep.extensions().returnType() === "string") {
-                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
-                }
-                else {
-                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "0";
+                else  {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
             }
 
