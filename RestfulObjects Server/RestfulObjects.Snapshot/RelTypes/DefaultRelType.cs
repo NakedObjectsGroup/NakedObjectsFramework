@@ -10,6 +10,8 @@ using RestfulObjects.Snapshot.Constants;
 
 namespace RestfulObjects.Snapshot.Utility {
     public class DefaultRelType : ObjectRelType {
+        private readonly string actionId;
+        private readonly string paramId;
         private readonly IActionParameterFacade parameter;
         private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) {}
 
@@ -18,8 +20,14 @@ namespace RestfulObjects.Snapshot.Utility {
             this.parameter = parameter;
         }
 
+        public DefaultRelType(string actionId, string paramId, UriMtHelper helper)
+            : this(helper) {
+            this.actionId = actionId;
+            this.paramId = paramId;
+        }
+
         public override string Name {
-            get { return base.Name + helper.GetRelParametersFor(parameter); }
+            get { return base.Name + (parameter == null ? helper.GetRelParametersFor(actionId, paramId) : helper.GetRelParametersFor(parameter)); }
         }
     }
 }

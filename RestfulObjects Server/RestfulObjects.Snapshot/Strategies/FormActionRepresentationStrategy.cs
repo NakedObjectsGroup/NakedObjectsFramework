@@ -26,7 +26,7 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {
             IObjectFacade objectFacade = ActionContext.Target;
-            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, Flags);
+            return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
         }
     }
 }

@@ -752,24 +752,50 @@ namespace NakedObjects.Facade.Impl {
             return true;
         }
 
+
         private ActionResultContextFacade ExecuteAction(ActionContext actionContext, ArgumentsContextFacade arguments) {
 
             if (!actionContext.Action.IsQueryOnly()) {
                 ValidateConcurrency(actionContext.Target, arguments.Digest);
             }
 
+            var actionResultContext = new ActionResultContext { Target = actionContext.Target, ActionContext = actionContext };
+            var errorOnChange = false;
+
             if (actionContext.Target.IsViewModelEditView()) {
-                // this is a form so we expect tup update form with values in arguments 
-                // then clear so that action (which must be zero parms) does not get confused
-                actionContext.Target = ChangeObject(actionContext.Target, arguments).Target.WrappedAdapter();
-                arguments.Values = new Dictionary<string, object>();
+                // this is a form so we expect to update form with values in arguments 
+                
+                var objectContext = ChangeObject(actionContext.Target, arguments);
+
+                if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
+                    errorOnChange = true;
+                    actionResultContext.ActionContext.VisibleParameters.ForEach(parm => {
+                        var matchingProperty = objectContext.VisibleProperties.SingleOrDefault(p => p.Id == parm.Id);
+
+                        if (matchingProperty != null) {
+                            parm.Reason = matchingProperty.Reason;
+                        }
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(objectContext.Reason)) {
+                    errorOnChange = true;
+                    actionResultContext.Reason = objectContext.Reason;
+                }
+
+                if (!errorOnChange) {
+                    // then clear so that action (which must be zero parms) does not get confused
+                    arguments.Values = new Dictionary<string, object>();
+                }
             }
 
-            var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
-            if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
-                if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
-                    INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
-                    actionResultContext.Result = GetObjectContext(result);
+
+            if (!errorOnChange) {
+                if (ConsentHandler(actionContext.Action.IsUsable(actionContext.Target), actionResultContext, Cause.Disabled)) {
+                    if (ValidateParameters(actionContext, arguments.Values) && !arguments.ValidateOnly) {
+                        INakedObjectAdapter result = actionContext.Action.Execute(actionContext.Target, actionContext.VisibleParameters.Select(p => p.ProposedNakedObject).ToArray());
+                        actionResultContext.Result = GetObjectContext(result);
+                    }
                 }
             }
             return actionResultContext.ToActionResultContextFacade(this, framework);
