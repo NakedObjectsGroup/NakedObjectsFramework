@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace AdventureWorksModel
@@ -15,7 +16,7 @@ namespace AdventureWorksModel
             // Properties
             Property(t => t.SalesOrderNumber)
                 .IsRequired()
-                .HasMaxLength(25);
+                .HasMaxLength(25).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
             Property(t => t.PurchaseOrderNumber)
                 .HasMaxLength(25);
@@ -53,7 +54,7 @@ namespace AdventureWorksModel
             Property(t => t.SubTotal).HasColumnName("SubTotal");
             Property(t => t.TaxAmt).HasColumnName("TaxAmt");
             Property(t => t.Freight).HasColumnName("Freight");
-            Property(t => t.TotalDue).HasColumnName("TotalDue");
+            Property(t => t.TotalDue).HasColumnName("TotalDue").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed); ;
             Property(t => t.Comment).HasColumnName("Comment");
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
