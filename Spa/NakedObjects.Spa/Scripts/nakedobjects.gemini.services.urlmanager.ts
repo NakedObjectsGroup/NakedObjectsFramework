@@ -324,6 +324,7 @@ module NakedObjects.Angular.Gemini {
                     setupPaneNumberAndTypes(paneId, listPath);
                     clearId(akm.menu + paneId, search);
                     clearId(akm.object + paneId, search);
+                    clearId(akm.dialog + paneId, search);
                     break;
                 case (Transition.LeaveEdit): 
                     search = clearSearchKeys(search, paneId, [akm.prop]);
