@@ -82,7 +82,7 @@
     }
 
     .type {
-        display: none; /*Change this to display type (e.g. for accessibility)*/
+       display: none; /*Change this to display type (e.g. for accessibility)*/
     }
 
 
@@ -301,12 +301,13 @@
        outline: none;
    }
 
-      .title:focus
+   /*TODO: review focus on title*/
+      /*.title:focus
      {
         outline:dotted;
         outline-width: 1px;
         outline-color: white;
-    }
+    }*/
 
 
 
@@ -326,7 +327,7 @@
     /*Collections within list*/
     .list .collection .details {
         padding-left: 40px; /*To align with first column text, allowing for checkbox*/
-        width: 350px;
+        width: 400px;
         float: left;
     }
 
@@ -336,7 +337,7 @@
 }
 
 td.reference {
-    width: 415px;
+    width: 440px;
 }
 
 td.checkbox {

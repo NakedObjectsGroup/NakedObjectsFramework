@@ -2,7 +2,7 @@
     <div class="header" ng-switch="object.unsaved">
         <div class="type">{{object.friendlyName}}</div>
         <div class="title">Form - {{object.title}}</div>
-     <div class="actions" ng-include="actionsTemplate"></div>
+     <div ng-include="actionsTemplate"></div>
         <div class="messages">{{object.message}}</div>
     </div>
     <div class="main-column">
