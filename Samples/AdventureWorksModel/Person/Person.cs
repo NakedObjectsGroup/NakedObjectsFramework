@@ -320,6 +320,10 @@ namespace AdventureWorksModel {
 
     public class EmailTemplate : IViewModelEdit
     {
+        #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
+        #endregion
+
         #region 
         public string[] DeriveKeys()
         {
@@ -331,6 +335,14 @@ namespace AdventureWorksModel {
             this.Status =  (EmailStatus)Enum.Parse(typeof(EmailStatus), keys[0]);
         }
         #endregion
+
+
+        public override string ToString()
+        {
+            var t = Container.NewTitleBuilder();
+            t.Append(Status).Append("email");
+            return t.ToString();
+        }
 
         [MemberOrder(10)]
         public virtual string To { get; set; }
