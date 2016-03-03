@@ -187,7 +187,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public ObjectContextFacade PutObject(IOidTranslation oid, ArgumentsContextFacade arguments) {
-            return MapErrors(() => ChangeObject(GetObjectAsNakedObject(oid), arguments));
+            return MapErrors(() => ChangeObject(GetObjectAsNakedObject(oid), arguments).ToObjectContextFacade(this, framework));
         }
 
         public PropertyContextFacade GetProperty(IOidTranslation oid, string propertyName) {
@@ -554,7 +554,7 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        private ObjectContextFacade ChangeObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
+        private ObjectContext ChangeObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
             ValidateConcurrency(nakedObject, arguments.Digest);
 
             Dictionary<string, PropertyContext> contexts;
@@ -594,7 +594,7 @@ namespace NakedObjects.Facade.Impl {
             oc.Mutated = true;
             oc.Reason = objectContext.Reason;
             oc.VisibleProperties = propertiesToDisplay;
-            return oc.ToObjectContextFacade(this, framework);
+            return oc;
         }
 
         private ObjectContextFacade SetTransientObject(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
@@ -769,13 +769,7 @@ namespace NakedObjects.Facade.Impl {
 
                 if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                     errorOnChange = true;
-                    actionResultContext.ActionContext.VisibleParameters.ForEach(parm => {
-                        var matchingProperty = objectContext.VisibleProperties.SingleOrDefault(p => p.Id == parm.Id);
-
-                        if (matchingProperty != null) {
-                            parm.Reason = matchingProperty.Reason;
-                        }
-                    });
+                    actionResultContext.ActionContext.VisibleProperties = objectContext.VisibleProperties;
                 }
 
                 if (!string.IsNullOrEmpty(objectContext.Reason)) {

@@ -26,7 +26,8 @@ namespace NakedObjects.Facade.Impl {
         private readonly string overloadedUniqueId;
 
         public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
-            FacadeUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
+            //Allow it to carry a null parameter
+            //FacadeUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
             FacadeUtils.AssertNotNull(framework, "framework is null");
             FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
             FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
