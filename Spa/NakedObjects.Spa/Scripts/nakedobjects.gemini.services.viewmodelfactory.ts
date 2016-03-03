@@ -719,7 +719,7 @@ module NakedObjects.Angular.Gemini {
                                 .then((menu: MenuRepresentation) => {
                                     let output = "";
                                     output += menu.title() + " menu" + "\n";
-                                    output += renderActionDialogIfOpen(menu, routeData);
+                                    output += renderActionDialogIfOpen(menu, routeData, mask);
                                     cvm.clearInput();
                                     cvm.output = output;
                                     appendAlertIfAny(cvm);
@@ -759,14 +759,14 @@ module NakedObjects.Angular.Gemini {
                                     if (obj.isTransient()) {
                                         output += "Unsaved ";
                                         output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
-                                        output += renderModifiedProperties(obj, routeData);
+                                        output += renderModifiedProperties(obj, routeData, mask);
                                     } else if (routeData.interactionMode === InteractionMode.Edit) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                        output += renderModifiedProperties(obj, routeData);
+                                        output += renderModifiedProperties(obj, routeData, mask);
                                     } else {
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                        output += renderActionDialogIfOpen(obj, routeData);
+                                        output += renderActionDialogIfOpen(obj, routeData, mask);
                                     }
                                 }
                                 cvm.clearInput();
@@ -834,14 +834,14 @@ module NakedObjects.Angular.Gemini {
         return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
     }
 
-    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData): string {
+    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData, mask: IMask): string {
         let output = "";
         if (_.keys(routeData.props).length > 0) {
             output += "Modified properties:\n";
             _.each(routeData.props, (value, propId) => {
                 output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
                 const pm = obj.propertyMember(propId);
-                output += renderFieldValue(pm, value);
+                output += renderFieldValue(pm, value, mask);
                 output += "\n";
             });
         }
@@ -849,7 +849,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     //Handles empty values, and also enum conversion
-    export function renderFieldValue(field: IField, value: Value): string {
+    export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
         if (field.isScalar() && value.toString()) { //i.e. not empty
             //This is to handle an enum: render it as text, not a number:           
             if (field.entryType() == EntryType.Choices) {
@@ -864,12 +864,23 @@ module NakedObjects.Angular.Gemini {
                 return output;
             }
         }
-        return value.toString() || "empty";
+        const remoteMask = field.extensions().mask();
+        const format = field.extensions().format();
+        let filter: ILocalFilter;
+        if (remoteMask) {
+            filter = mask.toLocalFilter(remoteMask, format);
+        } else {
+            filter = mask.defaultLocalFilter(format);
+        }
+        // formatting also happens in in directive - at least for dates - value is now date in that case
+        let formattedValue = value ? filter.filter(value.toString()) : "";
+        return formattedValue || "empty";
     }
 
     function renderActionDialogIfOpen(
         repWithActions: IHasActions,
-        routeData: PaneRouteData): string {
+        routeData: PaneRouteData,
+        mask: IMask): string {
         let output = "";
         if (routeData.dialogId) {
             const actionMember = repWithActions.actionMember(routeData.dialogId);
@@ -878,7 +889,7 @@ module NakedObjects.Angular.Gemini {
             _.forEach(routeData.dialogFields, (value, paramId) => {
                 output += Helpers.friendlyNameForParam(actionMember, paramId) + ": ";
                 const param = actionMember.parameters()[paramId];
-                output += renderFieldValue(param, value);
+                output += renderFieldValue(param, value, mask);
                 output += "\n";
             });
         }

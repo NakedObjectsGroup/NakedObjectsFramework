@@ -10,7 +10,8 @@ module NakedObjects.Angular.Gemini {
             protected context: IContext,
             protected navigation: INavigation,
             protected $q: ng.IQService,
-            protected $route: ng.route.IRouteService
+            protected $route: ng.route.IRouteService,
+            protected mask: IMask
         ) { }
 
         public fullCommand: string;
@@ -1215,7 +1216,7 @@ module NakedObjects.Angular.Gemini {
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
                 value = propInUrl.toString() + " (modified)";
             } else {
-                value = renderFieldValue(pm, pm.value());
+                value = renderFieldValue(pm, pm.value(), this.mask);
             }
             return name + ": " + value + "\n";
         }
