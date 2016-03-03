@@ -646,7 +646,7 @@ input[type=submit] {
 }
 
 /*Cicero*/
-.cicero, .cicero input {
+.cicero, .cicero input, .cicero pre {
     background-color: black;
     color: green;
     font-size: 18pt;
