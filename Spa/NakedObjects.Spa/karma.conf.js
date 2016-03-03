@@ -42,7 +42,8 @@ module.exports = function(config) {
       "Scripts/nakedobjects.cicero.commands.js",
       "Scripts/nakedobjects.cicero.commandFactory.js",
       "Tests/specs/nakedobjects.gemini.test.helpers.js",
-      "Tests/specs/nakedobjects.gemini.test.js"
+      "Tests/specs/nakedobjects.gemini.test.js",
+      "Tests/specs/nakedobjects.gemini.test.masks.js"
     ],
 
 
