@@ -17,16 +17,16 @@ module NakedObjects.Angular.Gemini {
         const handlers = <IHandlers>this;
 
         const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-            new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
+                                    new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
 
-        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager),
-            new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+                                      new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
 
         const perPaneDialogViews = [, new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
                                       new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
 
         const perPaneMenusViews = [, new MenusViewModel(viewModelFactory),
-                                    new MenusViewModel(viewModelFactory)];
+                                     new MenusViewModel(viewModelFactory)];
 
         function setVersionError(error : string) {
             context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError,  error));

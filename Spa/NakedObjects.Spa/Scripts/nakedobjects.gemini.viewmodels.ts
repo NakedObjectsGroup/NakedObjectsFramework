@@ -624,7 +624,8 @@ module NakedObjects.Angular.Gemini {
                     private contextService: IContext,
                     private viewModelFactory: IViewModelFactory,
                     private urlManager: IUrlManager,
-                    private focusManager: IFocusManager) {
+                    private focusManager: IFocusManager,
+                    private $q : ng.IQService) {
             super();
         }
 
@@ -686,7 +687,11 @@ module NakedObjects.Angular.Gemini {
                          
                          const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                          const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
-                         return wrappedInvoke(allpps, right);
+                         return wrappedInvoke(allpps, right).
+                             catch((reject: ErrorWrapper) => {
+                                 this.handleWrappedError(reject);
+                                 return this.$q.reject(reject);
+                             });
                      }
                  });
              }

@@ -630,6 +630,10 @@ module NakedObjects.Angular.Gemini {
                                         onReload: (updatedObject: DomainObjectRepresentation) => void,
                                         displayMessages: (em: ErrorMap) => void,
                                         customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
+            if (reject.handled) {
+                return;
+            }
+            reject.handled = true;
 
             context.setError(reject);
             switch (reject.category) {

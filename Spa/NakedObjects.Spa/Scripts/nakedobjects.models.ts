@@ -154,6 +154,8 @@ module NakedObjects {
         error: ErrorMap | ErrorRepresentation;
 
         stackTrace: string[];
+
+        handled = false;
     }
 
     // abstract classes 
