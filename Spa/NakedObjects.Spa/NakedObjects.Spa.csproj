@@ -151,6 +151,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\karma-jasmine\karma-jasmine.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.test.masks.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.test.ts" />
     <Content Include="web.config" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.gemini.test.helpers.ts" />
