@@ -4,7 +4,8 @@
 
 
 module NakedObjects.Angular.Gemini {
-
+    import getUtcDate = Helpers.getUtcDate;
+ 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
@@ -323,31 +324,6 @@ module NakedObjects.Angular.Gemini {
 
             if (!msg) msg = err.warningMessage;
             messageViewModel.message = msg;
-        }
-
-        function getUtcDate(rawDate : string ) 
-        {
-            if (!rawDate || rawDate.length === 0) {
-                return null;
-            }
-
-            const year = parseInt(rawDate.substring(0, 4));
-            const month = parseInt(rawDate.substring(5, 7)) - 1;
-            const day = parseInt(rawDate.substring(8, 10));
-
-            if (rawDate.length === 10) {
-                return new Date(Date.UTC(year, month, day, 0, 0, 0));
-            }
-
-            if (rawDate.length === 24) {
-                const hours = parseInt(rawDate.substring(11, 13));
-                const mins = parseInt(rawDate.substring(14, 16));
-                const secs = parseInt(rawDate.substring(17, 19));
-
-                return new Date(Date.UTC(year, month, day, hours, mins, secs));
-            }
-
-            return null;
         }
 
 
