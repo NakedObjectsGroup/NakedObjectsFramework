@@ -32,9 +32,11 @@
 
                     <div ng-switch-when="string" ng-switch="property.format">
                         <div ng-switch-when="blob" class='reference clickable-area' ng-model="$parent.property.attachment" gemini-attachment></div>
-                        <div ng-switch-default class='value'>{{property.formattedValue}}</div>
+                     <div ng-switch-default ng-switch="property.multipleLines">
+                      <div ng-switch-when="1" class="value">{{property.formattedValue}}</div>
+                      <div ng-switch-default class="value multiline" ng-style="{height: $parent.property.multipleLines * 20+'px'}"><pre>{{property.formattedValue}}</pre></div>
+                     </div>
                     </div>
-
                     <div ng-switch-when="boolean">
                         <input type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />
                     </div>
