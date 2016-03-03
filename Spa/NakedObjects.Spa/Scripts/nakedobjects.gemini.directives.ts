@@ -21,7 +21,7 @@ module NakedObjects.Angular.Gemini {
 
 
     // based on code in AngularJs, Green and Seshadri, O'Reilly
-    app.directive("geminiDatepicker", ($filter : ng.IFilterService, $timeout : ng.ITimeoutService): ng.IDirective => {
+    app.directive("geminiDatepicker", (mask : IMask, $timeout : ng.ITimeoutService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -62,16 +62,9 @@ module NakedObjects.Angular.Gemini {
                 // add our formatter that converts from date to our format
                 ngModel.$formatters = [];
 
-                let filterName = "date";
-                let filterMask = "d MMM yyyy";
-
                 // use viewmodel filter if we've been given one 
-                if (viewModel && viewModel.localFilter) {
-                    filterName = viewModel.localFilter.name;
-                    filterMask = viewModel.localFilter.mask;
-                }
-
-                ngModel.$formatters.push(val => $filter(filterName)(val, filterMask));
+                const localFilter = viewModel && viewModel.localFilter ? viewModel.localFilter : mask.defaultLocalFilter("date");
+                ngModel.$formatters.push(val => localFilter.filter(val));
                
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {

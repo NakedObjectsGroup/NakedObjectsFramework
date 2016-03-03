@@ -552,8 +552,12 @@ namespace RestfulObjects.Snapshot.Utility {
             throw new ArgumentException("Unexpected type:" + memberFacade.GetType());
         }
 
+        public string GetRelParametersFor(string actionId, string parmId) {
+            return FormatParameter(RelParamValues.Action, actionId) + FormatParameter(RelParamValues.Param, parmId);
+        }
+
         public string GetRelParametersFor(IActionParameterFacade actionParameterFacade) {
-            return FormatParameter(RelParamValues.Action, actionParameterFacade.Action.Id) + FormatParameter(RelParamValues.Param, actionParameterFacade.Id);
+            return GetRelParametersFor(actionParameterFacade.Action.Id, actionParameterFacade.Id);
         }
 
         public string GetRelParametersFor(string name) {

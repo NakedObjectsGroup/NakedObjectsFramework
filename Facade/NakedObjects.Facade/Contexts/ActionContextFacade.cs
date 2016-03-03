@@ -22,5 +22,6 @@ namespace NakedObjects.Facade.Contexts {
         }
 
         public ParameterContextFacade[] VisibleParameters { get; set; }
+        public PropertyContextFacade[] VisibleProperties { get; set; }
     }
 }

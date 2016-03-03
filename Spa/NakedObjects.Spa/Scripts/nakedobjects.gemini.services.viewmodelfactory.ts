@@ -226,8 +226,7 @@ module NakedObjects.Angular.Gemini {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
                     const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
-                    const dateValue = Date.parse(rawValue);
-                    parmViewModel.value = dateValue ? new Date(rawValue) : null;
+                    parmViewModel.value = getUtcDate(rawValue);
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
@@ -236,12 +235,10 @@ module NakedObjects.Angular.Gemini {
             const remoteMask = parmRep.extensions().mask();
 
             if (remoteMask && parmRep.isScalar()) {
-                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(parmRep.extensions().format());
-                if (localFilter) {
-                    parmViewModel.localFilter = localFilter;
-                    // formatting also happens in in directive - at least for dates - value is now date in that case
-                    parmViewModel.formattedValue = parmViewModel.value ? $filter(localFilter.name)(parmViewModel.value.toString(), localFilter.mask) : "";
-                }
+                const localFilter = mask.toLocalFilter(remoteMask, parmRep.extensions().format());
+                parmViewModel.localFilter = localFilter;
+                // formatting also happens in in directive - at least for dates - value is now date in that case
+                parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
             parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
 
@@ -328,6 +325,32 @@ module NakedObjects.Angular.Gemini {
             messageViewModel.message = msg;
         }
 
+        function getUtcDate(rawDate : string ) 
+        {
+            if (!rawDate || rawDate.length === 0) {
+                return null;
+            }
+
+            const year = parseInt(rawDate.substring(0, 4));
+            const month = parseInt(rawDate.substring(5, 7)) - 1;
+            const day = parseInt(rawDate.substring(8, 10));
+
+            if (rawDate.length === 10) {
+                return new Date(Date.UTC(year, month, day, 0, 0, 0));
+            }
+
+            if (rawDate.length === 24) {
+                const hours = parseInt(rawDate.substring(11, 13));
+                const mins = parseInt(rawDate.substring(14, 16));
+                const secs = parseInt(rawDate.substring(17, 19));
+
+                return new Date(Date.UTC(year, month, day, hours, mins, secs));
+            }
+
+            return null;
+        }
+
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
@@ -348,8 +371,9 @@ module NakedObjects.Angular.Gemini {
 
             if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
                 const rawValue = value ? value.toString() : "";
-                const dateValue = Date.parse(rawValue);
-                propertyViewModel.value = dateValue ? new Date(rawValue) : null;
+
+                const dateValue = getUtcDate(rawValue);
+                propertyViewModel.value = dateValue ? dateValue : null;
             }
             else {
                 propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
@@ -431,21 +455,16 @@ module NakedObjects.Angular.Gemini {
 
             if (propertyRep.isScalar()) {
                 const remoteMask = propertyRep.extensions().mask();
-                const localFilter = mask.toLocalFilter(remoteMask) || mask.defaultLocalFilter(propertyRep.extensions().format());
+                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
-                if (localFilter) {
-                    propertyViewModel.formattedValue = $filter(localFilter.name)(propertyViewModel.value, localFilter.mask);
-                }
-                else if (propertyViewModel.choice) {
+
+                if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 }
-                else if (propertyRep.extensions().returnType() === "string") {
-                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "";
-                }
-                else {
-                    propertyViewModel.formattedValue = propertyViewModel.value ? propertyViewModel.value.toString() : "0";
+                else  {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
             }
 
@@ -473,6 +492,10 @@ module NakedObjects.Angular.Gemini {
                     () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
+
+
+                // clear existing header 
+                listViewModel.header = null; 
 
                 getExtensions().then((ext: Extensions) => {
                     _.forEach(items, itemViewModel => {

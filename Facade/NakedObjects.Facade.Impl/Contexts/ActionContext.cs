@@ -11,7 +11,10 @@ using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade.Impl.Contexts {
     public class ActionContext : Context {
+
+        private PropertyContext[] properties;
         private ParameterContext[] parameters;
+
         public IActionSpec Action { get; set; }
 
         public override string Id {
@@ -27,12 +30,20 @@ namespace NakedObjects.Facade.Impl.Contexts {
             set { parameters = value; }
         }
 
+        public PropertyContext[] VisibleProperties
+        {
+            get { return properties ?? new PropertyContext[] { }; }
+            set { properties = value; }
+        }
+
+
         public string OverloadedUniqueId { get; set; }
 
         public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionContextFacade {
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
-                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray()
+                VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray(),
+                VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
             };
             return ToContextFacade(ac, facade, framework);
         }

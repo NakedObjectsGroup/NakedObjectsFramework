@@ -110,16 +110,22 @@ namespace RestfulObjects.Snapshot.Representations {
                    !parameter.GetChoicesParameters().Any();
         }
 
-        private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequestMessage req, IActionParameterFacade parameter, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
-            return LinkRepresentation.Create(oidStrategy, new DefaultRelType(parameter, new UriMtHelper(oidStrategy, req, defaultNakedObject)), flags, new OptionalProperty(JsonPropertyNames.Title, title));
+
+        private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequestMessage req, FieldFacadeAdapter parameter, IActionFacade action,  IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
+            var helper = new UriMtHelper(oidStrategy, req, defaultNakedObject);
+            var relType = new DefaultRelType(action.Id, parameter.Id, helper);
+
+            return LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequestMessage req, IActionParameterFacade parameter, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
+
+        private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequestMessage req, FieldFacadeAdapter parameter, IActionFacade action, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
             if (defaultNakedObject.Specification.IsCollection) {
-                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, i, i.TitleString, flags)).ToArray();
+                return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, action, i, i.TitleString, flags)).ToArray();
             }
-            return CreateDefaultLink(oidStrategy, req, parameter, defaultNakedObject, title, flags);
+            return CreateDefaultLink(oidStrategy, req, parameter, action, defaultNakedObject, title, flags);
         }
+
 
         public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
@@ -130,49 +136,53 @@ namespace RestfulObjects.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
+            var adapter = new FieldFacadeAdapter(parameter);
+
             if (parameter.DefaultTypeIsExplicit(objectFacade)) {
                 IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
                 if (defaultNakedObject != null) {
                     string title = defaultNakedObject.TitleString;
                     object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject(), true);
                     var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
-                    object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, parameter, defaultNakedObject, title, flags);
+                    object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, parameter.Action, defaultNakedObject, title, flags);
 
                     optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
                 }
             }
 
-            var adapter = new FieldFacadeAdapter(parameter);
-
+            
             if (optionals.Count == 0) {
                 return new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
             }
             return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals);
         }
 
-        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IAssociationFacade parameter, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IAssociationFacade assoc, ActionContextFacade actionContext, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
-            if (parameter.IsChoicesEnabled != Choices.NotEnabled && !parameter.GetChoicesParameters().Any()) {
-                IObjectFacade[] choices = parameter.GetChoices(objectFacade, null);
-                object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy, req, c, parameter, flags)).ToArray();
+            if (assoc.IsChoicesEnabled != Choices.NotEnabled && !assoc.GetChoicesParameters().Any()) {
+                IObjectFacade[] choices = assoc.GetChoices(objectFacade, null);
+                object[] choicesArray = choices.Select(c => RestUtils.GetChoiceValue(oidStrategy, req, c, assoc, flags)).ToArray();
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
-            //if (parameter.DefaultTypeIsExplicit(objectFacade)) {
-            //    IObjectFacade defaultNakedObject = parameter.GetDefault(objectFacade);
-            //    if (defaultNakedObject != null) {
-            //        string title = defaultNakedObject.TitleString;
-            //        object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject(), true);
-            //        var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
-            //        object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, parameter, defaultNakedObject, title, flags);
+            if (!RestUtils.IsBlobOrClob(assoc.Specification) && !RestUtils.IsAttachment(assoc.Specification)) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, assoc, objectFacade, flags, false, true)));
+            }
 
-            //        optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
-            //    }
-            //}
+            var adapter = new FieldFacadeAdapter(assoc);
 
-            var adapter = new FieldFacadeAdapter(parameter);
+            IObjectFacade defaultNakedObject = assoc.GetValue(objectFacade);
+            if (defaultNakedObject != null) {
+                string title = defaultNakedObject.TitleString;
+                object value = RestUtils.ObjectToPredefinedType(defaultNakedObject.GetDomainObject(), true);
+                var isValue = defaultNakedObject.Specification.IsParseable || (defaultNakedObject.Specification.IsCollection && defaultNakedObject.ElementSpecification.IsParseable);
+                object defaultValue = isValue ? value : CreateDefaultLinks(oidStrategy, req, adapter, actionContext.Action, defaultNakedObject, title, flags);
 
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
+            }
+
+        
             if (optionals.Count == 0) {
                 return new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
             }

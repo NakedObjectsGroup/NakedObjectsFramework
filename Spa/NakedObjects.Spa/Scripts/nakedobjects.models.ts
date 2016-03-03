@@ -77,6 +77,7 @@ module NakedObjects {
         return getLinkByRel(links, new Rel(`urn:org.restfulobjects:rels/${rel}`));
     }
 
+
     // interfaces 
 
     export interface IHateoasModel {

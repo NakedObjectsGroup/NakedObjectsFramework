@@ -722,6 +722,15 @@ namespace RestfulObjects.Mvc {
         }
 
         private void VerifyNoError(ActionResultContextFacade result) {
+
+            if (result.ActionContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
+                if (result.ActionContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
+                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
+            }
+
             if (result.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                 if (result.ActionContext.VisibleParameters.Any(p => p.ErrorCause == Cause.WrongType)) {
                     throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
@@ -729,6 +738,7 @@ namespace RestfulObjects.Mvc {
 
                 throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
             }
+
             if (!string.IsNullOrEmpty(result.Reason)) {
                 if (result.ErrorCause == Cause.WrongType) {
                     throw new BadRequestNOSException("Bad Request", result.ActionContext);
