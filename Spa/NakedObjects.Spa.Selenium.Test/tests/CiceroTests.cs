@@ -1166,6 +1166,27 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Unsaved Employee");
         }
+        public virtual void ScenarioTestEditableVM()
+        {
+            CiceroUrl("object?i1=View&o1=___1.Person-5968");
+            WaitForOutput("Person: Nathan Diaz");
+            EnterCommand("ac email");
+            WaitForOutputContaining("Action dialog: Create Email");
+            EnterCommand("ok");
+            WaitForOutput("Editing Email Template: New email");
+            EnterCommand("enter to,Stef");
+            WaitForOutputContaining("Modified properties:\r\nTo: Stef");
+            EnterCommand("enter from,Richard");
+            WaitForOutputContaining("From: Richard");
+            EnterCommand("enter sub,Test");
+            WaitForOutputContaining("Subject: Test");
+            EnterCommand("enter mes,Hello");
+            WaitForOutputContaining("Message: Hello");
+            EnterCommand("ac send");
+            WaitForOutputContaining("Action dialog: Send");
+            EnterCommand("ok");
+            WaitForOutput("Editing Email Template: Sent email");
+        }
         public virtual void ChainedCommands()
         {
             //Happy case
@@ -1255,6 +1276,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
         [TestMethod]
+        public override void ScenarioTestEditableVM() { base.ScenarioTestEditableVM(); }
+        [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
     }
 
@@ -1284,7 +1307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1370,6 +1393,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ScenarioMultiSelect();
             base.ScenarioTransientObject();
             base.ScenarioUsingClipboard();
+            base.ScenarioTestEditableVM();
             base.ChainedCommands();
         }
     }
