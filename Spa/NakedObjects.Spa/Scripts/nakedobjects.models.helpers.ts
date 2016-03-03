@@ -37,7 +37,7 @@ module NakedObjects.Helpers {
             return new Date(Date.UTC(year, month, day, 0, 0, 0));
         }
 
-        if (rawDate.length === 24) {
+        if (rawDate.length >= 20) {
             const hours = parseInt(rawDate.substring(11, 13));
             const mins = parseInt(rawDate.substring(14, 16));
             const secs = parseInt(rawDate.substring(17, 19));
