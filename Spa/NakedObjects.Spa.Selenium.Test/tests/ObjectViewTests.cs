@@ -73,6 +73,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("", cols[0].Text); //Title
             Assert.AreEqual("Rate Change Date", cols[1].Text);
             Assert.AreEqual("Rate", cols[2].Text);
+
+            //Dates formatted in table view
+            GeminiUrl("object?i1=View&o1=___1.Product-775&c1_SpecialOffers=Table");
+            var cell = WaitForCss("td:nth-child(5)");
+            Assert.AreEqual("31 Dec 2008", cell.Text);
         }
         public virtual void ClickReferenceProperty()
         {
