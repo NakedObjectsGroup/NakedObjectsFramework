@@ -163,6 +163,7 @@
     <Compile Include="CodeFirstContext.cs" />
     <Compile Include="CodeFirstContextLocal.cs" />
     <Compile Include="ContributerService.cs" />
+    <Compile Include="FormViewModel.cs" />
     <Compile Include="WithAttachments.cs" />
     <Compile Include="RedirectedObject.cs" />
     <Compile Include="MostSimpleViewModel.cs" />

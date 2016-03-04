@@ -76,6 +76,7 @@ type ANof4Tests() =
                    typeof<WithValue>
                    typeof<TestEnum>
                    typeof<MostSimple []>
+                   typeof<FormViewModel>
                    typeof<SetWrapper<MostSimple>> |]
             
             let mm (factory : IMenuFactory) = 
@@ -523,6 +524,9 @@ type ANof4Tests() =
         [<Test>]
         member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.api
         
+        [<Test>]
+        member x.GetFormViewModel() = DomainObject14.GetFormViewModel x.api
+
         [<Test>]
         member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.api
         

@@ -94,13 +94,17 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, self, Flags);
         }
 
+        protected virtual bool HasParams() {
+            return ActionContext.VisibleParameters.Any();
+        }
+
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(friendlyname: ActionContext.Action.Name,
                 description: ActionContext.Action.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
-                hasParams: ActionContext.VisibleParameters.Any(),
+                hasParams: HasParams(),
                 optional: null,
                 maxLength: null,
                 pattern: null,

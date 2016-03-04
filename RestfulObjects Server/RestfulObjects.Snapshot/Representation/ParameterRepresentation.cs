@@ -166,10 +166,6 @@ namespace RestfulObjects.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Choices, choicesArray));
             }
 
-            if (!RestUtils.IsBlobOrClob(assoc.Specification) && !RestUtils.IsAttachment(assoc.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, assoc, objectFacade, flags, false, true)));
-            }
-
             var adapter = new FieldFacadeAdapter(assoc);
 
             IObjectFacade defaultNakedObject = assoc.GetValue(objectFacade);
@@ -181,7 +177,6 @@ namespace RestfulObjects.Snapshot.Representations {
 
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
             }
-
         
             if (optionals.Count == 0) {
                 return new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);

@@ -28,5 +28,9 @@ namespace RestfulObjects.Snapshot.Strategies {
             IObjectFacade objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
         }
+
+        protected override bool HasParams() {
+            return GetParameterList().Any();
+        }
     }
 }

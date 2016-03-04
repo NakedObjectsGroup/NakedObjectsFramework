@@ -49,6 +49,10 @@ namespace RestfulObjects.Snapshot.Representations {
             return objectFacade.IsTransient;
         }
 
+        private static bool IsForm(IObjectFacade objectFacade) {
+            return objectFacade.IsViewModelEditView;
+        }
+
         private void SetScalars(ObjectContextFacade objectContext) {
             Title = objectContext.Target.TitleString;
         }
@@ -97,15 +101,13 @@ namespace RestfulObjects.Snapshot.Representations {
 
             PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
-            if (!IsProtoPersistent(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
+            if (!IsProtoPersistent(objectContext.Target) && !IsForm(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
                 string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
                 OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
 
                 var helper = GetHelper(OidStrategy, req, objectContext);
 
-                var method = objectContext.Target.IsTransient ? RelMethod.Post : RelMethod.Put;
-
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = method}, Flags,
+                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put }, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
@@ -133,10 +135,10 @@ namespace RestfulObjects.Snapshot.Representations {
 
             ActionContextFacade[] visibleActions;
 
-            if (objectContext.Target.IsTransient) {
+            if (IsProtoPersistent(objectContext.Target)) {
                 visibleActions = new ActionContextFacade[] {};
             }
-            else if (objectContext.Target.IsViewModelEditView) {
+            else if (IsForm(objectContext.Target)) {
                 visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
             }
             else {

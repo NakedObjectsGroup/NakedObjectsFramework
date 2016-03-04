@@ -76,6 +76,7 @@ type CNof4TestsDomainType() =
                    typeof<WithValue>
                    typeof<TestEnum>
                    typeof<MostSimple []>
+                   typeof<FormViewModel>
                    typeof<SetWrapper<MostSimple>> |]
             
             let services = 
@@ -534,6 +535,9 @@ type CNof4TestsDomainType() =
         [<Test>]
         member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.api
         
+        [<Test>]
+        member x.GetFormViewModel() = DomainObject14.GetFormViewModel x.api
+
         [<Test>]
         member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.api
         

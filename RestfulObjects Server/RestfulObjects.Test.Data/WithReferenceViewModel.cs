@@ -19,7 +19,6 @@ namespace RestfulObjects.Test.Data {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }
 
-
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
 

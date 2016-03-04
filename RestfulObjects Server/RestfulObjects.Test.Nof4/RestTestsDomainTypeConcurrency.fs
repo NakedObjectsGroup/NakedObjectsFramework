@@ -76,6 +76,7 @@ type DNof4TestsDomainTypeConcurrency() =
                    typeof<WithValue>
                    typeof<TestEnum>
                    typeof<MostSimple []>
+                   typeof<FormViewModel>
                    typeof<SetWrapper<MostSimple>> |]
             
             let services = 
