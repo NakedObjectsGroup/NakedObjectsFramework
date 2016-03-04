@@ -272,8 +272,10 @@ module NakedObjects.Angular.Gemini {
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
+          
+
             // open dialog on current pane always - invoke action goes to pane indicated by click
-            actionViewModel.doInvoke = actionRep.extensions().hasParams() ?
+            actionViewModel.doInvoke = actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form) ?
                 (right?: boolean) => {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
