@@ -8,7 +8,7 @@ module NakedObjects.Angular {
     }
 
     export interface IMaskMap {
-        [index: string]: ILocalFilter;
+        [index: string]: { [index: string] : ILocalFilter };
     }
 
     export interface IMask {
@@ -16,13 +16,30 @@ module NakedObjects.Angular {
         defaultLocalFilter(format: string): ILocalFilter;
 
         // ie the custom mask to handle (eg "d"), the angular filter (eg "date"), the angular mask and any timezone 
-        setMaskMapping(key: string, name: string, mask: string, tz : string);
+        setMaskMapping(key: string, format: string,  name: string, mask: string, tz: string);
+
+        setNumberMaskMapping(key: string, format: string, mask: string, tz: string);
+        setDateMaskMapping(key: string, format: string, mask: string, tz: string);
+        setCurrencyMaskMapping(key: string, format: string, mask: string, tz: string);
     }
 
 
     app.service("mask", function ($filter: ng.IFilterService) {
         const maskService = <IMask>this;
-        const maskMap: IMaskMap = {};
+
+        const maskMap: IMaskMap = {
+            string: {},
+            "date-time": {},
+            date: {},
+            time: {},
+            "utc-millisec": {},
+            "big-integer": {},
+            "big-decimal": {},
+            blob: {},
+            clob: {},
+            decimal: {},
+            int : { }
+        };
 
         class LocalFilter implements ILocalFilter {
 
@@ -67,15 +84,31 @@ module NakedObjects.Angular {
             }
         }
 
+        function customFilter(format: string, remoteMask : string) {
+            if (maskMap[format] && remoteMask) {
+                return maskMap[format][remoteMask];
+            }
+            return undefined;
+        }
 
         maskService.toLocalFilter = (remoteMask: string, format: string) => {
-            return maskMap[remoteMask] || maskService.defaultLocalFilter(format);
+            return customFilter(format, remoteMask) || maskService.defaultLocalFilter(format);
         }
 
-        maskService.setMaskMapping = (key: string, name: string, mask: string, tz : string) => {
-            maskMap[key] = new LocalFilter(name, mask, tz);
+        maskService.setMaskMapping = (customMask: string, format : string,  name: string, mask: string, tz : string) => {
+            maskMap[format][customMask] = new LocalFilter(name, mask, tz);
         }
 
+        maskService.setNumberMaskMapping = (key: string, format: string, mask: string, tz: string) => {
+            maskService.setMaskMapping(key, format, "number", mask, tz);
+        }
 
+        maskService.setDateMaskMapping = (key: string, format: string, mask: string, tz: string) => {
+            maskService.setMaskMapping(key, format, "date", mask, tz);
+        }
+
+        maskService.setCurrencyMaskMapping = (key: string, format: string, mask: string, tz: string) => {
+            maskService.setMaskMapping(key, format, "currency", mask, tz);
+        }
     });
 }

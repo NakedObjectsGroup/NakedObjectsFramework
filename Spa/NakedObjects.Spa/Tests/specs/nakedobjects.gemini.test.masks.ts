@@ -29,7 +29,6 @@ module NakedObjects.Gemini.Test.Masks {
 
             beforeEach(inject((mask: IMask) => {
                 maskService = mask;
-                maskService.setMaskMapping("customdt", "date-time", "mm yy dd hh mm ss", "+1000");
             }));
 
 
@@ -95,7 +94,7 @@ module NakedObjects.Gemini.Test.Masks {
             describe("custom date-time", () => {
 
                 beforeEach(() => {
-                    maskService.setMaskMapping("customdt", "date", "M dd yyyy hh-mm-ss", "+1000");
+                    maskService.setDateMaskMapping("customdt", "date-time", "M dd yyyy hh-mm-ss", "+1000");
                 });
 
 
@@ -111,22 +110,22 @@ module NakedObjects.Gemini.Test.Masks {
             describe("custom date", () => {
 
                 beforeEach(() => {
-                    maskService.setMaskMapping("customd", "date", "M dd yyyy", "+1100");
+                    maskService.setDateMaskMapping("customd", "date", "M dd yyyy", "+1100");
                 });
 
-                it("masks empty", () => testMask("", "customd", "date-time", ""));
-                it("masks null", () => testMask(null, "customd", "date-time", null));         
+                it("masks empty", () => testMask("", "customd", "date", ""));
+                it("masks null", () => testMask(null, "customd", "date", null));         
 
                 // these tests are locale specific UTC -> +1000
-                it("masks arbitaryDate1", () => testMask(arbitaryDate1, "customd", "date-time", "6 05 1985"));
-                it("masks arbitaryDate2", () => testMask(arbitaryDate2, "customd", "date-time", "2 20 2003"));
-                it("masks arbitaryDate3", () => testMask(arbitaryDate3, "customd", "date-time", "8 06 2016"));
+                it("masks arbitaryDate1", () => testMask(arbitaryDate1, "customd", "date", "6 05 1985"));
+                it("masks arbitaryDate2", () => testMask(arbitaryDate2, "customd", "date", "2 20 2003"));
+                it("masks arbitaryDate3", () => testMask(arbitaryDate3, "customd", "date", "8 06 2016"));
             });
 
-            describe("default time", () => {
+            describe("custom time", () => {
 
                 beforeEach(() => {
-                    maskService.setMaskMapping("customt", "date", "hh-mm-ss", "+0030");
+                    maskService.setDateMaskMapping("customt", "time", "hh-mm-ss", "+0030");
                 });
 
                 it("masks empty", () => testMask("", "customt", "time", ""));
