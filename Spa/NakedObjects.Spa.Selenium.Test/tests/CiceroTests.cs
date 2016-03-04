@@ -292,7 +292,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?o1=___1.Product-871&i1=Edit");
             WaitForOutput("Editing Product: Mountain Bottle Cage");
             EnterCommand("prop price");
-            WaitForOutput("List Price: ££9.99");
+            WaitForOutput("List Price: £9.99");
             EnterCommand("enter list price, 10.50");
             WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nList Price: £10.50");
 
@@ -1016,15 +1016,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Edit");
             WaitForOutput("Editing Product: HL Road Frame - Black, 44");
             var rand = new Random();
-            var newPrice = rand.Next(50, 150).ToString();
-            EnterCommand("Enter list price, "+newPrice);
+            var newPrice = rand.Next(50, 150);
+            EnterCommand("Enter list price, "+newPrice.ToString());
             WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n"+
                 "Modified properties:\r\n"+
-                "List Price: "+newPrice);
+                "List Price: "+newPrice.ToString("c"));
             EnterCommand("Save");
             WaitForOutput("Product: HL Road Frame - Black, 44");
             EnterCommand("prop list price");
-            WaitForOutput("List Price: "+newPrice);
+            WaitForOutput("List Price: "+ newPrice.ToString("c"));
 
             //Updating a date and a link
             CiceroUrl("object?o1=___1.WorkOrder-43132");
@@ -1307,7 +1307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+   // [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
