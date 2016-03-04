@@ -19,11 +19,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?i1=View&o1=___1.Person-9169&as1=open");
             Click(GetObjectAction("Create Email"));
-            //TODO: Title of Form will change
-            WaitForView(Pane.Single, PaneType.Object, "Form");
+            WaitForView(Pane.Single, PaneType.Object, "New email");
             var properties = br.FindElements(By.CssSelector(".property"));
 
-            //By default a read-only DateTime property is rendered as a formatted time stamp:
             Assert.AreEqual("Status:\r\nNew", properties[4].Text);
  
             ClearFieldThenType("#to1", "Stef");
@@ -36,12 +34,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(action);
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
             Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
+            var title = WaitForCss(".title");
+            Assert.AreEqual("Sent email", title.Text);
         }
     }
 
     public abstract class EditableVMObjectTests : EditableVMTestsRoot
     {
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void CreateEditableVM() { base.CreateEditableVM(); }
     }
     #region browsers specific subclasses
@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaEditableVMTestsRoot : EditableVMTestsRoot
     {
-        [TestMethod, Ignore]
+        [TestMethod]
         public void MegaEditableVMTest()
         {
             base.CreateEditableVM();

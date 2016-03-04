@@ -1072,12 +1072,18 @@ module NakedObjects.Angular.Gemini {
         }
 
         doExecute(args: string, chained: boolean): void {
-            const fieldMap = this.routeData().dialogFields;
+            
             this.getActionForCurrentDialog().then((action: ActionMember) => {
 
                 if (chained && action.invokeLink().method() !== "GET") {
                     this.mayNotBeChained(" unless the action is query-only");
                     return;
+                }
+                let fieldMap: _.Dictionary<Value>;
+                if (this.isForm()) {
+                    fieldMap = this.routeData().props; //Props passed in as pseudo-params to action
+                } else {
+                    fieldMap = this.routeData().dialogFields;
                 }
                 this.context.invokeAction(action, 1, fieldMap)
                     .then((result: ActionResultRepresentation) => {
@@ -1103,7 +1109,7 @@ module NakedObjects.Angular.Gemini {
                         this.context.handleWrappedError(reject, null, () => {}, display);
                     });
             });
-        };
+        }
     }
     export class Page extends Command {
         public fullCommand = "page";

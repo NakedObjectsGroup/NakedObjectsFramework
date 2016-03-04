@@ -1275,7 +1275,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ScenarioTransientObject() { base.ScenarioTransientObject(); }
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void ScenarioTestEditableVM() { base.ScenarioTestEditableVM(); }
         [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
@@ -1307,7 +1307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1393,7 +1393,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ScenarioMultiSelect();
             base.ScenarioTransientObject();
             base.ScenarioUsingClipboard();
-            //base.ScenarioTestEditableVM(); //TODO
+            base.ScenarioTestEditableVM();
             base.ChainedCommands();
         }
     }
