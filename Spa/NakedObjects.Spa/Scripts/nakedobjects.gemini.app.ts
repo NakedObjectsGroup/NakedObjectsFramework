@@ -272,7 +272,11 @@ module NakedObjects.Angular {
         color.setDefaultColor("darkBlue");
 
         // map to convert from mask representation in RO extension to client represention.
-        mask.setMaskMapping( "d", "date" ,"d MMM yyyy", "+0000");
+        //mask.setMaskMapping( "d", "date" ,"d MMM yyyy", "+0000");
  
+        mask.setMaskMapping("C", "number", "2", "");
+        mask.setMaskMapping("c", "number", "2", "");
+
+
     });
 }

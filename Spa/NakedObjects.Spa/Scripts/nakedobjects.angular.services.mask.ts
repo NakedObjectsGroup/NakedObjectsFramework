@@ -14,6 +14,8 @@ module NakedObjects.Angular {
     export interface IMask {
         toLocalFilter(remoteMask: string, format: string): ILocalFilter;
         defaultLocalFilter(format: string): ILocalFilter;
+
+        // ie the custom mask to handle (eg "d"), the angular filter (eg "date"), the angular mask and any timezone 
         setMaskMapping(key: string, name: string, mask: string, tz : string);
     }
 
