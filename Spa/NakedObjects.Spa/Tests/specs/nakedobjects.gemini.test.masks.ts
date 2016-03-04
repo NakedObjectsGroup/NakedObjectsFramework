@@ -62,13 +62,28 @@ module NakedObjects.Gemini.Test.Masks {
             const arbitaryDate3 = new Date(Date.UTC(2016, 7, 5, 23, 45, 8));
 
             describe("default date-time", () => {
-                it("masks empty", () => testDefaultMask("", "date-time", ""));
-                it("masks null", () => testDefaultMask(null, "date-time", null));         
 
+                let ts1: string;
+                let ts2: string;
+                let ts3: string;
+
+                beforeEach(() => {
+                    maskService.setDateMaskMapping("test", "date-time", "d MMM yyyy hh:mm:ss");
+
+                    const f = maskService.toLocalFilter("test", "date-time");
+
+                    ts1 = f.filter(arbitaryDate1); // "4 Jun 1985 05:27:10"
+                    ts2 = f.filter(arbitaryDate2); // "20 Feb 2003 01:13:55"
+                    ts3 = f.filter(arbitaryDate3); // "6 Aug 2016 12:45:08"
+                });
+
+                it("masks empty", () => testDefaultMask("", "date-time", ""));
+                it("masks null", () => testDefaultMask(null, "date-time", null));
+            
                 // these tests are locale specific UTC -> GMT/BST
-                //it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "date-time", "4 Jun 1985 05:27:10"));
-                //it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "date-time", "20 Feb 2003 01:13:55"));
-                //it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "date-time", "6 Aug 2016 12:45:08"));
+                it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "date-time", ts1));
+                it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "date-time", ts2));
+                it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "date-time", ts3));
             });
 
             describe("default date", () => {

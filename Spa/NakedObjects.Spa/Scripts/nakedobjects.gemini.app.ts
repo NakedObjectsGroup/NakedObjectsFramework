@@ -276,5 +276,6 @@ module NakedObjects.Angular {
         mask.setCurrencyMaskMapping("C", "decimal", "£", 2);
         mask.setCurrencyMaskMapping("c", "decimal", "£", 2);
 
+
     });
 }
