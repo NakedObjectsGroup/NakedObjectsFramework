@@ -15,12 +15,14 @@ module NakedObjects.Angular {
         toLocalFilter(remoteMask: string, format: string): ILocalFilter;
         defaultLocalFilter(format: string): ILocalFilter;
 
-        // ie the custom mask to handle (eg "d"), the angular filter (eg "date"), the angular mask and any timezone 
-        setMaskMapping(key: string, format: string,  name: string, mask: string, tz: string);
-
-        setNumberMaskMapping(key: string, format: string, mask: string, tz: string);
-        setDateMaskMapping(key: string, format: string, mask: string, tz: string);
-        setCurrencyMaskMapping(key: string, format: string, symbol? : string, fractionSize? : number);
+        // use angular number mask to format
+        setNumberMaskMapping(customMask: string, format: string, fractionSize?: number);
+        
+        // use angular date mask to format
+        setDateMaskMapping(customMask: string, format: string, mask?: string, tz?: string);
+        
+        // use angular currency mask to format
+        setCurrencyMaskMapping(customMask: string, format: string, symbol? : string, fractionSize? : number);
     }
 
 
@@ -63,36 +65,49 @@ module NakedObjects.Angular {
             }
         }
 
+        class LocalDateFilter implements ILocalFilter {
+
+            constructor(private mask?: string, private tz?: string) { }
+
+            filter(val): string {
+                return $filter("date")(val, this.mask, this.tz);
+            }
+        }
+
+        class LocalNumberFilter implements ILocalFilter {
+
+            constructor(private fractionSize?: number) { }
+
+            filter(val): string {
+                return $filter("number")(val, this.fractionSize);
+            }
+        }
 
 
-
-
-
-        maskService.defaultLocalFilter = (format: string) => {
+        maskService.defaultLocalFilter = (format: string): ILocalFilter => {
             switch (format) {
                 case ("string"):
                     return new LocalFilter();
                 case ("date-time"):
-                    return new LocalFilter("date", "d MMM yyyy hh:mm:ss");
+                    return new LocalDateFilter("d MMM yyyy hh:mm:ss");
                 case ("date"):
-                    return new LocalFilter("date", "d MMM yyyy", "+0000");
+                    return new LocalDateFilter("d MMM yyyy", "+0000");
                 case ("time"):
-                    return new LocalFilter("date", "hh:mm:ss", "+0000");
+                    return new LocalDateFilter("hh:mm:ss", "+0000");
                 case ("utc-millisec"):
-                    return new LocalFilter("number");
+                    return new LocalNumberFilter();
                 case ("big-integer"):
-                    return new LocalFilter("number");
+                    return new LocalNumberFilter();
                 case ("big-decimal"):
-                    return new LocalFilter("number");
+                    return new LocalNumberFilter();
                 case ("blob"):
                     return new LocalFilter();
                 case ("clob"):
                     return new LocalFilter();
                 case ("decimal"):
-                    return new LocalFilter("number");
-                //return { name: "currency", mask: "$" };
+                    return new LocalNumberFilter();
                 case ("int"):
-                    return new LocalFilter("number");
+                    return new LocalNumberFilter();
                 default:
                     return new LocalFilter();
             }
@@ -109,16 +124,12 @@ module NakedObjects.Angular {
             return customFilter(format, remoteMask) || maskService.defaultLocalFilter(format);
         }
 
-        maskService.setMaskMapping = (customMask: string, format : string,  name: string, mask: string, tz : string) => {
-            maskMap[format][customMask] = new LocalFilter(name, mask, tz);
+        maskService.setNumberMaskMapping = (customMask: string, format: string, fractionSize?: number) => {
+            maskMap[format][customMask] = new LocalNumberFilter(fractionSize);
         }
 
-        maskService.setNumberMaskMapping = (key: string, format: string, mask: string, tz: string) => {
-            maskService.setMaskMapping(key, format, "number", mask, tz);
-        }
-
-        maskService.setDateMaskMapping = (key: string, format: string, mask: string, tz: string) => {
-            maskService.setMaskMapping(key, format, "date", mask, tz);
+        maskService.setDateMaskMapping = (customMask: string, format: string, mask: string, tz: string) => {
+            maskMap[format][customMask] = new LocalDateFilter(mask, tz);
         }
 
         maskService.setCurrencyMaskMapping = (customMask: string, format: string, symbol ? : string, fractionSize ? : number) => {
