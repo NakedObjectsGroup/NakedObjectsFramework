@@ -649,7 +649,7 @@ module NakedObjects.Angular.Gemini {
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
 
-            this.unsaved = routeData.interactionMode === InteractionMode.Transient || routeData.interactionMode === InteractionMode.Form;
+            this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
             this.friendlyName = this.domainObject.extensions().friendlyName();

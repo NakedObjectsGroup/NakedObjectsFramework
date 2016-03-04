@@ -272,10 +272,11 @@ module NakedObjects.Angular.Gemini {
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
             }
 
-          
+            // form actions should never show dialogs
+            const showDialog = () => actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form);
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
-            actionViewModel.doInvoke = actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form) ?
+            actionViewModel.doInvoke = showDialog() ?
                 (right?: boolean) => {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
