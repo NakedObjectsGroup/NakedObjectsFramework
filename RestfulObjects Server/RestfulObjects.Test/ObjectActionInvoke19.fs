@@ -3381,6 +3381,115 @@ let GetInvokeActionWithReferenceParmsReturnObjectViewModel(api : RestfulObjectsC
     let oid = oType + "/" + ktc "1"
     VerifyGetInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.GetInvoke api
 
+let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
+    let oid =  ktc "1-1"
+    
+    let refType = "objects"
+   
+    let pid = "Step"
+    let ourl = sprintf "%s/%s/%s" refType oType oid
+    let roType = ttc "RestfulObjects.Test.Data.FormViewModel"
+    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" mst (ktc "1")))).ToString()))
+    let parms = 
+        new JObject(new JProperty("MostSimple", new JObject(new JProperty(JsonPropertyNames.Value, refParm))), 
+                    new JProperty("Name", new JObject(new JProperty(JsonPropertyNames.Value, "aname"))))
+
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    let args = CreateArgMap parms
+    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    let result = api.PostInvoke (oType, ktc "1-1", pid, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let roid = oType + "/" +  ktc "2-1"
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "MostSimple"
+
+    let makeValueParm pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("string"))
+                                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+    
+    let mp r n = sprintf ";%s=\"%s\"" r n
+
+    let makeParm pmid pid fid rt = 
+       
+        let defaultRel = RelValues.Default + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
+
+        let obj1 =  TProperty(JsonPropertyNames.Title, TObjectVal("1")) :: makeGetLinkProp defaultRel (sprintf "objects/%s/%s" mst (ktc "1")) RepresentationTypes.Object mst
+
+        let p = 
+            TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectJson(obj1))
+                          TProperty(JsonPropertyNames.Links,  TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ])
+        TProperty(pmid, p)
+
+    let val3 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" mst (ktc "1")) RepresentationTypes.Object mst)
+
+    let p2 = makeParm "MostSimple" "Step" "Most Simple" mst
+    let p3 = makeValueParm "Name" "Step" "Name" "string"
+
+    let resultObject = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-1"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("Untitled Form View Model"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object oType)
+                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                           ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty("MostSimple", TObjectJson(makePropertyMemberShort "objects" "MostSimple" roid "Most Simple" "" mst true val3 []))
+                                  TProperty("Name", TObjectJson(makePropertyMemberWithFormat "objects" "Name" roid "Name" "" "string" false (TObjectVal(null))))                           
+                                  TProperty("Step", TObjectJson(makeObjectActionMemberSimple "Step" roid oType [ p2; p3 ]))                                                    
+                    ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Form View Model"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Form View Models"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
+          TProperty(JsonPropertyNames.Result, TObjectJson(resultObject))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+
+
+
+
+
+
 let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionReturnsObjectWithParameterAnnotatedQueryOnly"
     let ourl = sprintf "%s/%s/%s" refType oType oid
