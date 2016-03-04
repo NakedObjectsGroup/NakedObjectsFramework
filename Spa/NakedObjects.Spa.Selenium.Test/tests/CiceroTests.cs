@@ -1018,14 +1018,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Editing Product: HL Road Frame - Black, 44");
             var rand = new Random();
             var newPrice = rand.Next(50, 150);
+            string currency = "£" + newPrice.ToString("c").Substring(1);
             EnterCommand("Enter list price, "+newPrice.ToString());
             WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n"+
                 "Modified properties:\r\n"+
-                "List Price: "+newPrice.ToString("c"));
+                "List Price: "+currency);
             EnterCommand("Save");
             WaitForOutput("Product: HL Road Frame - Black, 44");
             EnterCommand("prop list price");
-            WaitForOutput("List Price: "+ newPrice.ToString("c"));
+            WaitForOutput("List Price: "+ currency);
 
             //Updating a date and a link
             CiceroUrl("object?o1=___1.WorkOrder-43132");
