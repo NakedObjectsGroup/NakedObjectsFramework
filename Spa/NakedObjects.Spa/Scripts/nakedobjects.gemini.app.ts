@@ -275,7 +275,7 @@ module NakedObjects.Angular {
    
         mask.setCurrencyMaskMapping("C", "decimal", "£", 2);
         mask.setCurrencyMaskMapping("c", "decimal", "£", 2);
-
-
+        mask.setDateMaskMapping("d", "date-time", "d MMM yyyy", "+0000");
+        mask.setDateMaskMapping("D", "date", "d MMM yyyy hh:mm:ss");
     });
 }

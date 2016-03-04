@@ -24,8 +24,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?o1=___1.Product-870");
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
-            var newPrice = rand.Next(50, 150).ToString();
-            ClearFieldThenType("#listprice1", newPrice);
+            var newPrice = rand.Next(50, 150);
+            ClearFieldThenType("#listprice1", newPrice.ToString());
 
             var oldDays = WaitForCss("#daystomanufacture1").GetAttribute("value");
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("List Price:\r\n" + newPrice, properties[5].Text);
+            Assert.AreEqual("List Price:\r\n" + newPrice.ToString("c"), properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 

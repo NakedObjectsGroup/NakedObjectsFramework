@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
 
         public override string ToString() {
             var t = Container.NewTitleBuilder();
-            t.Append(Product).Append(StartDate, "d", null);
+            t.Append(Product).Append(":",StartDate, "d MMM yyyy", null);
             return t.ToString();
         }
 

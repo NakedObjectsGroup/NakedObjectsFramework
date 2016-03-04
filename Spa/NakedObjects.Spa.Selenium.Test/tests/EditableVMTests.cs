@@ -41,7 +41,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     public abstract class EditableVMObjectTests : EditableVMTestsRoot
     {
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void CreateEditableVM() { base.CreateEditableVM(); }
     }
     #region browsers specific subclasses
@@ -70,8 +70,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
-    public class TEditableVMTestsFirefox : EditableVMObjectTests
+    //[TestClass]
+    public class EditableVMTestsFirefox : EditableVMObjectTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaEditableVMTestsRoot : EditableVMTestsRoot
     {
-        [TestMethod]
+        [TestMethod, Ignore]
         public void MegaEditableVMTest()
         {
             base.CreateEditableVM();
