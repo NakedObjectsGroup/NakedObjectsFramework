@@ -43,15 +43,9 @@ module NakedObjects.Angular {
             int : { }
         };
 
-        class LocalFilter implements ILocalFilter {
-
-            constructor(private name?: string, private mask?: string, private tz?: string) { }
+        class LocalStringFilter implements ILocalFilter {
 
             filter(val): string {
-                if (this.name) {
-                    return $filter(this.name)(val, this.mask, this.tz);
-                }
-                // number should be filtered above so must be string
                 return val ? val.toString() : "";
             }
         }
@@ -83,11 +77,10 @@ module NakedObjects.Angular {
             }
         }
 
-
         maskService.defaultLocalFilter = (format: string): ILocalFilter => {
             switch (format) {
                 case ("string"):
-                    return new LocalFilter();
+                    return new LocalStringFilter();
                 case ("date-time"):
                     return new LocalDateFilter("d MMM yyyy hh:mm:ss");
                 case ("date"):
@@ -101,15 +94,15 @@ module NakedObjects.Angular {
                 case ("big-decimal"):
                     return new LocalNumberFilter();
                 case ("blob"):
-                    return new LocalFilter();
+                    return new LocalStringFilter();
                 case ("clob"):
-                    return new LocalFilter();
+                    return new LocalStringFilter();
                 case ("decimal"):
                     return new LocalNumberFilter();
                 case ("int"):
                     return new LocalNumberFilter();
                 default:
-                    return new LocalFilter();
+                    return new LocalStringFilter();
             }
         }
 

@@ -855,6 +855,10 @@ module NakedObjects.Angular.Gemini {
         }
         // formatting also happens in in directive - at least for dates - value is now date in that case
         let formattedValue = value ? filter.filter(value.toString()) : "";
+
+        // todo this should be equivalent 
+        //let formattedValue = mask.toLocalFilter(remoteMask, format).filter(value);
+
         return formattedValue || "empty";
     }
 
