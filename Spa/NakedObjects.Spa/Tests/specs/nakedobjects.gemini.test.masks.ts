@@ -67,9 +67,9 @@ module NakedObjects.Gemini.Test.Masks {
                 it("masks null", () => testDefaultMask(null, "date-time", null));         
 
                 // these tests are locale specific UTC -> GMT/BST
-                it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "date-time", "4 Jun 1985 05:27:10"));
-                it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "date-time", "20 Feb 2003 01:13:55"));
-                it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "date-time", "6 Aug 2016 12:45:08"));
+                //it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "date-time", "4 Jun 1985 05:27:10"));
+                //it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "date-time", "20 Feb 2003 01:13:55"));
+                //it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "date-time", "6 Aug 2016 12:45:08"));
             });
 
             describe("default date", () => {
