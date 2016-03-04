@@ -3484,7 +3484,46 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
+let VerifyPostInvokeActionMissingParmOnForm (api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
+    let oid =  ktc "1-1"
+    
+    let refType = "objects"
+   
+    let pid = "Step"
+    let ourl = sprintf "%s/%s/%s" refType oType oid
+    let roType = ttc "RestfulObjects.Test.Data.FormViewModel"
+    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
+    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" mst (ktc "1")))).ToString()))
+    let parms = 
+        new JObject(new JProperty("MostSimple", new JObject(new JProperty(JsonPropertyNames.Value, null))), 
+                    new JProperty("Name", new JObject(new JProperty(JsonPropertyNames.Value, ""))))
 
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    let args = CreateArgMap parms
+    //let args = CreateArgMap(new JObject())
+    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    let result = api.PostInvoke (oType, ktc "1-1", pid, args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    let roid = oType + "/" +  ktc "2-1"
+    
+    let expected = 
+        [ TProperty("MostSimple", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                ]))
+          TProperty("Name", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
+
+
+    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+    assertTransactionalCache result
+    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
 
 

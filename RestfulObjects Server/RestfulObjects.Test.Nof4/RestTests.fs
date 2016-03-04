@@ -1890,6 +1890,12 @@ type ANof4Tests() =
         member x.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm() = 
             ObjectActionInvoke19.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm x.api
 
+        
+
+        [<Test>]
+        member x.VerifyPostInvokeActionMissingParmOnForm() = 
+            ObjectActionInvoke19.VerifyPostInvokeActionMissingParmOnForm x.api
+
         [<Test>]
         member x.GetInvokeActionWithParmReturnObjectObject() = 
             ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject x.api
