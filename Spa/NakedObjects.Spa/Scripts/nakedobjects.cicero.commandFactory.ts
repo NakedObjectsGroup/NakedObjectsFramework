@@ -40,26 +40,26 @@ module NakedObjects.Angular.Gemini {
         let commandsInitialised = false;
 
         const commands: _.Dictionary<Command> = {
-            "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ca": new Cancel(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ed": new Edit(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "en": new Enter(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "fo": new Forward(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ge": new Gemini(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "go": new Goto(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "he": new Help(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "pa": new Page(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "pr": new Property(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "se": new Selection(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route),
-            "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route)
+            "ac": new Action(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ba": new Back(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ca": new Cancel(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "cl": new Clipboard(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ed": new Edit(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "en": new Enter(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "fo": new Forward(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ge": new Gemini(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "go": new Goto(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "he": new Help(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "me": new Menu(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ok": new OK(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "pa": new Page(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "pr": new Property(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "re": new Reload(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "ro": new Root(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "sa": new Save(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "se": new Selection(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
+            "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask)
         }
 
         commandFactory.initialiseCommands = (cvm: CiceroViewModel) => {

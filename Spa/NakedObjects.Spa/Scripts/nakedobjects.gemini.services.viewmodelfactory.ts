@@ -5,11 +5,11 @@
 
 module NakedObjects.Angular.Gemini {
     import getUtcDate = Helpers.getUtcDate;
- 
+
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember, vm : MessageViewModel,  routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember, vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -63,8 +63,8 @@ module NakedObjects.Angular.Gemini {
             }
             else if (error.category === ErrorCategory.ClientError) {
                 errorViewModel.code = ClientErrorCode[error.clientErrorCode];
-            } 
-  
+            }
+
             errorViewModel.isConcurrencyError = error.category === ErrorCategory.HttpClientError && error.httpErrorCode === HttpStatusCode.PreconditionFailed;
 
             return errorViewModel;
@@ -89,7 +89,7 @@ module NakedObjects.Angular.Gemini {
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
         }
 
-        const createChoiceViewModels = (id: string, searchTerm: string, choices :_.Dictionary<Value>) =>
+        const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
             $q.when(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
@@ -132,7 +132,7 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
-            const required = parmViewModel.optional ?  "" : "* ";
+            const required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
@@ -246,7 +246,7 @@ module NakedObjects.Angular.Gemini {
             return parmViewModel;
         };
 
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, vm: MessageViewModel,  routeData: PaneRouteData) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember, vm: MessageViewModel, routeData: PaneRouteData) => {
             const actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
@@ -439,7 +439,7 @@ module NakedObjects.Angular.Gemini {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 }
-                else  {
+                else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
             }
@@ -471,7 +471,7 @@ module NakedObjects.Angular.Gemini {
 
 
                 // clear existing header 
-                listViewModel.header = null; 
+                listViewModel.header = null;
 
                 getExtensions().then((ext: Extensions) => {
                     _.forEach(items, itemViewModel => {
@@ -589,7 +589,7 @@ module NakedObjects.Angular.Gemini {
 
         viewModelFactory.menuViewModel = (menuRep: MenuRepresentation, routeData: PaneRouteData) => {
             const menuViewModel = new MenuViewModel();
-            const actions = menuRep.actionMembers();      
+            const actions = menuRep.actionMembers();
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, menuViewModel, routeData));
 
@@ -601,9 +601,9 @@ module NakedObjects.Angular.Gemini {
 
 
 
-        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow? : string[]): TableRowViewModel => {
+        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
-            const properties = idsToShow ?  _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
+            const properties = idsToShow ? _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
             tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
 
             return tableRowViewModel;
@@ -695,7 +695,7 @@ module NakedObjects.Angular.Gemini {
                                 .then((menu: MenuRepresentation) => {
                                     let output = "";
                                     output += menu.title() + " menu" + "\n";
-                                    output += renderActionDialogIfOpen(menu, routeData);
+                                    output += renderActionDialogIfOpen(menu, routeData, mask);
                                     cvm.clearInput();
                                     cvm.output = output;
                                     appendAlertIfAny(cvm);
@@ -735,21 +735,26 @@ module NakedObjects.Angular.Gemini {
                                     if (obj.isTransient()) {
                                         output += "Unsaved ";
                                         output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
-                                        output += renderModifiedProperties(obj, routeData);
-                                    } else if (routeData.interactionMode === InteractionMode.Edit) {
+                                        output += renderModifiedProperties(obj, routeData, mask);
+                                    } else if (routeData.interactionMode === InteractionMode.Edit ||
+                                        routeData.interactionMode === InteractionMode.Form) {
                                         output += "Editing ";
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                        output += renderModifiedProperties(obj, routeData);
+                                        if (routeData.dialogId) {
+                                            output += renderActionDialogIfOpen(obj, routeData, mask);
+                                        } else {
+                                            output += renderModifiedProperties(obj, routeData, mask);
+                                        }
                                     } else {
                                         output += Helpers.typePlusTitle(obj) + "\n";
-                                        output += renderActionDialogIfOpen(obj, routeData);
+                                        output += renderActionDialogIfOpen(obj, routeData, mask);
                                     }
                                 }
                                 cvm.clearInput();
                                 cvm.output = output;
                                 appendAlertIfAny(cvm);
                             }).catch((reject: ErrorWrapper) => {
-                               
+
                                 const custom = (cc: ClientErrorCode) => {
                                     if (cc === ClientErrorCode.ExpiredTransient) {
                                         cvm.output = "The requested view of unsaved object details has expired";
@@ -758,7 +763,7 @@ module NakedObjects.Angular.Gemini {
                                     return false;
                                 };
 
-                                context.handleWrappedError(reject, null, () => { }, () => {}, custom);
+                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
                             });
                     }
                 };
@@ -810,14 +815,14 @@ module NakedObjects.Angular.Gemini {
         return _.filter(_.keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
     }
 
-    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData): string {
+    function renderModifiedProperties(obj: DomainObjectRepresentation, routeData: PaneRouteData, mask: IMask): string {
         let output = "";
         if (_.keys(routeData.props).length > 0) {
             output += "Modified properties:\n";
             _.each(routeData.props, (value, propId) => {
                 output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
                 const pm = obj.propertyMember(propId);
-                output += renderFieldValue(pm, value);
+                output += renderFieldValue(pm, value, mask);
                 output += "\n";
             });
         }
@@ -825,7 +830,7 @@ module NakedObjects.Angular.Gemini {
     }
 
     //Handles empty values, and also enum conversion
-    export function renderFieldValue(field: IField, value: Value): string {
+    export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
         if (field.isScalar() && value.toString()) { //i.e. not empty
             //This is to handle an enum: render it as text, not a number:           
             if (field.entryType() == EntryType.Choices) {
@@ -840,12 +845,23 @@ module NakedObjects.Angular.Gemini {
                 return output;
             }
         }
-        return value.toString() || "empty";
+        const remoteMask = field.extensions().mask();
+        const format = field.extensions().format();
+        let filter: ILocalFilter;
+        if (remoteMask) {
+            filter = mask.toLocalFilter(remoteMask, format);
+        } else {
+            filter = mask.defaultLocalFilter(format);
+        }
+        // formatting also happens in in directive - at least for dates - value is now date in that case
+        let formattedValue = value ? filter.filter(value.toString()) : "";
+        return formattedValue || "empty";
     }
 
     function renderActionDialogIfOpen(
         repWithActions: IHasActions,
-        routeData: PaneRouteData): string {
+        routeData: PaneRouteData,
+        mask: IMask): string {
         let output = "";
         if (routeData.dialogId) {
             const actionMember = repWithActions.actionMember(routeData.dialogId);
@@ -854,7 +870,7 @@ module NakedObjects.Angular.Gemini {
             _.forEach(routeData.dialogFields, (value, paramId) => {
                 output += Helpers.friendlyNameForParam(actionMember, paramId) + ": ";
                 const param = actionMember.parameters()[paramId];
-                output += renderFieldValue(param, value);
+                output += renderFieldValue(param, value, mask);
                 output += "\n";
             });
         }

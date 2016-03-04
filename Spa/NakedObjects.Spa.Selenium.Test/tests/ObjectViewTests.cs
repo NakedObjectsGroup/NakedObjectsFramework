@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
             Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
-            Assert.AreEqual("Demographics:\r\nAnnualSales: 800000 AnnualRevenue: 80000 BankName: International Security BusinessType: BM YearOpened: 1988 Specialty: Touring SquareFeet: 21000 Brands: AW Internet: T1 NumberEmployees: 11", properties[1].Text);
+            Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
 
@@ -73,6 +73,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("", cols[0].Text); //Title
             Assert.AreEqual("Rate Change Date", cols[1].Text);
             Assert.AreEqual("Rate", cols[2].Text);
+
+            //Dates formatted in table view
+            GeminiUrl("object?i1=View&o1=___1.Product-775&c1_SpecialOffers=Table");
+            var cell = WaitForCss("td:nth-child(5)");
+            Assert.AreEqual("31 Dec 2008", cell.Text);
         }
         public virtual void ClickReferenceProperty()
         {

@@ -10,7 +10,8 @@ module NakedObjects.Angular.Gemini {
             protected context: IContext,
             protected navigation: INavigation,
             protected $q: ng.IQService,
-            protected $route: ng.route.IRouteService
+            protected $route: ng.route.IRouteService,
+            protected mask: IMask
         ) { }
 
         public fullCommand: string;
@@ -204,7 +205,9 @@ module NakedObjects.Angular.Gemini {
         protected isEdit(): boolean {
             return this.routeData().interactionMode === InteractionMode.Edit;
         }
-
+        protected isForm(): boolean {
+            return this.routeData().interactionMode === InteractionMode.Form;
+        }
         protected isTransient(): boolean {
             return this.routeData().interactionMode === InteractionMode.Transient;
         }
@@ -415,7 +418,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 2;
 
         public isAvailableInCurrentContext(): boolean {
-            return (this.isMenu() || this.isObject()) && !this.isDialog() && !this.isEdit(); //TODO add list
+            return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); //TODO add list
         }
 
         doExecute(args: string, chained: boolean): void {
@@ -640,7 +643,7 @@ module NakedObjects.Angular.Gemini {
         protected maxArguments = 2;
 
         isAvailableInCurrentContext(): boolean {
-            return this.isDialog() || this.isEdit() || this.isTransient();
+            return this.isDialog() || this.isEdit() || this.isTransient() || this.isForm();
         }
 
         doExecute(args: string, chained: boolean): void {
@@ -1215,7 +1218,7 @@ module NakedObjects.Angular.Gemini {
             if (this.isEdit() && !pm.disabledReason() && propInUrl) {
                 value = propInUrl.toString() + " (modified)";
             } else {
-                value = renderFieldValue(pm, pm.value());
+                value = renderFieldValue(pm, pm.value(), this.mask);
             }
             return name + ": " + value + "\n";
         }

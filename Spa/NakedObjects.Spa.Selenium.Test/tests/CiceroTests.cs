@@ -712,12 +712,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Product Number: BK-R68R-52");
             var actual = WaitForCss(".output").Text;
             //Note that spacing of Road-450 and  Line: R is different to how it appears on screen!
+            //Name: Road-450 Red, 52
             var expected = "Product Number: BK-R68R-52\r\nProduct Model: Road-450\r\nProduct Category: Bikes\r\nProduct Subcategory: Road Bikes\r\nProduct Line: R \r\nProduct Inventory (collection): 2 items\r\nProduct Reviews (collection): empty";
             Assert.AreEqual(expected, actual);
 
             //No argument
             EnterCommand("pr ");
-            WaitForOutputStarting("Name: Road-450 Red, 52\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1457.99");
+            WaitForOutputStarting("Name: Road-450 Red");//\r\nProduct Number: BK-R68R-52\r\nColor: Red\r\nPhoto: empty\r\nProduct Model: Road-450\r\nList Price: 1,457.99");
             //No match
             EnterCommand("pr x");
             WaitForOutput("x does not match any properties");
@@ -731,7 +732,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?o1=___1.SalesPerson-284");
             WaitForOutput("Sales Person: Tete Mensa-Annan");
             EnterCommand("pr sales a");
-            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300000\r\nSales YTD: 1576562.1966\r\nSales Last Year: 0");
+            WaitForOutput("Sales Territory: Northwest\r\nSales Quota: 300,000\r\nSales YTD: 1,576,562.197\r\nSales Last Year: 0");
             EnterCommand("pr ter ory");
             WaitForOutput("Sales Territory: Northwest\r\nTerritory History (collection): 1 item");
             EnterCommand("pr sales z");
@@ -764,6 +765,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Sales Order Header: SO70996");
             EnterCommand("pr status");
             WaitForOutput("Status: Shipped");
+
+            //Test that date properties are correctly formatted/masked
+            CiceroUrl("object?i1=View&o1=___1.WorkOrder-71031");
+            WaitForOutput("Work Order: Road-750 Black, 52 19/06/2008");
+            EnterCommand("pr start");
+            WaitForOutput("Start Date: 18 Jun 2008");
+            EnterCommand("pr modified");
+            WaitForOutput("Modified Date: 30 Jun 2008 01:00:00");
         }
         public virtual void Root()
         {
@@ -1157,6 +1166,27 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("ok");
             WaitForOutput("Unsaved Employee");
         }
+        public virtual void ScenarioTestEditableVM()
+        {
+            CiceroUrl("object?i1=View&o1=___1.Person-5968");
+            WaitForOutput("Person: Nathan Diaz");
+            EnterCommand("ac email");
+            WaitForOutputContaining("Action dialog: Create Email");
+            EnterCommand("ok");
+            WaitForOutput("Editing Email Template: New email");
+            EnterCommand("enter to,Stef");
+            WaitForOutputContaining("Modified properties:\r\nTo: Stef");
+            EnterCommand("enter from,Richard");
+            WaitForOutputContaining("From: Richard");
+            EnterCommand("enter sub,Test");
+            WaitForOutputContaining("Subject: Test");
+            EnterCommand("enter mes,Hello");
+            WaitForOutputContaining("Message: Hello");
+            EnterCommand("ac send");
+            WaitForOutputContaining("Action dialog: Send");
+            EnterCommand("ok");
+            WaitForOutput("Editing Email Template: Sent email");
+        }
         public virtual void ChainedCommands()
         {
             //Happy case
@@ -1246,6 +1276,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ScenarioUsingClipboard() { base.ScenarioUsingClipboard(); }
         [TestMethod]
+        public override void ScenarioTestEditableVM() { base.ScenarioTestEditableVM(); }
+        [TestMethod]
         public override void ChainedCommands() { base.ChainedCommands(); }
     }
 
@@ -1275,7 +1307,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1361,6 +1393,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ScenarioMultiSelect();
             base.ScenarioTransientObject();
             base.ScenarioUsingClipboard();
+            base.ScenarioTestEditableVM();
             base.ChainedCommands();
         }
     }
