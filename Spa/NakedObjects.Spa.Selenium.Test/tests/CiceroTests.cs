@@ -770,7 +770,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?i1=View&o1=___1.WorkOrder-71031");
             WaitForOutput("Work Order: Road-750 Black, 52: 19 Jun 2008");
             EnterCommand("pr start");
-            WaitForOutput("Start Date: 18 Jun 2008");
+            WaitForOutput("Start Date: 19 Jun 2008");
             EnterCommand("pr modified");
             WaitForOutput("Modified Date: 30 Jun 2008 01:00:00");
         }

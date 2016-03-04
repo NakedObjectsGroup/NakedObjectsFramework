@@ -34,7 +34,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-
+            string currency = "£" + newPrice.ToString("c").Substring(1);
             Assert.AreEqual("List Price:\r\n" + newPrice.ToString("c"), properties[5].Text);
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
