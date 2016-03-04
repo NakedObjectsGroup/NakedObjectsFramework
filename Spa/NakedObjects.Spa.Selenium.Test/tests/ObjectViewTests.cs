@@ -59,8 +59,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
             
             //By default a read-only DateTime property is rendered as a formatted time stamp:
-            Assert.AreEqual("Modified Date:\r\n23 Apr 2008 01:00:00", properties[23].Text);
-
+            Assert.IsTrue(properties[23].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
+            Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //To ignore TimeZone difference
             //A read-only DateTime marked up with Mask("d") shows date only:
             Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
         }

@@ -772,7 +772,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("pr start");
             WaitForOutput("Start Date: 19 Jun 2008");
             EnterCommand("pr modified");
-            WaitForOutput("Modified Date: 30 Jun 2008 01:00:00");
+            WaitForOutputContaining("Modified Date: 30 Jun 2008");
+            WaitForOutputContaining(":00:00");
         }
         public virtual void Root()
         {
