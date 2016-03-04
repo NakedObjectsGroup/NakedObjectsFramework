@@ -274,8 +274,8 @@ module NakedObjects.Angular {
         // map to convert from mask representation in RO extension to client represention.
         //mask.setMaskMapping( "d", "date" ,"d MMM yyyy", "+0000");
  
-        mask.setNumberMaskMapping("C", "decimal", "2", "");
-        mask.setNumberMaskMapping("c", "decimal", "2", "");
+        mask.setCurrencyMaskMapping("C", "decimal");
+        mask.setCurrencyMaskMapping("c", "decimal");
 
     });
 }

@@ -20,7 +20,7 @@ module NakedObjects.Angular {
 
         setNumberMaskMapping(key: string, format: string, mask: string, tz: string);
         setDateMaskMapping(key: string, format: string, mask: string, tz: string);
-        setCurrencyMaskMapping(key: string, format: string, mask: string, tz: string);
+        setCurrencyMaskMapping(key: string, format: string, symbol? : string, fractionSize? : number);
     }
 
 
@@ -53,6 +53,20 @@ module NakedObjects.Angular {
                 return val ? val.toString() : "";
             }
         }
+
+        class LocalCurrencyFilter implements ILocalFilter {
+
+            constructor(private symbol?: string, private fractionSize?: number) { }
+
+            filter(val): string {
+                return $filter("currency")(val, this.symbol, this.fractionSize);
+            }
+        }
+
+
+
+
+
 
         maskService.defaultLocalFilter = (format: string) => {
             switch (format) {
@@ -107,8 +121,8 @@ module NakedObjects.Angular {
             maskService.setMaskMapping(key, format, "date", mask, tz);
         }
 
-        maskService.setCurrencyMaskMapping = (key: string, format: string, mask: string, tz: string) => {
-            maskService.setMaskMapping(key, format, "currency", mask, tz);
+        maskService.setCurrencyMaskMapping = (customMask: string, format: string, symbol ? : string, fractionSize ? : number) => {
+            maskMap[format][customMask] = new LocalCurrencyFilter(symbol, fractionSize);
         }
     });
 }
