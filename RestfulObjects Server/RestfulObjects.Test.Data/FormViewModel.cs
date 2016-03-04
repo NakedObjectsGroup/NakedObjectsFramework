@@ -47,6 +47,7 @@ namespace RestfulObjects.Test.Data {
         public FormViewModel Step() {
             var vm = Container.NewViewModel<FormViewModel>();
             vm.Id = 2;
+            vm.MostSimple = MostSimple;
             return vm;
         }
     }

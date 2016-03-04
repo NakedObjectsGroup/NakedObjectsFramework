@@ -1895,6 +1895,10 @@ type CNof4TestsDomainType() =
             ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModel x.api
         
         [<Test>]
+        member x.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm() = 
+            ObjectActionInvoke19.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm x.api
+
+        [<Test>]
         member x.GetInvokeActionWithParmReturnObjectObject() = 
             ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject x.api
         
