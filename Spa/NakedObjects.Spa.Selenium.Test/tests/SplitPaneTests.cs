@@ -19,6 +19,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             RightClick(OKButton());
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Object, "Marcus Collins, AW00022262");
+            //Check that dialog is still open on the left:
+            WaitForCss("#pane1 .dialog");
         }
 
         public virtual void RightClickActionReturningListFromHomeSingle()

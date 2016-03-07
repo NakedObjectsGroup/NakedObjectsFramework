@@ -37,7 +37,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Create New Sales Person");
             Assert.AreEqual("OK", OKButton().GetAttribute("value"));
         }
-
         public virtual void ChoicesParm()
         {
             Url(OrdersMenuUrl);
@@ -47,7 +46,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
-
         public virtual void TestCancelDialog()
         {
             Url(OrdersMenuUrl);
@@ -55,8 +53,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
-
-
         public virtual void ScalarChoicesParmKeepsValue()
         {
             Url(OrdersMenuUrl);
@@ -67,8 +63,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
             AssertTopItemInListIs("SO51782");
         }
-
-
         public virtual void ScalarParmShowsDefaultValue()
         {
             Url(CustomersMenuUrl);
@@ -77,8 +71,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var input = WaitForCss(".value input");
             Assert.AreEqual("AW", input.GetAttribute("value"));
         }
-
-
         public virtual void DateTimeParmKeepsValue()
         {
             GeminiUrl("object?o1=___1.Customer-29923&as1=open");
@@ -102,8 +94,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
             }
        }
-
-
         public virtual void RefChoicesParmKeepsValue()
         {
             Url(ProductServiceUrl);
@@ -113,8 +103,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             AssertTopItemInListIs("HL Fork");
         }
-
-
         public virtual void MultipleRefChoicesDefaults()
         {
             Url(ProductServiceUrl);
@@ -130,8 +118,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
-
         public virtual void MultipleRefChoicesChangeDefaults()
         {
             Url(ProductServiceUrl);
@@ -148,8 +134,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
             AssertTopItemInListIs("Road-150 Red, 44");
         }
-
-
         public virtual void ChoicesDefaults()
         {
             Url(ProductServiceUrl);
@@ -165,8 +149,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("Mountain-300 Black, 38");
         }
-
-
         public virtual void ChoicesChangeDefaults()
         {
             Url(ProductServiceUrl);
@@ -179,7 +161,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
-
         public virtual void ConditionalChoices() {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
@@ -192,7 +173,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
 
         }
-
         public virtual void ConditionalChoicesDefaults()
         {
             Url(ProductServiceUrl);
@@ -213,7 +193,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
         public virtual void ConditionalChoicesMultiple()
         {
             Url(ProductServiceUrl);
@@ -237,7 +216,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find Products By Category");
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
-
         #region Auto Complete
 
 
@@ -280,7 +258,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
         #endregion
-
         #region Parameter validation
 
         public virtual void MandatoryParameterEnforced()
@@ -336,8 +313,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         #endregion
-
-
         public virtual void ParameterDescriptionRenderedAsPlacholder()
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");

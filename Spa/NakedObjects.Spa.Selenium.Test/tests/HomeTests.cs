@@ -145,8 +145,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(CustomersMenuUrl);
             WaitForCss(".actions .action", CustomerServiceActions);
             OpenActionDialog("Find Customer By Account Number");
-
-
             var fieldCss = ".parameter:nth-child(1) input";
             //TODO: Test focus in separate tests; unreliable here
             //AssertHasFocus(WaitForCss(fieldCss));
