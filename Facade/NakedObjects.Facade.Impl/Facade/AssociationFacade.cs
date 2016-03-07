@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
@@ -176,6 +177,8 @@ namespace NakedObjects.Facade.Impl {
             return ((TypeFacade) objectFacade.Specification).WrappedValue.ContainsFacet<IEagerlyFacet>() ||
                    assoc.ContainsFacet<IEagerlyFacet>();
         }
+
+        public DataType? DataType => assoc.GetFacet<IDataTypeFacet>()?.DataType();
 
         public IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
             var oneToOneFeature = assoc as IOneToOneFeatureSpec;

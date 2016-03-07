@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedObjects.Facade.Contexts;
 
@@ -30,6 +32,10 @@ namespace NakedObjects.Facade {
         bool IsAjax { get; }
         bool IsNullable { get; }
         bool IsPassword { get; }
+        bool IsDateOnly { get; }
+
+        DataType? DataType { get; }
+
         IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         Tuple<string, ITypeFacade>[] GetChoicesParameters();

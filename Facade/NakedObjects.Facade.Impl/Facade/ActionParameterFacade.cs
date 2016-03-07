@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
@@ -72,6 +73,16 @@ namespace NakedObjects.Facade.Impl {
             get {
                 var facet = nakedObjectActionParameter.GetFacet<IMaxLengthFacet>();
                 return facet != null ? (int?) facet.Value : null;
+            }
+        }
+
+        public DataType? DataType => nakedObjectActionParameter.GetFacet<IDataTypeFacet>()?.DataType();
+
+        public bool IsDateOnly
+        {
+            get
+            {
+                return nakedObjectActionParameter.ContainsFacet<IDateOnlyFacet>();
             }
         }
 
