@@ -109,6 +109,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 maxLength: null,
                 pattern: null,
                 memberOrder: ActionContext.Action.MemberOrder,
+                dataType: null,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: ActionContext.Action.ReturnType,
                 elementType: ActionContext.Action.ElementType,

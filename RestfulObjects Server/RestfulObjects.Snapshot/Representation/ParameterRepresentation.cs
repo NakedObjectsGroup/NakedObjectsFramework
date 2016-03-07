@@ -101,7 +101,7 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
-            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, custom, parameter.Specification, parameter.ElementType, OidStrategy, true);
+            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, parameter.DataType,  custom, parameter.Specification, parameter.ElementType, OidStrategy, true);
         }
 
         private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter) {

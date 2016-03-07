@@ -152,7 +152,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public bool UseDateOverDateTime() {
-            return propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed || propertyContext.Property.IsDateOnly;
+            return propertyContext.Property.IsDateOnly;
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
@@ -167,6 +167,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 maxLength: propertyContext.Property.MaxLength,
                 pattern: propertyContext.Property.Pattern,
                 memberOrder: propertyContext.Property.MemberOrder,
+                dataType: propertyContext.Property.DataType,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
                 elementType: propertyContext.ElementSpecification,

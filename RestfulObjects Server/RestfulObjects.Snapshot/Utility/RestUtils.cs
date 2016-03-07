@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -51,6 +52,7 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       int? maxLength,
                                                       string pattern,
                                                       int? memberOrder,
+                                                      DataType? dataType,
                                                       IDictionary<string, object> customExtensions,
                                                       ITypeFacade returnType,
                                                       ITypeFacade elementType,
@@ -83,6 +85,10 @@ namespace RestfulObjects.Snapshot.Utility {
 
             if (memberOrder != null) {
                 exts.Add(JsonPropertyNames.MemberOrder, memberOrder);
+            }
+
+            if (dataType != null) {
+                exts.Add(JsonPropertyNames.CustomDataType, dataType);
             }
 
             if (returnType != null && !returnType.IsVoid) {
