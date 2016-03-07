@@ -95,7 +95,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             var rand = new Random();
-            var newPct = rand.NextDouble().ToString().Substring(0, 4);
+            var newPct = "0." + rand.Next(51, 100);
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             //Now select items
             SelectCheckBox("#item1-6");
@@ -105,6 +105,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             //Check that exactly two rows were updated
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 2);
+
+            //Reset to below 50%
+            OpenActionDialog("Change Discount");
+            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-8");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
         }
 
         public virtual void TableViewWithParmDialogNotOpen()
@@ -119,7 +127,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-4");
             OpenActionDialog("Change Discount");
             var rand = new Random();
-            var newPct = rand.NextDouble().ToString().Substring(0, 4);
+            var newPct = "0." + rand.Next(51, 100);
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
@@ -127,6 +135,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Check that exactly three rows were updated
 
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 3);
+
+            //Reset to below 50%
+            OpenActionDialog("Change Discount");
+            TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            SelectCheckBox("#item1-2");
+            SelectCheckBox("#item1-3");
+            SelectCheckBox("#item1-4");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
         }
 
         public virtual void DateParam()
@@ -169,14 +186,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(GetObjectAction("Comment As Users Unhappy"));
             Thread.Sleep(1000); //Because there is no visible change to wait for
             Reload();
-            wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") ==3);
+            //Wait for no checkboxes selected
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.checkbox")).Count() == 5);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.checkbox")).Count(cb => cb.Selected) == 0);
+            wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) ==3);
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text == "User unhappy") == 0);
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
 
     }

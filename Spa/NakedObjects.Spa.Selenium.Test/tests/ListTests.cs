@@ -135,7 +135,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".icon-table");
             //Test content of collection
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                .Text.StartsWith("Page 1 of 45"));
+                .Text.StartsWith("Page 1 of"));
             GetButton("First").AssertIsDisabled();
             GetButton("Previous").AssertIsDisabled();
             var next = GetButton("Next").AssertIsEnabled();
@@ -143,7 +143,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Go to next page
             Click(next);
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details"))
-                 .Text.StartsWith("Page 2 of 45"));
+                 .Text.StartsWith("Page 2 of"));
             //Confirm in Table view
             WaitForCss("thead tr th");
             WaitForCss(".icon-list");
