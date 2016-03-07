@@ -51,6 +51,7 @@ namespace NakedObjects.Reflect {
                 typeof (DisabledAnnotationFacetFactory),
                 typeof (PasswordAnnotationFacetFactory),
                 typeof (DateOnlyFacetFactory),
+                typeof (DataTypeAnnotationFacetFactory),
                 typeof (ExecutedAnnotationFacetFactory),
                 typeof (PotencyAnnotationFacetFactory),
                 typeof (PageSizeAnnotationFacetFactory),

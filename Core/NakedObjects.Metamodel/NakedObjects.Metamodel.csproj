@@ -85,6 +85,8 @@
     <Compile Include="Authorization\AuthorizationManager.cs" />
     <Compile Include="Authorization\IAuthorizationConfiguration.cs" />
     <Compile Include="Facet\ContributedActionFacet.cs" />
+    <Compile Include="Facet\DataTypeFacetAnnotation.cs" />
+    <Compile Include="Facet\DataTypeFacetAbstract.cs" />
     <Compile Include="Facet\FindMenuFacet.cs" />
     <Compile Include="Facet\DateOnlyFacet.cs" />
     <Compile Include="Facet\MarkerFlagFacetAbstract.cs" />

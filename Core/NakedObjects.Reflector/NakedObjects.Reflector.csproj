@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FacetFactory\DateOnlyFacetFactory.cs" />
+    <Compile Include="FacetFactory\DataTypeAnnotationFacetFactory.cs" />
     <Compile Include="FacetFactory\PrefixesAndRecognisedMethods.cs" />
     <Compile Include="FacetFactory\RemoveIgnoredMethodsFacetFactory.cs" />
     <Compile Include="RecognisedMethodsAndPrefixes.cs" />
