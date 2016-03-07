@@ -5,45 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using NakedObjects.Facade.Contexts;
-
 namespace NakedObjects.Facade {
-    public interface IActionParameterFacade : IFacadeHolder {
-        ITypeFacade Specification { get; }
+    public interface IActionParameterFacade : IFieldFacade, IFacadeHolder {
+        string Id { get; }
+        int Number { get; }
         ITypeFacade ElementType { get; }
         IActionFacade Action { get; }
-        string Id { get; }
-        Choices IsChoicesEnabled { get; }
-        bool IsAutoCompleteEnabled { get; }
-        string PresentationHint { get; }
-        Tuple<Regex, string> RegEx { get; }
-        Tuple<IConvertible, IConvertible, bool> Range { get; }
-        int NumberOfLines { get; }
-        int Width { get; }
-        int TypicalLength { get; }
-        bool IsAjax { get; }
-        bool IsNullable { get; }
-        bool IsPassword { get; }
-        string Name { get; }
-        string Description { get; }
-        bool IsMandatory { get; }
-        int? MaxLength { get; }
-        string Pattern { get; }
-        int Number { get; }
-        string Mask { get; }
-        int AutoCompleteMinLength { get; }
-        IDictionary<string, object> ExtensionData { get; }
-        bool IsFindMenuEnabled { get; }
-        IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
-        bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
         IObjectFacade GetDefault(IObjectFacade objectFacade);
-        Tuple<string, ITypeFacade>[] GetChoicesParameters();
-        string GetMaskedValue(IObjectFacade objectFacade);
+
         // todo not really same as other interfaces - more PutValue with validate only ? 
         IConsentFacade IsValid(IObjectFacade target, object value);
     }

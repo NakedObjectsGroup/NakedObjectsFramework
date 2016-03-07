@@ -6,57 +6,33 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade {
-    public interface IAssociationFacade : IMemberFacade {
-        ITypeFacade Specification { get; }
+    public interface IAssociationFacade : IFieldFacade, IMemberFacade {
         ITypeFacade ElementSpecification { get; }
-        Choices IsChoicesEnabled { get; }
-        bool IsAutoCompleteEnabled { get; }
+
         bool IsFile { get; }
         bool IsDateOnly { get; }
         bool IsEnum { get; }
-        Tuple<Regex, string> RegEx { get; }
-        Tuple<IConvertible, IConvertible, bool> Range { get; }
-        bool IsFindMenuEnabled { get; }
-        bool IsAjax { get; }
-        bool IsNullable { get; }
-        bool IsPassword { get; }
+
         bool DoNotCount { get; }
         bool RenderEagerly { get; }
-        int NumberOfLines { get; }
-        int Width { get; }
-        int TypicalLength { get; }
-        int? MaxLength { get; }
-        string PresentationHint { get; }
-        string Pattern { get; }
-        bool IsMandatory { get; }
-        string Name { get; }
-        string Description { get; }
+
         bool IsCollection { get; }
         bool IsObject { get; }
         int MemberOrder { get; }
         bool IsASet { get; }
         bool IsInline { get; }
-        string Mask { get; }
-        int AutoCompleteMinLength { get; }
+
         bool IsConcurrency { get; }
-        IDictionary<string, object> ExtensionData { get; }
+
         Tuple<bool, string[]> TableViewData { get; }
         IConsentFacade IsUsable(IObjectFacade target);
         IObjectFacade GetValue(IObjectFacade target);
         bool IsVisible(IObjectFacade objectFacade);
         bool IsEager(IObjectFacade objectFacade);
-        IObjectFacade[] GetChoices(IObjectFacade target, IDictionary<string, object> parameterNameValues);
-        Tuple<string, ITypeFacade>[] GetChoicesParameters();
-        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues);
-        IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm);
+
         string GetTitle(IObjectFacade objectFacade);
         int Count(IObjectFacade target);
-        string GetMaskedValue(IObjectFacade objectFacade);
-        bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
     }
 }

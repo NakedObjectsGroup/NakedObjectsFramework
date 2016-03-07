@@ -99,6 +99,7 @@
     <Compile Include="Contexts\ArgumentsContextFacade.cs" />
     <Compile Include="Contexts\AttachmentContextFacade.cs" />
     <Compile Include="Facade\IConsentFacade.cs" />
+    <Compile Include="Facade\IFieldFacade.cs" />
     <Compile Include="Translation\IOidTranslation.cs" />
     <Compile Include="Translation\IOidTranslator.cs" />
     <Compile Include="Facade\IMenuFacade.cs" />
