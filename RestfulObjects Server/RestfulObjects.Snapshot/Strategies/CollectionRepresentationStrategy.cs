@@ -35,6 +35,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 maxLength: null,
                 pattern: null,
                 memberOrder: propertyContext.Property.MemberOrder,
+                dataType: propertyContext.Property.DataType,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: collection.Specification,
                 elementType: propertyContext.ElementSpecification,

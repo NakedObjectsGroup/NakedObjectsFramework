@@ -264,7 +264,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
                           ("Id", 
                            
                            TObjectJson
-                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal("2012-09-18")) "date" )) ]))
+                               (makePropertyMemberDateTime "objects" "Id" oid "Id" "" false (TObjectVal( DateTime.Parse("2012-09-18 00:00:00.000"))) "date-time" )) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Date Time Key"))

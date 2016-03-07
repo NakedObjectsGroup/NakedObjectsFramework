@@ -116,7 +116,7 @@ namespace RestfulObjects.Snapshot.Representations {
             if (IsProtoPersistent(objectContext.Target)) {
                 KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
 
-                    var useDate = p.IsUsable(objectContext.Target).IsAllowed || p.IsDateOnly;
+                    var useDate = p.IsDateOnly;
 
                     return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
                 }).ToArray();
@@ -161,7 +161,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
-            return RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy, false);
+            return RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy, false);
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {

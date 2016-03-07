@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -40,6 +41,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public int? MaxLength => parameter?.MaxLength ?? association?.MaxLength;
         public string Pattern => parameter?.Pattern ?? association?.Pattern;
         public int AutoCompleteMinLength => (parameter?.AutoCompleteMinLength ?? association?.AutoCompleteMinLength).GetValueOrDefault();
+        public DataType? DataType => parameter?.DataType ?? association?.DataType;
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             return parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
