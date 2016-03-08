@@ -251,7 +251,6 @@ namespace AdventureWorksModel {
 
         [Disabled]
         [MemberOrder(20)]
-        [Mask("d")]
         public virtual DateTime OrderDate { get; set; }
 
         #endregion
@@ -259,7 +258,7 @@ namespace AdventureWorksModel {
         #region DueDate
 
         [MemberOrder(21)]
-        [Mask("d")]
+        [DataType(DataType.DateTime)]
         public virtual DateTime DueDate { get; set; }
 
         public string DisableDueDate() {
