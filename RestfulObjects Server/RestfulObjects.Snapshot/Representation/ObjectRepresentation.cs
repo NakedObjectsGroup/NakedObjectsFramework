@@ -162,10 +162,6 @@ namespace RestfulObjects.Snapshot.Representations {
             else if (objectFacade.IsViewModelEditView) {
                 mode = "form";
             }
-            else {
-                // temp 
-                return null;
-            }
 
             return new Dictionary<string, object> {
                 [JsonPropertyNames.InteractionMode] = mode

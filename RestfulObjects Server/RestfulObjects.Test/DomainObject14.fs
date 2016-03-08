@@ -46,6 +46,7 @@ let GetMostSimpleObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -86,6 +87,7 @@ let GetWithAttachmentsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Attachments"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Attachmentses"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -119,6 +121,7 @@ let GetMostSimpleObjectConfiguredSelectable(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -156,6 +159,7 @@ let GetMostSimpleObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -192,6 +196,7 @@ let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -225,6 +230,7 @@ let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -270,6 +276,7 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Date Time Key"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Date Time Keies"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -430,6 +437,7 @@ let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Very Simple Eager"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Very Simple Eagers"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -504,6 +512,7 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -597,6 +606,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -674,6 +684,7 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -750,6 +761,7 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -790,6 +802,7 @@ let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -830,6 +843,7 @@ let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControll
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -918,6 +932,7 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1013,6 +1028,7 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1123,6 +1139,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1167,6 +1184,7 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
@@ -1278,6 +1296,7 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With References"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1978,6 +1997,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action Object"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Action Objects"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -2610,6 +2630,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Action Object"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Action Objects"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -2654,6 +2675,7 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     let val1 = 
@@ -2762,6 +2784,7 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With References"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -2915,6 +2938,7 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Collection"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Collections"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -3071,6 +3095,7 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Collection"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Collections"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -3103,6 +3128,7 @@ let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
@@ -3255,6 +3281,7 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3297,6 +3324,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     let val1 = 
@@ -3386,6 +3414,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3444,6 +3473,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3488,6 +3518,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
@@ -3581,6 +3612,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3645,6 +3677,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -3719,6 +3752,7 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)

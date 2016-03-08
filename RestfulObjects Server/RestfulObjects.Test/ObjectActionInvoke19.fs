@@ -83,6 +83,7 @@ let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjects
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -142,6 +143,7 @@ let VerifyPostInvokeOverloadedActionReturnObject refType oType oid f (api : Rest
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -201,6 +203,7 @@ let VerifyPostInvokeContributedService refType oType oid f (api : RestfulObjects
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -261,6 +264,7 @@ let VerifyPostInvokeCollectionContributedActionContributedService refType oType 
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -322,6 +326,7 @@ let VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm ref
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
 
@@ -401,6 +406,7 @@ let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObje
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple View Models"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -461,6 +467,7 @@ let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -527,6 +534,7 @@ let VerifyPostInvokeUserDisabledActionReturnObject refType oType oid f (api : Re
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -588,6 +596,7 @@ let PostInvokeContribActionReturnObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -634,6 +643,7 @@ let PostInvokeContribActionReturnObjectBaseClass(api : RestfulObjectsControllerB
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -682,6 +692,7 @@ let PostInvokeContribActionReturnObjectWithRefParm(api : RestfulObjectsControlle
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -729,6 +740,7 @@ let PostInvokeContribActionReturnObjectWithValueParm(api : RestfulObjectsControl
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -874,6 +886,7 @@ let VerifyPutInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -933,6 +946,7 @@ let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple View Models"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -993,6 +1007,7 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag 
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -1123,6 +1138,7 @@ let VerifyGetInvokeActionReturnObject refType oType oid f (api : RestfulObjectsC
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let links = 
@@ -1197,6 +1213,7 @@ let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple View Models"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let links = 
@@ -1272,6 +1289,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let links = 
@@ -1347,6 +1365,7 @@ let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (a
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let links = 
@@ -1485,6 +1504,7 @@ let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oid f (api : R
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -2261,6 +2281,7 @@ let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType o
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let args = TObjectJson([ TProperty("parm", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("")) ])) ])
@@ -2568,6 +2589,7 @@ let VerifyPostInvokeOverloadedAction refType oType oid f (api : RestfulObjectsCo
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -3142,6 +3164,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oid f (ap
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -3236,6 +3259,7 @@ let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let expected = 
@@ -3340,6 +3364,7 @@ let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oid f (api
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let args = 
@@ -3569,6 +3594,7 @@ let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : Restful
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
     let args = TObjectJson([ TProperty("parm1", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(101)) ])) ])
