@@ -686,6 +686,23 @@ module NakedObjects {
         result(): Result {
             return new Result(this.wrapped().result, this.resultType());
         }
+
+        warningsOrMessages(): string {
+
+            const has = (arr: string[]) => arr && arr.length > 0;
+            const wOrM = has(this.extensions().warnings()) ? this.extensions().warnings() : this.extensions().messages();
+
+            if (has(wOrM)) {
+                return _.reduce(wOrM, (s, t) => s + " " + t, "");
+            }
+
+            return undefined;
+        }
+
+        shouldExpectResult(): boolean {
+            return this.result().isNull() && this.resultType() !== "void";
+        }
+
     }
 
     // matches an action representation 18.0 

@@ -323,10 +323,10 @@ module NakedObjects.Angular.Gemini {
 
         doInvoke = (right?: boolean) =>
             this.executeInvoke(right).
-                then((result: ActionResultRepresentation) => {
-                    if (result.result().isNull() && result.resultType() !== "void") {
-                        this.message = "no result found";
-                    } else if (result.resultType() === "void" ||  !right) {
+                then((actionResult: ActionResultRepresentation) => {
+                    if (actionResult.shouldExpectResult()) {
+                        this.message =  actionResult.warningsOrMessages() || UserMessages.noResultMessage;
+                    } else if (actionResult.resultType() === "void" ||  !right) {
                         // leave open if opening on other pane and dialog has result
                         this.doClose();
                     }
@@ -441,8 +441,8 @@ module NakedObjects.Angular.Gemini {
                     (right?: boolean) => {
                         a.executeInvoke([], right).
                             then((result: ActionResultRepresentation) => {
-                                if (result.result().isNull() && result.resultType() !== "void") {
-                                    this.message = "no result found";
+                                if (result.shouldExpectResult()) {
+                                    this.message = result.warningsOrMessages() || UserMessages.noResultMessage;
                                 } else {
                                     this.message = "";
                                 }

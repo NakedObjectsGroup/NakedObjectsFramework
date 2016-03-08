@@ -21,6 +21,7 @@ module.exports = function(config) {
       "Scripts/angular-route.js",
       "Scripts/angular-touch.js",
       "Scripts/angular-mocks.js",
+      "Scripts/nakedobjects.userMessages.config.js",
       "Scripts/nakedobjects.config.js",
       "Scripts/nakedobjects.models.helpers.js",
       "Scripts/nakedobjects.models.js",
