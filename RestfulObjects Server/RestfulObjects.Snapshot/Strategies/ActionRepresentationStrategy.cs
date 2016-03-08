@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
@@ -99,7 +100,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: ActionContext.Action.Name,
+            return RestUtils.GetExtensions(
+                friendlyname: ActionContext.Action.Name,
                 description: ActionContext.Action.Description,
                 pluralName: null,
                 domainType: null,
@@ -110,6 +112,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: null,
                 memberOrder: ActionContext.Action.MemberOrder,
                 dataType: null,
+                presentationHint: ActionContext.Action.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: ActionContext.Action.ReturnType,
                 elementType: ActionContext.Action.ElementType,
@@ -118,7 +121,12 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected IDictionary<string, object> GetCustomPropertyExtensions() {
-            return GetTableViewCustomExtensions(ActionContext.Action.ExtensionData, ActionContext.Action.TableViewData);
+            var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
+            if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
+                ext = ext ?? new Dictionary<string, object>();
+                ext[IdConstants.MenuPath] = ActionContext.MenuPath;
+            }
+            return ext;
         }
 
         protected LinkRepresentation CreateActionLink() {

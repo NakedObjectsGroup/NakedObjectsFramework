@@ -17,7 +17,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Value;
 
 namespace NakedObjects.Facade.Impl {
@@ -34,34 +33,11 @@ namespace NakedObjects.Facade.Impl {
             FrameworkFacade = frameworkFacade;
         }
 
-        public INakedObjectAdapter WrappedNakedObject { get; private set; }
+        public INakedObjectAdapter WrappedNakedObject { get; }
 
         #region IObjectFacade Members
 
-        public bool IsTransient {
-            get { return WrappedNakedObject.ResolveState.IsTransient(); }
-        }
-
-        public IDictionary<string, object> ExtensionData {
-            get {
-                var extData = new Dictionary<string, object>();
-                ITypeSpec spec = WrappedNakedObject.Spec;
-
-                if (spec.ContainsFacet<IViewModelFacet>() && spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject)) {
-                    extData[IdConstants.RenderInEditMode] = true;
-                }
-
-                if (IsTransient) {
-                    extData[IdConstants.RenderInEditMode] = true;
-                }
-
-                if (spec.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[IdConstants.PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
-                }
-
-                return extData.Any() ? extData : null;
-            }
-        }
+        public bool IsTransient => WrappedNakedObject.ResolveState.IsTransient();
 
         public void Resolve() {
             if (WrappedNakedObject.ResolveState.IsResolvable()) {
@@ -78,9 +54,7 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public ITypeFacade Specification {
-            get { return new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework); }
-        }
+        public ITypeFacade Specification => new TypeFacade(WrappedNakedObject.Spec, FrameworkFacade, framework);
 
         public ITypeFacade ElementSpecification {
             get {
@@ -91,9 +65,15 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public object Object {
-            get { return WrappedNakedObject.Object; }
+        public string PresentationHint {
+            get {
+                ITypeSpec spec = WrappedNakedObject.Spec;
+                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
+                return hintFacet == null ? "" : hintFacet.Value;
+            }
         }
+
+        public object Object => WrappedNakedObject.Object;
 
         public IEnumerable<IObjectFacade> ToEnumerable() {
             return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
@@ -128,11 +108,7 @@ namespace NakedObjects.Facade.Impl {
 
         public object[] GetSelected() {
             var memento = WrappedNakedObject.Oid as ICollectionMemento;
-            if (memento != null) {
-                return memento.SelectedObjects.ToArray();
-            }
-
-            return new object[] {};
+            return memento != null ? memento.SelectedObjects.ToArray() : new object[] {};
         }
 
         public PropertyInfo[] GetKeys() {
@@ -143,13 +119,9 @@ namespace NakedObjects.Facade.Impl {
             return framework.Persistor.GetKeys(WrappedNakedObject.Object.GetType());
         }
 
-        public IVersionFacade Version {
-            get { return new VersionFacade(WrappedNakedObject.Version); }
-        }
+        public IVersionFacade Version => new VersionFacade(WrappedNakedObject.Version);
 
-        public IOidFacade Oid {
-            get { return WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid); }
-        }
+        public IOidFacade Oid => WrappedNakedObject.Oid == null ? null : new OidFacade(WrappedNakedObject.Oid);
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
@@ -160,17 +132,11 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public bool IsViewModelEditView {
-            get { return IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject); }
-        }
+        public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject);
 
-        public bool IsViewModel {
-            get { return WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>(); }
-        }
+        public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
 
-        public bool IsDestroyed {
-            get { return WrappedNakedObject.ResolveState.IsDestroyed(); }
-        }
+        public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
 
         public IActionFacade MementoAction {
             get {
@@ -194,21 +160,13 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public string InvariantString {
-            get { return WrappedNakedObject.InvariantString(); }
-        }
+        public string InvariantString => WrappedNakedObject.InvariantString();
 
-        public bool IsCollectionMemento {
-            get { return WrappedNakedObject.Oid is ICollectionMemento; }
-        }
+        public bool IsCollectionMemento => WrappedNakedObject.Oid is ICollectionMemento;
 
-        public bool IsUserPersistable {
-            get { return WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable; }
-        }
+        public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
 
-        public bool IsNotPersistent {
-            get { return WrappedNakedObject.IsNotPersistent(); }
-        }
+        public bool IsNotPersistent => WrappedNakedObject.IsNotPersistent();
 
         public string TitleString {
             get {
@@ -265,7 +223,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public override int GetHashCode() {
-            return (WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0);
+            return WrappedNakedObject != null ? WrappedNakedObject.GetHashCode() : 0;
         }
     }
 }

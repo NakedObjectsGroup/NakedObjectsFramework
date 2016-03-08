@@ -25,7 +25,8 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name,
+            return RestUtils.GetExtensions(
+                friendlyname: propertyContext.Property.Name,
                 description: propertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
@@ -36,6 +37,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: null,
                 memberOrder: propertyContext.Property.MemberOrder,
                 dataType: propertyContext.Property.DataType,
+                presentationHint: propertyContext.Property.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: collection.Specification,
                 elementType: propertyContext.ElementSpecification,
@@ -44,7 +46,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-            return GetTableViewCustomExtensions(propertyContext.Property.ExtensionData, propertyContext.Property.TableViewData);
+            return GetTableViewCustomExtensions(propertyContext.Property.TableViewData);
         }
 
         public LinkRepresentation[] GetValue() {

@@ -6,19 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Facade.Impl {
     public class ActionFacade : IActionFacade {
-        private readonly IActionSpec action;
         private readonly INakedObjectsFramework framework;
         private readonly string overloadedUniqueId;
-        private IDictionary<string, object> extensionData; 
 
         public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
             FacadeUtils.AssertNotNull(action, "Action is null");
@@ -26,68 +22,34 @@ namespace NakedObjects.Facade.Impl {
             FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
             FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
 
-            this.action = action;
+            WrappedSpec = action;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
             FrameworkFacade = frameworkFacade;
         }
 
-        public IActionSpec WrappedSpec {
-            get { return action; }
-        }
+        public IActionSpec WrappedSpec { get; }
 
-        public ITypeFacade Specification {
-            get { return new TypeFacade(action.ReturnSpec, FrameworkFacade, framework); }
-        }
+        public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
         #region IActionFacade Members
 
-        public bool IsContributed {
-            get { return action.IsContributedMethod; }
-        }
+        public bool IsContributed => WrappedSpec.IsContributedMethod;
 
-        public string Name {
-            get { return action.Name; }
-        }
+        public string Name => WrappedSpec.Name;
 
-        public IDictionary<string, object> ExtensionData {
-            get {
-                if (extensionData == null) {
+        public string Description => WrappedSpec.Description;
 
-                    extensionData = new Dictionary<string, object>();
+        public bool IsQueryOnly => WrappedSpec.ReturnSpec.IsQueryable || WrappedSpec.ContainsFacet<IQueryOnlyFacet>();
 
-                    if (action.ContainsFacet<IPresentationHintFacet>()) {
-                        extensionData[IdConstants.PresentationHint] = action.GetFacet<IPresentationHintFacet>().Value;
-                    }
-                }
-
-                return extensionData;
-            }
-        }
-
-        public string Description {
-            get { return action.Description; }
-        }
-
-        public bool IsQueryOnly {
-            get {
-                if (action.ReturnSpec.IsQueryable) {
-                    return true;
-                }
-                return action.ContainsFacet<IQueryOnlyFacet>();
-            }
-        }
-
-        public bool IsIdempotent {
-            get { return action.ContainsFacet<IIdempotentFacet>(); }
-        }
+        public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
         public int MemberOrder {
             get {
-                var facet = action.GetFacet<IMemberOrderFacet>();
+                var facet = WrappedSpec.GetFacet<IMemberOrderFacet>();
 
                 int result;
-                if (facet != null && Int32.TryParse(facet.Sequence, out result)) {
+                if (facet != null && int.TryParse(facet.Sequence, out result)) {
                     return result;
                 }
 
@@ -95,64 +57,54 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public string Id {
-            get { return action.Id + overloadedUniqueId; }
-        }
+        public string Id => WrappedSpec.Id + overloadedUniqueId;
 
-        public ITypeFacade ReturnType {
-            get { return new TypeFacade(action.ReturnSpec, FrameworkFacade, framework); }
-        }
+        public ITypeFacade ReturnType => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
         public ITypeFacade ElementType {
             get {
-                var elementSpec = action.ElementSpec;
+                var elementSpec = WrappedSpec.ElementSpec;
                 return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
         }
 
-        public int ParameterCount {
-            get { return action.ParameterCount; }
-        }
+        public int ParameterCount => WrappedSpec.ParameterCount;
 
         public IActionParameterFacade[] Parameters {
-            get { return action.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
+            get { return WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
         }
 
         public bool IsVisible(IObjectFacade objectFacade) {
-            return action.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
+            return WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
         }
 
         public IConsentFacade IsUsable(IObjectFacade objectFacade) {
-            return new ConsentFacade(action.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
+            return new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
         }
 
-        public ITypeFacade OnType {
-            get { return new TypeFacade(action.OnSpec, FrameworkFacade, framework); }
-        }
+        public ITypeFacade OnType => new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool RenderEagerly {
             get {
-                IEagerlyFacet eagerlyFacet = action.GetFacet<IEagerlyFacet>();
+                IEagerlyFacet eagerlyFacet = WrappedSpec.GetFacet<IEagerlyFacet>();
                 return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
             }
         }
 
         public Tuple<bool, string[]> TableViewData {
             get {
-                var facet = action.GetFacet<ITableViewFacet>();
+                var facet = WrappedSpec.GetFacet<ITableViewFacet>();
                 return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
             }
         }
 
-        public int PageSize {
-            get { return action.GetFacet<IPageSizeFacet>().Value; }
-        }
+        public int PageSize => WrappedSpec.GetFacet<IPageSizeFacet>().Value;
 
         public string PresentationHint {
             get {
-                var hintFacet = action.GetFacet<IPresentationHintFacet>();
+                var hintFacet = WrappedSpec.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? null : hintFacet.Value;
             }
         }
@@ -170,11 +122,11 @@ namespace NakedObjects.Facade.Impl {
         public bool Equals(ActionFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.action, action);
+            return Equals(other.WrappedSpec, WrappedSpec);
         }
 
         public override int GetHashCode() {
-            return (action != null ? action.GetHashCode() : 0);
+            return (WrappedSpec != null ? WrappedSpec.GetHashCode() : 0);
         }
     }
 }

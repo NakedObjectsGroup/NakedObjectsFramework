@@ -46,6 +46,5 @@ namespace NakedObjects.Facade {
 
         string GetMaskedValue(IObjectFacade objectFacade);
         bool DefaultTypeIsExplicit(IObjectFacade objectFacade);
-        IDictionary<string, object> ExtensionData { get; }
     }
 }

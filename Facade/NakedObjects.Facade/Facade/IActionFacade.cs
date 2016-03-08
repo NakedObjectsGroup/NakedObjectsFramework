@@ -23,7 +23,6 @@ namespace NakedObjects.Facade {
         bool IsIdempotent { get; }
         bool IsContributed { get; }
         int MemberOrder { get; }
-        IDictionary<string, object> ExtensionData { get; }
         Tuple<bool, string[]> TableViewData { get; }
         bool RenderEagerly { get; }
         bool IsVisible(IObjectFacade objectFacade);

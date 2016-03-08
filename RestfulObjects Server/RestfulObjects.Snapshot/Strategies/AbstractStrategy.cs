@@ -26,14 +26,15 @@ namespace RestfulObjects.Snapshot.Strategies {
             return GetExtensionsForSimple();
         }
 
-        protected IDictionary<string, object> GetTableViewCustomExtensions(IDictionary<string, object> custom, Tuple<bool, string[]> tableViewData) {
-
-            if (tableViewData != null) {
-                custom = custom ?? new Dictionary<string, object>();
-                custom[JsonPropertyNames.CustomTableViewTitle] = tableViewData.Item1;
-                custom[JsonPropertyNames.CustomTableViewColumns] = tableViewData.Item2;
+        protected IDictionary<string, object> GetTableViewCustomExtensions(Tuple<bool, string[]> tableViewData) {
+            if (tableViewData == null) {
+                return null;
             }
-            return custom;
+            return new Dictionary<string, object> {
+                [JsonPropertyNames.CustomTableViewTitle] = tableViewData.Item1,
+                [JsonPropertyNames.CustomTableViewColumns] = tableViewData.Item2
+            };
+           
         }
 
         protected abstract MapRepresentation GetExtensionsForSimple();

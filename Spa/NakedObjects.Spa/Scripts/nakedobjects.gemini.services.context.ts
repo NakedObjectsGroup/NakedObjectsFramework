@@ -458,7 +458,7 @@ module NakedObjects.Angular.Gemini {
                         urlManager.setObject(resultObject, paneId);
 
                         // if render in edit must be  a form 
-                        if (resultObject.extensions().renderInEdit()) {
+                        if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
                             urlManager.setInteractionMode(InteractionMode.Form, paneId);
                         }

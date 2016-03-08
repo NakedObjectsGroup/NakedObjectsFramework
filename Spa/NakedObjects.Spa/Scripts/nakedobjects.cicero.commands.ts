@@ -1315,19 +1315,15 @@ module NakedObjects.Angular.Gemini {
                     }
                 });
                 const propMap = _.zipObject(propIds, values) as _.Dictionary<Value>;
-                if (obj.extensions().renderInEdit()) { //i.e. it is a transient or a viewmodel
-                    this.context.saveObject(obj, propMap, 1, true).                       
-                        catch((reject: ErrorWrapper) => {                            
-                            const display = (em: ErrorMap) => this.handleError(em, obj);                           
-                            this.context.handleWrappedError(reject, null, () => { }, display);
-                        });
-                } else { //It is a persistent object being updated
-                    this.context.updateObject(obj, propMap, 1, true).
-                        catch((reject: ErrorWrapper) => {
-                            const display = (em: ErrorMap) => this.handleError(em, obj);
-                            this.context.handleWrappedError(reject, null, () => { }, display);
-                        });
-                }
+                const mode = obj.extensions().interactionMode();
+
+                const saveOrUpdate = (mode === "form" || mode === "transient") ? this.context.saveObject : this.context.updateObject;
+
+                saveOrUpdate(obj, propMap, 1, true).
+                    catch((reject: ErrorWrapper) => {
+                        const display = (em: ErrorMap) => this.handleError(em, obj);
+                        this.context.handleWrappedError(reject, null, () => { }, display);
+                    });
             });
         };
 

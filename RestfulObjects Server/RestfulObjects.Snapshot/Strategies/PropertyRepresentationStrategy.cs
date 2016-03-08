@@ -114,9 +114,10 @@ namespace RestfulObjects.Snapshot.Strategies {
 
             if (customExtensions == null) {
 
-                customExtensions = propertyContext.Property.ExtensionData;
 
                 if (IsUnconditionalChoices()) {
+                    customExtensions = new Dictionary<string, object>();
+
                     Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
                     Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
 
@@ -131,12 +132,16 @@ namespace RestfulObjects.Snapshot.Strategies {
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
                     customExtensions = customExtensions ?? new Dictionary<string, object>();
+
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
                     customExtensions[JsonPropertyNames.CustomMask] = mask;
                 }
 
                 var multipleLines = propertyContext.Property.NumberOfLines;
 
                 if (multipleLines > 1) {
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+
                     customExtensions = customExtensions ?? new Dictionary<string, object>();
                     customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
@@ -157,7 +162,8 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         protected override MapRepresentation GetExtensionsForSimple() {
 
-            return RestUtils.GetExtensions(friendlyname: propertyContext.Property.Name,
+            return RestUtils.GetExtensions(
+                friendlyname: propertyContext.Property.Name,
                 description: propertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
@@ -168,6 +174,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 pattern: propertyContext.Property.Pattern,
                 memberOrder: propertyContext.Property.MemberOrder,
                 dataType: propertyContext.Property.DataType,
+                presentationHint: propertyContext.Property.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: propertyContext.Specification,
                 elementType: propertyContext.ElementSpecification,
