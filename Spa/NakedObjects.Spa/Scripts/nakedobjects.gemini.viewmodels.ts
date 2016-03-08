@@ -395,6 +395,8 @@ module NakedObjects.Angular.Gemini {
             this.pluralName = "Objects";
             this.items = this.viewModelFactory.getItems(links, this.state === CollectionViewState.Table, routeData, this);
 
+            this.allSelected = _.every(this.items, item => item.selected);
+
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
@@ -496,6 +498,8 @@ module NakedObjects.Angular.Gemini {
         numPages: number; 
         state: CollectionViewState; 
 
+        allSelected: boolean;
+
         id: string;
 
         private setPage = (newPage: number, newState: CollectionViewState) => {
@@ -525,6 +529,11 @@ module NakedObjects.Angular.Gemini {
             this.setPage(this.page, this.state);
         };
 
+        selectAll = () => _.each(this.items, (item, i)  => {
+            item.selected = this.allSelected;
+            item.checkboxChange(i);
+        });
+        
         description(): string { return this.size.toString() }
 
         template: string;

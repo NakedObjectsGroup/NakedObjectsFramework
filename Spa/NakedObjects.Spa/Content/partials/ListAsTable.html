@@ -28,8 +28,9 @@
         <div class="dialog" ng-include="dialogTemplate"></div>
         <div class="summary">
             <div class="details">{{collection.description()}}</div>
-         <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List"/>
+            <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List"/>
         </div>
+        <input type="checkbox" id="all" ng-model="collection.allSelected" ng-change="collection.selectAll()">
         <table >
             <thead>
             <tr>
