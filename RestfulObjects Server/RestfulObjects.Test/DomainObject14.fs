@@ -3183,7 +3183,7 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Form View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Form View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
     Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)

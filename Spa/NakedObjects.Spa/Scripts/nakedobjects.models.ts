@@ -629,12 +629,12 @@ module NakedObjects {
         choices = () => this.wrapped[Angular.nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; }
         menuPath = () => this.wrapped[Angular.nofMenuPath] as string;
         mask = () => this.wrapped[Angular.nofMask] as string;
-        renderInEdit = () => this.wrapped[Angular.nofRenderInEditMode] as boolean;
         tableViewTitle = () => this.wrapped[Angular.nofTableViewTitle] as boolean;
         tableViewColumns = () => this.wrapped[Angular.nofTableViewColumns] as string[];
         multipleLines = () => this.wrapped[Angular.nofMultipleLines] as number;
         warnings = () => this.wrapped[Angular.nofWarnings] as string[];
         messages = () => this.wrapped[Angular.nofMessages] as string[];
+        interactionMode = () => this.wrapped[Angular.nofInteractionMode] as string;
     } 
 
     // matches a action invoke resource 19.0 representation 

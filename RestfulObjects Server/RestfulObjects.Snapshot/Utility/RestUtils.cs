@@ -53,6 +53,7 @@ namespace RestfulObjects.Snapshot.Utility {
                                                       string pattern,
                                                       int? memberOrder,
                                                       DataType? dataType,
+                                                      string presentationHint,
                                                       IDictionary<string, object> customExtensions,
                                                       ITypeFacade returnType,
                                                       ITypeFacade elementType,
@@ -90,6 +91,11 @@ namespace RestfulObjects.Snapshot.Utility {
             if (dataType != null) {
                 exts.Add(JsonPropertyNames.CustomDataType, dataType);
             }
+
+            if (!string.IsNullOrEmpty(presentationHint)) {
+                exts.Add(JsonPropertyNames.PresentationHint, presentationHint);
+            }
+
 
             if (returnType != null && !returnType.IsVoid) {
                 Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);

@@ -75,9 +75,11 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private void SetExtensions(HttpRequestMessage req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags) {
-            IDictionary<string, object> custom = parameter.ExtensionData;
+            IDictionary<string, object> custom = null;
 
             if (IsUnconditionalChoices(parameter)) {
+                custom = new Dictionary<string, object>();
+
                 Tuple<IObjectFacade, string>[] choices = parameter.GetChoicesAndTitles(objectFacade, null);
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(parameter.GetChoiceValue(OidStrategy, req, tuple.Item1, flags), tuple.Item2)).ToArray();
 
@@ -101,7 +103,23 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
-            Extensions = RestUtils.GetExtensions(parameter.Name, parameter.Description, null, null, null, null, !parameter.IsMandatory, parameter.MaxLength, parameter.Pattern, null, parameter.DataType,  custom, parameter.Specification, parameter.ElementType, OidStrategy, true);
+            Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name,
+                                                  description: parameter.Description,
+                                                  pluralName: null,
+                                                  domainType: null,
+                                                  isService: null,
+                                                  hasParams: null,
+                                                  optional: !parameter.IsMandatory,
+                                                  maxLength: parameter.MaxLength,
+                                                  pattern: parameter.Pattern,
+                                                  memberOrder: null,
+                                                  dataType: parameter.DataType,
+                                                  presentationHint: parameter.PresentationHint,
+                                                  customExtensions: custom,
+                                                  returnType: parameter.Specification,
+                                                  elementType: parameter.ElementType,
+                                                  oidStrategy: OidStrategy,
+                                                  useDateOverDateTime: true);
         }
 
         private static bool IsUnconditionalChoices(FieldFacadeAdapter parameter) {

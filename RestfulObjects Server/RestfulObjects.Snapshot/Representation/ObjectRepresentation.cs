@@ -153,7 +153,23 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
-            return objectFacade.ExtensionData;
+
+            string mode = "persistent";
+
+            if (objectFacade.IsTransient) {
+                mode = "transient";
+            }
+            else if (objectFacade.IsViewModelEditView) {
+                mode = "form";
+            }
+            else {
+                // temp 
+                return null;
+            }
+
+            return new Dictionary<string, object> {
+                [JsonPropertyNames.InteractionMode] = mode
+            };
         }
 
         private void SetExtensions(IObjectFacade objectFacade) {
@@ -161,7 +177,24 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
-            return RestUtils.GetExtensions(objectFacade.Specification.SingularName, objectFacade.Specification.Description, objectFacade.Specification.PluralName, objectFacade.Specification.DomainTypeName(OidStrategy), objectFacade.Specification.IsService, null, null, null, null, null, null, GetCustomExtensions(objectFacade), null, null, OidStrategy, false);
+            return RestUtils.GetExtensions(
+                           friendlyname: objectFacade.Specification.SingularName,
+                           description: objectFacade.Specification.Description,
+                           pluralName: objectFacade.Specification.PluralName,
+                           domainType: objectFacade.Specification.DomainTypeName(OidStrategy),
+                           isService: objectFacade.Specification.IsService,
+                           hasParams: null,
+                           optional: null,
+                           maxLength: null,
+                           pattern: null,
+                           memberOrder: null,
+                           dataType: null,
+                           presentationHint: objectFacade.PresentationHint,
+                           customExtensions: GetCustomExtensions(objectFacade),
+                           returnType: null,
+                           elementType: null,
+                           oidStrategy: OidStrategy,
+                           useDateOverDateTime: false);
         }
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {

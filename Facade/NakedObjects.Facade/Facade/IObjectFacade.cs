@@ -18,6 +18,7 @@ namespace NakedObjects.Facade {
         IVersionFacade Version { get; }
         IActionFacade MementoAction { get; }
         string EnumIntegralValue { get; }
+        string PresentationHint { get; }
         bool IsPaged { get; }
         bool IsCollectionMemento { get; }
         bool IsTransient { get; }
@@ -28,7 +29,6 @@ namespace NakedObjects.Facade {
         string InvariantString { get; }
         bool IsViewModelEditView { get; }
         bool IsViewModel { get; }
-        IDictionary<string, object> ExtensionData { get; }
         IEnumerable<IObjectFacade> ToEnumerable();
         PropertyInfo[] GetKeys();
         IObjectFacade Page(int page, int size);

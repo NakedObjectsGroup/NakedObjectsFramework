@@ -638,7 +638,8 @@ module NakedObjects.Angular.Gemini {
             this.domainObject = obj;
             this.onPaneId = routeData.paneId;
             this.routeData = routeData;
-            this.isInEdit = routeData.interactionMode !== InteractionMode.View || this.domainObject.extensions().renderInEdit();
+            const iMode = this.domainObject.extensions().interactionMode();
+            this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode  === "form" || iMode === "transient";
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
 
             const actions = _.values(this.domainObject.actionMembers()) as ActionMember[];
@@ -729,7 +730,7 @@ module NakedObjects.Angular.Gemini {
         public setProperties = () =>
             _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
-        private cancelHandler = () => this.domainObject.extensions().renderInEdit() ?
+        private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient"    ?
             () => this.urlManager.popUrlState(this.onPaneId) :
             () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
@@ -782,7 +783,9 @@ module NakedObjects.Angular.Gemini {
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
 
 
-        hideEdit = () => this.domainObject.extensions().renderInEdit() || _.every(this.properties, p => !p.isEditable);
+        hideEdit = () => this.domainObject.extensions().interactionMode() === "form" ||
+            this.domainObject.extensions().interactionMode() === "transient" ||
+            _.every(this.properties, p => !p.isEditable);
 
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;

@@ -28,7 +28,6 @@ namespace RestfulObjects.Snapshot.Utility {
 
         public string Id => parameter?.Id ?? association?.Id;
 
-        public IDictionary<string, object> ExtensionData => parameter?.ExtensionData ?? association?.ExtensionData;
         public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
         public ITypeFacade Specification => parameter?.Specification ?? association?.Specification;
         public ITypeFacade ElementType => parameter?.ElementType ?? association?.ElementSpecification;
@@ -42,6 +41,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public string Pattern => parameter?.Pattern ?? association?.Pattern;
         public int AutoCompleteMinLength => (parameter?.AutoCompleteMinLength ?? association?.AutoCompleteMinLength).GetValueOrDefault();
         public DataType? DataType => parameter?.DataType ?? association?.DataType;
+        public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
             return parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();

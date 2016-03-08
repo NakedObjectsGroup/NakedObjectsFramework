@@ -3468,7 +3468,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Form View Model"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Form View Models"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
 
     let expected = 

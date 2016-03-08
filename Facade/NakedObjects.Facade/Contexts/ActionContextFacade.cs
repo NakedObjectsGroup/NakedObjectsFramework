@@ -9,19 +9,14 @@ namespace NakedObjects.Facade.Contexts {
     public class ActionContextFacade : ContextFacade {
         public IActionFacade Action { get; set; }
 
-        public override string Id {
-            get { return Action.Id; }
-        }
+        public override string Id => Action.Id;
 
-        public override ITypeFacade Specification {
-            get { return Action.ReturnType; }
-        }
+        public override ITypeFacade Specification => Action.ReturnType;
 
-        public override ITypeFacade ElementSpecification {
-            get { return Action.ElementType; }
-        }
+        public override ITypeFacade ElementSpecification => Action.ElementType;
 
         public ParameterContextFacade[] VisibleParameters { get; set; }
         public PropertyContextFacade[] VisibleProperties { get; set; }
+        public string MenuPath { get; set; }
     }
 }

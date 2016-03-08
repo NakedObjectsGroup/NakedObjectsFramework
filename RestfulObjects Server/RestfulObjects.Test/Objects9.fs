@@ -62,7 +62,7 @@ let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false)) 
-                                              TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true))])) ])
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient"))])) ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -119,7 +119,7 @@ let GetMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false))
-                                              TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true)) ])) ])
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient")) ])) ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -506,7 +506,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false))
-                                              TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true)) ])) ])
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient")) ])) ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -696,7 +696,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("With References"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false))
-                                              TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true)) ])) ])
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient")) ])) ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -841,7 +841,7 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("With Collections"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.IsService, TObjectVal(false))
-                                              TProperty(JsonPropertyNames.RenderInEdit, TObjectVal(true)) ])) ])
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("transient")) ])) ])
     
     let expected = 
         [ TProperty(JsonPropertyNames.Links, TArray([]))

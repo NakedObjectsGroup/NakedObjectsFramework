@@ -18,146 +18,107 @@ using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Utility;
 
 namespace NakedObjects.Facade.Impl {
     public class ActionParameterFacade : IActionParameterFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly IActionParameterSpec nakedObjectActionParameter;
         private readonly string overloadedUniqueId;
 
         public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
-            //Allow it to carry a null parameter
-            //FacadeUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
+            FacadeUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
             FacadeUtils.AssertNotNull(framework, "framework is null");
             FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
             FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
 
-            this.nakedObjectActionParameter = nakedObjectActionParameter;
+            this.WrappedSpec = nakedObjectActionParameter;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
             FrameworkFacade = frameworkFacade;
         }
 
-        public IActionParameterSpec WrappedSpec {
-            get { return nakedObjectActionParameter; }
-        }
+        public IActionParameterSpec WrappedSpec { get; }
 
         #region IActionParameterFacade Members
 
-        public IDictionary<string, object> ExtensionData {
-            get {
-                var extData = new Dictionary<string, object>();
+        public string Name => WrappedSpec.Name;
 
-                if (nakedObjectActionParameter.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[IdConstants.PresentationHint] = nakedObjectActionParameter.GetFacet<IPresentationHintFacet>().Value;
-                }
+        public string Description => WrappedSpec.Description;
 
-                return extData.Any() ? extData : null;
-            }
-        }
-
-        public string Name {
-            get { return nakedObjectActionParameter.Name; }
-        }
-
-        public string Description {
-            get { return nakedObjectActionParameter.Description; }
-        }
-
-        public bool IsMandatory {
-            get { return nakedObjectActionParameter.IsMandatory; }
-        }
+        public bool IsMandatory => WrappedSpec.IsMandatory;
 
         public int? MaxLength {
             get {
-                var facet = nakedObjectActionParameter.GetFacet<IMaxLengthFacet>();
+                var facet = WrappedSpec.GetFacet<IMaxLengthFacet>();
                 return facet != null ? (int?) facet.Value : null;
             }
         }
 
-        public DataType? DataType => nakedObjectActionParameter.GetFacet<IDataTypeFacet>()?.DataType();
+        public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType();
 
-        public bool IsDateOnly
-        {
-            get
-            {
-                return nakedObjectActionParameter.ContainsFacet<IDateOnlyFacet>();
-            }
-        }
+        public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
 
         public string Pattern {
             get {
-                var facet = nakedObjectActionParameter.GetFacet<IRegExFacet>();
+                var facet = WrappedSpec.GetFacet<IRegExFacet>();
                 return facet != null ? facet.Pattern.ToString() : null;
             }
         }
 
         public string Mask {
             get {
-                var facet = nakedObjectActionParameter.GetFacet<IMaskFacet>();
+                var facet = WrappedSpec.GetFacet<IMaskFacet>();
                 return facet != null ? facet.Value : null;
             }
         }
 
         public int AutoCompleteMinLength {
             get {
-                var facet = nakedObjectActionParameter.GetFacet<IAutoCompleteFacet>();
+                var facet = WrappedSpec.GetFacet<IAutoCompleteFacet>();
                 return facet != null ? facet.MinLength : 0;
             }
         }
 
-        public int Number {
-            get { return nakedObjectActionParameter.Number; }
-        }
+        public int Number => WrappedSpec.Number;
 
-        public ITypeFacade Specification {
-            get { return new TypeFacade(nakedObjectActionParameter.Spec, FrameworkFacade, framework); }
-        }
+        public ITypeFacade Specification => new TypeFacade(WrappedSpec.Spec, FrameworkFacade, framework);
 
         public ITypeFacade ElementType {
             get {
-                var parm = nakedObjectActionParameter as IOneToManyActionParameterSpec;
+                var parm = WrappedSpec as IOneToManyActionParameterSpec;
                 var elementSpec = parm == null ? null : parm.ElementSpec;
                 return elementSpec == null ? null : new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
         }
 
-        public IActionFacade Action {
-            get { return new ActionFacade(nakedObjectActionParameter.Action, FrameworkFacade, framework, overloadedUniqueId ?? ""); }
-        }
+        public IActionFacade Action => new ActionFacade(WrappedSpec.Action, FrameworkFacade, framework, overloadedUniqueId ?? "");
 
-        public string Id {
-            get { return nakedObjectActionParameter.Id; }
-        }
+        public string Id => WrappedSpec.Id;
 
         public Choices IsChoicesEnabled {
             get {
-                if (nakedObjectActionParameter.IsMultipleChoicesEnabled) {
+                if (WrappedSpec.IsMultipleChoicesEnabled) {
                     return Choices.Multiple;
                 }
-                return nakedObjectActionParameter.IsChoicesEnabled ? Choices.Single : Choices.NotEnabled;
+                return WrappedSpec.IsChoicesEnabled ? Choices.Single : Choices.NotEnabled;
             }
         }
 
-        public bool IsAutoCompleteEnabled {
-            get { return nakedObjectActionParameter.IsAutoCompleteEnabled; }
-        }
+        public bool IsAutoCompleteEnabled => WrappedSpec.IsAutoCompleteEnabled;
 
         public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
             var otherParms = parameterNameValues == null ? null : parameterNameValues.Select(kvp => new {kvp.Key, kvp.Value, parm = Action.Parameters.Single(p => p.Id == kvp.Key)});
 
             var pnv = otherParms == null ? null : otherParms.ToDictionary(a => a.Key, a => SafeGetValue(a.parm, a.Value));
 
-            return nakedObjectActionParameter.GetChoices(((ObjectFacade) objectFacade).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+            return WrappedSpec.GetChoices(((ObjectFacade) objectFacade).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
-            return nakedObjectActionParameter.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
+            return WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
         }
 
         public string GetMaskedValue(IObjectFacade objectFacade) {
-            var mask = nakedObjectActionParameter.GetFacet<IMaskFacet>();
+            var mask = WrappedSpec.GetFacet<IMaskFacet>();
 
             if (objectFacade == null) {
                 return null;
@@ -172,7 +133,7 @@ namespace NakedObjects.Facade.Impl {
             IConsent consent;
             try {
                 var v = GetValue(this, value);
-                consent = nakedObjectActionParameter.IsValid(t, v);
+                consent = WrappedSpec.IsValid(t, v);
             }
             catch (InvalidEntryException) {
                 consent = new Veto("Invalid Entry"); // todo i18n
@@ -190,73 +151,65 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) {
-            return nakedObjectActionParameter.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
+            return WrappedSpec.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
-            return nakedObjectActionParameter.GetDefaultType(((ObjectFacade) objectFacade).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
+            return WrappedSpec.GetDefaultType(((ObjectFacade) objectFacade).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
         }
 
         public IObjectFacade GetDefault(IObjectFacade objectFacade) {
-            return ObjectFacade.Wrap(nakedObjectActionParameter.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
+            return ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool IsFindMenuEnabled {
-            get { return (nakedObjectActionParameter is IOneToOneActionParameterSpec) && ((IOneToOneActionParameterSpec) nakedObjectActionParameter).IsFindMenuEnabled; }
-        }
+        public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec && ((IOneToOneActionParameterSpec) WrappedSpec).IsFindMenuEnabled;
 
         public Tuple<Regex, string> RegEx {
             get {
-                var regEx = nakedObjectActionParameter.GetFacet<IRegExFacet>();
+                var regEx = WrappedSpec.GetFacet<IRegExFacet>();
                 return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
             }
         }
 
         public Tuple<IConvertible, IConvertible, bool> Range {
             get {
-                var rangeFacet = nakedObjectActionParameter.GetFacet<IRangeFacet>();
+                var rangeFacet = WrappedSpec.GetFacet<IRangeFacet>();
                 return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
             }
         }
 
-        public bool IsAjax {
-            get { return !nakedObjectActionParameter.ContainsFacet<IAjaxFacet>(); }
-        }
+        public bool IsAjax => !WrappedSpec.ContainsFacet<IAjaxFacet>();
 
-        public bool IsPassword {
-            get { return nakedObjectActionParameter.ContainsFacet<IPasswordFacet>(); }
-        }
+        public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
 
         public int TypicalLength {
             get {
-                var typicalLength = nakedObjectActionParameter.GetFacet<ITypicalLengthFacet>();
+                var typicalLength = WrappedSpec.GetFacet<ITypicalLengthFacet>();
                 return typicalLength == null ? 0 : typicalLength.Value;
             }
         }
 
-        public bool IsNullable {
-            get { return nakedObjectActionParameter.ContainsFacet<INullableFacet>(); }
-        }
+        public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
 
         public int Width {
             get {
-                var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
+                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 0 : multiline.Width;
             }
         }
 
         public int NumberOfLines {
             get {
-                var multiline = nakedObjectActionParameter.GetFacet<IMultiLineFacet>();
+                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
                 return multiline == null ? 1 : multiline.NumberOfLines;
             }
         }
 
         public string PresentationHint {
             get {
-                var hintFacet = nakedObjectActionParameter.GetFacet<IPresentationHintFacet>();
+                var hintFacet = WrappedSpec.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? null : hintFacet.Value;
             }
         }
@@ -321,11 +274,11 @@ namespace NakedObjects.Facade.Impl {
         public bool Equals(ActionParameterFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.nakedObjectActionParameter, nakedObjectActionParameter);
+            return Equals(other.WrappedSpec, WrappedSpec);
         }
 
         public override int GetHashCode() {
-            return (nakedObjectActionParameter != null ? nakedObjectActionParameter.GetHashCode() : 0);
+            return (WrappedSpec != null ? WrappedSpec.GetHashCode() : 0);
         }
     }
 }

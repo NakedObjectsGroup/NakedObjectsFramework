@@ -61,11 +61,8 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) {
-            if (!string.IsNullOrEmpty(menuPath)) {
-                actionFacade.Action.ExtensionData[IdConstants.MenuPath] = menuPath;
-            }
-
             return new ActionContextFacade {
+                MenuPath = menuPath,
                 Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
                 Action = actionFacade.Action,
                 VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
