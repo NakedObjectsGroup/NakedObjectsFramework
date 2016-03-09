@@ -29,6 +29,7 @@ module.exports = function(config) {
       "Scripts/nakedobjects.gemini.routedata.js",
       "Scripts/nakedobjects.gemini.app.js",
       "Scripts/nakedobjects.angular.services.color.js",
+      "Scripts/nakedobjects.angular.services.color.config.js",
       "Scripts/nakedobjects.angular.services.mask.js",
       "Scripts/nakedobjects.angular.services.representationloader.js",
       "Scripts/nakedobjects.gemini.controllers.js",

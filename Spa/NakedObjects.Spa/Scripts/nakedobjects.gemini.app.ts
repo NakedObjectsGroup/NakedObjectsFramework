@@ -8,7 +8,7 @@ module NakedObjects.Angular {
     export const defaultPageSize = 20; // can be overriden by server 
     export const listCacheSize = 5;
 
-    import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
+   // import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
   
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
@@ -16,27 +16,27 @@ module NakedObjects.Angular {
     export const shortCutMarker = "___";
     export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 
-    export interface INakedObjectsScope extends ng.IScope {
-        backgroundColor: string;
-        menus: Angular.Gemini.MenusViewModel;
-        homeTemplate: string;
-        actionsTemplate: string;
-        object: Angular.Gemini.DomainObjectViewModel;
-        menu: Angular.Gemini.MenuViewModel;
-        dialogTemplate: string;
-        dialog: Angular.Gemini.DialogViewModel;
-        error: Angular.Gemini.ErrorViewModel;
-        errorTemplate: string;
-        listTemplate: string;
-        collection: Angular.Gemini.ListViewModel;
-        collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
+    //export interface INakedObjectsScope extends ng.IScope {
+    //    backgroundColor: string;
+    //    menus: Angular.Gemini.MenusViewModel;
+    //    homeTemplate: string;
+    //    actionsTemplate: string;
+    //    object: Angular.Gemini.DomainObjectViewModel;
+    //    menu: Angular.Gemini.MenuViewModel;
+    //    dialogTemplate: string;
+    //    dialog: Angular.Gemini.DialogViewModel;
+    //    error: Angular.Gemini.ErrorViewModel;
+    //    errorTemplate: string;
+    //    listTemplate: string;
+    //    collection: Angular.Gemini.ListViewModel;
+    //    collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
 
-        title: string;
-        toolBar: ToolBarViewModel;
-        objectTemplate: string;
-        collectionsTemplate: string;
-        cicero: Angular.Gemini.CiceroViewModel;
-    }
+    //    title: string;
+    //    toolBar: ToolBarViewModel;
+    //    objectTemplate: string;
+    //    collectionsTemplate: string;
+    //    cicero: Angular.Gemini.CiceroViewModel;
+    //}
 
 
     function getSvrPath() {
@@ -209,74 +209,11 @@ module NakedObjects.Angular {
             redirectTo: `/${geminiPath}/${homePath}`
             });
 
+
     });
 
-    app.run((color: IColor, mask: IMask, $cacheFactory) => {
+    app.run(($cacheFactory: ng.ICacheFactoryService) => {
 
         $cacheFactory("recentlyViewed");
-
-        color.setColorMap({
-            "AdventureWorksModel.CustomerRepository": "redLight",
-            "AdventureWorksModel.Store": "red",
-            "AdventureWorksModel.Individual": "red",
-            "AdventureWorksModel.OrderRepository": "green",
-            "AdventureWorksModel.SalesOrderHeader": "greenDark",
-            "AdventureWorksModel.SalesOrderDetail": "green",
-            "AdventureWorksModel.ProductRepository": "orange",
-            "AdventureWorksModel.Product": "orangeDark",
-            "AdventureWorksModel.ProductInventory": "orange",
-            "AdventureWorksModel.ProductReview": "orange",
-            "AdventureWorksModel.ProductModel": "yellow",
-            "AdventureWorksModel.ProductCategory": "redLight",
-            "AdventureWorksModel.ProductSubCategory": "red",
-            "AdventureWorksModel.EmployeeRepository": "blue",
-            "AdventureWorksModel.Employee": "blueDark",
-            "AdventureWorksModel.EmployeePayHistory": "blue",
-            "AdventureWorksModel.EmployeeDepartmentHistory": "blue",
-            "AdventureWorksModel.SalesRepository": "purple",
-            "AdventureWorksModel.SalesPerson": "purple",
-            "AdventureWorksModel.SpecialOfferRepository": "pink",
-            "AdventureWorksModel.SpecialOffer": "pinkDark",
-            "AdventureWorksModel.ContactRepository": "teal",
-            "AdventureWorksModel.Contact": "teal",
-            "AdventureWorksModel.VendorRepository": "greenDark",
-            "AdventureWorksModel.Vendor": "greenDark",
-            "AdventureWorksModel.PurchaseOrderRepository": "grayDark",
-            "AdventureWorksModel.PurchaseOrder": "grayDark",
-            "AdventureWorksModel.WorkOrderRepository": "orangeDark",
-            "AdventureWorksModel.WorkOrder": "orangeDark",
-            "AdventureWorksModel.OrderContributedActions": "darkBlue",
-            "AdventureWorksModel.CustomerContributedActions": "darkBlue"
-        });
-
-        color.setDefaultColorArray([
-            "blue", //0
-            "blueLight", //1
-            "blueDark", //2
-            "green", //3
-            "greenLight", //4
-            "greenDark", //5
-            "red", //6
-            "yellow", //7
-            "orange", //8
-            "orange", //9
-            "orangeDark", //10
-            "pink", //11
-            "pinkDark", //12
-            "purple", //13
-            "grayDark", //14
-            "magenta", //15
-            "teal", //16
-            "redLight" //17
-        ]);
-
-        color.setDefaultColor("darkBlue");
-
-        // map to convert from mask representation in RO extension to client represention.
-   
-        mask.setCurrencyMaskMapping("C", "decimal", "£", 2);
-        mask.setCurrencyMaskMapping("c", "decimal", "£", 2);
-        mask.setDateMaskMapping("d", "date-time", "d MMM yyyy", "+0000");
-        mask.setDateMaskMapping("D", "date", "d MMM yyyy hh:mm:ss");
     });
 }

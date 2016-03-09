@@ -44,8 +44,6 @@ module NakedObjects.Angular.Gemini {
         return _.map(menus, m => createActionSubmenuMap(avms, m));
     }
 
-
-
     export class AttachmentViewModel {
         href: string;
         mimeType: string;
@@ -817,6 +815,28 @@ module NakedObjects.Angular.Gemini {
 
         warnings: string[];
         messages: string[];
+    }
+
+    export interface INakedObjectsScope extends ng.IScope {
+        backgroundColor: string;
+        menus: Angular.Gemini.MenusViewModel;
+        homeTemplate: string;
+        actionsTemplate: string;
+        object: Angular.Gemini.DomainObjectViewModel;
+        menu: Angular.Gemini.MenuViewModel;
+        dialogTemplate: string;
+        dialog: Angular.Gemini.DialogViewModel;
+        error: Angular.Gemini.ErrorViewModel;
+        errorTemplate: string;
+        listTemplate: string;
+        collection: Angular.Gemini.ListViewModel;
+        collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
+
+        title: string;
+        toolBar: ToolBarViewModel;
+        objectTemplate: string;
+        collectionsTemplate: string;
+        cicero: Angular.Gemini.CiceroViewModel;
     }
 
     export class CiceroViewModel {

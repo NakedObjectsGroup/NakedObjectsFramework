@@ -107,6 +107,8 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.config.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.color.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.loaderwithtransform.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.ts" />

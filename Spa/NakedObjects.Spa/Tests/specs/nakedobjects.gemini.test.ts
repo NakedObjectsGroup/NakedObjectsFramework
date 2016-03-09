@@ -11,6 +11,7 @@
 /// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.simple.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.focusmanager.ts" />
+/// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
 /// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.gemini.test.helpers.ts" />
 
@@ -20,7 +21,7 @@
 module NakedObjects.Gemini.Test {
 
     import IHandlers = Angular.Gemini.IHandlers;
-    import INakedObjectsScope = Angular.INakedObjectsScope;
+    import INakedObjectsScope = Angular.Gemini.INakedObjectsScope;
     import PaneRouteData = Angular.Gemini.PaneRouteData;
     import MenusViewModel = Angular.Gemini.MenusViewModel;
     import FocusTarget = Angular.Gemini.FocusTarget;
