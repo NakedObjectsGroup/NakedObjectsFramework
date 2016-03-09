@@ -10,8 +10,6 @@
 
 module NakedObjects {
 
-    "use strict";
-
     // custom configuration for a particular implementation 
 
     // path to Restful Objects server 
@@ -20,6 +18,12 @@ module NakedObjects {
 
     // path local server (ie ~) only needed if you want to hard code paths for some reason
     export var svrPath = "";
+
+    export const defaultPageSize = 20; // can be overriden by server 
+    export const listCacheSize = 5;
+
+    export const shortCutMarker = "___";
+    export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 }
 
   

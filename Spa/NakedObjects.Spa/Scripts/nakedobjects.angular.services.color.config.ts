@@ -3,7 +3,7 @@
 
 module NakedObjects.Angular {
 
-    app.run((color: IColor, mask: IMask) => {
+    app.run((color: IColor) => {
 
         color.setColorMap({
             "AdventureWorksModel.CustomerRepository": "redLight",

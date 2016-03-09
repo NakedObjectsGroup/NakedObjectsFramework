@@ -1,15 +1,18 @@
 ﻿module NakedObjects.RoInterfaces.Custom {
  
-    
+    //NOF custom RO constants
 
     export interface ICustomExtensions extends RoInterfaces.IExtensions {
-        nofChoices?: { [index: string]: (string | number | boolean | ILink)[];}
-        nofMenuPath?: string;
-        nofMask?: string;
-        nofRenderInEditMode?: boolean;
-        nofTableViewTitle?: boolean;
-        nofTableViewColumns?: string[];
-        nofMultipleLines? : number; 
+        "x-ro-nof-choices"?: { [index: string]: (string | number | boolean | ILink)[];}
+        "x-ro-nof-menuPath"?: string;
+        "x-ro-nof-mask"?: string;
+        "x-ro-nof-interactionMode"?: string;
+        "x-ro-nof-tableViewTitle"?: boolean;
+        "x-ro-nof-tableViewColumns"?: string[];
+        "x-ro-nof-multipleLines"?: number; 
+        "x-ro-nof-warnings"? : string[];
+        "x-ro-nof-messages"?: string[];
+        "x-ro-nof-dataType"?: string;
     }  
 
     export interface IPagination {

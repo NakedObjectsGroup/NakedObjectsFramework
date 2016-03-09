@@ -1,138 +1,27 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/angularjs/angular-route.d.ts" />
+/// <reference path="nakedobjects.gemini.constants.ts" />
 
 module NakedObjects.Angular {
 
-    // consts to control app 
-    
-    export const defaultPageSize = 20; // can be overriden by server 
-    export const listCacheSize = 5;
-
-   // import ToolBarViewModel = NakedObjects.Angular.Gemini.ToolBarViewModel; /* Declare app level module */
-  
     export const app = angular.module("app", ["ngRoute"]);
     //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
-    export const shortCutMarker = "___";
-    export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
-
-    //export interface INakedObjectsScope extends ng.IScope {
-    //    backgroundColor: string;
-    //    menus: Angular.Gemini.MenusViewModel;
-    //    homeTemplate: string;
-    //    actionsTemplate: string;
-    //    object: Angular.Gemini.DomainObjectViewModel;
-    //    menu: Angular.Gemini.MenuViewModel;
-    //    dialogTemplate: string;
-    //    dialog: Angular.Gemini.DialogViewModel;
-    //    error: Angular.Gemini.ErrorViewModel;
-    //    errorTemplate: string;
-    //    listTemplate: string;
-    //    collection: Angular.Gemini.ListViewModel;
-    //    collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
-
-    //    title: string;
-    //    toolBar: ToolBarViewModel;
-    //    objectTemplate: string;
-    //    collectionsTemplate: string;
-    //    cicero: Angular.Gemini.CiceroViewModel;
-    //}
-
-
-    function getSvrPath() {
-        const trimmedPath = svrPath.trim();
-        if (trimmedPath.length === 0 || trimmedPath.charAt(svrPath.length - 1) === "/") {
-            return trimmedPath;
-        }
-        return trimmedPath + "/";
-    }
-
-    // templates 
-    export const nestedCollectionTemplate = getSvrPath() + "Content/partials/nestedCollection.html";
-    export const nestedCollectionTableTemplate = getSvrPath() + "Content/partials/nestedCollectionTable.html";
-    export const nestedObjectTemplate = getSvrPath() + "Content/partials/nestedObject.html";
-    export const dialogTemplate = getSvrPath() + "Content/partials/dialog.html";
-    export const servicesTemplate = getSvrPath() + "Content/partials/services.html";
-    export const serviceTemplate = getSvrPath() + "Content/partials/service.html";
-    export const errorTemplate = getSvrPath() + "Content/partials/error.html";
-    export const concurrencyTemplate = getSvrPath() + "Content/partials/concurrencyError.html";
-    export const httpErrorTemplate = getSvrPath() + "Content/partials/httpError.html";
-    export const appBarTemplate = getSvrPath() + "Content/partials/appbar.html";
-    export const nullTemplate = getSvrPath() + "Content/partials/null.html";
-
-    var singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
-
-    //All Gemini2 templates below:
-    const singleHomeTemplate = getSvrPath() + "Content/partials/singleHome.html";
-    const singleObjectTemplate = getSvrPath() + "Content/partials/singleObject.html";
-    const singleListTemplate = getSvrPath() + "Content/partials/singleList.html";
-    const splitHomeHomeTemplate = getSvrPath() + "Content/partials/splitHomeHome.html";
-    const splitHomeObjectTemplate = getSvrPath() + "Content/partials/splitHomeObject.html";
-    const splitHomeListTemplate = getSvrPath() + "Content/partials/splitHomeList.html";
-    const splitObjectHomeTemplate = getSvrPath() + "Content/partials/splitObjectHome.html";
-    const splitObjectObjectTemplate = getSvrPath() + "Content/partials/splitObjectObject.html";
-    const splitObjectListTemplate = getSvrPath() + "Content/partials/splitObjectList.html";
-    const splitListHomeTemplate = getSvrPath() + "Content/partials/splitListHome.html";
-    const splitListObjectTemplate = getSvrPath() + "Content/partials/splitListObject.html";
-    const splitListListTemplate = getSvrPath() + "Content/partials/splitListList.html";
-
-    export const blankTemplate = getSvrPath() + "Content/partials/blank.html";
-    export const homeTemplate = getSvrPath() + "Content/partials/home.html";
-    export const objectTemplate = getSvrPath() + "Content/partials/object.html";
-    export const objectViewTemplate = getSvrPath() + "Content/partials/objectView.html";
-    export const objectEditTemplate = getSvrPath() + "Content/partials/objectEdit.html";
-    export const transientObjectTemplate = getSvrPath() + "Content/partials/transient.html";
-    export const formTemplate = getSvrPath() + "Content/partials/form.html";
-    export const expiredTransientTemplate = getSvrPath() + "Content/partials/expiredTransient.html";
-
-    export const listPlaceholderTemplate = getSvrPath() + "Content/partials/ListPlaceholder.html";
-    export const listTemplate = getSvrPath() + "Content/partials/List.html";
-    export const listAsTableTemplate = getSvrPath() + "Content/partials/ListAsTable.html";
-
-    export const footerTemplate = getSvrPath() + "Content/partials/footer.html";
-    export const actionsTemplate = getSvrPath() + "Content/partials/actions.html";
-    export const formActionsTemplate = getSvrPath() + "Content/partials/formActions.html";
-    export const collectionsTemplate = getSvrPath() + "Content/partials/collections.html";
-    export const collectionSummaryTemplate = getSvrPath() + "Content/partials/collectionSummary.html";
-    export const collectionListTemplate = getSvrPath() + "Content/partials/collectionList.html";
-    export const collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
-
-    //Cicero
-    export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
-
-
-    // routing constants 
-
-    export const geminiPath = "gemini";
-    export const ciceroPath = "cicero";
-    export const homePath = "home";
-    export const objectPath = "object";
-    export const listPath = "list";
-    export const errorPath = "error";
-
-    //Restful Objects constants
-    export const roDomainType = "x-ro-domain-type";
-    export const roInvalidReason = "x-ro-invalidReason";
-    export const roSearchTerm = "x-ro-searchTerm";
-    export const roPage = "x-ro-page";
-    export const roPageSize = "x-ro-pageSize";
-
-    //NOF custom RO constants
-    export const nofChoices ="x-ro-nof-choices";
-    export const nofMenuPath = "x-ro-nof-menuPath";
-    export const nofMask = "x-ro-nof-mask";
-    export const nofInteractionMode = "x-ro-nof-interactionMode";
-    export const nofDataType = "x-ro-nof-dataType";
-
-    export const nofTableViewTitle = "x-ro-nof-tableViewTitle";
-    export const nofTableViewColumns = "x-ro-nof-tableViewColumns";
-    export const nofMultipleLines = "x-ro-nof-multipleLines";
-    export const nofWarnings = "x-ro-nof-warnings";
-    export const nofMessages = "x-ro-nof-messages";
-        
-    Angular.app.config(($routeProvider: ng.route.IRouteProvider) => {
-    
-
+    app.config(($routeProvider: ng.route.IRouteProvider) => {
+        const singleHomeTemplate = getSvrPath() + "Content/partials/singleHome.html";
+        const singleObjectTemplate = getSvrPath() + "Content/partials/singleObject.html";
+        const singleListTemplate = getSvrPath() + "Content/partials/singleList.html";
+        const splitHomeHomeTemplate = getSvrPath() + "Content/partials/splitHomeHome.html";
+        const splitHomeObjectTemplate = getSvrPath() + "Content/partials/splitHomeObject.html";
+        const splitHomeListTemplate = getSvrPath() + "Content/partials/splitHomeList.html";
+        const splitObjectHomeTemplate = getSvrPath() + "Content/partials/splitObjectHome.html";
+        const splitObjectObjectTemplate = getSvrPath() + "Content/partials/splitObjectObject.html";
+        const splitObjectListTemplate = getSvrPath() + "Content/partials/splitObjectList.html";
+        const splitListHomeTemplate = getSvrPath() + "Content/partials/splitListHome.html";
+        const splitListObjectTemplate = getSvrPath() + "Content/partials/splitListObject.html";
+        const splitListListTemplate = getSvrPath() + "Content/partials/splitListList.html";
+        const singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
+  
         $routeProvider.
             
             //Gemini2 Urls below:
@@ -213,7 +102,6 @@ module NakedObjects.Angular {
     });
 
     app.run(($cacheFactory: ng.ICacheFactoryService) => {
-
         $cacheFactory("recentlyViewed");
     });
 }

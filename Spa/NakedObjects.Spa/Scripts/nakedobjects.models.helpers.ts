@@ -51,14 +51,14 @@ module NakedObjects.Helpers {
 
     export function compress(toCompress: string) {
         if (toCompress) {
-            _.forEach(Angular.urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${Angular.shortCutMarker}${i}`));
+            _.forEach(urlShortCuts, (sc, i) => toCompress = toCompress.replace(sc, `${shortCutMarker}${i}`));
         }
         return toCompress;
     }
 
     export function decompress(toDecompress: string) {
         if (toDecompress) {
-            _.forEach(Angular.urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${Angular.shortCutMarker}${i}`, sc));
+            _.forEach(urlShortCuts, (sc, i) => toDecompress = toDecompress.replace(`${shortCutMarker}${i}`, sc));
         }
         return toDecompress;
     }
