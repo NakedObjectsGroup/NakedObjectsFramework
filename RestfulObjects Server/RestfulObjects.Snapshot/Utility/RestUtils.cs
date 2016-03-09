@@ -89,7 +89,7 @@ namespace RestfulObjects.Snapshot.Utility {
             }
 
             if (dataType != null) {
-                exts.Add(JsonPropertyNames.CustomDataType, dataType);
+                exts.Add(JsonPropertyNames.CustomDataType, dataType.ToString().ToLower());
             }
 
             if (!string.IsNullOrEmpty(presentationHint)) {

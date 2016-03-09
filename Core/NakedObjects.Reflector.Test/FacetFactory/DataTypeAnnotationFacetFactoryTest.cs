@@ -70,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Test), nameof(Test.NoAnnotationMethod), new[] {typeof (DateTime)});
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.NoAnnotationMethod), new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
             Assert.IsNull(facet);
@@ -78,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestAnnotatedDataTypeOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof (DateTime)});
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.DataTypeAnnotationMethod), new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestAnnotatedCustomDataTypeOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Test), nameof(Test.CustomDataTypeMethod), new[] {typeof (DateTime)});
+            MethodInfo method = FindMethod(typeof (Test), nameof(Test.CustomDataTypeMethod), new[] {typeof (string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IDataTypeFacet facet = Specification.GetFacet(typeof(IDataTypeFacet)) as IDataTypeFacet;
             Assert.IsNotNull(facet);
@@ -105,16 +105,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public DateTime NoAnnotation => DateTime.Now;
 
             [DataType(DataType.PostalCode)]
-            public DateTime DataTypeAnnotation => DateTime.Now;
+            public string DataTypeAnnotation => DateTime.Now.ToString();
 
             [DataType("CustomDataType")]
-            public DateTime CustomDataTypeAnnotation => DateTime.Now;
+            public string CustomDataTypeAnnotation => DateTime.Now.ToString();
 
-            public void NoAnnotationMethod(DateTime aDate1) {}
+            public void NoAnnotationMethod(string aDate1) {}
 
-            public void DataTypeAnnotationMethod([DataType(DataType.CreditCard)] DateTime aDate2) {}
+            public void DataTypeAnnotationMethod([DataType(DataType.CreditCard)] string aDate2) {}
 
-            public void CustomDataTypeMethod([DataType("CustomDataType")] DateTime aDate3) {}
+            public void CustomDataTypeMethod([DataType("CustomDataType")] string aDate3) {}
         }
 
         #endregion

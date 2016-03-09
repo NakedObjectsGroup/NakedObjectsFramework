@@ -985,6 +985,8 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
 
       let extArray = if choices then TProperty(JsonPropertyNames.CustomChoices, TObjectJson([TProperty("Value1", TObjectVal(0)); TProperty("Value2", TObjectVal(1))])) :: extArray else extArray;
       
+      let extArray = if mName = "EnumByAttributeChoices" then  TProperty(JsonPropertyNames.CustomDataType, TObjectVal("custom")) :: extArray else extArray
+
       let exts = TObjectJson(extArray);
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
@@ -1025,19 +1027,25 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
 
+      let exts = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                  TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"));
+                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
+                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
+                  TProperty(JsonPropertyNames.Format, TObjectVal(rType));
+                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                  TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]
+
+
+      let exts = if mName = "Password" then  TProperty(JsonPropertyNames.CustomDataType, TObjectVal("password")) :: exts else exts
+
+
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
         TProperty(JsonPropertyNames.Value, oValue);
         TProperty(JsonPropertyNames.HasChoices, TObjectVal(false));
         
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                             TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"));
-                                                             TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
-                                                             TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
-                                                             TProperty(JsonPropertyNames.Format, TObjectVal(rType));
-                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                             TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
+        TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
 

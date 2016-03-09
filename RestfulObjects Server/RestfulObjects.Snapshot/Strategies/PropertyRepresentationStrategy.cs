@@ -124,14 +124,14 @@ namespace RestfulObjects.Snapshot.Strategies {
                     OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                     MapRepresentation map = MapRepresentation.Create(op);
 
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                   
                     customExtensions[JsonPropertyNames.CustomChoices] = map;
                 }
 
                 string mask = propertyContext.Property.Mask;
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                   
 
                     customExtensions = customExtensions ?? new Dictionary<string, object>();
                     customExtensions[JsonPropertyNames.CustomMask] = mask;
@@ -140,8 +140,8 @@ namespace RestfulObjects.Snapshot.Strategies {
                 var multipleLines = propertyContext.Property.NumberOfLines;
 
                 if (multipleLines > 1) {
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
-
+                   
+                
                     customExtensions = customExtensions ?? new Dictionary<string, object>();
                     customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }

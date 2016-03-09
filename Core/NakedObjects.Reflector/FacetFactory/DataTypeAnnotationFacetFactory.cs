@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
@@ -31,9 +30,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if (property.PropertyType == typeof (DateTime)) {
-                Process(property, specification);
-            }
+            Process(property, specification);
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {

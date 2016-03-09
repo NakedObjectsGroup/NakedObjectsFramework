@@ -70,10 +70,15 @@ namespace RestfulObjects.Test.Data {
 
         public virtual DateTime DateTime { get; set; }
 
+        [DataType(DataType.Password)]
+        public virtual string Password { get; set; }
+
         public virtual ICollection<MostSimple> List {
             get { return list; }
             set { list = value; }
         }
+
+
 
         [NotMapped]
         public virtual ICollection<MostSimple> Set {

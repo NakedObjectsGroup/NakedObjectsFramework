@@ -410,6 +410,7 @@ let GetEnumValueProperty(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.CustomDataType, TObjectVal("custom"))
                                   TProperty(JsonPropertyNames.CustomChoices, 
                                             TObjectJson([ TProperty("Value1", TObjectVal(0))
                                                           TProperty("Value2", TObjectVal(1)) ]))
