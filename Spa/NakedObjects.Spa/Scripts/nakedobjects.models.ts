@@ -635,6 +635,7 @@ module NakedObjects {
         warnings = () => this.wrapped[Angular.nofWarnings] as string[];
         messages = () => this.wrapped[Angular.nofMessages] as string[];
         interactionMode = () => this.wrapped[Angular.nofInteractionMode] as string;
+        dataType = () => this.wrapped[Angular.nofDataType] as string;
     } 
 
     // matches a action invoke resource 19.0 representation 

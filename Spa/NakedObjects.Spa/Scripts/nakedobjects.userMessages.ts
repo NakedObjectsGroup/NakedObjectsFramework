@@ -13,6 +13,7 @@ module NakedObjects.UserMessages {
    // user message constants
 
     export const noResultMessage = "no result found";
+    export const obscuredText = "*****";
 
 }
 

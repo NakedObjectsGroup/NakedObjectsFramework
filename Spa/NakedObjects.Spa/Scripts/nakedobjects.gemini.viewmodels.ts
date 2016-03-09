@@ -156,6 +156,7 @@ module NakedObjects.Angular.Gemini {
         format: string;
         arguments: _.Dictionary<Value>; 
         mask: string;
+        password : boolean;
         
         minLength: number;
        

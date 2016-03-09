@@ -148,6 +148,7 @@ module NakedObjects.Angular.Gemini {
             parmViewModel.onPaneId = paneId;
 
             parmViewModel.multipleLines = parmRep.extensions().multipleLines() || 1;
+            parmViewModel.password = parmRep.extensions().dataType() === "password";
 
             parmViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
@@ -339,6 +340,7 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.onPaneId = paneId;
             propertyViewModel.propertyRep = propertyRep;
             propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
+            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
 
             const required = propertyViewModel.optional ? "" : "* ";
 
@@ -441,6 +443,9 @@ module NakedObjects.Angular.Gemini {
                 if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                }
+                else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = UserMessages.obscuredText;
                 }
                 else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
