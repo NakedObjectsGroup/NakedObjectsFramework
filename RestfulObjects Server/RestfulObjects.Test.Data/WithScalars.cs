@@ -71,7 +71,7 @@ namespace RestfulObjects.Test.Data {
         public virtual DateTime DateTime { get; set; }
 
         [DataType(DataType.Password)]
-        [Column("Maptopassword")]
+        [NotMapped]
         public virtual string Password { get; set; }
 
         public virtual ICollection<MostSimple> List {
