@@ -37,6 +37,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Create New Sales Person");
             Assert.AreEqual("OK", OKButton().GetAttribute("value"));
         }
+
+        public virtual void PasswordParam()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person-11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
+            //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "password").Count() == 3);
+        }
         public virtual void ChoicesParm()
         {
             Url(OrdersMenuUrl);
@@ -329,6 +336,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void OKButtonNaming() { base.OKButtonNaming(); }
         [TestMethod]
+        public override void PasswordParam() { base.PasswordParam(); }
+        [TestMethod]
         public override void ChoicesParm() { base.ChoicesParm(); }
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
@@ -463,6 +472,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaDialogTest()
         {
             base.OKButtonNaming();
+            base.PasswordParam();
             base.ChoicesParm();
             base.TestCancelDialog();
             base.ScalarChoicesParmKeepsValue();
