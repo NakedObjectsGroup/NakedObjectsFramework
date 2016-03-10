@@ -53,16 +53,27 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
         }
 
-        public virtual void DateProperties() {
-            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-68389");
+        public virtual void DateAndCurrencyProperties() {
+            GeminiUrl("object?o1=___1.SalesOrderHeader-68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
-            
-            //By default a read-only DateTime property is rendered as a formatted time stamp:
+
+            //By default a DateTime property is rendered as date only:
+            Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
+
+            //If marked with DataType.DateTime it will have a time element:
+            Assert.IsTrue(properties[9].Text.StartsWith("Due Date:\r\n28 Apr 2008"));
+            Assert.IsTrue(properties[9].Text.EndsWith(":00:00")); //To ignore TimeZone difference
+
+            //If marked with DataType.DateTime it can still be masked to a date
+            Assert.AreEqual("Ship Date:\r\n23 Apr 2008", properties[10].Text);
+
+            //Or if marked with ConcurrencyCheck
             Assert.IsTrue(properties[23].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
             Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //To ignore TimeZone difference
-            //A read-only DateTime marked up with Mask("d") shows date only:
-            Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
+
+            //Currency properties formatted to 2 places & with default currency symbok (£)
+            Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
         }
         public virtual void TableViewHonouredOnCollection()
         {
@@ -222,7 +233,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void PropertiesAndCollections() { base.PropertiesAndCollections(); }
 
         [TestMethod]
-        public override void DateProperties() { base.DateProperties(); }
+        public override void DateAndCurrencyProperties() { base.DateAndCurrencyProperties(); }
         
         [TestMethod]
         public override void TableViewHonouredOnCollection() { base.TableViewHonouredOnCollection(); }
@@ -284,7 +295,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -344,7 +355,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.Actions();
             base.PropertiesAndCollections();
-            base.DateProperties();
+            base.DateAndCurrencyProperties();
             base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();
             base.OpenCollectionAsList();

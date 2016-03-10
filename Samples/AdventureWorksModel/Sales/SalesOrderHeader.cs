@@ -286,6 +286,7 @@ namespace AdventureWorksModel {
 
         [Optionally]
         [MemberOrder(22)]
+        [DataType(DataType.DateTime)]
         [Mask("d")]
         [Range(-30, 0)]
         public virtual DateTime? ShipDate { get; set; }
