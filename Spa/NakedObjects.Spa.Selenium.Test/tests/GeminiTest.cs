@@ -178,13 +178,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             input.SendKeys(characters);
         }
 
-        protected void SelectCheckBox(string css)
+        protected void SelectCheckBox(string css, bool alreadySelected = false)
         {
             var checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
-            Assert.IsFalse(checkbox.Selected);
+            Assert.AreEqual(alreadySelected, checkbox.Selected);
             checkbox.Click();
             checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
-            Assert.IsTrue(checkbox.Selected);
+            Assert.AreEqual(!alreadySelected, checkbox.Selected);
         }
 
         /// <summary>

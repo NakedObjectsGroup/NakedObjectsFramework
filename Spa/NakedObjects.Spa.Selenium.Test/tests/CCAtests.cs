@@ -19,7 +19,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     /// </summary>
     public abstract class CCAtestsRoot : AWTest
     {
-
         public virtual void ListViewWithParmDialogAlreadyOpen()
         {
             GeminiUrl("home");
@@ -69,22 +68,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Confirm others have not
             CheckIndividualItem(1, maxQty,newMax, false);
             CheckIndividualItem(5, maxQty,newMax, false);
-        }
-        private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
-        {
-            GeminiUrl("object?o1=___1.SpecialOffer-" + (itemNo + 1));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
-            var properties = br.FindElements(By.CssSelector(".property"));
-            var html = label +"\r\n" + value;
-            var prop = properties.First(p => p.Text.StartsWith(label));
-            if (equal)
-            {
-                Assert.AreEqual(html, prop.Text);
-            }
-            else
-            {
-                Assert.AreNotEqual(html, prop.Text);
-            }
         }
 
         public virtual void TableViewWithParmDialogAlreadyOpen()
@@ -199,6 +182,63 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
 
+        public virtual void SelectAll()
+        {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type")=="checkbox") == 17);
+            WaitForSelectedCheckboxes(0);
+
+            //Select all
+            SelectCheckBox("#all");
+            WaitForSelectedCheckboxes(17);
+
+            //Deslect all
+            SelectCheckBox("#all", true);
+            WaitForSelectedCheckboxes(0);
+
+            //Repeat in table view
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table");
+            Reload();
+            WaitForCss("td", 64);
+            WaitForSelectedCheckboxes(0);
+
+            //Select all
+            SelectCheckBox("#all");
+            WaitForSelectedCheckboxes(17);
+
+            //Deslect all
+            SelectCheckBox("#all", true);
+            WaitForSelectedCheckboxes(0);
+
+        }
+
+        private void WaitForSelectedCheckboxes(int number)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
+        }
+
+        #region Helpers
+        private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
+        {
+            GeminiUrl("object?o1=___1.SpecialOffer-" + (itemNo + 1));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
+            var properties = br.FindElements(By.CssSelector(".property"));
+            var html = label + "\r\n" + value;
+            var prop = properties.First(p => p.Text.StartsWith(label));
+            if (equal)
+            {
+                Assert.AreEqual(html, prop.Text);
+            }
+            else
+            {
+                Assert.AreNotEqual(html, prop.Text);
+            }
+        }
+        #endregion
     }
 
     public abstract class CCAtests : CCAtestsRoot
@@ -220,6 +260,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void ZeroParamAction() { base.ZeroParamAction(); }
+
+        [TestMethod]
+        public override void SelectAll() { base.SelectAll(); }
     }
 
     #region browsers specific subclasses
@@ -311,7 +354,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.TableViewWithParmDialogAlreadyOpen();
             base.TableViewWithParmDialogNotOpen();
             base.DateParam();
-
+            base.SelectAll();
         }
     }
 
