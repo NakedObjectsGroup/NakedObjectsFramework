@@ -22,10 +22,11 @@ module NakedObjects.Angular {
         // array of colors for allocated colors by default
         let defaultColorArray : string[] = [];
 
-        let defaultColor: string = "darkBlue";
+        let defaultColor = "darkBlue";
+        const colorPrefix = "bg-color-";
 
         function hashCode(toHash) {
-            let hash = 0, i, chr;
+            let hash = 0, i: number, chr: number;
             if (toHash.length === 0) return hash;
             for (i = 0; i < toHash.length; i++) {
                 chr = toHash.charCodeAt(i);
@@ -67,9 +68,9 @@ module NakedObjects.Angular {
         // tested
         color.toColorFromHref = (href: string): string => {
             const type = typeFromUrl(href);
-            return `bg-color-${getColorMapValues(type)}`;
+            return `${colorPrefix}${getColorMapValues(type)}`;
         }
     
-        color.toColorFromType = (type: string): string => `bg-color-${getColorMapValues(type)}`;
+        color.toColorFromType = (type: string): string => `${colorPrefix}${getColorMapValues(type)}`;
     });
 }
