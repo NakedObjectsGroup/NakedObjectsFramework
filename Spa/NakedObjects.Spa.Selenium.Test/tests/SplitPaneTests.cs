@@ -61,6 +61,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?o1=___1.Customer-30116&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
+            OpenSubMenu("Orders");
             RightClick(GetObjectAction("Last Order"));
             WaitForView(Pane.Left, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             WaitForView(Pane.Right, PaneType.Object, "SO67279");
@@ -164,10 +165,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ActionDialogOpensInCorrectPane()
         {
-            Url(twoObjects);
-            WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
-            WaitForView(Pane.Right, PaneType.Object, "SO71926");
-
+            GeminiUrl("object/object?i1=View&o1=___1.Customer-543&i2=View&o2=___1.SalesOrderHeader-56672&as1=open&as2=open");
+            WaitForView(Pane.Left, PaneType.Object, "Friendly Neighborhood Bikes, AW00000543");
+            WaitForView(Pane.Right, PaneType.Object, "SO56672");
+            OpenSubMenu("Orders", Pane.Left);
             OpenActionDialog("Create New Order", Pane.Left);
             CancelDialog(Pane.Left);
             OpenActionDialog("Add New Sales Reasons", Pane.Right);
@@ -180,7 +181,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(twoObjects);
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
             WaitForView(Pane.Right, PaneType.Object, "SO71926");
-
+            OpenSubMenu("Orders", Pane.Left);
             RightClick(GetObjectAction("Create New Order", Pane.Left));
             var selector = CssSelectorFor(Pane.Left) + " .dialog ";
             var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
@@ -417,7 +418,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
     #region Mega tests
     [TestClass]
-    public class SplitPaneMegaTestFirefox : SplitPaneTestsRoot
+    public class MegaSplitPaneTestFirefox : SplitPaneTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)

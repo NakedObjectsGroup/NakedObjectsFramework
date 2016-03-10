@@ -81,6 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void DateTimeParmKeepsValue()
         {
             GeminiUrl("object?o1=___1.Customer-29923&as1=open");
+            OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
             Assert.AreEqual("1 Jan 2000", fromDate.GetAttribute("value")); //Default field value

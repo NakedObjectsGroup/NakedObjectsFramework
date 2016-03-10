@@ -39,9 +39,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: HL Grip Tape");
 
             EnterCommand("Action");
-            WaitForOutput("Actions:\r\nAdd Or Change Photo\r\nBest Special Offer\r\nAssociate Special Offer With Product\r\nOpen Purchase Orders For Product\r\nCreate New Work Order\r\nWork Orders");
+            WaitForOutputStarting("Actions:\r\nAdd Or Change Photo\r\nBest Special Offer\r\nSpecial Offers - Associate Special Offer With Product");
             EnterCommand("act ord");
-            WaitForOutput("Matching actions:\r\nOpen Purchase Orders For Product\r\nCreate New Work Order\r\nWork Orders");
+            WaitForOutputStarting("Matching actions:\r\nPurchase Orders - Open Purchase Orders For Product\r\nWork Orders - Create New Work Order\r\n");
             EnterCommand("act foo  ");
             WaitForOutput("foo does not match any actions");
             EnterCommand("ac best");

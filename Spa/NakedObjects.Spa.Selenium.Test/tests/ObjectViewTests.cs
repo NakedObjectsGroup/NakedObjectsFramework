@@ -21,6 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
+            OpenSubMenu("Orders");
             var actions = GetObjectActions(6);
 
             //Assert.AreEqual("Create New Address", actions[0].Text);
@@ -141,13 +142,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #region Actions
         public virtual void DialogAction()
         {
+            GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
         }
         public virtual void DialogActionOk()
         {
+            GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
-
+            OpenSubMenu("Orders");
             var dialog = OpenActionDialog("Search For Orders");
 
             dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
@@ -157,13 +161,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ObjectAction()
         {
+            GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            OpenSubMenu("Orders");
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
         }
         public virtual void CollectionAction()
         {
+            GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            OpenSubMenu("Orders");
             Click(GetObjectAction("Recent Orders"));
             WaitForView(Pane.Single, PaneType.List, "Recent Orders");
         }

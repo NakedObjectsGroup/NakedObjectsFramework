@@ -103,6 +103,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
             WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
 
+            OpenSubMenu("Work Orders");
             Click(GetObjectAction("Create New Work Order", Pane.Left));
             WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Work Order");
             ClearFieldThenType("#orderqty1", "4");
