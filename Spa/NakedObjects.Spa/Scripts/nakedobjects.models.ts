@@ -122,10 +122,12 @@ module NakedObjects {
         
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
+                this.errorCode = ClientErrorCode[this.clientErrorCode];
             }
 
             if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
                 this.httpErrorCode = code as HttpStatusCode;
+                this.errorCode = `${HttpStatusCode[this.httpErrorCode]}(${this.httpErrorCode})`;
             }
 
             if (err instanceof ErrorMap) {
@@ -146,6 +148,7 @@ module NakedObjects {
             }
         }
 
+        errorCode : string;
         httpErrorCode: HttpStatusCode;
         clientErrorCode : ClientErrorCode; 
 

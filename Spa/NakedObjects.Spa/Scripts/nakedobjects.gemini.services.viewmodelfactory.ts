@@ -56,14 +56,9 @@ module NakedObjects.Angular.Gemini {
             const stackTrace = error ? error.stackTrace : null;
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
 
-            errorViewModel.description = "This is a helpful description based upon the error codes and message in th wrapped error";
+            errorViewModel.description = "This is a helpful description based upon the error codes and message in the wrapped error";
 
-            if (error.category === ErrorCategory.HttpClientError) {
-                errorViewModel.code = HttpStatusCode[error.httpErrorCode];
-            }
-            else if (error.category === ErrorCategory.ClientError) {
-                errorViewModel.code = ClientErrorCode[error.clientErrorCode];
-            }
+            errorViewModel.code = error.errorCode;
 
             errorViewModel.isConcurrencyError = error.category === ErrorCategory.HttpClientError && error.httpErrorCode === HttpStatusCode.PreconditionFailed;
 
