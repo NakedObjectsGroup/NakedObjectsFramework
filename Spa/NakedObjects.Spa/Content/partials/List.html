@@ -27,25 +27,25 @@
     <div class="actions" ng-include="actionsTemplate"></div>
     <div class="collection">
         <div class="dialog" ng-include="dialogTemplate"></div>
-     <div class="summary">
-      <div class="details">{{collection.description()}}</div>
-      <img class="icon-table clickable-area" ng-click="collection.doTable()" src="images/table.png" title="View as Table" />
-     </div>
+        <div class="summary">
+            <div class="details">{{collection.description()}}</div>
+            <img class="icon-table clickable-area" ng-click="collection.doTable()" src="images/table.png" title="View as Table" />
+        </div>
         <table>
-         <thead>
-          <tr>
-           <th><input type="checkbox" id="all" ng-model="collection.allSelected" ng-change="collection.selectAll()">All</th>
-          </tr>
-         </thead>
-            <tbody>              
+            <thead>
+                <tr>
+                    <th ng-hide="collection.disableActions()"><input type="checkbox" id="all" ng-model="collection.allSelected" ng-change="collection.selectAll()">All</th>
+                </tr>
+            </thead>
+            <tbody>
                 <tr ng-repeat="item in collection.items">
-                <td class="checkbox">
-                    <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.checkboxChange($index)">
-                </td>
-                <td class="reference clickable-area" ng-class="item.color" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
-                    <label for="{{'item'+collection.onPaneId+'-'+ $index}}">{{item.title}}</label>
-                </td>
-            </tr>
+                    <td class="checkbox" ng-hide="collection.disableActions()">
+                        <input type="checkbox" id="{{'item'+collection.onPaneId+'-'+ $index}}" ng-model="item.selected" ng-change="item.checkboxChange($index)">
+                    </td>
+                    <td class="reference clickable-area" ng-class="item.color" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
+                        <label for="{{'item'+collection.onPaneId+'-'+ $index}}">{{item.title}}</label>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
