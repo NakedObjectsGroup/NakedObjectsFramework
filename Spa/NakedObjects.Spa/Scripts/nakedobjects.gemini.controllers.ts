@@ -77,6 +77,7 @@ module NakedObjects.Angular.Gemini {
         //cvm.viewType = ViewType.Error;
         cvm.renderError();
         focusManager.focusOn(FocusTarget.Input, 0, 1);
+        // todo is this supposed to be an assignment ?
         cvm.chainedCommands == null;
     });
 }

@@ -110,7 +110,6 @@
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.color.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.color.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.loaderwithtransform.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.mask.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.angular.services.representationloader.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.cicero.renderer.ts" />
