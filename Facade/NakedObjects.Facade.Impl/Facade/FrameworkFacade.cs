@@ -14,8 +14,10 @@ using System.Security.Principal;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
@@ -1034,12 +1036,37 @@ namespace NakedObjects.Facade.Impl {
 
         }
 
+        private Tuple<string, IActionSpecImmutable>[] GetMenuItem(IMenuItemImmutable item, string parent = "") {
+            var menuAction = item as IMenuActionImmutable;
+
+            if (menuAction != null) {
+                return new[] { new Tuple<string, IActionSpecImmutable>(parent, menuAction.Action) };
+            }
+
+            var menu = item as IMenuImmutable;
+
+            if (menu != null) {
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : "-") + menu.Name;
+                return menu.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
+            }
+
+            return new Tuple<string, IActionSpecImmutable>[] { };
+        }
+
+
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject) {
             if (nakedObject == null) {
                 return null;
             }
 
-            IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
+            IActionSpec[] actionLeafs = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
+
+            var menuItems = nakedObject.Spec.Menu?.MenuItems ?? new List<IMenuItemImmutable>();
+
+            var menuActions = menuItems.SelectMany(m => GetMenuItem(m));
+
+            var actions = menuActions.Select(m => new Tuple<string, IActionSpec>(m.Item1, actionLeafs.SingleOrDefault(a => a.Identifier.Equals(m.Item2.Identifier)))).Where(t => t.Item2 != null);
+
             var objectSpec = nakedObject.Spec as IObjectSpec;
             IAssociationSpec[] properties = objectSpec == null ? new IAssociationSpec[] {} : objectSpec.Properties.Where(p => p.IsVisible(nakedObject)).ToArray();
 
@@ -1064,11 +1091,13 @@ namespace NakedObjects.Facade.Impl {
                 }).ToArray();
             }
 
-            var actionContexts = actions.Select(a => new {action = a, uid = FacadeUtils.GetOverloadedUId(a, nakedObject.Spec)}).Select(a => new ActionContext {
+            var actionContexts = actions.Select(a => new {action = a.Item2, uid = FacadeUtils.GetOverloadedUId(a.Item2, nakedObject.Spec), mp = a.Item1}).Select(a => new ActionContext {
+                
                 Action = a.action,
                 Target = nakedObject,
                 VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
-                OverloadedUniqueId = a.uid
+                OverloadedUniqueId = a.uid,
+                MenuPath = a.mp
             });
 
             return new ObjectContext(nakedObject) {

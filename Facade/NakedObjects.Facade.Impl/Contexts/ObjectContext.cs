@@ -25,11 +25,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
             get
             {
                 var rdo = Target.Object as IRedirectedObject;
-                if (rdo != null)
-                {
-                    return new Tuple<string, string>(rdo.ServerName, rdo.Oid);
-                }
-                return null;
+                return rdo != null ? new Tuple<string, string>(rdo.ServerName, rdo.Oid) : null;
             }
         }
 
@@ -37,9 +33,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
             get { throw new NotImplementedException(); }
         }
 
-        public override ITypeSpec Specification {
-            get { return Target.Spec; }
-        }
+        public override ITypeSpec Specification => Target.Spec;
 
         public PropertyContext[] VisibleProperties { get; set; }
         public ActionContext[] VisibleActions { get; set; }
