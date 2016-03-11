@@ -129,6 +129,7 @@ module NakedObjects {
 
             context.clearWarnings();
             context.clearMessages();
+            $scope.homeTemplate = homePlaceholderTemplate;
 
             context.getMenus().
                 then((menus: MenusRepresentation) => {
