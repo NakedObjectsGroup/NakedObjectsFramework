@@ -7,7 +7,7 @@ module NakedObjects {
         pane(currentPane: number, right?: boolean): number;
     }
 
-    app.service("clickHandler", function () {
+    app.service("clickHandler", function() {
         const clickHandler = <IClickHandler>this;
 
         function leftRightClickHandler(currentPane: number, right = false): number {

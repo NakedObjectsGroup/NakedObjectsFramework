@@ -16,24 +16,24 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
 
     export interface IRepLoader {
-        retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, digest? : string) => ng.IPromise<T>;
-        retrieveFromLink: <T extends IHateoasModel>(link : Link) => ng.IPromise<T>;
+        retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string) => ng.IPromise<T>;
+        retrieveFromLink: <T extends IHateoasModel>(link: Link) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
-        invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms : _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
+        invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
 
-    app.service("repLoader", function ($http : ng.IHttpService, $q : ng.IQService, $rootScope : ng.IRootScopeService, $cacheFactory : ng.ICacheFactoryService ) {
+    app.service("repLoader", function($http: ng.IHttpService, $q: ng.IQService, $rootScope: ng.IRootScopeService, $cacheFactory: ng.ICacheFactoryService) {
 
         const repLoader = this as IRepLoader;
         let loadingCount = 0;
 
-        function addIfMatchHeader(config: ng.IRequestConfig, digest : string) {
+        function addIfMatchHeader(config: ng.IRequestConfig, digest: string) {
             if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
                 config.headers = { "If-Match": digest };
             }
         }
 
-        function httpPopulate(config : ng.IRequestConfig, ignoreCache : boolean, response : IHateoasModel) : ng.IPromise<IHateoasModel> {
+        function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
             $rootScope.$broadcast("ajax-change", ++loadingCount);
 
             if (ignoreCache) {
@@ -49,7 +49,7 @@ module NakedObjects {
                     return $q.when(response);
                 }).
                 catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
-                    
+
                     let message: string;
                     let category: ErrorCategory;
                     let error: ErrorRepresentation | ErrorMap = null;
@@ -68,7 +68,7 @@ module NakedObjects {
                         if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
                             // these errors should contain a map                            
                             error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
-                        } 
+                        }
                     }
 
                     $rootScope.$broadcast("ajax-change", --loadingCount);
@@ -82,11 +82,11 @@ module NakedObjects {
 
         repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
 
-            const response =  model;
+            const response = model;
             const useCache = !ignoreCache;
 
             const config = {
-                withCredentials : true,
+                withCredentials: true,
                 url: model.getUrl(),
                 method: model.method,
                 cache: useCache,
@@ -96,7 +96,7 @@ module NakedObjects {
             return httpPopulate(config, ignoreCache, response);
         };
 
-        repLoader.retrieve = <T extends IHateoasModel > (map: IHateoasModel, rc : { new () : IHateoasModel }, digest? : string): ng.IPromise<T> => {
+        repLoader.retrieve = <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string): ng.IPromise<T> => {
 
             const response = new rc();
 
@@ -113,8 +113,8 @@ module NakedObjects {
             return httpPopulate(config, true, response);
         };
 
-       
-        repLoader.retrieveFromLink = <T extends IHateoasModel>(link : Link): ng.IPromise<T> => {
+
+        repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link): ng.IPromise<T> => {
 
             const response = link.getTarget();
 
@@ -129,13 +129,12 @@ module NakedObjects {
         };
 
 
-
-        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise < ActionResultRepresentation > => {
+        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise<ActionResultRepresentation> => {
             const invokeMap = action.getInvokeMap();
-            _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));                                      
+            _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
-            return this.retrieve (invokeMap, ActionResultRepresentation);
-        }
+            return this.retrieve(invokeMap, ActionResultRepresentation);
+        };
     });
 
 }

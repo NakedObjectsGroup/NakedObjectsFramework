@@ -76,14 +76,14 @@ module NakedObjects.Models {
     }
 
     export function getClassName(obj: any) {
-        var funcNameRegex = /function (.{1,})\(/;
-        var results = (funcNameRegex).exec(obj.constructor.toString());
+        const funcNameRegex = /function (.{1,})\(/;
+        const results = (funcNameRegex).exec(obj.constructor.toString());
         return (results && results.length > 1) ? results[1] : "";
     }
 
     export function typeFromUrl(url: string) {
-        var typeRegex = /(objects|services)\/([\w|\.]+)/;
-        var results = (typeRegex).exec(url);
+        const typeRegex = /(objects|services)\/([\w|\.]+)/;
+        const results = (typeRegex).exec(url);
         return (results && results.length > 2) ? results[2] : "";
     }
 
@@ -93,19 +93,19 @@ module NakedObjects.Models {
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
-   export function friendlyNameForParam(action: ActionMember, parmId: string) {
-        var param = _.find(action.parameters(), (p) => p.id() == parmId);
+    export function friendlyNameForParam(action: ActionMember, parmId: string) {
+        const param = _.find(action.parameters(), (p) => p.id() == parmId);
         return param.extensions().friendlyName();
     }
 
-   export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
-       var prop = obj.propertyMember(propId);
-       return prop.extensions().friendlyName();
-   }
+    export function friendlyNameForProperty(obj: DomainObjectRepresentation, propId: string) {
+        const prop = obj.propertyMember(propId);
+        return prop.extensions().friendlyName();
+    }
 
-   export function typePlusTitle(obj: DomainObjectRepresentation) {
-       const type = friendlyTypeName(obj.domainType());
-       const title = obj.title();
-       return type + ": " + title;
-   }
+    export function typePlusTitle(obj: DomainObjectRepresentation) {
+        const type = friendlyTypeName(obj.domainType());
+        const title = obj.title();
+        return type + ": " + title;
+    }
 }

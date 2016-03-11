@@ -9,11 +9,11 @@ module NakedObjects {
     interface ISelectObj {
         request?: string;
         args?: _.Dictionary<Value>;
-        date? : string;
+        date?: string;
     }
 
     interface ISelectScope extends ng.IScope {
-        select: (obj : ISelectObj) => ng.IPromise<ChoiceViewModel[]>;
+        select: (obj: ISelectObj) => ng.IPromise<ChoiceViewModel[]>;
     }
 
     interface IPropertyOrParameterScope extends INakedObjectsScope {
@@ -23,7 +23,7 @@ module NakedObjects {
 
 
     // based on code in AngularJs, Green and Seshadri, O'Reilly
-    app.directive("geminiDatepicker", (mask : IMask, $timeout : ng.ITimeoutService): ng.IDirective => {
+    app.directive("geminiDatepicker", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -32,16 +32,16 @@ module NakedObjects {
             require: "?ngModel",
 
             // to make sure dynamic ids on element get picked up
-            transclude : true,
+            transclude: true,
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
-                select: "&"        // Bind the select function we refer to the right scope
+                select: "&" // Bind the select function we refer to the right scope
             },
             link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
-                 // only add datepicker if date field not supported 
+                // only add datepicker if date field not supported 
                 if (element.prop("type") === "date") return;
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
@@ -67,10 +67,10 @@ module NakedObjects {
                 // use viewmodel filter if we've been given one 
                 const localFilter = viewModel && viewModel.localFilter ? viewModel.localFilter : mask.defaultLocalFilter("date");
                 ngModel.$formatters.push(val => localFilter.filter(val));
-               
+
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
-                  
+
                     const updateModel = dateTxt => {
                         scope.$apply(() => {
                             // Call the internal AngularJS helper to
@@ -81,7 +81,7 @@ module NakedObjects {
                     };
 
                     const onSelect = dateTxt => updateModel(dateTxt);
-                
+
                     const optionsObj = {
                         dateFormat: "d M yy", // datepicker format
                         onSelect: onSelect,
@@ -92,7 +92,7 @@ module NakedObjects {
                     };
 
                     element.datepicker(optionsObj);
-                 
+
                 });
             }
         };
@@ -108,7 +108,7 @@ module NakedObjects {
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
-                select: "&"        // Bind the select function we refer to the right scope
+                select: "&" // Bind the select function we refer to the right scope
             },
 
             link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
@@ -129,7 +129,7 @@ module NakedObjects {
                 };
 
                 ngModel.$render = render;
-             
+
                 const updateModel = (cvm: ChoiceViewModel) => {
 
                     scope.$apply(() => {
@@ -148,21 +148,21 @@ module NakedObjects {
 
                 optionsObj.select = (event, ui) => {
                     updateModel(ui.item.value);
-                    return false; 
+                    return false;
                 };
 
                 optionsObj.focus = () => false;
                 optionsObj.autoFocus = true;
                 optionsObj.minLength = viewModel.minLength;
 
-                const clearHandler = function () {
+                const clearHandler = function() {
                     const value = $(this).val();
                     if (value.length === 0) {
                         updateModel(ChoiceViewModel.create(new Value(""), ""));
                     }
                 };
 
-                element.keyup(clearHandler); 
+                element.keyup(clearHandler);
                 element.autocomplete(optionsObj);
                 render(viewModel.choice);
             }
@@ -179,7 +179,7 @@ module NakedObjects {
             // This method needs to be defined and passed in from the
             // passed in to the directive from the view controller
             scope: {
-                select: "&"        // Bind the select function we refer to the right scope
+                select: "&" // Bind the select function we refer to the right scope
             },
             link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
@@ -190,11 +190,11 @@ module NakedObjects {
                 const paneId = viewModel.onPaneId;
                 let currentOptions: ChoiceViewModel[] = [];
 
-                function isDomainObjectViewModel(object : any) : object is DomainObjectViewModel {
+                function isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
                     return object && "properties" in object;
                 }
 
-                function mapValues(args : _.Dictionary<Value>, parmsOrProps : { argId : string, getValue : () => Value  }[]  ) {
+                function mapValues(args: _.Dictionary<Value>, parmsOrProps: { argId: string, getValue: () => Value }[]) {
                     return _.mapValues(pArgs, (v, n) => {
                         const pop = _.find(parmsOrProps, p => p.argId === n);
                         return pop.getValue();
@@ -229,7 +229,7 @@ module NakedObjects {
                     const prompts = scope.select({ args: nArgs });
                     prompts.then((cvms: ChoiceViewModel[]) => {
                         // if unchanged return 
-                        if (cvms.length === currentOptions.length && _.every(cvms, (c, i) =>  c.equals(currentOptions[i]))) {
+                        if (cvms.length === currentOptions.length && _.every(cvms, (c, i) => c.equals(currentOptions[i]))) {
                             return;
                         }
 
@@ -238,7 +238,7 @@ module NakedObjects {
                         element.append(emptyOpt);
 
                         _.forEach(cvms, cvm => {
-                           
+
                             const opt = $("<option></option>");
                             opt.val(cvm.value);
                             opt.text(cvm.name);
@@ -253,12 +253,12 @@ module NakedObjects {
                             $(element).val(vals);
                         } else if (viewModel.choice) {
                             $(element).val(viewModel.choice.value);
-                        } 
+                        }
                     }).catch(() => {
                         // error clear everything 
                         element.find("option").remove();
                         viewModel.choice = null;
-                        currentOptions = []; 
+                        currentOptions = [];
                     });
                 }
 
@@ -297,7 +297,7 @@ module NakedObjects {
                     setListeners();
                     // initial populate
                     populateDropdown();
-                }, 1); 
+                }, 1);
             }
         };
     });
@@ -327,19 +327,18 @@ module NakedObjects {
         const cloneDraggable = () => {
             let cloned: JQuery;
 
-             // make the dragged element look like a reference 
+            // make the dragged element look like a reference 
             if ($(element)[0].nodeName.toLowerCase() === "tr") {
                 const title = $(element).find("td.cell:first").text();
                 cloned = $(`<div>${title}</div>`);
             } else {
                 cloned = $(element).clone();
             }
-   
+
             cloned.removeClass();
             cloned.addClass("reference");
             return cloned;
-        }
-
+        };
         element.draggable({
             helper: cloneDraggable,
             zIndex: 9999
@@ -359,8 +358,8 @@ module NakedObjects {
         element.on("keydown keypress", event => {
             const cKeyCode = 67;
             if (event.keyCode === cKeyCode && event.ctrlKey) {
-                const draggableVm = scope.property || scope.item || scope.$parent.object;              
-                const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].textContent}</div>`)(scope);        
+                const draggableVm = scope.property || scope.item || scope.$parent.object;
+                const compiledClone = $compile(`<div class='reference ${draggableVm.color}' gemini-drag=''>${element[0].textContent}</div>`)(scope);
                 compiledClone.data(draggableVmKey, draggableVm);
                 $("div.footer div.currentcopy").empty();
                 $("div.footer div.currentcopy").append("<span>Copying...</span>").append(compiledClone);
@@ -379,45 +378,45 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager : IFocusManager) => (scope, elem, attr) => {
-        scope.$on(geminiFocusEvent, (e, target: FocusTarget, index : number, paneId : number, count : number) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope, elem, attr) => {
+        scope.$on(geminiFocusEvent, (e, target: FocusTarget, index: number, paneId: number, count: number) => {
 
             $timeout(() => {
 
                 let focusElements: JQuery;
 
                 switch (target) {
-                    case FocusTarget.Menu:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`);
-                        break;
-                    case FocusTarget.SubAction:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`);
-                        break;
-                    case FocusTarget.Action:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.action, div.single div.action`);
-                        break;
-                    case FocusTarget.ObjectTitle:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`);
-                        break;
-                    case FocusTarget.Dialog:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input[type!='hidden'], div.single div.parameters div.parameter :input[type!='hidden']`);
-                        break;
-                    case FocusTarget.ListItem:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`);
-                        break;
-                    case FocusTarget.Property:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`);
-                        break;
-                    case FocusTarget.TableItem:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.collection tbody tr, div.single div.collection tbody tr`);
-                        break;
-                    case FocusTarget.Input:
-                        focusElements = $(elem).find("input");
-                        break;
-                    case FocusTarget.CheckBox:
-                        focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
-                        break;
-    
+                case FocusTarget.Menu:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`);
+                    break;
+                case FocusTarget.SubAction:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`);
+                    break;
+                case FocusTarget.Action:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.action, div.single div.action`);
+                    break;
+                case FocusTarget.ObjectTitle:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`);
+                    break;
+                case FocusTarget.Dialog:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input[type!='hidden'], div.single div.parameters div.parameter :input[type!='hidden']`);
+                    break;
+                case FocusTarget.ListItem:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`);
+                    break;
+                case FocusTarget.Property:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`);
+                    break;
+                case FocusTarget.TableItem:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.collection tbody tr, div.single div.collection tbody tr`);
+                    break;
+                case FocusTarget.Input:
+                    focusElements = $(elem).find("input");
+                    break;
+                case FocusTarget.CheckBox:
+                    focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
+                    break;
+
                 }
 
                 if (focusElements) {
@@ -456,8 +455,7 @@ module NakedObjects {
                 return true;
             }
             return false;
-        }
-
+        };
         element.droppable({
             tolerance: "touch",
             hoverClass: "dropping",
@@ -481,7 +479,7 @@ module NakedObjects {
             const deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
                 event.preventDefault();
-             
+
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
@@ -499,7 +497,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window : ng.IWindowService): ng.IDirective => {
+    app.directive("geminiAttachment", ($window: ng.IWindowService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -511,11 +509,11 @@ module NakedObjects {
                     return;
                 }
 
-                function downloadFile(url : string, mt : string, success : (resp : Blob) => void ) {
+                function downloadFile(url: string, mt: string, success: (resp: Blob) => void) {
                     const xhr = new XMLHttpRequest();
                     xhr.open("GET", url, true);
                     xhr.responseType = "blob";
-                    xhr.setRequestHeader("Accept", mt); 
+                    xhr.setRequestHeader("Accept", mt);
                     xhr.onreadystatechange = () => {
                         if (xhr.readyState === 4) {
                             success(<Blob>xhr.response);
@@ -526,7 +524,7 @@ module NakedObjects {
 
                 function displayInline(mt: string) {
                     return mt === "image/jpeg" ||
-                        mt === "image/gif"  ||
+                        mt === "image/gif" ||
                         mt === "application/octet-stream";
                 }
 
@@ -535,10 +533,10 @@ module NakedObjects {
                     const url = attachment.href;
                     const mt = attachment.mimeType;
                     downloadFile(url, mt, resp => {
-                        const burl = URL.createObjectURL(resp); 
-                        $window.location.href = burl;                    
+                        const burl = URL.createObjectURL(resp);
+                        $window.location.href = burl;
                     });
-                    return false; 
+                    return false;
                 };
 
                 ngModel.$render = () => {

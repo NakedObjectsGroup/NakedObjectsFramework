@@ -4,7 +4,7 @@
 
 
 module NakedObjects {
-  
+
     import Decompress = Models.decompress;
     import Compress = Models.compress;
     import ErrorCategory = Models.ErrorCategory;
@@ -20,9 +20,9 @@ module NakedObjects {
 
     export interface IUrlManager {
         getRouteData(): RouteData;
-        setError(errorCategory : ErrorCategory, ec? : ClientErrorCode | HttpStatusCode );
+        setError(errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode);
         setHome(paneId?: number);
-        setMenu(menuId: string, paneId? : number);
+        setMenu(menuId: string, paneId?: number);
         setDialog(dialogId: string, paneId?: number);
         closeDialog(paneId?: number);
         setObject(resultObject: DomainObjectRepresentation, paneId?: number);
@@ -30,12 +30,12 @@ module NakedObjects {
         setProperty(propertyMember: PropertyMember, paneId?: number);
         setItem(link: Link, paneId?: number): void;
         toggleObjectMenu(paneId?: number): void;
-        setInteractionMode(newMode: InteractionMode, paneId? : number);
+        setInteractionMode(newMode: InteractionMode, paneId?: number);
         setCollectionMemberState(collectionMemberId: string, state: CollectionViewState, paneId?: number): void;
         setListState(state: CollectionViewState, paneId?: number): void;
         setListPaging(newPage: number, newPageSize: number, state: CollectionViewState, paneId?: number): void;
-        setListItem(item: number, selected: boolean, paneId?: number ): void;
-          
+        setListItem(item: number, selected: boolean, paneId?: number): void;
+
         pushUrlState(paneId?: number): void;
         clearUrlState(paneId?: number): void;
         popUrlState(onPaneId?: number): void;
@@ -43,7 +43,7 @@ module NakedObjects {
         swapPanes(): void;
         singlePane(paneId?: number): void;
 
-        setFieldValue: (dialogId: string, p: Parameter, pv: Value, reload?: boolean, paneId? : number) => void;
+        setFieldValue: (dialogId: string, p: Parameter, pv: Value, reload?: boolean, paneId?: number) => void;
 
         setParameterValue: (actionId: string, p: Parameter, pv: Value, reload?: boolean, paneId?: number) => void;
 
@@ -79,9 +79,7 @@ module NakedObjects {
             parm: "pm",
             prop: "pp",
             selected: "s"
-        }
-
-      
+        };
         const capturedPanes = [];
 
         let currentPaneId = 1;
@@ -100,7 +98,7 @@ module NakedObjects {
                 throw new TypeError("arrayFromMask - out of range");
             }
             const aFromMask = [];
-            for (var nShifted = nMask; nShifted; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+            for (let nShifted = nMask; nShifted; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
             return aFromMask;
         }
 
@@ -112,12 +110,12 @@ module NakedObjects {
             $location.search(search);
         }
 
-        function getIds(typeOfId : string,  paneId : number) {
+        function getIds(typeOfId: string, paneId: number) {
             return <_.Dictionary<string>> _.pickBy($routeParams, (v, k) => k.indexOf(typeOfId + paneId) === 0);
         }
 
-        function mapIds(ids : _.Dictionary<string>) : _.Dictionary<string>  {
-            return _.mapKeys(ids, (v, k : string) => k.substr(k.indexOf("_") + 1));
+        function mapIds(ids: _.Dictionary<string>): _.Dictionary<string> {
+            return _.mapKeys(ids, (v, k: string) => k.substr(k.indexOf("_") + 1));
         }
 
         function getAndMapIds(typeOfId: string, paneId: number) {
@@ -129,7 +127,7 @@ module NakedObjects {
             return _.mapValues(mappedIds, v => Value.fromJsonString(v));
         }
 
-        function getInteractionMode(rawInteractionMode : string) {
+        function getInteractionMode(rawInteractionMode: string) {
             return rawInteractionMode ? InteractionMode[rawInteractionMode] : InteractionMode.View;
         }
 
@@ -145,10 +143,10 @@ module NakedObjects {
             paneRouteData.objectId = getId(akm.object + paneId, $routeParams);
             paneRouteData.actionsOpen = getId(akm.actions + paneId, $routeParams);
 
-            const rawCollectionState: string = getId(akm.collection + paneId, $routeParams);
+            const rawCollectionState = getId(akm.collection + paneId, $routeParams);
             paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
 
-            const rawInteractionMode: string = getId(akm.interactionMode + paneId, $routeParams);
+            const rawInteractionMode = getId(akm.interactionMode + paneId, $routeParams);
             paneRouteData.interactionMode = getInteractionMode(rawInteractionMode);
 
             const collKeyMap = getAndMapIds(akm.collection, paneId);
@@ -175,7 +173,7 @@ module NakedObjects {
             return $location.path().split("/").length <= 3;
         }
 
-        function searchKeysForPane(search: any, paneId: number, raw : string[]) {
+        function searchKeysForPane(search: any, paneId: number, raw: string[]) {
             const ids = _.map(raw, s => s + paneId);
             return _.filter(_.keys(search), k => _.some(ids, id => k.indexOf(id) === 0));
         }
@@ -190,12 +188,12 @@ module NakedObjects {
             return _.omit(search, toClear);
         }
 
-        function clearSearchKeys(search: any, paneId: number, keys : string[]) {
+        function clearSearchKeys(search: any, paneId: number, keys: string[]) {
             const toClear = searchKeysForPane(search, paneId, keys);
             return _.omit(search, toClear);
         }
 
-        function clearFieldKeys(search: any, paneId: number) { 
+        function clearFieldKeys(search: any, paneId: number) {
             const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${paneId}`) === 0);
             return _.omit(search, ids);
         }
@@ -226,7 +224,7 @@ module NakedObjects {
             // changing item on pane 1
             // make sure pane is of correct type
             if (pane === 1 && pane1Type !== newPaneType) {
-                const newPath = `/${mode}/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;              
+                const newPath = `/${mode}/${newPaneType}${singlePane() ? "" : `/${pane2Type}`}`;
                 changeMode = false;
                 $location.path(newPath);
             }
@@ -235,7 +233,7 @@ module NakedObjects {
             // either single pane so need to add new pane of appropriate type
             // or double pane with second pane of wrong type. 
             if (pane === 2 && (singlePane() || pane2Type !== newPaneType)) {
-                const newPath = `/${mode}/${pane1Type}/${newPaneType}`;            
+                const newPath = `/${mode}/${pane1Type}/${newPaneType}`;
                 changeMode = false;
                 $location.path(newPath);
             }
@@ -259,12 +257,12 @@ module NakedObjects {
             return `${results[2]}-${results[3]}`;
         }
 
-      
-        function setValue(paneId: number, search: any, p: {id : () => string}, pv: Value, valueType : string) {
+
+        function setValue(paneId: number, search: any, p: { id: () => string }, pv: Value, valueType: string) {
             setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(), search);
         }
 
-        function setParameter(paneId: number, search: any, p : Parameter,  pv: Value) {
+        function setParameter(paneId: number, search: any, p: Parameter, pv: Value) {
             setValue(paneId, search, p, pv, akm.parm);
         }
 
@@ -273,16 +271,16 @@ module NakedObjects {
         }
 
         function setProperty(paneId: number, search: any, p: PropertyMember, pv: Value) {
-            setValue(paneId, search, p, pv, akm.prop);           
+            setValue(paneId, search, p, pv, akm.prop);
         }
 
 
         enum Transition {
-            Null, 
+            Null,
             ToHome,
             ToMenu,
             ToDialog,
-            FromDialog, 
+            FromDialog,
             ToObjectView,
             ToList,
             LeaveEdit
@@ -311,41 +309,41 @@ module NakedObjects {
             return search;
         }
 
-        function handleTransition(paneId: number, search : any, transition: Transition) {
+        function handleTransition(paneId: number, search: any, transition: Transition) {
 
             switch (transition) {
-                case (Transition.ToHome):
-                    setupPaneNumberAndTypes(paneId, homePath);
-                    search = clearPane(search, paneId);
-                    break;
-                case (Transition.ToMenu):
-                    search = clearPane(search, paneId);
-                    break;
-                case (Transition.ToDialog):
-                case (Transition.FromDialog):
-                    search = clearFieldKeys(search, paneId);
-                    break;
-                case (Transition.ToObjectView):
-                    setupPaneNumberAndTypes(paneId, objectPath);
-                    search = clearPane(search, paneId);
-                    setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
-                    break;
-                case (Transition.ToList):
-                    search = setFieldsToParms(paneId, search);          
-                    setupPaneNumberAndTypes(paneId, listPath);
-                    clearId(akm.menu + paneId, search);
-                    clearId(akm.object + paneId, search);
-                    clearId(akm.dialog + paneId, search);
-                    break;
-                case (Transition.LeaveEdit): 
-                    search = clearSearchKeys(search, paneId, [akm.prop]);
-                    break;
-                default:
-                    // null transition 
-                    break;         
+            case (Transition.ToHome):
+                setupPaneNumberAndTypes(paneId, homePath);
+                search = clearPane(search, paneId);
+                break;
+            case (Transition.ToMenu):
+                search = clearPane(search, paneId);
+                break;
+            case (Transition.ToDialog):
+            case (Transition.FromDialog):
+                search = clearFieldKeys(search, paneId);
+                break;
+            case (Transition.ToObjectView):
+                setupPaneNumberAndTypes(paneId, objectPath);
+                search = clearPane(search, paneId);
+                setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
+                break;
+            case (Transition.ToList):
+                search = setFieldsToParms(paneId, search);
+                setupPaneNumberAndTypes(paneId, listPath);
+                clearId(akm.menu + paneId, search);
+                clearId(akm.object + paneId, search);
+                clearId(akm.dialog + paneId, search);
+                break;
+            case (Transition.LeaveEdit):
+                search = clearSearchKeys(search, paneId, [akm.prop]);
+                break;
+            default:
+                // null transition 
+                break;
             }
 
-            return search; 
+            return search;
         }
 
         function executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search) => boolean) {
@@ -367,8 +365,7 @@ module NakedObjects {
 
         helper.setHome = (paneId = 1) => {
             executeTransition({}, paneId, Transition.ToHome, () => true);
-        }
-
+        };
         helper.setMenu = (menuId: string, paneId = 1) => {
             const key = `${akm.menu}${paneId}`;
             const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
@@ -395,7 +392,7 @@ module NakedObjects {
         };
 
         helper.setList = (actionMember: ActionMember, paneId = 1) => {
-            const newValues = {} as _.Dictionary<string>; 
+            const newValues = {} as _.Dictionary<string>;
             const parent = actionMember.parent;
 
             if (parent instanceof DomainObjectRepresentation) {
@@ -428,16 +425,15 @@ module NakedObjects {
             const key = `${akm.object}${paneId}`;
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
-        }
-
-        helper.toggleObjectMenu = (paneId = 1) => {      
+        };
+        helper.toggleObjectMenu = (paneId = 1) => {
             const key = akm.actions + paneId;
             const actionsId = getSearch()[key] ? null : "open";
             const newValues = _.zipObject([key], [actionsId]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
-        function checkAndSetValue(paneId : number,  check: (search : any) => boolean, set: (search : any) => void, reload : boolean) {
+        function checkAndSetValue(paneId: number, check: (search: any) => boolean, set: (search: any) => void, reload: boolean) {
             currentPaneId = paneId;
             const search = getSearch();
 
@@ -453,22 +449,19 @@ module NakedObjects {
         }
 
         helper.setFieldValue = (dialogId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
-
             checkAndSetValue(paneId,
                 search => getId(`${akm.dialog}${paneId}`, search) === dialogId,
                 search => setField(paneId, search, p, pv),
                 reload);
 
         helper.setParameterValue = (actionId: string, p: Parameter, pv: Value, reload = true, paneId = 1) =>
-      
             checkAndSetValue(paneId,
                 search => getId(`${akm.action}${paneId}`, search) === actionId,
                 search => setParameter(paneId, search, p, pv),
                 reload);
-       
 
-        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, reload = true, paneId = 1) => 
-                   
+
+        helper.setPropertyValue = (obj: DomainObjectRepresentation, p: PropertyMember, pv: Value, reload = true, paneId = 1) =>
             checkAndSetValue(paneId,
                 search => {
                     // only add value if matching object (to catch case when swapping panes) 
@@ -480,8 +473,8 @@ module NakedObjects {
                 },
                 search => setProperty(paneId, search, p, pv),
                 reload);
-       
-     
+
+
         helper.setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId = 1) => {
             const key = `${akm.collection}${paneId}_${collectionMemberId}`;
             const newValues = _.zipObject([key], [CollectionViewState[state]]) as _.Dictionary<string>;
@@ -494,7 +487,7 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
-        helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {         
+        helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {
             const key = `${akm.interactionMode}${paneId}`;
             const currentMode = getInteractionMode(getId(key, $routeParams));
             const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
@@ -504,18 +497,17 @@ module NakedObjects {
 
 
         helper.setListItem = (item: number, isSelected: boolean, paneId = 1) => {
-         
+
             const key = `${akm.selected}${paneId}`;
-            const currentSelected: number = parseInt(getSearch()[key] || 0);
-            const selectedArray : boolean[] = arrayFromMask(currentSelected);
+            const currentSelected = parseInt(getSearch()[key] || 0);
+            const selectedArray: boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
             const currentSelectedAsString = (createMask(selectedArray)).toString();
             const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
 
             $location.replace();
-        }
-
+        };
         helper.setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
             const pageValues = {} as _.Dictionary<string>;
 
@@ -532,15 +524,15 @@ module NakedObjects {
             const segments = path.split("/");
             const mode = segments[1];
             const newPath = `/${mode}/error`;
-           
-            const search = {}
+
+            const search = {};
             // always on pane 1
             search[akm.errorCat + 1] = ErrorCategory[errorCategory];
 
             $location.path(newPath);
             setNewSearch(search);
 
-            if (errorCategory ===  ErrorCategory.HttpClientError && ec === HttpStatusCode.PreconditionFailed) {
+            if (errorCategory === ErrorCategory.HttpClientError && ec === HttpStatusCode.PreconditionFailed) {
                 // on concurrency fail replace url so we can't just go back
                 $location.replace();
             }
@@ -558,8 +550,7 @@ module NakedObjects {
 
         helper.pushUrlState = (paneId = 1) => {
             capturedPanes[paneId] = helper.getUrlState(paneId);
-        }
-
+        };
         helper.getUrlState = (paneId = 1) => {
             currentPaneId = paneId;
 
@@ -570,17 +561,16 @@ module NakedObjects {
             const paneSearch = capturePane(paneId);
 
             return { paneType: paneType, search: paneSearch };
-        }
-
-        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format? : CollectionViewState) => {
+        };
+        helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
             const search = getSearch();
-       
+
             const s1 = getId(`${akm.menu}${paneId}`, search) || "";
             const s2 = getId(`${akm.object}${paneId}`, search) || "";
             const s3 = getId(`${akm.action}${paneId}`, search) || "";
 
             const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
-            const mappedParms = _.mapValues(parms, v => decodeURIComponent( Decompress(v)));
+            const mappedParms = _.mapValues(parms, v => decodeURIComponent(Decompress(v)));
 
             const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
 
@@ -592,8 +582,7 @@ module NakedObjects {
             const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
             return _.reduce(ss, (r, n) => r + "-" + n, "");
-        }
-
+        };
         helper.popUrlState = (paneId = 1) => {
             currentPaneId = paneId;
 
@@ -610,17 +599,15 @@ module NakedObjects {
                 // just go home 
                 helper.setHome(paneId);
             }
-        }
-
+        };
         helper.clearUrlState = (paneId: number) => {
             currentPaneId = paneId;
             capturedPanes[paneId] = null;
-        }
-
+        };
 
         function swapSearchIds(search: any) {
             return _.mapKeys(search,
-                (v, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
+            (v, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
         }
 
 
@@ -633,27 +620,25 @@ module NakedObjects {
             currentPaneId = currentPaneId === 1 ? 2 : 1;
 
             $location.path(newPath).search(search);
-        }
-
+        };
         helper.cicero = () => {
             const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
             $location.path(newPath);
-        }
-
+        };
         helper.currentpane = () => currentPaneId;
 
         helper.singlePane = (paneId = 1) => {
             currentPaneId = 1;
 
             if (!singlePane()) {
-           
+
                 const paneToKeepId = paneId;
                 const paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
 
                 const path = $location.path();
                 const segments = path.split("/");
                 const mode = segments[1];
-                const paneToKeep = segments[paneToKeepId + 1];            
+                const paneToKeep = segments[paneToKeepId + 1];
                 const newPath = `/${mode}/${paneToKeep}`;
 
                 let search = getSearch();
@@ -671,12 +656,11 @@ module NakedObjects {
 
                 $location.path(newPath).search(search);
             }
-        }
-
+        };
         helper.isHome = (paneId = 1) => {
             const path = $location.path();
             const segments = path.split("/");
-            return segments[paneId+1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
-        }
+            return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
+        };
     });
 }

@@ -25,5 +25,3 @@ module NakedObjects {
     export const shortCutMarker = "___";
     export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 }
-
-  

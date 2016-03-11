@@ -4,7 +4,7 @@
 
 
 module NakedObjects {
-  
+
     import ErrorWrapper = Models.ErrorWrapper;
     import ActionMember = Models.ActionMember;
     import CollectionMember = Models.CollectionMember;
@@ -59,7 +59,7 @@ module NakedObjects {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
     }
 
-    app.service('viewModelFactory', function ($q: ng.IQService,
+    app.service("viewModelFactory", function($q: ng.IQService,
         $timeout: ng.ITimeoutService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
@@ -135,7 +135,7 @@ module NakedObjects {
                 const currentPane = clickHandler.pane(paneId, right);
                 focusManager.setCurrentPane(currentPane);
                 urlManager.setItem(linkRep, currentPane);
-            }
+            };
             initLinkViewModel(itemViewModel, linkRep);
 
             itemViewModel.selected = selected;
@@ -143,9 +143,7 @@ module NakedObjects {
             itemViewModel.checkboxChange = (index) => {
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
-            }
-
-
+            };
             return itemViewModel;
         };
 
@@ -160,7 +158,7 @@ module NakedObjects {
             parmViewModel.description = required + parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
-            parmViewModel.argId = `${parmViewModel.id.toLowerCase() }`;
+            parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
             parmViewModel.paneArgId = `${parmViewModel.argId}${paneId}`;
             parmViewModel.reference = "";
 
@@ -198,8 +196,7 @@ module NakedObjects {
                     const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, searchTerm);
                     return context.autoComplete(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, searchTerm).
                         then(createcvm);
-                }
-
+                };
                 parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
             }
 
@@ -208,7 +205,7 @@ module NakedObjects {
                     const createcvm = _.partial(createChoiceViewModels, parmViewModel.id, null);
                     return context.conditionalChoices(parmRep, parmViewModel.id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
-                }
+                };
                 // fromPairs definition faulty
                 parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
@@ -246,7 +243,7 @@ module NakedObjects {
                 }
             } else {
                 const returnType = parmRep.extensions().returnType();
-              
+
                 if (returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
                 } else if (IsDateOrDateTime(parmRep)) {
@@ -293,29 +290,29 @@ module NakedObjects {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), false, paneId));
                 return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
-            }
+            };
 
             // form actions should never show dialogs
             const showDialog = () => actionRep.extensions().hasParams() && (routeData.interactionMode !== InteractionMode.Form);
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = showDialog() ?
-                (right?: boolean) => {
-                    focusManager.setCurrentPane(paneId);
-                    focusManager.focusOverrideOff();
-                    urlManager.setDialog(actionRep.actionId(), paneId);
-                    focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
-                } :
-                (right?: boolean) => {
-                    focusManager.focusOverrideOff();
-                    const pps = actionViewModel.parameters;
-                    actionViewModel.executeInvoke(pps, right).catch((reject: ErrorWrapper) => {
-                        const parent = actionRep.parent as DomainObjectRepresentation;
-                        const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
-                        const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                        context.handleWrappedError(reject, parent, reset, display);
-                    });
-                };
+            (right?: boolean) => {
+                focusManager.setCurrentPane(paneId);
+                focusManager.focusOverrideOff();
+                urlManager.setDialog(actionRep.actionId(), paneId);
+                focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+            } :
+            (right?: boolean) => {
+                focusManager.focusOverrideOff();
+                const pps = actionViewModel.parameters;
+                actionViewModel.executeInvoke(pps, right).catch((reject: ErrorWrapper) => {
+                    const parent = actionRep.parent as DomainObjectRepresentation;
+                    const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
+                    const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
+                    context.handleWrappedError(reject, parent, reset, display);
+                });
+            };
 
             return actionViewModel;
         };
@@ -350,9 +347,7 @@ module NakedObjects {
 
             if (!msg) msg = err.warningMessage;
             messageViewModel.message = msg;
-        }
-
-
+        };
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
@@ -369,11 +364,10 @@ module NakedObjects {
             propertyViewModel.description = required + propertyRep.extensions().description();
 
             const value = previousValue || propertyRep.value();
-            
+
             if (isDateOrDateTime(propertyRep)) {
                 propertyViewModel.value = toUtcDate(value);
-            }
-            else if (propertyRep.isScalar()) {
+            } else if (propertyRep.isScalar()) {
                 propertyViewModel.value = value.scalar();
             } else if (value.isNull()) {
                 // ie null reference 
@@ -412,7 +406,7 @@ module NakedObjects {
             propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType()) : "";
 
             propertyViewModel.id = id;
-            propertyViewModel.argId = `${id.toLowerCase() }`;
+            propertyViewModel.argId = `${id.toLowerCase()}`;
             propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
             propertyViewModel.isEditable = !propertyRep.disabledReason();
             propertyViewModel.choices = [];
@@ -431,8 +425,7 @@ module NakedObjects {
                     const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
                     return context.autoComplete(propertyRep, id, parentValues, searchTerm).
                         then(createcvm);
-                }
-
+                };
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
             }
 
@@ -442,14 +435,14 @@ module NakedObjects {
                     const createcvm = _.partial(createChoiceViewModels, id, null);
                     return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).
                         then(createcvm);
-                }
+                };
                 // fromPairs definition faulty
                 propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm) {
 
-                const currentChoice: ChoiceViewModel = ChoiceViewModel.create(value, id);
+                const currentChoice = ChoiceViewModel.create(value, id);
 
                 if (fieldEntryType === EntryType.Choices) {
                     propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
@@ -467,11 +460,9 @@ module NakedObjects {
                 if (propertyViewModel.choice) {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
-                }
-                else if (propertyViewModel.password) {
+                } else if (propertyViewModel.password) {
                     propertyViewModel.formattedValue = obscuredText;
-                }
-                else {
+                } else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
             }
@@ -482,9 +473,7 @@ module NakedObjects {
 
             propertyViewModel.isDirty = () => {
                 return !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-            }
-
-
+            };
             return propertyViewModel;
         };
 
@@ -496,8 +485,8 @@ module NakedObjects {
             if (populateItems) {
 
                 const getActionExtensions = routeData.objectId ?
-                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                    () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -536,8 +525,7 @@ module NakedObjects {
             }
 
             return items;
-        }
-
+        };
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
@@ -556,14 +544,14 @@ module NakedObjects {
             collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
 
             switch (state) {
-                case CollectionViewState.List:
-                    collectionViewModel.template = collectionListTemplate;
-                    break;
-                case CollectionViewState.Table:
-                    collectionViewModel.template = collectionTableTemplate;
-                    break;
-                default:
-                    collectionViewModel.template = collectionSummaryTemplate;
+            case CollectionViewState.List:
+                collectionViewModel.template = collectionListTemplate;
+                break;
+            case CollectionViewState.Table:
+                collectionViewModel.template = collectionTableTemplate;
+                break;
+            default:
+                collectionViewModel.template = collectionSummaryTemplate;
             }
 
             collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
@@ -581,8 +569,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
+                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () =>
@@ -590,8 +578,7 @@ module NakedObjects {
                     $route.reload();
                 });
             return collectionPlaceholderViewModel;
-        }
-
+        };
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {
             const servicesViewModel = new ServicesViewModel();
 
@@ -632,7 +619,6 @@ module NakedObjects {
         };
 
 
-
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             const properties = idsToShow ? _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
@@ -670,7 +656,7 @@ module NakedObjects {
                 tvm.cicero = () => {
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
-                }
+                };
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 
@@ -713,7 +699,7 @@ module NakedObjects {
                         const next = cvm.popNextCommand();
                         commandFactory.processSingleCommand(next, cvm, true);
                     }
-                }
+                };
                 cvm.autoComplete = (input: string) => {
                     commandFactory.autoComplete(input, cvm);
                 };
@@ -732,8 +718,7 @@ module NakedObjects {
                                     cvm.output = output;
                                     appendAlertIfAny(cvm);
                                 });
-                        }
-                        else {
+                        } else {
                             cvm.clearInput();
                             cvm.output = "Welcome to Cicero";
                         }
@@ -744,7 +729,7 @@ module NakedObjects {
                         cvm.outputMessageThenClearIt();
                     } else {
                         const [domainType, ...id] = routeData.objectId.split("-");
-                        const transient: boolean = routeData.interactionMode === InteractionMode.Transient;
+                        const transient = routeData.interactionMode === InteractionMode.Transient;
                         context.getObject(1, domainType, id, transient) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
@@ -752,16 +737,16 @@ module NakedObjects {
                                 if (_.some(openCollIds)) {
                                     const id = openCollIds[0];
                                     const coll = obj.collectionMember(id);
-                                    output += `Collection: ${coll.extensions().friendlyName() } on ${TypePlusTitle(obj) }\n`;
+                                    output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
                                     switch (coll.size()) {
-                                        case 0:
-                                            output += "empty";
-                                            break;
-                                        case 1:
-                                            output += "1 item";
-                                            break;
-                                        default:
-                                            output += `${coll.size() } items`;
+                                    case 0:
+                                        output += "empty";
+                                        break;
+                                    case 1:
+                                        output += "1 item";
+                                        break;
+                                    default:
+                                        output += `${coll.size()} items`;
                                     }
                                 } else {
                                     if (obj.isTransient()) {
@@ -795,7 +780,7 @@ module NakedObjects {
                                     return false;
                                 };
 
-                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
+                                context.handleWrappedError(reject, null, () => {}, () => {}, custom);
                             });
                     }
                 };
@@ -828,7 +813,7 @@ module NakedObjects {
                 cvm.renderError = () => {
                     const err = context.getError().error as ErrorRepresentation;
                     cvm.clearInput();
-                    cvm.output = `Sorry, an application error has occurred. ${err.message() }`;
+                    cvm.output = `Sorry, an application error has occurred. ${err.message()}`;
                 };
             }
             return cvm;
@@ -868,8 +853,7 @@ module NakedObjects {
             if (field.entryType() == EntryType.Choices) {
                 const inverted = _.invert(field.choices());
                 return inverted[value.toValueString()];
-            }
-            else if (field.entryType() == EntryType.MultipleChoices && value.isList()) {
+            } else if (field.entryType() == EntryType.MultipleChoices && value.isList()) {
                 const inverted = _.invert(field.choices());
                 let output = "";
                 const values = value.list();
@@ -886,7 +870,7 @@ module NakedObjects {
             filter = mask.defaultLocalFilter(format);
         }
         // formatting also happens in in directive - at least for dates - value is now date in that case
-        let formattedValue = value ? filter.filter(value.toString()) : "";
+        const formattedValue = value ? filter.filter(value.toString()) : "";
 
         // todo this should be equivalent 
         //let formattedValue = mask.toLocalFilter(remoteMask, format).filter(value);

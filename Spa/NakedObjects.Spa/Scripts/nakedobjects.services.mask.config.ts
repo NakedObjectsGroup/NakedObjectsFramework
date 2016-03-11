@@ -6,7 +6,7 @@ module NakedObjects {
     app.run((mask: IMask) => {
 
         // map to convert from mask representation in RO extension to client represention.
-   
+
         var pound = "\u00A3";
 
         mask.setCurrencyMaskMapping("C", "decimal", pound, 2);

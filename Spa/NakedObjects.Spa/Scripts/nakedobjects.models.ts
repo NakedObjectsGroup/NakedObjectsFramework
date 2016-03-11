@@ -24,7 +24,7 @@ module NakedObjects.Models {
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
-  
+
 
     // helper functions 
 
@@ -36,7 +36,7 @@ module NakedObjects.Models {
         return typeName === "list";
     }
 
-    function emptyResource() : IResourceRepresentation {
+    function emptyResource(): IResourceRepresentation {
         return { links: [], extensions: {} };
     }
 
@@ -80,18 +80,18 @@ module NakedObjects.Models {
     // interfaces 
 
     export interface IHateoasModel {
-        etagDigest : string;
+        etagDigest: string;
         hateoasUrl: string;
         method: string;
         urlParms: _.Dictionary<string>;
         populate(wrapped: RoInterfaces.IRepresentation);
         getBody(): RoInterfaces.IRepresentation;
-        getUrl() : string;
+        getUrl(): string;
     }
 
     export enum ErrorCategory {
         HttpClientError,
-        HttpServerError,  
+        HttpServerError,
         ClientError
     }
 
@@ -103,7 +103,7 @@ module NakedObjects.Models {
         MethodNotAllowed = 405,
         NotAcceptable = 406,
         PreconditionFailed = 412,
-        UnprocessableEntity = 422, 
+        UnprocessableEntity = 422,
         PreconditionRequired = 428,
         InternalServerError = 500
     }
@@ -116,9 +116,9 @@ module NakedObjects.Models {
     }
 
     export class ErrorWrapper {
-        constructor(rc : ErrorCategory, code : HttpStatusCode | ClientErrorCode,  err : string | ErrorMap | ErrorRepresentation) {
+        constructor(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, err: string | ErrorMap | ErrorRepresentation) {
             this.category = rc;
-        
+
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
                 this.errorCode = ClientErrorCode[this.clientErrorCode];
@@ -134,22 +134,21 @@ module NakedObjects.Models {
                 this.message = em.invalidReason() || em.warningMessage;
                 this.error = em;
                 this.stackTrace = [];
-            }
-            else if (err instanceof ErrorRepresentation) {
+            } else if (err instanceof ErrorRepresentation) {
                 const er = err as ErrorRepresentation;
                 this.message = er.message();
                 this.error = er;
                 this.stackTrace = err.stackTrace();
             } else {
                 this.message = (err as string) || "No message";
-                this.error = null; 
+                this.error = null;
                 this.stackTrace = [];
             }
         }
 
-        errorCode : string;
+        errorCode: string;
         httpErrorCode: HttpStatusCode;
-        clientErrorCode : ClientErrorCode; 
+        clientErrorCode: ClientErrorCode;
 
         category: ErrorCategory;
         message: string;
@@ -165,8 +164,8 @@ module NakedObjects.Models {
     export abstract class HateosModel implements IHateoasModel {
 
         etagDigest: string;
-        hateoasUrl: string = "";
-        method: string = "GET";
+        hateoasUrl = "";
+        method = "GET";
         urlParms: _.Dictionary<string>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
@@ -194,7 +193,7 @@ module NakedObjects.Models {
                     return {
                         dt,
                         id
-                    }
+                    };
                 }
             }
             return { dt: "", id: [] };
@@ -220,7 +219,7 @@ module NakedObjects.Models {
             const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
 
             return urlParmString !== "" ? url + "?" + urlParmString : url;
-        }   
+        }
     }
 
     export abstract class ArgumentMap extends HateosModel {
@@ -230,7 +229,7 @@ module NakedObjects.Models {
         }
 
         populate(wrapped: RoInterfaces.IValueMap) {
-           super.populate(wrapped);
+            super.populate(wrapped);
         }
     }
 
@@ -238,7 +237,7 @@ module NakedObjects.Models {
 
         protected resource = () => this.model as T;
 
-        constructor(private model: T) { }
+        constructor(private model: T) {}
 
         private lazyLinks: Link[];
 
@@ -265,7 +264,7 @@ module NakedObjects.Models {
     export class RelParm {
 
         name: string;
-        value : string;
+        value: string;
 
         constructor(public asString: string) {
             this.decomposeParm();
@@ -280,7 +279,7 @@ module NakedObjects.Models {
 
     export class Rel {
 
-        ns: string = "";
+        ns = "";
         uniqueValue: string;
         parms: RelParm[] = [];
 
@@ -339,12 +338,12 @@ module NakedObjects.Models {
             }
         }
     }
- 
+
     export class Value {
 
         private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
-    
-        constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean ) {
+
+        constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean) {
             // can only be Link, number, boolean, string or null    
 
             if (raw instanceof Array) {
@@ -392,7 +391,7 @@ module NakedObjects.Models {
             }
 
             if (this.isList()) {
-                const ss = _.map(this.list(), v =>  v.toString());
+                const ss = _.map(this.list(), v => v.toString());
                 return ss.length === 0 ? "" : _.reduce(ss, (m, s) => m + "-" + s, "");
             }
 
@@ -441,15 +440,14 @@ module NakedObjects.Models {
         toJsonString(): string {
             this.compress();
             const value = this.wrapped;
-            const raw = (value instanceof Link) ? value.wrapped :          value;
+            const raw = (value instanceof Link) ? value.wrapped : value;
             return JSON.stringify(raw);
         }
 
         setValue(target: IValue) {
             if (this.isReference()) {
                 target.value = { "href": this.link().href() };
-            }
-            else if (this.isList()) {
+            } else if (this.isList()) {
                 target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());
             } else {
                 target.value = this.scalar();
@@ -463,11 +461,11 @@ module NakedObjects.Models {
     }
 
     export class ErrorValue {
-        constructor(public value : Value, public invalidReason : string) { }
+        constructor(public value: Value, public invalidReason: string) {}
     }
 
     export class Result {
-        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) { }
+        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) {}
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
@@ -512,7 +510,7 @@ module NakedObjects.Models {
             } else {
                 return temp;
             }
-        }
+        };
 
         constructor(private map: RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, public statusCode: number, public warningMessage: string) {
 
@@ -525,7 +523,7 @@ module NakedObjects.Models {
         }
 
         invalidReason() {
-            
+
             const temp = this.map;
             if (isIObjectOfType(temp)) {
                 return temp[roInvalidReason];
@@ -535,7 +533,7 @@ module NakedObjects.Models {
         }
 
         containsError() {
-            return !!this.invalidReason() || !!this.warningMessage ||  _.some(this.valuesMap(), ev => !!ev.invalidReason);
+            return !!this.invalidReason() || !!this.warningMessage || _.some(this.valuesMap(), ev => !!ev.invalidReason);
         }
 
     }
@@ -546,13 +544,13 @@ module NakedObjects.Models {
 
             domainObject.updateLink().copyToHateoasModel(this);
 
-            _.each(this.properties(), (value : Value, key : string) => {
+            _.each(this.properties(), (value: Value, key: string) => {
                 this.setProperty(key, value);
             });
-        }   
+        }
 
         properties(): _.Dictionary<Value> {
-            return _.mapValues(this.map, (v : any) => new Value(v.value));
+            return _.mapValues(this.map, (v: any) => new Value(v.value));
         }
 
         setProperty(name: string, value: Value) {
@@ -574,7 +572,7 @@ module NakedObjects.Models {
             super(map, getId(propertyResource));
             propertyResource.modifyLink().copyToHateoasModel(this);
             propertyResource.value().set(this.map, this.id);
-        }      
+        }
     }
 
     export class ClearMap extends ArgumentMap implements IHateoasModel {
@@ -585,7 +583,7 @@ module NakedObjects.Models {
         }
     }
 
-   
+
     // REPRESENTATIONS
 
     export abstract class ResourceRepresentation<T extends RoInterfaces.IResourceRepresentation> extends HateosModel {
@@ -602,6 +600,7 @@ module NakedObjects.Models {
             this.lazyLinks = this.lazyLinks || wrapLinks(this.resource().links);
             return this.lazyLinks;
         }
+
         private lazyExtensions: Extensions;
 
         extensions(): Extensions {
@@ -612,7 +611,7 @@ module NakedObjects.Models {
 
     export class Extensions {
 
-        constructor(private wrapped: ICustomExtensions) { }
+        constructor(private wrapped: ICustomExtensions) {}
 
         //Standard RO:
         friendlyName = () => this.wrapped.friendlyName;
@@ -626,9 +625,9 @@ module NakedObjects.Models {
         format = () => this.wrapped.format;
         memberOrder = () => this.wrapped.memberOrder;
         isService = () => this.wrapped.isService;
-        minLength = () => this.wrapped.minLength; 
+        minLength = () => this.wrapped.minLength;
         //Nof custom:
-        choices = () => this.wrapped[nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; }
+        choices = () => this.wrapped[nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; };
         menuPath = () => this.wrapped[nofMenuPath] as string;
         mask = () => this.wrapped[nofMask] as string;
         tableViewTitle = () => this.wrapped[nofTableViewTitle] as boolean;
@@ -638,12 +637,12 @@ module NakedObjects.Models {
         messages = () => this.wrapped[nofMessages] as string[];
         interactionMode = () => this.wrapped[nofInteractionMode] as string;
         dataType = () => this.wrapped[nofDataType] as string;
-    } 
+    }
 
     // matches a action invoke resource 19.0 representation 
 
     export class InvokeMap extends ArgumentMap implements IHateoasModel {
-        constructor(private link : Link) {
+        constructor(private link: Link) {
             super(link.arguments() as RoInterfaces.IValueMap, "");
             link.copyToHateoasModel(this);
         }
@@ -712,8 +711,8 @@ module NakedObjects.Models {
 
     // matches 18.2.1
     export class Parameter
-        extends NestedRepresentation<RoInterfaces.IParameterRepresentation>
-        implements IField {
+    extends NestedRepresentation<RoInterfaces.IParameterRepresentation>
+    implements IField {
 
         wrapped = () => this.resource() as RoInterfaces.IParameterRepresentation;
 
@@ -748,7 +747,7 @@ module NakedObjects.Models {
 
         getPromptMap(): PromptMap {
             const pr = <PromptRepresentation>this.promptLink().getTarget();
-            return  new PromptMap(this.promptLink(), pr.instanceId());            
+            return new PromptMap(this.promptLink(), pr.instanceId());
         }
 
         default(): Value {
@@ -834,8 +833,8 @@ module NakedObjects.Models {
         }
 
         getInvoke(): ActionResultRepresentation {
-         
-            const ar =<ActionResultRepresentation>this.invokeLink().getTarget();
+
+            const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
             ar.getInvokeMap = () => new InvokeMap(this.invokeLink());
             return ar;
         }
@@ -892,7 +891,7 @@ module NakedObjects.Models {
 
         setMember(name: string, value: Value) {
             value.set(this.promptMap()["x-ro-nof-members"] as RoInterfaces.IValueMap, name);
-        }    
+        }
 
         setMembers(objectValues: () => _.Dictionary<Value>) {
             if (this.map["x-ro-nof-members"]) {
@@ -1079,7 +1078,7 @@ module NakedObjects.Models {
             return null;
         }
 
-       
+
         // properties 
 
         instanceId(): string {
@@ -1150,11 +1149,11 @@ module NakedObjects.Models {
             return isScalarType(this.extensions().returnType());
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember , parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id : string): Member<RoInterfaces.IMember> {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id: string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
                 return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
-            } 
+            }
 
             if (toWrap.memberType === "collection") {
                 return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
@@ -1173,7 +1172,7 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
-        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private propId : string) {
+        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private propId: string) {
             super(wrapped, parent);
         }
 
@@ -1215,7 +1214,7 @@ module NakedObjects.Models {
             return null;
         }
 
-        
+
         getPromptMap(): PromptMap {
             const pr = <PromptRepresentation>this.promptLink().getTarget();
             return new PromptMap(this.promptLink(), pr.instanceId());
@@ -1247,7 +1246,7 @@ module NakedObjects.Models {
         }
 
         private hasPrompt(): boolean {
-            return !!this.promptLink();             
+            return !!this.promptLink();
         }
 
         choices(): _.Dictionary<Value> {
@@ -1268,11 +1267,11 @@ module NakedObjects.Models {
         private hasConditionalChoices(): boolean {
             return !!this.promptLink() && !this.hasPrompt();
         }
-      
-          //This is actually not relevant to a property. Slight smell here!
-          
+
+        //This is actually not relevant to a property. Slight smell here!
+
         isCollectionContributed(): boolean {
-            return false; 
+            return false;
         }
 
         entryType(): EntryType {
@@ -1296,13 +1295,12 @@ module NakedObjects.Models {
 
     // matches 14.4.2 
     export class CollectionMember
-        extends Member<RoInterfaces.ICollectionMember>
-        implements IHasLinksAsValue
-    {
+    extends Member<RoInterfaces.ICollectionMember>
+    implements IHasLinksAsValue {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
-        constructor(wrapped : RoInterfaces.ICollectionMember, parent : DomainObjectRepresentation, private id : string) {
+        constructor(wrapped: RoInterfaces.ICollectionMember, parent: DomainObjectRepresentation, private id: string) {
             super(wrapped, parent);
         }
 
@@ -1331,7 +1329,7 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
-        constructor(wrapped: RoInterfaces.IActionMember, parent :  DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id : string) {
+        constructor(wrapped: RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
             super(wrapped, parent);
         }
 
@@ -1351,7 +1349,7 @@ module NakedObjects.Models {
         }
 
         getInvokeMap(): InvokeMap {
-            return  new InvokeMap(this.invokeLink());
+            return new InvokeMap(this.invokeLink());
         }
 
         // properties 
@@ -1514,7 +1512,7 @@ module NakedObjects.Models {
         }
 
         private memberMap: _.Dictionary<Member<RoInterfaces.IMember>>;
-      
+
         private actionMemberMap: _.Dictionary<ActionMember>;
 
         private resetMemberMaps() {
@@ -1550,7 +1548,7 @@ module NakedObjects.Models {
         selfLink(): Link {
             return linkByRel(this.links(), "self");
         }
-   
+
         // linked representations 
         getSelf(): MenuRepresentation {
             return <MenuRepresentation> this.selfLink().getTarget();
@@ -1574,8 +1572,8 @@ module NakedObjects.Models {
 
     // matches List Representation 11.0
     export class ListRepresentation
-        extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation>
-        implements IHasLinksAsValue {
+    extends ResourceRepresentation<RoInterfaces.Custom.ICustomListRepresentation>
+    implements IHasLinksAsValue {
 
         wrapped = () => this.resource() as RoInterfaces.Custom.ICustomListRepresentation;
 
@@ -1613,13 +1611,13 @@ module NakedObjects.Models {
     }
 
     export interface IErrorDetails {
-        message() : string;
-        stackTrace() : string[];
+        message(): string;
+        stackTrace(): string[];
     }
 
     // matches the error representation 10.0 
     export class ErrorRepresentation extends ResourceRepresentation<RoInterfaces.IErrorRepresentation> implements IErrorDetails {
-   
+
         wrapped = () => this.resource() as RoInterfaces.IErrorRepresentation;
 
         static create(message: string, stackTrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
@@ -1664,7 +1662,7 @@ module NakedObjects.Models {
 
         setMember(name: string, value: Value) {
             value.set(this.map.members, name);
-        }      
+        }
     }
 
     // matches the version representation 8.0 
@@ -1748,7 +1746,7 @@ module NakedObjects.Models {
             return <HomePageRepresentation> this.upLink().getTarget();
         }
 
-        getMenu(menuId : string): MenuRepresentation {
+        getMenu(menuId: string): MenuRepresentation {
             const menuLink = _.find(this.value(), link => link.rel().parms[0].value === menuId);
             return <MenuRepresentation> menuLink.getTarget();
         }
@@ -1781,12 +1779,15 @@ module NakedObjects.Models {
         userName(): string {
             return this.wrapped().userName;
         }
+
         friendlyName(): string {
             return this.wrapped().friendlyName;
         }
+
         email(): string {
             return this.wrapped().email;
         }
+
         roles(): string[] {
             return this.wrapped().roles;
         }
@@ -1796,7 +1797,7 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IDomainTypeActionInvokeRepresentation;
 
-        constructor(againstType : string, toCheckType : string) {
+        constructor(againstType: string, toCheckType: string) {
             super();
             this.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke`;
             this.urlParms = {};
@@ -1884,13 +1885,11 @@ module NakedObjects.Models {
 
     }
 
-   
-
 
     // matches the Link representation 2.7
-    export class Link  {
+    export class Link {
 
-        constructor(public wrapped : RoInterfaces.ILink) { }
+        constructor(public wrapped: RoInterfaces.ILink) {}
 
         compress() {
             this.wrapped.href = compress(this.wrapped.href);
@@ -1932,7 +1931,7 @@ module NakedObjects.Models {
         private lazyExtensions: Extensions;
 
         extensions(): Extensions {
-            this.lazyExtensions = this.lazyExtensions ||new Extensions(this.wrapped.extensions);
+            this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions);
             return this.lazyExtensions;
         }
 
@@ -1961,7 +1960,7 @@ module NakedObjects.Models {
             "prompt": PromptRepresentation,
             // custom 
             "menu": MenuRepresentation
-        }
+        };
 
         // get the object that this link points to 
         getTarget(): IHateoasModel {

@@ -1,11 +1,12 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/angularjs/angular-route.d.ts" />
+/// <reference path="nakedobjects.config.ts" />
 
 module NakedObjects {
 
     // code constants - not for config
 
-    let path: string = null; 
+    let path: string = null;
 
     export function getSvrPath() {
         if (!path) {
@@ -66,7 +67,7 @@ module NakedObjects {
     export const roPageSize = "x-ro-pageSize";
 
     //NOF custom RO constants
-    export const nofChoices ="x-ro-nof-choices";
+    export const nofChoices = "x-ro-nof-choices";
     export const nofMenuPath = "x-ro-nof-menuPath";
     export const nofMask = "x-ro-nof-mask";
     export const nofInteractionMode = "x-ro-nof-interactionMode";
@@ -77,5 +78,5 @@ module NakedObjects {
     export const nofMultipleLines = "x-ro-nof-multipleLines";
     export const nofWarnings = "x-ro-nof-warnings";
     export const nofMessages = "x-ro-nof-messages";
-     
+
 }

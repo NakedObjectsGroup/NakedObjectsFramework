@@ -43,7 +43,7 @@ module NakedObjects {
 
     interface ICondition {
         condition: (val) => boolean,
-        name : string;
+        name: string;
     }
 
     export class PaneRouteData {
@@ -69,31 +69,35 @@ module NakedObjects {
         interactionMode: InteractionMode;
         errorCategory: ErrorCategory;
 
-        private validatingUrl : string;
+        private validatingUrl: string;
 
         isValid(name: string) {
             if (!this.hasOwnProperty(name)) {
                 throw new Error(`${name} is not a valid property on PaneRouteData`);
             }
         }
-      
+
         private isNull = {
-             condition: val => !val, name: "is null"
+            condition: val => !val,
+            name: "is null"
         };
 
         private isNotNull = {
-            condition: val => val, name: "is not null"
+            condition: val => val,
+            name: "is not null"
         };
 
         private isLength0 = {
-            condition: val =>  val && val.length === 0, name: "is length 0"
+            condition: val => val && val.length === 0,
+            name: "is length 0"
         };
 
         private isEmptyMap = {
-            condition: val => _.keys(val).length === 0, name: "is an empty map"
+            condition: val => _.keys(val).length === 0,
+            name: "is an empty map"
         };
 
-        private assertMustBe(context: string, name: string, contextCondition : ICondition, valueCondition : ICondition ) {
+        private assertMustBe(context: string, name: string, contextCondition: ICondition, valueCondition: ICondition) {
             // make sure context and name are valid
             this.isValid(context);
             this.isValid(name);
@@ -108,7 +112,7 @@ module NakedObjects {
         assertMustBeEmptyOutsideContext(context: string, name: string) {
             this.assertMustBe(context, name, this.isNull, this.isEmptyMap);
         }
-   
+
         assertMustBeNullOutsideContext(context: string, name: string) {
             this.assertMustBe(context, name, this.isNull, this.isNull);
         }
@@ -123,7 +127,7 @@ module NakedObjects {
 
         validate(url: string) {
 
-            this.validatingUrl = url; 
+            this.validatingUrl = url;
 
             // todo add more conditions !
             if (this.doValidation) {
@@ -132,7 +136,7 @@ module NakedObjects {
 
                 this.assertMustBeNullInContext("menuId", "objectId");
 
-                this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");         
+                this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");
                 this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
                 this.assertMustBeEmptyOutsideContext("objectId", "props");
             }

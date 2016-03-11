@@ -8,19 +8,19 @@ module NakedObjects {
     }
 
     export interface IColor {
-        toColorFromHref(href: string) : string;
+        toColorFromHref(href: string): string;
         toColorFromType(type: string): string;
         setColorMap(map: IColorMap);
         setDefaultColorArray(colors: string[]);
-        setDefaultColor(dfltColor : string); 
+        setDefaultColor(dfltColor: string);
     }
 
-    app.service('color', function () {
+    app.service("color", function() {
         const color = <IColor>this;
         let colorMap: IColorMap = {};
 
         // array of colors for allocated colors by default
-        let defaultColorArray : string[] = [];
+        let defaultColorArray: string[] = [];
 
         let defaultColor = "darkBlue";
         const colorPrefix = "bg-color-";
@@ -55,22 +55,19 @@ module NakedObjects {
 
         color.setColorMap = (map: IColorMap) => {
             colorMap = map;
-        }
-
+        };
         color.setDefaultColorArray = (colors: string[]) => {
             defaultColorArray = colors;
-        }
-
+        };
         color.setDefaultColor = (dfltColor: string) => {
             defaultColor = dfltColor;
-        }
+        };
 
         // tested
         color.toColorFromHref = (href: string): string => {
             const type = typeFromUrl(href);
             return `${colorPrefix}${getColorMapValues(type)}`;
-        }
-    
+        };
         color.toColorFromType = (type: string): string => `${colorPrefix}${getColorMapValues(type)}`;
     });
 }

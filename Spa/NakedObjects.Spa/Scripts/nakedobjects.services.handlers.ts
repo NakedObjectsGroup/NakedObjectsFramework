@@ -23,26 +23,34 @@ module NakedObjects {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function ($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
+    app.service("handlers", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
         const handlers = <IHandlers>this;
 
-        const perPaneListViews = [, new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                                    new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
+        const perPaneListViews = [
+            , new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+            new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+        ];
 
-        const perPaneObjectViews = [, new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-                                      new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)];
+        const perPaneObjectViews = [
+            , new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+            new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+        ];
 
-        const perPaneDialogViews = [, new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
-                                      new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)];
+        const perPaneDialogViews = [
+            , new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
+            new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)
+        ];
 
-        const perPaneMenusViews = [, new MenusViewModel(viewModelFactory),
-                                     new MenusViewModel(viewModelFactory)];
+        const perPaneMenusViews = [
+            , new MenusViewModel(viewModelFactory),
+            new MenusViewModel(viewModelFactory)
+        ];
 
-        function setVersionError(error : string) {
-            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError,  error));
+        function setVersionError(error: string) {
+            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
             urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
         }
- 
+
 
         function cacheRecentlyViewed(object: DomainObjectRepresentation) {
             const cache = $cacheFactory.get("recentlyViewed");
@@ -58,12 +66,13 @@ module NakedObjects {
 
         class DeReg {
 
-            private deRegers : (() =>void)[];
+            private deRegers: (() => void)[];
 
             add(newF: () => void) {
                 this.deRegers.push(newF);
             }
-            deReg() {   
+
+            deReg() {
                 _.forEach(this.deRegers, d => d());
                 this.deRegers = [];
             }
@@ -80,7 +89,7 @@ module NakedObjects {
             const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, dialogViewModel, routeData) : action as ActionViewModel;
 
             dialogViewModel.reset(actionViewModel, routeData);
-            $scope.dialog = dialogViewModel; 
+            $scope.dialog = dialogViewModel;
 
             deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
             deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
@@ -106,8 +115,7 @@ module NakedObjects {
 
                 if (specVersion < 1.1) {
                     setVersionError("Restful Objects server must support spec version 1.1 or greater for NakedObjects Gemini\r\n (8.2:specVersion)");
-                }
-                else if (domainModel !== "simple" && domainModel !== "selectable") {
+                } else if (domainModel !== "simple" && domainModel !== "selectable") {
                     setVersionError(`NakedObjects Gemini requires domain metadata representation to be simple or selectable not "${domainModel}"\r\n (8.2:optionalCapabilities)`);
                 } else {
                     versionValidated = true;
@@ -133,31 +141,31 @@ module NakedObjects {
 
                                 const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.SubAction;
 
-                                if (routeData.dialogId) {                               
+                                if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
                                     setDialog($scope, action, routeData);
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                            }).catch((reject : ErrorWrapper) => {
+                            }).catch((reject: ErrorWrapper) => {
                                 context.handleWrappedError(reject, null, () => {}, () => {});
                             });
                     } else {
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch((reject: ErrorWrapper) => {
-                    context.handleWrappedError(reject, null, () => { }, () => { });
+                    context.handleWrappedError(reject, null, () => {}, () => {});
                 });
-        };       
+        };
 
         handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
             const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
             const getActionExtensions = routeData.objectId ?
-                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
-            
+            () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+            () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+
 
             if (cachedList) {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
@@ -179,7 +187,7 @@ module NakedObjects {
                 $scope.listTemplate = listPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
                 getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
-                focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);       
+                focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
             }
         };
 
@@ -189,21 +197,18 @@ module NakedObjects {
 
             if (evm.isConcurrencyError) {
                 $scope.errorTemplate = concurrencyTemplate;
-            }
-            else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
+            } else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
                 $scope.errorTemplate = httpErrorTemplate;
-            }
-            else if (routeData.errorCategory === ErrorCategory.ClientError) {
+            } else if (routeData.errorCategory === ErrorCategory.ClientError) {
                 $scope.errorTemplate = errorTemplate;
-            }
-            else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
+            } else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
                 $scope.errorTemplate = errorTemplate;
             }
         };
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
-        };     
+        };
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -212,13 +217,13 @@ module NakedObjects {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.backgroundColor =  color.toColorFromType(dt); 
+            $scope.backgroundColor = color.toColorFromType(dt);
 
             deRegObject[routeData.paneId].deReg();
 
             context.getObject(routeData.paneId, dt, id, routeData.interactionMode === InteractionMode.Transient).
                 then((object: DomainObjectRepresentation) => {
-                    
+
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
 
                     $scope.object = ovm;
@@ -226,8 +231,7 @@ module NakedObjects {
                     if (routeData.interactionMode === InteractionMode.Form) {
                         $scope.objectTemplate = formTemplate;
                         $scope.actionsTemplate = formActionsTemplate;
-                    }
-                    else if (routeData.interactionMode === InteractionMode.View) {
+                    } else if (routeData.interactionMode === InteractionMode.View) {
                         $scope.objectTemplate = objectViewTemplate;
                         $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                     } else {
@@ -242,7 +246,7 @@ module NakedObjects {
 
                     let focusTarget: FocusTarget;
 
-                    if (routeData.dialogId) {                    
+                    if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
                         setDialog($scope, action, routeData);
                         focusTarget = FocusTarget.Dialog;
@@ -260,17 +264,16 @@ module NakedObjects {
                     deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
                     deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
 
-                }).catch((reject : ErrorWrapper) => {
-                 
-                    const handler =  (cc: ClientErrorCode) => {
+                }).catch((reject: ErrorWrapper) => {
+
+                    const handler = (cc: ClientErrorCode) => {
                         if (cc === ClientErrorCode.ExpiredTransient) {
                             $scope.objectTemplate = expiredTransientTemplate;
                             return true;
                         }
                         return false;
-                    }
-
-                    context.handleWrappedError(reject, null, () => { }, () => { }, handler);                                       
+                    };
+                    context.handleWrappedError(reject, null, () => {}, () => {}, handler);
                 });
 
         };

@@ -10,7 +10,7 @@ module NakedObjects {
         push();
     }
 
-    app.service("navigation", function ($location: ng.ILocationService) {
+    app.service("navigation", function($location: ng.ILocationService) {
         const nav = <INavigation>this;
         const history = [];
         let index = -1;

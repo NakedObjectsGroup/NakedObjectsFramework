@@ -2,6 +2,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
+
 module NakedObjects {
     import ListRepresentation = Models.ListRepresentation;
     import VersionRepresentation = Models.VersionRepresentation;
@@ -34,7 +35,7 @@ module NakedObjects {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, type: string, id: string[], isTransient : boolean) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId: number, type: string, id: string[], isTransient: boolean) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId: string) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
@@ -48,14 +49,14 @@ module NakedObjects {
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: ActionMember, paneId: number, parms : _.Dictionary<Value>) : ng.IPromise<ActionResultRepresentation>;
+        invokeAction(action: ActionMember, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
 
-        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;     
+        updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
-        setError: (reject : ErrorWrapper) => void;
+        setError: (reject: ErrorWrapper) => void;
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
 
@@ -71,12 +72,12 @@ module NakedObjects {
             toReload: DomainObjectRepresentation,
             onReload: (updatedObject: DomainObjectRepresentation) => void,
             displayMessages: (em: ErrorMap) => void,
-            customClientHandler? : (ec : ClientErrorCode) => boolean): void;
+            customClientHandler?: (ec: ClientErrorCode) => boolean): void;
     }
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
-        getDomainObject: (paneId: number, type: string, id: string, transient : boolean) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId: number, type: string, id: string, transient: boolean) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
@@ -114,7 +115,6 @@ module NakedObjects {
         }
 
 
-
         getDirty(type: string, id: string) {
             const key = this.getKey(type, id);
             return this.dirtyObjects[key];
@@ -135,20 +135,20 @@ module NakedObjects {
     }
 
     class TransientCache {
-        private transientCache: DomainObjectRepresentation[][] = [,[],[]]; // per pane 
+        private transientCache: DomainObjectRepresentation[][] = [, [], []]; // per pane 
 
         private depth = 4;
 
         add(paneId: number, obj: DomainObjectRepresentation) {
             let paneObjects = this.transientCache[paneId];
             if (paneObjects.length >= this.depth) {
-                paneObjects = paneObjects.slice(-(this.depth - 1));               
+                paneObjects = paneObjects.slice(-(this.depth - 1));
             }
             paneObjects.push(obj);
             this.transientCache[paneId] = paneObjects;
         }
 
-        get(paneId: number, type: string, id: string) : DomainObjectRepresentation {
+        get(paneId: number, type: string, id: string): DomainObjectRepresentation {
             const paneObjects = this.transientCache[paneId];
             return _.find(paneObjects, o => isSameObject(o, type, id));
         }
@@ -162,16 +162,16 @@ module NakedObjects {
     }
 
 
-    app.service("context", function ($q: ng.IQService,
+    app.service("context", function($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
         $cacheFactory: ng.ICacheFactoryService,
-        $rootScope : ng.IRootScopeService) {
+        $rootScope: ng.IRootScopeService) {
         const context = <IContextInternal>this;
 
         // cached values
-       
+
         const currentObjects: DomainObjectRepresentation[] = []; // per pane 
         const transientCache = new TransientCache();
 
@@ -181,17 +181,17 @@ module NakedObjects {
         let currentVersion: VersionRepresentation = null;
 
         const dirtyCache = new DirtyCache();
-        const currentLists: _.Dictionary<{ list : ListRepresentation; added : number} > = {};
+        const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
         function getAppPath() {
             if (appPath.charAt(appPath.length - 1) === "/") {
                 return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
             }
             return appPath;
-        }   
+        }
 
         // exposed for test mocking
-        context.getDomainObject = (paneId: number, type: string, id: string, transient : boolean): ng.IPromise<DomainObjectRepresentation> => {
+        context.getDomainObject = (paneId: number, type: string, id: string, transient: boolean): ng.IPromise<DomainObjectRepresentation> => {
 
             const isDirty = dirtyCache.getDirty(type, id);
 
@@ -222,8 +222,7 @@ module NakedObjects {
                     currentObjects[paneId] = obj;
                     return $q.when(obj);
                 });
-        }
-
+        };
         context.getService = (paneId: number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
             if (isSameObject(currentObjects[paneId], serviceType)) {
@@ -258,7 +257,7 @@ module NakedObjects {
                 });
         };
 
-        context.clearMessages = () => {         
+        context.clearMessages = () => {
             $rootScope.$broadcast("nof-message", []);
         };
 
@@ -323,7 +322,7 @@ module NakedObjects {
                 });
         };
 
-        context.getObject = (paneId: number, type: string, id: string[], transient : boolean) => {
+        context.getObject = (paneId: number, type: string, id: string[], transient: boolean) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
             return oid ? context.getDomainObject(paneId, type, oid, transient) : context.getService(paneId, type);
         };
@@ -337,12 +336,11 @@ module NakedObjects {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             const entry = currentLists[index];
             return entry ? entry.list : null;
-        }
-
+        };
         context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             delete currentLists[index];
-        }
+        };
 
         function cacheList(list: ListRepresentation, index: string) {
 
@@ -376,9 +374,7 @@ module NakedObjects {
             } else {
                 return $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.WrongType, "expect list"));
             }
-        }
-
-
+        };
         const getList = (paneId: number, resultPromise: () => ng.IPromise<ActionResultRepresentation>, page: number, pageSize: number) => {
             return resultPromise().then(result => handleResult(paneId, result, page, pageSize));
         };
@@ -411,9 +407,7 @@ module NakedObjects {
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
-        }
-
-
+        };
         let currentError: ErrorWrapper = null;
 
         context.getError = () => currentError;
@@ -430,11 +424,11 @@ module NakedObjects {
             const map = field.getPromptMap();
             map.setMembers(objectValues);
             setupPrompt(map);
-            return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) =>  p.choices());
+            return repLoader.retrieve(map, PromptRepresentation).then((p: PromptRepresentation) => p.choices());
         };
 
         context.autoComplete = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string) =>
-            doPrompt(field, id, searchTerm, (map : PromptMap) => map.setSearchTerm(searchTerm), objectValues);
+            doPrompt(field, id, searchTerm, (map: PromptMap) => map.setSearchTerm(searchTerm), objectValues);
 
         context.conditionalChoices = (field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>) =>
             doPrompt(field, id, null, (map: PromptMap) => map.setArguments(args), objectValues);
@@ -444,7 +438,7 @@ module NakedObjects {
         context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 
             const warnings = result.extensions().warnings() || [];
-            const messages = result.extensions().messages() || []; 
+            const messages = result.extensions().messages() || [];
 
             $rootScope.$broadcast("nof-warning", warnings);
             $rootScope.$broadcast("nof-message", messages);
@@ -472,7 +466,7 @@ module NakedObjects {
                         // persistent object
                         // set the object here and then update the url. That should reload the page but pick up this object 
                         // so we don't hit the server again. 
-                        
+
                         // copy the etag down into the object
                         resultObject.etagDigest = result.etagDigest;
 
@@ -490,14 +484,14 @@ module NakedObjects {
                     const resultList = result.result().list();
 
                     urlManager.setList(action, paneId);
-  
+
                     const index = urlManager.getListCacheIndex(paneId, page, pageSize);
                     cacheList(resultList, index);
                 }
             }
         };
 
-        function invokeActionInternal(invokeMap : InvokeMap, action : ActionMember, paneId : number, setDirty : () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: ActionMember, paneId: number, setDirty: () => void) {
 
             focusManager.setCurrentPane(paneId);
 
@@ -536,7 +530,7 @@ module NakedObjects {
                 }
             }
 
-            return () => { };
+            return () => {};
         }
 
         context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
@@ -548,7 +542,7 @@ module NakedObjects {
             return invokeActionInternal(invokeMap, action, paneId, setDirty);
         };
 
-        function setNewObject(updatedObject : DomainObjectRepresentation, paneId : number, viewSavedObject : Boolean) {
+        function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
             context.setObject(paneId, updatedObject);
             dirtyCache.setDirty(updatedObject);
 
@@ -561,7 +555,7 @@ module NakedObjects {
 
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const update = object.getUpdateMap();
-    
+
             _.each(props, (v, k) => update.setProperty(k, v));
 
             return repLoader.retrieve(update, DomainObjectRepresentation, object.etagDigest).
@@ -574,7 +568,7 @@ module NakedObjects {
                 });
         };
 
-        context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean ) => {
+        context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const persist = object.getPersistMap();
 
             _.each(props, (v, k) => persist.setMember(k, v));
@@ -608,34 +602,34 @@ module NakedObjects {
                 catch((reject: ErrorWrapper) => {
                     return false;
                 });
-        }
+        };
 
         function handleHttpServerError(reject: ErrorWrapper) {
             urlManager.setError(ErrorCategory.HttpServerError);
         }
 
         function handleHttpClientError(reject: ErrorWrapper,
-                                       toReload: DomainObjectRepresentation,
-                                       onReload: (updatedObject: DomainObjectRepresentation) => void,
-                                       displayMessages: (em: ErrorMap) => void) {
+            toReload: DomainObjectRepresentation,
+            onReload: (updatedObject: DomainObjectRepresentation) => void,
+            displayMessages: (em: ErrorMap) => void) {
             switch (reject.httpErrorCode) {
-                case (HttpStatusCode.PreconditionFailed):
+            case (HttpStatusCode.PreconditionFailed):
 
-                    if (toReload.isTransient()) {
-                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                    } else {
-                        context.reloadObject(1, toReload).
-                            then((updatedObject: DomainObjectRepresentation) => {
-                                onReload(updatedObject);
-                                urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                            });
-                    }
-                    break;
-                case (HttpStatusCode.UnprocessableEntity):
-                    displayMessages(reject.error as ErrorMap);
-                    break;
-                default:
+                if (toReload.isTransient()) {
                     urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                } else {
+                    context.reloadObject(1, toReload).
+                        then((updatedObject: DomainObjectRepresentation) => {
+                            onReload(updatedObject);
+                            urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                        });
+                }
+                break;
+            case (HttpStatusCode.UnprocessableEntity):
+                displayMessages(reject.error as ErrorMap);
+                break;
+            default:
+                urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
             }
 
         }
@@ -648,10 +642,10 @@ module NakedObjects {
         }
 
         context.handleWrappedError = (reject: ErrorWrapper,
-                                        toReload: DomainObjectRepresentation,
-                                        onReload: (updatedObject: DomainObjectRepresentation) => void,
-                                        displayMessages: (em: ErrorMap) => void,
-                                        customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
+            toReload: DomainObjectRepresentation,
+            onReload: (updatedObject: DomainObjectRepresentation) => void,
+            displayMessages: (em: ErrorMap) => void,
+            customClientHandler: (ec: ClientErrorCode) => boolean = () => false) => {
             if (reject.handled) {
                 return;
             }
@@ -659,17 +653,17 @@ module NakedObjects {
 
             context.setError(reject);
             switch (reject.category) {
-                case (ErrorCategory.HttpServerError):
-                    handleHttpServerError(reject);
-                    break;
-                case (ErrorCategory.HttpClientError):
-                    handleHttpClientError(reject, toReload, onReload, displayMessages);
-                    break;
-                case (ErrorCategory.ClientError):
-                    handleClientError(reject, customClientHandler);
-                    break;
+            case (ErrorCategory.HttpServerError):
+                handleHttpServerError(reject);
+                break;
+            case (ErrorCategory.HttpClientError):
+                handleHttpClientError(reject, toReload, onReload, displayMessages);
+                break;
+            case (ErrorCategory.ClientError):
+                handleClientError(reject, customClientHandler);
+                break;
             }
-        }
+        };
     });
 
 }

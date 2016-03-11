@@ -2,7 +2,7 @@
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
     export interface ILink {
-        id? : string;
+        id?: string;
         rel?: string;
         href: string;
         type?: string;
@@ -72,7 +72,7 @@
     }
 
     export interface IValueMap {
-        [index : string] : IValue | string;
+        [index: string]: IValue | string;
     }
 
     export interface IObjectOfType {
@@ -108,7 +108,7 @@
     export interface IPropertyMember extends IMember {
         value?: string | number | boolean | ILink;
         choices?: (string | number | boolean | ILink)[];
-        hasChoices : boolean;
+        hasChoices: boolean;
     }
 
     export interface ICollectionMember extends IMember {
@@ -117,7 +117,7 @@
     }
 
     export interface IActionMember extends IMember {
-        id : string;
+        id: string;
         parameters: { [index: string]: IParameterRepresentation };
     }
 
@@ -142,7 +142,7 @@
     export interface IActionRepresentation extends IResourceRepresentation {
         id: string;
         parameters: { [index: string]: IParameterRepresentation };
-        disabledReason? : string;
+        disabledReason?: string;
     }
 
     export interface IPropertyRepresentation extends IResourceRepresentation {
@@ -198,11 +198,11 @@
 
     export interface IDomainTypeActionInvokeRepresentation extends IResourceRepresentation {
         id: string;
-        value: boolean;    
+        value: boolean;
     }
 
     export interface IPromptRepresentation extends IResourceRepresentation {
         id: string;
-        choices? : (string | number | boolean | ILink)[];
+        choices?: (string | number | boolean | ILink)[];
     }
 }

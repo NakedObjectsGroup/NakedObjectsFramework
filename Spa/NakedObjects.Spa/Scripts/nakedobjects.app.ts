@@ -20,9 +20,9 @@ module NakedObjects {
         const splitListObjectTemplate = getSvrPath() + "Content/partials/splitListObject.html";
         const splitListListTemplate = getSvrPath() + "Content/partials/splitListList.html";
         const singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
-  
+
         $routeProvider.
-            
+
             //Gemini2 Urls below:
             when(`/${geminiPath}/${homePath}`, {
                 templateUrl: singleHomeTemplate,
@@ -94,7 +94,7 @@ module NakedObjects {
                 controller: "CiceroErrorController"
             }).
             otherwise({
-            redirectTo: `/${geminiPath}/${homePath}`
+                redirectTo: `/${geminiPath}/${homePath}`
             });
 
 

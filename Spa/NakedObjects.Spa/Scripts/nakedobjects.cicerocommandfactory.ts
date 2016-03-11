@@ -21,7 +21,7 @@ module NakedObjects {
         getCommand(commandWord: string): Command;
     }
 
-    app.service('commandFactory', function (
+    app.service("commandFactory", function(
         $q: ng.IQService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
@@ -60,8 +60,7 @@ module NakedObjects {
             "se": new Selection(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
             "sh": new Show(urlManager, $location, commandFactory, context, navigation, $q, $route, mask),
             "wh": new Where(urlManager, $location, commandFactory, context, navigation, $q, $route, mask)
-        }
-
+        };
         commandFactory.initialiseCommands = (cvm: CiceroViewModel) => {
             if (!commandsInitialised) {
                 _.forEach(commands, command => command.initialiseWithViewModel(cvm));
@@ -80,7 +79,7 @@ module NakedObjects {
             cvm.previousInput = cvm.input;
             const commands = input.split(";");
             if (commands.length > 1) {
-                let first = commands[0];
+                const first = commands[0];
                 commands.splice(0, 1);
                 cvm.chainedCommands = commands;
                 commandFactory.processSingleCommand(first, cvm, false);
@@ -93,15 +92,14 @@ module NakedObjects {
             try {
                 input = input.trim();
                 const firstWord = input.split(" ")[0].toLowerCase();
-                const command: Command = commandFactory.getCommand(firstWord);
-                var argString: string = null;
+                const command = commandFactory.getCommand(firstWord);
+                let argString: string = null;
                 const index = input.indexOf(" ");
                 if (index >= 0) {
                     argString = input.substr(index + 1);
                 }
                 command.execute(argString, chained);
-            }
-            catch (Error) {
+            } catch (Error) {
                 cvm.output = Error.message;
                 cvm.input = "";
             }
@@ -119,11 +117,10 @@ module NakedObjects {
                 return;
             }
             try {
-                const command: Command = commandFactory.getCommand(lastInChain);
+                const command = commandFactory.getCommand(lastInChain);
                 const earlierChain = input.substr(0, input.length - charsTyped);
                 cvm.input = earlierChain + command.fullCommand + " ";
-            }
-            catch (Error) {
+            } catch (Error) {
                 cvm.output = Error.message;
             }
         };
@@ -133,23 +130,22 @@ module NakedObjects {
                 throw new Error("Command word must have at least 2 characters");
             }
             const abbr = commandWord.substr(0, 2);
-            const command: Command = commands[abbr];
+            const command = commands[abbr];
             if (command == null) {
-                throw new Error("No command begins with " + abbr);
+                throw new Error(`No command begins with ${abbr}`);
             }
             command.checkMatch(commandWord);
             return command;
-        }
-
+        };
         commandFactory.allCommandsForCurrentContext = () => {
             var result = "Commands available in current context:\n";
-            for (var key in commands) {
-                var c = commands[key];
+            for (let key in commands) {
+                const c = commands[key];
                 if (c.isAvailableInCurrentContext()) {
                     result = result + c.fullCommand + "\n";
                 }
             }
             return result;
-        }
+        };
     });
 }
