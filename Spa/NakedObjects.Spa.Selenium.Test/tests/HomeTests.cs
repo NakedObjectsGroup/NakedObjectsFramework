@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForCss(".actions .action", CustomerServiceActions);
             Click(GetObjectAction("Throw Domain Exception"));
             var msg = WaitForCss(".error .message");
-            Assert.AreEqual("Foo", msg.Text);
+            Assert.AreEqual("Message: Foo", msg.Text);
         }
 
         public virtual void ZeroParamReturnsEmptyCollection()
