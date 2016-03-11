@@ -189,7 +189,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
-            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type")=="checkbox") == 17);
+            wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") == 17);
             WaitForSelectedCheckboxes(0);
 
             //Select all
@@ -199,12 +199,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Deslect all
             SelectCheckBox("#all", true);
             WaitForSelectedCheckboxes(0);
+        }
 
-            //Repeat in table view
+        public virtual void SelectAllTableView()
+        {
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table");
             Reload();
             WaitForCss("td", 64);
             WaitForSelectedCheckboxes(0);
+
+            Thread.Sleep(1000);
 
             //Select all
             SelectCheckBox("#all");
@@ -274,6 +278,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void SelectAll() { base.SelectAll(); }
+
+        [TestMethod]
+        public override void SelectAllTableView() { base.SelectAllTableView(); }
 
         [TestMethod]
         public override void IfNoCCAs() { base.IfNoCCAs(); }
@@ -369,6 +376,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.TableViewWithParmDialogNotOpen();
             base.DateParam();
             base.SelectAll();
+            base.SelectAllTableView();
             base.IfNoCCAs();
         }
     }
