@@ -3,28 +3,28 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects {
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import VersionRepresentation = NakedObjects.Models.VersionRepresentation;
-    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import Value = NakedObjects.Models.Value;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import IField = NakedObjects.Models.IField;
-    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
-    import Extensions = NakedObjects.Models.Extensions;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
-    import HomePageRepresentation = NakedObjects.Models.HomePageRepresentation;
-    import DomainServicesRepresentation = NakedObjects.Models.DomainServicesRepresentation;
-    import Link = NakedObjects.Models.Link;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import PromptMap = NakedObjects.Models.PromptMap;
-    import PromptRepresentation = NakedObjects.Models.PromptRepresentation;
-    import InvokeMap = NakedObjects.Models.InvokeMap;
-    import DomainTypeActionInvokeRepresentation = NakedObjects.Models.DomainTypeActionInvokeRepresentation;
-    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
+    import ListRepresentation = Models.ListRepresentation;
+    import VersionRepresentation = Models.VersionRepresentation;
+    import MenusRepresentation = Models.MenusRepresentation;
+    import MenuRepresentation = Models.MenuRepresentation;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import Value = Models.Value;
+    import ActionMember = Models.ActionMember;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import IField = Models.IField;
+    import ActionResultRepresentation = Models.ActionResultRepresentation;
+    import Extensions = Models.Extensions;
+    import ErrorMap = Models.ErrorMap;
+    import ClientErrorCode = Models.ClientErrorCode;
+    import HomePageRepresentation = Models.HomePageRepresentation;
+    import DomainServicesRepresentation = Models.DomainServicesRepresentation;
+    import Link = Models.Link;
+    import ErrorCategory = Models.ErrorCategory;
+    import PromptMap = Models.PromptMap;
+    import PromptRepresentation = Models.PromptRepresentation;
+    import InvokeMap = Models.InvokeMap;
+    import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
+    import HttpStatusCode = Models.HttpStatusCode;
 
     export interface IContext {
 

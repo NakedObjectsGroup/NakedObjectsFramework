@@ -1,8 +1,8 @@
 ﻿
 module NakedObjects {
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import ErrorCategory = Models.ErrorCategory;
+    import ClientErrorCode = Models.ClientErrorCode;
 
     app.provider({
         $exceptionHandler() {

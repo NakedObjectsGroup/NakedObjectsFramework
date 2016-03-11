@@ -1,9 +1,9 @@
 ﻿module NakedObjects {
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
-    import IHasActions = NakedObjects.Models.IHasActions;
+    import MenuRepresentation = Models.MenuRepresentation;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import ListRepresentation = Models.ListRepresentation;
+    import ErrorRepresentation = Models.ErrorRepresentation;
+    import IHasActions = Models.IHasActions;
     import TypePlusTitle = Models.typePlusTitle;
     import PlusTitle = Models.typePlusTitle;
     import FriendlyNameForParam = Models.friendlyNameForParam;

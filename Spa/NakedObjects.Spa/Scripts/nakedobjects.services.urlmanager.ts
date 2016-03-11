@@ -7,16 +7,16 @@ module NakedObjects {
   
     import Decompress = Models.decompress;
     import Compress = Models.compress;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
-    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import PropertyMember = NakedObjects.Models.PropertyMember;
-    import Link = NakedObjects.Models.Link;
-    import Parameter = NakedObjects.Models.Parameter;
-    import Value = NakedObjects.Models.Value;
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import ErrorCategory = Models.ErrorCategory;
+    import ClientErrorCode = Models.ClientErrorCode;
+    import HttpStatusCode = Models.HttpStatusCode;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import ActionMember = Models.ActionMember;
+    import PropertyMember = Models.PropertyMember;
+    import Link = Models.Link;
+    import Parameter = Models.Parameter;
+    import Value = Models.Value;
+    import MenuRepresentation = Models.MenuRepresentation;
 
     export interface IUrlManager {
         getRouteData(): RouteData;

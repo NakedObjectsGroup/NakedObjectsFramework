@@ -3,16 +3,16 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects {
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import Value = NakedObjects.Models.Value;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import VersionRepresentation = NakedObjects.Models.VersionRepresentation;
-    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
-    import Extensions = NakedObjects.Models.Extensions;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import ErrorCategory = Models.ErrorCategory;
+    import ClientErrorCode = Models.ClientErrorCode;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import Value = Models.Value;
+    import ActionMember = Models.ActionMember;
+    import VersionRepresentation = Models.VersionRepresentation;
+    import MenusRepresentation = Models.MenusRepresentation;
+    import MenuRepresentation = Models.MenuRepresentation;
+    import Extensions = Models.Extensions;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;

@@ -4,21 +4,21 @@
 
 module NakedObjects {
    
-    import Value = NakedObjects.Models.Value;
-    import Link = NakedObjects.Models.Link;
-    import EntryType = NakedObjects.Models.EntryType;
-    import Parameter = NakedObjects.Models.Parameter;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
-    import PropertyMember = NakedObjects.Models.PropertyMember;
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
-    import CollectionMember = NakedObjects.Models.CollectionMember;
-    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
+    import Value = Models.Value;
+    import Link = Models.Link;
+    import EntryType = Models.EntryType;
+    import Parameter = Models.Parameter;
+    import ActionMember = Models.ActionMember;
+    import ActionResultRepresentation = Models.ActionResultRepresentation;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import ErrorMap = Models.ErrorMap;
+    import PropertyMember = Models.PropertyMember;
+    import ListRepresentation = Models.ListRepresentation;
+    import ErrorCategory = Models.ErrorCategory;
+    import HttpStatusCode = Models.HttpStatusCode;
+    import CollectionMember = Models.CollectionMember;
+    import MenusRepresentation = Models.MenusRepresentation;
     import DateString = Models.toDateString;
 
     export interface IDraggableViewModel {

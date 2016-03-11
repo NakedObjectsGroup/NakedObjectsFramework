@@ -4,16 +4,16 @@
 
 
 module NakedObjects {
-    import IHateoasModel = NakedObjects.Models.IHateoasModel;
-    import Link = NakedObjects.Models.Link;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import Value = NakedObjects.Models.Value;
-    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
-    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import IHateoasModel = Models.IHateoasModel;
+    import Link = Models.Link;
+    import ActionMember = Models.ActionMember;
+    import Value = Models.Value;
+    import ActionResultRepresentation = Models.ActionResultRepresentation;
+    import ErrorCategory = Models.ErrorCategory;
+    import ErrorRepresentation = Models.ErrorRepresentation;
+    import ErrorMap = Models.ErrorMap;
+    import HttpStatusCode = Models.HttpStatusCode;
+    import ErrorWrapper = Models.ErrorWrapper;
 
     export interface IRepLoader {
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, digest? : string) => ng.IPromise<T>;

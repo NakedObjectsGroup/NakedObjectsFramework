@@ -1,25 +1,25 @@
-﻿
+﻿/// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects {
-    import IHasExtensions = NakedObjects.Models.IHasExtensions;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
-    import PropertyMember = NakedObjects.Models.PropertyMember;
-    import CollectionMember = NakedObjects.Models.CollectionMember;
-    import Parameter = NakedObjects.Models.Parameter;
-    import Value = NakedObjects.Models.Value;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
-    import ErrorValue = NakedObjects.Models.ErrorValue;
-    import IField = NakedObjects.Models.IField;
-    import EntryType = NakedObjects.Models.EntryType;
-    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
-    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
-    import IHasLinksAsValue = NakedObjects.Models.IHasLinksAsValue;
+    import IHasExtensions = Models.IHasExtensions;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import ListRepresentation = Models.ListRepresentation;
+    import MenuRepresentation = Models.MenuRepresentation;
+    import ActionMember = Models.ActionMember;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import ErrorCategory = Models.ErrorCategory;
+    import ClientErrorCode = Models.ClientErrorCode;
+    import PropertyMember = Models.PropertyMember;
+    import CollectionMember = Models.CollectionMember;
+    import Parameter = Models.Parameter;
+    import Value = Models.Value;
+    import ErrorMap = Models.ErrorMap;
+    import ErrorValue = Models.ErrorValue;
+    import IField = Models.IField;
+    import EntryType = Models.EntryType;
+    import MenusRepresentation = Models.MenusRepresentation;
+    import ActionResultRepresentation = Models.ActionResultRepresentation;
+    import IHasLinksAsValue = Models.IHasLinksAsValue;
     import TypePlusTitle = Models.typePlusTitle;
     import FriendlyTypeName = Models.friendlyTypeName;
     import FriendlyNameForParam = Models.friendlyNameForParam;

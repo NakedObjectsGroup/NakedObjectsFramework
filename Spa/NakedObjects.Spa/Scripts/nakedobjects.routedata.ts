@@ -2,8 +2,8 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects {
-    import Value = NakedObjects.Models.Value;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import Value = Models.Value;
+    import ErrorCategory = Models.ErrorCategory;
 
     export enum ViewType {
         Home,

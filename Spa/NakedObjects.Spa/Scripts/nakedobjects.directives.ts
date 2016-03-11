@@ -2,9 +2,9 @@
 /// <reference path="nakedobjects.models.ts" />
 
 module NakedObjects {
-    import Value = NakedObjects.Models.Value;
+    import Value = Models.Value;
     import toDateString = Models.toDateString;
-    import EntryType = NakedObjects.Models.EntryType;
+    import EntryType = Models.EntryType;
 
     interface ISelectObj {
         request?: string;

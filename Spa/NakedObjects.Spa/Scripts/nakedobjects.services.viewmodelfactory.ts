@@ -5,26 +5,26 @@
 
 module NakedObjects {
   
-    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
-    import ActionMember = NakedObjects.Models.ActionMember;
-    import CollectionMember = NakedObjects.Models.CollectionMember;
-    import DomainServicesRepresentation = NakedObjects.Models.DomainServicesRepresentation;
-    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
-    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
-    import Parameter = NakedObjects.Models.Parameter;
-    import Value = NakedObjects.Models.Value;
-    import PropertyMember = NakedObjects.Models.PropertyMember;
-    import ErrorMap = NakedObjects.Models.ErrorMap;
-    import Link = NakedObjects.Models.Link;
-    import ErrorCategory = NakedObjects.Models.ErrorCategory;
-    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
-    import EntryType = NakedObjects.Models.EntryType;
-    import Extensions = NakedObjects.Models.Extensions;
-    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
-    import ListRepresentation = NakedObjects.Models.ListRepresentation;
-    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
-    import IField = NakedObjects.Models.IField;
-    import IHasActions = NakedObjects.Models.IHasActions;
+    import ErrorWrapper = Models.ErrorWrapper;
+    import ActionMember = Models.ActionMember;
+    import CollectionMember = Models.CollectionMember;
+    import DomainServicesRepresentation = Models.DomainServicesRepresentation;
+    import DomainObjectRepresentation = Models.DomainObjectRepresentation;
+    import MenuRepresentation = Models.MenuRepresentation;
+    import Parameter = Models.Parameter;
+    import Value = Models.Value;
+    import PropertyMember = Models.PropertyMember;
+    import ErrorMap = Models.ErrorMap;
+    import Link = Models.Link;
+    import ErrorCategory = Models.ErrorCategory;
+    import HttpStatusCode = Models.HttpStatusCode;
+    import EntryType = Models.EntryType;
+    import Extensions = Models.Extensions;
+    import ClientErrorCode = Models.ClientErrorCode;
+    import ListRepresentation = Models.ListRepresentation;
+    import ErrorRepresentation = Models.ErrorRepresentation;
+    import IField = Models.IField;
+    import IHasActions = Models.IHasActions;
     import TypePlusTitle = Models.typePlusTitle;
     import IsDateOrDateTime = Models.isDateOrDateTime;
     import toUtcDate = Models.toUtcDate;
