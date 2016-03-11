@@ -60,5 +60,7 @@ namespace NakedObjects.Facade {
         IObjectFacade GetObject(object domainObject);
         // todo temp wrap - probably remove actionresult model ? 
         object Wrap(object arm, IObjectFacade objectFacade);
+
+        void Inject(object toInject);
     }
 }

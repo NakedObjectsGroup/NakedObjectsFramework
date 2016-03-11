@@ -4,7 +4,8 @@
 
 
 module NakedObjects.Angular.Gemini {
-    import getUtcDate = Helpers.getUtcDate;
+    import toUtcDate = Helpers.toUtcDate;
+    import isDateOrDateTime = Helpers.isDateOrDateTime;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -217,13 +218,11 @@ module NakedObjects.Angular.Gemini {
                 }
             } else {
                 const returnType = parmRep.extensions().returnType();
-                const format = parmRep.extensions().format();
-
+              
                 if (returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
-                } else if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
-                    const rawValue = (previousValue ? previousValue.toString() : "") || parmViewModel.dflt || "";
-                    parmViewModel.value = getUtcDate(rawValue);
+                } else if (isDateOrDateTime(parmRep)) {
+                    parmViewModel.value = toUtcDate(previousValue || new Value(parmViewModel.dflt));
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
@@ -342,19 +341,21 @@ module NakedObjects.Angular.Gemini {
             propertyViewModel.description = required + propertyRep.extensions().description();
 
             const value = previousValue || propertyRep.value();
+            
+            if (isDateOrDateTime(propertyRep)) {
+                propertyViewModel.value = toUtcDate(value);
+            }
+            else if (propertyRep.isScalar()) {
+                propertyViewModel.value = value.scalar();
+            } else if (value.isNull()) {
+                // ie null reference 
+                propertyViewModel.value = propertyViewModel.description;
+            } else {
+                propertyViewModel.value = value.toString();
+            }
+
             const returnType = propertyRep.extensions().returnType();
             const format = propertyRep.extensions().format();
-
-            if (returnType === "string" && ((format === "date-time") || (format === "date"))) {
-                const rawValue = value ? value.toString() : "";
-
-                const dateValue = getUtcDate(rawValue);
-                propertyViewModel.value = dateValue ? dateValue : null;
-            }
-            else {
-                propertyViewModel.value = propertyRep.isScalar() ? value.scalar() : value.isNull() ? propertyViewModel.description : value.toString();
-            }
-
             propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
             propertyViewModel.returnType = returnType;
             propertyViewModel.format = format;

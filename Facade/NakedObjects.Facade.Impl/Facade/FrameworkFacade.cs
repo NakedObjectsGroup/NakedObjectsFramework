@@ -264,6 +264,10 @@ namespace NakedObjects.Facade.Impl {
             return noArm.Object;
         }
 
+        public void Inject(object toInject) {
+            framework.DomainObjectInjector.InjectInto(toInject);
+        }
+
         #endregion
 
         #region Helpers
