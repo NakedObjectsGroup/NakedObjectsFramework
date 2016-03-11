@@ -10,7 +10,7 @@
 
 // helpers for common tasks with nakedobjects.models 
 
-module NakedObjects.Helpers {
+module NakedObjects.Models {
 
     export function toDateString(dt: Date) {
 

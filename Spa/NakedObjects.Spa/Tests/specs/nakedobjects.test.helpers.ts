@@ -1,9 +1,11 @@
-﻿module NakedObjects.Gemini.Test.Helpers {
-    import IHomePageRepresentation = RoInterfaces.IHomePageRepresentation;
-    import IListRepresentation = RoInterfaces.IListRepresentation;
-    import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
+﻿/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
 
-    const homeRepresentation: IHomePageRepresentation = {
+module NakedObjects.Test.Helpers {
+    import HomePageRepresentation = NakedObjects.RoInterfaces.IHomePageRepresentation;
+    import ListRepresentation = NakedObjects.RoInterfaces.IListRepresentation;
+    import MenuRepresentation = NakedObjects.RoInterfaces.Custom.IMenuRepresentation;
+
+    const homeRepresentation: HomePageRepresentation = {
         links: [
             {
                 rel: "self",
@@ -44,7 +46,7 @@
         ],
         extensions: {}
     };
-    const menusRepresentation: IListRepresentation = {
+    const menusRepresentation: ListRepresentation = {
         links: [
             {
                 rel: "self",
@@ -133,7 +135,7 @@
             }
         ]
     };
-    const vendorRepositoryMenuRepresentation: IMenuRepresentation = {
+    const vendorRepositoryMenuRepresentation: MenuRepresentation = {
         title: "Vendors",
         menuId: "VendorRepository",
         links: [

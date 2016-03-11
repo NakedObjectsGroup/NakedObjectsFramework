@@ -2,7 +2,29 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import VersionRepresentation = NakedObjects.Models.VersionRepresentation;
+    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
+    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import Value = NakedObjects.Models.Value;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import IField = NakedObjects.Models.IField;
+    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
+    import Extensions = NakedObjects.Models.Extensions;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import HomePageRepresentation = NakedObjects.Models.HomePageRepresentation;
+    import DomainServicesRepresentation = NakedObjects.Models.DomainServicesRepresentation;
+    import Link = NakedObjects.Models.Link;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import PromptMap = NakedObjects.Models.PromptMap;
+    import PromptRepresentation = NakedObjects.Models.PromptRepresentation;
+    import InvokeMap = NakedObjects.Models.InvokeMap;
+    import DomainTypeActionInvokeRepresentation = NakedObjects.Models.DomainTypeActionInvokeRepresentation;
+    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
 
     export interface IContext {
 

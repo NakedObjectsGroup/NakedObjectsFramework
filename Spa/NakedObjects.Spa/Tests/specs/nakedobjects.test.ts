@@ -1,36 +1,12 @@
-/// <reference path="../../Scripts/nakedobjects.config.ts" />
-/// <reference path="../../Scripts/nakedobjects.models.helpers.ts" />
-/// <reference path="../../Scripts/nakedobjects.models.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.app.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.controllers.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.directives.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.routedata.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.context.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.browser.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.simple.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.focusmanager.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.viewmodels.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
-/// <reference path="nakedobjects.gemini.test.helpers.ts" />
+/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular-mocks.d.ts" />
+
 
 // todo make sure tests are enhanced to validate contents of view models and urls
 // todo tests for invalid url combinations ? 
 
-module NakedObjects.Gemini.Test {
-
-    import IHandlers = Angular.Gemini.IHandlers;
-    import INakedObjectsScope = Angular.Gemini.INakedObjectsScope;
-    import PaneRouteData = Angular.Gemini.PaneRouteData;
-    import MenusViewModel = Angular.Gemini.MenusViewModel;
-    import FocusTarget = Angular.Gemini.FocusTarget;
-    import ActionViewModel = Angular.Gemini.ActionViewModel;
-    import DialogViewModel = Angular.Gemini.DialogViewModel;
-    import DomainObjectViewModel = Angular.Gemini.DomainObjectViewModel;
-    import CollectionViewState = Angular.Gemini.CollectionViewState;
-    import IContext = Angular.Gemini.IContext;
-    import InteractionMode = NakedObjects.Angular.Gemini.InteractionMode;
+module NakedObjects.Test {
+   
     describe("nakedobjects.gemini.tests", () => {
 
         beforeEach(angular.mock.module("app"));
@@ -88,7 +64,7 @@ module NakedObjects.Gemini.Test {
         }));
 
         function verifyOpenDialogState(ts: INakedObjectsScope, parmCount : number, title : string) {
-            expect(ts.dialogTemplate).toBe(Angular.dialogTemplate);
+            expect(ts.dialogTemplate).toBe(dialogTemplate);
             const dialogViewModel = ts.dialog as DialogViewModel;
             expect(dialogViewModel.parameters.length).toBe(parmCount);
             expect(dialogViewModel.title).toBe(title);
@@ -102,14 +78,14 @@ module NakedObjects.Gemini.Test {
             }
 
             function verifyBaseHomePageState(ts: INakedObjectsScope) {
-                expect(ts.homeTemplate).toBe(Angular.homeTemplate);
+                expect(ts.homeTemplate).toBe(homeTemplate);
                 const menusViewModel = ts.menus as MenusViewModel;
                 expect(menusViewModel.items.length).toBe(10);
                 expect(testEventSpy).toHaveBeenCalled();
             }
 
             function verifyOpenMenuHomePageState(ts: INakedObjectsScope) {
-                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);
+                expect(ts.actionsTemplate).toBe(actionsTemplate);
                 expect(ts.menu.actions.length).toBe(4);
             }
 
@@ -178,7 +154,7 @@ module NakedObjects.Gemini.Test {
             }
 
             function verifyBaseObjectPageState(ts: INakedObjectsScope) {            
-                expect(ts.collectionsTemplate).toBe(Angular.collectionsTemplate);
+                expect(ts.collectionsTemplate).toBe(collectionsTemplate);
                 const objectViewModel = ts.object as DomainObjectViewModel;
                 expect(objectViewModel.properties.length).toBe(7);
                 expect(testEventSpy).toHaveBeenCalled();
@@ -186,20 +162,20 @@ module NakedObjects.Gemini.Test {
             }
 
             function verifyObjectViewPageState(ts: INakedObjectsScope) {
-                expect(ts.objectTemplate).toBe(Angular.objectViewTemplate);              
+                expect(ts.objectTemplate).toBe(objectViewTemplate);              
             }
 
             function verifyObjectEditPageState(ts: INakedObjectsScope) {
-                expect(ts.objectTemplate).toBe(Angular.objectEditTemplate);  
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);          
+                expect(ts.objectTemplate).toBe(objectEditTemplate);  
+                expect(ts.actionsTemplate).toBe(nullTemplate);          
             }
 
             function verifyActionsOpenPageState(ts: INakedObjectsScope) {
-                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);              
+                expect(ts.actionsTemplate).toBe(actionsTemplate);              
             }
 
             function verifyActionsClosedPageState(ts: INakedObjectsScope) {
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+                expect(ts.actionsTemplate).toBe(nullTemplate);
             }
 
             function verifyOpenDialogObjectPageState(ts: INakedObjectsScope) {
@@ -315,22 +291,22 @@ module NakedObjects.Gemini.Test {
         
             function verifyListPlaceholderPageState(ts: INakedObjectsScope) {
                 expect(ts.title).toBe("All Vendors With Web Addresses");
-                expect(ts.listTemplate).toBe(Angular.listPlaceholderTemplate);
+                expect(ts.listTemplate).toBe(listPlaceholderTemplate);
                 const collectionPlaceholderViewModel = ts.collectionPlaceholder;
                 expect(collectionPlaceholderViewModel).not.toBeNull();
                 expect(collectionPlaceholderViewModel.description()).toBe("Page 1");
             }
 
             function verifyListPageState(ts: INakedObjectsScope) {
-                expect(ts.listTemplate).toBe(Angular.listTemplate);
+                expect(ts.listTemplate).toBe(listTemplate);
             }
 
             function verifyListClosedActionsPageState(ts: INakedObjectsScope) {
-                expect(ts.actionsTemplate).toBe(Angular.nullTemplate);
+                expect(ts.actionsTemplate).toBe(nullTemplate);
             }
 
             function verifyListOpenActionsPageState(ts: INakedObjectsScope) {
-                expect(ts.actionsTemplate).toBe(Angular.actionsTemplate);
+                expect(ts.actionsTemplate).toBe(actionsTemplate);
             }
          
 

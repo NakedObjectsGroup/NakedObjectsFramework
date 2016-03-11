@@ -3,7 +3,17 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular {
+module NakedObjects {
+    import IHateoasModel = NakedObjects.Models.IHateoasModel;
+    import Link = NakedObjects.Models.Link;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import Value = NakedObjects.Models.Value;
+    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
 
     export interface IRepLoader {
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new (): IHateoasModel }, digest? : string) => ng.IPromise<T>;

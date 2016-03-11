@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular {
+module NakedObjects {
 
     app.run((color: IColor) => {
 

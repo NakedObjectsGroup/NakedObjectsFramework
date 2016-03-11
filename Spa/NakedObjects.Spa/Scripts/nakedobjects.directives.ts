@@ -1,8 +1,10 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular.Gemini {
-    import toDateString = Helpers.toDateString;
+module NakedObjects {
+    import Value = NakedObjects.Models.Value;
+    import toDateString = Models.toDateString;
+    import EntryType = NakedObjects.Models.EntryType;
 
     interface ISelectObj {
         request?: string;

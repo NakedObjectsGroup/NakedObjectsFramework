@@ -8,7 +8,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module NakedObjects.UserMessages {
+module NakedObjects {
 
    // user message constants
 

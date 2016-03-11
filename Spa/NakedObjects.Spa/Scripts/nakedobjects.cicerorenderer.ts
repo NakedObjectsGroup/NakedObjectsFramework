@@ -1,4 +1,12 @@
-﻿module NakedObjects.Angular.Gemini {
+﻿module NakedObjects {
+    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
+    import IHasActions = NakedObjects.Models.IHasActions;
+    import TypePlusTitle = Models.typePlusTitle;
+    import PlusTitle = Models.typePlusTitle;
+    import FriendlyNameForParam = Models.friendlyNameForParam;
 
     export interface ICiceroRenderer {
 
@@ -40,7 +48,7 @@
                         const id = openCollIds[0];
                         const coll = obj.collectionMember(id);
                         output += "Collection: " + coll.extensions().friendlyName();
-                        output += " on " + Helpers.typePlusTitle(obj) + ",  "
+                        output += " on " + TypePlusTitle(obj) + ",  "
                         switch (coll.size()) {
                             case 0:
                                 output += "empty";
@@ -55,7 +63,7 @@
                         if (routeData.interactionMode === InteractionMode.Edit) {
                             output += "Editing ";
                         }
-                        output += Helpers.typePlusTitle(obj) + ". ";
+                        output += PlusTitle(obj) + ". ";
                         output += renderActionDialogIfOpen(obj, routeData);
                     }
                     cvm.clearInput();
@@ -99,7 +107,7 @@
                 const actionName = actionMember.extensions().friendlyName();
                 output += "Action dialog: " + actionName + ". ";
                 _.forEach(routeData.dialogFields, (value, key) => {
-                    output += Helpers.friendlyNameForParam(actionMember, key) + ": ";
+                    output += FriendlyNameForParam(actionMember, key) + ": ";
                     output += value.toString() || "empty";
                     output += ", ";
                 });

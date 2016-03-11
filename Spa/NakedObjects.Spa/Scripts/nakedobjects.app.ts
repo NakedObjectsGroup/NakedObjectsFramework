@@ -1,11 +1,10 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/angularjs/angular-route.d.ts" />
-/// <reference path="nakedobjects.gemini.constants.ts" />
 
-module NakedObjects.Angular {
+
+module NakedObjects {
 
     export const app = angular.module("app", ["ngRoute"]);
-    //export const app = angular.module("app", ["ngRoute", "ngTouch"]);
 
     app.config(($routeProvider: ng.route.IRouteProvider) => {
         const singleHomeTemplate = getSvrPath() + "Content/partials/singleHome.html";

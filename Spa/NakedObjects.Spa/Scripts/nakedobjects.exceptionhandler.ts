@@ -1,5 +1,8 @@
 ﻿
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
 
     app.provider({
         $exceptionHandler() {

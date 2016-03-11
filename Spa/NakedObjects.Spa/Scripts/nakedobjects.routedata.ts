@@ -1,7 +1,9 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
+    import Value = NakedObjects.Models.Value;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
 
     export enum ViewType {
         Home,

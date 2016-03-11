@@ -17,15 +17,14 @@
 /// <reference path="nakedobjects.config.ts" />
 /// <reference path="nakedobjects.rointerfaces.ts" />
 
-module NakedObjects {
+module NakedObjects.Models {
     import ICustomExtensions = RoInterfaces.Custom.ICustomExtensions;
     import ILink = RoInterfaces.ILink;
     import IMenuRepresentation = RoInterfaces.Custom.IMenuRepresentation;
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
-    import Compress = Helpers.compress;
-    import Decompress = Helpers.decompress;
+  
 
     // helper functions 
 
@@ -333,7 +332,7 @@ module NakedObjects {
                     const profileValue = (this.profile.split("=")[1].replace(/\"/g, "")).trim();
                     this.representationType = (profileValue.split("/")[1]).trim();
                 }
-                if (parms[i].trim().substring(0, 16) === Angular.roDomainType) {
+                if (parms[i].trim().substring(0, 16) === roDomainType) {
                     this.xRoDomainType = (parms[i]).trim();
                     this.domainType = (this.xRoDomainType.split("=")[1].replace(/\"/g, "")).trim();
                 }
@@ -409,7 +408,7 @@ module NakedObjects {
             };
 
             if (this.scalar() && this.wrapped instanceof String) {
-                this.wrapped = Compress(this.wrapped as string);
+                this.wrapped = compress(this.wrapped as string);
             }
         }
 
@@ -422,7 +421,7 @@ module NakedObjects {
             };
 
             if (this.scalar() && this.wrapped instanceof String) {
-                this.wrapped = Decompress(this.wrapped as string);
+                this.wrapped = decompress(this.wrapped as string);
             }
         }
 
@@ -529,10 +528,10 @@ module NakedObjects {
             
             const temp = this.map;
             if (isIObjectOfType(temp)) {
-                return temp[Angular.roInvalidReason];
+                return temp[roInvalidReason];
             }
 
-            return this.wrapped()[Angular.roInvalidReason] as string;
+            return this.wrapped()[roInvalidReason] as string;
         }
 
         containsError() {
@@ -629,16 +628,16 @@ module NakedObjects {
         isService = () => this.wrapped.isService;
         minLength = () => this.wrapped.minLength; 
         //Nof custom:
-        choices = () => this.wrapped[Angular.nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; }
-        menuPath = () => this.wrapped[Angular.nofMenuPath] as string;
-        mask = () => this.wrapped[Angular.nofMask] as string;
-        tableViewTitle = () => this.wrapped[Angular.nofTableViewTitle] as boolean;
-        tableViewColumns = () => this.wrapped[Angular.nofTableViewColumns] as string[];
-        multipleLines = () => this.wrapped[Angular.nofMultipleLines] as number;
-        warnings = () => this.wrapped[Angular.nofWarnings] as string[];
-        messages = () => this.wrapped[Angular.nofMessages] as string[];
-        interactionMode = () => this.wrapped[Angular.nofInteractionMode] as string;
-        dataType = () => this.wrapped[Angular.nofDataType] as string;
+        choices = () => this.wrapped[nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; }
+        menuPath = () => this.wrapped[nofMenuPath] as string;
+        mask = () => this.wrapped[nofMask] as string;
+        tableViewTitle = () => this.wrapped[nofTableViewTitle] as boolean;
+        tableViewColumns = () => this.wrapped[nofTableViewColumns] as string[];
+        multipleLines = () => this.wrapped[nofMultipleLines] as number;
+        warnings = () => this.wrapped[nofWarnings] as string[];
+        messages = () => this.wrapped[nofMessages] as string[];
+        interactionMode = () => this.wrapped[nofInteractionMode] as string;
+        dataType = () => this.wrapped[nofDataType] as string;
     } 
 
     // matches a action invoke resource 19.0 representation 
@@ -786,7 +785,7 @@ module NakedObjects {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()[Angular.roSearchTerm]) {
+                if (!!this.promptLink().arguments()[roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }
@@ -880,7 +879,7 @@ module NakedObjects {
         }
 
         setSearchTerm(term: string) {
-            this.setArgument(Angular.roSearchTerm, new Value(term));
+            this.setArgument(roSearchTerm, new Value(term));
         }
 
         setArgument(name: string, val: Value) {
@@ -1280,7 +1279,7 @@ module NakedObjects {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()[Angular.roSearchTerm]) {
+                if (!!this.promptLink().arguments()[roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }
@@ -1894,11 +1893,11 @@ module NakedObjects {
         constructor(public wrapped : RoInterfaces.ILink) { }
 
         compress() {
-            this.wrapped.href = Compress(this.wrapped.href);
+            this.wrapped.href = compress(this.wrapped.href);
         }
 
         decompress() {
-            this.wrapped.href = Decompress(this.wrapped.href);
+            this.wrapped.href = decompress(this.wrapped.href);
         }
 
         href(): string {

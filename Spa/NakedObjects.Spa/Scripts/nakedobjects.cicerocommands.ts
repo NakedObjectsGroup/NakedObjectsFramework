@@ -1,6 +1,29 @@
-﻿/// <reference path="nakedobjects.gemini.services.urlmanager.ts" />
+﻿
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
+    import IHasExtensions = NakedObjects.Models.IHasExtensions;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import PropertyMember = NakedObjects.Models.PropertyMember;
+    import CollectionMember = NakedObjects.Models.CollectionMember;
+    import Parameter = NakedObjects.Models.Parameter;
+    import Value = NakedObjects.Models.Value;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import ErrorValue = NakedObjects.Models.ErrorValue;
+    import IField = NakedObjects.Models.IField;
+    import EntryType = NakedObjects.Models.EntryType;
+    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
+    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
+    import IHasLinksAsValue = NakedObjects.Models.IHasLinksAsValue;
+    import TypePlusTitle = Models.typePlusTitle;
+    import FriendlyTypeName = Models.friendlyTypeName;
+    import FriendlyNameForParam = Models.friendlyNameForParam;
+    import FriendlyNameForProperty = Models.friendlyNameForProperty;
 
     export abstract class Command {
 
@@ -587,7 +610,7 @@ module NakedObjects.Angular.Gemini {
         }
         private show(): void {
             if (this.vm.clipboard) {
-                const label = Helpers.typePlusTitle(this.vm.clipboard);
+                const label = TypePlusTitle(this.vm.clipboard);
                 this.clearInputAndSetMessage("Clipboard contains: " + label);
             } else {
                 this.clearInputAndSetMessage("Clipboard is empty");
@@ -855,7 +878,7 @@ module NakedObjects.Angular.Gemini {
             let s = "Field name: " + field.extensions().friendlyName();
             const desc = field.extensions().description();
             s += desc ? "\nDescription: " + desc : "";
-            s += "\nType: " + Helpers.friendlyTypeName(field.extensions().returnType());
+            s += "\nType: " + FriendlyTypeName(field.extensions().returnType());
             if (field instanceof PropertyMember && field.disabledReason()) {
                 s += "\nUnmodifiable: " + field.disabledReason();
             } else {
@@ -1102,7 +1125,7 @@ module NakedObjects.Angular.Gemini {
                     catch((reject: ErrorWrapper) => {
 
                         const display = (em: ErrorMap) => {
-                            const paramFriendlyName = (paramId: string) => Helpers.friendlyNameForParam(action, paramId);
+                            const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         }
 
@@ -1329,7 +1352,7 @@ module NakedObjects.Angular.Gemini {
 
         private handleError(err: ErrorMap, obj: DomainObjectRepresentation) {
             if (err.containsError()) {
-                const propFriendlyName = (propId: string) => Helpers.friendlyNameForProperty(obj, propId);
+                const propFriendlyName = (propId: string) => FriendlyNameForProperty(obj, propId);
                 this.handleErrorResponse(err, propFriendlyName);
             } else {
                 this.urlManager.setInteractionMode(InteractionMode.View);

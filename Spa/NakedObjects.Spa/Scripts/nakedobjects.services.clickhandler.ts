@@ -1,7 +1,7 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
 
     export interface IClickHandler {
         pane(currentPane: number, right?: boolean): number;

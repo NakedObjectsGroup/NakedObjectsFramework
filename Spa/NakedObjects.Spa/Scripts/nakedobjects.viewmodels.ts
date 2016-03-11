@@ -2,8 +2,24 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular.Gemini {
-    import toDateString = Helpers.toDateString;
+module NakedObjects {
+   
+    import Value = NakedObjects.Models.Value;
+    import Link = NakedObjects.Models.Link;
+    import EntryType = NakedObjects.Models.EntryType;
+    import Parameter = NakedObjects.Models.Parameter;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import PropertyMember = NakedObjects.Models.PropertyMember;
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
+    import CollectionMember = NakedObjects.Models.CollectionMember;
+    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
+    import DateString = Models.toDateString;
 
     export interface IDraggableViewModel {
         canDropOn:  (targetType: string) => ng.IPromise<boolean>;
@@ -246,7 +262,7 @@ module NakedObjects.Angular.Gemini {
                 
                     if (this.format === "date") {
                         // truncate time;
-                        return new Value(toDateString(this.value as Date));
+                        return new Value(DateString(this.value as Date));
                     }
                     // date-time
                     return new Value((this.value as Date).toISOString());
@@ -324,7 +340,7 @@ module NakedObjects.Angular.Gemini {
             this.executeInvoke(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
-                        this.message =  actionResult.warningsOrMessages() || UserMessages.noResultMessage;
+                        this.message =  actionResult.warningsOrMessages() || noResultMessage;
                     } else if (actionResult.resultType() === "void" ||  !right) {
                         // leave open if opening on other pane and dialog has result
                         this.doClose();
@@ -443,7 +459,7 @@ module NakedObjects.Angular.Gemini {
                         a.executeInvoke([], right).
                             then((result: ActionResultRepresentation) => {
                                 if (result.shouldExpectResult()) {
-                                    this.message = result.warningsOrMessages() || UserMessages.noResultMessage;
+                                    this.message = result.warningsOrMessages() || noResultMessage;
                                 } else {
                                     this.message = "";
                                 }
@@ -819,24 +835,24 @@ module NakedObjects.Angular.Gemini {
 
     export interface INakedObjectsScope extends ng.IScope {
         backgroundColor: string;
-        menus: Angular.Gemini.MenusViewModel;
+        menus: MenusViewModel;
         homeTemplate: string;
         actionsTemplate: string;
-        object: Angular.Gemini.DomainObjectViewModel;
-        menu: Angular.Gemini.MenuViewModel;
+        object: DomainObjectViewModel;
+        menu: MenuViewModel;
         dialogTemplate: string;
-        dialog: Angular.Gemini.DialogViewModel;
-        error: Angular.Gemini.ErrorViewModel;
+        dialog: DialogViewModel;
+        error: ErrorViewModel;
         errorTemplate: string;
         listTemplate: string;
-        collection: Angular.Gemini.ListViewModel;
-        collectionPlaceholder: Angular.Gemini.CollectionPlaceholderViewModel;
+        collection: ListViewModel;
+        collectionPlaceholder: CollectionPlaceholderViewModel;
 
         title: string;
         toolBar: ToolBarViewModel;
         objectTemplate: string;
         collectionsTemplate: string;
-        cicero: Angular.Gemini.CiceroViewModel;
+        cicero: CiceroViewModel;
     }
 
     export class CiceroViewModel {

@@ -1,24 +1,11 @@
-/// <reference path="../../Scripts/nakedobjects.config.ts" />
-/// <reference path="../../Scripts/nakedobjects.models.helpers.ts" />
-/// <reference path="../../Scripts/nakedobjects.models.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.app.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.controllers.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.directives.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.routedata.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.context.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.handlers.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.browser.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.navigation.simple.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.urlmanager.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.focusmanager.ts" />
-/// <reference path="../../Scripts/nakedobjects.gemini.services.viewmodelfactory.ts" />
-/// <reference path="nakedobjects.gemini.test.helpers.ts" />
+
+/// <reference path="../../Scripts/typings/jasmine/jasmine.d.ts" />
+
 
 // todo make sure tests are enhanced to validate contents of view models and urls
 // todo tests for invalid url combinations ? 
 
-module NakedObjects.Gemini.Test.Masks {
-    import IMask = Angular.IMask;
+module NakedObjects.Test.Masks {
     describe("nakedobjects.gemini.tests.masks", () => {
 
         beforeEach(angular.mock.module("app"));

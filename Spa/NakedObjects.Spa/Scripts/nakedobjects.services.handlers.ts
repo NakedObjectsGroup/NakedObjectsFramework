@@ -2,7 +2,17 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import Value = NakedObjects.Models.Value;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import VersionRepresentation = NakedObjects.Models.VersionRepresentation;
+    import MenusRepresentation = NakedObjects.Models.MenusRepresentation;
+    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import Extensions = NakedObjects.Models.Extensions;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;

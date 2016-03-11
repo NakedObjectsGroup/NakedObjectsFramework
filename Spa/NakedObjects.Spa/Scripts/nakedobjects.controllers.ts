@@ -2,7 +2,7 @@
 /// <reference path="nakedobjects.models.ts" />
 
 // tested 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
 
     app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         const routeData = urlManager.getRouteData();

@@ -2,7 +2,7 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular.Gemini {
+module NakedObjects {
 
     export interface INavigation {
         back();

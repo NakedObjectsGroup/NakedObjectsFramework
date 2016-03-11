@@ -3,9 +3,37 @@
 /// <reference path="nakedobjects.models.ts" />
 
 
-module NakedObjects.Angular.Gemini {
-    import toUtcDate = Helpers.toUtcDate;
-    import isDateOrDateTime = Helpers.isDateOrDateTime;
+module NakedObjects {
+  
+    import ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    import ActionMember = NakedObjects.Models.ActionMember;
+    import CollectionMember = NakedObjects.Models.CollectionMember;
+    import DomainServicesRepresentation = NakedObjects.Models.DomainServicesRepresentation;
+    import DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
+    import MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    import Parameter = NakedObjects.Models.Parameter;
+    import Value = NakedObjects.Models.Value;
+    import PropertyMember = NakedObjects.Models.PropertyMember;
+    import ErrorMap = NakedObjects.Models.ErrorMap;
+    import Link = NakedObjects.Models.Link;
+    import ErrorCategory = NakedObjects.Models.ErrorCategory;
+    import HttpStatusCode = NakedObjects.Models.HttpStatusCode;
+    import EntryType = NakedObjects.Models.EntryType;
+    import Extensions = NakedObjects.Models.Extensions;
+    import ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    import ListRepresentation = NakedObjects.Models.ListRepresentation;
+    import ErrorRepresentation = NakedObjects.Models.ErrorRepresentation;
+    import IField = NakedObjects.Models.IField;
+    import IHasActions = NakedObjects.Models.IHasActions;
+    import TypePlusTitle = Models.typePlusTitle;
+    import IsDateOrDateTime = Models.isDateOrDateTime;
+    import toUtcDate = Models.toUtcDate;
+    import isDateOrDateTime = Models.isDateOrDateTime;
+    import FriendlyTypeName = Models.friendlyTypeName;
+    import PlusTitle = Models.typePlusTitle;
+    import Title = Models.typePlusTitle;
+    import FriendlyNameForProperty = Models.friendlyNameForProperty;
+    import FriendlyNameForParam = Models.friendlyNameForParam;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -221,7 +249,7 @@ module NakedObjects.Angular.Gemini {
               
                 if (returnType === "boolean") {
                     parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
-                } else if (isDateOrDateTime(parmRep)) {
+                } else if (IsDateOrDateTime(parmRep)) {
                     parmViewModel.value = toUtcDate(previousValue || new Value(parmViewModel.dflt));
                 } else {
                     parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
@@ -441,7 +469,7 @@ module NakedObjects.Angular.Gemini {
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 }
                 else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = UserMessages.obscuredText;
+                    propertyViewModel.formattedValue = obscuredText;
                 }
                 else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
@@ -724,7 +752,7 @@ module NakedObjects.Angular.Gemini {
                                 if (_.some(openCollIds)) {
                                     const id = openCollIds[0];
                                     const coll = obj.collectionMember(id);
-                                    output += `Collection: ${coll.extensions().friendlyName() } on ${Helpers.typePlusTitle(obj) }\n`;
+                                    output += `Collection: ${coll.extensions().friendlyName() } on ${TypePlusTitle(obj) }\n`;
                                     switch (coll.size()) {
                                         case 0:
                                             output += "empty";
@@ -738,19 +766,19 @@ module NakedObjects.Angular.Gemini {
                                 } else {
                                     if (obj.isTransient()) {
                                         output += "Unsaved ";
-                                        output += Helpers.friendlyTypeName(obj.domainType()) + "\n";
+                                        output += FriendlyTypeName(obj.domainType()) + "\n";
                                         output += renderModifiedProperties(obj, routeData, mask);
                                     } else if (routeData.interactionMode === InteractionMode.Edit ||
                                         routeData.interactionMode === InteractionMode.Form) {
                                         output += "Editing ";
-                                        output += Helpers.typePlusTitle(obj) + "\n";
+                                        output += PlusTitle(obj) + "\n";
                                         if (routeData.dialogId) {
                                             output += renderActionDialogIfOpen(obj, routeData, mask);
                                         } else {
                                             output += renderModifiedProperties(obj, routeData, mask);
                                         }
                                     } else {
-                                        output += Helpers.typePlusTitle(obj) + "\n";
+                                        output += Title(obj) + "\n";
                                         output += renderActionDialogIfOpen(obj, routeData, mask);
                                     }
                                 }
@@ -824,7 +852,7 @@ module NakedObjects.Angular.Gemini {
         if (_.keys(routeData.props).length > 0) {
             output += "Modified properties:\n";
             _.each(routeData.props, (value, propId) => {
-                output += Helpers.friendlyNameForProperty(obj, propId) + ": ";
+                output += FriendlyNameForProperty(obj, propId) + ": ";
                 const pm = obj.propertyMember(propId);
                 output += renderFieldValue(pm, value, mask);
                 output += "\n";
@@ -876,7 +904,7 @@ module NakedObjects.Angular.Gemini {
             const actionName = actionMember.extensions().friendlyName();
             output += `Action dialog: ${actionName}\n`;
             _.forEach(routeData.dialogFields, (value, paramId) => {
-                output += Helpers.friendlyNameForParam(actionMember, paramId) + ": ";
+                output += FriendlyNameForParam(actionMember, paramId) + ": ";
                 const param = actionMember.parameters()[paramId];
                 output += renderFieldValue(param, value, mask);
                 output += "\n";
