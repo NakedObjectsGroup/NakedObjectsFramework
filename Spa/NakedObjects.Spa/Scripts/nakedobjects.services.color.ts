@@ -1,5 +1,6 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
 
@@ -10,9 +11,9 @@ module NakedObjects {
     export interface IColor {
         toColorFromHref(href: string): string;
         toColorFromType(type: string): string;
-        setColorMap(map: IColorMap);
-        setDefaultColorArray(colors: string[]);
-        setDefaultColor(dfltColor: string);
+        setColorMap(map: IColorMap): void;
+        setDefaultColorArray(colors: string[]): void;
+        setDefaultColor(dfltColor: string): void;
     }
 
     app.service("color", function() {
@@ -25,7 +26,7 @@ module NakedObjects {
         let defaultColor = "darkBlue";
         const colorPrefix = "bg-color-";
 
-        function hashCode(toHash) {
+        function hashCode(toHash : any) {
             let hash = 0, i: number, chr: number;
             if (toHash.length === 0) return hash;
             for (i = 0; i < toHash.length; i++) {

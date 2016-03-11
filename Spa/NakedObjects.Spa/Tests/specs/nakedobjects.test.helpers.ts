@@ -449,7 +449,7 @@ module NakedObjects.Test.Helpers {
                             {
                                 arguments: {
                                      "x-ro-searchTerm": {
-                                          value: null
+                                          value: null as string
                                      }
                                 },
                                 extensions: {
@@ -479,7 +479,7 @@ module NakedObjects.Test.Helpers {
                             {
                                 arguments: {
                                      "x-ro-searchTerm": {
-                                          value: null
+                                          value: null as any
                                      }
                                 },
                                 extensions: { "minLength": 2 },
@@ -509,10 +509,10 @@ module NakedObjects.Test.Helpers {
                     {
                         arguments: {
                             offer: {
-                                 value: null
+                                 value: null as any
                             },
                             product: {
-                                value: null
+                                value: null as any
                             }
                         },
                         rel: "urn:org.restfulobjects:rels/invoke;action=\"AssociateSpecialOfferWithProduct\"",
@@ -662,12 +662,12 @@ module NakedObjects.Test.Helpers {
             },
             {
                 arguments: {
-                    AccountNumber: { value: null },
-                    Name: { value: null },
-                    CreditRating: { value: null },
-                    PreferredVendorStatus: { value: null },
-                    ActiveFlag: { value: null },
-                    PurchasingWebServiceURL: { value: null }
+                    AccountNumber: { value: null as any },
+                    Name: { value: null as any},
+                    CreditRating: { value: null as any },
+                    PreferredVendorStatus: { value: null as any },
+                    ActiveFlag: { value: null as any },
+                    PurchasingWebServiceURL: { value: null as any }
                 },
                 rel: "urn:org.restfulobjects:rels/update",
                 method: "PUT",
@@ -702,7 +702,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/AccountNumber"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"AccountNumber\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -739,7 +739,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/Name"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"Name\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -776,7 +776,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/CreditRating"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"CreditRating\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -811,7 +811,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/PreferredVendorStatus"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"PreferredVendorStatus\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -845,7 +845,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/ActiveFlag"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"ActiveFlag\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -861,7 +861,7 @@ module NakedObjects.Test.Helpers {
                 }
             },
             PurchasingWebServiceURL: {
-                value: null,
+                value: null as any,
                 hasChoices: false,
                 memberType: "property",
                 id: "PurchasingWebServiceURL",
@@ -879,7 +879,7 @@ module NakedObjects.Test.Helpers {
                         href: "http://nakedobjectsrodemo.azurewebsites.net/domain-types/AdventureWorksModel.Vendor/properties/PurchasingWebServiceURL"
                     },
                     {
-                        arguments: { value: null },
+                        arguments: { value: null as any },
                         rel: "urn:org.restfulobjects:rels/modify;property=\"PurchasingWebServiceURL\"",
                         method: "PUT",
                         type: "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
@@ -937,7 +937,7 @@ module NakedObjects.Test.Helpers {
             Products: {
                 disabledReason: "Field not editable",
                 size: 0,
-                value: [],
+                value: [] as any[],
                 memberType: "collection",
                 id: "Products",
                 links: [
@@ -1099,8 +1099,8 @@ module NakedObjects.Test.Helpers {
                     },
                     {
                         arguments: {
-                            fromDate: { value: null },
-                            toDate: { value: null }
+                            fromDate: { value: null as any },
+                            toDate: { value: null as any }
                         },
                         rel: "urn:org.restfulobjects:rels/invoke;action=\"ListPurchaseOrders\"",
                         method: "GET",
@@ -1337,8 +1337,8 @@ module NakedObjects.Test.Helpers {
                         },
                         {
                             arguments: {
-                                offers: { value: null },
-                                newType: { value: null }
+                                offers: { value: null as any },
+                                newType: { value: null as any }
                             },
                             rel: "urn:org.restfulobjects:rels/invoke;action=\"ChangeType\"",
                             method: "POST",
@@ -1424,8 +1424,8 @@ module NakedObjects.Test.Helpers {
                         },
                         {
                             arguments: {
-                                offers: { value: null },
-                                toDate: { value: null }
+                                offers: { value: null as any },
+                                toDate: { value: null as any }
                             },
                             rel: "urn:org.restfulobjects:rels/invoke;action=\"ExtendOffers\"",
                             method: "POST",
@@ -1492,7 +1492,7 @@ module NakedObjects.Test.Helpers {
                         {
                             arguments: {
                                 offers: {
-                                    value: null
+                                    value: null as any
                                 }
                             },
                             rel: "urn:org.restfulobjects:rels/invoke;action=\"TerminateActiveOffers\"",

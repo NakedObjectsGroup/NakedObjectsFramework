@@ -146,7 +146,7 @@ module NakedObjects {
                 arg = "1-";
             }
             const clauses = arg.split("-");
-            const range = { start: null, end: null };
+            const range = { start: null as number, end: null as number };
             switch (clauses.length) {
                 case 1:
                     range.start = this.parseInt(clauses[0]);
@@ -888,7 +888,7 @@ module NakedObjects {
             const enteredFields = this.routeData().dialogFields;
 
             // fromPairs definition is faulty
-            const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)])) as _.Dictionary<Value>;
+            const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
             _.forEach(_.keys(args), key => {
                 args[key] = enteredFields[key];
             });
@@ -1219,7 +1219,7 @@ module NakedObjects {
             });
         }
 
-        private setPage(page) {
+        private setPage(page : number) {
             const pageSize = this.routeData().pageSize;
             this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
         }

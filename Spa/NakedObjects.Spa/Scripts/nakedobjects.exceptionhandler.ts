@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="nakedobjects.app.ts" />
+
 module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
@@ -8,7 +9,7 @@ module NakedObjects {
         $exceptionHandler() {
 
 
-            this.$get = $injector => (exception) => {
+            this.$get = ($injector : any) => (exception : any) => {
                 const ulrManager: IUrlManager = $injector.get("urlManager");
                 const context: IContext = $injector.get("context");
 

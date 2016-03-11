@@ -24,6 +24,7 @@ module NakedObjects.Models {
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
+    import IObjectOfType = RoInterfaces.IObjectOfType;
 
 
     // helper functions 
@@ -40,7 +41,7 @@ module NakedObjects.Models {
         return { links: [], extensions: {} };
     }
 
-    function isILink(object: any): object is RoInterfaces.ILink {
+    function isILink(object: any): object is ILink {
         return object && object instanceof Object && "href" in object;
     }
 
@@ -84,7 +85,7 @@ module NakedObjects.Models {
         hateoasUrl: string;
         method: string;
         urlParms: _.Dictionary<string>;
-        populate(wrapped: RoInterfaces.IRepresentation);
+        populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
         getUrl(): string;
     }
@@ -455,7 +456,7 @@ module NakedObjects.Models {
         }
 
         set(target: _.Dictionary<IValue | string>, name: string) {
-            const t = target[name] = { "value": null };
+            const t = target[name] = <IValue>{ value: null };
             this.setValue(t);
         }
     }
@@ -522,11 +523,11 @@ module NakedObjects.Models {
             return _.mapValues(values, v => new ErrorValue(new Value(v.value), v.invalidReason));
         }
 
-        invalidReason() {
+        invalidReason(): string {
 
             const temp = this.map;
             if (isIObjectOfType(temp)) {
-                return temp[roInvalidReason];
+                return (<any>temp)[roInvalidReason] as string;
             }
 
             return this.wrapped()[roInvalidReason] as string;
@@ -627,16 +628,16 @@ module NakedObjects.Models {
         isService = () => this.wrapped.isService;
         minLength = () => this.wrapped.minLength;
         //Nof custom:
-        choices = () => this.wrapped[nofChoices] as { [index: string]: (string | number | boolean | ILink)[]; };
-        menuPath = () => this.wrapped[nofMenuPath] as string;
-        mask = () => this.wrapped[nofMask] as string;
-        tableViewTitle = () => this.wrapped[nofTableViewTitle] as boolean;
-        tableViewColumns = () => this.wrapped[nofTableViewColumns] as string[];
-        multipleLines = () => this.wrapped[nofMultipleLines] as number;
-        warnings = () => this.wrapped[nofWarnings] as string[];
-        messages = () => this.wrapped[nofMessages] as string[];
-        interactionMode = () => this.wrapped[nofInteractionMode] as string;
-        dataType = () => this.wrapped[nofDataType] as string;
+        choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: (string | number | boolean | ILink)[]; };
+        menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
+        mask = () => this.wrapped["x-ro-nof-mask"] as string;
+        tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
+        tableViewColumns = () => this.wrapped["x-ro-nof-tableViewColumns"] as string[];
+        multipleLines = () => this.wrapped["x-ro-nof-multipleLines"] as number;
+        warnings = () => this.wrapped["x-ro-nof-warnings"] as string[];
+        messages = () => this.wrapped["x-ro-nof-messages"] as string[];
+        interactionMode = () => this.wrapped["x-ro-nof-interactionMode"] as string;
+        dataType = () => this.wrapped["x-ro-nof-dataType"] as string;
     }
 
     // matches a action invoke resource 19.0 representation 
@@ -784,7 +785,7 @@ module NakedObjects.Models {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()[roSearchTerm]) {
+                if (!!(<any>this.promptLink().arguments())[roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }
@@ -1196,7 +1197,7 @@ module NakedObjects.Models {
 
         setFromModifyMap(map: ModifyMap) {
             _.forOwn(map.map, (v, k) => {
-                this.wrapped[k] = v;
+                (<any>this.wrapped)[k] = v;
             });
         }
 
@@ -1278,7 +1279,7 @@ module NakedObjects.Models {
             if (this.hasPrompt()) {
                 // ConditionalChoices, ConditionalMultipleChoices, AutoComplete 
 
-                if (!!this.promptLink().arguments()[roSearchTerm]) {
+                if (!!(<any>this.promptLink().arguments())[roSearchTerm]) {
                     // autocomplete 
                     return EntryType.AutoComplete;
                 }
@@ -1622,7 +1623,7 @@ module NakedObjects.Models {
 
         static create(message: string, stackTrace?: string[], causedBy?: RoInterfaces.IErrorDetailsRepresentation) {
             const rawError = {
-                links: [],
+                links : [] as any[],
                 extensions: {},
                 message: message,
                 stackTrace: stackTrace,
@@ -1940,13 +1941,13 @@ module NakedObjects.Models {
             hateoasModel.method = this.method();
         }
 
-        private getHateoasTarget(targetType): IHateoasModel {
+        private getHateoasTarget(targetType : any): IHateoasModel {
             const MatchingType = this.repTypeToModel[targetType];
             const target: IHateoasModel = new MatchingType();
             return target;
         }
 
-        private repTypeToModel = {
+        private repTypeToModel : any = {
             "homepage": HomePageRepresentation,
             "user": UserRepresentation,
             "version": VersionRepresentation,

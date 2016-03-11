@@ -1,6 +1,7 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 
 module NakedObjects {
@@ -63,10 +64,10 @@ module NakedObjects {
         getActionExtensionsFromMenu: (menuId: string, actionId: string) => angular.IPromise<Extensions>;
         getActionExtensionsFromObject: (paneId: number, objectId: string, actionId: string) => angular.IPromise<Extensions>;
 
-        swapCurrentObjects();
+        swapCurrentObjects(): void;
 
-        clearMessages();
-        clearWarnings();
+        clearMessages(): void;
+        clearWarnings(): void;
 
         handleWrappedError(reject: ErrorWrapper,
             toReload: DomainObjectRepresentation,
@@ -81,7 +82,7 @@ module NakedObjects {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number);
+        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
     }
 
@@ -401,7 +402,7 @@ module NakedObjects {
             return getList(paneId, promise, page, pageSize);
         };
 
-        context.setObject = (paneId: number, co) => currentObjects[paneId] = co;
+        context.setObject = (paneId: number, co : DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
             const [, p1, p2] = currentObjects;

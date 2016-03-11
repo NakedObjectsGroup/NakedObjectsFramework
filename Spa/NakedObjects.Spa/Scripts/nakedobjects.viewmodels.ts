@@ -1,5 +1,6 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.userMessages.config.ts" />
 
 
 module NakedObjects {
@@ -49,7 +50,7 @@ module NakedObjects {
             .value();
 
         // remove non unique submenus 
-        menus = _.uniqWith(menus, (a, b) => {
+        menus = _.uniqWith(menus, (a: { name: string }, b: { name: string }) => {
             if (a.name && b.name) {
                 return a.name === b.name;
             }
@@ -198,7 +199,7 @@ module NakedObjects {
             }
 
             if (this.entryType === EntryType.MultipleChoices) {
-                const ss = _.map(this.multiChoices, (c) => {
+                const ss = _.map(this.multiChoices, c => {
                     return c.search;
                 });
 
@@ -206,7 +207,7 @@ module NakedObjects {
                     return "";
                 }
 
-                return _.reduce(ss, (m: string, s) => {
+                return _.reduce(ss, (m: string, s : string) => {
                     return m + "-" + s;
                 });
             }
@@ -484,7 +485,7 @@ module NakedObjects {
                 this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, page, pageSize) :
                 this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, page, pageSize);
         };
-        private pageOrRecreate = (newPage: number, newPageSize, newState?: CollectionViewState) => {
+        private pageOrRecreate = (newPage: number, newPageSize : number, newState?: CollectionViewState) => {
             this.recreate(newPage, newPageSize).
                 then((list: ListRepresentation) => {
                     this.routeData.state = newState || this.routeData.state;
@@ -774,7 +775,7 @@ module NakedObjects {
         };
 
 
-        doSave = viewObject => {
+        doSave = (viewObject : boolean) => {
 
             this.setProperties();
             const propMap = this.propertyMap();

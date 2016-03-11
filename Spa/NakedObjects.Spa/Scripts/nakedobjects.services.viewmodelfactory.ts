@@ -1,7 +1,8 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
-
+/// <reference path="nakedobjects.userMessages.config.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
 
@@ -50,8 +51,8 @@ module NakedObjects {
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
-        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]);
-        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel);
+        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) : void;
+        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel) : ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
     }
 
@@ -74,7 +75,7 @@ module NakedObjects {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route) {
+        $route : any) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -207,7 +208,7 @@ module NakedObjects {
                         then(createcvm);
                 };
                 // fromPairs definition faulty
-                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
@@ -348,6 +349,7 @@ module NakedObjects {
             if (!msg) msg = err.warningMessage;
             messageViewModel.message = msg;
         };
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
@@ -437,7 +439,7 @@ module NakedObjects {
                         then(createcvm);
                 };
                 // fromPairs definition faulty
-                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key) => [key, new Value(v.value)]));
+                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm) {
@@ -854,14 +856,16 @@ module NakedObjects {
         //Rest is for scalar fields only:
         if (value.toString()) { //i.e. not empty
             //This is to handle an enum: render it as text, not a number:           
-            if (field.entryType() == EntryType.Choices) {
+            if (field.entryType() === EntryType.Choices) {
                 const inverted = _.invert(field.choices());
-                return inverted[value.toValueString()];
-            } else if (field.entryType() == EntryType.MultipleChoices && value.isList()) {
+                return (<any>inverted)[value.toValueString()];
+            } else if (field.entryType() === EntryType.MultipleChoices && value.isList()) {
                 const inverted = _.invert(field.choices());
                 let output = "";
                 const values = value.list();
-                _.forEach(values, v => output += inverted[v.toValueString()] + ",");
+                _.forEach(values, v => {
+                    output += (<any>inverted)[v.toValueString()] + ",";
+                });
                 return output;
             }
         }

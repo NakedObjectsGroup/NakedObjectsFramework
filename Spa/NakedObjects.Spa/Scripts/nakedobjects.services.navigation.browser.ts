@@ -1,12 +1,13 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
 
     export interface INavigation {
-        back();
-        forward();
-        push();
+        back() : void;
+        forward() : void;
+        push() : void;
     }
 
     app.service("navigation", function() {

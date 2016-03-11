@@ -34,7 +34,7 @@ module NakedObjects.Test {
         }
 
         function getEventTestFunc(t: FocusTarget, i: number, p: number, c: number) {
-            return (e, target: FocusTarget, index: number, paneId: number, count: number) => {
+            return (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
                 expect(e.name).toBe("geminiFocuson");
                 expect(target).toBe(t);
                 expect(index).toBe(i);
@@ -50,7 +50,7 @@ module NakedObjects.Test {
             return tes;
         }
 
-        beforeEach(inject($injector => {
+        beforeEach(inject(($injector : any) => {
             // Set up the mock http service responses
             $httpBackend = $injector.get("$httpBackend");
             Helpers.setupBackend($httpBackend);

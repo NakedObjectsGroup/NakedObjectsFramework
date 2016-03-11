@@ -1,4 +1,6 @@
-﻿module NakedObjects {
+﻿/// <reference path="nakedobjects.app.ts" />
+
+module NakedObjects {
     import MenuRepresentation = Models.MenuRepresentation;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
     import ListRepresentation = Models.ListRepresentation;

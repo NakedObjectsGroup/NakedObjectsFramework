@@ -1,5 +1,8 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.services.handlers.ts" />
+/// <reference path="nakedobjects.viewmodels.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 // tested 
 module NakedObjects {

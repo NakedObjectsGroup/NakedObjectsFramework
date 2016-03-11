@@ -1,5 +1,8 @@
 ﻿/// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.services.viewmodelfactory.ts" />
+/// <reference path="nakedobjects.viewmodels.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
     import Value = Models.Value;
@@ -38,7 +41,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link(scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) {
+            link(scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
                 // only add datepicker if date field not supported 
@@ -71,7 +74,7 @@ module NakedObjects {
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
 
-                    const updateModel = dateTxt => {
+                    const updateModel = (dateTxt : any) => {
                         scope.$apply(() => {
                             // Call the internal AngularJS helper to
                             // update the two way binding
@@ -80,7 +83,7 @@ module NakedObjects {
                         });
                     };
 
-                    const onSelect = dateTxt => updateModel(dateTxt);
+                    const onSelect = (dateTxt : any) => updateModel(dateTxt);
 
                     const optionsObj = {
                         dateFormat: "d M yy", // datepicker format
@@ -111,7 +114,7 @@ module NakedObjects {
                 select: "&" // Bind the select function we refer to the right scope
             },
 
-            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
@@ -139,14 +142,14 @@ module NakedObjects {
                     });
                 };
 
-                optionsObj.source = (request, response) => {
+                optionsObj.source = (request : any, response : any) => {
                     scope.$apply(() =>
                         scope.select({ request: request.term }).
                         then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
                         catch(() => response([])));
                 };
 
-                optionsObj.select = (event, ui) => {
+                optionsObj.select = (event : any, ui : any) => {
                     updateModel(ui.item.value);
                     return false;
                 };
@@ -181,7 +184,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
@@ -266,7 +269,7 @@ module NakedObjects {
 
                     if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
                         const options = $(element).find("option:selected");
-                        const kvps = [];
+                        const kvps = [] as any[];
 
                         options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
                         const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
@@ -303,15 +306,15 @@ module NakedObjects {
     });
 
     //The 'right-click' functionality is also triggered by shift-enter
-    app.directive("geminiRightclick", $parse => (scope, element, attrs) => {
+    app.directive("geminiRightclick", $parse => (scope : any, element : any, attrs : any) => {
         const fn = $parse(attrs.geminiRightclick);
-        element.bind("contextmenu", event => {
+        element.bind("contextmenu", (event : any) => {
             scope.$apply(() => {
                 event.preventDefault();
                 fn(scope, { $event: event });
             });
         });
-        element.bind("keydown keypress", event => {
+        element.bind("keydown keypress", (event : any) => {
             const enterKeyCode = 13;
             if (event.keyCode === enterKeyCode && event.shiftKey) {
                 scope.$apply(() => scope.$eval(attrs.geminiRightclick));
@@ -322,7 +325,7 @@ module NakedObjects {
 
     const draggableVmKey = "dvmk";
 
-    app.directive("geminiDrag", ($compile) => (scope, element) => {
+    app.directive("geminiDrag", ($compile) => (scope : any, element : any) => {
 
         const cloneDraggable = () => {
             let cloned: JQuery;
@@ -344,7 +347,7 @@ module NakedObjects {
             zIndex: 9999
         });
 
-        element.on("dragstart", (event, ui) => {
+        element.on("dragstart", (event : any, ui : any) => {
             const draggableVm = scope.property || scope.item || scope.$parent.object;
 
             // make sure dragged element is correct color (object will not be set yet)
@@ -355,7 +358,7 @@ module NakedObjects {
             element.data(draggableVmKey, draggableVm);
         });
 
-        element.on("keydown keypress", event => {
+        element.on("keydown keypress", (event : any) => {
             const cKeyCode = 67;
             if (event.keyCode === cKeyCode && event.ctrlKey) {
                 const draggableVm = scope.property || scope.item || scope.$parent.object;
@@ -368,8 +371,8 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiEnter", () => (scope, element, attrs) => {
-        element.bind("keydown keypress", event => {
+    app.directive("geminiEnter", () => (scope : any, element : any, attrs : any) => {
+        element.bind("keydown keypress", (event : any) => {
             const enterKeyCode = 13;
             if (event.which === enterKeyCode && !event.shiftKey) {
                 scope.$apply(() => scope.$eval(attrs.geminiEnter));
@@ -378,8 +381,8 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope, elem, attr) => {
-        scope.$on(geminiFocusEvent, (e, target: FocusTarget, index: number, paneId: number, count: number) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any, attr: any) => {
+        scope.$on(geminiFocusEvent, (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
 
             $timeout(() => {
 
@@ -433,12 +436,12 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiDrop", () => (scope, element) => {
+    app.directive("geminiDrop", () => (scope : any, element: any) => {
 
         const propertyScope = () => scope.$parent.$parent.$parent;
         const parameterScope = () => scope.$parent.$parent;
 
-        const accept = (draggable) => {
+        const accept = (draggable : any) => {
             const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
 
@@ -462,7 +465,7 @@ module NakedObjects {
             accept: accept
         });
 
-        element.on("drop", (event, ui) => {
+        element.on("drop", (event : any, ui : any) => {
 
             if (element.hasClass("candrop")) {
 
@@ -474,7 +477,7 @@ module NakedObjects {
             }
         });
 
-        element.on("keydown keypress", event => {
+        element.on("keydown keypress", (event: any) => {
             const vKeyCode = 86;
             const deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
@@ -504,7 +507,7 @@ module NakedObjects {
             restrict: "A",
             // Always use along with an ng-model
             require: "?ngModel",
-            link: (scope: ISelectScope, element, attrs, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
                 if (!ngModel) {
                     return;
                 }
@@ -570,8 +573,8 @@ module NakedObjects {
         };
     });
 
-    app.directive("ciceroDown", () => (scope, element, attrs) => {
-        element.bind("keydown keypress", event => {
+    app.directive("ciceroDown", () => (scope : any, element : any, attrs : any) => {
+        element.bind("keydown keypress", (event: any) => {
             const enterKeyCode = 40;
             if (event.which === enterKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroDown));
@@ -580,8 +583,8 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroUp", () => (scope, element, attrs) => {
-        element.bind("keydown keypress", event => {
+    app.directive("ciceroUp", () => (scope : any, element : any, attrs : any) => {
+        element.bind("keydown keypress", (event: any) => {
             const enterKeyCode = 38;
             if (event.which === enterKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroUp));
@@ -590,8 +593,8 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroSpace", () => (scope, element, attrs) => {
-        element.bind("keydown keypress", event => {
+    app.directive("ciceroSpace", () => (scope : any, element: any, attrs: any) => {
+        element.bind("keydown keypress", (event : any) => {
             const tabKeyCode = 32;
             if (event.which === tabKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroSpace));

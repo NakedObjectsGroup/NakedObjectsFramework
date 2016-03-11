@@ -42,7 +42,7 @@ module NakedObjects {
     }
 
     interface ICondition {
-        condition: (val) => boolean,
+        condition: (val: any) => boolean,
         name: string;
     }
 
@@ -78,22 +78,22 @@ module NakedObjects {
         }
 
         private isNull = {
-            condition: val => !val,
+            condition: (val: any) => !val,
             name: "is null"
         };
 
         private isNotNull = {
-            condition: val => val,
+            condition: (val: any) => val,
             name: "is not null"
         };
 
         private isLength0 = {
-            condition: val => val && val.length === 0,
+            condition: (val: any) => val && val.length === 0,
             name: "is length 0"
         };
 
         private isEmptyMap = {
-            condition: val => _.keys(val).length === 0,
+            condition: (val : any) => _.keys(val).length === 0,
             name: "is an empty map"
         };
 
@@ -102,8 +102,8 @@ module NakedObjects {
             this.isValid(context);
             this.isValid(name);
 
-            if (contextCondition.condition(this[context])) {
-                if (!valueCondition.condition(this[name])) {
+            if (contextCondition.condition((<any>this)[context])) {
+                if (!valueCondition.condition((<any>this)[name])) {
                     throw new Error(`Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
                 }
             }

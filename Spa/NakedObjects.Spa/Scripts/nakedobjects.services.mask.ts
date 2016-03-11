@@ -1,5 +1,6 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
 
@@ -16,13 +17,13 @@ module NakedObjects {
         defaultLocalFilter(format: string): ILocalFilter;
 
         // use angular number mask to format
-        setNumberMaskMapping(customMask: string, format: string, fractionSize?: number);
+        setNumberMaskMapping(customMask: string, format: string, fractionSize?: number): void;
 
         // use angular date mask to format
-        setDateMaskMapping(customMask: string, format: string, mask?: string, tz?: string);
+        setDateMaskMapping(customMask: string, format: string, mask?: string, tz?: string): void;
 
         // use angular currency mask to format
-        setCurrencyMaskMapping(customMask: string, format: string, symbol?: string, fractionSize?: number);
+        setCurrencyMaskMapping(customMask: string, format: string, symbol?: string, fractionSize?: number): void;
     }
 
 
@@ -45,7 +46,7 @@ module NakedObjects {
 
         class LocalStringFilter implements ILocalFilter {
 
-            filter(val): string {
+            filter(val : any): string {
                 return val ? val.toString() : "";
             }
         }
@@ -54,7 +55,7 @@ module NakedObjects {
 
             constructor(private symbol?: string, private fractionSize?: number) {}
 
-            filter(val): string {
+            filter(val : any): string {
                 return $filter("currency")(val, this.symbol, this.fractionSize);
             }
         }
@@ -63,7 +64,7 @@ module NakedObjects {
 
             constructor(private mask?: string, private tz?: string) {}
 
-            filter(val): string {
+            filter(val : any): string {
                 return $filter("date")(val, this.mask, this.tz);
             }
         }
@@ -72,7 +73,7 @@ module NakedObjects {
 
             constructor(private fractionSize?: number) {}
 
-            filter(val): string {
+            filter(val : any): string {
                 return $filter("number")(val, this.fractionSize);
             }
         }

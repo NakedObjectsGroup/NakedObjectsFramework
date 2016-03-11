@@ -1,6 +1,7 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 
 module NakedObjects {
@@ -20,17 +21,17 @@ module NakedObjects {
 
     export interface IUrlManager {
         getRouteData(): RouteData;
-        setError(errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode);
-        setHome(paneId?: number);
-        setMenu(menuId: string, paneId?: number);
-        setDialog(dialogId: string, paneId?: number);
-        closeDialog(paneId?: number);
-        setObject(resultObject: DomainObjectRepresentation, paneId?: number);
-        setList(action: ActionMember, paneId?: number);
-        setProperty(propertyMember: PropertyMember, paneId?: number);
+        setError(errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode): void;
+        setHome(paneId?: number): void;
+        setMenu(menuId: string, paneId?: number): void;
+        setDialog(dialogId: string, paneId?: number): void;
+        closeDialog(paneId?: number): void;
+        setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
+        setList(action: ActionMember, paneId?: number): void;
+        setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
         toggleObjectMenu(paneId?: number): void;
-        setInteractionMode(newMode: InteractionMode, paneId?: number);
+        setInteractionMode(newMode: InteractionMode, paneId?: number): void;
         setCollectionMemberState(collectionMemberId: string, state: CollectionViewState, paneId?: number): void;
         setListState(state: CollectionViewState, paneId?: number): void;
         setListPaging(newPage: number, newPageSize: number, state: CollectionViewState, paneId?: number): void;
@@ -80,11 +81,11 @@ module NakedObjects {
             prop: "pp",
             selected: "s"
         };
-        const capturedPanes = [];
+        const capturedPanes = [] as { paneType: string; search: Object }[];
 
         let currentPaneId = 1;
 
-        function createMask(arr) {
+        function createMask(arr : any) {
             let nMask = 0;
             let nFlag = 0;
             const nLen = arr.length > 32 ? 32 : arr.length;
@@ -92,12 +93,12 @@ module NakedObjects {
             return nMask;
         }
 
-        function arrayFromMask(nMask) {
+        function arrayFromMask(nMask : any) {
             // nMask must be between -2147483648 and 2147483647
             if (nMask > 0x7fffffff || nMask < -0x80000000) {
                 throw new TypeError("arrayFromMask - out of range");
             }
-            const aFromMask = [];
+            const aFromMask = [] as any[];
             for (let nShifted = nMask; nShifted; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
             return aFromMask;
         }
@@ -106,7 +107,7 @@ module NakedObjects {
             return $location.search();
         }
 
-        function setNewSearch(search) {
+        function setNewSearch(search : any) {
             $location.search(search);
         }
 
@@ -115,7 +116,7 @@ module NakedObjects {
         }
 
         function mapIds(ids: _.Dictionary<string>): _.Dictionary<string> {
-            return _.mapKeys(ids, (v, k: string) => k.substr(k.indexOf("_") + 1));
+            return _.mapKeys(ids, (v : any, k: string) => k.substr(k.indexOf("_") + 1));
         }
 
         function getAndMapIds(typeOfId: string, paneId: number) {
@@ -127,8 +128,8 @@ module NakedObjects {
             return _.mapValues(mappedIds, v => Value.fromJsonString(v));
         }
 
-        function getInteractionMode(rawInteractionMode: string) {
-            return rawInteractionMode ? InteractionMode[rawInteractionMode] : InteractionMode.View;
+        function getInteractionMode(rawInteractionMode: string) : InteractionMode {
+            return rawInteractionMode ? (<any> InteractionMode)[rawInteractionMode] : InteractionMode.View;
         }
 
         function setPaneRouteData(paneRouteData: PaneRouteData, paneId: number) {
@@ -138,19 +139,19 @@ module NakedObjects {
             paneRouteData.dialogId = getId(akm.dialog + paneId, $routeParams);
 
             const rawErrorCategory = getId(akm.errorCat + paneId, $routeParams);
-            paneRouteData.errorCategory = rawErrorCategory ? ErrorCategory[rawErrorCategory] : null;
+            paneRouteData.errorCategory = rawErrorCategory ? (<any>ErrorCategory)[rawErrorCategory] : null;
 
             paneRouteData.objectId = getId(akm.object + paneId, $routeParams);
             paneRouteData.actionsOpen = getId(akm.actions + paneId, $routeParams);
 
             const rawCollectionState = getId(akm.collection + paneId, $routeParams);
-            paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState] : CollectionViewState.List;
+            paneRouteData.state = rawCollectionState ? (<any>CollectionViewState)[rawCollectionState] : CollectionViewState.List;
 
             const rawInteractionMode = getId(akm.interactionMode + paneId, $routeParams);
             paneRouteData.interactionMode = getInteractionMode(rawInteractionMode);
 
             const collKeyMap = getAndMapIds(akm.collection, paneId);
-            paneRouteData.collections = _.mapValues(collKeyMap, v => CollectionViewState[v]);
+            paneRouteData.collections = _.mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
 
             const parmKeyMap = getAndMapIds(akm.parm, paneId);
             paneRouteData.actionParams = getMappedValues(parmKeyMap);
@@ -301,7 +302,7 @@ module NakedObjects {
         function setFieldsToParms(paneId: number, search: any) {
             const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${paneId}`) === 0);
             const fields = _.pick(search, ids);
-            const parms = _.mapKeys(fields, (v, k: string) => k.replace(akm.field, akm.parm));
+            const parms = _.mapKeys(fields, (v : any, k: string) => k.replace(akm.field, akm.parm));
 
             search = _.omit(search, ids);
             search = _.merge(search, parms);
@@ -346,7 +347,7 @@ module NakedObjects {
             return search;
         }
 
-        function executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search) => boolean) {
+        function executeTransition(newValues: _.Dictionary<string>, paneId: number, transition: Transition, condition: (search : any) => boolean) {
             currentPaneId = paneId;
             let search = getSearch();
             if (condition(search)) {
@@ -527,7 +528,7 @@ module NakedObjects {
 
             const search = {};
             // always on pane 1
-            search[akm.errorCat + 1] = ErrorCategory[errorCategory];
+            (<any>search)[akm.errorCat + 1] = ErrorCategory[errorCategory];
 
             $location.path(newPath);
             setNewSearch(search);
@@ -607,7 +608,7 @@ module NakedObjects {
 
         function swapSearchIds(search: any) {
             return _.mapKeys(search,
-            (v, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
+            (v : any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
         }
 
 

@@ -1,18 +1,19 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 
 module NakedObjects {
 
     export interface INavigation {
-        back();
-        forward();
-        push();
+        back() : void;
+        forward(): void;
+        push(): void;
     }
 
     app.service("navigation", function($location: ng.ILocationService) {
         const nav = <INavigation>this;
-        const history = [];
+        const history : any[]  = [];
         let index = -1;
         let navigating = false;
 

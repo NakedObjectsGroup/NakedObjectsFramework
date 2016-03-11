@@ -1,6 +1,7 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
+/// <reference path="nakedobjects.app.ts" />
 
 
 module NakedObjects {
@@ -26,7 +27,7 @@ module NakedObjects {
         focusOverrideOn(target: FocusTarget, index: number, paneId: number): void;
         focusOverrideOff(): void;
 
-        setCurrentPane(paneId: number);
+        setCurrentPane(paneId: number): void;
 
         refresh(paneId: number): void;
     }
