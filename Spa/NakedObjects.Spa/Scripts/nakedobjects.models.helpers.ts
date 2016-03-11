@@ -48,6 +48,18 @@ module NakedObjects.Helpers {
         return null;
     }
 
+    export function isDateOrDateTime(rep: IHasExtensions) {
+        const returnType = rep.extensions().returnType();
+        const format = rep.extensions().format();
+
+        return (returnType === "string" && ((format === "date-time") || (format === "date")));
+    }
+
+    export function toUtcDate(value: Value) {
+        const rawValue = value ? value.toString() : "";
+        const dateValue = getUtcDate(rawValue);
+        return dateValue ? dateValue : null;
+    }
 
     export function compress(toCompress: string) {
         if (toCompress) {
