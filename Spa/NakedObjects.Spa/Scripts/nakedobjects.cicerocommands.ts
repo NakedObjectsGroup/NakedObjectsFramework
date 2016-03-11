@@ -788,7 +788,7 @@ module NakedObjects {
                 let value: Value = new Value(fieldEntry);
                 //TODO: handle a non-parsable date
                 if (isDateOrDateTime(field)) {
-                    const m = moment(fieldEntry, ["D/M/YYYY", "D MMM YYYY"], "en-GB", true);
+                    const m = moment(fieldEntry, supportedDateFormats, "en-GB", true);
 
                     if (m.isValid()) {
                         const dt = m.toDate();

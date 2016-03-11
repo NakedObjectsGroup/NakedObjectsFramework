@@ -80,4 +80,7 @@ module NakedObjects {
     export const nofWarnings = "x-ro-nof-warnings";
     export const nofMessages = "x-ro-nof-messages";
 
+
+    export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMM YY"];
+
 }

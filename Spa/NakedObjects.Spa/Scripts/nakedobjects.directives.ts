@@ -56,7 +56,7 @@ module NakedObjects {
                 ngModel.$parsers.reverse();
                 ngModel.$parsers.push(val => {
 
-                    const dt1 = moment(val, ["D/M/YYYY", "D MMM YYYY"], "en-GB", true);
+                    const dt1 = moment(val, supportedDateFormats, "en-GB", true);
 
                     if (dt1.isValid()) {
                         const dt = dt1.toDate();
