@@ -787,9 +787,13 @@ module NakedObjects {
             if (field.isScalar()) {
                 let value: Value = new Value(fieldEntry);
                 //TODO: handle a non-parsable date
-                if (isDateOrDateTime(field) && Date.parse(fieldEntry)) {
-                    const dt = new Date(fieldEntry);
-                    value = new Value(toDateString(dt));
+                if (isDateOrDateTime(field)) {
+                    const m = moment(fieldEntry, ["D/M/YYYY", "D MMM YYYY"], "en-GB", true);
+
+                    if (m.isValid()) {
+                        const dt = m.toDate();
+                        value = new Value(toDateString(dt));
+                    }
                 }
                 this.setFieldValue(field, value);
             } else {

@@ -3,6 +3,7 @@
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.viewmodels.ts" />
 /// <reference path="nakedobjects.app.ts" />
+/// <reference path="typings/moment/moment.d.ts"/>
 
 module NakedObjects {
     import Value = Models.Value;
@@ -55,8 +56,10 @@ module NakedObjects {
                 ngModel.$parsers.reverse();
                 ngModel.$parsers.push(val => {
 
-                    if (Date.parse(val)) {
-                        const dt = new Date(val);
+                    const dt1 = moment(val, ["D/M/YYYY", "D MMM YYYY"], "en-GB", true);
+
+                    if (dt1.isValid()) {
+                        const dt = dt1.toDate();
                         return toDateString(dt);
                     }
 
