@@ -24,6 +24,8 @@ module NakedObjects {
     import FriendlyTypeName = Models.friendlyTypeName;
     import FriendlyNameForParam = Models.friendlyNameForParam;
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
+    import isDateOrDateTime = Models.isDateOrDateTime;
+    import toDateString = Models.toDateString;
 
     export abstract class Command {
 
@@ -35,7 +37,7 @@ module NakedObjects {
             protected $q: ng.IQService,
             protected $route: ng.route.IRouteService,
             protected mask: IMask
-        ) {}
+        ) { }
 
         fullCommand: string;
         helpText: string;
@@ -122,7 +124,7 @@ module NakedObjects {
             if (!arg && optional) return null;
             const number = parseInt(arg);
             if (isNaN(number)) {
-                throw new Error(`Argument number ${(argNo + 1).toString()} must be a number`);
+                throw new Error(`Argument number ${(argNo + 1).toString() } must be a number`);
             }
             return number;
         }
@@ -146,16 +148,16 @@ module NakedObjects {
             const clauses = arg.split("-");
             const range = { start: null, end: null };
             switch (clauses.length) {
-            case 1:
-                range.start = this.parseInt(clauses[0]);
-                range.end = range.start;
-                break;
-            case 2:
-                range.start = this.parseInt(clauses[0]);
-                range.end = this.parseInt(clauses[1]);
-                break;
-            default:
-                throw new Error("Cannot have more than one dash in argument");
+                case 1:
+                    range.start = this.parseInt(clauses[0]);
+                    range.end = range.start;
+                    break;
+                case 2:
+                    range.start = this.parseInt(clauses[0]);
+                    range.end = this.parseInt(clauses[1]);
+                    break;
+                default:
+                    throw new Error("Cannot have more than one dash in argument");
             }
             if ((range.start != null && range.start < 1) || (range.end != null && range.end < 1)) {
                 throw new Error("Item number or range values must be greater than zero");
@@ -294,7 +296,7 @@ module NakedObjects {
                 const path = rep.extensions().menuPath();
                 const name = rep.extensions().friendlyName().toLowerCase();
                 return _.every(clauses, clause => name.indexOf(clause) >= 0 ||
-                (!!path && path.toLowerCase().indexOf(clause) >= 0));
+                    (!!path && path.toLowerCase().indexOf(clause) >= 0));
             });
         }
 
@@ -307,18 +309,18 @@ module NakedObjects {
             const matchingLabels = _.filter(labels, l => l.toString().toLowerCase().indexOf(titleMatch.toLowerCase()) >= 0);
             const result = new Array<Value>();
             switch (matchingLabels.length) {
-            case 0:
-                break; //leave result empty
-            case 1:
-                //Push the VALUE for the key
-                //For simple scalars they are the same, but not for Enums
-                result.push(choices[matchingLabels[0]]);
-                break;
-            default:
-                //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
-                //For simple scalars the values would also be OK, but not for Enums
-                _.forEach(matchingLabels, label => result.push(new Value(label)));
-                break;
+                case 0:
+                    break; //leave result empty
+                case 1:
+                    //Push the VALUE for the key
+                    //For simple scalars they are the same, but not for Enums
+                    result.push(choices[matchingLabels[0]]);
+                    break;
+                default:
+                    //Push the matching KEYs, wrapped as (pseudo) Values for display in message to user
+                    //For simple scalars the values would also be OK, but not for Enums
+                    _.forEach(matchingLabels, label => result.push(new Value(label)));
+                    break;
             }
             return result;
         }
@@ -436,18 +438,18 @@ module NakedObjects {
 
         fullCommand = "action";
         helpText = "Open the dialog for action from a menu, or from object actions.\n" +
-            "A dialog is always opened for an action, even if it has no fields (parameters):\n" +
-            "This is a safety mechanism, allowing the user to confirm that the action is the one intended.\n" +
-            "Once the dialog fields have been completed, using the Enter command,\n" +
-            "the action may then be invoked  with the OK command.\n" +
-            "The action command takes two optional arguments.\n" +
-            "The first is the name, or partial name, of the action.\n" +
-            "If the partial name matches more than one action, a list of matches is returned but none opened.\n" +
-            "If no argument is provided, a full list of available action names is returned.\n" +
-            "The partial name may have more than one clause, separated by spaces.\n" +
-            "these may match either parts of the action name or the sub-menu name if one exists.\n" +
-            "If the action name matches a single action, then a question-mark may be added as a second\n" +
-            "parameter, which will generate a more detailed description of the Action.";
+        "A dialog is always opened for an action, even if it has no fields (parameters):\n" +
+        "This is a safety mechanism, allowing the user to confirm that the action is the one intended.\n" +
+        "Once the dialog fields have been completed, using the Enter command,\n" +
+        "the action may then be invoked  with the OK command.\n" +
+        "The action command takes two optional arguments.\n" +
+        "The first is the name, or partial name, of the action.\n" +
+        "If the partial name matches more than one action, a list of matches is returned but none opened.\n" +
+        "If no argument is provided, a full list of available action names is returned.\n" +
+        "The partial name may have more than one clause, separated by spaces.\n" +
+        "these may match either parts of the action name or the sub-menu name if one exists.\n" +
+        "If the action name matches a single action, then a question-mark may be added as a second\n" +
+        "parameter, which will generate a more detailed description of the Action.";
 
         protected minArguments = 0;
         protected maxArguments = 2;
@@ -487,23 +489,23 @@ module NakedObjects {
                 actions = this.matchFriendlyNameAndOrMenuPath(actions, match);
             }
             switch (actions.length) {
-            case 0:
-                this.clearInputAndSetMessage(match + " does not match any actions");
-                break;
-            case 1:
-                const action = actions[0];
-                if (details) {
-                    this.renderActionDetails(action);
-                } else if (action.disabledReason()) {
-                    this.disabledAction(action);
-                } else {
-                    this.openActionDialog(action);
-                }
-                break;
-            default:
-                let output = match ? "Matching actions:\n" : "Actions:\n";
-                output += this.listActions(actions);
-                this.clearInputAndSetMessage(output);
+                case 0:
+                    this.clearInputAndSetMessage(match + " does not match any actions");
+                    break;
+                case 1:
+                    const action = actions[0];
+                    if (details) {
+                        this.renderActionDetails(action);
+                    } else if (action.disabledReason()) {
+                        this.disabledAction(action);
+                    } else {
+                        this.openActionDialog(action);
+                    }
+                    break;
+                default:
+                    let output = match ? "Matching actions:\n" : "Actions:\n";
+                    output += this.listActions(actions);
+                    this.clearInputAndSetMessage(output);
             }
         }
 
@@ -517,7 +519,7 @@ module NakedObjects {
         private listActions(actions: ActionMember[]): string {
             return _.reduce(actions, (s, t) => {
                 const menupath = t.extensions().menuPath() ? t.extensions().menuPath() + " - " : "";
-                const disabled = t.disabledReason() ? ` (disabled: ${t.disabledReason()})` : "";
+                const disabled = t.disabledReason() ? ` (disabled: ${t.disabledReason() })` : "";
                 return s + menupath + t.extensions().friendlyName() + disabled + "\n";
             }, "");
         }
@@ -531,7 +533,7 @@ module NakedObjects {
         }
 
         private renderActionDetails(action: ActionMember) {
-            let s = `Description for action: ${action.extensions().friendlyName()}`;
+            let s = `Description for action: ${action.extensions().friendlyName() }`;
             s += `\n${action.extensions().description() || "No description provided"}`;
             this.clearInputAndSetMessage(s);
         }
@@ -578,17 +580,17 @@ module NakedObjects {
 
         fullCommand = "clipboard";
         helpText = "The clipboard command is used for temporarily\n" +
-            "holding a reference to an object, so that it may be used later\n" +
-            "to enter into a field.\n" +
-            "Clipboard requires one argument, which may take one of four values:\n" +
-            "copy, show, go, or discard\n" +
-            "each of which may be abbreviated down to one character.\n" +
-            "Copy copies a reference to the object being viewed into the clipboard,\n" +
-            "overwriting any existing reference.\n" +
-            "Show displays the content of the clipboard without using it.\n" +
-            "Go takes you directly to the object held in the clipboard.\n" +
-            "Discard removes any existing reference from the clipboard.\n" +
-            "The reference held in the clipboard may be used within the Enter command.";
+        "holding a reference to an object, so that it may be used later\n" +
+        "to enter into a field.\n" +
+        "Clipboard requires one argument, which may take one of four values:\n" +
+        "copy, show, go, or discard\n" +
+        "each of which may be abbreviated down to one character.\n" +
+        "Copy copies a reference to the object being viewed into the clipboard,\n" +
+        "overwriting any existing reference.\n" +
+        "Show displays the content of the clipboard without using it.\n" +
+        "Go takes you directly to the object held in the clipboard.\n" +
+        "Discard removes any existing reference from the clipboard.\n" +
+        "The reference held in the clipboard may be used within the Enter command.";
 
         protected minArguments = 1;
         protected maxArguments = 1;
@@ -671,15 +673,15 @@ module NakedObjects {
 
         fullCommand = "enter";
         helpText = "Enter a value into a field,\n" +
-            "meaning a parameter in an action dialog,\n" +
-            "or  a property on an object being edited.\n" +
-            "Enter requires 2 arguments.\n" +
-            "The first argument is the partial field name, which must match a single field.\n" +
-            "The second optional argument specifies the value, or selection, to be entered.\n" +
-            "If a question mark is provided as the second argument, the field will not be\n" +
-            "updated but further details will be provided about that input field.\n" +
-            "If the word paste is used as the second argument, then, provided that the field is\n" +
-            "a reference field, the object reference in the clipboard will be pasted into the field.\n";
+        "meaning a parameter in an action dialog,\n" +
+        "or  a property on an object being edited.\n" +
+        "Enter requires 2 arguments.\n" +
+        "The first argument is the partial field name, which must match a single field.\n" +
+        "The second optional argument specifies the value, or selection, to be entered.\n" +
+        "If a question mark is provided as the second argument, the field will not be\n" +
+        "updated but further details will be provided about that input field.\n" +
+        "If the word paste is used as the second argument, then, provided that the field is\n" +
+        "a reference field, the object reference in the clipboard will be pasted into the field.\n";
         protected minArguments = 2;
         protected maxArguments = 2;
 
@@ -703,24 +705,24 @@ module NakedObjects {
                     const fields = this.matchingProperties(obj, fieldName);
                     let s: string;
                     switch (fields.length) {
-                    case 0:
-                        s = fieldName + " does not match any properties";
-                        break;
-                    case 1:
-                        const field = fields[0];
-                        if (fieldEntry === "?") {
-                            //TODO: does this work in edit mode i.e. show entered value
-                            s = this.renderFieldDetails(field, field.value());
-                        } else {
-                            this.setField(field, fieldEntry);
-                            return;
-                        }
-                        break;
-                    default:
-                        s = fieldName + " matches multiple fields:\n";
-                        s += _.reduce(fields, (s, prop) => {
-                            return s + prop.extensions().friendlyName() + "\n";
-                        }, "");
+                        case 0:
+                            s = fieldName + " does not match any properties";
+                            break;
+                        case 1:
+                            const field = fields[0];
+                            if (fieldEntry === "?") {
+                                //TODO: does this work in edit mode i.e. show entered value
+                                s = this.renderFieldDetails(field, field.value());
+                            } else {
+                                this.setField(field, fieldEntry);
+                                return;
+                            }
+                            break;
+                        default:
+                            s = fieldName + " matches multiple fields:\n";
+                            s += _.reduce(fields, (s, prop) => {
+                                return s + prop.extensions().friendlyName() + "\n";
+                            }, "");
                     }
                     this.clearInputAndSetMessage(s);
                 });
@@ -731,22 +733,22 @@ module NakedObjects {
                 let params = _.map(action.parameters(), param => param);
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {
-                case 0:
-                    this.clearInputAndSetMessage(fieldName + " does not match any fields in the dialog");
-                    break;
-                case 1:
-                    if (fieldEntry === "?") {
-                        const p = params[0];
-                        const value = this.routeData().dialogFields[p.id()];
-                        const s = this.renderFieldDetails(p, value);
-                        this.clearInputAndSetMessage(s);
-                    } else {
-                        this.setField(params[0], fieldEntry);
-                    }
-                    break;
-                default:
-                    this.clearInputAndSetMessage(`Multiple fields match ${fieldName}`); //TODO: list them
-                    break;
+                    case 0:
+                        this.clearInputAndSetMessage(fieldName + " does not match any fields in the dialog");
+                        break;
+                    case 1:
+                        if (fieldEntry === "?") {
+                            const p = params[0];
+                            const value = this.routeData().dialogFields[p.id()];
+                            const s = this.renderFieldDetails(p, value);
+                            this.clearInputAndSetMessage(s);
+                        } else {
+                            this.setField(params[0], fieldEntry);
+                        }
+                        break;
+                    default:
+                        this.clearInputAndSetMessage(`Multiple fields match ${fieldName}`); //TODO: list them
+                        break;
                 }
             });
         }
@@ -758,32 +760,38 @@ module NakedObjects {
             }
             const entryType = field.entryType();
             switch (entryType) {
-            case EntryType.FreeForm:
-                this.handleFreeForm(field, fieldEntry);
-                return;
-            case EntryType.AutoComplete:
-                this.handleAutoComplete(field, fieldEntry);
-                return;
-            case EntryType.Choices:
-                this.handleChoices(field, fieldEntry);
-                return;
-            case EntryType.MultipleChoices:
-                this.handleChoices(field, fieldEntry);
-                return;
-            case EntryType.ConditionalChoices:
-                this.handleConditionalChoices(field, fieldEntry);
-                return;
-            case EntryType.MultipleConditionalChoices:
-                this.handleConditionalChoices(field, fieldEntry);
-                return;
-            default:
-                throw new Error("Invalid case");
+                case EntryType.FreeForm:
+                    this.handleFreeForm(field, fieldEntry);
+                    return;
+                case EntryType.AutoComplete:
+                    this.handleAutoComplete(field, fieldEntry);
+                    return;
+                case EntryType.Choices:
+                    this.handleChoices(field, fieldEntry);
+                    return;
+                case EntryType.MultipleChoices:
+                    this.handleChoices(field, fieldEntry);
+                    return;
+                case EntryType.ConditionalChoices:
+                    this.handleConditionalChoices(field, fieldEntry);
+                    return;
+                case EntryType.MultipleConditionalChoices:
+                    this.handleConditionalChoices(field, fieldEntry);
+                    return;
+                default:
+                    throw new Error("Invalid case");
             }
         }
 
         private handleFreeForm(field: IField, fieldEntry: string): void {
             if (field.isScalar()) {
-                this.setFieldValue(field, new Value(fieldEntry));
+                let value: Value = new Value(fieldEntry);
+                //TODO: handle a non-parsable date
+                if (isDateOrDateTime(field) && Date.parse(fieldEntry)) {
+                    const dt = new Date(fieldEntry);
+                    value = new Value(toDateString(dt));
+                }
+                this.setFieldValue(field, value);
             } else {
                 this.handleReferenceField(field, fieldEntry);
             }
@@ -842,10 +850,10 @@ module NakedObjects {
                 this.handleClipboard(field);
             } else {
                 this.context.autoComplete(field, field.id(), null, fieldEntry).then(
-                (choices: _.Dictionary<Value>) => {
-                    const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
-                    this.switchOnMatches(field, fieldEntry, matches);
-                });
+                    (choices: _.Dictionary<Value>) => {
+                        const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
+                        this.switchOnMatches(field, fieldEntry, matches);
+                    });
             }
         }
 
@@ -861,17 +869,17 @@ module NakedObjects {
 
         private switchOnMatches(field: IField, fieldEntry: string, matches: Value[]) {
             switch (matches.length) {
-            case 0:
-                this.clearInputAndSetMessage(`None of the choices matches ${fieldEntry}`);
-                break;
-            case 1:
-                this.setFieldValue(field, matches[0]);
-                break;
-            default:
-                let msg = "Multiple matches:\n";
-                _.forEach(matches, m => msg += m.toString() + "\n");
-                this.clearInputAndSetMessage(msg);
-                break;
+                case 0:
+                    this.clearInputAndSetMessage(`None of the choices matches ${fieldEntry}`);
+                    break;
+                case 1:
+                    this.setFieldValue(field, matches[0]);
+                    break;
+                default:
+                    let msg = "Multiple matches:\n";
+                    _.forEach(matches, m => msg += m.toString() + "\n");
+                    this.clearInputAndSetMessage(msg);
+                    break;
             }
         }
 
@@ -892,12 +900,12 @@ module NakedObjects {
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
-            let s = `Field name: ${field.extensions().friendlyName()}`;
+            let s = `Field name: ${field.extensions().friendlyName() }`;
             const desc = field.extensions().description();
             s += desc ? `\nDescription: ${desc}` : "";
-            s += `\nType: ${FriendlyTypeName(field.extensions().returnType())}`;
+            s += `\nType: ${FriendlyTypeName(field.extensions().returnType()) }`;
             if (field instanceof PropertyMember && field.disabledReason()) {
-                s += `\nUnmodifiable: ${field.disabledReason()}`;
+                s += `\nUnmodifiable: ${field.disabledReason() }`;
             } else {
                 s += field.extensions().optional() ? "\nOptional" : "\nMandatory";
                 if (field.choices()) {
@@ -915,7 +923,7 @@ module NakedObjects {
 
         fullCommand = "forward";
         helpText = "Move forward to next context in the history\n" +
-            "(if you have previously moved back).";
+        "(if you have previously moved back).";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -933,7 +941,7 @@ module NakedObjects {
 
         fullCommand = "gemini";
         helpText = "Switch to the Gemini (graphical) user interface\n" +
-            "preserving the current context.";
+        "preserving the current context.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -951,12 +959,12 @@ module NakedObjects {
 
         fullCommand = "goto";
         helpText = "Go to the object referenced in a property,\n" +
-            "or to a collection within an object,\n" +
-            "or to an object within an open list or collection.\n" +
-            "Goto takes one argument.  In the context of an object\n" +
-            "that is the name or partial name of the property or collection.\n" +
-            "In the context of an open list or collection, it is the\n" +
-            "number of the item within the list or collection (starting at 1). ";
+        "or to a collection within an object,\n" +
+        "or to an object within an open list or collection.\n" +
+        "Goto takes one argument.  In the context of an object\n" +
+        "that is the name or partial name of the property or collection.\n" +
+        "In the context of an open list or collection, it is the\n" +
+        "number of the item within the list or collection (starting at 1). ";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -999,26 +1007,26 @@ module NakedObjects {
                             const matchingColls = this.matchingCollections(obj, arg0);
                             let s = "";
                             switch (matchingRefProps.length + matchingColls.length) {
-                            case 0:
-                                s = arg0 + " does not match any reference fields or collections";
-                                break;
-                            case 1:
-                                //TODO: Check for any empty reference
-                                if (matchingRefProps.length > 0) {
-                                    const link = matchingRefProps[0].value().link();
-                                    this.urlManager.setItem(link);
-                                } else { //Must be collection
-                                    this.openCollection(matchingColls[0]);
-                                }
-                                break;
-                            default:
-                                const props = _.reduce(matchingRefProps, (s, prop) => {
-                                    return s + prop.extensions().friendlyName() + "\n";
-                                }, "");
-                                const colls = _.reduce(matchingColls, (s, coll) => {
-                                    return s + coll.extensions().friendlyName() + "\n";
-                                }, "");
-                                s = `Multiple matches for ${arg0}:\n${props}${colls}`;
+                                case 0:
+                                    s = arg0 + " does not match any reference fields or collections";
+                                    break;
+                                case 1:
+                                    //TODO: Check for any empty reference
+                                    if (matchingRefProps.length > 0) {
+                                        const link = matchingRefProps[0].value().link();
+                                        this.urlManager.setItem(link);
+                                    } else { //Must be collection
+                                        this.openCollection(matchingColls[0]);
+                                    }
+                                    break;
+                                default:
+                                    const props = _.reduce(matchingRefProps, (s, prop) => {
+                                        return s + prop.extensions().friendlyName() + "\n";
+                                    }, "");
+                                    const colls = _.reduce(matchingColls, (s, coll) => {
+                                        return s + coll.extensions().friendlyName() + "\n";
+                                    }, "");
+                                    s = `Multiple matches for ${arg0}:\n${props}${colls}`;
                             }
                             this.clearInputAndSetMessage(s);
                         }
@@ -1037,8 +1045,8 @@ module NakedObjects {
 
         fullCommand = "help";
         helpText = "If no argument is specified, help lists the commands available\n" +
-            "in the current context. If help is followed by another command word as an argument\n" +
-            "(or an abbreviation of it), a description of the specified Command is returned.";
+        "in the current context. If help is followed by another command word as an argument\n" +
+        "(or an abbreviation of it), a description of the specified Command is returned.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1066,10 +1074,10 @@ module NakedObjects {
 
         fullCommand = "menu";
         helpText = "Open a named main menu, from any context.\n" +
-            "Menu takes one optional argument: the name, or partial name, of the menu.\n" +
-            "If the partial name matches more than one menu, a list of matches is returned\n" +
-            "but no menu is opened; if no argument is provided a list of all the menus\n" +
-            "is returned.";
+        "Menu takes one optional argument: the name, or partial name, of the menu.\n" +
+        "If the partial name matches more than one menu, a list of matches is returned\n" +
+        "but no menu is opened; if no argument is provided a list of all the menus\n" +
+        "is returned.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1089,19 +1097,19 @@ module NakedObjects {
                         links = exactMatches.length === 1 ? exactMatches : partialMatches;
                     }
                     switch (links.length) {
-                    case 0:
-                        this.clearInputAndSetMessage(name + " does not match any menu");
-                        break;
-                    case 1:
-                        const menuId = links[0].rel().parms[0].value;
-                        this.urlManager.setHome();
-                        this.urlManager.clearUrlState();
-                        this.urlManager.setMenu(menuId);
-                        break;
-                    default:
-                        const label = name ? "Matching menus:\n" : "Menus:\n";
-                        const s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
-                        this.clearInputAndSetMessage(s);
+                        case 0:
+                            this.clearInputAndSetMessage(name + " does not match any menu");
+                            break;
+                        case 1:
+                            const menuId = links[0].rel().parms[0].value;
+                            this.urlManager.setHome();
+                            this.urlManager.clearUrlState();
+                            this.urlManager.setMenu(menuId);
+                            break;
+                        default:
+                            const label = name ? "Matching menus:\n" : "Menus:\n";
+                            const s = _.reduce(links, (s, t) => { return s + t.title() + "\n"; }, label);
+                            this.clearInputAndSetMessage(s);
                     }
                 });
         }
@@ -1111,7 +1119,7 @@ module NakedObjects {
 
         fullCommand = "ok";
         helpText = "Invoke the action currently open as a dialog.\n" +
-            "Fields in the dialog should be completed before this.";
+        "Fields in the dialog should be completed before this.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1153,7 +1161,7 @@ module NakedObjects {
                             const paramFriendlyName = (paramId: string) => FriendlyNameForParam(action, paramId);
                             this.handleErrorResponse(em, paramFriendlyName);
                         };
-                        this.context.handleWrappedError(reject, null, () => {}, display);
+                        this.context.handleWrappedError(reject, null, () => { }, display);
                     });
             });
         }
@@ -1162,10 +1170,10 @@ module NakedObjects {
     export class Page extends Command {
         fullCommand = "page";
         helpText = "Supports paging of returned lists.\n" +
-            "The page command takes a single argument, which may be one of these four words:\n" +
-            "first, previous, next, or last, \n" +
-            "which may be abbreviated down to the first character.\n" +
-            "Alternative, the argument may be a specific page number.";
+        "The page command takes a single argument, which may be one of these four words:\n" +
+        "first, previous, next, or last, \n" +
+        "which may be abbreviated down to the first character.\n" +
+        "Alternative, the argument may be a specific page number.";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -1221,9 +1229,9 @@ module NakedObjects {
 
         fullCommand = "property";
         helpText = "Display the name and content of one or more properties of an object.\n" +
-            "Field may take 1 argument:  the partial field name.\n" +
-            "If this matches more than one property, a list of matches is returned.\n" +
-            "If no argument is provided, the full list of properties is returned. ";
+        "Field may take 1 argument:  the partial field name.\n" +
+        "If this matches more than one property, a list of matches is returned.\n" +
+        "If no argument is provided, the full list of properties is returned. ";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1240,27 +1248,27 @@ module NakedObjects {
                     //TODO -  include these
                     let s: string;
                     switch (props.length + colls.length) {
-                    case 0:
-                        if (!fieldName) {
-                            s = "No visible properties";
-                        } else {
-                            s = fieldName + " does not match any properties";
-                        }
-                        break;
-                    case 1:
-                        if (props.length > 0) {
-                            s = this.renderPropNameAndValue(props[0]);
-                        } else {
-                            s = this.renderColl(colls[0]);
-                        }
-                        break;
-                    default:
-                        s = _.reduce(props, (s, prop) => {
-                            return s + this.renderPropNameAndValue(prop);
-                        }, "");
-                        s += _.reduce(colls, (s, coll) => {
-                            return s + this.renderColl(coll);
-                        }, "");
+                        case 0:
+                            if (!fieldName) {
+                                s = "No visible properties";
+                            } else {
+                                s = fieldName + " does not match any properties";
+                            }
+                            break;
+                        case 1:
+                            if (props.length > 0) {
+                                s = this.renderPropNameAndValue(props[0]);
+                            } else {
+                                s = this.renderColl(colls[0]);
+                            }
+                            break;
+                        default:
+                            s = _.reduce(props, (s, prop) => {
+                                return s + this.renderPropNameAndValue(prop);
+                            }, "");
+                            s += _.reduce(colls, (s, coll) => {
+                                return s + this.renderColl(coll);
+                            }, "");
                     }
                     this.clearInputAndSetMessage(s);
                 });
@@ -1281,14 +1289,14 @@ module NakedObjects {
         private renderColl(coll: CollectionMember): string {
             let output = coll.extensions().friendlyName() + " (collection): ";
             switch (coll.size()) {
-            case 0:
-                output += "empty";
-                break;
-            case 1:
-                output += "1 item";
-                break;
-            default:
-                output += `${coll.size()} items`;
+                case 0:
+                    output += "empty";
+                    break;
+                case 1:
+                    output += "1 item";
+                    break;
+                default:
+                    output += `${coll.size() } items`;
             }
             return output + "\n";
         }
@@ -1298,10 +1306,10 @@ module NakedObjects {
 
         fullCommand = "reload";
         helpText = "Not yet implemented. Reload the data from the server for an object or a list.\n" +
-            "Note that for a list, which was generated by an action, reload runs the action again, \n" +
-            "thus ensuring that the list is up to date. However, reloading a list does not reload the\n" +
-            "individual objects in that list, which may still be cached. Invoking Reload on an\n" +
-            "individual object, however, will ensure that its fields show the latest server data.";
+        "Note that for a list, which was generated by an action, reload runs the action again, \n" +
+        "thus ensuring that the list is up to date. However, reloading a list does not reload the\n" +
+        "individual objects in that list, which may still be cached. Invoking Reload on an\n" +
+        "individual object, however, will ensure that its fields show the latest server data.";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1318,7 +1326,7 @@ module NakedObjects {
 
         fullCommand = "root";
         helpText = "From within an opend collection context, the root command returns\n" +
-            " to the root object that owns the collection. Does not take any arguments.\n";
+        " to the root object that owns the collection. Does not take any arguments.\n";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1335,7 +1343,7 @@ module NakedObjects {
 
         fullCommand = "save";
         helpText = "Save the updated fields on an object that is being edited,\n" +
-            "and return from edit mode to a normal view of that object";
+        "and return from edit mode to a normal view of that object";
         protected minArguments = 0;
         protected maxArguments = 0;
 
@@ -1375,7 +1383,7 @@ module NakedObjects {
                 saveOrUpdate(obj, propMap, 1, true).
                     catch((reject: ErrorWrapper) => {
                         const display = (em: ErrorMap) => this.handleError(em, obj);
-                        this.context.handleWrappedError(reject, null, () => {}, display);
+                        this.context.handleWrappedError(reject, null, () => { }, display);
                     });
             });
         };
@@ -1394,11 +1402,11 @@ module NakedObjects {
 
         fullCommand = "selection";
         helpText = "Not fully implemented. Select one or more items from a list,\n" +
-            "prior to invoking an action on the selection.\n" +
-            "Selection has one mandatory argument, which must be one of these words,\n" +
-            "add, remove, all, clear, show.\n" +
-            "The Add and Remove options must be followed by a second argument specifying\n" +
-            "the item number, or range, to be added or removed.\n";
+        "prior to invoking an action on the selection.\n" +
+        "Selection has one mandatory argument, which must be one of these words,\n" +
+        "add, remove, all, clear, show.\n" +
+        "The Add and Remove options must be followed by a second argument specifying\n" +
+        "the item number, or range, to be added or removed.\n";
         protected minArguments = 1;
         protected maxArguments = 1;
 
@@ -1427,11 +1435,11 @@ module NakedObjects {
 
         fullCommand = "show";
         helpText = "Show one or more of the items from or a list view,\n" +
-            "or an opened object collection. If no arguments are specified, \n" +
-            "show will list all of the the items in the opened object collection,\n" +
-            "or the first page of items if in a list view.\n" +
-            "Alternatively, the command may be specified with an item number,\n" +
-            "or a range such as 3-5.";
+        "or an opened object collection. If no arguments are specified, \n" +
+        "show will list all of the the items in the opened object collection,\n" +
+        "or the first page of items if in a list view.\n" +
+        "Alternatively, the command may be specified with an item number,\n" +
+        "or a range such as 3-5.";
         protected minArguments = 0;
         protected maxArguments = 1;
 
@@ -1476,7 +1484,7 @@ module NakedObjects {
             let i: number;
             const links = source.value();
             for (i = startNo; i <= endNo; i++) {
-                output += `Item ${i}: ${links[i - 1].title()}\n`;
+                output += `Item ${i}: ${links[i - 1].title() }\n`;
             }
             this.clearInputAndSetMessage(output);
         }
@@ -1486,7 +1494,7 @@ module NakedObjects {
 
         fullCommand = "where";
         helpText = "Display a reminder of the current context.\n" +
-            "The same can also be achieved by hitting the Return key on the empty input field.";
+        "The same can also be achieved by hitting the Return key on the empty input field.";
         protected minArguments = 0;
         protected maxArguments = 0;
 

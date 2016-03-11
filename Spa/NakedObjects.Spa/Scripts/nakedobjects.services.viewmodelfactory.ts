@@ -848,7 +848,11 @@ module NakedObjects {
 
     //Handles empty values, and also enum conversion
     export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
-        if (field.isScalar() && value.toString()) { //i.e. not empty
+        if (!field.isScalar()) { //i.e. a reference
+            return value.isNull() ? "empty": value.toString();          
+        }
+        //Rest is for scalar fields only:
+        if (value.toString()) { //i.e. not empty
             //This is to handle an enum: render it as text, not a number:           
             if (field.entryType() == EntryType.Choices) {
                 const inverted = _.invert(field.choices());
@@ -861,20 +865,15 @@ module NakedObjects {
                 return output;
             }
         }
+        let properScalarValue: number | string | boolean | Date;
+        if (isDateOrDateTime(field)) {
+            properScalarValue = toUtcDate(value);
+        } else  {
+            properScalarValue = value.scalar();
+        } 
         const remoteMask = field.extensions().mask();
         const format = field.extensions().format();
-        let filter: ILocalFilter;
-        if (remoteMask) {
-            filter = mask.toLocalFilter(remoteMask, format);
-        } else {
-            filter = mask.defaultLocalFilter(format);
-        }
-        // formatting also happens in in directive - at least for dates - value is now date in that case
-        const formattedValue = value ? filter.filter(value.toString()) : "";
-
-        // todo this should be equivalent 
-        //let formattedValue = mask.toLocalFilter(remoteMask, format).filter(value);
-
+        let formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
         return formattedValue || "empty";
     }
 
