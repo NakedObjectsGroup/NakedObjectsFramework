@@ -85,7 +85,7 @@ module NakedObjects {
             const stackTrace = error ? error.stackTrace : null;
             errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
 
-            errorViewModel.description = "This is a helpful description based upon the error codes and message in the wrapped error";
+            errorViewModel.description = "";
 
             errorViewModel.code = error.errorCode;
 

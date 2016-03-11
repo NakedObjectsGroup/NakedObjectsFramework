@@ -216,6 +216,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         }
 
+        public virtual void IfNoCCAs()
+        {
+            //test that Actions is disabled & no checkboxes appear
+            GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1=0&c1=List");
+            Reload();
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Single(el => el.Text == "Actions"));
+            Assert.AreEqual("true", actions.GetAttribute("disabled"));
+            var checkboxes = WaitForCss("input", 3);
+            Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
+        }
+
         private void WaitForSelectedCheckboxes(int number)
         {
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
@@ -263,6 +274,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void SelectAll() { base.SelectAll(); }
+
+        [TestMethod]
+        public override void IfNoCCAs() { base.IfNoCCAs(); }
     }
 
     #region browsers specific subclasses
@@ -355,6 +369,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.TableViewWithParmDialogNotOpen();
             base.DateParam();
             base.SelectAll();
+            base.IfNoCCAs();
         }
     }
 
