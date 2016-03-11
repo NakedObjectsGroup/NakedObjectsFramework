@@ -158,6 +158,7 @@
     <TypeScriptCompile Include="Scripts\typings\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
+    <TypeScriptCompile Include="Tests\specs\nakedobjects.test.moment.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.masks.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.ts" />
     <Content Include="Scripts\moment-with-locales.js" />

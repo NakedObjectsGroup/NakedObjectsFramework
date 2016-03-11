@@ -21,6 +21,7 @@ module.exports = function(config) {
       "Scripts/angular-route.js",
       "Scripts/angular-touch.js",
       "Scripts/angular-mocks.js",
+      "Scripts/moment.js",
       "Scripts/nakedobjects.config.js",
       "Scripts/nakedobjects.userMessages.config.js",
       "Scripts/nakedobjects.constants.js",
@@ -46,7 +47,8 @@ module.exports = function(config) {
       "Scripts/nakedobjects.cicerocommandFactory.js",
       "Tests/specs/nakedobjects.test.helpers.js",
       "Tests/specs/nakedobjects.test.js",
-      "Tests/specs/nakedobjects.test.masks.js"
+      "Tests/specs/nakedobjects.test.masks.js",
+      "Tests/specs/nakedobjects.test.moment.js"
     ],
 
 
