@@ -27,8 +27,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
         }
 
+        private static bool IsDatetimeOrNullableDateTime(Type type) {
+            return type == typeof (DateTime) || type == typeof (DateTime?);
+        }
+
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            if (property.PropertyType == typeof (DateTime)) {
+            if (IsDatetimeOrNullableDateTime(property.PropertyType)) {
                 Process(property, specification);
             }
         }
@@ -36,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
 
-            if (parameter.ParameterType == typeof (DateTime)) {
+            if (IsDatetimeOrNullableDateTime(parameter.ParameterType)) {
                 var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
                 var concurrencyCheckAttribute = parameter.GetCustomAttribute<ConcurrencyCheckAttribute>();
                 FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));

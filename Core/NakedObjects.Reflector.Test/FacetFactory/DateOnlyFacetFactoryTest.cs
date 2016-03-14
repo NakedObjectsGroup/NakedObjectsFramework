@@ -48,6 +48,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestDefaultDateOnlyOnNullableProperty() {
+            PropertyInfo property = FindProperty(typeof(Test), "ADate6");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is DateOnlyFacet);
+        }
+
+        [TestMethod]
         public void TestNoFacetOnNonDateProperty() {
             PropertyInfo property = FindProperty(typeof (Test), "NotADate");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
@@ -65,10 +74,27 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [TestMethod]
+        public void TestAnnotatedDateOnlyOnNullableProperty() {
+            PropertyInfo property = FindProperty(typeof(Test), "ADate7");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is DateOnlyFacet);
+        }
+
+        [TestMethod]
         public void TestNoFacetOnDateTimeProperty() {
             PropertyInfo property = FindProperty(typeof (Test), "ADate3");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            Assert.IsNull(facet);
+        }
+
+        [TestMethod]
+        public void TestNoFacetOnDateTimeNullableProperty() {
+            PropertyInfo property = FindProperty(typeof(Test), "ADate8");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
@@ -141,6 +167,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [ConcurrencyCheck]
             [DataType(DataType.Date)]
             public DateTime ADate5 => DateTime.Now;
+
+            public DateTime? ADate6 => DateTime.Now;
+
+            [DataType(DataType.Date)]
+            public DateTime? ADate7 => DateTime.Now;
+
+            [DataType(DataType.DateTime)]
+            public DateTime? ADate8 => DateTime.Now;
 
             [DataType(DataType.Date)]
             public TimeSpan NotADate => new TimeSpan();
