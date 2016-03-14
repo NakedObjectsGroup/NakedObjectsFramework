@@ -44,22 +44,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?o1=___1.Product-870");
             EditObject();
 
-            // set price and days to mfctr
-            var date = new DateTime(2014, 7, 18);
-            var dateStr = date.ToString("d MMM yyyy");
+            var rand = new Random();
+           var date = new DateTime(2000, 1, 1);
+            var sellStart = date.AddDays(rand.Next(2000));
+            var sellEnd = date.AddDays(rand.Next(2000,3000)); 
 
-            //for (int i = 0; i < 12; i++) {
-            //    ClearFieldThenType("#sellstartdate1", Keys.Backspace);
-            //}
-
-            ClearFieldThenType("#sellstartdate1", dateStr);
+            //TODO: Uncomment lines when DateTime? bug fixed
+            ClearFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
+           // ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
             ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("Sell Start Date:\r\n" + dateStr, properties[18].Text);
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
+            Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
+           // Assert.AreEqual("Sell End Date:\r\n"+sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
 
         public virtual void ObjectEditChangeChoices()
