@@ -51,7 +51,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //TODO: Uncomment lines when DateTime? bug fixed
             ClearFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
-           // ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
+            ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
             ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
 
@@ -59,7 +59,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
             Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy"), properties[18].Text);
-           // Assert.AreEqual("Sell End Date:\r\n"+sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
+           Assert.AreEqual("Sell End Date:\r\n"+sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
         }
 
         public virtual void ObjectEditChangeChoices()
