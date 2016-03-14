@@ -97,6 +97,7 @@ module NakedObjects.Models {
     }
 
     export enum HttpStatusCode {
+        NoContent = 204,
         BadRequest = 400,
         Unauthorized = 401,
         Forbidden = 403,
@@ -557,6 +558,10 @@ module NakedObjects.Models {
         setProperty(name: string, value: Value) {
             value.set(this.map, name);
         }
+
+        setValidateOnly() {
+            (<any>this.map)[roValidateOnly] = true;
+        }
     }
 
     export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
@@ -627,6 +632,9 @@ module NakedObjects.Models {
         memberOrder = () => this.wrapped.memberOrder;
         isService = () => this.wrapped.isService;
         minLength = () => this.wrapped.minLength;
+        maxLength = () => this.wrapped.maxLength;
+        pattern = () => this.wrapped.pattern;
+
         //Nof custom:
         choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: (string | number | boolean | ILink)[]; };
         menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
@@ -1663,6 +1671,10 @@ module NakedObjects.Models {
 
         setMember(name: string, value: Value) {
             value.set(this.map.members, name);
+        }
+
+        setValidateOnly() {
+            (<any>this.map)[roValidateOnly] = true;
         }
     }
 

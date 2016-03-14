@@ -55,6 +55,10 @@ module NakedObjects {
         updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
 
+        validateUpdateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>): ng.IPromise<boolean>;
+        validateSaveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>): ng.IPromise<boolean>;
+
+
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
         setError: (reject: ErrorWrapper) => void;
@@ -557,6 +561,8 @@ module NakedObjects {
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const update = object.getUpdateMap();
 
+       
+
             _.each(props, (v, k) => update.setProperty(k, v));
 
             return repLoader.retrieve(update, DomainObjectRepresentation, object.etagDigest).
@@ -572,6 +578,7 @@ module NakedObjects {
         context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const persist = object.getPersistMap();
 
+
             _.each(props, (v, k) => persist.setMember(k, v));
 
             return repLoader.retrieve(persist, DomainObjectRepresentation).
@@ -581,6 +588,22 @@ module NakedObjects {
                     return $q.when(updatedObject);
                 });
         };
+
+
+        context.validateUpdateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>) => {
+            const update = object.getUpdateMap();
+            update.setValidateOnly();
+            _.each(props, (v, k) => update.setProperty(k, v));
+            return repLoader.validate(update, object.etagDigest);
+        };
+
+        context.validateSaveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>) => {
+            const persist = object.getPersistMap();
+            persist.setValidateOnly();
+            _.each(props, (v, k) => persist.setMember(k, v));
+            return repLoader.validate(persist);
+        };
+
 
         const subTypeCache: _.Dictionary<_.Dictionary<boolean>> = {};
 

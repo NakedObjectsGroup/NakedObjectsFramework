@@ -25,8 +25,6 @@ module NakedObjects {
         parameter?: ValueViewModel;
     }
 
-
-    // based on code in AngularJs, Green and Seshadri, O'Reilly
     app.directive("geminiDatepicker", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
@@ -605,4 +603,16 @@ module NakedObjects {
             }
         });
     });
+
+    app.directive("geminiFieldvalidate", () => ({
+        require: "ngModel",
+        link(scope : any, elm : any, attrs : any, ctrl : any) {
+            ctrl.$validators.geminiValidate = (modelValue: any, viewValue: any) => {
+                const parent = scope.$parent as IPropertyOrParameterScope;
+                const viewModel = parent.parameter || parent.property;
+                return viewModel.validate(viewValue);
+            };
+        }
+    }));
+
 }

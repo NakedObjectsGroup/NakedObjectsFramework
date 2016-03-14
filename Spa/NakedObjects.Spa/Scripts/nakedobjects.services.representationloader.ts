@@ -17,6 +17,8 @@ module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
 
     export interface IRepLoader {
+        validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
+
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string) => ng.IPromise<T>;
         retrieveFromLink: <T extends IHateoasModel>(link: Link) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
@@ -34,6 +36,50 @@ module NakedObjects {
             }
         }
 
+        function handleError(promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) {
+            let message: string;
+            let category: ErrorCategory;
+            let error: ErrorRepresentation | ErrorMap = null;
+
+            if (promiseCallback.status === HttpStatusCode.InternalServerError) {
+                // this error contains an error representatation 
+                const errorRep = new ErrorRepresentation();
+                errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
+                category = ErrorCategory.HttpServerError;
+                error = errorRep;
+                message = promiseCallback.headers("warning") || "Unknown server HTTP error";
+            } else {
+                category = ErrorCategory.HttpClientError;
+                message = promiseCallback.headers("warning") || "Unknown client HTTP error";
+
+                if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
+                    // these errors should contain a map                            
+                    error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
+                }
+            }
+
+            const rr = new ErrorWrapper(category, promiseCallback.status, error);
+            
+            return $q.reject(rr);
+        }
+
+
+        function httpValidate(config: ng.IRequestConfig): ng.IPromise<boolean> {
+            $rootScope.$broadcast("ajax-change", ++loadingCount);
+
+            return $http(config).
+                then(() => {
+                    return $q.when(true);
+                }).
+                catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {                   
+                    return handleError(promiseCallback);
+                }).
+                finally(() => {
+                    $rootScope.$broadcast("ajax-change", --loadingCount);
+                });
+        }
+
+
         function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
             $rootScope.$broadcast("ajax-change", ++loadingCount);
 
@@ -46,39 +92,14 @@ module NakedObjects {
                 then((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IResourceRepresentation>) => {
                     response.populate(promiseCallback.data);
                     response.etagDigest = promiseCallback.headers("ETag");
-                    $rootScope.$broadcast("ajax-change", --loadingCount);
                     return $q.when(response);
                 }).
                 catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
-
-                    let message: string;
-                    let category: ErrorCategory;
-                    let error: ErrorRepresentation | ErrorMap = null;
-
-                    if (promiseCallback.status === HttpStatusCode.InternalServerError) {
-                        // this error contains an error representatation 
-                        const errorRep = new ErrorRepresentation();
-                        errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
-                        category = ErrorCategory.HttpServerError;
-                        error = errorRep;
-                        message = promiseCallback.headers("warning") || "Unknown server HTTP error";
-                    } else {
-                        category = ErrorCategory.HttpClientError;
-                        message = promiseCallback.headers("warning") || "Unknown client HTTP error";
-
-                        if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
-                            // these errors should contain a map                            
-                            error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
-                        }
-                    }
-
+                    return handleError(promiseCallback);
+                }).
+                finally(() => {
                     $rootScope.$broadcast("ajax-change", --loadingCount);
-
-                    const rr = new ErrorWrapper(category, promiseCallback.status, error);
-
-                    return $q.reject(rr);
                 });
-
         }
 
         repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
@@ -113,6 +134,24 @@ module NakedObjects {
 
             return httpPopulate(config, true, response);
         };
+
+        repLoader.validate = (map: IHateoasModel, digest?: string): ng.IPromise<boolean> => {
+
+          
+
+            const config = {
+                withCredentials: true,
+                url: map.getUrl(),
+                method: map.method,
+                cache: false,
+                data: map.getBody()
+            };
+
+            addIfMatchHeader(config, digest);
+
+            return httpValidate(config);
+        };
+
 
 
         repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link): ng.IPromise<T> => {

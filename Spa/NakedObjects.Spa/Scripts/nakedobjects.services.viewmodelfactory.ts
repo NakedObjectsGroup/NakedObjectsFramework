@@ -172,6 +172,18 @@ module NakedObjects {
 
             parmViewModel.multipleLines = parmRep.extensions().multipleLines() || 1;
             parmViewModel.password = parmRep.extensions().dataType() === "password";
+            parmViewModel.clientValid = true;
+
+            parmViewModel.validate = (newvalue: any) => {
+                const message = Models.validate(parmRep, newvalue);
+
+                if (message !== mandatory) {
+                    parmViewModel.message = message;
+                }
+
+                parmViewModel.clientValid = !message;
+                return parmViewModel.clientValid;
+            };
 
             parmViewModel.drop = (newValue: IDraggableViewModel) => {
                 context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
@@ -360,6 +372,7 @@ module NakedObjects {
             propertyViewModel.propertyRep = propertyRep;
             propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
             propertyViewModel.password = propertyRep.extensions().dataType() === "password";
+            propertyViewModel.clientValid = true;
 
             const required = propertyViewModel.optional ? "" : "* ";
 
@@ -377,6 +390,17 @@ module NakedObjects {
             } else {
                 propertyViewModel.value = value.toString();
             }
+        
+            propertyViewModel.validate = (newvalue: any) => {
+                const message = Models.validate(propertyRep, newvalue);
+
+                if (message !== mandatory) {
+                    propertyViewModel.message = message;
+                }
+
+                propertyViewModel.clientValid = !message;
+                return propertyViewModel.clientValid;
+            };
 
             const returnType = propertyRep.extensions().returnType();
             const format = propertyRep.extensions().format();

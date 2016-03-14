@@ -108,4 +108,70 @@ module NakedObjects.Models {
         const title = obj.title();
         return type + ": " + title;
     }
+
+    function isInteger(value: number) {
+        return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+    }
+
+
+    function validateNumber(model: IHasExtensions, newValue: number): string {
+        const format = model.extensions().format();
+
+        switch (format) {
+            case ("integer"):
+                if (!isInteger(newValue)) {
+                    return "Not an integer";
+                }
+        }
+        return "";
+    }
+
+    function validateString(model: IHasExtensions, newValue: string): string {
+        const minLength = model.extensions().minLength();
+        const maxLength = model.extensions().maxLength();
+        const pattern = model.extensions().pattern();
+        const len = newValue ? newValue.length : 0;
+
+
+        if (minLength && len < minLength) {
+            return tooShort;
+        }
+
+        if (maxLength && len > maxLength) {
+            return tooLong;
+        }
+
+        if (pattern) {
+            const regex = new RegExp(pattern);
+            return regex.test(newValue) ? "" : noPatternMatch;
+        }
+        return "";
+    }
+
+
+    export function validate(model: IHasExtensions, newValue: any): string {
+        // first check 
+        const isMandatory = !model.extensions().optional();
+
+        if (isMandatory && newValue === "" || newValue === null) {
+            return mandatory;
+        }
+
+        // check type 
+        const returnType = model.extensions().returnType();
+
+        switch (returnType) {
+            case ("number"):
+                if (!$.isNumeric(newValue)) {
+                    return notANumber;
+                }
+                return validateNumber(model, parseFloat(newValue));
+            case ("string"):
+                return validateString(model, newValue as string);
+            case ("boolean"):
+                return "";
+            default:
+                return "";
+        }
+    }
 }

@@ -31,6 +31,28 @@ module NakedObjects {
         draggableType: string;
     }
 
+    function tooltip (onWhat : {clientValid : () => boolean }, fields : ValueViewModel[]) : string  {
+        if (onWhat.clientValid()) {
+            return "";
+        }
+
+        const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.message);
+
+        if (missingMandatoryFields.length > 0) {
+            return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", "Missing mandatory fields: ");
+        }
+
+        const invalidFields = _.filter(fields, p => !p.clientValid);
+
+        if (invalidFields.length > 0) {
+            return _.reduce(invalidFields, (s, t) => s + t.title + "; ", "Invalid fields: ");
+        }
+
+        return "";
+    }
+
+
+
     export function createActionSubmenuMap(avms: ActionViewModel[], menu: { name: string, actions: ActionViewModel[] }) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
@@ -149,6 +171,9 @@ module NakedObjects {
     }
 
     export class ValueViewModel extends MessageViewModel {
+
+        validate: (newValue: any) => boolean; 
+        clientValid: boolean;
 
         isDirty = () => false;
 
@@ -328,6 +353,10 @@ module NakedObjects {
 
         actionMember: ActionMember;
         actionViewModel: ActionViewModel;
+
+        clientValid = () => _.every(this.parameters, p => p.clientValid);
+
+        tooltip = () => tooltip(this, this.parameters);
 
         setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), false, this.onPaneId));
 
@@ -699,7 +728,6 @@ module NakedObjects {
             this.color = this.colorService.toColorFromType(this.domainObject.domainType());
             this.message = "";
 
-
             if (routeData.interactionMode === InteractionMode.Form) {
                 _.forEach(this.actions, a => {
 
@@ -744,6 +772,10 @@ module NakedObjects {
         collections: CollectionViewModel[];
         unsaved: boolean;
 
+        clientValid = () => _.every(this.properties, p => p.clientValid);
+
+        tooltip = () => tooltip(this, this.properties);
+
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
             this.urlManager.toggleObjectMenu(this.onPaneId);
@@ -768,23 +800,36 @@ module NakedObjects {
 
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
+        private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
+
         private handleWrappedError = (reject: ErrorWrapper) => {
             const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
             const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
             this.contextService.handleWrappedError(reject, this.domainObject, reset, display);
         };
 
-
-        doSave = (viewObject : boolean) => {
-
+        doSave = (viewObject: boolean) => {
             this.setProperties();
             const propMap = this.propertyMap();
-
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
 
+        doSaveValidate = () => {
+            //this.setProperties();
+            const propMap = this.propertyMap();
 
+            return this.validateHandler()(this.domainObject, propMap).
+                then(() => {
+                    this.message = "";
+                    return true;
+                }).
+                catch((reject: ErrorWrapper) => {
+                    this.handleWrappedError(reject);
+                    return this.$q.reject(false);
+                });
+        };
+     
         doEdit = () => {
             this.contextService.reloadObject(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
@@ -794,6 +839,7 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
+
         doReload = () =>
             this.contextService.reloadObject(this.onPaneId, this.domainObject).
             then((updatedObject: DomainObjectRepresentation) => {

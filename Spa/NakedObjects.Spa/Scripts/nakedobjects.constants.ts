@@ -67,6 +67,8 @@ module NakedObjects {
     export const roPage = "x-ro-page";
     export const roPageSize = "x-ro-pageSize";
 
+    export const roValidateOnly = "x-ro-validate-only";
+
     //NOF custom RO constants
     export const nofChoices = "x-ro-nof-choices";
     export const nofMenuPath = "x-ro-nof-menuPath";

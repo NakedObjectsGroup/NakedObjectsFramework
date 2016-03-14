@@ -94,7 +94,7 @@
                                     <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="date" placeholder="{{parameter.description}}" ng-model="$parent.parameter.value" gemini-datepicker />
                                 </div>
                                 <div ng-switch-default ng-switch="parameter.multipleLines">
-                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" />
+                                    <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate />
                                     <!--TODO: Placeholder for description ?-->
                                     <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" placeholder="" ng-model="$parent.parameter.value" />
                                 </div>
@@ -114,6 +114,6 @@
         </div>
         <div class="co-validation">{{dialog.message}}</div>
     </div>
-    <input class="ok" tabindex="0" type="submit" value="OK" gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
+    <input class="ok" tabindex="0" type="submit" value="OK" title="{{dialog.tooltip()}}"  ng-disabled="!dialog.clientValid()"    gemini-enter="dialog.doInvoke()" ng-click="dialog.doInvoke()" gemini-rightclick="dialog.doInvoke(true)" />
     <input class="cancel" tabindex="0" type="button" gemini-enter="dialog.doClose()" ng-click="dialog.doClose()" value="Cancel" />
 </form>
