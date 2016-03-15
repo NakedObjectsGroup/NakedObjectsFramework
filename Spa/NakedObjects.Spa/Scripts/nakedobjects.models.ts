@@ -25,6 +25,7 @@ module NakedObjects.Models {
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
     import IObjectOfType = RoInterfaces.IObjectOfType;
+    import IRange = RoInterfaces.Custom.IRange;
 
 
     // helper functions 
@@ -646,6 +647,7 @@ module NakedObjects.Models {
         messages = () => this.wrapped["x-ro-nof-messages"] as string[];
         interactionMode = () => this.wrapped["x-ro-nof-interactionMode"] as string;
         dataType = () => this.wrapped["x-ro-nof-dataType"] as string;
+        range = () => this.wrapped["x-ro-nof-range"] as IRange;
     }
 
     // matches a action invoke resource 19.0 representation 

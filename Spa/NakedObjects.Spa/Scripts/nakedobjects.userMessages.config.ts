@@ -15,11 +15,12 @@ module NakedObjects {
 
     export const noResultMessage = "no result found";
     export const obscuredText = "*****";
-
     export const tooShort = "Too short";
     export const tooLong = "Too long";
     export const notAnInteger = "Not an integer";
     export const notANumber = "Not a number";
     export const mandatory = "Mandatory";
     export const noPatternMatch = "no pattern match";
+    export const outOfRangeBelowMin = "Out of range below min";
+    export const outOfRangeAboveMax = "Out of range above max";
 }

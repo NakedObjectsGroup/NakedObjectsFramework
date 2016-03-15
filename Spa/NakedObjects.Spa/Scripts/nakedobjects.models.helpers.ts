@@ -123,6 +123,23 @@ module NakedObjects.Models {
                     return "Not an integer";
                 }
         }
+
+        const range = model.extensions().range();
+
+        if (range) {
+            const min = range.min;
+            const max = range.max;
+
+            if (min && newValue < min) {
+                return outOfRangeBelowMin;
+            }
+
+            if (max && newValue > max) {
+                return outOfRangeAboveMax;
+            }
+        }
+
+
         return "";
     }
 
@@ -193,7 +210,7 @@ module NakedObjects.Models {
                 if (!$.isNumeric(modelValue)) {
                     return notANumber;
                 }
-                return validateNumber(model, modelValue as number);
+                return validateNumber(model, parseFloat(modelValue));
             case ("string"):
                 return validateString(model, modelValue as string);
             case ("boolean"):
