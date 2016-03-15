@@ -178,16 +178,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
 
-        public virtual void SinglePropertyValidationError()
+        public virtual void SinglePropertyLocalValidationError()
         {
             GeminiUrl("object?i1=Edit&o1=___1.Product-817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
             ClearFieldThenType("#daystomanufacture1", "0");
-            Click(SaveButton());
-            WaitForMessage("See field validation message(s).");
 
+            //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+            //.Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+
+            //TODO: Temporary  -  pending change to the server message
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+.Where(el => el.Text == "Out of range below min").Count() == 1);
+
+
+            //Confirm that the save button is disabled & has helper tooltip
+            SaveButton().AssertIsDisabled();
+            //TODO: Check the tooltip message on the SaveButton
 
             //Test for an earlier bug, that references still rendered correctly
             var field = WaitForCss("#productmodel1");
@@ -237,7 +244,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ObjectEditPicksUpLatestServerVersion() { base.ObjectEditPicksUpLatestServerVersion(); }
         [TestMethod]
-        public override void SinglePropertyValidationError() { base.SinglePropertyValidationError(); }
+        public override void SinglePropertyLocalValidationError() { base.SinglePropertyLocalValidationError(); }
 
         [TestMethod]
         public override void CoValidationOnSavingChanges() { base.CoValidationOnSavingChanges(); }
@@ -272,7 +279,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -337,7 +344,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CanSetAndClearAnOptionalDropDown();
             base.ObjectEditChangeConditionalChoices();
             base.ObjectEditPicksUpLatestServerVersion();
-            base.SinglePropertyValidationError();
+            base.SinglePropertyLocalValidationError();
             base.CoValidationOnSavingChanges();
             base.ViewModelEditOpensInEditMode();
         }

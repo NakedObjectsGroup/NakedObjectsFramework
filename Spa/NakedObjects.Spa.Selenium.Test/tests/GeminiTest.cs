@@ -141,9 +141,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected virtual void Click(IWebElement element)
         {
+            element.AssertIsEnabled();
             ScrollTo(element);
             element.Click();
         }
+
 
         protected virtual void RightClick(IWebElement element)
         {
@@ -627,7 +629,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public static IWebElement AssertIsDisabled(this IWebElement a, string reason = null)
         {
-            Assert.IsNotNull(a.GetAttribute("disabled"));
+            Assert.IsNotNull(a.GetAttribute("disabled"), "Element " + a.Text + " is not disabled");
             if (reason != null)
             {
                 Assert.AreEqual(reason, a.GetAttribute("title"));
@@ -637,7 +639,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public static IWebElement AssertIsEnabled(this IWebElement a)
         {
-            Assert.IsNull(a.GetAttribute("disabled"));
+            Assert.IsNull(a.GetAttribute("disabled"), "Element "+a.Text + " is disabled");
             return a;
         }
 
