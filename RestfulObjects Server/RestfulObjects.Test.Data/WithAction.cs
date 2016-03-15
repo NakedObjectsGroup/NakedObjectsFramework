@@ -228,6 +228,10 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm1);
         }
 
+        public virtual MostSimple AnActionWithValueParameterWithRange([System.ComponentModel.DataAnnotations.Range (1, 500)] int parm1) {
+            return Container.Instances<MostSimple>().Single(x => x.Id == parm1);
+        }
+
         public virtual MostSimple AnActionWithValueParameterWithChoices(int parm3) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm3);
         }

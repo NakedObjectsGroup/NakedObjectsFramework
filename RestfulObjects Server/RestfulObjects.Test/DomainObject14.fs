@@ -1576,7 +1576,9 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
-    
+   
+
+
     let makeIntParmWithHint pmid pid fid rt = 
       
         
@@ -1593,6 +1595,23 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeIntParmWithRange pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))                                                  
+                                                  TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(1)); TProperty("max", TObjectVal(500))]))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+
     let makeIntParmWithChoicesAndDefault pmid pid fid rt = 
        
         
@@ -1801,6 +1820,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let p43 = makeStringParmWithDefaults "parm" "AnActionWithCollectionParameter" "Parm" (ttc "list") (ttc "string")
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" (ttc "list") (ttc "RestfulObjects.Test.Data.MostSimple")
     
+    let p45 = makeIntParmWithRange "parm1" "AnActionWithValueParameterWithRange" "Parm1" (ttc "number")
+
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
@@ -1984,6 +2005,8 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       TProperty("AnOverloadedAction0", TObjectJson(makeActionMember "objects" "AnOverloadedAction0" oid "An Overloaded Action" "" mst []))
                       TProperty("AnOverloadedAction1", TObjectJson(makeActionMember "objects" "AnOverloadedAction1" oid "An Overloaded Action" "" mst [ p19 ]))
                       TProperty("AnActionWithValueParameter", TObjectJson(makeObjectActionMember "AnActionWithValueParameter" oid mst [ p20 ]))
+
+                      TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithRange" oid mst [ p45 ]))
                       
                       TProperty
                           ("AnActionWithValueParametersWithConditionalChoices", 
@@ -2221,6 +2244,19 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
+    let makeIntParmWithRange pmid fid rt = 
+        let p = 
+            TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                  TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(1)); TProperty("max", TObjectVal(500))]))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+
     let makeIntParmWithHint pmid fid rt = 
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([]))
@@ -2408,7 +2444,8 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
     let p42 = makeStringParmWithConditionalChoices "parm4" "AnActionWithValueParametersWithConditionalChoices" "Parm4" (ttc "string")
     let p43 = makeStringParmWithDefaults "parm" "Parm" (ttc "list") (ttc "string")
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" (ttc "list") (ttc "RestfulObjects.Test.Data.MostSimple")
-    
+    let p45 = makeIntParmWithRange "parm1" "Parm1" (ttc "number")
+
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
@@ -2614,6 +2651,9 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                           ("AnOverloadedAction1", TObjectJson(makeActionMemberSimple "objects" "AnOverloadedAction1" oid "An Overloaded Action" "" mst [ p19 ]))
                       TProperty("AnActionWithValueParameter", TObjectJson(makeObjectActionMemberSimple "AnActionWithValueParameter" oid mst [ p20 ]))
                       
+                      TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithRange" oid mst [ p45 ]))
+
+
                       TProperty
                           ("AnActionWithValueParametersWithConditionalChoices", 
                            TObjectJson(makeObjectActionMemberSimple "AnActionWithValueParametersWithConditionalChoices" oid mst [ p41; p42 ]))

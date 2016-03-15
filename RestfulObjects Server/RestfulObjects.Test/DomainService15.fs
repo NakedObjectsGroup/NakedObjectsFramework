@@ -596,6 +596,23 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
+ 
+    let makeIntParmWithRange pmid pid fid rt = 
+      
+        
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                  TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(1)); TProperty("max", TObjectVal(500))]))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+ 
     
     let makeIntParmWithHint pmid pid fid rt = 
     
@@ -842,7 +859,8 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
     let p42 = makeStringParmWithConditionalChoices "parm4" "AnActionWithValueParametersWithConditionalChoices" "Parm4" (ttc "string")
     let p43 = makeStringParmWithDefaults "parm" "AnActionWithCollectionParameter" "Parm" (ttc "list") (ttc "string")
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" (ttc "list") (ttc "RestfulObjects.Test.Data.MostSimple")
-    
+    let p45 = makeIntParmWithRange "parm1" "AnActionWithValueParameterWithRange" "Parm1" (ttc "number")
+
     let expected = 
         [ TProperty(JsonPropertyNames.ServiceId, TObjectVal(oid))
           TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service"))
@@ -1063,6 +1081,9 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                        TObjectJson(makeActionMember "services" "AnOverloadedAction1" oid "An Overloaded Action" "" mst [ p19 ]))
                                   TProperty("AnActionWithValueParameter", TObjectJson(makeServiceActionMember "AnActionWithValueParameter" oid mst [ p20 ]))
                                   
+                                  TProperty("AnActionWithValueParameterWithRange", TObjectJson(makeServiceActionMember "AnActionWithValueParameterWithRange" oid mst [ p45 ]))
+
+
                                   TProperty
                                       ("AnActionWithValueParametersWithConditionalChoices", 
                                        TObjectJson(makeServiceActionMember "AnActionWithValueParametersWithConditionalChoices" oid mst [ p41; p42 ]))

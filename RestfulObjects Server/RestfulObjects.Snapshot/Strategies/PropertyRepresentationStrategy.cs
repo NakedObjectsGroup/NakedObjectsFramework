@@ -145,20 +145,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                     customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
-                var range = propertyContext.Property.Range;
-
-                if (range != null) {
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
-
-                    var propertyType = propertyContext.Property.Specification.GetUnderlyingType();
-
-                    var min = range.Item1.ToType(propertyType, null);
-                    var max = range.Item2.ToType(propertyType, null);
-
-                    OptionalProperty[] op = { new OptionalProperty("min", min), new OptionalProperty("max", max) };
-                    MapRepresentation map = MapRepresentation.Create(op);
-                    customExtensions[JsonPropertyNames.CustomRange] = map;
-                }
+                customExtensions = RestUtils.AddRangeExtension(propertyContext.Property, customExtensions);
             }
 
             return customExtensions;

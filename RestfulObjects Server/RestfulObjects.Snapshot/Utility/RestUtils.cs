@@ -318,5 +318,27 @@ namespace RestfulObjects.Snapshot.Utility {
         public static string GuidAsKey(this Guid guid) {
             return guid.ToString("N");
         }
+
+        public static IDictionary<string, object> AddRangeExtension(IFieldFacade field, IDictionary<string, object> customExtensions ) {
+            var range = field.Range;
+
+            if (range != null) {
+                customExtensions = customExtensions ?? new Dictionary<string, object>();
+
+                var propertyType = field.Specification.GetUnderlyingType();
+
+                var min = range.Item1.ToType(propertyType, null);
+                var max = range.Item2.ToType(propertyType, null);
+
+                OptionalProperty[] op = { new OptionalProperty("min", min), new OptionalProperty("max", max) };
+                MapRepresentation map = MapRepresentation.Create(op);
+                customExtensions[JsonPropertyNames.CustomRange] = map;
+            }
+            return customExtensions;
+        }
+
+
+
+
     }
 }

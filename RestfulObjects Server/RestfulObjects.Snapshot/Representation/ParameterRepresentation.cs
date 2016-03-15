@@ -103,6 +103,8 @@ namespace RestfulObjects.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
+            custom = RestUtils.AddRangeExtension(parameter.AsField, custom);
+
             Extensions = RestUtils.GetExtensions(friendlyname: parameter.Name,
                                                   description: parameter.Description,
                                                   pluralName: null,
