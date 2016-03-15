@@ -975,6 +975,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       let choices = mName.Contains("Choices")
       let disabled = mName.Contains("Disabled")        
       let autocomplete = mName.Contains("AutoComplete")
+      let range = mName.Contains("Range")
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                               TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -986,6 +987,8 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       let extArray = if choices then TProperty(JsonPropertyNames.CustomChoices, TObjectJson([TProperty("Value1", TObjectVal(0)); TProperty("Value2", TObjectVal(1))])) :: extArray else extArray;
       
       let extArray = if mName = "EnumByAttributeChoices" then  TProperty(JsonPropertyNames.CustomDataType, TObjectVal("custom")) :: extArray else extArray
+
+      let extArray = if range then TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(0)); TProperty("max", TObjectVal(400))])) :: extArray else extArray
 
       let exts = TObjectJson(extArray);
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1000,8 +1003,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
                     TProperty(JsonPropertyNames.Id, TObjectVal(mName));
                     TProperty(JsonPropertyNames.Value, oValue);
-                    TProperty(JsonPropertyNames.HasChoices, TObjectVal(choices));
-                   
+                    TProperty(JsonPropertyNames.HasChoices, TObjectVal(choices));                   
                     TProperty(JsonPropertyNames.Extensions, exts);
                     TProperty(JsonPropertyNames.Links, TArray(links))]
 

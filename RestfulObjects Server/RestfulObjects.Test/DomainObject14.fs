@@ -546,6 +546,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("Float", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Int", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("IntWithRange", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -592,6 +593,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(7.3))))
                       TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
                       TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(8))))
+                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "integer" false (TObjectVal(0))))
                       TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(9))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oid "Password" "" "string" false (TObjectVal(null))))
@@ -1052,7 +1054,8 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                     new JProperty("Double", new JObject(new JProperty(JsonPropertyNames.Value, 200.8))), 
                     new JProperty("EnumByAttributeChoices", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
                     new JProperty("Float", new JObject(new JProperty(JsonPropertyNames.Value, 300.7))), 
-                    new JProperty("Int", new JObject(new JProperty(JsonPropertyNames.Value, 400))), 
+                    new JProperty("Int", new JObject(new JProperty(JsonPropertyNames.Value, 400))),
+                    new JProperty("IntWithRange", new JObject(new JProperty(JsonPropertyNames.Value, 400))), 
                     new JProperty("Long", new JObject(new JProperty(JsonPropertyNames.Value, 500))), 
                     new JProperty("SByte", new JObject(new JProperty(JsonPropertyNames.Value, 3))), 
                     new JProperty("Short", new JObject(new JProperty(JsonPropertyNames.Value, 4))), 
@@ -1081,6 +1084,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                                 TProperty("Float", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Int", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("IntWithRange", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -1127,6 +1131,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(300.7))))
                       TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
                       TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(400))))
+                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "integer" false (TObjectVal(400))))
                       TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
                       TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(500))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oid "Password" "" "string" false (TObjectVal(null))))

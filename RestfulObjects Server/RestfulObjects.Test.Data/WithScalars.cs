@@ -45,6 +45,9 @@ namespace RestfulObjects.Test.Data {
 
         public virtual int Int { get; set; }
 
+        [Range(0, 400)]
+        public virtual int IntWithRange { get; set; }
+
         [NotMapped]
         public virtual uint UInt { get; set; }
 
@@ -68,6 +71,7 @@ namespace RestfulObjects.Test.Data {
         public virtual sbyte[] SByteArray { get; set; }
         public virtual char[] CharArray { get; set; }
 
+       
         public virtual DateTime DateTime { get; set; }
 
         [DataType(DataType.Password)]
