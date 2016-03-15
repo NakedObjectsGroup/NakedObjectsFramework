@@ -26,6 +26,8 @@ namespace RestfulObjects.Snapshot.Utility {
             this.association = association;
         }
 
+        public IFieldFacade AsField => (IFieldFacade) parameter ?? association;
+
         public string Id => parameter?.Id ?? association?.Id;
 
         public Choices IsChoicesEnabled => (parameter?.IsChoicesEnabled ?? association?.IsChoicesEnabled).GetValueOrDefault();
