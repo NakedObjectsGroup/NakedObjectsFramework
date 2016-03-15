@@ -169,6 +169,22 @@ module NakedObjects.Models {
     }
 
     function validateDateFormat(model: IHasExtensions, newValue: string): string {
+        const range = model.extensions().range();
+        const date = getUtcDate(newValue);
+
+        if (range) {
+            const min = range.min ? getUtcDate(range.min as string) : null;
+            const max = range.max ? getUtcDate(range.max as string) : null;
+
+            if (min && date < min) {
+                return outOfRangeBelowMin;
+            }
+
+            if (max && date > max) {
+                return outOfRangeAboveMax;
+            }
+        }
+
         return "";
     }
 
