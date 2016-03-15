@@ -268,6 +268,7 @@ namespace NakedObjects.Web.Mvc.Html {
             var menuSet = new TagBuilder("div");
             menuSet.AddCssClass(cls);
             menuSet.GenerateId(id);
+          
 
             if (!elements.Any()) {
                 menuSet.MergeAttribute("title", MvcUi.NoActionsAvailable);
@@ -296,11 +297,13 @@ namespace NakedObjects.Web.Mvc.Html {
         private static MvcHtmlString GetStandalone(HtmlHelper html, INakedObjectAdapter collectionNakedObject, Func<IAssociationSpec, bool> filter, Func<IAssociationSpec, int> order, TagBuilder tag, bool withTitle) {
             Func<INakedObjectAdapter, string> linkFunc = item => html.Object(html.ObjectTitle(item).ToString(), IdHelper.ViewAction, item.Object).ToString();
 
-            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnQueryable(collectionNakedObject.Object).ToString() : "";
+            bool hasActions = false;
+            string menu = collectionNakedObject.Spec.IsQueryable ? html.MenuOnQueryable(collectionNakedObject.Object, out hasActions).ToString() : "";
             string id = collectionNakedObject.Oid == null ? "" : html.Framework().GetObjectId(collectionNakedObject);
 
             // can only be standalone and hence page if we have an id 
-            tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), collectionNakedObject.Spec.IsQueryable, withTitle);
+            var withSelection = collectionNakedObject.Spec.IsQueryable && hasActions;
+            tag.InnerHtml += html.CollectionTable(collectionNakedObject, linkFunc, filter, order, !string.IsNullOrEmpty(id), withSelection, withTitle);
 
             return html.WrapInForm(IdHelper.EditObjectAction,
                 html.Framework().GetObjectTypeName(collectionNakedObject.Object),
