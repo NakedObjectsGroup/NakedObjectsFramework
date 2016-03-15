@@ -607,10 +607,10 @@ module NakedObjects {
     app.directive("geminiFieldvalidate", () => ({
         require: "ngModel",
         link(scope : any, elm : any, attrs : any, ctrl : any) {
-            ctrl.$validators.geminiValidate = (modelValue: any, viewValue: any) => {
+            ctrl.$validators.geminiValidate = (modelValue: any, viewValue: string) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-                return viewModel.validate(viewValue);
+                return viewModel.validate(modelValue, viewValue);
             };
         }
     }));

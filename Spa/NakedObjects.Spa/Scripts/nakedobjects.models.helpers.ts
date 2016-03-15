@@ -126,12 +126,11 @@ module NakedObjects.Models {
         return "";
     }
 
-    function validateString(model: IHasExtensions, newValue: string): string {
+    function validateStringFormat(model: IHasExtensions, newValue: string): string {
         const minLength = model.extensions().minLength();
         const maxLength = model.extensions().maxLength();
         const pattern = model.extensions().pattern();
         const len = newValue ? newValue.length : 0;
-
 
         if (minLength && len < minLength) {
             return tooShort;
@@ -148,12 +147,41 @@ module NakedObjects.Models {
         return "";
     }
 
+    function validateDateTimeFormat(model: IHasExtensions, newValue: string): string {
+        return "";
+    }
 
-    export function validate(model: IHasExtensions, newValue: any): string {
+    function validateDateFormat(model: IHasExtensions, newValue: string): string {
+        return "";
+    }
+
+    function validateTimeFormat(model: IHasExtensions, newValue: string): string {
+        return "";
+    }
+
+    function validateString(model: IHasExtensions, newValue: string): string {
+        const format = model.extensions().format();
+
+        switch (format) {
+            case ("string"):        
+                return validateStringFormat(model, newValue);
+            case ("date-time"):
+                return validateDateTimeFormat(model, newValue);
+            case ("date"):
+                return validateDateFormat(model, newValue);
+            case ("time"):
+                return validateTimeFormat(model, newValue);
+            default:
+                return "";
+        }
+    }
+
+
+    export function validate(model: IHasExtensions, modelValue: any, viewValue : string): string {
         // first check 
         const isMandatory = !model.extensions().optional();
 
-        if (isMandatory && newValue === "" || newValue === null) {
+        if (isMandatory && viewValue === "" || viewValue === null) {
             return mandatory;
         }
 
@@ -162,12 +190,12 @@ module NakedObjects.Models {
 
         switch (returnType) {
             case ("number"):
-                if (!$.isNumeric(newValue)) {
+                if (!$.isNumeric(modelValue)) {
                     return notANumber;
                 }
-                return validateNumber(model, parseFloat(newValue));
+                return validateNumber(model, modelValue as number);
             case ("string"):
-                return validateString(model, newValue as string);
+                return validateString(model, modelValue as string);
             case ("boolean"):
                 return "";
             default:
