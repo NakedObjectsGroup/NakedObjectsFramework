@@ -202,6 +202,10 @@ namespace RestfulObjects.Snapshot.Utility {
             return false;
         }
 
+        public static string ToDateFormatString(DateTime date) {
+            return date.Date.ToString("yyyy-MM-dd");
+        }
+
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
             PredefinedType predefinedType = TypeToPredefinedType(toMap.GetType(), useDateOverDateTime);
             if (predefinedType == PredefinedType.Date_time) {
@@ -214,8 +218,7 @@ namespace RestfulObjects.Snapshot.Utility {
                 return dt.ToUniversalTime();
             }
             if (predefinedType == PredefinedType.Date) {
-                var dt = ((DateTime) toMap).Date;
-                return dt.ToString("yyyy-MM-dd");
+                return ToDateFormatString((DateTime) toMap);
             }
 
             return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
@@ -327,8 +330,23 @@ namespace RestfulObjects.Snapshot.Utility {
 
                 var propertyType = field.Specification.GetUnderlyingType();
 
-                var min = range.Item1.ToType(propertyType, null);
-                var max = range.Item2.ToType(propertyType, null);
+                object min;
+                object max;
+
+                if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)) {
+                    var minDays = (double)range.Item1.ToType(typeof(double), null);
+                    var maxDays = (double)range.Item2.ToType(typeof(double), null);
+
+                    DateTime earliest = DateTime.Today.AddDays(minDays);
+                    DateTime latest = DateTime.Today.AddDays(maxDays);
+
+                    min = ToDateFormatString(earliest);
+                    max = ToDateFormatString(latest);
+                }
+                else {
+                    min = range.Item1.ToType(propertyType, null);
+                    max = range.Item2.ToType(propertyType, null);
+                }
 
                 OptionalProperty[] op = { new OptionalProperty("min", min), new OptionalProperty("max", max) };
                 MapRepresentation map = MapRepresentation.Create(op);
