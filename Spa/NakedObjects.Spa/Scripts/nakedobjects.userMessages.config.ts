@@ -21,6 +21,6 @@ module NakedObjects {
     export const notANumber = "Not a number";
     export const mandatory = "Mandatory";
     export const noPatternMatch = "no pattern match";
-    export const outOfRangeBelowMin = "Out of range below min";
-    export const outOfRangeAboveMax = "Out of range above max";
+
+    export const outOfRange = (val : any, min : any, max : any) => `Value is out of range ${min || "unlimited"} to ${max || "unlimited"}`;
 }

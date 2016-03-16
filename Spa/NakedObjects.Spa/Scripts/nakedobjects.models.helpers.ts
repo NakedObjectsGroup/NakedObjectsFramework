@@ -131,11 +131,11 @@ module NakedObjects.Models {
             const max = range.max;
 
             if (min && newValue < min) {
-                return outOfRangeBelowMin;
+                return outOfRange(newValue, min, max);
             }
 
             if (max && newValue > max) {
-                return outOfRangeAboveMax;
+                return outOfRange(newValue, min, max);
             }
         }
 
@@ -164,46 +164,45 @@ module NakedObjects.Models {
         return "";
     }
 
-    function validateDateTimeFormat(model: IHasExtensions, newValue: string): string {
+    function validateDateTimeFormat(model: IHasExtensions, newValue: Date): string {
         return "";
     }
 
-    function validateDateFormat(model: IHasExtensions, newValue: string): string {
+    function validateDateFormat(model: IHasExtensions, newValue: Date): string {
         const range = model.extensions().range();
-        const date = getUtcDate(newValue);
 
-        if (range) {
+        if (range && newValue) {
             const min = range.min ? getUtcDate(range.min as string) : null;
             const max = range.max ? getUtcDate(range.max as string) : null;
 
-            if (min && date < min) {
-                return outOfRangeBelowMin;
+            if (min && newValue < min) {
+                return outOfRange(toDateString(newValue), min, max);
             }
 
-            if (max && date > max) {
-                return outOfRangeAboveMax;
+            if (max && newValue > max) {
+                return outOfRange(toDateString(newValue), min, max);
             }
         }
 
         return "";
     }
 
-    function validateTimeFormat(model: IHasExtensions, newValue: string): string {
+    function validateTimeFormat(model: IHasExtensions, newValue: Date): string {
         return "";
     }
 
-    function validateString(model: IHasExtensions, newValue: string): string {
+    function validateString(model: IHasExtensions, newValue: any): string {
         const format = model.extensions().format();
 
         switch (format) {
             case ("string"):        
-                return validateStringFormat(model, newValue);
+                return validateStringFormat(model, newValue as string);
             case ("date-time"):
-                return validateDateTimeFormat(model, newValue);
+                return validateDateTimeFormat(model, newValue as Date);
             case ("date"):
-                return validateDateFormat(model, newValue);
+                return validateDateFormat(model, newValue as Date);
             case ("time"):
-                return validateTimeFormat(model, newValue);
+                return validateTimeFormat(model, newValue as Date);
             default:
                 return "";
         }
@@ -214,7 +213,7 @@ module NakedObjects.Models {
         // first check 
         const isMandatory = !model.extensions().optional();
 
-        if (isMandatory && viewValue === "" || viewValue === null) {
+        if (isMandatory && (viewValue === "" || viewValue === null)) {
             return mandatory;
         }
 
@@ -228,7 +227,7 @@ module NakedObjects.Models {
                 }
                 return validateNumber(model, parseFloat(modelValue));
             case ("string"):
-                return validateString(model, modelValue as string);
+                return validateString(model, modelValue);
             case ("boolean"):
                 return "";
             default:
