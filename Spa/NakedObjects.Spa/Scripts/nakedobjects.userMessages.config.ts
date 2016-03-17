@@ -22,5 +22,5 @@ module NakedObjects {
     export const mandatory = "Mandatory";
     export const noPatternMatch = "no pattern match";
 
-    export const outOfRange = (val : any, min : any, max : any) => `Value is out of range ${min || "unlimited"} to ${max || "unlimited"}`;
+    export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is out of range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 }

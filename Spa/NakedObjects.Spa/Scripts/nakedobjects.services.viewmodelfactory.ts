@@ -175,7 +175,7 @@ module NakedObjects {
             parmViewModel.clientValid = true;
 
             parmViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
-                const message =  mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue);
+                const message =  mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue, parmViewModel.localFilter);
 
                 if (message !== mandatory) {
                     parmViewModel.message = message;
@@ -392,7 +392,7 @@ module NakedObjects {
             }
         
             propertyViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
-                const message = mandatoryOnly ? Models.validateMandatory(propertyRep, viewValue) : Models.validate(propertyRep, modelValue, viewValue);
+                const message = mandatoryOnly ? Models.validateMandatory(propertyRep, viewValue) : Models.validate(propertyRep, modelValue, viewValue, propertyViewModel.localFilter);
 
                 if (message !== mandatory) {
                     propertyViewModel.message = message;
