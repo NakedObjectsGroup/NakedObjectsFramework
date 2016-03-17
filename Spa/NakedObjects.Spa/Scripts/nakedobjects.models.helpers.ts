@@ -225,6 +225,11 @@ module NakedObjects.Models {
             return mandatory;
         }
 
+        // if optional but empty always valid 
+        if (modelValue == null) {
+            return "";
+        }
+
         // check type 
         const returnType = model.extensions().returnType();
 

@@ -561,8 +561,6 @@ module NakedObjects {
         context.updateObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const update = object.getUpdateMap();
 
-       
-
             _.each(props, (v, k) => update.setProperty(k, v));
 
             return repLoader.retrieve(update, DomainObjectRepresentation, object.etagDigest).
@@ -577,7 +575,6 @@ module NakedObjects {
 
         context.saveObject = (object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean) => {
             const persist = object.getPersistMap();
-
 
             _.each(props, (v, k) => persist.setMember(k, v));
 
