@@ -107,7 +107,6 @@ namespace AdventureWorksModel {
 
         #region StartDate
 
-        [Range(0, 14)]
         [MemberOrder(30)]
         [Mask("d")]
         public virtual DateTime StartDate { get; set; }

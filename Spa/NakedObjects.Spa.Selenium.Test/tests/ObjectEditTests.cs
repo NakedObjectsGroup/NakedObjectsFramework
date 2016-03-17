@@ -63,7 +63,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var sellStart = date.AddDays(rand.Next(2000));
             var sellEnd = date.AddDays(rand.Next(2000,3000)); 
 
-            //TODO: Uncomment lines when DateTime? bug fixed
             ClearFieldThenType("#sellstartdate1", sellStart.ToString("d MMM yyyy"));
             ClearFieldThenType("#sellenddate1", sellEnd.ToString("dd/MM/yy")); //Test different input format...
             ClearFieldThenType("#daystomanufacture1", "1");
