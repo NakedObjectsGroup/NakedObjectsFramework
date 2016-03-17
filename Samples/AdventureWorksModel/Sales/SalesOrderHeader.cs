@@ -258,7 +258,6 @@ namespace AdventureWorksModel {
         #region DueDate
 
         [MemberOrder(21)]
-        [DataType(DataType.DateTime)]
         public virtual DateTime DueDate { get; set; }
 
         public string DisableDueDate() {
