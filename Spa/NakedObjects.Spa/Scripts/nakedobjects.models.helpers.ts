@@ -143,14 +143,10 @@ module NakedObjects.Models {
     }
 
     function validateStringFormat(model: IHasExtensions, newValue: string): string {
-        const minLength = model.extensions().minLength();
+        
         const maxLength = model.extensions().maxLength();
         const pattern = model.extensions().pattern();
         const len = newValue ? newValue.length : 0;
-
-        if (minLength && len < minLength) {
-            return tooShort;
-        }
 
         if (maxLength && len > maxLength) {
             return tooLong;
