@@ -52,6 +52,11 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(HttpRequestMessage req, INakedObjectSurface nakedObject, IOidStrategy oidStrategy) : this(req) {
             this.nakedObject = nakedObject;
             spec = nakedObject.Specification;
+
+            if (nakedObject.Specification.IsParseable()) {
+                throw new ArgumentException(string.Format("Cannot build URI  for parseable specification : {0}", nakedObject.Specification.FullName()));
+            }
+
             LinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
@@ -62,6 +67,10 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             nakedObject = propertyContext.Target;
             spec = nakedObject.Specification;
+
+            if (nakedObject.Specification.IsParseable()) {
+                throw new ArgumentException(string.Format("Cannot build URI  for parseable specification : {0}", nakedObject.Specification.FullName()));
+            }
             LinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
@@ -80,6 +89,11 @@ namespace RestfulObjects.Snapshot.Utility {
             action = actionContext.Action;
             nakedObject = actionContext.Target;
             spec = nakedObject.Specification;
+
+            if (nakedObject.Specification.IsParseable()) {
+                throw new ArgumentException(string.Format("Cannot build URI  for parseable specification : {0}", nakedObject.Specification.FullName()));
+            }
+
             LinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
@@ -108,6 +122,11 @@ namespace RestfulObjects.Snapshot.Utility {
             param = parameterContext.Parameter;
             nakedObject = parameterContext.Target;
             spec = nakedObject.Specification;
+
+            if (nakedObject.Specification.IsParseable()) {
+                throw new ArgumentException(string.Format("Cannot build URI  for parseable specification : {0}", nakedObject.Specification.FullName()));
+            }
+
             LinkObjectId oid = oidStrategy.GetOid(nakedObject);
             cachedId = oid.InstanceId;
             cachedType = oid.DomainType;
