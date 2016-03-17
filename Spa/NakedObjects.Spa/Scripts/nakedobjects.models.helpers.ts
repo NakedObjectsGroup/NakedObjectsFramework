@@ -208,7 +208,7 @@ module NakedObjects.Models {
         // first check 
         const isMandatory = !model.extensions().optional();
 
-        if (isMandatory && (viewValue === "" || viewValue === null)) {
+        if (isMandatory && (viewValue === "" || viewValue == null)) {
             return mandatory;
         }
 
