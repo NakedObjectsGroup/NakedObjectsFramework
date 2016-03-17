@@ -262,9 +262,8 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             Assert.AreEqual("Field Trip Store, AW00000546", obj.FindElement(By.ClassName("nof-object")).FindElement(By.TagName("a")).Text);
 
-            br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003");
+            br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003" + Keys.Escape);
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText("12/12/2003" + Keys.Escape);
-            br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText(Keys.Escape);
 
             wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }

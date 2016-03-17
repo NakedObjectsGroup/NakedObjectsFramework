@@ -166,7 +166,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             options = subcategories.FindElements(By.TagName("option"));
             Assert.AreEqual(21, options.Count);
-            var optionTexts = options.Select(o => o.Text).ToArray();
+            var optionTexts = subcategories.FindElements(By.TagName("option")).Select(o => o.Text).ToArray();
 
             Assert.IsFalse(optionTexts.Any(we => we == "Mountain Bikes"));
             Assert.IsFalse(optionTexts.Any(we => we == "Handlebars"));
