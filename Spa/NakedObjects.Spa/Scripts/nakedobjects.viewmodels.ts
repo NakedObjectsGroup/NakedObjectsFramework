@@ -172,7 +172,7 @@ module NakedObjects {
 
     export class ValueViewModel extends MessageViewModel {
 
-        validate: (modelValue: any, viewValue : string) => boolean; 
+        validate: (modelValue: any, viewValue : string, mandatoryOnly : boolean) => boolean; 
         clientValid: boolean;
 
         isDirty = () => false;

@@ -45,6 +45,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual int Int { get; set; }
 
+        [NotPersisted]
         [Range(0, 400)]
         public virtual int IntWithRange { get; set; }
 
