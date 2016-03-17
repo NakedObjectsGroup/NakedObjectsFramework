@@ -198,16 +198,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
             ClearFieldThenType("#daystomanufacture1", "0");
 
-            //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-            //.Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
-
-            //TODO: Temporary  -  pending change to the server message
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-.Where(el => el.Text == "Out of range below min").Count() == 1);
-
+            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
 
             //Confirm that the save button is disabled & has helper tooltip
-            SaveButton().AssertIsDisabled();
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
             //TODO: Check the tooltip message on the SaveButton
 
             //Test for an earlier bug, that references still rendered correctly
@@ -296,7 +291,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]

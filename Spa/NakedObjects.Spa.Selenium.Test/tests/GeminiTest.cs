@@ -643,6 +643,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             return a;
         }
 
+        public static IWebElement AssertHasTooltip(this IWebElement a, string tooltip)
+        {
+            Assert.AreEqual(tooltip, a.GetAttribute("title"));
+            return a;
+        }
+
         //public static IWebElement AssertIsVisible(this IWebElement a)
         //{
         //    Assert.IsNull(a.GetAttribute("displayed"));

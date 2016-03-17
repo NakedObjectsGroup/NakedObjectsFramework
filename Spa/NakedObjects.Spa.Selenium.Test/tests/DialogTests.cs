@@ -265,9 +265,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
             wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
-            Click(OKButton());
-            wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "REQUIRED * ");
+            OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Last Name; ");
             ClearFieldThenType("input#lastname1", "a");
+            OKButton().AssertIsEnabled();
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
