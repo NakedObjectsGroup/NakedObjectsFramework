@@ -209,11 +209,24 @@ module NakedObjects.Models {
     }
 
 
-    export function validate(model: IHasExtensions, modelValue: any, viewValue : string): string {
+    export function validateMandatory(model: IHasExtensions, viewValue: string): string {
         // first check 
         const isMandatory = !model.extensions().optional();
 
         if (isMandatory && (viewValue === "" || viewValue === null)) {
+            return mandatory;
+        }
+
+        return "";
+    }
+
+
+    export function validate(model: IHasExtensions, modelValue: any, viewValue : string): string {
+        // first check 
+
+        const mandatory = validateMandatory(model, viewValue);
+
+        if (mandatory) {
             return mandatory;
         }
 

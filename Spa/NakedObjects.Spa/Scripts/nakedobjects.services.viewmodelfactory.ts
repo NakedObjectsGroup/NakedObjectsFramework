@@ -174,8 +174,8 @@ module NakedObjects {
             parmViewModel.password = parmRep.extensions().dataType() === "password";
             parmViewModel.clientValid = true;
 
-            parmViewModel.validate = (modelValue: any, viewValue : string) => {
-                const message = Models.validate(parmRep, modelValue, viewValue);
+            parmViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
+                const message =  mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue);
 
                 if (message !== mandatory) {
                     parmViewModel.message = message;
@@ -391,8 +391,8 @@ module NakedObjects {
                 propertyViewModel.value = value.toString();
             }
         
-            propertyViewModel.validate = (modelValue: any, viewValue : string) => {
-                const message = Models.validate(propertyRep, modelValue, viewValue);
+            propertyViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
+                const message = mandatoryOnly ? Models.validateMandatory(propertyRep, viewValue) : Models.validate(propertyRep, modelValue, viewValue);
 
                 if (message !== mandatory) {
                     propertyViewModel.message = message;
