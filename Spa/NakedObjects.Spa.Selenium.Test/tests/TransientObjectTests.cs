@@ -51,12 +51,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             SelectDropDownOnField("#expyear1", "2020");
-            Click(SaveButton());
-            wait.Until(dr => dr.FindElement(
-                By.CssSelector("input#cardnumber1")).GetAttribute("placeholder") == "REQUIRED * Without spaces");
-            wait.Until(dr => dr.FindElement(
-                By.CssSelector("select#expmonth1 option[selected='selected']")).Text == "REQUIRED *");
-            WaitForMessage("Please complete REQUIRED fields.");
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Card Number; Exp Month; ");
         }
         public virtual void IndividualFieldValidation()
         {
