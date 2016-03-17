@@ -39,6 +39,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 
+        public virtual void ObjectEditChangeEnum()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person-6748");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
+            EditObject();
+            SelectDropDownOnField("#emailpromotion1", "Adventureworks Only");
+            SaveObject();
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nAdventureworks Only");
+            EditObject();
+            SelectDropDownOnField("#emailpromotion1", "No Promotions");
+            SaveObject();
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
+        }
+
         public virtual void ObjectEditChangeDateTime()
         {
             GeminiUrl("object?o1=___1.Product-870");
@@ -231,6 +245,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ObjectEditChangeScalar() { base.ObjectEditChangeScalar(); }
 
         [TestMethod]
+        public override void  ObjectEditChangeEnum() { base.ObjectEditChangeEnum(); }
+
+        [TestMethod]
         public override void ObjectEditChangeDateTime() { base.ObjectEditChangeDateTime(); }
 
         [TestMethod]
@@ -279,7 +296,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -339,6 +356,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaObjectEditTest()
         {
             base.ObjectEditChangeScalar();
+            base.ObjectEditChangeEnum();
             base.ObjectEditChangeDateTime();
             base.ObjectEditChangeChoices();
             base.CanSetAndClearAnOptionalDropDown();

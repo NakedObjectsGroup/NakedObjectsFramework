@@ -135,7 +135,7 @@ namespace AdventureWorksModel {
         #region EmailPromotion
 
         [MemberOrder(21), DefaultValue(1)]
-        public virtual int EmailPromotion { get; set; }
+        public virtual EmailPromotion EmailPromotion { get; set; }
 
         #endregion
 
@@ -368,5 +368,12 @@ namespace AdventureWorksModel {
     public enum EmailStatus
     {
         New, Sent, Failed
+    }
+
+    public enum EmailPromotion
+    {
+        NoPromotions = 0,
+        AdventureworksOnly = 1,
+        AdventureworksAndPartners = 2   
     }
 }
