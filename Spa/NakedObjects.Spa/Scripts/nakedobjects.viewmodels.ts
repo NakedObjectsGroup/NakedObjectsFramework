@@ -581,7 +581,7 @@ module NakedObjects {
         template: string;
 
         disableActions(): boolean {
-            return !this.actions || this.actions.length === 0;
+            return !this.actions || this.actions.length === 0 || this.items.length === 0;
         }
 
         actions: ActionViewModel[];
