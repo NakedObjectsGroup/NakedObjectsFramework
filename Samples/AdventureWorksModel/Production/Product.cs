@@ -249,6 +249,7 @@ namespace AdventureWorksModel {
         [Optionally]
         [MemberOrder(83)]
         [Mask("d")]
+        [Range(0, 10)]
         public virtual DateTime? DiscontinuedDate { get; set; }
 
         [NakedObjectsIgnore]
