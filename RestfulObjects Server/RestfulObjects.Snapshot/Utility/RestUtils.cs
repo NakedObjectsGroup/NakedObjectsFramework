@@ -138,18 +138,18 @@ namespace RestfulObjects.Snapshot.Utility {
             }
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, ChoiceRelType relType, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
             object value = ObjectToPredefinedType(item.GetDomainObject());
-            return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType, flags, new OptionalProperty(JsonPropertyNames.Title, title));
+            return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IAssociationFacade property, RestControlFlags flags) {
-            return GetChoiceValue(oidStrategy, item, new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
+            return GetChoiceValue(oidStrategy, item, () => new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IActionParameterFacade parameter, RestControlFlags flags) {
-            return GetChoiceValue(oidStrategy, item, new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
+            return GetChoiceValue(oidStrategy, item, () => new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
         public static string SafeGetTitle(IObjectFacade no) {

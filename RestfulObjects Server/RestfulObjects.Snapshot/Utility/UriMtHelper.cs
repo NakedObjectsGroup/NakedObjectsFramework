@@ -57,6 +57,9 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy, req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
@@ -65,6 +68,9 @@ namespace RestfulObjects.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, string instanceId) : this(oidStrategy, req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = instanceId;
             CachedType = oid.DomainType;
@@ -75,6 +81,9 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = propertyContext.Target.IsTransient ? "" : oid.InstanceId;
             CachedType = oid.DomainType;
@@ -85,6 +94,9 @@ namespace RestfulObjects.Snapshot.Utility {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = instanceId;
             CachedType = oid.DomainType;
@@ -95,6 +107,9 @@ namespace RestfulObjects.Snapshot.Utility {
             action = actionContext.Action;
             objectFacade = actionContext.Target;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
@@ -106,6 +121,9 @@ namespace RestfulObjects.Snapshot.Utility {
             param = parameterContext.Parameter;
             objectFacade = parameterContext.Target;
             spec = objectFacade.Specification;
+            if (objectFacade.Specification.IsParseable) {
+                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+            }
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
