@@ -26,7 +26,7 @@ module NakedObjects {
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
         closeDialog(paneId?: number): void;
-        setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
+        setObject(resultObject: DomainObjectRepresentation, rewrite: boolean, paneId?: number): void;
         setList(action: ActionMember, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
@@ -385,11 +385,14 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.FromDialog, () => true);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
+        helper.setObject = (resultObject: DomainObjectRepresentation, rewrite : boolean, paneId = 1) => {
             const oid = resultObject.id();
             const key = `${akm.object}${paneId}`;
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+            if (rewrite) {
+                $location.replace();
+            }
         };
 
         helper.setList = (actionMember: ActionMember, paneId = 1) => {

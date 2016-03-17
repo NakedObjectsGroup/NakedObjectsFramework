@@ -464,7 +464,7 @@ module NakedObjects {
                         context.setObject(paneId, resultObject);
                         transientCache.add(paneId, resultObject);
                         urlManager.pushUrlState(paneId);
-                        urlManager.setObject(resultObject, paneId);
+                        urlManager.setObject(resultObject, false, paneId);
                         urlManager.setInteractionMode(InteractionMode.Transient, paneId);
                     } else {
 
@@ -476,7 +476,7 @@ module NakedObjects {
                         resultObject.etagDigest = result.etagDigest;
 
                         context.setObject(paneId, resultObject);
-                        urlManager.setObject(resultObject, paneId);
+                        urlManager.setObject(resultObject, false, paneId);
 
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
@@ -552,7 +552,7 @@ module NakedObjects {
             dirtyCache.setDirty(updatedObject);
 
             if (viewSavedObject) {
-                urlManager.setObject(updatedObject, paneId);
+                urlManager.setObject(updatedObject, true, paneId);
             } else {
                 urlManager.popUrlState(paneId);
             }
