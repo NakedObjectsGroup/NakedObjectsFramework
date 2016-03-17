@@ -264,6 +264,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
 
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-FromDate-Input")).TypeText("01/01/2003");
             br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText("12/12/2003" + Keys.Escape);
+            br.FindElement(By.CssSelector("#OrderContributedActions-SearchForOrders-ToDate-Input")).TypeText(Keys.Escape);
 
             wait.ClickAndWait(".nof-ok", wd => wd.Title == "4 Sales Orders");
         }
@@ -403,7 +404,7 @@ namespace NakedObjects.Mvc.Selenium.Test {
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.ArrowDown);
             br.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product-Select-AutoComplete")).SendKeys(Keys.Tab);
 
-            wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product input")).GetAttribute("value") == "HL Hub");
+            wait.Until(wd => wd.FindElement(By.CssSelector("#WorkOrderRepository-CreateNewWorkOrder-Product input")).GetAttribute("value") == "HL Touring Seat Assembly");
         }
 
         public abstract void AutoCompleteOnActionDialogFailingToSelectValidOption();

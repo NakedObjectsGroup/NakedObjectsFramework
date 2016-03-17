@@ -1902,7 +1902,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("OrdersByValue", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, 31466);
         }
 
         [Test]
@@ -1922,7 +1922,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("OrdersByValue", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, 31466);
         }
 
         [Test]
@@ -1940,7 +1940,7 @@ namespace MvcTestApp.Tests.Controllers {
             Assert.AreEqual(20, ((IQueryable<SalesOrderHeader>) arm.Result).Count());
             Assert.AreEqual("HighestValueOrders", arm.Action.Id);
 
-            AssertPagingData(result, 1, 20, 31465);
+            AssertPagingData(result, 1, 20, 31466);
         }
 
         [Test]

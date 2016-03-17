@@ -91,16 +91,16 @@ namespace NakedObjects.Mvc.Test.Javascript {
         }
 
 
-        [TestMethod] 
-        public void RunFfQUnitTests() {
-            using (var ff = new FirefoxDriver()) {
-                // if don't do this focus won't go to element in browser window
-                ff.Keyboard.SendKeys(Keys.Tab);
-                ff.Keyboard.SendKeys(Keys.Tab);
+        //[TestMethod] 
+        //public void RunFfQUnitTests() {
+        //    using (var ff = new FirefoxDriver()) {
+        //        // if don't do this focus won't go to element in browser window
+        //        ff.Keyboard.SendKeys(Keys.Tab);
+        //        ff.Keyboard.SendKeys(Keys.Tab);
 
-                RunQUnitTests(ff, "ff");
-            }
-        }
+        //        RunQUnitTests(ff, "ff");
+        //    }
+        //}
 
         [TestMethod] 
         public void RunIeQUnitTests() {
@@ -111,13 +111,13 @@ namespace NakedObjects.Mvc.Test.Javascript {
             }
         }
 
-        [TestMethod]
-        public void RunCrQUnitTests() {
-            using (var cr = new ChromeDriver()) {
-                RunQUnitTests(cr, "cr");
-                cr.Quit();
-            }
-        }
+        //[TestMethod]
+        //public void RunCrQUnitTests() {
+        //    using (var cr = new ChromeDriver()) {
+        //        RunQUnitTests(cr, "cr");
+        //        cr.Quit();
+        //    }
+        //}
        
         private void AssertQUnitTestResults(IWebDriver iwd, string browser) {
 
