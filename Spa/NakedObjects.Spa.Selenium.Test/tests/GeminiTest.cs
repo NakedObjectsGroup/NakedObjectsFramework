@@ -649,11 +649,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             return a;
         }
 
-        //public static IWebElement AssertIsVisible(this IWebElement a)
-        //{
-        //    Assert.IsNull(a.GetAttribute("displayed"));
-        //    return a;
-        //}
+        public static IWebElement AssertIsInvisible(this IWebElement a)
+        {
+            Assert.IsNull(a.GetAttribute("displayed"));
+            return a;
+        }
 
     }
 }
