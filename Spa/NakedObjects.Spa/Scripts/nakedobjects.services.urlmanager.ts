@@ -31,7 +31,9 @@ module NakedObjects {
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
         toggleObjectMenu(paneId?: number): void;
-        setInteractionMode(newMode: InteractionMode, paneId?: number): void;
+
+        // todo can we simplify this and always rewite when we go to view ?
+        setInteractionMode(rewrite : boolean,  newMode: InteractionMode, paneId?: number): void;
         setCollectionMemberState(collectionMemberId: string, state: CollectionViewState, paneId?: number): void;
         setListState(state: CollectionViewState, paneId?: number): void;
         setListPaging(newPage: number, newPageSize: number, state: CollectionViewState, paneId?: number): void;
@@ -39,7 +41,7 @@ module NakedObjects {
 
         pushUrlState(paneId?: number): void;
         clearUrlState(paneId?: number): void;
-        popUrlState(onPaneId?: number): void;
+        popUrlState(rewrite : boolean,  onPaneId?: number): void;
 
         swapPanes(): void;
         singlePane(paneId?: number): void;
@@ -491,12 +493,15 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
 
-        helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {
+        helper.setInteractionMode = (rewrite : boolean, newMode: InteractionMode, paneId = 1) => {
             const key = `${akm.interactionMode}${paneId}`;
             const currentMode = getInteractionMode(getId(key, $routeParams));
             const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
             const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, transition, () => true);
+            if (rewrite) {
+                $location.replace();
+            }
         };
 
 
@@ -587,7 +592,7 @@ module NakedObjects {
 
             return _.reduce(ss, (r, n) => r + "-" + n, "");
         };
-        helper.popUrlState = (paneId = 1) => {
+        helper.popUrlState = (rewrite : boolean, paneId = 1) => {
             currentPaneId = paneId;
 
             const capturedPane = capturedPanes[paneId];
@@ -603,7 +608,11 @@ module NakedObjects {
                 // just go home 
                 helper.setHome(paneId);
             }
+            if (rewrite) {
+                $location.replace();
+            }
         };
+
         helper.clearUrlState = (paneId: number) => {
             currentPaneId = paneId;
             capturedPanes[paneId] = null;

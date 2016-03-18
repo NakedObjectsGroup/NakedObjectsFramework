@@ -786,8 +786,8 @@ module NakedObjects {
             _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-        () => this.urlManager.popUrlState(this.onPaneId) :
-        () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+        () => this.urlManager.popUrlState(true, this.onPaneId) :
+        () => this.urlManager.setInteractionMode(true, InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
             this.setProperties();
@@ -835,7 +835,7 @@ module NakedObjects {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
-                    this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
+                    this.urlManager.setInteractionMode(false, InteractionMode.Edit, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };

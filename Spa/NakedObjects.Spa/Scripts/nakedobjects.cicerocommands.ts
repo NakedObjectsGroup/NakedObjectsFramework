@@ -568,7 +568,7 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
             if (this.isEdit()) {
-                this.urlManager.setInteractionMode(InteractionMode.View);
+                this.urlManager.setInteractionMode(false, InteractionMode.View);
             }
             if (this.isDialog()) {
                 this.urlManager.closeDialog();
@@ -665,7 +665,7 @@ module NakedObjects {
                 this.mayNotBeChained();
                 return;
             }
-            this.urlManager.setInteractionMode(InteractionMode.Edit);
+            this.urlManager.setInteractionMode(false, InteractionMode.Edit);
         };
     }
 
@@ -1397,7 +1397,7 @@ module NakedObjects {
                 const propFriendlyName = (propId: string) => FriendlyNameForProperty(obj, propId);
                 this.handleErrorResponse(err, propFriendlyName);
             } else {
-                this.urlManager.setInteractionMode(InteractionMode.View);
+                this.urlManager.setInteractionMode(false, InteractionMode.View);
             }
         }
     }

@@ -465,7 +465,7 @@ module NakedObjects {
                         transientCache.add(paneId, resultObject);
                         urlManager.pushUrlState(paneId);
                         urlManager.setObject(resultObject, false, paneId);
-                        urlManager.setInteractionMode(InteractionMode.Transient, paneId);
+                        urlManager.setInteractionMode(false, InteractionMode.Transient, paneId);
                     } else {
 
                         // persistent object
@@ -481,7 +481,7 @@ module NakedObjects {
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
-                            urlManager.setInteractionMode(InteractionMode.Form, paneId);
+                            urlManager.setInteractionMode(false, InteractionMode.Form, paneId);
                         }
                     }
                 } else if (result.resultType() === "list") {
@@ -554,7 +554,7 @@ module NakedObjects {
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, true, paneId);
             } else {
-                urlManager.popUrlState(paneId);
+                urlManager.popUrlState(true, paneId);
             }
         }
 
