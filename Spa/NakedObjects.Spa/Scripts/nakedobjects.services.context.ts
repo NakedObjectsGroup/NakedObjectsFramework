@@ -552,9 +552,9 @@ module NakedObjects {
             dirtyCache.setDirty(updatedObject);
 
             if (viewSavedObject) {
-                urlManager.setObject(updatedObject, true, paneId);
+                urlManager.setObject(updatedObject, false, paneId);
             } else {
-                urlManager.popUrlState(true, paneId);
+                urlManager.popUrlState(false, paneId);
             }
         }
 

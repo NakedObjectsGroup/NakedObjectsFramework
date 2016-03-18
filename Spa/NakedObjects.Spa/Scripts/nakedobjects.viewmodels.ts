@@ -786,8 +786,8 @@ module NakedObjects {
             _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-        () => this.urlManager.popUrlState(true, this.onPaneId) :
-        () => this.urlManager.setInteractionMode(true, InteractionMode.View, this.onPaneId);
+        () => this.urlManager.popUrlState(false, this.onPaneId) :
+        () => this.urlManager.setInteractionMode(false, InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
             this.setProperties();
