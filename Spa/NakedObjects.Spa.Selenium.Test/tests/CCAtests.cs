@@ -227,8 +227,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             var actions = wait.Until(dr => dr.FindElements(By.CssSelector(".menu")).Single(el => el.Text == "Actions"));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
+            actions.AssertHasTooltip("No actions available");
             var checkboxes = WaitForCss("input", 3);
             Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
+            //Check that actions menu is disabled and 
         }
 
         public virtual void NoAllIfNoResults()
