@@ -61,7 +61,7 @@ module NakedObjects {
                         return toDateString(dt);
                     }
 
-                    return undefined;
+                    return "";
                 });
                 ngModel.$parsers.reverse();
 
