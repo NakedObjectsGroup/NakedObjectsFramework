@@ -389,6 +389,7 @@ namespace AdventureWorksModel {
         [Optionally]
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
+        [Description("Free-form text")]
         public virtual string Comment { get; set; }
 
         public void AddStandardComments(IEnumerable<string> comments) {
