@@ -62,14 +62,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //By default a DateTime property is rendered as date only:
             Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
 
-            //If marked with DataType.DateTime it will have a time element:
-            Assert.IsTrue(properties[9].Text.StartsWith("Due Date:\r\n28 Apr 2008"));
-            Assert.IsTrue(properties[9].Text.EndsWith(":00:00")); //To ignore TimeZone difference
-
-            //If marked with DataType.DateTime it can still be masked to a date
-            Assert.AreEqual("Ship Date:\r\n23 Apr 2008", properties[10].Text);
-
-            //Or if marked with ConcurrencyCheck
+            //If marked with ConcurrencyCheck, rendered as date time
             Assert.IsTrue(properties[23].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
             Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //To ignore TimeZone difference
 
@@ -88,6 +81,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Dates formatted in table view
             GeminiUrl("object?i1=View&o1=___1.Product-775&c1_SpecialOffers=Table");
+            WaitForCss("td", 15);
             var cell = WaitForCss("td:nth-child(5)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
