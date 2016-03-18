@@ -64,8 +64,6 @@
     <Content Include="Scripts\angular-touch.js" />
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\lodash.js" />
-    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\splitHomeHome.html" />
     <Content Include="Content\partials\actions.html" />
@@ -161,6 +159,10 @@
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.moment.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.masks.ts" />
     <TypeScriptCompile Include="Tests\specs\nakedobjects.test.ts" />
+    <Content Include="Scripts\lodash.core.js" />
+    <Content Include="Scripts\lodash.core.min.js" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
