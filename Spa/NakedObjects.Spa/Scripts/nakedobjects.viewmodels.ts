@@ -51,6 +51,12 @@ module NakedObjects {
         return "";
     }
 
+    function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
+        if (actionsOpen) {
+            return closeActions;
+        }
+        return onWhat.disableActions() ? noActions : openActions;
+    }
 
 
     export function createActionSubmenuMap(avms: ActionViewModel[], menu: { name: string, actions: ActionViewModel[] }) {
@@ -584,6 +590,8 @@ module NakedObjects {
             return !this.actions || this.actions.length === 0 || this.items.length === 0;
         }
 
+        actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+
         actions: ActionViewModel[];
         actionsMap: { name: string; actions: ActionViewModel[] }[];
 
@@ -776,6 +784,8 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.properties);
 
+        actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
             this.urlManager.toggleObjectMenu(this.onPaneId);
@@ -855,6 +865,8 @@ module NakedObjects {
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
         }
+
+
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
     }
