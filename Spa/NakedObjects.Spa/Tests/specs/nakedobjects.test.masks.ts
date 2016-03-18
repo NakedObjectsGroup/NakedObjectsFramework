@@ -41,7 +41,7 @@ module NakedObjects.Test.Masks {
                 it("masks 101", () => testDefaultMask(101, "int", "101"));
                 it("masks 1002", () => testDefaultMask(1002, "int", "1,002"));
                 it("masks 10003", () => testDefaultMask(10003, "int", "10,003"));
-                it("masks max int", () => testDefaultMask(Number.MAX_VALUE, "int", "1.7976931348623157e+308"));
+                it("masks max int", () => testDefaultMask(Number.MAX_VALUE, "int", "1.798e+308"));
             });
 
             const arbitaryDate1 = new Date(Date.UTC(1985, 5, 4, 16, 27, 10));
