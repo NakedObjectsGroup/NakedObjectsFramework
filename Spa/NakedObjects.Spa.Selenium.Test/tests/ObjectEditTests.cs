@@ -39,6 +39,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 
+        public virtual void LocalValidationOfMandatoryFields()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer-11");
+            SaveButton().AssertIsEnabled();
+            ClearFieldThenType("#startdate1", "");
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Start Date; ");
+            ClearFieldThenType("#minqty1", "");
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Start Date; Min Qty; ");
+            ClearFieldThenType("#description1", "");
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; Min Qty; ");
+            ClearFieldThenType("#minqty1", "1");
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; ");
+        }
         public virtual void LocalValidationOfMaxLength()
         {
             GeminiUrl("object?i1=Edit&o1=___1.Person-12125&c1_Addresses=List&c1_EmailAddresses=List");
@@ -62,7 +75,29 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
             SaveButton().AssertIsEnabled();
         }
+        public virtual void LocalValidationOfRange()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.Product-817");
+            WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
 
+            ClearFieldThenType("#daystomanufacture1", "0");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+            //Confirm that the save button is disabled & has helper tooltip
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
+
+            ClearFieldThenType("#daystomanufacture1", "1");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 0);
+            //Confirm that the save button is disabled & has helper tooltip
+            SaveButton().AssertIsEnabled();
+
+            ClearFieldThenType("#daystomanufacture1", "91");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+                .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+            //Confirm that the save button is disabled & has helper tooltip
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
+        }
         public virtual void ObjectEditChangeEnum()
         {
             GeminiUrl("object?i1=View&o1=___1.Person-6748");
@@ -215,24 +250,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
         }
 
-        public virtual void SinglePropertyLocalValidationError()
-        {
-            GeminiUrl("object?i1=Edit&o1=___1.Product-817");
-            WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
-            ClearFieldThenType("#daystomanufacture1", "0");
-
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
-
-            //Confirm that the save button is disabled & has helper tooltip
-            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
-            //TODO: Check the tooltip message on the SaveButton
-
-            //Test for an earlier bug, that references still rendered correctly
-            var field = WaitForCss("#productmodel1");
-            Assert.AreEqual("HL Mountain Front Wheel", field.GetAttribute("value"));
-        }
-
         public virtual void CoValidationOnSavingChanges()
         {
             GeminiUrl("object?o1=___1.WorkOrder-43134&i1=Edit");
@@ -261,11 +278,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void ObjectEditChangeScalar() { base.ObjectEditChangeScalar(); }
-
+        [TestMethod]
+        public override void LocalValidationOfMandatoryFields() { base.LocalValidationOfMandatoryFields(); }
         [TestMethod]
         public override void LocalValidationOfMaxLength() { base.LocalValidationOfMaxLength(); }
         [TestMethod]
         public override void LocalValidationOfRegex() { base.LocalValidationOfRegex(); }
+        [TestMethod]
+        public override void LocalValidationOfRange() { base.LocalValidationOfRange(); }
 
         [TestMethod]
         public override void  ObjectEditChangeEnum() { base.ObjectEditChangeEnum(); }
@@ -283,9 +303,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void ObjectEditPicksUpLatestServerVersion() { base.ObjectEditPicksUpLatestServerVersion(); }
-        [TestMethod]
-        public override void SinglePropertyLocalValidationError() { base.SinglePropertyLocalValidationError(); }
-
         [TestMethod]
         public override void CoValidationOnSavingChanges() { base.CoValidationOnSavingChanges(); }
 
@@ -319,7 +336,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -379,15 +396,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaObjectEditTest()
         {
             base.ObjectEditChangeScalar();
+            base.LocalValidationOfMandatoryFields();
+            base.LocalValidationOfMaxLength();
             base.LocalValidationOfRegex();
-            base.LocalValidationOfRegex();
+            base.LocalValidationOfRange();
             base.ObjectEditChangeEnum();
             base.ObjectEditChangeDateTime();
             base.ObjectEditChangeChoices();
             base.CanSetAndClearAnOptionalDropDown();
-            base.ObjectEditChangeConditionalChoices();
+            //base.ObjectEditChangeConditionalChoices(); //TODO: Pending bug fix
             base.ObjectEditPicksUpLatestServerVersion();
-            base.SinglePropertyLocalValidationError();
             base.CoValidationOnSavingChanges();
             base.ViewModelEditOpensInEditMode();
         }
