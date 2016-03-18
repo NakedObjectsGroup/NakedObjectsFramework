@@ -95,8 +95,7 @@
                                 </div>
                                 <div ng-switch-default ng-switch="parameter.multipleLines">
                                     <input ng-switch-when="1" id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="{{parameter.password ? 'password' : 'text'}}" ng-model="parameter.value" gemini-fieldvalidate />
-                                    <!--TODO: Placeholder for description ?-->
-                                    <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" placeholder="" ng-model="$parent.parameter.value" gemini-fieldvalidate />
+                                    <textarea ng-switch-default rows="{{$parent.parameter.multipleLines}}" id="{{$parent.parameter.paneArgId}}" class="{{$parent.parameter.status}}" ng-model="$parent.parameter.value" gemini-fieldvalidate gemini-placeholder="$parent.parameter.description"></textarea>
                                 </div>
                             </div>
                             <div ng-switch-when="boolean">
