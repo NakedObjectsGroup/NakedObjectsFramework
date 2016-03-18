@@ -39,6 +39,30 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
         }
 
+        public virtual void LocalValidationOfMaxLength()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.Person-12125&c1_Addresses=List&c1_EmailAddresses=List");
+            ClearFieldThenType("#title1", "Generalis");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Title; ");
+
+            TypeIntoFieldWithoutClearing("#title1", Keys.Backspace);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
+            SaveButton().AssertIsEnabled();
+        }
+
+        public virtual void LocalValidationOfRegex()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.EmailAddress-12043-11238");
+            ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
+            SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Email Address; ");
+
+            TypeIntoFieldWithoutClearing("#emailaddress11", ".com");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
+            SaveButton().AssertIsEnabled();
+        }
+
         public virtual void ObjectEditChangeEnum()
         {
             GeminiUrl("object?i1=View&o1=___1.Person-6748");
@@ -239,6 +263,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ObjectEditChangeScalar() { base.ObjectEditChangeScalar(); }
 
         [TestMethod]
+        public override void LocalValidationOfMaxLength() { base.LocalValidationOfMaxLength(); }
+        [TestMethod]
+        public override void LocalValidationOfRegex() { base.LocalValidationOfRegex(); }
+
+        [TestMethod]
         public override void  ObjectEditChangeEnum() { base.ObjectEditChangeEnum(); }
 
         [TestMethod]
@@ -350,6 +379,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaObjectEditTest()
         {
             base.ObjectEditChangeScalar();
+            base.LocalValidationOfRegex();
+            base.LocalValidationOfRegex();
             base.ObjectEditChangeEnum();
             base.ObjectEditChangeDateTime();
             base.ObjectEditChangeChoices();

@@ -285,8 +285,8 @@ namespace AdventureWorksModel {
 
         [Optionally]
         [MemberOrder(22)]
-        [DataType(DataType.DateTime)]
-        [Mask("d")]
+        [DataType(DataType.DateTime)][Mask("d")]//Just to prove that you can, if perverse enough, make something
+        //a dateTime and then mask it as a Date
         [Range(-30, 0)]
         public virtual DateTime? ShipDate { get; set; }
 

@@ -23,6 +23,7 @@ namespace AdventureWorksModel {
 
         [Title]
         [DisplayName("Email Address")]
+        [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", Message = "Not a valid email address")]
         public virtual string EmailAddress1 { get; set; }
 
         [NakedObjectsIgnore]
