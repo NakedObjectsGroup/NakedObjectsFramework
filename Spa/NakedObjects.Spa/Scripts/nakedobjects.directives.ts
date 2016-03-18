@@ -382,6 +382,11 @@ module NakedObjects {
         });
     });
 
+    app.directive("geminiPlaceholder", $parse => (scope: any, element: any, attrs: any) => {
+        const fn = $parse(attrs.geminiPlaceholder);
+        element.attr("placeholder", fn(scope, { $event: event }));
+    });
+
     app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any, attr: any) => {
         scope.$on(geminiFocusEvent, (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
 
