@@ -51,6 +51,12 @@ module NakedObjects {
         return "";
     }
 
+    function actionsTooltip(onWhat: { disableActions: () => boolean }, actionsOpen: boolean) {
+        if (actionsOpen) {
+            return closeActions;
+        }
+        return onWhat.disableActions() ? noActions : openActions;
+    }
 
 
     export function createActionSubmenuMap(avms: ActionViewModel[], menu: { name: string, actions: ActionViewModel[] }) {
@@ -584,6 +590,8 @@ module NakedObjects {
             return !this.actions || this.actions.length === 0 || this.items.length === 0;
         }
 
+        actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+
         actions: ActionViewModel[];
         actionsMap: { name: string; actions: ActionViewModel[] }[];
 
@@ -776,6 +784,8 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.properties);
 
+        actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
+
         toggleActionMenu = () => {
             this.focusManager.focusOverrideOff();
             this.urlManager.toggleObjectMenu(this.onPaneId);
@@ -786,8 +796,8 @@ module NakedObjects {
             _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-        () => this.urlManager.popUrlState(this.onPaneId) :
-        () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
+        () => this.urlManager.popUrlState(false, this.onPaneId) :
+        () => this.urlManager.setInteractionMode(false, InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
             this.setProperties();
@@ -835,7 +845,7 @@ module NakedObjects {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
-                    this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
+                    this.urlManager.setInteractionMode(false, InteractionMode.Edit, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
@@ -855,6 +865,8 @@ module NakedObjects {
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
         }
+
+
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
     }

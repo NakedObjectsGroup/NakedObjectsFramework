@@ -21,6 +21,10 @@ module NakedObjects {
     export const notANumber = "Not a number";
     export const mandatory = "Mandatory";
     export const noPatternMatch = "Invalid entry";
+    export const closeActions = "Close actions";
+    export const noActions = "No actions available";
+    export const openActions = "Open actions";
+
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 }
