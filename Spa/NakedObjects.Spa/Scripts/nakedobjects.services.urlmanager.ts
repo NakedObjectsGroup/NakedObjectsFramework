@@ -332,8 +332,9 @@ module NakedObjects {
             ToObjectView,
             ToList,
             LeaveEdit,
-            Page
-        }
+            Page,
+            ToTransient
+    }
 
         function getId(key: string, search: any) {
             return Decompress(search[key]);
@@ -375,7 +376,8 @@ module NakedObjects {
                 search = clearFieldKeys(search, paneId);                
                 break;
             case (Transition.ToObjectView):
-                replace =setupPaneNumberAndTypes(paneId, objectPath);
+                replace = false;
+                setupPaneNumberAndTypes(paneId, objectPath);
                 search = clearPane(search, paneId);
                 setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                 break;
@@ -390,6 +392,9 @@ module NakedObjects {
                 search = clearSearchKeys(search, paneId, [akm.prop]);
                 break;
             case (Transition.Page):
+                replace = false;
+                break;
+            case (Transition.ToTransient):
                 replace = false;
                 break;
             default:
@@ -540,7 +545,17 @@ module NakedObjects {
         helper.setInteractionMode = (newMode: InteractionMode, paneId = 1) => {
             const key = `${akm.interactionMode}${paneId}`;
             const currentMode = getInteractionMode(getId(key, $routeParams));
-            const transition = (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) ? Transition.LeaveEdit : Transition.Null;
+            let transition: Transition;
+
+            if (currentMode === InteractionMode.Edit && newMode !== InteractionMode.Edit) {
+                transition = Transition.LeaveEdit;
+            }
+            else if (newMode === InteractionMode.Transient) {
+                transition = Transition.ToTransient;
+            } else {
+                transition = Transition.Null;
+            }
+
             const newValues = _.zipObject([key], [InteractionMode[newMode]]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, transition, () => true);
         };
