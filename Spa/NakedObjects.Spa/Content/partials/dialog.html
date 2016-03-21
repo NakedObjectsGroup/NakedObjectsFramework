@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <div ng-switch-when="boolean">
-                                <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" ng-model="parameter.value" />
+                                <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="checkbox" ng-model="parameter.value" gemini-boolean/>
                             </div>
                             <div ng-switch-default>
                                 <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" type="text" placeholder="{{parameter.description}}" ng-model="parameter.value" gemini-fieldvalidate/>
