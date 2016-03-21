@@ -277,7 +277,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-44440");
             var ta = WaitForCss("textarea#comment1");
-            Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
+            Assert.AreEqual("Free-form text", ta.GetAttribute("gemini-placeholder"));
             ClearFieldThenType("#comment1", "line1" + Keys.Enter + "line2" + Keys.Enter + "line3");
             Click(SaveButton());
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
@@ -353,7 +353,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -421,11 +421,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ObjectEditChangeDateTime();
             base.ObjectEditChangeChoices();
             base.CanSetAndClearAnOptionalDropDown();
-            //base.ObjectEditChangeConditionalChoices(); //TODO: Pending bug fix
+            base.ObjectEditChangeConditionalChoices(); 
             base.ObjectEditPicksUpLatestServerVersion();
             base.CoValidationOnSavingChanges();
             base.ViewModelEditOpensInEditMode();
-            base.MultiLineText();
+            base.MultiLineText(); 
         }
     }
 
