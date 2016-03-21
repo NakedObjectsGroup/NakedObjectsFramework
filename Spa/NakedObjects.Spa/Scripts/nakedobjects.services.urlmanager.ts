@@ -87,22 +87,62 @@ module NakedObjects {
 
         let currentPaneId = 1;
 
-        function createMask(arr : any) {
+        function createSubMask(arr : boolean[]) {
             let nMask = 0;
             let nFlag = 0;
-            const nLen = arr.length > 32 ? 32 : arr.length;
-            for (nFlag; nFlag < nLen; nMask |= arr[nFlag] << nFlag++);
+
+            if (arr.length > 31) {
+                throw new TypeError("createSubMask - out of range");
+            }
+
+            const nLen = arr.length;
+            for (nFlag; nFlag < nLen; nMask |= (<any>arr)[nFlag] << nFlag++);
             return nMask;
         }
 
-        function arrayFromMask(nMask : any) {
-            // nMask must be between -2147483648 and 2147483647
+
+        // convert from array of bools to mask string
+        function createArrays(arr: boolean[], arrays?: boolean[][]) : boolean[][] {
+
+            arrays = arrays || [];
+
+            if (arr.length > 31) {
+                arrays.push(arr.slice(0, 31));
+                return createArrays(arr.slice(31), arrays);
+            }
+
+            arrays.push(arr);
+            return arrays;
+        }
+
+
+        function createMask(arr: boolean[]) {
+            // split into smaller arrays if necessary 
+
+            const arrays = createArrays(arr);
+            const masks = _.map(arrays, a => createSubMask(a).toString());
+
+            return _.reduce(masks, (res, val) => res + "-" + val); 
+        }
+
+        // convert from mask string to array of bools
+        function arrayFromSubMask(sMask: string) {
+            const nMask = parseInt(sMask);
+            // nMask must be between 0 and 2147483647 - to keep simple we stick to 31 bits 
             if (nMask > 0x7fffffff || nMask < -0x80000000) {
                 throw new TypeError("arrayFromMask - out of range");
             }
-            const aFromMask = [] as any[];
-            for (let nShifted = nMask; nShifted; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+            const aFromMask = [] as boolean[];
+            let len = 31; // kae array always 31 bit long as we may concat another on end
+            for (let nShifted = nMask; len > 0; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1, --len);
             return aFromMask;
+        }
+
+        function arrayFromMask(sMask: string) {
+            sMask = sMask || "0";
+            const sMasks = sMask.split("-");
+            const maskArrays = _.map(sMasks, s => arrayFromSubMask(s));
+            return _.reduce(maskArrays, (res, val) => res.concat(val), [] as boolean[]);
         }
 
         function getSearch() {
@@ -167,7 +207,7 @@ module NakedObjects {
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
             paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
 
-            paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams) || 0);
+            paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
 
             paneRouteData.validate($location.url());
         }
@@ -508,7 +548,7 @@ module NakedObjects {
         helper.setListItem = (item: number, isSelected: boolean, paneId = 1) => {
 
             const key = `${akm.selected}${paneId}`;
-            const currentSelected = parseInt(getSearch()[key] || 0);
+            const currentSelected = getSearch()[key];
             const selectedArray: boolean[] = arrayFromMask(currentSelected);
             selectedArray[item] = isSelected;
             const currentSelectedAsString = (createMask(selectedArray)).toString();
