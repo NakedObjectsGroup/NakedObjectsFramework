@@ -372,7 +372,6 @@ module NakedObjects {
                 break;
             case (Transition.ToDialog):
             case (Transition.FromDialog):
-                replace = false;
                 search = clearFieldKeys(search, paneId);                
                 break;
             case (Transition.ToObjectView):
