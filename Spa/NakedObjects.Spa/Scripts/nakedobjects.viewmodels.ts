@@ -377,10 +377,17 @@ module NakedObjects {
             then((actionResult: ActionResultRepresentation) => {
                 if (actionResult.shouldExpectResult()) {
                     this.message = actionResult.warningsOrMessages() || noResultMessage;
-                } else if (actionResult.resultType() === "void" || !right) {
-                    // leave open if opening on other pane and dialog has result
+                } else if (actionResult.resultType() === "void") {
+                    // dialog staying on same page so treat as cancel 
+                    // for url replacing purposes
+                    this.doCancel();
+                }
+                else if (!right) {
+                    // going to new page close dialog (and do not replace url)
                     this.doClose();
                 }
+                // else leave open if opening on other pane and dialog has result
+
             }).
             catch((reject: ErrorWrapper) => {
                 const parent = this.actionMember.parent as DomainObjectRepresentation;
@@ -392,6 +399,9 @@ module NakedObjects {
             this.urlManager.closeDialog(this.onPaneId);
         };
 
+        doCancel = () => {
+            this.urlManager.cancelDialog(this.onPaneId);
+        };
 
         clearMessages = () => {
             this.message = "";
