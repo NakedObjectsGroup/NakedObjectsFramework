@@ -319,6 +319,21 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
+
+        public virtual void NullableBooleanParams()
+        {
+            GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
+            var current = WaitForCss("#current1");
+            var married = WaitForCss("#married1");
+            var salaried = WaitForCss("#salaried1");
+            var older = WaitForCss("#olderthan501");
+
+            //TODO
+            //Assert.AreEqual("(null)", current.GetAttribute("checked"));
+            //Assert.AreEqual("(null)", married.GetAttribute("checked"));
+            //Assert.AreEqual("false", salaried.GetAttribute("checked"));
+            //Assert.AreEqual("true", older.GetAttribute("checked"));
+        }
     }
     public abstract class DialogTests : DialogTestsRoot
     {
@@ -378,6 +393,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
         [TestMethod]
         public override void ParameterDescriptionRenderedAsPlacholder() { base.ParameterDescriptionRenderedAsPlacholder(); }
+
+        [TestMethod]
+        public override void NullableBooleanParams() { base.NullableBooleanParams(); }
     }
 
     #region browsers specific subclasses
@@ -405,7 +423,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
@@ -487,6 +505,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ValidateSingleRefParamFromChoices();
             base.CoValidationOfMultipleParameters();
             base.ParameterDescriptionRenderedAsPlacholder();
+            base.NullableBooleanParams();
         }
     }
 
