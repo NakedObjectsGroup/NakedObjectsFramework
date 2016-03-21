@@ -464,8 +464,8 @@ module NakedObjects {
                         context.setObject(paneId, resultObject);
                         transientCache.add(paneId, resultObject);
                         urlManager.pushUrlState(paneId);
-                        urlManager.setObject(resultObject, false, paneId);
-                        urlManager.setInteractionMode(false, InteractionMode.Transient, paneId);
+                        urlManager.setObject(resultObject, paneId);
+                        urlManager.setInteractionMode(InteractionMode.Transient, paneId);
                     } else {
 
                         // persistent object
@@ -476,12 +476,12 @@ module NakedObjects {
                         resultObject.etagDigest = result.etagDigest;
 
                         context.setObject(paneId, resultObject);
-                        urlManager.setObject(resultObject, false, paneId);
+                        urlManager.setObject(resultObject, paneId);
 
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
-                            urlManager.setInteractionMode(false, InteractionMode.Form, paneId);
+                            urlManager.setInteractionMode(InteractionMode.Form, paneId);
                         }
                     }
                 } else if (result.resultType() === "list") {
@@ -552,9 +552,9 @@ module NakedObjects {
             dirtyCache.setDirty(updatedObject);
 
             if (viewSavedObject) {
-                urlManager.setObject(updatedObject, false, paneId);
+                urlManager.setObject(updatedObject, paneId);
             } else {
-                urlManager.popUrlState(false, paneId);
+                urlManager.popUrlState(paneId);
             }
         }
 

@@ -364,12 +364,12 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), false, this.onPaneId));
+        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), false, this.onPaneId));
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
         doInvoke = (right?: boolean) =>
@@ -793,11 +793,11 @@ module NakedObjects {
 
         private editProperties = () => _.filter(this.properties, p => p.isEditable && p.isDirty());
         setProperties = () =>
-            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), false, this.onPaneId));
+            _.forEach(this.editProperties(), p => this.urlManager.setPropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
         private cancelHandler = () => this.domainObject.extensions().interactionMode() === "form" || this.domainObject.extensions().interactionMode() === "transient" ?
-        () => this.urlManager.popUrlState(false, this.onPaneId) :
-        () => this.urlManager.setInteractionMode(false, InteractionMode.View, this.onPaneId);
+        () => this.urlManager.popUrlState(this.onPaneId) :
+        () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
         editComplete = () => {
             this.setProperties();
@@ -845,7 +845,7 @@ module NakedObjects {
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);
-                    this.urlManager.setInteractionMode(false, InteractionMode.Edit, this.onPaneId);
+                    this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
