@@ -278,12 +278,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-44440");
             var ta = WaitForCss("textarea#comment1");
             Assert.AreEqual("Free-form text", ta.GetAttribute("gemini-placeholder"));
-            ClearFieldThenType("#comment1", "line1" + Keys.Enter + "line2" + Keys.Enter + "line3");
+            var rand = new Random();
+            var ran1 = rand.Next(10000);
+            var ran2 = rand.Next(10000);
+            var ran3 = rand.Next(10000);
+            ClearFieldThenType("#comment1", ran1 + Keys.Enter + ran2 + Keys.Enter + ran3);
             Click(SaveButton());
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
-            Assert.AreEqual("Comment:\r\nline1\r\nline2\r\nline3", properties[20].Text);
+            Assert.AreEqual("Comment:\r\n"+ ran1+"\r\n"+ ran2+"\r\n"+ran3, properties[20].Text);
         }
     }
     public abstract class ObjectEditTests : ObjectEditTestsRoot
@@ -353,7 +357,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
