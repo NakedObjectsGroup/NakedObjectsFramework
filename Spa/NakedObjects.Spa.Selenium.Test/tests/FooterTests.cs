@@ -22,13 +22,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void BackAndForward()
         {
             Url(BaseUrl);
-            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
-            GoToMenuFromHomePage("Customers");
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
-            Click(br.FindElement(By.CssSelector(".icon-back")));
-            wait.Until(d => d.FindElements(By.CssSelector(".menu")).Count == MainMenusCount);
-            Click(br.FindElement(By.CssSelector(".icon-forward")));
-            wait.Until(d => d.FindElements(By.CssSelector(".action")).Count == CustomerServiceActions);
+            GoToMenuFromHomePage("Orders");
+            Click(GetObjectAction("Random Order"));
+            WaitForView(Pane.Single, PaneType.Object);
+            var orderTitle = WaitForCss(".title").Text;
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
+            ClickForwardButton();
+            WaitForView(Pane.Single, PaneType.Object, orderTitle);
+            var link = GetReferenceFromProperty("Customer");
+            var cusTitle = link.Text;
+            Click(link);
+            WaitForView(Pane.Single, PaneType.Object, cusTitle);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Object, orderTitle);
+            ClickForwardButton();
+            WaitForView(Pane.Single, PaneType.Object, cusTitle);
+            
         }
         public virtual void Cicero()
         {

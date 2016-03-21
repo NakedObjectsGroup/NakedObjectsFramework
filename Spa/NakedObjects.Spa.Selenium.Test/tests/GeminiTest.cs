@@ -323,6 +323,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Right
         }
 
+        protected IWebElement GetReferenceFromProperty(string propertyName,  Pane pane = Pane.Single)
+        {
+            string propCss = CssSelectorFor(pane) + " " + ".property";
+            var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
+                    .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single()
+            );
+            return prop.FindElement(By.CssSelector(".reference"));
+        }
+
         protected IWebElement GetReferenceProperty(string propertyName, string refTitle, Pane pane = Pane.Single)
         {
             string propCss = CssSelectorFor(pane) + " " + ".property";
@@ -443,6 +452,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             string p = CssSelectorFor(pane);
             return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
+        }
+
+        protected void ClickBackButton()
+        {
+            Click(br.FindElement(By.CssSelector(".icon-back")));
+        }
+
+        protected void ClickForwardButton()
+        {
+            Click(br.FindElement(By.CssSelector(".icon-forward")));
         }
         #endregion
 
