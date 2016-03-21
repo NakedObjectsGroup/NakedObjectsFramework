@@ -272,6 +272,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //TODO: Check that actions are rendered e.g. Send
             //as individual buttons, and NO generic Save button
         }
+
+        public virtual void MultiLineText()
+        {
+            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-44440");
+            var ta = WaitForCss("textarea#comment1");
+            Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
+            ClearFieldThenType("#comment1", "line1" + Keys.Enter + "line2" + Keys.Enter + "line3");
+            Click(SaveButton());
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Comment:\r\nline1\r\nline2\r\nline3", properties[20].Text);
+        }
     }
     public abstract class ObjectEditTests : ObjectEditTestsRoot
     {
@@ -303,11 +316,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void ObjectEditPicksUpLatestServerVersion() { base.ObjectEditPicksUpLatestServerVersion(); }
+
         [TestMethod]
         public override void CoValidationOnSavingChanges() { base.CoValidationOnSavingChanges(); }
 
         [TestMethod]
         public override void ViewModelEditOpensInEditMode() { base.ViewModelEditOpensInEditMode(); }
+
+        [TestMethod]
+        public override void MultiLineText() { base.MultiLineText();  }
     }
 
     #region browsers specific subclasses
@@ -336,7 +353,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -408,6 +425,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ObjectEditPicksUpLatestServerVersion();
             base.CoValidationOnSavingChanges();
             base.ViewModelEditOpensInEditMode();
+            base.MultiLineText();
         }
     }
 

@@ -106,5 +106,39 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+
+        #region
+        //This method is to test use of nullable booleans
+        public IQueryable<Employee> ListEmployees(
+             bool? current, //mandatory
+            [Optionally]  bool? married, 
+            [DefaultValue(false)] bool? salaried,
+            [Optionally][DefaultValue(true)] bool?  olderThan50
+  )
+        {
+            var emps = Container.Instances<Employee>();
+            emps = emps.Where(e => e.Current == current.Value);
+            if (married != null)
+            {
+                string value = married.Value ? "M" : "S";
+                emps = emps.Where(e => e.MaritalStatus == value);
+            }
+            emps = emps.Where(e => e.Salaried == salaried.Value);
+            if (olderThan50 != null)
+            {
+                var date = DateTime.Today.AddYears(-50);  //Not an exact calculation!
+                if (olderThan50.Value)
+                {
+                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth < date);
+                } else
+                {
+                    emps = emps.Where(e => e.DateOfBirth != null && e.DateOfBirth > date);
+                }
+            }
+            return emps;
+        }
+        #endregion
+
     }
 }
