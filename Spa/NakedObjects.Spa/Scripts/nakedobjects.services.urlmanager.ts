@@ -25,7 +25,11 @@ module NakedObjects {
         setHome(paneId?: number): void;
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
+
         closeDialog(paneId?: number): void;
+
+        cancelDialog(paneId?: number): void;
+
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
         setList(action: ActionMember, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
@@ -329,12 +333,13 @@ module NakedObjects {
             ToMenu,
             ToDialog,
             FromDialog,
+            CancelDialog,
             ToObjectView,
             ToList,
             LeaveEdit,
             Page,
             ToTransient
-    }
+        }
 
         function getId(key: string, search: any) {
             return Decompress(search[key]);
@@ -371,8 +376,11 @@ module NakedObjects {
             case (Transition.ToMenu):
                 search = clearPane(search, paneId);
                 break;
-            case (Transition.ToDialog):
             case (Transition.FromDialog):
+                replace = false;
+                // fall through
+            case (Transition.ToDialog):
+            case (Transition.CancelDialog):
                 search = clearFieldKeys(search, paneId);                
                 break;
             case (Transition.ToObjectView):
@@ -441,10 +449,19 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
         };
 
-        helper.closeDialog = (paneId = 1) => {
+        function closeOrCancelDialog(paneId: number, transition: Transition) {
             const key = `${akm.dialog}${paneId}`;
             const newValues = _.zipObject([key], [null]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.FromDialog, () => true);
+            executeTransition(newValues, paneId, transition, () => true);
+        }
+
+
+        helper.closeDialog = (paneId = 1) => {
+            closeOrCancelDialog(paneId, Transition.FromDialog);
+        };
+
+        helper.cancelDialog = (paneId = 1) => {
+            closeOrCancelDialog(paneId, Transition.CancelDialog);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation,  paneId = 1) => {
