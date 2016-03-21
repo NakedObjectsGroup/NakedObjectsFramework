@@ -58,7 +58,7 @@
                         </div>
 
                         <div ng-switch-when="boolean">
-                            <input id="{{property.paneArgId}}" type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />
+                            <input id="{{property.paneArgId}}" type="checkbox" onclick="return false" ng-checked="property.value" disabled="disabled" />{{parameter.description}}
                         </div>
 
                         <div ng-switch-default>
