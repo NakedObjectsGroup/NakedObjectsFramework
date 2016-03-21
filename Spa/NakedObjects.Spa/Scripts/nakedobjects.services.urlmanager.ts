@@ -360,11 +360,11 @@ module NakedObjects {
 
         function handleTransition(paneId: number, search: any, transition: Transition) {
 
-            let mayReplace = true;
+            let replace = true;
 
             switch (transition) {
             case (Transition.ToHome):
-                mayReplace = setupPaneNumberAndTypes(paneId, homePath);
+                replace = setupPaneNumberAndTypes(paneId, homePath);
                 search = clearPane(search, paneId);
                 break;
             case (Transition.ToMenu):
@@ -372,16 +372,17 @@ module NakedObjects {
                 break;
             case (Transition.ToDialog):
             case (Transition.FromDialog):
-                search = clearFieldKeys(search, paneId);
+                replace = false;
+                search = clearFieldKeys(search, paneId);                
                 break;
             case (Transition.ToObjectView):
-                mayReplace =setupPaneNumberAndTypes(paneId, objectPath);
+                replace =setupPaneNumberAndTypes(paneId, objectPath);
                 search = clearPane(search, paneId);
                 setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                 break;
             case (Transition.ToList):
                 search = setFieldsToParms(paneId, search);
-                mayReplace = setupPaneNumberAndTypes(paneId, listPath);
+                replace = setupPaneNumberAndTypes(paneId, listPath);
                 clearId(akm.menu + paneId, search);
                 clearId(akm.object + paneId, search);
                 clearId(akm.dialog + paneId, search);
@@ -390,14 +391,14 @@ module NakedObjects {
                 search = clearSearchKeys(search, paneId, [akm.prop]);
                 break;
             case (Transition.Page):
-                mayReplace = false;
+                replace = false;
                 break;
             default:
                 // null transition 
                 break;
             }
 
-            if (mayReplace) {
+            if (replace) {
                 $location.replace();
             }
 
