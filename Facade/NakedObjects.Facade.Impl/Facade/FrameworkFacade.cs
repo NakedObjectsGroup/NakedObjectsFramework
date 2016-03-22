@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
@@ -409,8 +410,39 @@ namespace NakedObjects.Facade.Impl {
             };
         }
 
+        private IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) {
+            var actionImmutable = item as IMenuActionImmutable;
+            if (actionImmutable != null) {
+                return new[] { actionImmutable };
+            }
+
+            var menu = item as IMenuImmutable;
+
+            return menu != null ? menu.MenuItems.SelectMany(GetMenuActions).ToArray() : new IMenuActionImmutable[] { };
+        }
+
+        private bool IsVisible(IActionSpecImmutable specIm) {
+            var serviceSpec = specIm.OwnerSpec;
+            var objectSpec = framework.MetamodelManager.GetSpecification(serviceSpec);
+            var no = framework.ServicesManager.GetServices().SingleOrDefault(s => ReferenceEquals(s.Spec, objectSpec));
+            var actionSpec = framework.MetamodelManager.GetActionSpec(specIm);
+
+            return actionSpec.IsVisible(no);
+        }
+
+
+        private bool HasVisibleAction(IMenuImmutable menu) {
+            return menu.MenuItems.SelectMany(GetMenuActions).Any(a => IsVisible(a.Action));
+        }
+
+
+        private IMenuImmutable[] GetMenusWithVisibleActions(IMetamodelManager metamodelManager) {
+            var menus = framework.MetamodelManager.MainMenus();
+            return menus?.Where(HasVisibleAction).ToArray();
+        }
+
         private MenuContext GetMenusInternal() {
-            var menus = framework.MetamodelManager.MainMenus() ?? framework.ServicesManager.GetServices().Select(s => s.GetServiceSpec().Menu);
+            var menus = GetMenusWithVisibleActions(framework.MetamodelManager) ?? framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).Select(s => s.GetServiceSpec().Menu);
             var elementType = (IObjectSpec)framework.MetamodelManager.GetSpecification(typeof(object));
 
             return new MenuContext {
