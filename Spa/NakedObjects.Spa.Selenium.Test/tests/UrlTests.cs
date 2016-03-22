@@ -111,7 +111,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         public virtual void ListZeroParameterAction()
         {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
-            //todo: test that title is correct
             Reload(Pane.Single);
             wait.Until(d => d.FindElement(By.CssSelector(".list")));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");

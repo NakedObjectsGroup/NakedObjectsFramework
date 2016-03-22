@@ -56,7 +56,8 @@ namespace NakedObjects.Rest.App.Demo {
                     typeof (WorkOrderRepository),
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
-                    typeof (SpecialOfferContributedActions)
+                    typeof (SpecialOfferContributedActions),
+                    typeof (ServiceWithNoVisibleActions)
                 };
             }
         }
@@ -98,7 +99,7 @@ namespace NakedObjects.Rest.App.Demo {
                     factory.NewMenu<VendorRepository>(true),
                     factory.NewMenu<PurchaseOrderRepository>(true),
                     factory.NewMenu<WorkOrderRepository>(true),
-                    factory.NewMenu<object>(false, "Empty")
+                    factory.NewMenu<ServiceWithNoVisibleActions>(true, "Empty")
             };
         }
     }
