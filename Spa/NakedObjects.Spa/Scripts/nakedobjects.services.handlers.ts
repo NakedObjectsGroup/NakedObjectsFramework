@@ -23,6 +23,7 @@ module NakedObjects {
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHome($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
     app.service("handlers", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
@@ -192,6 +193,10 @@ module NakedObjects {
                 getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
                 focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
             }
+        };
+
+        handlers.handleRecent = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+           //TODO:
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {

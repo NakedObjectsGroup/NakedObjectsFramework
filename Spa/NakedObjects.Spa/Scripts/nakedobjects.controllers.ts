@@ -37,6 +37,16 @@ module NakedObjects {
         handlers.handleList($scope, routeData.pane2);
     });
 
+    app.controller("Pane1RecentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        const routeData = urlManager.getRouteData();
+        handlers.handleRecent($scope, routeData.pane1);
+    });
+
+    app.controller("Pane2RecentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        const routeData = urlManager.getRouteData();
+        handlers.handleRecent($scope, routeData.pane2);
+    });
+
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
         handlers.handleBackground($scope);
     });

@@ -890,6 +890,7 @@ module NakedObjects {
         goForward: () => void;
         swapPanes: () => void;
         singlePane: (right?: boolean) => void;
+        recent: (right?: boolean) => void;
         cicero: () => void;
 
         warnings: string[];
