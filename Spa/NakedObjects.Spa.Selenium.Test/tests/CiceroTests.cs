@@ -1372,7 +1372,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
 
             base.Action();
-            base.BackAndForward();
+           // base.BackAndForward(); TODO: pending review of back & forward in Cicero
             base.Cancel();
             base.Clipboard();
             base.Edit();
