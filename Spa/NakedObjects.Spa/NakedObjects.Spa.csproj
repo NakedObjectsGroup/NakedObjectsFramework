@@ -40,9 +40,13 @@
     <Content Include="Content\partials\objectView.html" />
     <Content Include="Content\partials\ListAsTable.html" />
     <Content Include="Content\partials\List.html" />
+    <Content Include="Content\partials\recent.html" />
     <Content Include="Content\partials\singleHome.html" />
     <Content Include="Content\partials\singleList.html" />
+    <Content Include="Content\partials\singleRecent.html" />
     <Content Include="Content\partials\splitHomeList.html" />
+    <Content Include="Content\partials\splitHomeRecent.html" />
+    <Content Include="Content\partials\splitListRecent.html" />
     <Content Include="Content\partials\splitObjectList.html" />
     <Content Include="Content\partials\splitListHome.html" />
     <Content Include="Content\partials\splitListObject.html" />
@@ -53,6 +57,11 @@
     <Content Include="Content\partials\singleObject.html" />
     <Content Include="Content\partials\collections.html" />
     <Content Include="Content\gemini.css" />
+    <Content Include="Content\partials\splitObjectRecent.html" />
+    <Content Include="Content\partials\splitRecentHome.html" />
+    <Content Include="Content\partials\splitRecentList.html" />
+    <Content Include="Content\partials\splitRecentObject.html" />
+    <Content Include="Content\partials\splitRecentRecent.html" />
     <Content Include="images\calendar.png" />
     <Content Include="images\list.png" />
     <Content Include="images\summary.png" />

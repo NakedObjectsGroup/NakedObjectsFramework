@@ -909,6 +909,7 @@ module NakedObjects {
         error: ErrorViewModel;
         errorTemplate: string;
         listTemplate: string;
+        recentTemplate: string;
         collection: ListViewModel;
         collectionPlaceholder: CollectionPlaceholderViewModel;
 
