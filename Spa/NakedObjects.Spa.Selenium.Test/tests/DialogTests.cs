@@ -328,11 +328,28 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var salaried = WaitForCss("#salaried1");
             var older = WaitForCss("#olderthan501");
 
-            //TODO
-            //Assert.AreEqual("(null)", current.GetAttribute("checked"));
-            //Assert.AreEqual("(null)", married.GetAttribute("checked"));
-            //Assert.AreEqual("false", salaried.GetAttribute("checked"));
-            //Assert.AreEqual("true", older.GetAttribute("checked"));
+            //The following is a VERY limited form of testing, because the tri-state checkbox does
+            //not show up as Html -  it is managed by the JavaScript
+            Assert.IsNull(current.GetAttribute("checked"));
+            Assert.IsNull(married.GetAttribute("checked"));
+            Assert.IsNull(salaried.GetAttribute("checked")); //This should really be 'false' but doesn't show up to Html that way
+            Assert.AreEqual("true", older.GetAttribute("checked"));
+
+            //Check that last one is tri-state  -  three clicks to get back to checked
+            Click(older);
+            Assert.IsNull(older.GetAttribute("checked"));
+            Click(older);
+            Assert.IsNull(older.GetAttribute("checked"));
+            Click(older);
+            Assert.AreEqual("true", older.GetAttribute("checked"));
+
+            //But the top one is bi-state because it is mandatory
+            Click(current);
+            Assert.AreEqual("true", current.GetAttribute("checked"));
+            Click(current);
+            Assert.IsNull(current.GetAttribute("checked"));
+            Click(current);
+            Assert.AreEqual("true", current.GetAttribute("checked"));
         }
     }
     public abstract class DialogTests : DialogTestsRoot
@@ -423,7 +440,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
