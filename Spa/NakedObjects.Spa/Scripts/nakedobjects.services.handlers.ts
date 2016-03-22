@@ -55,18 +55,6 @@ module NakedObjects {
         }
 
 
-        function cacheRecentlyViewed(object: DomainObjectRepresentation) {
-            const cache = $cacheFactory.get("recentlyViewed");
-
-            if (cache && object && !object.persistLink()) {
-                const key = object.domainType();
-                const subKey = object.selfLink().href();
-                const dict = cache.get(key) || {};
-                dict[subKey] = { value: new Value(object.selfLink()), name: object.title() };
-                cache.put(key, dict);
-            }
-        }
-
         class DeReg {
 
             private deRegers: (() => void)[];
@@ -199,6 +187,10 @@ module NakedObjects {
             context.clearWarnings();
             context.clearMessages();
             $scope.recentTemplate = recentTemplate;
+
+            $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
+
+
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
@@ -250,9 +242,6 @@ module NakedObjects {
                     }
 
                     $scope.collectionsTemplate = collectionsTemplate;
-
-                    // cache
-                    cacheRecentlyViewed(object);
 
                     let focusTarget: FocusTarget;
 

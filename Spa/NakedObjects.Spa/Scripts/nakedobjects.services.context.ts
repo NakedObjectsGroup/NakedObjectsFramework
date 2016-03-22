@@ -78,6 +78,9 @@ module NakedObjects {
             onReload: (updatedObject: DomainObjectRepresentation) => void,
             displayMessages: (em: ErrorMap) => void,
             customClientHandler?: (ec: ClientErrorCode) => boolean): void;
+
+        getRecentlyViewed() : DomainObjectRepresentation[];
+
     }
 
     interface IContextInternal extends IContext {
@@ -217,6 +220,7 @@ module NakedObjects {
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
                     dirtyCache.clearDirty(type, id);
+                    addRecentlyViewed(obj);
                     return $q.when(obj);
                 });
         };
@@ -228,6 +232,7 @@ module NakedObjects {
                     return $q.when(obj);
                 });
         };
+
         context.getService = (paneId: number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 
             if (isSameObject(currentObjects[paneId], serviceType)) {
@@ -482,6 +487,8 @@ module NakedObjects {
                         if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
                             urlManager.setInteractionMode(InteractionMode.Form, paneId);
+                        } else {
+                            addRecentlyViewed(resultObject);
                         }
                     }
                 } else if (result.resultType() === "list") {
@@ -685,6 +692,33 @@ module NakedObjects {
                 break;
             }
         };
+
+
+        function cacheRecentlyViewed(object: DomainObjectRepresentation) {
+            const cache = $cacheFactory.get("recentlyViewed");
+
+            if (cache && object && !object.persistLink()) {
+                const key = object.domainType();
+                const subKey = object.selfLink().href();
+                const dict = cache.get(key) || {};
+                dict[subKey] = { value: new Value(object.selfLink()), name: object.title() };
+                cache.put(key, dict);
+            }
+        }
+
+
+        // naive impl
+
+        const recentlyViewed : DomainObjectRepresentation[] = [];
+
+        function addRecentlyViewed(obj: DomainObjectRepresentation) {
+            recentlyViewed.push(obj);
+        }
+
+        context.getRecentlyViewed = () => {
+            return recentlyViewed;
+        }
+
     });
 
 }

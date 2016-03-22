@@ -897,6 +897,11 @@ module NakedObjects {
         messages: string[];
     }
 
+    export class RecentItemsViewModel {
+        onPaneId: number;
+        items: ItemViewModel[]; 
+    }
+
     export interface INakedObjectsScope extends ng.IScope {
         backgroundColor: string;
         menus: MenusViewModel;
@@ -907,6 +912,7 @@ module NakedObjects {
         dialogTemplate: string;
         dialog: DialogViewModel;
         error: ErrorViewModel;
+        recent : RecentItemsViewModel;
         errorTemplate: string;
         listTemplate: string;
         recentTemplate: string;

@@ -54,6 +54,7 @@ module NakedObjects {
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) : void;
         getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel) : ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
+        recentItemsViewModel(paneId : number) : RecentItemsViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
@@ -643,6 +644,16 @@ module NakedObjects {
 
             return menuViewModel;
         };
+
+        viewModelFactory.recentItemsViewModel = (paneId : number) => {
+            const recentItemsViewModel = new RecentItemsViewModel();
+            recentItemsViewModel.onPaneId = paneId;
+
+            const links = _.map(context.getRecentlyViewed(), o => o.selfLink());
+
+            recentItemsViewModel.items = _.map(links, l => viewModelFactory.itemViewModel(l, paneId, false));
+            return recentItemsViewModel;
+        }
 
 
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
