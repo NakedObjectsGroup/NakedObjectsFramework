@@ -683,6 +683,12 @@ module NakedObjects {
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
+
+                tvm.recent = (right?: boolean) => {
+                    focusManager.focusOverrideOff();
+                    urlManager.setRecent(clickHandler.pane(1, right));
+                };
+
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 

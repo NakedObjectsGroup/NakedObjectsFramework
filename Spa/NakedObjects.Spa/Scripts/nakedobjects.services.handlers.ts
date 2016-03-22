@@ -196,7 +196,9 @@ module NakedObjects {
         };
 
         handlers.handleRecent = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-           //TODO:
+            context.clearWarnings();
+            context.clearMessages();
+            $scope.recentTemplate = recentTemplate;
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {

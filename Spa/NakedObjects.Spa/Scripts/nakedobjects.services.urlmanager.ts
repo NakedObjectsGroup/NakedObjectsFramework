@@ -22,6 +22,8 @@ module NakedObjects {
     export interface IUrlManager {
         getRouteData(): RouteData;
         setError(errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode): void;
+
+        setRecent(paneId?: number): void;
         setHome(paneId?: number): void;
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
@@ -338,7 +340,8 @@ module NakedObjects {
             ToList,
             LeaveEdit,
             Page,
-            ToTransient
+            ToTransient,
+            ToRecent
         }
 
         function getId(key: string, search: any) {
@@ -405,6 +408,10 @@ module NakedObjects {
             case (Transition.ToTransient):
                 replace = false;
                 break;
+            case (Transition.ToRecent):
+                replace = setupPaneNumberAndTypes(paneId, recentPath);
+                search = clearPane(search, paneId);
+                break;
             default:
                 // null transition 
                 break;
@@ -437,6 +444,11 @@ module NakedObjects {
         helper.setHome = (paneId = 1) => {
             executeTransition({}, paneId, Transition.ToHome, () => true);
         };
+
+        helper.setRecent = (paneId = 1) => {
+            executeTransition({}, paneId, Transition.ToRecent, () => true);
+        };
+
         helper.setMenu = (menuId: string, paneId = 1) => {
             const key = `${akm.menu}${paneId}`;
             const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
