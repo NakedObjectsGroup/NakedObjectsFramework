@@ -238,6 +238,7 @@
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOfferRepository.cs" />
     <Compile Include="Sales\Store.cs" />
+    <Compile Include="Sales\StoreSalesInfo.cs" />
     <Compile Include="Utilities.cs">
       <SubType>Code</SubType>
     </Compile>

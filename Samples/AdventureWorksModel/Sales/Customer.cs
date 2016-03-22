@@ -122,5 +122,20 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #region Action to test switchable view model
+        public StoreSalesInfo ReviewSalesResponsibility()
+        {
+            var ssi = Container.NewViewModel<StoreSalesInfo>();
+            ssi.PopulateUsingKeys(new string[] { AccountNumber, false.ToString() });
+            return ssi;
+        }
+
+
+        public bool HideReviewSalesResponsibility()
+        {
+            return !this.IsStore();
+        }
+
+        #endregion
     }
 }
