@@ -6,7 +6,6 @@ module NakedObjects {
 
     app.run((color: IColor) => {
         color.addType("AdventureWorksModel.CustomerRepository", 17);
-        color.addType("AdventureWorksModel.Store", 6);
         color.addType("AdventureWorksModel.Individual", 6);
         color.addType("AdventureWorksModel.OrderRepository", 3);
         color.addType("AdventureWorksModel.SalesOrderHeader", 5);
@@ -40,6 +39,8 @@ module NakedObjects {
         const matchBusiness = /AdventureWorksModel.Business*/;
 
         color.addMatch(matchBusiness, 8);
+
+        color.addSubtype("AdventureWorksModel.BusinessEntity", 6);
 
         color.setDefault(18);
     });

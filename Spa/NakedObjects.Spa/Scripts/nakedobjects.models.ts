@@ -1816,7 +1816,7 @@ module NakedObjects.Models {
             super();
             this.hateoasUrl = `${appPath}/domain-types/${againstType}/type-actions/isSubtypeOf/invoke`;
             this.urlParms = {};
-            this.urlParms["supertype"] = toCheckType;
+            this.urlParms["supertype"] = againstType;
         }
 
         selfLink(): Link {
