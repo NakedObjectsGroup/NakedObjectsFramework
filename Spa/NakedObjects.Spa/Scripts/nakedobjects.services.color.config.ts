@@ -4,11 +4,33 @@
 
 module NakedObjects {
 
+    const enum Colors {
+        Blue,
+        BlueLight,
+        BlueDark,
+        Green,
+        GreenLight,
+        GreenDark,
+        Red,
+        Yellow,
+        Orange1,
+        Orange2,
+        OrangeDark,
+        Pink,
+        PinkDark,
+        Purple,
+        GrayDark,
+        Magenta,
+        Teal,
+        RedLight,
+        DarkBlue
+    };
+
+
     app.run((color: IColor) => {
         color.addType("AdventureWorksModel.CustomerRepository", 17);
         color.addType("AdventureWorksModel.Individual", 6);
         color.addType("AdventureWorksModel.OrderRepository", 3);
-        color.addType("AdventureWorksModel.SalesOrderHeader", 5);
         color.addType("AdventureWorksModel.SalesOrderDetail", 3);
         color.addType("AdventureWorksModel.ProductRepository", 8);
         color.addType("AdventureWorksModel.Product", 10);
@@ -40,12 +62,12 @@ module NakedObjects {
 
         color.addMatch(matchBusiness, 8);
 
+        // matches Person and Store 
         color.addSubtype("AdventureWorksModel.BusinessEntity", 6);
+
+        // matches SalesOrderHeader
+        color.addSubtype("AdventureWorksModel.ICreditCardCreator", 5);
 
         color.setDefault(18);
     });
-
-
-
-
 }
