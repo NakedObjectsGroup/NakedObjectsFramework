@@ -5,62 +5,46 @@
 module NakedObjects {
 
     app.run((color: IColor) => {
+        color.addType("AdventureWorksModel.CustomerRepository", 17);
+        color.addType("AdventureWorksModel.Store", 6);
+        color.addType("AdventureWorksModel.Individual", 6);
+        color.addType("AdventureWorksModel.OrderRepository", 3);
+        color.addType("AdventureWorksModel.SalesOrderHeader", 5);
+        color.addType("AdventureWorksModel.SalesOrderDetail", 3);
+        color.addType("AdventureWorksModel.ProductRepository", 8);
+        color.addType("AdventureWorksModel.Product", 10);
+        color.addType("AdventureWorksModel.ProductInventory", 8);
+        color.addType("AdventureWorksModel.ProductReview", 8);
+        color.addType("AdventureWorksModel.ProductModel", 7);
+        color.addType("AdventureWorksModel.ProductCategory", 17);
+        color.addType("AdventureWorksModel.ProductSubCategory", 6);
+        color.addType("AdventureWorksModel.EmployeeRepository", 0);
+        color.addType("AdventureWorksModel.Employee", 2);
+        color.addType("AdventureWorksModel.EmployeePayHistory", 0);
+        color.addType("AdventureWorksModel.EmployeeDepartmentHistory",0);
+        color.addType("AdventureWorksModel.SalesRepository", 13);
+        color.addType("AdventureWorksModel.SalesPerson", 13);
+        color.addType("AdventureWorksModel.SpecialOfferRepository", 11);
+        color.addType("AdventureWorksModel.SpecialOffer", 12);
+        color.addType("AdventureWorksModel.ContactRepository",16);
+        color.addType("AdventureWorksModel.Contact", 16);
+        color.addType("AdventureWorksModel.VendorRepository", 5);
+        color.addType("AdventureWorksModel.Vendor", 5);
+        color.addType("AdventureWorksModel.PurchaseOrderRepository",14);
+        color.addType("AdventureWorksModel.PurchaseOrder", 14);
+        color.addType("AdventureWorksModel.WorkOrderRepository", 10);
+        color.addType("AdventureWorksModel.WorkOrder", 10);
+        color.addType("AdventureWorksModel.OrderContributedActions", 18);
+        color.addType("AdventureWorksModel.CustomerContributedActions", 18);
 
-        color.setColorMap({
-            "AdventureWorksModel.CustomerRepository": "redLight",
-            "AdventureWorksModel.Store": "red",
-            "AdventureWorksModel.Individual": "red",
-            "AdventureWorksModel.OrderRepository": "green",
-            "AdventureWorksModel.SalesOrderHeader": "greenDark",
-            "AdventureWorksModel.SalesOrderDetail": "green",
-            "AdventureWorksModel.ProductRepository": "orange",
-            "AdventureWorksModel.Product": "orangeDark",
-            "AdventureWorksModel.ProductInventory": "orange",
-            "AdventureWorksModel.ProductReview": "orange",
-            "AdventureWorksModel.ProductModel": "yellow",
-            "AdventureWorksModel.ProductCategory": "redLight",
-            "AdventureWorksModel.ProductSubCategory": "red",
-            "AdventureWorksModel.EmployeeRepository": "blue",
-            "AdventureWorksModel.Employee": "blueDark",
-            "AdventureWorksModel.EmployeePayHistory": "blue",
-            "AdventureWorksModel.EmployeeDepartmentHistory": "blue",
-            "AdventureWorksModel.SalesRepository": "purple",
-            "AdventureWorksModel.SalesPerson": "purple",
-            "AdventureWorksModel.SpecialOfferRepository": "pink",
-            "AdventureWorksModel.SpecialOffer": "pinkDark",
-            "AdventureWorksModel.ContactRepository": "teal",
-            "AdventureWorksModel.Contact": "teal",
-            "AdventureWorksModel.VendorRepository": "greenDark",
-            "AdventureWorksModel.Vendor": "greenDark",
-            "AdventureWorksModel.PurchaseOrderRepository": "grayDark",
-            "AdventureWorksModel.PurchaseOrder": "grayDark",
-            "AdventureWorksModel.WorkOrderRepository": "orangeDark",
-            "AdventureWorksModel.WorkOrder": "orangeDark",
-            "AdventureWorksModel.OrderContributedActions": "darkBlue",
-            "AdventureWorksModel.CustomerContributedActions": "darkBlue"
-        });
+        const matchBusiness = /AdventureWorksModel.Business*/;
 
-        color.setDefaultColorArray([
-            "blue", //0
-            "blueLight", //1
-            "blueDark", //2
-            "green", //3
-            "greenLight", //4
-            "greenDark", //5
-            "red", //6
-            "yellow", //7
-            "orange", //8
-            "orange", //9
-            "orangeDark", //10
-            "pink", //11
-            "pinkDark", //12
-            "purple", //13
-            "grayDark", //14
-            "magenta", //15
-            "teal", //16
-            "redLight" //17
-        ]);
+        color.addMatch(matchBusiness, 8);
 
-        color.setDefaultColor("darkBlue");
+        color.setDefault(18);
     });
+
+
+
+
 }

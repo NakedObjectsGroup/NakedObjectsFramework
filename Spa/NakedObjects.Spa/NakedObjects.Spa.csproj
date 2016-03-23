@@ -115,9 +115,9 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.config.ts" />
-    <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.representationloader.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.cicerorenderer.ts" />

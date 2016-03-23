@@ -99,7 +99,11 @@ module NakedObjects {
 
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
-            linkViewModel.color = color.toColorFromHref(linkRep.href());
+
+            color.toColorFromHref(linkRep.href()).then((c: string) => {
+                linkViewModel.color = c;
+            });
+
             linkViewModel.link = linkRep;
 
             linkViewModel.domainType = linkRep.type().domainType;
@@ -275,7 +279,14 @@ module NakedObjects {
                 // formatting also happens in in directive - at least for dates - value is now date in that case
                 parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
-            parmViewModel.color = parmViewModel.value ? color.toColorFromType(parmViewModel.returnType) : "";
+
+            if (parmViewModel.value) {
+                color.toColorFromType(parmViewModel.returnType).then((c: string) => {
+                    parmViewModel.color = c;
+                });
+            } else {
+                parmViewModel.color = "";
+            }
 
             return parmViewModel;
         };
@@ -430,7 +441,15 @@ module NakedObjects {
             }
 
             // only set color if has value 
-            propertyViewModel.color = propertyViewModel.value ? color.toColorFromType(propertyRep.extensions().returnType()) : "";
+
+            if (propertyViewModel.value) {
+                color.toColorFromType(propertyRep.extensions().returnType()).then((c: string) => {
+                    propertyViewModel.color = c;
+                });
+            } else {
+                propertyViewModel.color = "";
+            }
+
 
             propertyViewModel.id = id;
             propertyViewModel.argId = `${id.toLowerCase()}`;
@@ -566,7 +585,10 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-            collectionViewModel.color = color.toColorFromType(collectionRep.extensions().elementType());
+
+            color.toColorFromType(collectionRep.extensions().elementType()).then((c: string) => {
+                collectionViewModel.color = c;
+            });
 
             collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
 
@@ -628,7 +650,10 @@ module NakedObjects {
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
             serviceViewModel.actionsMap = createActionMenuMap(serviceViewModel.actions);
-            serviceViewModel.color = color.toColorFromType(serviceRep.serviceId());
+
+            color.toColorFromType(serviceRep.serviceId()).then((c: string) => {
+                serviceViewModel.color = c;
+            });
 
             return serviceViewModel;
         };

@@ -4,49 +4,32 @@
 
 module NakedObjects {
 
-    export interface IColorMap {
-        [index: string]: string;
-    }
-
+ 
     export interface IColor {
-        toColorFromHref(href: string): string;
-        toColorFromType(type: string): string;
-        setColorMap(map: IColorMap): void;
-        setDefaultColorArray(colors: string[]): void;
-        setDefaultColor(dfltColor: string): void;
+
+        // these here for backward compat
+        toColorFromHref(href: string): ng.IPromise<string>;
+        toColorFromType(type: string): ng.IPromise<string>;
+
+
+        toColorNumberFromHref(href: string): ng.IPromise<number>;
+        toColorNumberFromType(type: string): ng.IPromise<number>;
+
+        addType(type: string, color: number): void;
+        addMatch(matcher: RegExp, color: number): void;
+        addSubtype(type: string, color: number): void;
+
+        setDefault(def: number): void;
     }
 
-    app.service("color", function() {
-        const color = <IColor>this;
-        let colorMap: IColorMap = {};
+    app.service("color", function(context: IContext, $q: ng.IQService) {
+        const colorService = <IColor>this;
 
-        // array of colors for allocated colors by default
-        let defaultColorArray: string[] = [];
+        const colorCache: _.Dictionary<number> = {};
+        const regexCache: { regex: RegExp, color: number } [] = [];
+        const subtypeCache: { type: string, color: number }[] = [];
 
-        let defaultColor = "darkBlue";
-        const colorPrefix = "bg-color-";
-
-        function hashCode(toHash : any) {
-            let hash = 0, i: number, chr: number;
-            if (toHash.length === 0) return hash;
-            for (i = 0; i < toHash.length; i++) {
-                chr = toHash.charCodeAt(i);
-                hash = ((hash << 5) - hash) + chr;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash;
-        };
-
-        function getColorMapValues(dt: string) {
-            let clr = dt ? colorMap[dt] : defaultColor;
-            if (!clr) {
-                const hash = Math.abs(hashCode(dt));
-                const index = hash % 18;
-                clr = defaultColorArray[index];
-                colorMap[dt] = clr;
-            }
-            return clr;
-        }
+        let defaultColor = 0;
 
         function typeFromUrl(url: string): string {
             const typeRegex = /(objects|services)\/([\w|\.]+)/;
@@ -54,21 +37,126 @@ module NakedObjects {
             return (results && results.length > 2) ? results[2] : "";
         }
 
-        color.setColorMap = (map: IColorMap) => {
-            colorMap = map;
-        };
-        color.setDefaultColorArray = (colors: string[]) => {
-            defaultColorArray = colors;
-        };
-        color.setDefaultColor = (dfltColor: string) => {
-            defaultColor = dfltColor;
+        function isSubtypeOf(subtype: string, index: number, count: number): ng.IPromise<number> {
+
+            if (index >= count) {
+                return $q.reject();
+            }
+
+            const entry = subtypeCache[index];
+
+            return context.isSubTypeOf(subtype, entry.type).then((b: boolean) => {
+                if (b) {
+                    return $q.when(entry.color);
+                }
+                return isSubtypeOf(subtype, index + 1, count);
+            });
+        }
+
+        function cacheAndReturn(type: string, color: number) {
+            colorCache[type] = color;
+            return $q.when(color);
+        }
+
+        function isSubtype(subtype: string): angular.IPromise<any> {
+
+            const subtypeChecks = subtypeCache.length;
+
+            if (subtypeChecks > 0) {
+                return isSubtypeOf(subtype, 0, subtypeChecks).
+                    then((c: number) => {
+                        return cacheAndReturn(subtype, c);
+                    }).
+                    catch(() => {
+                        return cacheAndReturn(subtype, defaultColor);
+                    });
+            }
+
+            return cacheAndReturn(subtype, defaultColor);
+        }
+
+
+        function getColor(type: string) {
+            // 1 cache 
+            // 2 match regex 
+            // 3 match subtype 
+
+            // this is potentially expensive - need to filter out non ref types ASAP
+       
+            if (!type || type === "string" || type === "number" || type === "boolean") {
+                return $q.when(defaultColor);
+            }
+
+            const cachedEntry = colorCache[type];
+
+            if (cachedEntry) {
+                return $q.when(cachedEntry);
+            }
+
+            for (const entry of regexCache) {
+                if (entry.regex.test(type)) {
+                    return cacheAndReturn(type, entry.color);
+                }
+            }
+
+            return isSubtype(type);
+        }
+
+
+        colorService.toColorNumberFromHref = (href: string) => {
+            const type = typeFromUrl(href);
+            return colorService.toColorNumberFromType(type);
         };
 
-        // tested
-        color.toColorFromHref = (href: string): string => {
+        colorService.toColorNumberFromType = (type: string) => getColor(type);
+
+        colorService.addType = (type: string, color: number) => {
+            colorCache[type] = color;
+        }
+
+        colorService.addMatch = (matcher: RegExp, color: number) => {
+            regexCache.push({ regex: matcher, color: color });
+        }
+
+        colorService.addSubtype = (type: string, color: number) => {
+            subtypeCache.push({ type: type, color: color });
+        }
+
+        colorService.setDefault = (def: number) => {
+            defaultColor = def;
+        }
+
+        // for backward compat 
+        const colorPrefix = "bg-color-";
+        const numColorMap = [
+            "blue",
+            "blueLight",
+            "blueDark",
+            "green",
+            "greenLight",
+            "greenDark",
+            "red",
+            "yellow",
+            "orange",
+            "orange",
+            "orangeDark",
+            "pink",
+            "pinkDark",
+            "purple",
+            "grayDark",
+            "magenta",
+            "teal",
+            "redLight",
+            "darkBlue"
+        ];
+        colorService.toColorFromHref = (href: string) => {
             const type = typeFromUrl(href);
-            return `${colorPrefix}${getColorMapValues(type)}`;
+            return colorService.toColorFromType(type);
         };
-        color.toColorFromType = (type: string): string => `${colorPrefix}${getColorMapValues(type)}`;
+        colorService.toColorFromType = (type: string) => {
+            return colorService.toColorNumberFromType(type).then((num: number) => {
+                return $q.when(colorPrefix + numColorMap[num]);
+            });
+        };
     });
 }

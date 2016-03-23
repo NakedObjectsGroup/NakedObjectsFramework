@@ -743,7 +743,11 @@ module NakedObjects {
             this.value = sav ? sav.toString() : "";
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
-            this.color = this.colorService.toColorFromType(this.domainObject.domainType());
+
+            this.colorService.toColorFromType(this.domainObject.domainType()).then((c: string) => {
+                this.color = c;
+            });
+
             this.message = "";
 
             if (routeData.interactionMode === InteractionMode.Form) {

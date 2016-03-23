@@ -90,7 +90,9 @@ module NakedObjects {
 
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
-            $scope.backgroundColor = color.toColorFromHref($location.absUrl());
+            color.toColorFromHref($location.absUrl()).then((c: string) => {
+                $scope.backgroundColor = c;
+            });
 
             navigation.push();
 
@@ -219,7 +221,10 @@ module NakedObjects {
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
-            $scope.backgroundColor = color.toColorFromType(dt);
+
+            color.toColorFromType(dt).then((c: string) => {
+                $scope.backgroundColor = c;
+            });
 
             deRegObject[routeData.paneId].deReg();
 
