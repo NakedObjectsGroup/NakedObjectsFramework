@@ -158,7 +158,6 @@ module NakedObjects.Test {
                 const objectViewModel = ts.object as DomainObjectViewModel;
                 expect(objectViewModel.properties.length).toBe(7);
                 expect(testEventSpy).toHaveBeenCalled();
-                expect(cacheFactory.get("recentlyViewed").get("AdventureWorksModel.Vendor")[objectViewModel.domainObject.selfLink().href()].name).toBe(objectViewModel.domainObject.title());
             }
 
             function verifyObjectViewPageState(ts: INakedObjectsScope) {
