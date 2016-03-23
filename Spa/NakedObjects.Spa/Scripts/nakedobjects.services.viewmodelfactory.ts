@@ -645,11 +645,17 @@ module NakedObjects {
             return menuViewModel;
         };
 
+        function selfLinkWithTitle(o: DomainObjectRepresentation) {
+            const link = o.selfLink();
+            link.setTitle(o.title());
+            return link;
+        }
+
         viewModelFactory.recentItemsViewModel = (paneId : number) => {
             const recentItemsViewModel = new RecentItemsViewModel();
             recentItemsViewModel.onPaneId = paneId;
 
-            const links = _.map(context.getRecentlyViewed(), o => o.selfLink());
+            const links = _.map(context.getRecentlyViewed(), o => selfLinkWithTitle(o));
 
             recentItemsViewModel.items = _.map(links, l => viewModelFactory.itemViewModel(l, paneId, false));
             return recentItemsViewModel;
