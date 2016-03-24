@@ -21,10 +21,10 @@
 
                 <div class="name">{{property.title}}:</div>
 
-                <div ng-switch-when="ref" ng-switch="property.value">
+                <div ng-switch-when="ref" ng-switch="property.formattedValue">
                     <div ng-switch-when=""></div> <!--So that empty reference field is not tabbed onto-->
                     <div ng-switch-default class="reference clickable-area" ng-class="property.color" ng-click="property.doClick()" gemini-rightclick="property.doClick(true)" gemini-drag gemini-enter="property.doClick()" tabindex="0">
-                        {{property.value}}
+                        {{property.formattedValue}}
                     </div>
                 </div>
 

@@ -518,6 +518,11 @@ module NakedObjects {
                 } else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
+            } else if (value.isNull()) { 
+                // ie null reference 
+                propertyViewModel.formattedValue = "";
+            } else {
+                propertyViewModel.formattedValue = value.toString();
             }
 
             if (!previousValue) {
