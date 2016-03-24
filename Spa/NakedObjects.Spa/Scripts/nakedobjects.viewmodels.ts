@@ -167,6 +167,10 @@ module NakedObjects {
         checkboxChange: (index: number) => void;
     }
 
+    export class RecentItemViewModel extends ItemViewModel {
+        friendlyName : string;
+    }
+
     export class MessageViewModel {
 
         message: string;
@@ -903,7 +907,7 @@ module NakedObjects {
 
     export class RecentItemsViewModel {
         onPaneId: number;
-        items: ItemViewModel[]; 
+        items: RecentItemViewModel[]; 
     }
 
     export interface INakedObjectsScope extends ng.IScope {

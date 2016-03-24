@@ -59,6 +59,7 @@ module NakedObjects {
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
+        recentItemViewModel(obj: DomainObjectRepresentation,  linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -152,6 +153,12 @@ module NakedObjects {
             };
             return itemViewModel;
         };
+
+        viewModelFactory.recentItemViewModel = (obj : DomainObjectRepresentation,  linkRep: Link, paneId: number, selected: boolean) => {
+            const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as RecentItemViewModel;
+            recentItemViewModel.friendlyName = obj.extensions().friendlyName();
+            return recentItemViewModel;
+        }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             const parmViewModel = new ParameterViewModel();
@@ -676,13 +683,11 @@ module NakedObjects {
             return link;
         }
 
-        viewModelFactory.recentItemsViewModel = (paneId : number) => {
+        viewModelFactory.recentItemsViewModel = (paneId: number) => {
             const recentItemsViewModel = new RecentItemsViewModel();
             recentItemsViewModel.onPaneId = paneId;
-
-            const links = _.map(context.getRecentlyViewed(), o => selfLinkWithTitle(o));
-
-            recentItemsViewModel.items = _.map(links, l => viewModelFactory.itemViewModel(l, paneId, false));
+            const items = _.map(context.getRecentlyViewed(), o => ({ obj: o, link: selfLinkWithTitle(o) }));
+            recentItemsViewModel.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link, paneId, false));
             return recentItemsViewModel;
         }
 
