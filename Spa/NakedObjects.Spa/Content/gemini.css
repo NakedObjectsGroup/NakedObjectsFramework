@@ -448,7 +448,7 @@ th, td {
     background-color: #a90d37;
 }
 .object-color4 {
-    background-color: #e3a21a; //Yellow ochre
+    background-color: #e3a21a; /*Yellow ochre*/
 }
 .link-color4 {
     background-color: #d3920a;

@@ -532,6 +532,7 @@ module NakedObjects {
             // only add field if matching dialog or dialog (to catch case when swapping panes) 
             if (check(search)) {
                 set(search);
+                setNewSearch(search);
             }
         }
 
