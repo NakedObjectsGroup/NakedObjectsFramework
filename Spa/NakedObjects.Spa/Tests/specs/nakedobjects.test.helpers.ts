@@ -1632,7 +1632,7 @@ module NakedObjects.Test.Helpers {
     let vendorDomainObjectRequestHandler: ng.mock.IRequestHandler;
     let listAllVendorsWithWebAddressesResultRequestHandler: ng.mock.IRequestHandler;
     let listSpecialOffersWithNoMinimumQtyResultRequestHandler: ng.mock.IRequestHandler;
-    let specialOfferRepositoryMenuRequestHandler: angular.mock.IRequestHandler;
+    let specialOfferRepositoryMenuRequestHandler: ng.mock.IRequestHandler;
     let isSubtypeOfHandler1: ng.mock.IRequestHandler;
     let isSubtypeOfHandler2: ng.mock.IRequestHandler;
 

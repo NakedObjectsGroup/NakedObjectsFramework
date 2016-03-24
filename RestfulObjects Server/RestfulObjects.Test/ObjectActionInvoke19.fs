@@ -3408,7 +3408,7 @@ let GetInvokeActionWithReferenceParmsReturnObjectViewModel(api : RestfulObjectsC
 
 let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
-    let oid =  ktc "1-1"
+    let oid =  ktc "1--1"
     
     let refType = "objects"
    
@@ -3425,10 +3425,10 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
     let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
     let args = CreateArgMap parms
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-    let result = api.PostInvoke (oType, ktc "1-1", pid, args)
+    let result = api.PostInvoke (oType, ktc "1--1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roid = oType + "/" +  ktc "2-1"
+    let roid = oType + "/" +  ktc "2--1"
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "MostSimple"
@@ -3477,7 +3477,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
 
     let resultObject = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2--1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("Untitled Form View Model"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object oType)
@@ -3511,7 +3511,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
 
 let VerifyPostInvokeActionMissingParmOnForm (api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
-    let oid =  ktc "1-1"
+    let oid =  ktc "1--1"
     
     let refType = "objects"
    
@@ -3529,10 +3529,10 @@ let VerifyPostInvokeActionMissingParmOnForm (api : RestfulObjectsControllerBase)
     let args = CreateArgMap parms
     //let args = CreateArgMap(new JObject())
     api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-    let result = api.PostInvoke (oType, ktc "1-1", pid, args)
+    let result = api.PostInvoke (oType, ktc "1--1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roid = oType + "/" +  ktc "2-1"
+    let roid = oType + "/" +  ktc "2--1"
     
     let expected = 
         [ TProperty("MostSimple", 

@@ -308,7 +308,7 @@ module NakedObjects {
         function getOidFromHref(href: string) {
             const urlRegex = /(objects|services)\/(.*)\/(.*)/;
             const results = (urlRegex).exec(href);
-            return `${results[2]}-${results[3]}`;
+            return `${results[2]}${keySeparator}${results[3]}`;
         }
 
 
@@ -664,7 +664,7 @@ module NakedObjects {
             const parms = <_.Dictionary<string>>_.pickBy(search, (v, k) => k.indexOf(akm.parm + paneId) === 0);
             const mappedParms = _.mapValues(parms, v => decodeURIComponent(Decompress(v)));
 
-            const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + "-"), "");
+            const s4 = _.reduce(mappedParms, (r, n, k) => r + (k + "=" + n + keySeparator), "");
 
             const s5 = `${newPage}`;
             const s6 = `${newPageSize}`;
@@ -673,7 +673,7 @@ module NakedObjects {
 
             const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
-            return _.reduce(ss, (r, n) => r + "-" + n, "");
+            return _.reduce(ss, (r, n) => r + keySeparator + n, "");
         };
         helper.popUrlState = (paneId = 1) => {
             currentPaneId = paneId;

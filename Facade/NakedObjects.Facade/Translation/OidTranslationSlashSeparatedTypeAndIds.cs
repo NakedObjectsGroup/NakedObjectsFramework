@@ -12,7 +12,7 @@ namespace NakedObjects.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
         static OidTranslationSlashSeparatedTypeAndIds() {
             // default 
-            KeySeparator = "-";
+            KeySeparator = "--";
         }
 
         // when using this ctor be aware of encoded values that might include a "/"
@@ -43,13 +43,13 @@ namespace NakedObjects.Facade.Translation {
         }
 
         public string Encode() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
+            return DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
         }
 
         #endregion
 
         public override string ToString() {
-            return DomainType + (String.IsNullOrEmpty(InstanceId) ? "" : KeySeparator + InstanceId);
+            return DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
         }
     }
 }

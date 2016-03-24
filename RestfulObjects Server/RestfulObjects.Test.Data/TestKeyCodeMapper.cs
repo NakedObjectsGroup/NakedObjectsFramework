@@ -13,7 +13,7 @@ using NakedObjects.Services;
 
 namespace RestfulObjects.Test.Data {
     public class TestKeyCodeMapper : IKeyCodeMapper {
-        private const string KeySeparator = "-";
+        private const string KeySeparator = "--";
         private static readonly RijndaelManaged Provider = new RijndaelManaged();
 
         // these are constants so that tests are reproduceable

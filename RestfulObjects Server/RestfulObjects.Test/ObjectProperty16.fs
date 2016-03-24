@@ -238,7 +238,7 @@ let GetImageAttachmentValueWithDefault(api : RestfulObjectsControllerBase) =
 let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-    let oid = ktc ("1-100-200-4-0--" + ticks + "-8-0")
+    let oid = ktc ("1--100--200--4--0----" + ticks + "--8--0")
     let pid = "AValue"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid
@@ -1103,7 +1103,7 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
 
 let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-    let oid = ktc "1-1-1-1"
+    let oid = ktc "1--1--1--1"
     let pid = "AReference"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid

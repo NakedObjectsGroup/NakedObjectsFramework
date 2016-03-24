@@ -802,7 +802,7 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const [domainType, ...id] = routeData.objectId.split("-");
+                        const [domainType, ...id] = routeData.objectId.split(keySeparator);
                         const transient = routeData.interactionMode === InteractionMode.Transient;
                         context.getObject(1, domainType, id, transient) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {

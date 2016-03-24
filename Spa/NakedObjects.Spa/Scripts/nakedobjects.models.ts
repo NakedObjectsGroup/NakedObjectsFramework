@@ -192,14 +192,14 @@ module NakedObjects.Models {
                 if (segments.length >= 2) {
                     segments.reverse();
                     const [idr, dt] = segments;
-                    const id = idr.split("-");
+                    const id = idr.split(keySeparator);
                     return {
                         dt,
                         id
                     };
                 }
             }
-            return { dt: "", id: [] };
+            return { dt: "", id: [] as string[]  };
         }
 
 
@@ -1394,7 +1394,7 @@ module NakedObjects.Models {
         }
 
         id(): string {
-            return `${this.domainType() || this.serviceId()}${this.instanceId() ? `-${this.instanceId()}` : ""}`;
+            return `${this.domainType() || this.serviceId()}${this.instanceId() ? `${keySeparator}${this.instanceId()}` : ""}`;
         }
 
         title(): string {

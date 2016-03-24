@@ -67,7 +67,7 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
 
 let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
-    let oid = ktc "1-2"
+    let oid = ktc "1--2"
     let oid1 = ktc "1"
     let oid2 = ktc "2"
     let pid = "ACollection"

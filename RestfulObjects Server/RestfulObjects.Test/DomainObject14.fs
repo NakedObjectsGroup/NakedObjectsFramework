@@ -3187,11 +3187,11 @@ let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) =
 
 let GetFormViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
-    let oid = oType + "/" + ktc "1-1"
+    let oid = oType + "/" + ktc "1--1"
     let url = sprintf "http://localhost/objects/%s" oid
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (url)
-    let result = api.GetObject(oType, ktc "1-1", args)
+    let result = api.GetObject(oType, ktc "1--1", args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -3242,7 +3242,7 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1-1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1--1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("Untitled Form View Model"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
@@ -3271,7 +3271,7 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
 let GetWithValueViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-    let key = ktc ("1-100-200-4-0--" + ticks + "-8-0")
+    let key = ktc ("1--100--200--4--0----" + ticks + "--8--0")
     let oid = oType + "/" + key
     let url = sprintf "http://localhost/objects/%s" oid
     let args = CreateReservedArgs ""
@@ -3341,14 +3341,14 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
 
 let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-    let oid = oType + "/" + ktc "1-1-1-1"
+    let oid = oType + "/" + ktc "1--1--1--1"
     let url = sprintf "http://localhost/objects/%s" oid
     let pid = "AnEagerReference"
     let ourl = sprintf "objects/%s" oid
     let purl = sprintf "%s/properties/%s" ourl pid
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (url)
-    let result = api.GetObject(oType, ktc "1-1-1-1", args)
+    let result = api.GetObject(oType, ktc "1--1--1--1", args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
@@ -3429,7 +3429,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1-1-1-1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1--1--1--1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
@@ -3474,11 +3474,11 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
 
 let GetWithNestedViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
-    let oid = oType + "/" + ktc "1-1-1-1-1"
+    let oid = oType + "/" + ktc "1--1--1--1--1"
     let url = sprintf "http://localhost/objects/%s" oid
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (url)
-    let result = api.GetObject(oType, ktc "1-1-1-1-1", args)
+    let result = api.GetObject(oType, ktc "1--1--1--1--1", args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AReference"
@@ -3492,7 +3492,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
     let val2 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "1-1-1-1")) RepresentationTypes.Object roType1)
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "1--1--1--1")) RepresentationTypes.Object roType1)
     
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, 
@@ -3502,7 +3502,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1-1-1-1-1"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1--1--1--1--1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
@@ -3533,8 +3533,8 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 
 let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-    let oid = oType + "/" + ktc "1-1-1-1"
-    let rOid = oType + "/" + ktc "2-1-1-2"
+    let oid = oType + "/" + ktc "1--1--1--1"
+    let rOid = oType + "/" + ktc "2--1--1--2"
     let url = sprintf "http://localhost/objects/%s" oid
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let rooid = roType + "/" + ktc "2"
@@ -3548,7 +3548,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                     new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
     let args = CreateArgMap props
     api.Request <- jsonPutMsg url (props.ToString())
-    let result = api.PutObject(oType, ktc "1-1-1-1", args)
+    let result = api.PutObject(oType, ktc "1--1--1--1", args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -3626,7 +3626,7 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-1-1-2"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2--1--1--2"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
@@ -3672,19 +3672,19 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
 
 let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
-    let oid = oType + "/" + ktc "1-1-1-1-1"
-    let rOid = oType + "/" + ktc "2-2-1-1-2"
+    let oid = oType + "/" + ktc "1--1--1--1--1"
+    let rOid = oType + "/" + ktc "2--2--1--1--2"
     let url = sprintf "http://localhost/objects/%s" oid
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
     let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2-1-1-2")))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
     let props = 
         new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
                     new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
     let args = CreateArgMap props
     api.Request <- jsonPutMsg url (props.ToString())
-    let result = api.PutObject(oType, ktc "1-1-1-1-1", args)
+    let result = api.PutObject(oType, ktc "1--1--1--1--1", args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AReference"
@@ -3696,7 +3696,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
     let val2 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "2-1-1-2")) RepresentationTypes.Object roType1)
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")) RepresentationTypes.Object roType1)
     
     let arguments = 
         TProperty(JsonPropertyNames.Arguments, 
@@ -3706,7 +3706,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
     
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2-2-1-1-2"))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2--2--1--1--2"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
@@ -3738,8 +3738,8 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
 let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-    let key = ktc ("1-100-200-4-0--" + ticks + "-8-0")
-    let rKey = ktc ("1-222-200-4-333--" + ticks + "-8-0")
+    let key = ktc ("1--100--200--4--0----" + ticks + "--8--0")
+    let rKey = ktc ("1--222--200--4--333----" + ticks + "--8--0")
     let oid = oType + "/" + key
     let rOid = oType + "/" + rKey
     let url = sprintf "http://localhost/objects/%s" oid

@@ -182,7 +182,7 @@ module NakedObjects.Test {
             }
 
             beforeEach(inject(() => {
-                testRouteData.objectId = "AdventureWorksModel.Vendor-1634";
+                testRouteData.objectId = "AdventureWorksModel.Vendor--1634";
             }));
 
             describe("View with closed actions no dialog", () => {

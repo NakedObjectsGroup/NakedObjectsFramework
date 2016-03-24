@@ -216,7 +216,7 @@ module NakedObjects {
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            const [dt, ...id] = routeData.objectId.split("-");
+            const [dt, ...id] = routeData.objectId.split(keySeparator);
 
             // to ease transition 
             $scope.objectTemplate = blankTemplate;

@@ -97,7 +97,7 @@ module NakedObjects {
         private dirtyObjects: _.Dictionary<boolean> = {};
 
         private getKey(type: string, id: string) {
-            return type + "-" + id;
+            return type + keySeparator + id;
         }
 
         setDirty(obj: DomainObjectRepresentation | Link) {
@@ -356,12 +356,12 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, type: string, id: string[], transient: boolean) => {
-            const oid = _.reduce(id, (a, v) => `${a}${a ? "-" : ""}${v}`, "");
+            const oid = _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
             return oid ? context.getDomainObject(paneId, type, oid, transient) : context.getService(paneId, type);
         };
 
         context.getObjectByOid = (paneId: number, objectId: string) => {
-            const [dt, ...id] = objectId.split("-");
+            const [dt, ...id] = objectId.split(keySeparator);
             return context.getObject(paneId, dt, id, false);
         };
 
