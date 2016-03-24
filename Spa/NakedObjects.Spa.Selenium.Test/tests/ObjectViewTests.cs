@@ -22,16 +22,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?o1=___1.Customer-555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             OpenSubMenu("Orders");
-            var actions = GetObjectActions(6);
-
-            //Assert.AreEqual("Create New Address", actions[0].Text);
-            // Assert.AreEqual("Create New Contact", actions[1].Text);
-            Assert.AreEqual("Create New Order", actions[0].Text);
-            Assert.AreEqual("Quick Order", actions[1].Text);
-            Assert.AreEqual("Search For Orders", actions[2].Text);
-            Assert.AreEqual("Last Order", actions[3].Text);
-            Assert.AreEqual("Open Orders", actions[4].Text);
-            Assert.AreEqual("Recent Orders", actions[5].Text);
+            var actions = GetObjectActions(7);
+            Assert.AreEqual("Review Sales Responsibility", actions[0].Text);
+            Assert.AreEqual("Create New Order", actions[1].Text);
+            Assert.AreEqual("Quick Order", actions[2].Text);
+            Assert.AreEqual("Search For Orders", actions[3].Text);
+            Assert.AreEqual("Last Order", actions[4].Text);
+            Assert.AreEqual("Open Orders", actions[5].Text);
+            Assert.AreEqual("Recent Orders", actions[6].Text);
         }
 
         public virtual void PropertiesAndCollections()
