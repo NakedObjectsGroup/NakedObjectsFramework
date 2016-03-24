@@ -38,7 +38,7 @@ namespace RestfulObjects.Test.EndToEnd {
                 new JProperty("AnEagerReference", simpleJ),
                 new JProperty("Id", new JObject(new JProperty("value", key1)))
                 );
-            Object(Urls.VMWithReference + "1-2-2-1", "WithReference", body.ToString(), Methods.Put);
+            Object(Urls.VMWithReference + "1--2--2--1", "WithReference", body.ToString(), Methods.Put);
         }
       
      

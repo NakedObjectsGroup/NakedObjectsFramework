@@ -65,60 +65,60 @@ namespace RestfulObjects.Test.EndToEnd {
         public void WithValue()
         {
             var ticks = new DateTime(2012, 1,1).Ticks;
-            Object(Urls.VMWithValue + "1-2-3-4-5-foo-"+ticks+"-6-7", "WithValue");
+            Object(Urls.VMWithValue + "1--2--3--4--5--foo--"+ticks+"--6--7", "WithValue");
         }
 
         [TestMethod]
         public void AttemptWithValueInvalidKey1()
         {
             var ticks = new DateTime(2012, 1, 1).Ticks;
-            Object(Urls.VMWithValue + "1-2-3-4-5-foo-" + ticks + "-6-bar", null, null, Methods.Get, Codes.NotFound);
+            Object(Urls.VMWithValue + "1--2--3--4--5--foo--" + ticks + "--6--bar", null, null, Methods.Get, Codes.NotFound);
         }
 
         [TestMethod]
         public void AttemptWithValueInvalidKey2()
         {
             var ticks = new DateTime(2012, 1, 1).Ticks;
-            Object(Urls.VMWithValue + "1-2-3-4-5", null, null, Methods.Get, Codes.NotFound);
+            Object(Urls.VMWithValue + "1--2--3--4--5", null, null, Methods.Get, Codes.NotFound);
         }
 
 
         [TestMethod]
         public void WithReference()
         {
-            Object(Urls.VMWithReference+"1-2-2-3", "WithReference");
+            Object(Urls.VMWithReference+"1--2--2--3", "WithReference");
         }
 
         [TestMethod]
         public void WithReferenceFollowingAPropertyLink()
         {
-            Object(Urls.VMWithReference + "1-2-2-3" + "/properties/AReference", "WithReference-Property");
+            Object(Urls.VMWithReference + "1--2--2--3" + "/properties/AReference", "WithReference-Property");
         }
 
         [TestMethod]
         public void AttemptWithReferenceInvalidKey1()
         {
-            Object(Urls.VMWithReference + "1-2-2", null, null, Methods.Get, Codes.NotFound);
+            Object(Urls.VMWithReference + "1--2--2", null, null, Methods.Get, Codes.NotFound);
         }
 
         [TestMethod]
         public void AttemptWithReferenceInvalidKey2()
         {
-            Object(Urls.VMWithReference + "1-2-2-foo", null, null, Methods.Get, Codes.NotFound);
+            Object(Urls.VMWithReference + "1--2--2--foo", null, null, Methods.Get, Codes.NotFound);
         }
 
 
         [TestMethod]
         public void WithCollection()
         {
-            Object(Urls.VMWithCollection + "1-3", "WithCollection");
+            Object(Urls.VMWithCollection + "1--3", "WithCollection");
         }
 
 
         [TestMethod]
         public void WithCollectionFollowingACollectionLink()
         {
-            Object(Urls.VMWithCollection + "1-3" + "/collections/ACollection", "WithCollection-ACollection");
+            Object(Urls.VMWithCollection + "1--3" + "/collections/ACollection", "WithCollection-ACollection");
         }
 
 
