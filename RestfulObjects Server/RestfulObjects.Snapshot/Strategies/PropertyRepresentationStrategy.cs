@@ -145,6 +145,14 @@ namespace RestfulObjects.Snapshot.Strategies {
                     customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
+                var notNavigable = propertyContext.Property.NotNavigable;
+
+                if (notNavigable) {
+                    customExtensions = customExtensions ?? new Dictionary<string, object>();
+                    customExtensions[JsonPropertyNames.CustomNotNavigable] = notNavigable;
+                }
+
+
                 customExtensions = RestUtils.AddRangeExtension(propertyContext.Property, customExtensions);
             }
 
