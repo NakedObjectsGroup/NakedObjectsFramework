@@ -440,7 +440,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
