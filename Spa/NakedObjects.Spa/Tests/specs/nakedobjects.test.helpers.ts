@@ -642,6 +642,8 @@ module NakedObjects.Test.Helpers {
         }
     }
 
+    const isSubTypeOfRepresentation = {}
+
 
     const vendorObjectRepresentation = {
         instanceId: "1634",
@@ -1631,7 +1633,8 @@ module NakedObjects.Test.Helpers {
     let listAllVendorsWithWebAddressesResultRequestHandler: ng.mock.IRequestHandler;
     let listSpecialOffersWithNoMinimumQtyResultRequestHandler: ng.mock.IRequestHandler;
     let specialOfferRepositoryMenuRequestHandler: angular.mock.IRequestHandler;
-
+    let isSubtypeOfHandler1: ng.mock.IRequestHandler;
+    let isSubtypeOfHandler2: ng.mock.IRequestHandler;
 
     export function setupBackend($httpBackend: ng.IHttpBackendService) {
         // backend definition common for all tests
@@ -1661,6 +1664,12 @@ module NakedObjects.Test.Helpers {
 
         listSpecialOffersWithNoMinimumQtyResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.SpecialOfferRepository/actions/SpecialOffersWithNoMinimumQty/invoke?x-ro-page=1&x-ro-pageSize=20");
         listSpecialOffersWithNoMinimumQtyResultRequestHandler.respond(listSpecialOffersWithNoMinimumQtyResultResultRepresentation);
+
+        isSubtypeOfHandler1 = $httpBackend.when("GET", root + "/domain-types/AdventureWorksModel.ProductVendor/type-actions/isSubtypeOf/invoke?supertype=AdventureWorksModel.BusinessEntity");
+        isSubtypeOfHandler1.respond(isSubTypeOfRepresentation);
+
+        isSubtypeOfHandler2 = $httpBackend.when("GET", root + "/domain-types/AdventureWorksModel.ProductVendor/type-actions/isSubtypeOf/invoke?supertype=AdventureWorksModel.ICreditCardCreator");
+        isSubtypeOfHandler2.respond(isSubTypeOfRepresentation);
     }
 
 }
