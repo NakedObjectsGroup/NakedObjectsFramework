@@ -169,12 +169,11 @@
         width: 145px; /*To align input box with reference fields*/
     }
 
-/*Properties*/
-
-    .property {
-        overflow: hidden;
+    .property, .parameter {
+        overflow: hidden; /*To cope with long param/prop names*/
     }
-
+    
+/*Properties*/
         .property:not(:last-child), .list .reference:not(:last-child) {
             margin-bottom: 5px;
         }
