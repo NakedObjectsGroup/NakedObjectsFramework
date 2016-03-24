@@ -48,6 +48,7 @@ namespace NakedObjects.Facade.Impl {
         public bool IsObject => WrappedSpec is IOneToOneAssociationSpec;
 
         public bool IsConcurrency => WrappedSpec.ContainsFacet<IConcurrencyCheckFacet>();
+        public bool NotNavigable => WrappedSpec.ContainsFacet<INotNavigableFacet>();
 
         public int? MaxLength {
             get {

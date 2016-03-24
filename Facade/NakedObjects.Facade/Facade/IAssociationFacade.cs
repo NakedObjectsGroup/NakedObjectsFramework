@@ -26,6 +26,8 @@ namespace NakedObjects.Facade {
 
         bool IsConcurrency { get; }
 
+        bool NotNavigable { get; }
+
         Tuple<bool, string[]> TableViewData { get; }
         IConsentFacade IsUsable(IObjectFacade target);
         IObjectFacade GetValue(IObjectFacade target);
