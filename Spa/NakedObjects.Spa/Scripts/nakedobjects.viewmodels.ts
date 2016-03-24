@@ -744,8 +744,8 @@ module NakedObjects {
             this.reference = sav ? sav.toValueString() : "";
             this.choice = sav ? ChoiceViewModel.create(sav, "") : null;
 
-            this.colorService.toColorFromType(this.domainObject.domainType()).then((c: string) => {
-                this.color = c;
+            this.colorService.toColorNumberFromType(this.domainObject.domainType()).then((c: number) => {
+                this.color = `${objectColor}${c}`;
             });
 
             this.message = "";

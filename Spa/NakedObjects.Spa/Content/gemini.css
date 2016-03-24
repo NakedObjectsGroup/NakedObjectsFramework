@@ -422,49 +422,49 @@ th, td {
 }
 
 /* Colours */
-.bg-color-blue {
-    background-color: #2d89ef;
+.object-color0 {
+     background-color: #000000; /*Black*/
+}
+.link-color0 {
+     background-color: #303030 /*#525252*/ ; /*Grey*/
+}
+.object-color1 {
+    background-color: #2b5797; /*Blue*/
+}
+.link-color1 {
+    background-color: #1b4787; 
+}
+.object-color2 {
+    background-color: #1e7145; /*Green*/
+}
+.link-color2 {
+    background-color: #0e6135;
 }
 
-.bg-color-blueLight {
-    background-color: #66ccff;
+.object-color3 {
+    background-color: #b91d47; /*Red*/
+}
+.link-color3 {
+    background-color: #a90d37;
+}
+.object-color4 {
+    background-color: #e3a21a; //Yellow ochre
+}
+.link-color4 {
+    background-color: #d3920a;
+}
+.object-color5 {
+    background-color: #603cba;
+}
+.link-color5 {
+    background-color: #502caa;
 }
 
-.bg-color-blueDark {
-    background-color: #2b5797;
-}
-
-.bg-color-darkBlue { /*Temporary fix*/
-    background-color: #000000;
-}
-
-.fg-color-darkBlue { /*Temporary fix*/
-    color: #000000;
-}
-
-.bg-color-green {
-    background-color: #00a300;
-}
-
-.bg-color-greenLight {
-    background-color: #99b433;
-}
-
-.bg-color-greenDark {
-    background-color: #1e7145;
-}
-
-.bg-color-red {
-    background-color: #b91d47;
-}
 
 .bg-color-yellow {
     background-color: #ffc40d;
 }
 
-.bg-color-orange {
-    background-color: #e3a21a;
-}
 
 .bg-color-orangeDark {
     background-color: #da532c;

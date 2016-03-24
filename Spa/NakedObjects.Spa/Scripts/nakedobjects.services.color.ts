@@ -7,11 +7,6 @@ module NakedObjects {
  
     export interface IColor {
 
-        // these here for backward compat
-        toColorFromHref(href: string): ng.IPromise<string>;
-        toColorFromType(type: string): ng.IPromise<string>;
-
-
         toColorNumberFromHref(href: string): ng.IPromise<number>;
         toColorNumberFromType(type: string): ng.IPromise<number>;
 
@@ -149,14 +144,5 @@ module NakedObjects {
             "redLight",
             "darkBlue"
         ];
-        colorService.toColorFromHref = (href: string) => {
-            const type = typeFromUrl(href);
-            return colorService.toColorFromType(type);
-        };
-        colorService.toColorFromType = (type: string) => {
-            return colorService.toColorNumberFromType(type).then((num: number) => {
-                return $q.when(colorPrefix + numColorMap[num]);
-            });
-        };
     });
 }

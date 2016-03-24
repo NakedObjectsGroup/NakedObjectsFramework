@@ -100,8 +100,8 @@ module NakedObjects {
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
 
-            color.toColorFromHref(linkRep.href()).then((c: string) => {
-                linkViewModel.color = c;
+            color.toColorNumberFromHref(linkRep.href()).then((c: number) => {
+                linkViewModel.color = `${linkColor}${c}`;
             });
 
             linkViewModel.link = linkRep;
@@ -281,8 +281,8 @@ module NakedObjects {
             }
 
             if (parmViewModel.value) {
-                color.toColorFromType(parmViewModel.returnType).then((c: string) => {
-                    parmViewModel.color = c;
+                color.toColorNumberFromType(parmViewModel.returnType).then((c: number) => {
+                    parmViewModel.color = `${linkColor}${c}`;
                 });
             } else {
                 parmViewModel.color = "";
@@ -443,8 +443,8 @@ module NakedObjects {
             // only set color if has value 
 
             if (propertyViewModel.value) {
-                color.toColorFromType(propertyRep.extensions().returnType()).then((c: string) => {
-                    propertyViewModel.color = c;
+                color.toColorNumberFromType(propertyRep.extensions().returnType()).then((c: number) => {
+                    propertyViewModel.color = `${linkColor}${c}`;
                 });
             } else {
                 propertyViewModel.color = "";
@@ -586,8 +586,8 @@ module NakedObjects {
             collectionViewModel.size = links.length;
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
 
-            color.toColorFromType(collectionRep.extensions().elementType()).then((c: string) => {
-                collectionViewModel.color = c;
+            color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => {
+                collectionViewModel.color = `${linkColor}${c}`;
             });
 
             collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
@@ -651,8 +651,8 @@ module NakedObjects {
             serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
             serviceViewModel.actionsMap = createActionMenuMap(serviceViewModel.actions);
 
-            color.toColorFromType(serviceRep.serviceId()).then((c: string) => {
-                serviceViewModel.color = c;
+            color.toColorNumberFromType(serviceRep.serviceId()).then((c: number) => {
+                serviceViewModel.color = `${objectColor}${c}`;
             });
 
             return serviceViewModel;
