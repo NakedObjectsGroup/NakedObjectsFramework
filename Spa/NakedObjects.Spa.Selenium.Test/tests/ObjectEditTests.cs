@@ -21,7 +21,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ObjectEditChangeScalar()
         {
             var rand = new Random();
-            GeminiUrl("object?o1=___1.Product-870");
+            GeminiUrl("object?o1=___1.Product--870");
             EditObject();
             var oldPrice = WaitForCss("#listprice1").GetAttribute("value");
             var newPrice = rand.Next(50, 150);
@@ -41,7 +41,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void LocalValidationOfMandatoryFields()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer-11");
+            GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
             SaveButton().AssertIsEnabled();
             ClearFieldThenType("#startdate1", "");
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Start Date; ");
@@ -54,7 +54,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void LocalValidationOfMaxLength()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.Person-12125&c1_Addresses=List&c1_EmailAddresses=List");
+            GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
             ClearFieldThenType("#title1", "Generalis");
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Title; ");
@@ -66,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void LocalValidationOfRegex()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.EmailAddress-12043-11238");
+            GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043-11238");
             ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Email Address; ");
@@ -77,7 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void LocalValidationOfRange()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.Product-817");
+            GeminiUrl("object?i1=Edit&o1=___1.Product--817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
 
             ClearFieldThenType("#daystomanufacture1", "0");
@@ -100,7 +100,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ObjectEditChangeEnum()
         {
-            GeminiUrl("object?i1=View&o1=___1.Person-6748");
+            GeminiUrl("object?i1=View&o1=___1.Person--6748");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
             EditObject();
             SelectDropDownOnField("#emailpromotion1", "Adventureworks Only");
@@ -114,7 +114,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ObjectEditChangeDateTime()
         {
-            GeminiUrl("object?o1=___1.Product-870");
+            GeminiUrl("object?o1=___1.Product--870");
             EditObject();
 
             var rand = new Random();
@@ -136,7 +136,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ObjectEditChangeChoices()
         {
-            GeminiUrl("object?o1=___1.Product-870");
+            GeminiUrl("object?o1=___1.Product--870");
             EditObject();
 
             // set product line 
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CanSetAndClearAnOptionalDropDown()
         {
-            GeminiUrl("object?o1=___1.WorkOrder-54064");
+            GeminiUrl("object?o1=___1.WorkOrder--54064");
             WaitForView(Pane.Single, PaneType.Object);
             EditObject();
             SelectDropDownOnField("#scrapreason1", "Color incorrect");
@@ -169,7 +169,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ObjectEditChangeConditionalChoices()
         {
-            GeminiUrl("object?o1=___1.Product-870");
+            GeminiUrl("object?o1=___1.Product--870");
             EditObject();
             // set product category and sub category
             SelectDropDownOnField("#productcategory1", "Clothing");
@@ -234,7 +234,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ObjectEditPicksUpLatestServerVersion()
         {
 
-            GeminiUrl("object?o1=___1.Person-8410&as1=open");
+            GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
@@ -252,7 +252,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CoValidationOnSavingChanges()
         {
-            GeminiUrl("object?o1=___1.WorkOrder-43134&i1=Edit");
+            GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
             ClearFieldThenType("input#startdate1", "");
@@ -266,7 +266,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ViewModelEditOpensInEditMode()
         {
-            GeminiUrl("object?o1=___1.EmailTemplate-1&i1=Form");
+            GeminiUrl("object?o1=___1.EmailTemplate--1&i1=Form");
             WaitForCss("input#to1");
             WaitForCss("input#from1");
             //TODO: Check that actions are rendered e.g. Send
@@ -275,7 +275,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void MultiLineText()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader-44440");
+            GeminiUrl("object?i1=Edit&o1=___1.SalesOrderHeader--44440");
             var ta = WaitForCss("textarea#comment1");
             Assert.AreEqual("Free-form text", ta.GetAttribute("placeholder"));
             var rand = new Random();

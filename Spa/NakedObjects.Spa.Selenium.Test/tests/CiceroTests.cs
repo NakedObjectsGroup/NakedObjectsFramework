@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("act rand");
             WaitForOutput("Products menu\r\nAction dialog: Random Product");
             //Test from object context
-            CiceroUrl("object?o1=___1.Product-358");
+            CiceroUrl("object?o1=___1.Product---358");
             WaitForOutput("Product: HL Grip Tape");
 
             EnterCommand("Action");
@@ -69,7 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu\r\nAction dialog: Random Individual");
 
             //object with no actions
-            CiceroUrl("object?o1=___1.ProductInventory-442-6");
+            CiceroUrl("object?o1=___1.ProductInventory--442-6");
             WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G");
             EnterCommand("ac");
             WaitForOutput("No actions available");
@@ -85,13 +85,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Work Orders menu\r\nAction dialog: Create New Work Order\r\nProduct: empty");
 
             //Invoking action (no args) on an object with only one action goes straight to dialog
-            CiceroUrl("object?o1=___1.SpecialOffer-1");
+            CiceroUrl("object?o1=___1.SpecialOffer--1");
             WaitForOutput("Special Offer: No Discount");
             EnterCommand("ac");
             WaitForOutput("Special Offer: No Discount\r\nAction dialog: Associate Special Offer With Product\r\nProduct: empty");
 
             //Disabled action - listed as such
-            CiceroUrl("object?o1=___1.Vendor-1644");
+            CiceroUrl("object?o1=___1.Vendor--1644");
             WaitForOutput("Vendor: International Sport Assoc.");
             EnterCommand("ac");
             WaitForOutputContaining("Check Credit (disabled: Not yet implemented)");
@@ -155,18 +155,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided");
 
             //Object dialog
-            CiceroUrl("object?o1=___1.Product-358&d1=BestSpecialOffer");
+            CiceroUrl("object?o1=___1.Product--358&d1=BestSpecialOffer");
             WaitForOutputStarting("Product: HL Grip Tape\r\nAction dialog: Best Special Offer");
             EnterCommand("cancel");
             WaitForOutput("Product: HL Grip Tape");
             //Zero param
-            CiceroUrl("object?o1=___1.Customer-29688&d1=LastOrder");
+            CiceroUrl("object?o1=___1.Customer--29688&d1=LastOrder");
             WaitForOutputStarting("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("Ca");
             WaitForOutput("Customer: Handy Bike Services, AW00029688");
 
             //Cancel of Edits
-            CiceroUrl("object?o1=___1.Product-358&i1=Edit");
+            CiceroUrl("object?o1=___1.Product--358&i1=Edit");
             WaitForOutput("Editing Product: HL Grip Tape");
             EnterCommand("cancel");
             WaitForOutput("Product: HL Grip Tape");
@@ -180,7 +180,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Products menu");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
-            CiceroUrl("object?o1=___1.Customer-29688");
+            CiceroUrl("object?o1=___1.Customer--29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
@@ -191,11 +191,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Welcome to Cicero");
 
 
-            CiceroUrl("object?o1=___1.Person-12941");
+            CiceroUrl("object?o1=___1.Person--12941");
             WaitForOutput("Person: Dakota Wood");
             EnterCommand("clipboard cop");
             WaitForOutput("Clipboard contains: Person: Dakota Wood");
-            CiceroUrl("object?o1=___1.Person-12942");
+            CiceroUrl("object?o1=___1.Person--12942");
             WaitForOutput("Person: Jaclyn Liang");
             //Check clipboard still unmodified
             EnterCommand("clipboard sh");
@@ -233,17 +233,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void Edit()
         {
             CiceroUrl("home");
-            CiceroUrl("object?o1=___1.Customer-29688");
+            CiceroUrl("object?o1=___1.Customer--29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("edit");
             WaitForOutput("Editing Customer: Handy Bike Services, AW00029688");
             //No arguments
-            CiceroUrl("object?o1=___1.Customer-29688");
+            CiceroUrl("object?o1=___1.Customer--29688");
             WaitForOutput("Customer: Handy Bike Services, AW00029688");
             EnterCommand("edit x");
             WaitForOutput("Too many arguments provided");
             //Invalid contexts
-            CiceroUrl("object?o1=___1.Product-358&i1=Edit");
+            CiceroUrl("object?o1=___1.Product--358&i1=Edit");
             WaitForOutput("Editing Product: HL Grip Tape");
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
@@ -263,7 +263,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: Arthur G\r\nLast Name: Fenton-Jones III");
 
             //Different types (bool, date, number)
-            CiceroUrl("object?o1=___1.Product-897&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            CiceroUrl("object?o1=___1.Product--897&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
             WaitForOutputContaining("Action dialog: Best Special Offer");
             EnterCommand("enter quantity,25");
             WaitForOutputContaining("Quantity: 25");
@@ -271,7 +271,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputContaining("Action dialog: List Purchase Orders");
             EnterCommand("enter from, 1 Jan 2016");
             WaitForOutputContaining("From Date: 1 Jan 2016");
-            CiceroUrl("object?o1=___1.Customer-140&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=false");
+            CiceroUrl("object?o1=___1.Customer--140&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=false");
             WaitForOutputContaining("Action dialog: Create New Order");
             EnterCommand("enter copy,false");
             WaitForOutputContaining("Copy Header From Last Order: false");
@@ -289,7 +289,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Multiple matches:\r\nMountain Frames\r\nRoad Frames\r\nTouring Frames");
 
             //Then property entries
-            CiceroUrl("object?o1=___1.Product-871&i1=Edit");
+            CiceroUrl("object?o1=___1.Product--871&i1=Edit");
             WaitForOutput("Editing Product: Mountain Bottle Cage");
             EnterCommand("prop price");
             WaitForOutput("List Price: £9.99");
@@ -297,7 +297,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Editing Product: Mountain Bottle Cage\r\nModified properties:\r\nList Price: £10.50");
 
             //Multiple matches
-            CiceroUrl("object?o1=___1.WorkOrder-33787&i1=Edit");
+            CiceroUrl("object?o1=___1.WorkOrder--33787&i1=Edit");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("enter date,1 Jan 2015");
             WaitForOutput("date matches multiple fields:\r\n"+
@@ -339,19 +339,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("None of the choices matches 456x");
 
             //Auto-complete on an object edit
-            CiceroUrl("object?i1=Edit&o1=___1.Product-415");
+            CiceroUrl("object?i1=Edit&o1=___1.Product--415");
             WaitForOutput("Editing Product: Internal Lock Washer 5");
             EnterCommand("enter model,HL Road Frame");
             WaitForOutputContaining("Product Model: HL Road Frame");
 
             //TODO: Entering fields on an editable view model
-            //CiceroUrl("object?o1=___1.EmailTemplate-1");
+            //CiceroUrl("object?o1=___1.EmailTemplate--1");
             //WaitForOutput("Email Template: Untitled Email Template");
             //EnterCommand("enter to,info@nakedobjects.net");
             //WaitForOutputContaining("To: info@nakedobjects.net");
 
             //Cannot use enter on a non-modifable property
-            CiceroUrl("object?i1=Edit&o1=___1.WorkOrder-37879");
+            CiceroUrl("object?i1=Edit&o1=___1.WorkOrder--37879");
             WaitForOutputStarting("Editing Work Order: HL Crankset");
             EnterCommand("enter stocked,3");
             WaitForOutput("Stocked Qty is not modifiable");
@@ -365,7 +365,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
                             "Type: String\r\n"+
                             "Mandatory");
             // '?' to get details on editable prop
-            CiceroUrl("object?i1=Edit&o1=___1.Person-4463&as1=open");
+            CiceroUrl("object?i1=Edit&o1=___1.Person--4463&as1=open");
             WaitForOutput("Editing Person: Nina Nath");
             EnterCommand("enter mid,?");
             WaitForOutput("Field name: Middle Name\r\n" +
@@ -416,7 +416,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("gemini");
             WaitForView(Pane.Single, PaneType.Home);
 
-            CiceroUrl("object?o1=___1.Product-968");
+            CiceroUrl("object?o1=___1.Product--968");
             WaitForOutput("Product: Touring-1000 Blue, 54");
             EnterCommand("gemini");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
@@ -429,7 +429,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void Goto()
         {
-            CiceroUrl("object?o1=___1.Customer-577");
+            CiceroUrl("object?o1=___1.Customer--577");
             WaitForOutput("Customer: Synthetic Materials Manufacturing, AW00000577");
             //Full match
             EnterCommand("go Details");
@@ -486,7 +486,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("The command: goto is not available in the current context");
 
             //Goto a collection within an object
-            CiceroUrl("object?o1=___1.SalesOrderHeader-60485");
+            CiceroUrl("object?o1=___1.SalesOrderHeader--60485");
             WaitForOutput("Sales Order Header: SO60485");
 
             //Simple case
@@ -494,7 +494,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Collection: Details on Sales Order Header: SO60485\r\n3 items");
 
             //Multiple matches
-            CiceroUrl("object?o1=___1.Product-901");
+            CiceroUrl("object?o1=___1.Product--901");
             WaitForOutput("Product: LL Touring Frame - Yellow, 54");
             EnterCommand("goto pr");
             WaitForOutput("Multiple matches for pr:\r\nProduct Model\r\nProduct Category\r\nProduct Subcategory\r\nProduct Inventory\r\nProduct Reviews");
@@ -504,7 +504,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Collection: Product Inventory on Product: LL Touring Frame - Yellow, 54\r\nempty");
 
             //No matches
-            CiceroUrl("object?o1=___1.SalesOrderHeader-60485");
+            CiceroUrl("object?o1=___1.SalesOrderHeader--60485");
             WaitForOutput("Sales Order Header: SO60485");
             EnterCommand("go x son");
             WaitForOutput("x son does not match any reference fields or collections");
@@ -521,7 +521,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("help");
             WaitForOutput("Commands available in current context:\r\nback\r\nclipboard\r\nforward\r\ngemini\r\nhelp\r\nmenu\r\nwhere");
             //Now try an object context
-            CiceroUrl("object?o1=___1.Product-943");
+            CiceroUrl("object?o1=___1.Product--943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
             EnterCommand("help");
@@ -562,7 +562,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("Menu cus, ord");
             WaitForOutput("Too many arguments provided");
             //Invoked in another context
-            CiceroUrl("object?o1=___1.Product-943");
+            CiceroUrl("object?o1=___1.Product--943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             EnterCommand("Menu");
             WaitForOutput("Menus:\r\nCustomers\r\nOrders\r\nProducts\r\nEmployees\r\nSales\r\nSpecial Offers\r\nContacts\r\nVendors\r\nPurchase Orders\r\nWork Orders");
@@ -594,7 +594,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided");
 
             //Object action
-            CiceroUrl("object?o1=___1.Customer-29688&d1=LastOrder");
+            CiceroUrl("object?o1=___1.Customer--29688&d1=LastOrder");
             WaitForOutput("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("ok");
             WaitForOutput("Sales Order Header: SO69562");
@@ -646,7 +646,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Sorry, an application error has occurred. Foo");
 
             //Co-validation error
-            CiceroUrl("object?o1=___1.Vendor-1668&as1=open&d1=ListPurchaseOrders&f1_fromDate=%222016-01-06T00%3A00%3A00.000Z%22&f1_toDate=%222016-01-05T00%3A00%3A00.000Z%22");
+            CiceroUrl("object?o1=___1.Vendor--1668&as1=open&d1=ListPurchaseOrders&f1_fromDate=%222016-01-06T00%3A00%3A00.000Z%22&f1_toDate=%222016-01-05T00%3A00%3A00.000Z%22");
             WaitForOutputStarting("Vendor: Touring Equipment Center\r\n"+
                 "Action dialog: List Purchase Orders");
             EnterCommand("ok");
@@ -697,14 +697,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Welcome to Cicero");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
-            CiceroUrl("object?o1=___1.SalesOrderHeader-51131");
+            CiceroUrl("object?o1=___1.SalesOrderHeader--51131");
             WaitForOutput("Sales Order Header: SO51131");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
         }
         public virtual void Property()
         {
-            CiceroUrl("object?o1=___1.Product-758");
+            CiceroUrl("object?o1=___1.Product--758");
             WaitForOutput("Product: Road-450 Red, 52");
             EnterCommand("prop num");
             WaitForOutput("Product Number: BK-R68R-52");
@@ -729,7 +729,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("The command: property is not available in the current context");
 
             //Multi-clause match
-            CiceroUrl("object?o1=___1.SalesPerson-284");
+            CiceroUrl("object?o1=___1.SalesPerson--284");
             WaitForOutput("Sales Person: Tete Mensa-Annan");
             EnterCommand("pr sales a");
             WaitForOutput("Sales Territory: Northwest\r\nSales Quota: £300,000.00\r\nSales YTD: £1,576,562.20\r\nSales Last Year: £0.00");
@@ -739,7 +739,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("sales z does not match any properties");
 
             //No fields
-            CiceroUrl("object?o1=___1.AddressType-2");
+            CiceroUrl("object?o1=___1.AddressType--2");
             WaitForOutput("Address Type: Home");
             EnterCommand("prop");
             WaitForOutput("No visible properties");
@@ -749,7 +749,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided");
 
             //Reading properties in edit mode
-            CiceroUrl("object?o1=___1.Product-369&i1=Edit&pp1_Style=%22U%20%22&pp1_ListPrice=%22500%22");
+            CiceroUrl("object?o1=___1.Product--369&i1=Edit&pp1_Style=%22U%20%22&pp1_ListPrice=%22500%22");
             WaitForOutputStarting("Editing");
             EnterCommand("prop");
             WaitForOutputContaining("List Price: 500 (modified)");
@@ -761,13 +761,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //WaitForOutput("Product Category: Bikes");
 
             //Check that enum property renders as text, not number
-            CiceroUrl("object?o1=___1.SalesOrderHeader-70996");
+            CiceroUrl("object?o1=___1.SalesOrderHeader--70996");
             WaitForOutput("Sales Order Header: SO70996");
             EnterCommand("pr status");
             WaitForOutput("Status: Shipped");
 
             //Test that date properties are correctly formatted/masked
-            CiceroUrl("object?i1=View&o1=___1.WorkOrder-71031");
+            CiceroUrl("object?i1=View&o1=___1.WorkOrder--71031");
             WaitForOutput("Work Order: Road-750 Black, 52: 19 Jun 2008");
             EnterCommand("pr start");
             WaitForOutput("Start Date: 19 Jun 2008");
@@ -777,7 +777,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void Root()
         {
-            CiceroUrl("object?o1=___1.Product-459&c1_ProductInventory=List");
+            CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
             WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
             EnterCommand("root");
             WaitForOutput("Product: Lock Nut 19");
@@ -788,20 +788,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("root");
             WaitForOutput("The command: root is not available in the current context");
 
-            CiceroUrl("object?o1=___1.Product-459");
+            CiceroUrl("object?o1=___1.Product--459");
             WaitForOutput("Product: Lock Nut 19");
             EnterCommand("root");
             WaitForOutput("The command: root is not available in the current context");
 
             //Argument added
-            CiceroUrl("object?o1=___1.Product-459&c1_ProductInventory=List");
+            CiceroUrl("object?o1=___1.Product--459&c1_ProductInventory=List");
             WaitForOutput("Collection: Product Inventory on Product: Lock Nut 19\r\n3 items");
             EnterCommand("root x");
             WaitForOutput("Too many arguments provided");
         }
         public virtual void Save() {
             //Happy case
-            CiceroUrl("object?o1=___1.Product-839&i1=Edit&pp1_ListPrice=%221500%22");
+            CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
             WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
                 "Modified properties:\r\n" +
                 "List Price: £1,500.00");
@@ -815,13 +815,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Welcome to Cicero");
             EnterCommand("save");
             WaitForOutput("The command: save is not available in the current context");
-            CiceroUrl("object?o1=___1.Customer-29688&d1=LastOrder");
+            CiceroUrl("object?o1=___1.Customer--29688&d1=LastOrder");
             WaitForOutput("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("save");
             WaitForOutput("The command: save is not available in the current context");
 
             //No arguments
-            CiceroUrl("object?o1=___1.Product-839&i1=Edit&pp1_ListPrice=%221500%22");
+            CiceroUrl("object?o1=___1.Product--839&i1=Edit&pp1_ListPrice=%221500%22");
             WaitForOutput("Editing Product: HL Road Frame - Black, 48\r\n" +
                 "Modified properties:\r\n" +
                 "List Price: £1,500.00");
@@ -829,14 +829,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Too many arguments provided");
 
             //Field validation
-            CiceroUrl("object?o1=___1.WorkOrder-43134&i1=Edit&pp1_OrderQty=%220%22");
+            CiceroUrl("object?o1=___1.WorkOrder--43134&i1=Edit&pp1_OrderQty=%220%22");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("save");
             WaitForOutput("Please complete or correct these fields:\r\n" +
                 "Order Qty: 0 Order Quantity must be > 0");
 
             //Co-validation
-            CiceroUrl("object?o1=___1.WorkOrder-43133&i1=Edit&pp1_StartDate=%2212%20Jan%202015%22");
+            CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit&pp1_StartDate=%2212%20Jan%202015%22");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("save");
             WaitForOutput("StartDate must be before EndDate");
@@ -873,7 +873,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Starting item number cannot be greater than the ending item number");
 
             //Applied to collection
-            CiceroUrl("object?o1=___1.SalesOrderHeader-44518&c1_Details=List");
+            CiceroUrl("object?o1=___1.SalesOrderHeader--44518&c1_Details=List");
             WaitForOutput("Collection: Details on Sales Order Header: SO44518\r\n20 items");
             EnterCommand("show 1");
             WaitForOutput("Item 1: 5 x Mountain-100 Black, 44");
@@ -901,7 +901,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
-            CiceroUrl("object?o1=___1.Customer-29863");
+            CiceroUrl("object?o1=___1.Customer--29863");
             WaitForOutput("Customer: Efficient Cycling, AW00029863");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
@@ -910,7 +910,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void Where()
         {
             CiceroUrl("home");
-            CiceroUrl("object?o1=___1.Product-358");
+            CiceroUrl("object?o1=___1.Product--358");
             WaitForOutput("Product: HL Grip Tape");
             //Do something to change the output
             EnterCommand("help");
@@ -935,7 +935,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TypeIntoFieldWithoutClearing("input", "sel"+Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
-            CiceroUrl("object?o1=___1.Product-968");
+            CiceroUrl("object?o1=___1.Product--968");
             WaitForOutput("Product: Touring-1000 Blue, 54");
             //Hitting Tab with no entry has no effect
             TypeIntoFieldWithoutClearing("input", Keys.Space);
@@ -953,7 +953,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Command word must have at least 2 characters");
 
             //if there's any argument specified, just adds a space
-            CiceroUrl("object?o1=___1.Product-968");
+            CiceroUrl("object?o1=___1.Product--968");
             WaitForOutput("Product: Touring-1000 Blue, 54");
             TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
@@ -1008,7 +1008,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ScenarioEditAndSave()
         {
             //happy case -  edit one property
-            CiceroUrl("object?o1=___1.Product-838");
+            CiceroUrl("object?o1=___1.Product--838");
             WaitForOutput("Product: HL Road Frame - Black, 44");
             EnterCommand("prop list price");
             WaitForOutputStarting("List Price: ");
@@ -1029,7 +1029,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("List Price: "+ currency);
 
             //Updating a date and a link
-            CiceroUrl("object?o1=___1.WorkOrder-43132");
+            CiceroUrl("object?o1=___1.WorkOrder--43132");
             WaitForOutputStarting("Work Order:");
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
@@ -1046,7 +1046,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Field validation
             //Order Quantity must be > 0
-            CiceroUrl("object?o1=___1.WorkOrder-43134");
+            CiceroUrl("object?o1=___1.WorkOrder--43134");
             WaitForOutputStarting("Work Order:");
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
@@ -1057,7 +1057,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "Order Qty: 0 Order Quantity must be > 0");
    
             //Co-Validation
-            CiceroUrl("object?o1=___1.WorkOrder-43133");
+            CiceroUrl("object?o1=___1.WorkOrder--43133");
             WaitForOutputStarting("Work Order:");
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
@@ -1106,7 +1106,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ScenarioTransientObject() {
             //Happy case
-            CiceroUrl("object?o1=___1.Person-12044");
+            CiceroUrl("object?o1=___1.Person--12044");
             WaitForOutput("Person: Gail Moore");
             EnterCommand("action Create New Credit Card");
             WaitForOutputContaining("Action dialog: Create New Credit Card");
@@ -1125,7 +1125,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutput("Credit Card: "+obfuscated);
             //Incomplete fields
-            CiceroUrl("object?o1=___1.Person-12045");
+            CiceroUrl("object?o1=___1.Person--12045");
             WaitForOutput("Person: Rakesh Tangirala");
             EnterCommand("action Create New Credit Card");
             WaitForOutputContaining("Action dialog: Create New Credit Card");
@@ -1134,14 +1134,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutputStarting("Please complete or correct these fields:");
             //Request for an expired transient
-            CiceroUrl("object?i1=Transient&o1=___1.CreditCard-37");
+            CiceroUrl("object?i1=Transient&o1=___1.CreditCard--37");
             WaitForOutput("The requested view of unsaved object details has expired");
         
         }
         public virtual void ScenarioUsingClipboard()
         {
             //Copy a Product to clipboard
-            CiceroUrl("object?o1=___1.Product-980");
+            CiceroUrl("object?o1=___1.Product--980");
             WaitForOutput("Product: Mountain-400-W Silver, 38");
             EnterCommand("clip copy");
             WaitForOutput("Clipboard contains: Product: Mountain-400-W Silver, 38");
@@ -1157,7 +1157,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Clipboard is empty");
             EnterCommand("enter details, paste");
             WaitForOutput("Cannot use Clipboard as it is empty");
-            CiceroUrl("object?o1=___1.Person-7185");
+            CiceroUrl("object?o1=___1.Person--7185");
             WaitForOutput("Person: Carmen Perez");
             EnterCommand("clip copy");
             WaitForOutput("Clipboard contains: Person: Carmen Perez");
@@ -1170,7 +1170,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ScenarioTestEditableVM()
         {
-            CiceroUrl("object?i1=View&o1=___1.Person-5968");
+            CiceroUrl("object?i1=View&o1=___1.Person--5968");
             WaitForOutput("Person: Nathan Diaz");
             EnterCommand("ac email");
             WaitForOutputContaining("Action dialog: Create Email");

@@ -14,7 +14,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void Home()
         {
-            GeminiUrl("object?o1=___1.Product-968");
+            GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(br.FindElement(By.CssSelector(".icon-home")));
             WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -42,16 +42,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void Cicero()
         {
-            GeminiUrl("object?o1=___1.Product-968");
+            GeminiUrl("object?o1=___1.Product--968");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54"); //Cicero
-            GeminiUrl("object/list?o1=___1.Store-350&m2=OrderRepository&a2=HighestValueOrders");
+            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Store: Twin Cycles"); //Cicero
 
-            GeminiUrl("object?o1=___1.Product-968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
+            GeminiUrl("object?o1=___1.Product--968&as1=open&d1=BestSpecialOffer&f1_quantity=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
             WaitForCss("#quantity1"); //i.e. dialog open
             Click(WaitForCss(".icon-speech"));

@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void CreateEditableVM()
         {
-            GeminiUrl("object?i1=View&o1=___1.Person-9169&as1=open");
+            GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
             var properties = br.FindElements(By.CssSelector(".property"));

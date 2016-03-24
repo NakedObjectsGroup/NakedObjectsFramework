@@ -50,7 +50,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void Object()
         {
-            GeminiUrl("object?o1=___1.Store-350");
+            GeminiUrl("object?o1=___1.Store--350");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".view")));
             AssertObjectElementsPresent();
@@ -70,19 +70,19 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void ObjectWithNoSuchObject()
         {
-            GeminiUrl("object?o1=___1.Foo-555");
+            GeminiUrl("object?o1=___1.Foo--555");
             wait.Until(d => d.FindElement(By.CssSelector(".error")));
         }
         public virtual void ObjectWithActions()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             GetObjectAction("Create New Address");
             AssertObjectElementsPresent();
         }
         //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
         public virtual void ObjectWithCollections()
         {
-            GeminiUrl("object?o1=___1.Store-350&&c1_Addresses=List&c1_Contacts=Table");
+            GeminiUrl("object?o1=___1.Store--350&&c1_Addresses=List&c1_Contacts=Table");
             wait.Until(d => d.FindElement(By.CssSelector(".collections")));
             AssertObjectElementsPresent();
             wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
@@ -101,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void ObjectInEditMode()
         {
-            GeminiUrl("object?o1=___1.Store-350&i1=Edit");
+            GeminiUrl("object?o1=___1.Store--350&i1=Edit");
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
             wait.Until(d => d.FindElement(By.CssSelector(".edit")));
             SaveButton();
@@ -125,7 +125,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void SplitHomeObject()
         {
-            GeminiUrl("home/object?o2=___1.Store-350");
+            GeminiUrl("home/object?o2=___1.Store--350");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.Object, "Twin Cycles");
         }
@@ -139,13 +139,13 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void SplitObjectHome()
         {
-            GeminiUrl("object/home?o1=___1.Store-350");
+            GeminiUrl("object/home?o1=___1.Store--350");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
         public virtual void SplitObjectObject()
         {
-            GeminiUrl("object/object?o1=___1.Store-350&o2=___1.Store-604");
+            GeminiUrl("object/object?o1=___1.Store--350&o2=___1.Store--604");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("object/list?o1=___1.Store-350&m2=OrderRepository&a2=HighestValueOrders");
+            GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
             Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
@@ -167,7 +167,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
         public virtual void SplitListObject()
         {
-            GeminiUrl("list/object?m1=OrderRepository&a1=HighestValueOrders&o2=___1.Store-604");
+            GeminiUrl("list/object?m1=OrderRepository&a1=HighestValueOrders&o2=___1.Store--604");
             Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");

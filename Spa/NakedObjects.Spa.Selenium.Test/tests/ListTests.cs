@@ -190,7 +190,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 .StartsWith("Page 1 of 1;"));
-            GeminiUrl("object?o1=___1.SpecialOffer-7");
+            GeminiUrl("object?o1=___1.SpecialOffer--7");
             EditObject();
             ClearFieldThenType("#minqty1", "10");
             SaveObject();
@@ -203,7 +203,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 == "Page 1 of 1; viewing 10 of 10 items");
 
             //Undo to leave in original state
-            GeminiUrl("object?o1=___1.SpecialOffer-7");
+            GeminiUrl("object?o1=___1.SpecialOffer--7");
             EditObject();
             ClearFieldThenType("#minqty1", Keys.Backspace + Keys.Backspace + "0");
             SaveObject();

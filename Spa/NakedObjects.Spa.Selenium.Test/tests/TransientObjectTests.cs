@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void CreateAndSaveTransientObject()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
@@ -30,7 +30,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void SaveAndClose()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             string number = DateTime.Now.Ticks.ToString(); //pseudo-random string
@@ -47,7 +47,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void MissingMandatoryFieldsNotified()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             SelectDropDownOnField("#expyear1", "2020");
@@ -55,7 +55,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void IndividualFieldValidation()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("input#cardnumber1", "123");
@@ -68,7 +68,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void MultiFieldValidation()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("#cardnumber1", "1111222233334444");
@@ -79,14 +79,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectAction("Create New Credit Card"));
             var name = WaitForCss("input#cardnumber1");
             Assert.AreEqual("* Without spaces", name.GetAttribute("placeholder"));
         }
         public virtual void CancelTransientObject()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             Click(GetObjectAction("Create New Credit Card"));
             Click(GetCancelEditButton());
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void SwapPanesWithTransients()
         {
-            GeminiUrl("object/object?o1=___1.Product-738&as1=open&o2=___1.Person-20774&as2=open");
+            GeminiUrl("object/object?o1=___1.Product--738&as1=open&o2=___1.Person--20774&as2=open");
             WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
             WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
 
@@ -116,7 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void BackAndForwardOverTransient()
         {
-            GeminiUrl("object?o1=___1.Person-12043&as1=open");
+            GeminiUrl("object?o1=___1.Person--12043&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             Click(GetObjectAction("Create New Credit Card"));
             WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
@@ -128,7 +128,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RequestForExpiredTransient()
         {
-            GeminiUrl("object?i1=Transient&o1=___1.CreditCard-100");
+            GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
             string title = WaitForCss(".title").Text;
             Assert.AreEqual(
                 "The requested view of unsaved object details has expired.",

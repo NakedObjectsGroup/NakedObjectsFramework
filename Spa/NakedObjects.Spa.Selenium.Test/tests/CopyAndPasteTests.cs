@@ -16,7 +16,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void CopyTitleOrPropertyIntoClipboard()
         {
-            GeminiUrl("object/object?o1=___1.Product-990&o2=___1.Customer-13179");
+            GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");
             WaitForView(Pane.Left, PaneType.Object, "Mountain-500 Black, 42");
             WaitForView(Pane.Right, PaneType.Object, "Adrian Sanchez, AW00013179");
 
@@ -63,7 +63,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoReferenceField()
         {
-            GeminiUrl("object/object?o1=___1.PurchaseOrderHeader-1372&i1=Edit&o2=___1.Employee-161");
+            GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Employee--161");
             WaitForView(Pane.Left, PaneType.Object);
             Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").Text);
             var title = WaitForCss("#pane2 .header .title");
@@ -74,7 +74,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu()
         {
-            GeminiUrl("object/object?o2=___1.SalesPerson-284&o1=___1.Store-740&i1=Edit");
+            GeminiUrl("object/object?o2=___1.SalesPerson--284&o1=___1.Store--740&i1=Edit");
             WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
             Assert.AreEqual("Tsvi Reiter", WaitForCss("input#salesperson1").GetAttribute("value"));
             var title = WaitForCss("#pane2 .header .title");
@@ -94,7 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PasteIntoDialog()
         {
-            GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=___1.Employee-206");
+            GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=___1.Employee--206");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Stuart Munson", title.Text);
             title.Click();
@@ -107,7 +107,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DroppableReferenceFieldWithoutAutoComplete()
         {
-            GeminiUrl("object?o1=___1.PurchaseOrderHeader-121");
+            GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
             GetReferenceProperty("Order Placed By", "Sheela Word");
             EditObject();
             CancelDatePicker("#orderdate1");
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void CannotPasteWrongTypeIntoReferenceField()
         {
-            GeminiUrl("object/object?o1=___1.PurchaseOrderHeader-1372&i1=Edit&o2=___1.Product-771");
+            GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Product--771");
             WaitForView(Pane.Left, PaneType.Object);
             CancelDatePicker("#orderdate1");
             var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
@@ -142,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void CanClearADroppableReferenceField()
         {
-            GeminiUrl("object?o1=___1.PurchaseOrderHeader-561&i1=Edit");
+            GeminiUrl("object?o1=___1.PurchaseOrderHeader--561&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
             var fieldCss = ".property:nth-child(4) .value.droppable";
             var field = WaitForCss(fieldCss);
@@ -153,7 +153,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
         {
-            GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=___1.Person-10895");
+            GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=___1.Person--10895");
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Arthur Kapoor", title.Text);
             title.Click();

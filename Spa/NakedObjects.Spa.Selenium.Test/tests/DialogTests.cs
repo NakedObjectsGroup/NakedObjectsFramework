@@ -40,7 +40,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void PasswordParam()
         {
-            GeminiUrl("object?i1=View&o1=___1.Person-11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
+            GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
             //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "password").Count() == 3);
         }
@@ -80,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DateTimeParmKeepsValue()
         {
-            GeminiUrl("object?o1=___1.Customer-29923&as1=open");
+            GeminiUrl("object?o1=___1.Customer--29923&as1=open");
             OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
             var fromDate = WaitForCss("#fromdate1");
@@ -275,7 +275,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleValueParameter()
         {
-            GeminiUrl("object?o1=___1.Product-342&as1=open&d1=BestSpecialOffer");
+            GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
             var qty = WaitForCss("input#quantity1");
             qty.SendKeys("0");
             Click(OKButton());
@@ -291,7 +291,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ValidateSingleRefParamFromChoices()
         {
-            GeminiUrl("object?o1=___1.SalesOrderHeader-71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
@@ -303,7 +303,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CoValidationOfMultipleParameters()
         {
-            GeminiUrl("object?o1=___1.PurchaseOrderDetail-1632-3660&as1=open&d1=ReceiveGoods");
+            GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632-3660&as1=open&d1=ReceiveGoods");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");

@@ -19,7 +19,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         public virtual void Actions()
         {
-            GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
             OpenSubMenu("Orders");
             var actions = GetObjectActions(7);
@@ -34,7 +34,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void PropertiesAndCollections()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
             wait.Until(dr => dr.FindElement(By.CssSelector(".view")).Displayed == true);
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
@@ -53,7 +53,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
 
         public virtual void DateAndCurrencyProperties() {
-            GeminiUrl("object?o1=___1.SalesOrderHeader-68389");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
 
@@ -69,7 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void TableViewHonouredOnCollection()
         {
-            GeminiUrl("object?i1=View&o1=___1.Employee-83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
+            GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
             Assert.AreEqual(3, cols.Length);
@@ -78,14 +78,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Rate", cols[2].Text);
 
             //Dates formatted in table view
-            GeminiUrl("object?i1=View&o1=___1.Product-775&c1_SpecialOffers=Table");
+            GeminiUrl("object?i1=View&o1=___1.Product--775&c1_SpecialOffers=Table");
             WaitForCss("td", 15);
             var cell = WaitForCss("td:nth-child(5)");
             Assert.AreEqual("31 Dec 2008", cell.Text);
         }
         public virtual void ClickReferenceProperty()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             Click(reference);
@@ -93,7 +93,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void OpenCollectionAsList()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForCss(".collection", 2);
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
@@ -106,7 +106,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
-            var testUrl = GeminiBaseUrl + "object?o1=___1.Store-350&as1=open" + "&c1_Addresses=List";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
             Url(testUrl);
             var row = WaitForCss("table .reference");
             Click(row);
@@ -114,7 +114,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ClickOnLineItemWithCollectionAsTable()
         {
-            var testUrl = GeminiBaseUrl + "object?o1=___1.Store-350&as1=open" + "&c1_Addresses=Table";
+            var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table";
             Url(testUrl);
             var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
             wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
@@ -126,7 +126,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void AttachmentProperty()
         {
-            GeminiUrl("object?o1=___1.Product-968");
+            GeminiUrl("object?o1=___1.Product--968");
             wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
             wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
             Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0);
@@ -135,14 +135,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void DialogAction()
         {
             GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
             OpenActionDialog("Search For Orders");
         }
         public virtual void DialogActionOk()
         {
             GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
             var dialog = OpenActionDialog("Search For Orders");
 
@@ -154,7 +154,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ObjectAction()
         {
             GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
             Click(GetObjectAction("Last Order"));
             wait.Until(d => d.FindElement(By.CssSelector(".object")));
@@ -162,7 +162,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CollectionAction()
         {
             GeminiUrl("home");
-            GeminiUrl("object?o1=___1.Customer-555&as1=open");
+            GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
             Click(GetObjectAction("Recent Orders"));
             WaitForView(Pane.Single, PaneType.List, "Recent Orders");
@@ -175,7 +175,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void DisabledAction()
         {
-            GeminiUrl("object?o1=___1.SalesOrderHeader-43893&as1=open");
+            GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
             //First the control test
             GetObjectAction("Add New Sales Reason").AssertIsEnabled();
 
@@ -184,7 +184,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void ActionsMenuDisabledOnObjectWithNoActions()
         {
-            GeminiUrl("object?o1=___1.Address-21467");
+            GeminiUrl("object?o1=___1.Address--21467");
             WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
             var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header .menu")));
             Assert.AreEqual("true", actions.GetAttribute("disabled"));
@@ -192,7 +192,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
         public virtual void QueryOnlyActionDoesNotReloadAutomatically()
         {
-            GeminiUrl("object?o1=___1.Person-8410&as1=open");
+            GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(6) .value").Text;
             var dialog = OpenActionDialog("Update Suffix"); //This is deliberately wrongly marked up as QueryOnly
@@ -212,7 +212,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void PotentActionDoesReloadAutomatically()
         {
-            GeminiUrl("object?o1=___1.Person-8410&as1=open");
+            GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(3) .value").Text;
             var dialog = OpenActionDialog("Update Middle Name"); //This is deliberately wrongly marked up as QueryOnly

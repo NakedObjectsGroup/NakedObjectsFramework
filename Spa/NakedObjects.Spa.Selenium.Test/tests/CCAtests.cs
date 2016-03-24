@@ -248,7 +248,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #region Helpers
         private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
-            GeminiUrl("object?o1=___1.SpecialOffer-" + (itemNo + 1));
+            GeminiUrl("object?o1=___1.SpecialOffer---" + (itemNo + 1));
             wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
             var properties = br.FindElements(By.CssSelector(".property"));
             var html = label + "\r\n" + value;

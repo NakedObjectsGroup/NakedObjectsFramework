@@ -48,7 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickReferencePropertyFromObjectSingle()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
             RightClick(reference);
@@ -59,7 +59,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickActionFromObjectSingle()
         {
-            GeminiUrl("object?o1=___1.Customer-30116&as1=open");
+            GeminiUrl("object?o1=___1.Customer--30116&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
             OpenSubMenu("Orders");
             RightClick(GetObjectAction("Last Order"));
@@ -70,7 +70,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RightClickHomeIconFromObjectSingle()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             RightClick(HomeIcon());
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
@@ -80,7 +80,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void SwapPanesIconFromSingleOpensHomeOnLeft()
         {
-            GeminiUrl("object?o1=___1.Store-350&as1=open");
+            GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
             Click(SwapIcon());
             WaitForView(Pane.Left, PaneType.Home, "Home");
@@ -89,8 +89,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer-555&as1=open&o2=___1.SalesOrderHeader-71926&as2=open";
-        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store-350&as1=open&o2=___1.SalesOrderHeader-71926&as2=open";
+        private const string twoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer--555&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
+        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store--350&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
 
 
         public virtual void RightClickReferenceInLeftPaneObject()
@@ -165,7 +165,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ActionDialogOpensInCorrectPane()
         {
-            GeminiUrl("object/object?i1=View&o1=___1.Customer-543&i2=View&o2=___1.SalesOrderHeader-56672&as1=open&as2=open");
+            GeminiUrl("object/object?i1=View&o1=___1.Customer--543&i2=View&o2=___1.SalesOrderHeader--56672&as1=open&as2=open");
             WaitForView(Pane.Left, PaneType.Object, "Friendly Neighborhood Bikes, AW00000543");
             WaitForView(Pane.Right, PaneType.Object, "SO56672");
             OpenSubMenu("Orders", Pane.Left);
@@ -267,8 +267,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
 
         #region Actions within split panes
-        private const string twoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer-555&as1=open&o2=___1.SalesOrderHeader-71926&as2=open";
-        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store-350&as1=open&o2=___1.SalesOrderHeader-71926&as2=open";
+        private const string twoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer--555&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
+        private const string twoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store--350&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
 
         [TestMethod]
         public override void RightClickReferenceInLeftPaneObject()
