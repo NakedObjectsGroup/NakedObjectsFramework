@@ -4,29 +4,6 @@
 
 module NakedObjects {
 
-    const enum Colors {
-        Blue,
-        BlueLight,
-        BlueDark,
-        Green,
-        GreenLight,
-        GreenDark,
-        Red,
-        Yellow,
-        Orange1,
-        Orange2,
-        OrangeDark,
-        Pink,
-        PinkDark,
-        Purple,
-        GrayDark,
-        Magenta,
-        Teal,
-        RedLight,
-        DarkBlue
-    };
-
-
     app.run((color: IColor) => {
         //color.addType("AdventureWorksModel.CustomerRepository", 17);
         //color.addType("AdventureWorksModel.Individual", 1);
