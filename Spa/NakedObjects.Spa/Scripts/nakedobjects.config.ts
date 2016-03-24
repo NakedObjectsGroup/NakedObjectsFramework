@@ -26,4 +26,6 @@ module NakedObjects {
     export const urlShortCuts = ["http://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel"];
 
     export const keySeparator = "--";
+    export const objectColor = "objectColor";
+    export const linkColor = "linkColor";
 }
