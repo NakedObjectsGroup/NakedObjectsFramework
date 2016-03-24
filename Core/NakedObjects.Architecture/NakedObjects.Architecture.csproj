@@ -151,6 +151,7 @@
     <Compile Include="Facet\IDataTypeFacet.cs" />
     <Compile Include="Facet\IFindMenuFacet.cs" />
     <Compile Include="Facet\IContributedActionFacet.cs" />
+    <Compile Include="Facet\INotNavigableFacet.cs" />
     <Compile Include="Facet\IImperativeFacet.cs">
       <SubType>
       </SubType>

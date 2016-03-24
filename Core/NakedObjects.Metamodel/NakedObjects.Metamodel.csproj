@@ -89,6 +89,7 @@
     <Compile Include="Facet\DataTypeFacetAbstract.cs" />
     <Compile Include="Facet\FindMenuFacet.cs" />
     <Compile Include="Facet\DateOnlyFacet.cs" />
+    <Compile Include="Facet\NotNavigableFacet.cs" />
     <Compile Include="Facet\MarkerFlagFacetAbstract.cs" />
     <Compile Include="Facet\MenuFacetAbstract.cs" />
     <Compile Include="Facet\MenuFacetDefault.cs" />
