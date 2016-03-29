@@ -12,7 +12,7 @@
     <description>Add to a Test project to write Selenium tests against a NakedObjects MVC application.</description>
     <tags>naked objects nakedobjects selenium</tags>
     <dependencies>
-      <dependency id="common.Logging" version="[2.2.0, 3.0)" />
+      <dependency id="common.Logging" version="[3.3.1, 4.0)" />
       <dependency id="Selenium.WebDriver" version="[2.40.0, 3.0)" />
     </dependencies>
     <frameworkAssemblies>
