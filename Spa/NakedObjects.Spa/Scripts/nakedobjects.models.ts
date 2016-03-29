@@ -648,6 +648,7 @@ module NakedObjects.Models {
         interactionMode = () => this.wrapped["x-ro-nof-interactionMode"] as string;
         dataType = () => this.wrapped["x-ro-nof-dataType"] as string;
         range = () => this.wrapped["x-ro-nof-range"] as IRange;
+        notNavigable = () => this.wrapped["x-ro-nof-notNavigable"] as boolean;
     }
 
     // matches a action invoke resource 19.0 representation 

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,18 +19,9 @@ namespace NakedObjects.Reflect.FacetFactory {
         public NotNavigableAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) {}
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var attribute = type.GetCustomAttribute<NotNavigableAttribute>();
-            FacetUtils.AddFacet(Create(attribute, specification));
-        }
-
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NotNavigableAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
-
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
+            var attribute = property.GetCustomAttribute<NotNavigableAttribute>() ?? property.PropertyType.GetCustomAttribute<NotNavigableAttribute>();
+            FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) {

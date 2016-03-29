@@ -9,6 +9,7 @@ using System;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -16,6 +17,7 @@ using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Rest.App.Demo {
@@ -52,6 +54,12 @@ namespace NakedObjects.Rest.App.Demo {
             StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
             StandardUnityConfig.RegisterCorePerTransactionTypes<HierarchicalLifetimeManager>(container);
 
+            // add custom notnavigable factory
+
+            Type factory = typeof(AdventureWorksNotNavigableFacetFactory);
+            int order = 1000;
+            UnityConfigHelpers.RegisterFacetFactory(factory, container, order);
+          
             // config 
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());

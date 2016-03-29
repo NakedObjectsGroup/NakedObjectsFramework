@@ -61,7 +61,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         [NotNavigable]
+        private class NotNavigable {
+          
+        }
+
         private class Customer2 {
+            public NotNavigable FirstName
+            {
+                get { return null; }
+            }
         }
 
         [TestMethod]
@@ -96,7 +104,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNotNavigableAnnotationPickedUpOnType() {
-            facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
+            PropertyInfo property = FindProperty(typeof(Customer2), "FirstName");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet(typeof(INotNavigableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotNavigableFacet);
