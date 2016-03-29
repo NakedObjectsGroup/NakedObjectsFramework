@@ -94,6 +94,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeDiscount&f1_newDiscount=%22%22&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
+            WaitForCss("td", 64);
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             SelectCheckBox("#item1-6");
@@ -130,6 +131,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
+            WaitForCss("td", 64);
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             SelectCheckBox("#item1-2");
