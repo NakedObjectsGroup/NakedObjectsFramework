@@ -66,7 +66,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void LocalValidationOfRegex()
         {
-            GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043-11238");
+            GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
             ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
             wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
             SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Email Address; ");

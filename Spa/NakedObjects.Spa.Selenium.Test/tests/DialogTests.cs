@@ -303,7 +303,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void CoValidationOfMultipleParameters()
         {
-            GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632-3660&as1=open&d1=ReceiveGoods");
+            GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");

@@ -35,7 +35,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("act rand");
             WaitForOutput("Products menu\r\nAction dialog: Random Product");
             //Test from object context
-            CiceroUrl("object?o1=___1.Product---358");
+            CiceroUrl("object?o1=___1.Product--358");
             WaitForOutput("Product: HL Grip Tape");
 
             EnterCommand("Action");
@@ -69,7 +69,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu\r\nAction dialog: Random Individual");
 
             //object with no actions
-            CiceroUrl("object?o1=___1.ProductInventory--442-6");
+            CiceroUrl("object?o1=___1.ProductInventory--442--6");
             WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G");
             EnterCommand("ac");
             WaitForOutput("No actions available");
