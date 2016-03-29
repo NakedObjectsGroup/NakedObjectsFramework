@@ -79,7 +79,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             var cells = WaitForCss("td", 64);
             var rand = new Random();
-            var newPct = "0." + rand.Next(51, 100);
+            var newPct = "0." + rand.Next(51, 59);
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             //Now select items
             SelectCheckBox("#item1-6");
@@ -114,7 +114,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-4");
             OpenActionDialog("Change Discount");
             var rand = new Random();
-            var newPct = "0." + rand.Next(51, 100);
+            var newPct = "0." + rand.Next(51, 59);
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
