@@ -421,94 +421,99 @@ th, td {
     margin-top: 5px;
 }
 
-/* Colours */
+/*0. Black */
 .object-color0 {
-     background-color: #000000; /*Black*/
+     background-color: #000000; 
 }
 .link-color0 {
-     background-color: #303030 /*#525252*/ ; /*Grey*/
+     background-color: #303030;
 }
+/*1. Blue*/
 .object-color1 {
-    background-color: #2b5797; /*Blue*/
+    background-color: #2b5797; 
 }
 .link-color1 {
-    background-color: #1b4787; /*Slightly-lighter blue*/
+    background-color: #1b4787; 
 }
+/*2. Green*/
 .object-color2 {
-    background-color: #1e7145; /*Green*/
+    background-color: #1e7145; 
 }
 .link-color2 {
     background-color: #0e6135;
 }
-
+/*3. Red*/
 .object-color3 {
-    background-color: #b91d47; /*Red*/
+    background-color: #ee2121;
 }
 .link-color3 {
-    background-color: #a90d37;
+    background-color: #ce0101;
 }
+/*4. Yellow*/
 .object-color4 {
-    background-color: #e3a21a; /*Yellow ochre*/
+    background-color: #ffc41d;
 }
 .link-color4 {
-    background-color: #d3920a;
+    background-color: #efb40d;
 }
+/*5. Purple*/
 .object-color5 {
     background-color: #603cba;
 }
 .link-color5 {
     background-color: #502caa;
 }
-
-
-.bg-color-yellow {
-    background-color: #ffc40d;
-}
-
-
-.bg-color-orangeDark {
+/*6. Orange*/
+.object-color6 {
     background-color: #da532c;
 }
-
-.bg-color-pink {
-    background-color: #9f00a7;
+.link-color6 {
+    background-color: #ca431c;
 }
-
-.bg-color-pinkDark {
-    background-color: #7e3878;
+/*7. Mauve*/
+.object-color7 {
+    background-color: #9f10a7;
 }
-
-.bg-color-purple {
-    background-color: #603cba;
+.link-color7 {
+    background-color: #8f0097;
 }
-
-.bg-color-darken {
-    background-color: #1d1d1d;
+/*8. Teal*/
+.object-color8 {
+    background-color: #10aba9;
 }
-
-.bg-color-lighten {
-    background-color: #d5e7ec;
+.link-color8 {
+    background-color: #009b99;
 }
-
-.bg-color-white {
-    background-color: #ffffff;
+/*9. Cherry*/
+.object-color9 {
+    background-color: #b91d47; 
 }
-
-.bg-color-grayDark {
+.link-color9 {
+    background-color: #a90d37; 
+}
+/*10. Grey*/
+.object-color10 {
     background-color: #525252;
 }
-
-.bg-color-magenta {
-    background-color: #ff0097;
+.link-color10 {
+    background-color: #424242;
+}
+/*11. Yellow ochre*/
+.object-color11 {
+    background-color: #e3a21a; 
+}
+.link-color11 {
+    background-color: #d3920a;
+}
+/*Fuschia*/
+.object-color12 {
+    background-color: #ff2097;
+}
+.link-color12 {
+    background-color: #df0077;
 }
 
-.bg-color-teal {
-    background-color: #00aba9;
-}
 
-.bg-color-redLight {
-    background-color: #ee1111;
-}
 
 /*Icons - general*/
 
