@@ -542,8 +542,13 @@ module NakedObjects {
                     const url = attachment.href;
                     const mt = attachment.mimeType;
                     downloadFile(url, mt, resp => {
-                        const burl = URL.createObjectURL(resp);
-                        $window.location.href = burl;
+                        if (window.navigator.msSaveBlob) {
+                            // internet explorer 
+                            window.navigator.msSaveBlob(resp, attachment.title);
+                        } else {
+                            const burl = URL.createObjectURL(resp);
+                            $window.location.href = burl;
+                        }
                     });
                     return false;
                 };
