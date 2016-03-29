@@ -236,10 +236,13 @@ module NakedObjects {
                         if (cvms.length === currentOptions.length && _.every(cvms, (c, i) => c.equals(currentOptions[i]))) {
                             return;
                         }
-
+                      
                         element.find("option").remove();
-                        const emptyOpt = "<option></option>";
-                        element.append(emptyOpt);
+                        
+                        if (viewModel.optional) {
+                            const emptyOpt = $("<option></option>");
+                            element.append(emptyOpt);
+                        }
 
                         _.forEach(cvms, cvm => {
 
@@ -257,6 +260,9 @@ module NakedObjects {
                             $(element).val(vals);
                         } else if (viewModel.choice) {
                             $(element).val(viewModel.choice.value);
+                        }
+                        else  {
+                            $(element).val("");
                         }
                     }).catch(() => {
                         // error clear everything 
@@ -300,6 +306,16 @@ module NakedObjects {
                 setTimeout(() => {
                     setListeners();
                     // initial populate
+
+                    // do this initially so that there is a valid model 
+                    // otherwise angular will insert another empty value giving two 
+                    element.find("option").remove();
+                    if (viewModel.optional) {
+                        const emptyOpt = $("<option></option>");
+                        element.append(emptyOpt);
+                        $(element).val("");
+                    }
+                   
                     populateDropdown();
                 }, 1);
             }
