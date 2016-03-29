@@ -52,6 +52,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
         }
 
+        public virtual void NonNavigableReferenceProperty()
+        {
+            //Tests properties of types that have had the NonNavigable Facet added to them 
+            //(in this case by the custom AdventureWorksNotNavigableFacetFactory)
+            GeminiUrl("object?i1=View&o1=___1.Product--869");
+            var props = WaitForCss(".property", 23);
+            //First test a navigable reference
+            var model = props[4];
+            Assert.AreEqual("Product Model:\r\nWomen's Mountain Shorts", model.Text);
+            var link = model.FindElement(By.CssSelector(".reference.clickable-area"));
+            Assert.IsNotNull(link);
+
+            //Now a non-navigable one
+            var cat = props[6];
+            Assert.AreEqual("Product Category:\r\nClothing", cat.Text);
+            var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
+            Assert.AreEqual(0, links.Count());
+        }
+
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
@@ -268,6 +287,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void QueryOnlyActionDoesNotReloadAutomatically() { base.QueryOnlyActionDoesNotReloadAutomatically(); }
         [TestMethod]
         public override void PotentActionDoesReloadAutomatically() { base.PotentActionDoesReloadAutomatically(); }
+
+        [TestMethod]
+        public override void NonNavigableReferenceProperty() { base.NonNavigableReferenceProperty(); }
     }
     #region browsers specific subclasses
 
@@ -371,6 +393,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ActionsMenuDisabledOnObjectWithNoActions();
             base.QueryOnlyActionDoesNotReloadAutomatically();
             base.PotentActionDoesReloadAutomatically();
+            base.NonNavigableReferenceProperty();
         }
     }
     [TestClass]

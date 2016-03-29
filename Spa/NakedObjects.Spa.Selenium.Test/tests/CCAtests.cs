@@ -77,6 +77,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeDiscount&f1_newDiscount=%22%22&c1=Table");
             WaitForView(Pane.Single, PaneType.List);
             Reload();
+            var cells = WaitForCss("td", 64);
             var rand = new Random();
             var newPct = "0." + rand.Next(51, 100);
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
@@ -85,9 +86,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-8");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
-            //Check that exactly two rows were updated
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 2);
+            CheckIndividualItem(6, "Discount Pct:", newPct);
+            CheckIndividualItem(7, "Discount Pct:", newPct, false);
+            CheckIndividualItem(8, "Discount Pct:", newPct);
+
             //Reset to below 50%
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeDiscount&f1_newDiscount=%22%22&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             SelectCheckBox("#item1-6");
@@ -114,10 +120,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".dialog");
             Reload();
             //Check that exactly three rows were updated
-
-            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 3);
+            CheckIndividualItem(1, "Discount Pct:", newPct, false);
+            CheckIndividualItem(2, "Discount Pct:", newPct);
+            CheckIndividualItem(3, "Discount Pct:", newPct);
+            CheckIndividualItem(4, "Discount Pct:", newPct);
+            CheckIndividualItem(5, "Discount Pct:", newPct, false);
 
             //Reset to below 50%
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
             SelectCheckBox("#item1-2");
