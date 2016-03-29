@@ -85,10 +85,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-8");
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
-            Reload();
             //Check that exactly two rows were updated
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(4)")).Count(el => el.Text == newPct) == 2);
-
             //Reset to below 50%
             OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
