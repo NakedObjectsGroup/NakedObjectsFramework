@@ -426,6 +426,7 @@ module NakedObjects {
         isEditable: boolean;
         attachment: AttachmentViewModel;
         draggableType: string;
+        refType : string;
 
         doClick(right?: boolean): void {}
 

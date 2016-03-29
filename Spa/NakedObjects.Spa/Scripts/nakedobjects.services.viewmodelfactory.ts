@@ -529,6 +529,18 @@ module NakedObjects {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
 
+            if (!propertyRep.isScalar()) {
+                if (value.isNull()) {
+                    propertyViewModel.refType = "null";
+                }
+                else if (propertyRep.extensions().notNavigable()) {
+                    propertyViewModel.refType = "notNavigable";
+                } else {
+                    propertyViewModel.refType = "navigable";
+                }
+            }
+
+
             propertyViewModel.isDirty = () => {
                 return !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
             };

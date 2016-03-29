@@ -13,7 +13,8 @@
         "x-ro-nof-warnings"?: string[];
         "x-ro-nof-messages"?: string[];
         "x-ro-nof-dataType"?: string;
-        "x-ro-nof-range"? : IRange;
+        "x-ro-nof-range"?: IRange;
+        "x-ro-nof-notNavigable"?: boolean;
     }
 
     export interface IRange {
