@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="FacetFactory\DataTypeAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\DateOnlyFacetFactoryTest.cs" />
+    <Compile Include="FacetFactory\NotNavigableAnnotationFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\RemoveIgnoredMethodsFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\FindMenuFacetFactoryTest.cs" />
     <Compile Include="FacetFactory\TestSpecification.cs" />

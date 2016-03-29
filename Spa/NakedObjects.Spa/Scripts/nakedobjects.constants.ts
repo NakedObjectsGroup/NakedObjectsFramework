@@ -84,6 +84,7 @@ module NakedObjects {
     export const nofMultipleLines = "x-ro-nof-multipleLines";
     export const nofWarnings = "x-ro-nof-warnings";
     export const nofMessages = "x-ro-nof-messages";
+    export const nofNotNavigable = "x-ro-nof-notNavigable";
 
 
     export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];

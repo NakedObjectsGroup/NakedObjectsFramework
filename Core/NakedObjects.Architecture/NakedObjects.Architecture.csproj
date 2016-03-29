@@ -140,6 +140,7 @@
     <Compile Include="Adapter\IOid.cs" />
     <Compile Include="Adapter\IViewModelOid.cs" />
     <Compile Include="Adapter\PersistableType.cs" />
+    <Compile Include="Attributes\NotNavigableAttribute.cs" />
     <Compile Include="Component\IFrameworkResolver.cs" />
     <Compile Include="Component\IBatchRunner.cs" />
     <Compile Include="Component\IBatchStartPoint.cs" />
