@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -72,6 +73,39 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".footer .warnings");
             WaitUntilElementDoesNotExist(".footer .messages");
         }
+
+        public virtual void RecentObjects()
+        {
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
+            ClearFieldThenType("#accountnumber1", "AW00000042");
+                Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
+            ClickBackButton();
+            ClearFieldThenType("#accountnumber1", "AW00000359");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Mechanical Sports Center, AW00000359");
+            ClickBackButton();
+            ClearFieldThenType("#accountnumber1", "AW00022262");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
+            ClickBackButton();
+            GoToMenuFromHomePage("Products");
+            Click(GetObjectAction("Find Product By Number"));
+            ClearFieldThenType("#number1", "LJ-0192-S");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Long-Sleeve Logo Jersey, S");
+            ClickRecentButton();
+            WaitForView(Pane.Single, PaneType.Recent);
+            var el = WaitForCssNo("tr td:nth-child(1)", 0);
+            Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
+             el = WaitForCssNo("tr td:nth-child(1)", 1);
+            Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
+             el = WaitForCssNo("tr td:nth-child(1)", 2);
+            Assert.AreEqual("Mechanical Sports Center, AW00000359", el.Text);
+             el = WaitForCssNo("tr td:nth-child(1)", 3);
+            Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
+        }
+        
     }
     public abstract class FooterTests : FooterTestsRoot
     {
@@ -87,6 +121,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod] 
         public override void WarningsAndInfo() { base.WarningsAndInfo(); }
+
+        [TestMethod]
+        public override void RecentObjects() { base.RecentObjects(); }
     }
 
     #region browsers specific subclasses 
@@ -177,6 +214,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.BackAndForward();
             base.Cicero();
             base.WarningsAndInfo();
+            base.RecentObjects();
         }
     }
 

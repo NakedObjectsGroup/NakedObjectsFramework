@@ -314,7 +314,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Home,
             Object,
-            List
+            List,
+            Recent
         }
 
         protected enum ClickType
@@ -463,6 +464,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Click(br.FindElement(By.CssSelector(".icon-forward")));
         }
+        protected void ClickRecentButton()
+        {
+            Click(br.FindElement(By.CssSelector(".icon-recent")));
+        }
         #endregion
 
         #region Object Actions
@@ -505,8 +510,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected IWebElement OKButton()
         {
-            return wait.Until(d => br.FindElement(By.CssSelector(".dialog .ok")));
+            return WaitForCss(".dialog .ok");
         }
+
 
         protected void CancelDialog(Pane pane = Pane.Single)
         {
