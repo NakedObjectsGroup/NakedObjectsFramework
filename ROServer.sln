@@ -31,8 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736FFE
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RestTest", "..\..\Visual Studio 2015\Projects\RestTest\RestTest.sqlproj", "{7ED55134-5CB6-4BB4-88E3-F42DCE8D70B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.App", "Test\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj", "{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,14 +97,6 @@ Global
 		{7ED55134-5CB6-4BB4-88E3-F42DCE8D70B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{7ED55134-5CB6-4BB4-88E3-F42DCE8D70B7}.Release|x86.Build.0 = Release|Any CPU
 		{7ED55134-5CB6-4BB4-88E3-F42DCE8D70B7}.Release|x86.Deploy.0 = Release|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Debug|x86.Build.0 = Debug|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Release|x86.ActiveCfg = Release|Any CPU
-		{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
