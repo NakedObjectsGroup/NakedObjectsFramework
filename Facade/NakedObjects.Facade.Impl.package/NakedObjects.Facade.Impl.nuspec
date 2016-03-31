@@ -3,7 +3,7 @@
   <metadata>
     <id>NakedObjects.Facade.Impl</id>
     <title>NakedObjects.Facade.Impl</title>
-    <version>8.0.1-alpha</version>
+    <version>8.0.0-beta1</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
@@ -12,8 +12,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Implementation of Surface facade for current version of the Naked Objects Framework</description>
     <dependencies>
-      <dependency id="NakedObjects.Core" version="[8.0.0-alpha, 9)" />
-      <dependency id="NakedObjects.Facade" version="[8.0.0-alpha, 9)" />
+      <dependency id="NakedObjects.Core" version="[8.0.0-beta1, 9)" />
+      <dependency id="NakedObjects.Facade" version="[8.0.0-beta1, 9)" />
     </dependencies>
   </metadata>
 </package>
