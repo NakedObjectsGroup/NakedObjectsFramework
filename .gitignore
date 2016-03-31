@@ -21,3 +21,5 @@ nog-packages.txt
 *.dll
 RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
 .vs/config/applicationhost.config
+/Tiny App/packages
+/Tiny App/.vs/config/applicationhost.config
