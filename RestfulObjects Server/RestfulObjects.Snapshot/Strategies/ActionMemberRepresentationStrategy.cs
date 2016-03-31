@@ -18,7 +18,13 @@ namespace RestfulObjects.Snapshot.Strategies {
             : base(oidStrategy, req, actionContext, flags) {}
 
         public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> {CreateDetailsLink(), CreateActionLink()}.ToArray();
+            var links = new List<LinkRepresentation> {CreateDetailsLink()};
+
+            if (!HasParams()) {
+                links.Add(CreateActionLink());
+            }
+
+            return links.ToArray();
         }
 
         public override bool ShowParameters() {

@@ -27,6 +27,7 @@ module NakedObjects {
     import InvokeMap = Models.InvokeMap;
     import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
     import HttpStatusCode = Models.HttpStatusCode;
+    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
 
     export interface IContext {
 
@@ -41,7 +42,6 @@ module NakedObjects {
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
-        getActionFriendlyName: (action: ActionMember) => ng.IPromise<string>;
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
@@ -272,6 +272,13 @@ module NakedObjects {
                     return $q.when(service);
                 });
         };
+
+
+        function getActionDetails(actionmember: ActionMember): ng.IPromise<ActionRepresentation> {
+            const details = actionmember.getDetails();
+            return repLoader.populate(details);
+        };
+
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
 
@@ -568,13 +575,23 @@ module NakedObjects {
             return () => {};
         }
 
+        
+
+
         context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
+
+            const invokeOnMap = (invokeMap: InvokeMap) => {
+                _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
+                const setDirty = getSetDirtyFunction(action, parms);
+                return invokeActionInternal(invokeMap, action, paneId, setDirty);
+            }
+
             const invokeMap = action.getInvokeMap();
 
-            _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
-
-            const setDirty = getSetDirtyFunction(action, parms);
-            return invokeActionInternal(invokeMap, action, paneId, setDirty);
+            if (invokeMap) {
+                return invokeOnMap(invokeMap);
+            } 
+            return getActionDetails(action).then((details: ActionRepresentation) => invokeOnMap(details.getInvokeMap()));
         };
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {

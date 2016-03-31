@@ -845,10 +845,13 @@ module NakedObjects.Models {
         }
 
         getInvoke(): ActionResultRepresentation {
-
             const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
             ar.getInvokeMap = () => new InvokeMap(this.invokeLink());
             return ar;
+        }
+
+        getInvokeMap(): InvokeMap {
+            return new InvokeMap(this.invokeLink());
         }
 
         // properties 
@@ -1361,7 +1364,12 @@ module NakedObjects.Models {
         }
 
         getInvokeMap(): InvokeMap {
-            return new InvokeMap(this.invokeLink());
+            const invokeLink = this.invokeLink();
+
+            if (invokeLink) {
+                return new InvokeMap(this.invokeLink());
+            }
+            return null;
         }
 
         // properties 

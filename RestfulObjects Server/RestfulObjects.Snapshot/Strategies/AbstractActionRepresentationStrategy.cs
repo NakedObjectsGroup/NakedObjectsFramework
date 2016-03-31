@@ -118,7 +118,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return ext;
         }
 
-        protected LinkRepresentation CreateActionLink() {
+        protected virtual LinkRepresentation CreateActionLink() {
             List<OptionalProperty> optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToList();
 
             RelMethod method = GetRelMethod();

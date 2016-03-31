@@ -55,6 +55,7 @@ namespace NakedObjects.Rest.App.Demo {
                 // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
                 //RestfulObjectsControllerBase.DefaultPageSize = 50; 
 
+                RestfulObjectsControllerBase.InlineDetailsInMemberRepresentations = false;
             }
         }
     }
