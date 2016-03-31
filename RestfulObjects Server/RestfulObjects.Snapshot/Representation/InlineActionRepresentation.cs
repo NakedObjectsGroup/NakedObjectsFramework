@@ -33,12 +33,12 @@ namespace RestfulObjects.Snapshot.Representations {
             var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
             var optionals = new List<OptionalProperty>();
 
-            if (strategy.ShowParameters()) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Parameters, strategy.GetParameters()));
-            }
-
             if (consent.IsVetoed) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
+            }
+
+            if (strategy.ShowParameters()) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Parameters, strategy.GetParameters()));
             }
 
             if (optionals.Any()) {
