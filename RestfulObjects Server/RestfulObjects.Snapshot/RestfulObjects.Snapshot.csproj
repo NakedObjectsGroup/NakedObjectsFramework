@@ -130,7 +130,9 @@
     <Compile Include="Representation\AttachmentRepresentation.cs" />
     <Compile Include="Representation\CollectionValueRepresentation.cs" />
     <Compile Include="Strategies\AbstractActionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\ActionMemberWithDetailsRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionMemberRepresentationStrategy.cs" />
+    <Compile Include="Strategies\FormActionMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\FormActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />

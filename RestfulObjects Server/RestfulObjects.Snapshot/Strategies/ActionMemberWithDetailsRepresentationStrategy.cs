@@ -13,16 +13,13 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class ActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+    public class ActionMemberWithDetailsRepresentationStrategy : AbstractActionRepresentationStrategy {
+        public ActionMemberWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
-        public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> {CreateDetailsLink(), CreateActionLink()}.ToArray();
-        }
 
-        public override bool ShowParameters() {
-            return false;
+        public override LinkRepresentation[] GetLinks() {
+            return new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace RestfulObjects.Mvc {
             // defaults 
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
             DefaultPageSize = 20;
+            InlineDetailsInMemberRepresentations = true;
         }
 
         protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
@@ -41,6 +42,9 @@ namespace RestfulObjects.Mvc {
         }
 
         public static bool IsReadOnly { get; set; }
+
+        public static bool InlineDetailsInMemberRepresentations { get; set; }
+
 
         public static RestControlFlags.DomainModelType DomainModel {
             get { return RestControlFlags.ConfiguredDomainModelType; }

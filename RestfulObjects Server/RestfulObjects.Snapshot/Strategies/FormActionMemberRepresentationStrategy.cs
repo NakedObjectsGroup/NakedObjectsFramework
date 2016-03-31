@@ -14,8 +14,8 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+    public class FormActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
+        public FormActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
         protected override IEnumerable<ParameterRepresentation> GetParameterList() {
@@ -24,11 +24,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> {
-                CreateSelfLink(),
-                CreateUpLink(),
-                CreateActionLink()
-            }.ToArray();
+            return new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
         }
 
         protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {

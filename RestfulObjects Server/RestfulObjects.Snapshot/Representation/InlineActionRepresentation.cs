@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -21,26 +22,30 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Action;
             Id = strategy.GetId();
-            Parameters = strategy.GetParameters();
             Links = strategy.GetLinks();
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
         }
 
-        [DataMember(Name = JsonPropertyNames.Parameters)]
-        public MapRepresentation Parameters { get; set; }
-
         public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
-            var actionRepresentationStrategy =  AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
+            var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
+            var optionals = new List<OptionalProperty>();
 
-            if (consent.IsVetoed) {
-                var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason)};
-                return CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, actionRepresentationStrategy}, optionals);
+            if (strategy.ShowParameters()) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Parameters, strategy.GetParameters()));
             }
 
-            return new InlineActionRepresentation(oidStrategy, actionRepresentationStrategy);
+            if (consent.IsVetoed) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
+            }
+
+            if (optionals.Any()) {
+                return CreateWithOptionals<InlineActionRepresentation>(new object[] { oidStrategy, strategy }, optionals);
+            }
+
+            return new InlineActionRepresentation(oidStrategy, strategy);
         }
     }
 }

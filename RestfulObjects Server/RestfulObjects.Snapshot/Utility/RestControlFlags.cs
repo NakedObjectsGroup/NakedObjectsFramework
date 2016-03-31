@@ -49,6 +49,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public bool FollowLinks { get; private set; }
         public bool SortBy { get; private set; }
         public bool BlobsClobs { get; private set; }
+        public bool InlineDetailsInMemberRepresentations { get; set; }
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
@@ -120,7 +121,11 @@ namespace RestfulObjects.Snapshot.Utility {
             return GetFlags(s => null);
         }
 
-        public static RestControlFlags FlagsFromArguments(bool validateOnly, int page, int pageSize, string domainModel = null) {
+        public static RestControlFlags FlagsFromArguments(bool validateOnly,
+                                                          int page,
+                                                          int pageSize,
+                                                          string domainModel = null,
+                                                          bool inlineDetailsInMemberRepresentations = true) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -135,7 +140,8 @@ namespace RestfulObjects.Snapshot.Utility {
                 SortBy = false,
                 BlobsClobs = false,
                 PageSize = DefaultPageSize(pageSize),
-                Page = DefaultPage(page)
+                Page = DefaultPage(page),
+                InlineDetailsInMemberRepresentations = inlineDetailsInMemberRepresentations
             };
 
             return controlFlags;

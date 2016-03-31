@@ -40,8 +40,8 @@ namespace MvcTestApp {
                 // 0, 3600, 86400 are the defaults 
                 //RestfulObjectsControllerBase.CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
 
-                // to set KeySeparator (for multi-part keys) defaults to "-"
-                //RestfulObjectsControllerBase.KeySeparator = "-";
+                // to set KeySeparator (for multi-part keys) defaults to "--"
+                //RestfulObjectsControllerBase.KeySeparator = "--";
 
                 // make Accept header handling non-strict (RO spec 2.4.4)
                 //RestfulObjectsControllerBase.AcceptHeaderStrict = false;

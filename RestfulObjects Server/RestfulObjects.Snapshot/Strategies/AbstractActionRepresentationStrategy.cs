@@ -31,6 +31,10 @@ namespace RestfulObjects.Snapshot.Strategies {
 
         protected HttpRequestMessage Req { get; }
 
+        public virtual bool ShowParameters() {
+            return true;
+        }
+
         public virtual void CreateParameters() {
             parameterList = GetParameterList();
         }
@@ -69,22 +73,6 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public abstract LinkRepresentation[] GetLinks();
-
-        protected virtual LinkRepresentation[] GetLinks(bool standalone) {
-            var tempLinks = new List<LinkRepresentation>();
-
-            if (standalone) {
-                tempLinks.Add(CreateSelfLink());
-                tempLinks.Add(CreateUpLink());
-            }
-            else {
-                tempLinks.Add(CreateDetailsLink());
-            }
-
-            tempLinks.Add(CreateActionLink());
-
-            return tempLinks.ToArray();
-        }
 
         protected LinkRepresentation CreateUpLink() {
             var helper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
@@ -145,23 +133,31 @@ namespace RestfulObjects.Snapshot.Strategies {
             return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
 
-        public static AbstractActionRepresentationStrategy GetStrategy(bool inline,  IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
-
+        public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             AbstractActionRepresentationStrategy strategy;
-            if (actionContext.Target.IsViewModelEditView) {
-                strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
-            }
-            else if (inline) {
-                strategy = new ActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
+            if (inline) {
+                if (actionContext.Target.IsViewModelEditView) {
+                    strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                }
+                else if (flags.InlineDetailsInMemberRepresentations) {
+                    strategy = new ActionMemberWithDetailsRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                }
+                else {
+                    strategy = new ActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                }
             }
             else {
-                strategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                if (actionContext.Target.IsViewModelEditView) {
+                    strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                }
+                else {
+                    strategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+                }
             }
 
             strategy.CreateParameters();
 
             return strategy;
         }
-
     }
 }

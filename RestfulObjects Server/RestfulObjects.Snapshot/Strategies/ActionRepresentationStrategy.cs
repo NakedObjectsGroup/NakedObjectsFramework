@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -17,7 +18,11 @@ namespace RestfulObjects.Snapshot.Strategies {
             : base(oidStrategy, req, actionContext, flags) {}
 
         public override LinkRepresentation[] GetLinks() {
-            return GetLinks(true);
+            return new List<LinkRepresentation> {
+                CreateSelfLink(),
+                CreateUpLink(),
+                CreateActionLink()
+            }.ToArray();
         }
     }
 }
