@@ -167,10 +167,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("List Products");
             SelectDropDownOnField("#category1", "Clothing");
                 var x = new SelectElement(WaitForCss("#subcategory1")).Options;
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bib-Shorts");
 
             SelectDropDownOnField("#category1", "Accessories");
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bike Racks");
 
         }
         public virtual void ConditionalChoicesDefaults()
