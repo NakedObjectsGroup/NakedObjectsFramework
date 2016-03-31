@@ -16,11 +16,11 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class AbstractActionRepresentationStrategy : AbstractStrategy {
+    public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
         private readonly RelType self;
         private IEnumerable<ParameterRepresentation> parameterList;
 
-        public AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+        protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Req = req;
             ActionContext = actionContext;
@@ -68,7 +68,9 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, Req, ActionContext)), Flags);
         }
 
-        public virtual LinkRepresentation[] GetLinks(bool standalone) {
+        public abstract LinkRepresentation[] GetLinks();
+
+        protected virtual LinkRepresentation[] GetLinks(bool standalone) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (standalone) {
@@ -142,5 +144,24 @@ namespace RestfulObjects.Snapshot.Strategies {
             }
             return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
+
+        public static AbstractActionRepresentationStrategy GetStrategy(bool inline,  IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
+
+            AbstractActionRepresentationStrategy strategy;
+            if (actionContext.Target.IsViewModelEditView) {
+                strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+            }
+            else if (inline) {
+                strategy = new ActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
+            }
+            else {
+                strategy = new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
+            }
+
+            strategy.CreateParameters();
+
+            return strategy;
+        }
+
     }
 }

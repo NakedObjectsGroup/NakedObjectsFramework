@@ -12,12 +12,12 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class ActionRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+    public class ActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
+        public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
         public override LinkRepresentation[] GetLinks() {
-            return GetLinks(true);
+            return GetLinks(false);
         }
     }
 }

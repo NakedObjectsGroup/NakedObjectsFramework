@@ -23,6 +23,10 @@ namespace RestfulObjects.Snapshot.Strategies {
             return visibleProperties.Select(GetParameter);
         }
 
+        public override LinkRepresentation[] GetLinks() {
+            return GetLinks(false);
+        }
+
         protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {
             IObjectFacade objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);

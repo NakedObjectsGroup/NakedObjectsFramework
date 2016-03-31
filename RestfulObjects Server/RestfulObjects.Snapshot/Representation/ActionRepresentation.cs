@@ -21,7 +21,7 @@ namespace RestfulObjects.Snapshot.Representations {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
             Parameters = strategy.GetParameters();
-            Links = strategy.GetLinks(true);
+            Links = strategy.GetLinks();
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
         }
@@ -44,11 +44,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
-            var actionRepresentationStrategy = actionContext.Target.IsViewModelEditView ?
-                (AbstractActionRepresentationStrategy) new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
-                new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
-
-            actionRepresentationStrategy.CreateParameters();
+            var actionRepresentationStrategy = AbstractActionRepresentationStrategy.GetStrategy(false, oidStrategy, req, actionContext, flags);
 
             return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);
         }

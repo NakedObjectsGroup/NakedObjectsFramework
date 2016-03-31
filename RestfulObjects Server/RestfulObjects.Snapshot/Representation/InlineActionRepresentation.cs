@@ -22,7 +22,7 @@ namespace RestfulObjects.Snapshot.Representations {
             MemberType = MemberTypes.Action;
             Id = strategy.GetId();
             Parameters = strategy.GetParameters();
-            Links = strategy.GetLinks(false);
+            Links = strategy.GetLinks();
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
         }
@@ -33,11 +33,7 @@ namespace RestfulObjects.Snapshot.Representations {
         public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
-            var actionRepresentationStrategy =  actionContext.Target.IsViewModelEditView ?
-                (AbstractActionRepresentationStrategy) new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
-                new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
-
-            actionRepresentationStrategy.CreateParameters();
+            var actionRepresentationStrategy =  AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
 
             if (consent.IsVetoed) {
                 var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason)};
