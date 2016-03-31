@@ -5,8 +5,9 @@
 module NakedObjects {
 
     // code constants - not for config
-
     let path: string = null;
+    // path local server (ie ~) only needed if you want to hard code paths for some reason
+    const svrPath = "";
 
     export function getSvrPath() {
         if (!path) {

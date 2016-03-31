@@ -16,9 +16,6 @@ module NakedObjects {
     export var appPath = "http://nakedobjectsrodemo.azurewebsites.net";
     //export var appPath = "http://localhost:61546";
 
-    // path local server (ie ~) only needed if you want to hard code paths for some reason
-    export var svrPath = "";
-
     export const defaultPageSize = 20; // can be overriden by server 
     export const listCacheSize = 5;
 
