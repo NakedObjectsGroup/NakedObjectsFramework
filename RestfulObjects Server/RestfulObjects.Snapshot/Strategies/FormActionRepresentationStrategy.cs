@@ -14,10 +14,9 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class FormActionRepresentationStrategy : ActionRepresentationStrategy {
+    public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
         public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
-
 
         protected override IEnumerable<ParameterRepresentation> GetParameterList() {
             var visibleProperties = ActionContext.Target.Specification.Properties.Where(p => p.IsUsable(ActionContext.Target).IsAllowed && p.IsVisible(ActionContext.Target));

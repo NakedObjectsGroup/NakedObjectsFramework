@@ -17,7 +17,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class InlineActionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineActionRepresentation(IOidStrategy oidStrategy, ActionRepresentationStrategy strategy)
+        protected InlineActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
             : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Action;
             Id = strategy.GetId();
@@ -34,7 +34,7 @@ namespace RestfulObjects.Snapshot.Representations {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
             var actionRepresentationStrategy =  actionContext.Target.IsViewModelEditView ?
-                new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
+                (AbstractActionRepresentationStrategy) new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
                 new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
 
             actionRepresentationStrategy.CreateParameters();

@@ -16,7 +16,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class ActionRepresentation : Representation {
-        protected ActionRepresentation(IOidStrategy oidStrategy, ActionRepresentationStrategy strategy)
+        protected ActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)
             : base(oidStrategy, strategy.GetFlags()) {
             SelfRelType = strategy.GetSelf();
             Id = strategy.GetId();
@@ -45,7 +45,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             var actionRepresentationStrategy = actionContext.Target.IsViewModelEditView ?
-                new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
+                (AbstractActionRepresentationStrategy) new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags) :
                 new ActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
 
             actionRepresentationStrategy.CreateParameters();
