@@ -35,7 +35,7 @@ module NakedObjects {
     import Title = Models.typePlusTitle;
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
     import FriendlyNameForParam = Models.friendlyNameForParam;
-    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    import ActionRepresentation = Models.ActionRepresentation;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;

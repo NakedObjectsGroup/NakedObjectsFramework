@@ -39,7 +39,7 @@ module NakedObjects.Models {
     }
 
     function emptyResource(): IResourceRepresentation {
-        return { links: [], extensions: {} };
+        return { links: [] as ILink[], extensions: {} };
     }
 
     function isILink(object: any): object is ILink {
