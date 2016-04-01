@@ -1,7 +1,7 @@
 ﻿
 using NakedObjects;
 
-namespace DomainModel
+namespace TinyApp
 {
     public class Customer
     {

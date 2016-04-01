@@ -1,7 +1,7 @@
 ﻿
 using System.Data.Entity;
 
-namespace DomainModel
+namespace TinyApp
 {
     public class MyDbContext : DbContext
     {

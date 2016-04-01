@@ -7,7 +7,7 @@
     <ProjectGuid>{23FC0852-E850-47B7-A62B-7CD0D060DEA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DomainModel</RootNamespace>
+    <RootNamespace>TinyApp</RootNamespace>
     <AssemblyName>DomainModel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

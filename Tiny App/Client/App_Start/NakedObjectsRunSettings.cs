@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
-using DomainModel;
+using TinyApp;
 
 namespace Client {
     public class NakedObjectsRunSettings {
@@ -21,7 +21,7 @@ namespace Client {
 
 		private static string[] ModelNamespaces { 
             get {
-                return new string[] { "DomainModel"}; //Add top-level namespace(s) that cover the domain model
+                return new string[] { "TinyApp"}; //Add top-level namespace(s) that cover the domain model
             }			
 		}
         
