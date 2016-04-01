@@ -41,13 +41,13 @@ module NakedObjects {
         const missingMandatoryFields = _.filter(fields, p => !p.clientValid && !p.message);
 
         if (missingMandatoryFields.length > 0) {
-            return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", "Missing mandatory fields: ");
+            return _.reduce(missingMandatoryFields, (s, t) => s + t.title + "; ", mandatoryFieldsPrefix);
         }
 
         const invalidFields = _.filter(fields, p => !p.clientValid);
 
         if (invalidFields.length > 0) {
-            return _.reduce(invalidFields, (s, t) => s + t.title + "; ", "Invalid fields: ");
+            return _.reduce(invalidFields, (s, t) => s + t.title + "; ", invalidFieldsPrefix);
         }
 
         return "";
@@ -100,7 +100,7 @@ module NakedObjects {
             const attachmentViewModel = new AttachmentViewModel();
             attachmentViewModel.href = href;
             attachmentViewModel.mimeType = mimeType;
-            attachmentViewModel.title = title || "UnknownFile";
+            attachmentViewModel.title = title || unknownFileTitle;
 
             return attachmentViewModel;
         }
@@ -514,9 +514,7 @@ module NakedObjects {
                     }
 
                     return this.contextService.getActionDetails(a.actionRep as ActionMember).
-                        then((details: ActionRepresentation) => {
-                            return wrappedInvoke(getParms(details), right);
-                        });
+                        then((details: ActionRepresentation) => wrappedInvoke(getParms(details), right));
                 };
 
                 // show dialog if more than 1 parm (single parm is collection itself)
@@ -566,7 +564,6 @@ module NakedObjects {
         listRep: ListRepresentation;
         routeData: PaneRouteData;
 
-        //title: string;
         size: number;
         pluralName: string;
         color: string;

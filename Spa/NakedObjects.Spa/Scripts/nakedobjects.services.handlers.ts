@@ -256,10 +256,9 @@ module NakedObjects {
 
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
-              
+                        focusTarget = FocusTarget.Dialog;
                         context.getInvokableAction(action).then((details: IInvokableAction) => {
-                            setDialog($scope, details, routeData);
-                            focusTarget = FocusTarget.Dialog;
+                            setDialog($scope, details, routeData);                         
                         });
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.SubAction;

@@ -24,6 +24,9 @@ module NakedObjects {
     export const closeActions = "Close actions";
     export const noActions = "No actions available";
     export const openActions = "Open actions";
+    export const mandatoryFieldsPrefix = "Missing mandatory fields: ";
+    export const invalidFieldsPrefix = "Invalid fields: ";
+    export const unknownFileTitle = "UnknownFile";
 
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;

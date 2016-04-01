@@ -137,11 +137,11 @@ module NakedObjects.Test {
                     executeHandleHome(handlers);
                 }));
 
-                //it("Verify state in scope", () => {
-                //    verifyBaseHomePageState(testScope);
-                //    verifyOpenMenuHomePageState(testScope);
-                //    verifyOpenDialogHomePageState(testScope);
-                //});
+                it("Verify state in scope", () => {
+                    verifyBaseHomePageState(testScope);
+                    verifyOpenMenuHomePageState(testScope);
+                    verifyOpenDialogHomePageState(testScope);
+                });
             });
         });
 
@@ -235,12 +235,12 @@ module NakedObjects.Test {
                     executeHandleObject(handlers);
                 }));
 
-                //it("Verify state in scope", () => {
-                //    verifyBaseObjectPageState(testScope);
-                //    verifyObjectViewPageState(testScope);
-                //    verifyActionsOpenPageState(testScope);
-                //    verifyOpenDialogObjectPageState(testScope);
-                //});
+                it("Verify state in scope", () => {
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
+                    verifyActionsOpenPageState(testScope);
+                    verifyOpenDialogObjectPageState(testScope);
+                });
             });
 
             describe("View with closed actions and dialog", () => {
@@ -255,12 +255,12 @@ module NakedObjects.Test {
                     executeHandleObject(handlers);
                 }));
 
-                //it("Verify state in scope", () => {
-                //    verifyBaseObjectPageState(testScope);
-                //    verifyObjectViewPageState(testScope);
-                //    verifyActionsClosedPageState(testScope);
-                //    verifyOpenDialogObjectPageState(testScope);
-                //});
+                it("Verify state in scope", () => {
+                    verifyBaseObjectPageState(testScope);
+                    verifyObjectViewPageState(testScope);
+                    verifyActionsClosedPageState(testScope);
+                    verifyOpenDialogObjectPageState(testScope);
+                });
             });
 
             describe("Edit", () => {
