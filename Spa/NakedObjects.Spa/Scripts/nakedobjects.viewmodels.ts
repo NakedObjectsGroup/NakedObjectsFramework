@@ -486,6 +486,7 @@ module NakedObjects {
 
                 const wrappedInvoke = a.executeInvoke;
                 a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+
                     const selected = _.filter(this.items, i => i.selected);
 
                     if (selected.length === 0) {
@@ -495,15 +496,27 @@ module NakedObjects {
 
                         return this.$q.reject(rp);
                     }
-                    const parms = _.values(a.actionRep.parameters()) as Parameter[];
-                    const contribParm = _.find(parms, p => p.isCollectionContributed());
-                    const parmValue = new Value(_.map(selected, i => i.link));
-                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
-                    const allpps = _.clone(pps);
-                    allpps.push(collectionParmVm);
+                    const getParms =  (action : IAction) => {
 
-                    return wrappedInvoke(allpps, right);
+                        const parms = _.values(action.parameters()) as Parameter[];
+                        const contribParm = _.find(parms, p => p.isCollectionContributed());
+                        const parmValue = new Value(_.map(selected, i => i.link));
+                        const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
+
+                        const allpps = _.clone(pps);
+                        allpps.push(collectionParmVm);
+                        return allpps;
+                    }
+
+                    if (a.actionRep.invokeLink()) {
+                        return wrappedInvoke(getParms(a.actionRep), right);
+                    }
+
+                    return this.contextService.getActionDetails(a.actionRep as ActionMember).
+                        then((details: ActionRepresentation) => {
+                            return wrappedInvoke(getParms(details), right);
+                        });
                 };
 
                 // show dialog if more than 1 parm (single parm is collection itself)

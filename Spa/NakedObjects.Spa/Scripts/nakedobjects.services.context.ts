@@ -578,19 +578,19 @@ module NakedObjects {
 
         context.invokeAction = (action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>) => {
 
-            const invokeOnMap = (im: InvokeMap) => {
+            const invokeOnMap = (iAction: IInvokableAction) => {
+                const im = iAction.getInvokeMap();
                 _.each(parms, (parm, k) => im.setParameter(k, parm));
-                const setDirty = getSetDirtyFunction(action, parms);
-                return invokeActionInternal(im, action, paneId, setDirty);
+                const setDirty = getSetDirtyFunction(iAction, parms);
+                return invokeActionInternal(im, iAction, paneId, setDirty);
             }
 
-            const invokeMap = action.getInvokeMap();
-
-            if (invokeMap) {
-                return invokeOnMap(invokeMap);
+            if (action.invokeLink()) {
+                // invokable
+                return invokeOnMap(action);
             } 
             // must be an actionMember or we would have found invokemap 
-            return context.getActionDetails(action as ActionMember).then((details: ActionRepresentation) => invokeOnMap(details.getInvokeMap()));
+            return context.getActionDetails(action as ActionMember).then((details: ActionRepresentation) => invokeOnMap(details));
         };
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
