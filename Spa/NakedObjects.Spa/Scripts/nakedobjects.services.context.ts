@@ -43,7 +43,9 @@ module NakedObjects {
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
-        getActionDetails : (actionmember: ActionMember) => ng.IPromise<ActionRepresentation>;
+        getActionDetails: (actionmember: ActionMember) => ng.IPromise<ActionRepresentation>;
+
+        getInvokableAction: (actionmember: ActionMember) => ng.IPromise<IInvokableAction>;
 
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
@@ -279,6 +281,15 @@ module NakedObjects {
         context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
             const details = actionMember.getDetails();
             return repLoader.populate(details);
+        };
+
+        context.getInvokableAction = (actionMember: ActionMember): ng.IPromise<IInvokableAction> => {
+
+            if (actionMember.invokeLink()) {
+                return $q.when(actionMember as IInvokableAction);
+            }
+
+            return context.getActionDetails(actionMember);
         };
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
@@ -585,12 +596,7 @@ module NakedObjects {
                 return invokeActionInternal(im, iAction, paneId, setDirty);
             }
 
-            if (action.invokeLink()) {
-                // invokable
-                return invokeOnMap(action);
-            } 
-            // must be an actionMember or we would have found invokemap 
-            return context.getActionDetails(action as ActionMember).then((details: ActionRepresentation) => invokeOnMap(details));
+            return context.getInvokableAction(action as ActionMember).then((details: IInvokableAction) => invokeOnMap(details));
         };
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {

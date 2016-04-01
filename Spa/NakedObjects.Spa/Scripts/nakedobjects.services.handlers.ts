@@ -14,6 +14,7 @@ module NakedObjects {
     import MenuRepresentation = Models.MenuRepresentation;
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
+    import IInvokableAction = Models.IInvokableAction;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -71,7 +72,7 @@ module NakedObjects {
         const deRegDialog = [, new DeReg(), new DeReg()];
         const deRegObject = [, new DeReg(), new DeReg()];
 
-        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionRepresentation | ActionViewModel, routeData: PaneRouteData) {
+        function setDialog($scope: INakedObjectsScope, action: IInvokableAction | ActionViewModel, routeData: PaneRouteData) {
             deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
@@ -138,7 +139,7 @@ module NakedObjects {
                                 if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
 
-                                    context.getActionDetails(action).then((details: ActionRepresentation) => {
+                                    context.getInvokableAction(action).then((details: IInvokableAction) => {
                                         setDialog($scope, details, routeData);
                                     });                           
                                 }
@@ -256,7 +257,7 @@ module NakedObjects {
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
               
-                        context.getActionDetails(action).then((details: ActionRepresentation) => {
+                        context.getInvokableAction(action).then((details: IInvokableAction) => {
                             setDialog($scope, details, routeData);
                             focusTarget = FocusTarget.Dialog;
                         });
