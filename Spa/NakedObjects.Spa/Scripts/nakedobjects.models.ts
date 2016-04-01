@@ -821,7 +821,7 @@ module NakedObjects.Models {
     // this interface guarantees that an action can be invoked. 
     // An ActionRepresentation is always invokable 
     // An Actionmember is not 
-    export interface IInvokableAction {
+    export interface IInvokableAction extends IHasExtensions{
         parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
         actionId(): string;
         invokeLink(): Link;
