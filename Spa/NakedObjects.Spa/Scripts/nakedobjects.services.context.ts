@@ -28,6 +28,7 @@ module NakedObjects {
     import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
     import HttpStatusCode = Models.HttpStatusCode;
     import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    import IAction = NakedObjects.Models.IAction;
 
     export interface IContext {
 
@@ -42,6 +43,8 @@ module NakedObjects {
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
+        getActionDetails : (actionmember: ActionMember) => ng.IPromise<ActionRepresentation>;
+
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
@@ -50,7 +53,7 @@ module NakedObjects {
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: ActionMember, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
+        invokeAction(action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
 
         updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
@@ -89,7 +92,7 @@ module NakedObjects {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
+        setResult(action: IAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
     }
 
@@ -274,8 +277,8 @@ module NakedObjects {
         };
 
 
-        function getActionDetails(actionmember: ActionMember): ng.IPromise<ActionRepresentation> {
-            const details = actionmember.getDetails();
+        context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
+            const details = actionMember.getDetails();
             return repLoader.populate(details);
         };
 
@@ -475,7 +478,7 @@ module NakedObjects {
 
         let nextTransientId = 0;
 
-        context.setResult = (action: ActionMember, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
+        context.setResult = (action: IAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
@@ -533,7 +536,7 @@ module NakedObjects {
             }
         };
 
-        function invokeActionInternal(invokeMap: InvokeMap, action: ActionMember, paneId: number, setDirty: () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: IAction, paneId: number, setDirty: () => void) {
 
             focusManager.setCurrentPane(paneId);
 
@@ -545,7 +548,7 @@ module NakedObjects {
                 });
         }
 
-        function getSetDirtyFunction(action: ActionMember, parms: _.Dictionary<Value>) {
+        function getSetDirtyFunction(action: IAction, parms: _.Dictionary<Value>) {
             const parent = action.parent;
             const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
 
@@ -575,10 +578,7 @@ module NakedObjects {
             return () => {};
         }
 
-        
-
-
-        context.invokeAction = (action: ActionMember, paneId: number, parms: _.Dictionary<Value>) => {
+        context.invokeAction = (action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>) => {
 
             const invokeOnMap = (invokeMap: InvokeMap) => {
                 _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
@@ -591,7 +591,8 @@ module NakedObjects {
             if (invokeMap) {
                 return invokeOnMap(invokeMap);
             } 
-            return getActionDetails(action).then((details: ActionRepresentation) => invokeOnMap(details.getInvokeMap()));
+            // must be an actionMember or we would have found invokemap 
+            return context.getActionDetails(action as ActionMember).then((details: ActionRepresentation) => invokeOnMap(details.getInvokeMap()));
         };
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {

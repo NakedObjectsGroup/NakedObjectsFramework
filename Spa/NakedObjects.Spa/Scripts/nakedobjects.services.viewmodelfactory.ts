@@ -35,11 +35,12 @@ module NakedObjects {
     import Title = Models.typePlusTitle;
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
     import FriendlyNameForParam = Models.friendlyNameForParam;
+    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember, vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember | ActionRepresentation , vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -298,7 +299,7 @@ module NakedObjects {
             return parmViewModel;
         };
 
-        viewModelFactory.actionViewModel = (actionRep: ActionMember, vm: MessageViewModel, routeData: PaneRouteData) => {
+        viewModelFactory.actionViewModel = (actionRep: ActionMember | ActionRepresentation, vm: MessageViewModel, routeData: PaneRouteData) => {
             const actionViewModel = new ActionViewModel();
 
             const parms = routeData.actionParams;
@@ -329,22 +330,23 @@ module NakedObjects {
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = showDialog() ?
-            (right?: boolean) => {
-                focusManager.setCurrentPane(paneId);
-                focusManager.focusOverrideOff();
-                urlManager.setDialog(actionRep.actionId(), paneId);
-                focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
-            } :
-            (right?: boolean) => {
-                focusManager.focusOverrideOff();
-                const pps = actionViewModel.parameters;
-                actionViewModel.executeInvoke(pps, right).catch((reject: ErrorWrapper) => {
-                    const parent = actionRep.parent as DomainObjectRepresentation;
-                    const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
-                    const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                    context.handleWrappedError(reject, parent, reset, display);
-                });
-            };
+                (right?: boolean) => {
+                    focusManager.setCurrentPane(paneId);
+                    focusManager.focusOverrideOff();
+                    urlManager.setDialog(actionRep.actionId(), paneId);
+                    focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+                } :
+                (right?: boolean) => {
+                    focusManager.focusOverrideOff();
+                    const pps = actionViewModel.parameters;
+                    actionViewModel.executeInvoke(pps, right).
+                        catch((reject: ErrorWrapper) => {
+                            const parent = actionRep.parent as DomainObjectRepresentation;
+                            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
+                            const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
+                            context.handleWrappedError(reject, parent, reset, display);
+                        });
+                };
 
             return actionViewModel;
         };

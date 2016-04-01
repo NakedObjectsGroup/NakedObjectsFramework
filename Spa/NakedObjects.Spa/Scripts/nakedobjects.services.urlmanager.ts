@@ -18,6 +18,7 @@ module NakedObjects {
     import Parameter = Models.Parameter;
     import Value = Models.Value;
     import MenuRepresentation = Models.MenuRepresentation;
+    import IAction = NakedObjects.Models.IAction;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -33,7 +34,7 @@ module NakedObjects {
         cancelDialog(paneId?: number): void;
 
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
-        setList(action: ActionMember, paneId?: number): void;
+        setList(action: IAction, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
         toggleObjectMenu(paneId?: number): void;
@@ -483,7 +484,7 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
 
-        helper.setList = (actionMember: ActionMember, paneId = 1) => {
+        helper.setList = (actionMember: IAction, paneId = 1) => {
             const newValues = {} as _.Dictionary<string>;
             const parent = actionMember.parent;
 

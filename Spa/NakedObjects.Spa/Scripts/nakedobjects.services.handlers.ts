@@ -15,6 +15,7 @@ module NakedObjects {
     import MenusRepresentation = Models.MenusRepresentation;
     import MenuRepresentation = Models.MenuRepresentation;
     import Extensions = Models.Extensions;
+    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -72,12 +73,13 @@ module NakedObjects {
         const deRegDialog = [, new DeReg(), new DeReg()];
         const deRegObject = [, new DeReg(), new DeReg()];
 
-        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionViewModel, routeData: PaneRouteData) {
+        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionRepresentation | ActionViewModel, routeData: PaneRouteData) {
             deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
             const dialogViewModel = perPaneDialogViews[routeData.paneId];
-            const actionViewModel = action instanceof ActionMember ? viewModelFactory.actionViewModel(action, dialogViewModel, routeData) : action as ActionViewModel;
+            const isAlreadyViewModel = action instanceof ActionViewModel;
+            const actionViewModel = !isAlreadyViewModel ? viewModelFactory.actionViewModel(action as ActionMember | ActionRepresentation, dialogViewModel, routeData) : action as ActionViewModel;
 
             dialogViewModel.reset(actionViewModel, routeData);
             $scope.dialog = dialogViewModel;
@@ -137,7 +139,10 @@ module NakedObjects {
 
                                 if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
-                                    setDialog($scope, action, routeData);
+
+                                    context.getActionDetails(action).then((details: ActionRepresentation) => {
+                                        setDialog($scope, details, routeData);
+                                    });                           
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
@@ -252,8 +257,11 @@ module NakedObjects {
 
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
-                        setDialog($scope, action, routeData);
-                        focusTarget = FocusTarget.Dialog;
+              
+                        context.getActionDetails(action).then((details: ActionRepresentation) => {
+                            setDialog($scope, details, routeData);
+                            focusTarget = FocusTarget.Dialog;
+                        });
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.SubAction;
                     } else if (ovm.isInEdit) {

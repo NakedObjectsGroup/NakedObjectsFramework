@@ -818,9 +818,21 @@ module NakedObjects.Models {
         }
     }
 
-    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> {
+    // common stuff between ActionMember and ActionRepresentation
+    export interface IAction {
+        parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
+        actionId(): string;
+        invokeLink(): Link;
+        getInvokeMap(): InvokeMap;
+        parameters(): _.Dictionary<Parameter>;
+        disabledReason(): string;
+    }
+
+    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> implements IAction {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
+
+        parent : DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
 
         // links 
         selfLink(): Link {
@@ -1340,7 +1352,7 @@ module NakedObjects.Models {
     }
 
     // matches 14.4.3 
-    export class ActionMember extends Member<RoInterfaces.IActionMember> {
+    export class ActionMember extends Member<RoInterfaces.IActionMember> implements IAction {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
@@ -1353,7 +1365,9 @@ module NakedObjects.Models {
         }
 
         getDetails(): ActionRepresentation {
-            return <ActionRepresentation> this.detailsLink().getTarget();
+            const details = <ActionRepresentation>this.detailsLink().getTarget();
+            details.parent = this.parent;
+            return details;
         }
 
         // 1.1 inlined 

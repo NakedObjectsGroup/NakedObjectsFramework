@@ -21,6 +21,8 @@ module NakedObjects {
     import CollectionMember = Models.CollectionMember;
     import MenusRepresentation = Models.MenusRepresentation;
     import DateString = Models.toDateString;
+    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    import IAction = NakedObjects.Models.IAction;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -318,7 +320,7 @@ module NakedObjects {
     }
 
     export class ActionViewModel {
-        actionRep: ActionMember;
+        actionRep: ActionMember | ActionRepresentation;
         menuPath: string;
         title: string;
         description: string;
@@ -361,7 +363,7 @@ module NakedObjects {
         isQueryOnly: boolean;
         onPaneId: number;
 
-        actionMember: ActionMember;
+        actionMember: ActionMember| ActionRepresentation;
         actionViewModel: ActionViewModel;
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
