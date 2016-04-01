@@ -378,28 +378,29 @@ module NakedObjects {
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
+
         doInvoke = (right?: boolean) =>
             this.executeInvoke(right).
-            then((actionResult: ActionResultRepresentation) => {
-                if (actionResult.shouldExpectResult()) {
-                    this.message = actionResult.warningsOrMessages() || noResultMessage;
-                } else if (actionResult.resultType() === "void") {
-                    // dialog staying on same page so treat as cancel 
-                    // for url replacing purposes
-                    this.doCancel();
-                }
-                else if (!right) {
-                    // going to new page close dialog (and do not replace url)
-                    this.doClose();
-                }
-                // else leave open if opening on other pane and dialog has result
+                then((actionResult: ActionResultRepresentation) => {
+                    if (actionResult.shouldExpectResult()) {
+                        this.message = actionResult.warningsOrMessages() || noResultMessage;
+                    } else if (actionResult.resultType() === "void") {
+                        // dialog staying on same page so treat as cancel 
+                        // for url replacing purposes
+                        this.doCancel();
+                    }
+                    else if (!right) {
+                        // going to new page close dialog (and do not replace url)
+                        this.doClose();
+                    }
+                    // else leave open if opening on other pane and dialog has result
 
-            }).
-            catch((reject: ErrorWrapper) => {
-                const parent = this.actionMember.parent as DomainObjectRepresentation;
-                const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                this.context.handleWrappedError(reject, parent, () => {}, display);
-            });
+                }).
+                catch((reject: ErrorWrapper) => {
+                    const parent = this.actionMember.parent as DomainObjectRepresentation;
+                    const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
+                    this.context.handleWrappedError(reject, parent, () => { }, display);
+                });
 
         doClose = () => {
             this.urlManager.closeDialog(this.onPaneId);
@@ -504,25 +505,25 @@ module NakedObjects {
 
                     return wrappedInvoke(allpps, right);
                 };
-                a.doInvoke = _.keys(a.actionRep.parameters()).length > 1 ?
-                (right?: boolean) => {
-                    this.focusManager.focusOverrideOff();
-                    this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
-                } :
-                (right?: boolean) => {
-                    a.executeInvoke([], right).
-                        then((result: ActionResultRepresentation) => {
-                            if (result.shouldExpectResult()) {
-                                this.message = result.warningsOrMessages() || noResultMessage;
-                            } else {
-                                this.message = "";
-                            }
-                        }).
-                        catch((reject: ErrorWrapper) => {
-                            const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                            this.contextService.handleWrappedError(reject, null, () => {}, display);
-                        });
-                };
+
+                // show dialog if more than 1 parm (single parm is collection itself)
+                const showDialog = () => _.keys(a.actionRep.parameters()).length > 1;
+
+                a.doInvoke = showDialog() ?
+                    (right?: boolean) => {
+                        this.focusManager.focusOverrideOff();
+                        this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
+                    } :
+                    (right?: boolean) => {
+                        a.executeInvoke([], right).
+                            then((result: ActionResultRepresentation) => {
+                                this.message = result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "";
+                            }).
+                            catch((reject: ErrorWrapper) => {
+                                const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                                this.contextService.handleWrappedError(reject, null, () => { }, display);
+                            });
+                    };
             });
             return this;
         }
