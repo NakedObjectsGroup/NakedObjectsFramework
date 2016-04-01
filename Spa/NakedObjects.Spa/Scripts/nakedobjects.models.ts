@@ -818,8 +818,10 @@ module NakedObjects.Models {
         }
     }
 
-    // common stuff between ActionMember and ActionRepresentation
-    export interface IAction {
+    // this interface guarantees that an action can be invoked. 
+    // An ActionRepresentation is always invokable 
+    // An Actionmember is not 
+    export interface IInvokableAction {
         parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
         actionId(): string;
         invokeLink(): Link;
@@ -828,7 +830,7 @@ module NakedObjects.Models {
         disabledReason(): string;
     }
 
-    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> implements IAction {
+    export class ActionRepresentation extends ResourceRepresentation<RoInterfaces.IActionRepresentation> implements IInvokableAction {
 
         wrapped = () => this.resource() as RoInterfaces.IActionRepresentation;
 
@@ -1352,7 +1354,7 @@ module NakedObjects.Models {
     }
 
     // matches 14.4.3 
-    export class ActionMember extends Member<RoInterfaces.IActionMember> implements IAction {
+    export class ActionMember extends Member<RoInterfaces.IActionMember> {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 

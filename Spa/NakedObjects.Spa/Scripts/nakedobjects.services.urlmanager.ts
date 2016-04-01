@@ -18,7 +18,7 @@ module NakedObjects {
     import Parameter = Models.Parameter;
     import Value = Models.Value;
     import MenuRepresentation = Models.MenuRepresentation;
-    import IAction = NakedObjects.Models.IAction;
+    import IAction = NakedObjects.Models.IInvokableAction;
 
     export interface IUrlManager {
         getRouteData(): RouteData;

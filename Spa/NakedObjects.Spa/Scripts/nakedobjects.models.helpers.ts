@@ -93,8 +93,8 @@ module NakedObjects.Models {
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
-    export function friendlyNameForParam(action: ActionMember, parmId: string) {
-        const param = _.find(action.parameters(), (p) => p.id() == parmId);
+    export function friendlyNameForParam(action: Models.IInvokableAction, parmId: string) {
+        const param = _.find(action.parameters(), (p) => p.id() === parmId);
         return param.extensions().friendlyName();
     }
 

@@ -2,20 +2,18 @@
 /// <reference path="typings/lodash/lodash.d.ts" />
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
-/// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
     import ErrorWrapper = Models.ErrorWrapper;
     import ErrorCategory = Models.ErrorCategory;
     import ClientErrorCode = Models.ClientErrorCode;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
-    import Value = Models.Value;
     import ActionMember = Models.ActionMember;
     import VersionRepresentation = Models.VersionRepresentation;
     import MenusRepresentation = Models.MenusRepresentation;
     import MenuRepresentation = Models.MenuRepresentation;
     import Extensions = Models.Extensions;
-    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    import ActionRepresentation = Models.ActionRepresentation;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;

@@ -21,8 +21,8 @@ module NakedObjects {
     import CollectionMember = Models.CollectionMember;
     import MenusRepresentation = Models.MenusRepresentation;
     import DateString = Models.toDateString;
-    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
-    import IAction = NakedObjects.Models.IAction;
+    import ActionRepresentation = Models.ActionRepresentation;
+    import IAction = Models.IInvokableAction;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;

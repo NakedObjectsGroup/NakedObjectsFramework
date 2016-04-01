@@ -27,8 +27,8 @@ module NakedObjects {
     import InvokeMap = Models.InvokeMap;
     import DomainTypeActionInvokeRepresentation = Models.DomainTypeActionInvokeRepresentation;
     import HttpStatusCode = Models.HttpStatusCode;
-    import ActionRepresentation = NakedObjects.Models.ActionRepresentation;
-    import IAction = NakedObjects.Models.IAction;
+    import ActionRepresentation = Models.ActionRepresentation;
+    import IInvokableAction = Models.IInvokableAction;
 
     export interface IContext {
 
@@ -92,7 +92,7 @@ module NakedObjects {
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
-        setResult(action: IAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
+        setResult(action: IInvokableAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
     }
 
@@ -276,12 +276,10 @@ module NakedObjects {
                 });
         };
 
-
         context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
             const details = actionMember.getDetails();
             return repLoader.populate(details);
         };
-
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
 
@@ -478,7 +476,7 @@ module NakedObjects {
 
         let nextTransientId = 0;
 
-        context.setResult = (action: IAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
+        context.setResult = (action: IInvokableAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number) => {
 
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
@@ -536,7 +534,7 @@ module NakedObjects {
             }
         };
 
-        function invokeActionInternal(invokeMap: InvokeMap, action: IAction, paneId: number, setDirty: () => void) {
+        function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, paneId: number, setDirty: () => void) {
 
             focusManager.setCurrentPane(paneId);
 
@@ -548,7 +546,7 @@ module NakedObjects {
                 });
         }
 
-        function getSetDirtyFunction(action: IAction, parms: _.Dictionary<Value>) {
+        function getSetDirtyFunction(action: IInvokableAction, parms: _.Dictionary<Value>) {
             const parent = action.parent;
             const actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
 
@@ -580,10 +578,10 @@ module NakedObjects {
 
         context.invokeAction = (action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>) => {
 
-            const invokeOnMap = (invokeMap: InvokeMap) => {
-                _.each(parms, (parm, k) => invokeMap.setParameter(k, parm));
+            const invokeOnMap = (im: InvokeMap) => {
+                _.each(parms, (parm, k) => im.setParameter(k, parm));
                 const setDirty = getSetDirtyFunction(action, parms);
-                return invokeActionInternal(invokeMap, action, paneId, setDirty);
+                return invokeActionInternal(im, action, paneId, setDirty);
             }
 
             const invokeMap = action.getInvokeMap();
