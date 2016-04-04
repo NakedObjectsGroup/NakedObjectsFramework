@@ -443,13 +443,18 @@ module NakedObjects {
 
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
-            const promise = () => context.getMenu(menuId).then(menu => repLoader.invoke(menu.actionMember(actionId), parms, urlParms));
+            const promise = () => context.getMenu(menuId).
+                then(menu => context.getInvokableAction(menu.actionMember(actionId))).
+                then(details => repLoader.invoke(details, parms, urlParms));
             return getList(paneId, promise, page, pageSize);
         };
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
-            const promise = () => context.getObjectByOid(paneId, objectId).then(object => repLoader.invoke(object.actionMember(actionId), parms, urlParms));
+            const promise = () => context.getObjectByOid(paneId, objectId).
+                then(object => context.getInvokableAction(object.actionMember(actionId))).
+                then(details => repLoader.invoke(details, parms, urlParms));
+
             return getList(paneId, promise, page, pageSize);
         };
 

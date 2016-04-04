@@ -15,6 +15,7 @@ module NakedObjects {
     import ErrorMap = Models.ErrorMap;
     import HttpStatusCode = Models.HttpStatusCode;
     import ErrorWrapper = Models.ErrorWrapper;
+    import IInvokableAction = NakedObjects.Models.IInvokableAction;
 
     export interface IRepLoader {
         validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
@@ -22,7 +23,7 @@ module NakedObjects {
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string) => ng.IPromise<T>;
         retrieveFromLink: <T extends IHateoasModel>(link: Link) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
-        invoke: (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
+        invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
     }
 
     app.service("repLoader", function($http: ng.IHttpService, $q: ng.IQService, $rootScope: ng.IRootScopeService, $cacheFactory: ng.ICacheFactoryService) {
@@ -169,7 +170,7 @@ module NakedObjects {
         };
 
 
-        repLoader.invoke = (action: ActionMember, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise<ActionResultRepresentation> => {
+        repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise<ActionResultRepresentation> => {
             const invokeMap = action.getInvokeMap();
             _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
