@@ -210,12 +210,12 @@ module NakedObjects {
             return !!this.routeData().dialogId;
         }
 
-        protected getActionForCurrentDialog(): ng.IPromise<ActionMember> {
+        protected getActionForCurrentDialog(): ng.IPromise<Models.IInvokableAction> {
             const dialogId = this.routeData().dialogId;
             if (this.isObject()) {
-                return this.getObject().then((obj: DomainObjectRepresentation) => this.$q.when(obj.actionMember(dialogId)));
+                return this.getObject().then((obj: DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId)));
             } else if (this.isMenu()) {
-                return this.getMenu().then((menu: MenuRepresentation) => this.$q.when(menu.actionMember(dialogId))); //i.e. return a promise
+                return this.getMenu().then((menu: MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); //i.e. return a promise
             }
             return this.$q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, "List actions not implemented yet"));
         }
@@ -731,7 +731,8 @@ module NakedObjects {
         }
 
         private fieldEntryForDialog(fieldName: string, fieldEntry: string) {
-            this.getActionForCurrentDialog().then((action: ActionMember) => {
+            this.getActionForCurrentDialog().then((action: Models.IInvokableAction) => {
+                //TODO: error -  need to get invokable action to get the params.
                 let params = _.map(action.parameters(), param => param);
                 params = this.matchFriendlyNameAndOrMenuPath(params, fieldName);
                 switch (params.length) {

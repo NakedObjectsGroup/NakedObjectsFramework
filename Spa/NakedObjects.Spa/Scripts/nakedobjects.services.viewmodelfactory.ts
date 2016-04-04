@@ -41,7 +41,7 @@ module NakedObjects {
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
         errorViewModel(errorRep: ErrorWrapper): ErrorViewModel;
-        actionViewModel(actionRep: ActionMember | ActionRepresentation , vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
+        actionViewModel(actionRep: ActionMember | ActionRepresentation, vm: MessageViewModel, routedata: PaneRouteData): ActionViewModel;
         collectionViewModel(collectionRep: CollectionMember, routeData: PaneRouteData): CollectionViewModel;
         listPlaceholderViewModel(routeData: PaneRouteData): CollectionPlaceholderViewModel;
         servicesViewModel(servicesRep: DomainServicesRepresentation): ServicesViewModel;
@@ -53,18 +53,18 @@ module NakedObjects {
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
-        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]) : void;
-        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel) : ItemViewModel[];
+        handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]): void;
+        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
-        recentItemsViewModel(paneId : number) : RecentItemsViewModel;
+        recentItemsViewModel(paneId: number): RecentItemsViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
-        recentItemViewModel(obj: DomainObjectRepresentation,  linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
+        recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
     }
 
-    app.service("viewModelFactory", function($q: ng.IQService,
+    app.service("viewModelFactory", function ($q: ng.IQService,
         $timeout: ng.ITimeoutService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
@@ -79,7 +79,7 @@ module NakedObjects {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route : any) {
+        $route: any) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -156,7 +156,7 @@ module NakedObjects {
             return itemViewModel;
         };
 
-        viewModelFactory.recentItemViewModel = (obj : DomainObjectRepresentation,  linkRep: Link, paneId: number, selected: boolean) => {
+        viewModelFactory.recentItemViewModel = (obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean) => {
             const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as RecentItemViewModel;
             recentItemViewModel.friendlyName = obj.extensions().friendlyName();
             return recentItemViewModel;
@@ -188,8 +188,8 @@ module NakedObjects {
             parmViewModel.password = parmRep.extensions().dataType() === "password";
             parmViewModel.clientValid = true;
 
-            parmViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
-                const message =  mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue, parmViewModel.localFilter);
+            parmViewModel.validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
+                const message = mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue, parmViewModel.localFilter);
 
                 if (message !== mandatory) {
                     parmViewModel.message = message;
@@ -234,7 +234,7 @@ module NakedObjects {
                         then(createcvm);
                 };
                 // fromPairs definition faulty
-                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)]));
+                parmViewModel.arguments = (<any>_).fromPairs(_.map(parmRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm || parmViewModel.isCollectionContributed) {
@@ -419,8 +419,8 @@ module NakedObjects {
             } else {
                 propertyViewModel.value = value.toString();
             }
-        
-            propertyViewModel.validate = (modelValue: any, viewValue : string, mandatoryOnly : boolean) => {
+
+            propertyViewModel.validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
                 const message = mandatoryOnly ? Models.validateMandatory(propertyRep, viewValue) : Models.validate(propertyRep, modelValue, viewValue, propertyViewModel.localFilter);
 
                 if (message !== mandatory) {
@@ -500,7 +500,7 @@ module NakedObjects {
                         then(createcvm);
                 };
                 // fromPairs definition faulty
-                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)]));
+                propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
             if (fieldEntryType !== EntryType.FreeForm) {
@@ -528,7 +528,7 @@ module NakedObjects {
                 } else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
-            } else if (value.isNull()) { 
+            } else if (value.isNull()) {
                 // ie null reference 
                 propertyViewModel.formattedValue = "";
             } else {
@@ -565,8 +565,8 @@ module NakedObjects {
             if (populateItems) {
 
                 const getActionExtensions = routeData.objectId ?
-                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                    () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -627,14 +627,14 @@ module NakedObjects {
             collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
 
             switch (state) {
-            case CollectionViewState.List:
-                collectionViewModel.template = collectionListTemplate;
-                break;
-            case CollectionViewState.Table:
-                collectionViewModel.template = collectionTableTemplate;
-                break;
-            default:
-                collectionViewModel.template = collectionSummaryTemplate;
+                case CollectionViewState.List:
+                    collectionViewModel.template = collectionListTemplate;
+                    break;
+                case CollectionViewState.Table:
+                    collectionViewModel.template = collectionTableTemplate;
+                    break;
+                default:
+                    collectionViewModel.template = collectionSummaryTemplate;
             }
 
             collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
@@ -652,8 +652,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
-                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () =>
@@ -816,12 +816,15 @@ module NakedObjects {
                     } else {
                         if (routeData.menuId) {
                             context.getMenu(routeData.menuId)
-                                .then((menu: MenuRepresentation) => {
-                                    let output = "";
-                                    output += menu.title() + " menu" + "\n";
-                                    output += renderActionDialogIfOpen(menu, routeData, mask);
-                                    cvm.clearInput();
-                                    cvm.output = output;
+                                .then((menu: MenuRepresentation) => {                                  
+                                    cvm.output = menu.title() + " menu" + "\n";                                                                      
+                                    return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
+                                }).then((details: IInvokableAction) => {
+                                    if (details) {                                       
+                                        cvm.output += renderActionDialog(details, routeData, mask);
+                                    }                                  
+                                }).finally(() => {
+                                    cvm.clearInput();                            
                                     appendAlertIfAny(cvm);
                                 });
                         } else {
@@ -845,37 +848,63 @@ module NakedObjects {
                                     const coll = obj.collectionMember(id);
                                     output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
                                     switch (coll.size()) {
-                                    case 0:
-                                        output += "empty";
-                                        break;
-                                    case 1:
-                                        output += "1 item";
-                                        break;
-                                    default:
-                                        output += `${coll.size()} items`;
+                                        case 0:
+                                            output += "empty";
+                                            break;
+                                        case 1:
+                                            output += "1 item";
+                                            break;
+                                        default:
+                                            output += `${coll.size()} items`;
                                     }
+                                    //TODO: These three lines (or similar) repeated. Extract into function.
+                                    cvm.clearInput();
+                                    cvm.output = output;
+                                    appendAlertIfAny(cvm);
                                 } else {
                                     if (obj.isTransient()) {
                                         output += "Unsaved ";
                                         output += FriendlyTypeName(obj.domainType()) + "\n";
                                         output += renderModifiedProperties(obj, routeData, mask);
+                                        cvm.clearInput();
+                                        cvm.output = output;
+                                        appendAlertIfAny(cvm);
                                     } else if (routeData.interactionMode === InteractionMode.Edit ||
                                         routeData.interactionMode === InteractionMode.Form) {
-                                        output += "Editing ";
-                                        output += PlusTitle(obj) + "\n";
+                                        cvm.output = "Editing ";
+                                        cvm.output += PlusTitle(obj) + "\n";
                                         if (routeData.dialogId) {
-                                            output += renderActionDialogIfOpen(obj, routeData, mask);
+                                            context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                                                .then((details: IInvokableAction) => {
+                                                    cvm.clearInput();
+                                                    cvm.output += renderActionDialog(details, routeData, mask);
+                                                    appendAlertIfAny(cvm);
+                                                });
                                         } else {
-                                            output += renderModifiedProperties(obj, routeData, mask);
+                                            cvm.clearInput();
+                                            cvm.output += renderModifiedProperties(obj, routeData, mask);
+                                            appendAlertIfAny(cvm);
                                         }
                                     } else {
-                                        output += Title(obj) + "\n";
-                                        output += renderActionDialogIfOpen(obj, routeData, mask);
+                                        cvm.output = Title(obj) + "\n";
+                                        if (routeData.dialogId) {
+                                            context.getInvokableAction(obj.actionMember(routeData.dialogId))
+                                                .then((details: IInvokableAction) => {
+                                                    cvm.clearInput();
+                                                    cvm.output += renderActionDialog(details, routeData, mask);
+                                                    appendAlertIfAny(cvm);
+                                                });
+                                        }
+                                        else {
+                                            cvm.clearInput();
+                                            appendAlertIfAny(cvm);
+                                        }
+
                                     }
                                 }
-                                cvm.clearInput();
-                                cvm.output = output;
-                                appendAlertIfAny(cvm);
+                                //cvm.clearInput();
+                                //cvm.output = output;
+                                //appendAlertIfAny(cvm);
                             }).catch((reject: ErrorWrapper) => {
 
                                 const custom = (cc: ClientErrorCode) => {
@@ -886,7 +915,7 @@ module NakedObjects {
                                     return false;
                                 };
 
-                                context.handleWrappedError(reject, null, () => {}, () => {}, custom);
+                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
                             });
                     }
                 };
@@ -955,7 +984,7 @@ module NakedObjects {
     //Handles empty values, and also enum conversion
     export function renderFieldValue(field: IField, value: Value, mask: IMask): string {
         if (!field.isScalar()) { //i.e. a reference
-            return value.isNull() ? "empty": value.toString();          
+            return value.isNull() ? "empty" : value.toString();
         }
         //Rest is for scalar fields only:
         if (value.toString()) { //i.e. not empty
@@ -976,9 +1005,9 @@ module NakedObjects {
         let properScalarValue: number | string | boolean | Date;
         if (isDateOrDateTime(field)) {
             properScalarValue = toUtcDate(value);
-        } else  {
+        } else {
             properScalarValue = value.scalar();
-        } 
+        }
         const remoteMask = field.extensions().mask();
         const format = field.extensions().format();
         let formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
@@ -1001,6 +1030,21 @@ module NakedObjects {
                 output += "\n";
             });
         }
+        return output;
+    }
+
+    function renderActionDialog(
+        invokable: Models.IInvokableAction,
+        routeData: PaneRouteData,
+        mask: IMask): string {
+        const actionName = invokable.extensions().friendlyName();
+        let output = `Action dialog: ${actionName}\n`;
+        _.forEach(routeData.dialogFields, (value, paramId) => {
+            output += FriendlyNameForParam(invokable, paramId) + ": ";
+            const param = invokable.parameters()[paramId];
+            output += renderFieldValue(param, value, mask);
+            output += "\n";
+        });
         return output;
     }
 
