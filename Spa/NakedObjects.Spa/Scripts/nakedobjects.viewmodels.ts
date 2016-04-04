@@ -22,7 +22,7 @@ module NakedObjects {
     import MenusRepresentation = Models.MenusRepresentation;
     import DateString = Models.toDateString;
     import ActionRepresentation = Models.ActionRepresentation;
-    import IAction = Models.IInvokableAction;
+    import IInvokableAction = Models.IInvokableAction;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -320,17 +320,21 @@ module NakedObjects {
     }
 
     export class ActionViewModel {
-        actionRep: ActionMember | ActionRepresentation;
+        actionRep: ActionMember | ActionRepresentation | IInvokableAction;
         menuPath: string;
         title: string;
         description: string;
+
+        // todo - confusing name better 
         doInvoke: (right?: boolean) => void;
         executeInvoke: (pps: ParameterViewModel[], right?: boolean) => ng.IPromise<ActionResultRepresentation>;
 
         disabled(): boolean { return false; }
 
-        parameters: ParameterViewModel[];
+        parameters: () => ParameterViewModel[];
         stopWatchingParms: () => void;
+
+        makeInvokable : (details : IInvokableAction) => void;
     }
 
     export class DialogViewModel extends MessageViewModel {
@@ -343,39 +347,37 @@ module NakedObjects {
         }
 
         reset(actionViewModel: ActionViewModel, routeData: PaneRouteData) {
-            this.actionMember = actionViewModel.actionRep;
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
             const fields = routeData.dialogFields;
-            const parameters = _.filter(actionViewModel.parameters, p => !p.isCollectionContributed);
+            const parameters = _.filter(actionViewModel.parameters(), p => !p.isCollectionContributed);
             this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], this.onPaneId));
 
-            this.title = this.actionMember.extensions().friendlyName();
-            this.isQueryOnly = this.actionMember.invokeLink().method() === "GET";
+            this.title = this.actionMember().extensions().friendlyName();
+            this.isQueryOnly = this.actionMember().invokeLink().method() === "GET";
             this.message = "";
             return this;
         }
 
-
+        private actionMember = () => this.actionViewModel.actionRep;
         title: string;
         message: string;
         isQueryOnly: boolean;
         onPaneId: number;
 
-        actionMember: ActionMember| ActionRepresentation;
         actionViewModel: ActionViewModel;
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember.actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -397,7 +399,7 @@ module NakedObjects {
 
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const parent = this.actionMember.parent as DomainObjectRepresentation;
+                    const parent = this.actionMember().parent as DomainObjectRepresentation;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
                     this.context.handleWrappedError(reject, parent, () => { }, display);
                 });
@@ -416,7 +418,7 @@ module NakedObjects {
         };
 
         isSame(paneId: number, otherAction: ActionMember) {
-            return this.onPaneId === paneId && this.actionMember.invokeLink().href() === otherAction.invokeLink().href();
+            return this.onPaneId === paneId && this.actionMember().invokeLink().href() === otherAction.invokeLink().href();
         }
 
         parameters: ParameterViewModel[];
@@ -497,7 +499,7 @@ module NakedObjects {
                         return this.$q.reject(rp);
                     }
 
-                    const getParms =  (action : IAction) => {
+                    const getParms = (action: IInvokableAction) => {
 
                         const parms = _.values(action.parameters()) as Parameter[];
                         const contribParm = _.find(parms, p => p.isCollectionContributed());
@@ -518,23 +520,30 @@ module NakedObjects {
                 };
 
                 // show dialog if more than 1 parm (single parm is collection itself)
-                const showDialog = () => _.keys(a.actionRep.parameters()).length > 1;
+                const showDialog = () => {
+                    return this.contextService.getInvokableAction(a.actionRep as ActionMember).then((ia: IInvokableAction) => {
+                        return _.keys(ia.parameters()).length > 1;
+                    });
+                }
 
-                a.doInvoke = showDialog() ?
-                    (right?: boolean) => {
-                        this.focusManager.focusOverrideOff();
-                        this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
-                    } :
-                    (right?: boolean) => {
-                        a.executeInvoke([], right).
-                            then((result: ActionResultRepresentation) => {
-                                this.message = result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "";
-                            }).
-                            catch((reject: ErrorWrapper) => {
-                                const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
-                                this.contextService.handleWrappedError(reject, null, () => { }, display);
-                            });
-                    };
+                a.doInvoke = () => {};
+
+                showDialog().
+                    then((show: boolean) => a.doInvoke = show ?
+                        (right?: boolean) => {
+                            this.focusManager.focusOverrideOff();
+                            this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
+                        } :
+                        (right?: boolean) => {
+                            a.executeInvoke([], right).
+                                then((result: ActionResultRepresentation) => {
+                                    this.message = result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "";
+                                }).
+                                catch((reject: ErrorWrapper) => {
+                                    const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                                    this.contextService.handleWrappedError(reject, null, () => { }, display);
+                                });
+                        });
             });
             return this;
         }

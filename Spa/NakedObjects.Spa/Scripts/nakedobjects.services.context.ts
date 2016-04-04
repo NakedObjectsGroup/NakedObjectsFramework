@@ -45,7 +45,7 @@ module NakedObjects {
 
         getActionDetails: (actionmember: ActionMember) => ng.IPromise<ActionRepresentation>;
 
-        getInvokableAction: (actionmember: ActionMember) => ng.IPromise<IInvokableAction>;
+        getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<IInvokableAction>;
 
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
@@ -55,7 +55,7 @@ module NakedObjects {
         //The object values are only needed on a transient object / editable view model
         conditionalChoices(field: IField, id: string, objectValues: () => _.Dictionary<Value>, args: _.Dictionary<Value>): ng.IPromise<_.Dictionary<Value>>;
 
-        invokeAction(action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
+        invokeAction(action: ActionMember | ActionRepresentation | IInvokableAction, paneId: number, parms: _.Dictionary<Value>): ng.IPromise<ActionResultRepresentation>;
 
         updateObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
         saveObject(object: DomainObjectRepresentation, props: _.Dictionary<Value>, paneId: number, viewSavedObject: boolean): ng.IPromise<DomainObjectRepresentation>;
@@ -283,13 +283,13 @@ module NakedObjects {
             return repLoader.populate(details);
         };
 
-        context.getInvokableAction = (actionMember: ActionMember): ng.IPromise<IInvokableAction> => {
+        context.getInvokableAction = (action: ActionMember | ActionRepresentation | IInvokableAction): ng.IPromise<IInvokableAction> => {
 
-            if (actionMember.invokeLink()) {
-                return $q.when(actionMember as IInvokableAction);
+            if (action.invokeLink()) {
+                return $q.when(action as IInvokableAction);
             }
 
-            return context.getActionDetails(actionMember);
+            return context.getActionDetails(action as ActionMember);
         };
 
         context.getMenu = (menuId: string): ng.IPromise<MenuRepresentation> => {
@@ -587,7 +587,7 @@ module NakedObjects {
             return () => {};
         }
 
-        context.invokeAction = (action: ActionMember | ActionRepresentation, paneId: number, parms: _.Dictionary<Value>) => {
+        context.invokeAction = (action: ActionMember | ActionRepresentation | IInvokableAction, paneId: number, parms: _.Dictionary<Value>) => {
 
             const invokeOnMap = (iAction: IInvokableAction) => {
                 const im = iAction.getInvokeMap();

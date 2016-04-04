@@ -175,7 +175,12 @@ module NakedObjects {
 
                 if (routeData.dialogId) {
                     const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-                    setDialog($scope, actionViewModel, routeData);
+
+                    context.getInvokableAction(actionViewModel.actionRep).then((details: IInvokableAction) => {
+                        actionViewModel.makeInvokable(details);
+                        setDialog($scope, actionViewModel, routeData);
+                    });
+
                     focusTarget = FocusTarget.Dialog;
                 }
 

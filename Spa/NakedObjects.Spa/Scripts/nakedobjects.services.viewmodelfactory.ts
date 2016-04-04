@@ -36,6 +36,7 @@ module NakedObjects {
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
     import FriendlyNameForParam = Models.friendlyNameForParam;
     import ActionRepresentation = Models.ActionRepresentation;
+    import IInvokableAction = Models.IInvokableAction;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -316,8 +317,11 @@ module NakedObjects {
                 actionViewModel.description = actionRep.extensions().description();
             }
 
-            const parameters = _.pickBy(actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
-            actionViewModel.parameters = _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
+            actionViewModel.parameters = () => {
+                // don't use actionRep directly as it may change and we've closed around the original value
+                const parameters = _.pickBy(actionViewModel.actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+                return _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
+            };
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
@@ -338,7 +342,7 @@ module NakedObjects {
                 } :
                 (right?: boolean) => {
                     focusManager.focusOverrideOff();
-                    const pps = actionViewModel.parameters;
+                    const pps = actionViewModel.parameters();
                     actionViewModel.executeInvoke(pps, right).
                         catch((reject: ErrorWrapper) => {
                             const parent = actionRep.parent as DomainObjectRepresentation;
@@ -347,6 +351,10 @@ module NakedObjects {
                             context.handleWrappedError(reject, parent, reset, display);
                         });
                 };
+
+            actionViewModel.makeInvokable = (details: IInvokableAction) => {
+                actionViewModel.actionRep = details;
+            }
 
             return actionViewModel;
         };
