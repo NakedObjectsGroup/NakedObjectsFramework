@@ -132,10 +132,12 @@
     <Compile Include="Strategies\AbstractActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionMemberWithDetailsRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionMemberRepresentationStrategy.cs" />
+    <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\CollectionMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\FormActionMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\FormActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
-    <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\AbstractCollectionRepresentationStrategy.cs" />
     <Compile Include="Strategies\PropertyRepresentationStrategy.cs" />
     <Compile Include="Strategies\MemberRepresentationStrategy.cs" />
     <Compile Include="Representation\NullRepresentation.cs" />

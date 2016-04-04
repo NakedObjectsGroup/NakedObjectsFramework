@@ -17,26 +17,28 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class InlineCollectionRepresentation : InlineMemberAbstractRepresentation {
-        protected InlineCollectionRepresentation(IOidStrategy oidStrategy, CollectionRepresentationStrategy strategy)
+        protected InlineCollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy)
             : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Collection;
             Id = strategy.GetId();
             Links = strategy.GetLinks(true);
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
-            Value = strategy.GetValue();
         }
 
-        [DataMember(Name = JsonPropertyNames.Value)]
-        public LinkRepresentation[] Value { get; set; }
-
         public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            var collectionRepresentationStrategy = new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
 
             int? size = collectionRepresentationStrategy.GetSize();
 
             if (size != null) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Size, size));
+            }
+
+            var value = collectionRepresentationStrategy.GetValue();
+
+            if (value != null) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
             }
 
             if (optionals.Count == 0) {

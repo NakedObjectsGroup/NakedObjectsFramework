@@ -13,15 +13,23 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class CollectionRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+    public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
+        public CollectionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {}
 
         public override LinkRepresentation[] GetValue() {
+            if (propertyContext.Property.DoNotCount) {
+                return null;
+            }
+
             return Collection.ToEnumerable().Select(CreateValueLink).ToArray();
         }
 
         public override int? GetSize() {
+            if (propertyContext.Property.DoNotCount) {
+                return null;
+            }
+
             return propertyContext.Property.Count(propertyContext.Target);
         }
     }

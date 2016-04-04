@@ -567,7 +567,7 @@ module NakedObjects.Models {
 
     export class AddToRemoveFromMap extends ArgumentMap implements IHateoasModel {
         constructor(private collectionResource: CollectionRepresentation, map: RoInterfaces.IValueMap, add: boolean) {
-            super(map, collectionResource.instanceId());
+            super(map, collectionResource.collectionId());
             const link = add ? collectionResource.addToLink() : collectionResource.removeFromLink();
             link.copyToHateoasModel(this);
         }
@@ -1032,8 +1032,12 @@ module NakedObjects.Models {
 
         // properties 
 
-        instanceId(): string {
+        collectionId(): string {
             return this.wrapped().id;
+        }
+
+        size(): number {
+            return this.value().length;
         }
 
         private lazyValue: Link[];
@@ -1340,7 +1344,7 @@ module NakedObjects.Models {
         private lazyValue: Link[];
 
         value(): Link[] {
-            this.lazyValue = this.lazyValue || wrapLinks(this.wrapped().value);
+            this.lazyValue = this.lazyValue || (this.wrapped().value ? wrapLinks(this.wrapped().value) : null);
             return this.lazyValue;
         }
 

@@ -23,6 +23,7 @@ module NakedObjects {
     import DateString = Models.toDateString;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
+    import CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -641,7 +642,7 @@ module NakedObjects {
     export class CollectionViewModel {
 
         title: string;
-        size: number;
+        size: string;
         pluralName: string;
         color: string;
         items: ItemViewModel[];
@@ -664,7 +665,7 @@ module NakedObjects {
         actionsMap: { name: string; actions: ActionViewModel[] }[];
         messages: string;
 
-        collectionRep: CollectionMember;
+        collectionRep: CollectionMember | CollectionRepresentation;
     }
 
     export class ServicesViewModel {

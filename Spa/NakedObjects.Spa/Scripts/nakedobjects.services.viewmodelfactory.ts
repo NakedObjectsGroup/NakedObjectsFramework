@@ -37,6 +37,7 @@ module NakedObjects {
     import FriendlyNameForParam = Models.friendlyNameForParam;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
+    import CollectionRepresentation = Models.CollectionRepresentation;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -606,6 +607,7 @@ module NakedObjects {
 
             return items;
         };
+
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
@@ -617,14 +619,34 @@ module NakedObjects {
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-            collectionViewModel.size = links.length;
+
+            const size = collectionRep.size();
+
+            if (size == null) {
+                collectionViewModel.size = `${size} Items(s)`;
+            } else {
+                collectionViewModel.size = unknownCollectionSize;
+            }
+
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
 
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => {
                 collectionViewModel.color = `${linkColor}${c}`;
             });
 
-            collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
+            if (links) {
+                collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
+            }
+            else if (state === CollectionViewState.List || state === CollectionViewState.Table) {
+
+                context.getCollectionDetails(collectionRep).then((details: CollectionRepresentation) => {
+                    collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
+                    collectionViewModel.size = `${collectionViewModel.items.length} Items(s)`;
+                });
+            } else {
+                collectionViewModel.items = [];
+            } 
+                
 
             switch (state) {
             case CollectionViewState.List:

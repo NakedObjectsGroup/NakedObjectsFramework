@@ -29,6 +29,8 @@ module NakedObjects {
     import HttpStatusCode = Models.HttpStatusCode;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
+    import CollectionMember = NakedObjects.Models.CollectionMember;
+    import CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
 
     export interface IContext {
 
@@ -43,7 +45,8 @@ module NakedObjects {
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
-        getActionDetails: (actionmember: ActionMember) => ng.IPromise<ActionRepresentation>;
+        getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember) => ng.IPromise<CollectionRepresentation>;
 
         getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<IInvokableAction>;
 
@@ -280,6 +283,11 @@ module NakedObjects {
 
         context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
             const details = actionMember.getDetails();
+            return repLoader.populate(details);
+        };
+
+        context.getCollectionDetails = (collectionMember: CollectionMember): ng.IPromise<CollectionRepresentation> => {
+            const details = collectionMember.getDetails();
             return repLoader.populate(details);
         };
 
