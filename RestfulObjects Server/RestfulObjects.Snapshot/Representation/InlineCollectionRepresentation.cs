@@ -21,21 +21,24 @@ namespace RestfulObjects.Snapshot.Representations {
             : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Collection;
             Id = strategy.GetId();
-            Size = strategy.GetSize();
             Links = strategy.GetLinks(true);
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
             Value = strategy.GetValue();
         }
 
-        [DataMember(Name = JsonPropertyNames.Size)]
-        public int Size { get; set; }
-
         [DataMember(Name = JsonPropertyNames.Value)]
         public LinkRepresentation[] Value { get; set; }
 
         public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+
+            int? size = collectionRepresentationStrategy.GetSize();
+
+            if (size != null) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Size, size));
+            }
+
             if (optionals.Count == 0) {
                 return new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
             }

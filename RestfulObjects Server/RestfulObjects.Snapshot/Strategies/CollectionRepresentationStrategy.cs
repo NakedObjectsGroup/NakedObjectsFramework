@@ -50,6 +50,10 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public LinkRepresentation[] GetValue() {
+            if (propertyContext.Property.DoNotCount) {
+                return new LinkRepresentation[] {};
+            }
+
             return collection.ToEnumerable().Select(CreateValueLink).ToArray();
         }
 
@@ -58,7 +62,12 @@ namespace RestfulObjects.Snapshot.Strategies {
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        public int GetSize() {
+        public int? GetSize() {
+
+            if (propertyContext.Property.DoNotCount) {
+                return null;
+            }
+
             return propertyContext.Property.Count(propertyContext.Target);
         }
     }
