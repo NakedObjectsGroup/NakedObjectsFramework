@@ -14,7 +14,7 @@ module NakedObjects {
 
     // path to Restful Objects server 
     export var appPath = "http://nakedobjectsrodemo.azurewebsites.net";
-    //export var appPath = "http://localhost:57840";
+    //export var appPath = "http://localhost:61546/";
 
     export const defaultPageSize = 20; // can be overriden by server 
     export const listCacheSize = 5;
