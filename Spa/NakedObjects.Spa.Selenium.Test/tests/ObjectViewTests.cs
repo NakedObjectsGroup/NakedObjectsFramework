@@ -55,6 +55,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product Inventory:\r\n2 Items");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text == "Special Offers:\r\n1 Item");
+
+            //Test NotCounted collection
+            GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
+            WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
+
+            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count == 1);
+            collections = br.FindElements(By.CssSelector(".collection"));
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product - Order Info:\r\nUnknown Size");
+
         }
 
         public virtual void NonNavigableReferenceProperty()
