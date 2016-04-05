@@ -608,6 +608,22 @@ module NakedObjects {
             return items;
         };
 
+        function getCollectionCount(count: number) {
+            if (count == null) {
+                return unknownCollectionSize;
+            }
+
+            if (count === 0) {
+                return emptyCollectionSize;
+            }
+
+            const postfix = count === 1 ? "Item" : "Items";
+
+            return `${count} ${postfix}`;
+        }
+    
+
+
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
@@ -621,13 +637,9 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
 
             const size = collectionRep.size();
-
-            if (size == null) {
-                collectionViewModel.size = unknownCollectionSize;
-            } else {
-                collectionViewModel.size = `${size} Item${size === 1 ? "" : "s"}`;
-            }
-
+       
+            collectionViewModel.size = getCollectionCount(size);
+           
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
 
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => {
@@ -641,7 +653,7 @@ module NakedObjects {
 
                 context.getCollectionDetails(collectionRep).then((details: CollectionRepresentation) => {
                     collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
-                    collectionViewModel.size = `${collectionViewModel.items.length} Items(s)`;
+                    collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                 });
             } else {
                 collectionViewModel.items = [];
