@@ -205,10 +205,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomReflectorExtensions\AWNotCountedAnnotationFacetFactory.cs" />
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />
     <Compile Include="App_Start\CorsConfig.cs" />
     <Compile Include="App_Start\NakedObjectsRunSettings.cs" />
-    <Compile Include="App_Start\AdventureWorksNotNavigableFacetFactory.cs" />
+    <Compile Include="CustomReflectorExtensions\AWNotNavigableFacetFactory.cs" />
     <Compile Include="App_Start\RestfulObjectsActivator.cs" />
     <Compile Include="App_Start\RestfulObjectsConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />

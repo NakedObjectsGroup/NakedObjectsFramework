@@ -5,11 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using AWCustom;
 using System;
 using System.Security.Principal;
 using System.Web;
 using Microsoft.Practices.Unity;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -17,7 +17,6 @@ using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Unity;
 
 namespace NakedObjects.Rest.App.Demo {
@@ -56,10 +55,9 @@ namespace NakedObjects.Rest.App.Demo {
 
             // add custom notnavigable factory
 
-            Type factory = typeof(AdventureWorksNotNavigableFacetFactory);
-            int order = 1000;
-            UnityConfigHelpers.RegisterFacetFactory(factory, container, order);
-          
+            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactory), container, 1000);
+            UnityConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactory), container, 1001);
+
             // config 
             container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
             container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());

@@ -14,9 +14,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Reflect.FacetFactory {
-    public sealed class AdventureWorksNotNavigableFacetFactory : FacetFactoryAbstract {
-        public AdventureWorksNotNavigableFacetFactory(int numericOrder)
+namespace AWCustom
+{
+    public sealed class AWNotNavigableFacetFactory : FacetFactoryAbstract {
+        public AWNotNavigableFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) {}
 
         public override void Process(IReflector reflector, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
