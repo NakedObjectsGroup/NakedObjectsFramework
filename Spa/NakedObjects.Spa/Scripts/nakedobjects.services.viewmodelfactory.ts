@@ -623,9 +623,9 @@ module NakedObjects {
             const size = collectionRep.size();
 
             if (size == null) {
-                collectionViewModel.size = `${size} Items(s)`;
-            } else {
                 collectionViewModel.size = unknownCollectionSize;
+            } else {
+                collectionViewModel.size = `${size} Items(s)`;
             }
 
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
