@@ -31,6 +31,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
             ClickForwardButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
+            EditObject();
+            WaitForView(Pane.Single, PaneType.Object, "Editing - "+orderTitle);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
+            ClickForwardButton();
+            WaitForView(Pane.Single, PaneType.Object, "Editing - " + orderTitle);
+            Click(GetCancelEditButton());
+            WaitForView(Pane.Single, PaneType.Object, orderTitle);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
+            ClickForwardButton();
+            WaitForView(Pane.Single, PaneType.Object, orderTitle);
+
             var link = GetReferenceFromProperty("Customer");
             var cusTitle = link.Text;
             Click(link);
@@ -39,7 +52,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
             ClickForwardButton();
             WaitForView(Pane.Single, PaneType.Object, cusTitle);
-            
+
         }
         public virtual void Cicero()
         {
