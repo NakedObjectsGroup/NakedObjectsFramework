@@ -1193,8 +1193,6 @@
         setCollectionButtonStates();
 
         drawHistoryMenus();
-
-        api.bindAjaxError();
     }
 
     function updatePage(doc, updateLink) {
@@ -1564,8 +1562,6 @@ window.onerror = function (msg, url, linenumber) {
     return true;
 };
 
-nakedObjects.bindAjaxError();
-
 // jquery live binds
 $(function () { $(document).on("click", "form button", nakedObjects.markedClicked); });
 $(function () { $(document).on('click', "form button[name=Finder], form button[name=Redisplay], form button[name=Selector], form button[name=ActionAsFinder], form button[name=InvokeActionAsFinder], form button[name=InvokeActionAsSave]", nakedObjects.allowSubmit); });
@@ -1589,3 +1585,4 @@ $(function () { $(document).on("keydown", "form :input:not(textarea)", nakedObje
 
 //Comment-out this function to restore operation of browser context menu
 $(function () { $(document).on("contextmenu", ".nof-tab", function () { return false; }); });
+$(nakedObjects.bindAjaxError());
