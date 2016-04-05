@@ -32,7 +32,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Recent Orders", actions[6].Text);
         }
 
-        public virtual void PropertiesAndCollections()
+        public virtual void Properties()
         {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
@@ -45,11 +45,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
+        }
 
-            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count >= 2);
+        public virtual void Collections() { 
+            //Test collection count
+            GeminiUrl("object?i1=View&o1=___1.Product--821");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count == 3);
             ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Addresses:\r\n1 Item(s)");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Contacts:\r\n1 Item(s)");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product Inventory:\r\n2 Items");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text == "Special Offers:\r\n1 Item");
         }
 
         public virtual void NonNavigableReferenceProperty()
@@ -244,12 +249,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
     {
-
         [TestMethod]
         public override void Actions() { base.Actions(); }
 
         [TestMethod]
-        public override void PropertiesAndCollections() { base.PropertiesAndCollections(); }
+        public override void Properties() { base.Properties(); }
+
+        [TestMethod]
+        public override void Collections() { base.Collections(); }
 
         [TestMethod]
         public override void DateAndCurrencyProperties() { base.DateAndCurrencyProperties(); }
@@ -317,7 +324,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -376,7 +383,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaObjectViewTest()
         {
             base.Actions();
-            base.PropertiesAndCollections();
+            base.Properties();
+            base.Collections();
             base.DateAndCurrencyProperties();
             base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();

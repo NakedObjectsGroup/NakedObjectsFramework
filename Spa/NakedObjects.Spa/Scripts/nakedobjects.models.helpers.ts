@@ -104,7 +104,7 @@ module NakedObjects.Models {
     }
 
     export function typePlusTitle(obj: DomainObjectRepresentation) {
-        const type = friendlyTypeName(obj.domainType());
+        const type = obj.extensions().friendlyName();
         const title = obj.title();
         return type + ": " + title;
     }

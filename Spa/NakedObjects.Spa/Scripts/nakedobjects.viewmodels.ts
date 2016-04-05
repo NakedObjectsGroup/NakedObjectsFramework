@@ -1000,5 +1000,14 @@ module NakedObjects {
             }
             return null;
         }
+
+        clearInputRenderOutputAndAppendAlertIfAny(output: string): void {
+            this.clearInput();
+            this.output = output;
+            if (this.alert) {
+                this.output += this.alert;
+                this.alert = "";
+            }
+        }
     }
 }

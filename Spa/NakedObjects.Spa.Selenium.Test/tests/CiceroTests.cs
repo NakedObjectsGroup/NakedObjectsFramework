@@ -487,11 +487,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Goto a collection within an object
             CiceroUrl("object?o1=___1.SalesOrderHeader--60485");
-            WaitForOutput("Sales Order Header: SO60485");
+            WaitForOutput("Sales Order: SO60485");
 
             //Simple case
             EnterCommand("goto details");
-            WaitForOutput("Collection: Details on Sales Order Header: SO60485\r\n3 items");
+            WaitForOutput("Collection: Details on Sales Order: SO60485\r\n3 items");
 
             //Multiple matches
             CiceroUrl("object?o1=___1.Product--901");
@@ -505,7 +505,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No matches
             CiceroUrl("object?o1=___1.SalesOrderHeader--60485");
-            WaitForOutput("Sales Order Header: SO60485");
+            WaitForOutput("Sales Order: SO60485");
             EnterCommand("go x son");
             WaitForOutput("x son does not match any reference fields or collections");
 
@@ -597,7 +597,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?o1=___1.Customer--29688&d1=LastOrder");
             WaitForOutput("Customer: Handy Bike Services, AW00029688\r\nAction dialog: Last Order");
             EnterCommand("ok");
-            WaitForOutput("Sales Order Header: SO69562");
+            WaitForOutput("Sales Order: SO69562");
 
             //Invalid contexts
             CiceroUrl("home");
@@ -698,7 +698,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
             CiceroUrl("object?o1=___1.SalesOrderHeader--51131");
-            WaitForOutput("Sales Order Header: SO51131");
+            WaitForOutput("Sales Order: SO51131");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
         }
@@ -762,7 +762,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Check that enum property renders as text, not number
             CiceroUrl("object?o1=___1.SalesOrderHeader--70996");
-            WaitForOutput("Sales Order Header: SO70996");
+            WaitForOutput("Sales Order: SO70996");
             EnterCommand("pr status");
             WaitForOutput("Status: Shipped");
 
@@ -874,7 +874,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Applied to collection
             CiceroUrl("object?o1=___1.SalesOrderHeader--44518&c1_Details=List");
-            WaitForOutput("Collection: Details on Sales Order Header: SO44518\r\n20 items");
+            WaitForOutput("Collection: Details on Sales Order: SO44518\r\n20 items");
             EnterCommand("show 1");
             WaitForOutput("Item 1: 5 x Mountain-100 Black, 44");
             EnterCommand("show 20");

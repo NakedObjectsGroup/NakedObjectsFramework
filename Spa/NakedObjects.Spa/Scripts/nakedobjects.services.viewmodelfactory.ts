@@ -848,18 +848,18 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
+                        let output = "";
                         if (routeData.menuId) {
                             context.getMenu(routeData.menuId)
                                 .then((menu: MenuRepresentation) => {                                  
-                                    cvm.output = menu.title() + " menu" + "\n";                                                                      
+                                    output += menu.title() + " menu" + "\n";                                                                      
                                     return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
                                 }).then((details: IInvokableAction) => {
                                     if (details) {                                       
-                                        cvm.output += renderActionDialog(details, routeData, mask);
+                                        output += renderActionDialog(details, routeData, mask);
                                     }                                  
                                 }).finally(() => {
-                                    cvm.clearInput();                            
-                                    appendAlertIfAny(cvm);
+                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                 });
                         } else {
                             cvm.clearInput();
@@ -891,54 +891,41 @@ module NakedObjects {
                                         default:
                                             output += `${coll.size()} items`;
                                     }
-                                    //TODO: These three lines (or similar) repeated. Extract into function.
-                                    cvm.clearInput();
-                                    cvm.output = output;
-                                    appendAlertIfAny(cvm);
+                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                 } else {
                                     if (obj.isTransient()) {
                                         output += "Unsaved ";
-                                        output += FriendlyTypeName(obj.domainType()) + "\n";
+                                        output += obj.extensions().friendlyName() + "\n";
                                         output += renderModifiedProperties(obj, routeData, mask);
-                                        cvm.clearInput();
-                                        cvm.output = output;
-                                        appendAlertIfAny(cvm);
+                                        cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                     } else if (routeData.interactionMode === InteractionMode.Edit ||
                                         routeData.interactionMode === InteractionMode.Form) {
-                                        cvm.output = "Editing ";
-                                        cvm.output += PlusTitle(obj) + "\n";
+                                         let output = "Editing ";
+                                         output += PlusTitle(obj) + "\n";
                                         if (routeData.dialogId) {
                                             context.getInvokableAction(obj.actionMember(routeData.dialogId))
                                                 .then((details: IInvokableAction) => {
-                                                    cvm.clearInput();
-                                                    cvm.output += renderActionDialog(details, routeData, mask);
-                                                    appendAlertIfAny(cvm);
+                                                    output += renderActionDialog(details, routeData, mask);
+                                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                                 });
                                         } else {
-                                            cvm.clearInput();
-                                            cvm.output += renderModifiedProperties(obj, routeData, mask);
-                                            appendAlertIfAny(cvm);
+                                            output += renderModifiedProperties(obj, routeData, mask);
+                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                         }
                                     } else {
-                                        cvm.output = Title(obj) + "\n";
+                                        let output = Title(obj) + "\n";
                                         if (routeData.dialogId) {
                                             context.getInvokableAction(obj.actionMember(routeData.dialogId))
                                                 .then((details: IInvokableAction) => {
-                                                    cvm.clearInput();
-                                                    cvm.output += renderActionDialog(details, routeData, mask);
-                                                    appendAlertIfAny(cvm);
+                                                    output += renderActionDialog(details, routeData, mask);
+                                                    cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                                 });
-                                        }
-                                        else {
-                                            cvm.clearInput();
-                                            appendAlertIfAny(cvm);
+                                        } else {
+                                            cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                         }
 
                                     }
                                 }
-                                //cvm.clearInput();
-                                //cvm.output = output;
-                                //appendAlertIfAny(cvm);
                             }).catch((reject: ErrorWrapper) => {
 
                                 const custom = (cc: ClientErrorCode) => {
@@ -972,9 +959,8 @@ module NakedObjects {
                                 }
                                 const actionMember = menu.actionMember(routeData.actionId);
                                 const actionName = actionMember.extensions().friendlyName();
-                                cvm.clearInput();
-                                cvm.output = `Result from ${actionName}:\n${description}`;
-                                appendAlertIfAny(cvm);
+                                let output = `Result from ${actionName}:\n${description}`;
+                                cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                             });
                         });
                     }
@@ -988,13 +974,6 @@ module NakedObjects {
             return cvm;
         };
     });
-
-    function appendAlertIfAny(cvm: CiceroViewModel) {
-        if (cvm.alert) {
-            cvm.output += cvm.alert;
-            cvm.alert = "";
-        }
-    }
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
     export function openCollectionIds(routeData: PaneRouteData): string[] {
