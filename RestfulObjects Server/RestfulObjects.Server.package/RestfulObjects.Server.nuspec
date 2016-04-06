@@ -18,7 +18,7 @@
       <dependency id="RestfulObjects.Mvc" version="[8.0.0-beta1, 9)" />
       <dependency id="NakedObjects.Facade.Impl" version="[8.0.0-beta1, 9)" />
       <dependency id="WebActivatorEx" version="[2.1.0, 3.0)" />
-      <dependency id="Unity.AspNet.WebApi" version="[4.0.1, 5.0)" />
+      <dependency id="Unity.AspNet.WebApi" version="[3.5.1404, 4.0)" />
     </dependencies>
   </metadata>
 </package>
