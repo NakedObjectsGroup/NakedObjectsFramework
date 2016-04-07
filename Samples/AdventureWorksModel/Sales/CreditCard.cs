@@ -138,7 +138,7 @@ namespace AdventureWorksModel {
         [NotPersisted]
         public ICreditCardCreator Creator { get; set; }
 
-        [NotPersisted][Disabled]
+        [NotPersisted]
         public Person ForContact { get; set; }
 
         #endregion
