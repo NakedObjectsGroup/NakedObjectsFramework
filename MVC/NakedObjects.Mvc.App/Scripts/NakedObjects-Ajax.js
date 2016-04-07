@@ -10,6 +10,14 @@
     var fileUploadTimeOut = 60 * 1000; // one minute 
     var tempStoreQuota = 1024 * 1024 * 1024; // One Gigabyte
 
+    function ieLeakMitigation() {
+        // On IE a low level function is writing a reference to an input field from 
+        // our page into this global variable. This seems to be causing a leak (not sure why)
+        // It may be it's holding a global reference to an element and so jQuery can't clean up properly?
+        // Null the variable each time we're called then jQuery should be able to clean up correctly. 
+        window.elt = null; 
+    }
+
     api.executeAndCloseButtonQueryOnlyText = "OK"; //Recommended alternative label:  "Go"
     api.executeWithoutClosingButtonText = "Apply";    //Recommended alternative label:  "Show"
     api.executeAndCloseButtonDefaultText = "OK";   //Recommended alternative label:  "Do"
@@ -22,7 +30,7 @@
     var ignoreNextEnter = false;
 
     api.checkForEnter = function (event) {
-
+        ieLeakMitigation();
         if (event.keyCode === 13) { // enter key 
 
             if (ignoreNextEnter) {
@@ -96,7 +104,7 @@
     };
 
     api.clearHistory = function () {
-
+        ieLeakMitigation();
         $.post($(this).attr("action"), $(this).serialize(), function (response) {
 
             // check attribute value exists for ie8 support no need ie9+ and ff/chrome
@@ -116,7 +124,7 @@
     };
     
     api.clearTabbedHistory = function () {
-
+        ieLeakMitigation();
         $.post($(this).attr("action"), $(this).serialize(), function (response) {
 
             handleLoginForm(response);
@@ -130,7 +138,7 @@
 
 
     api.clearHistoryItem = function () {
-        
+        ieLeakMitigation();
         // if clearing active tab redraw otherwise just remove tab from history 
 
         var clearingActive = false;
@@ -163,7 +171,7 @@
     };
 
     api.clearHistoryOthers = function () {
-
+        ieLeakMitigation();
         var alreadyActive = false;
         var tab = $(this).closest(".nof-tab");
         if (tab.hasClass("active")) {
@@ -340,7 +348,7 @@
 
 
     api.redisplayInlineProperty = function (event) {
-
+        ieLeakMitigation();
         var button = getButton(event);
 
         if (!button || button.name !== "Redisplay") {
@@ -396,7 +404,7 @@
 
 
     api.redisplayProperty = function (event) {
-
+        ieLeakMitigation();
         var button = getButton(event);
 
         if (!button || button.name !== "Redisplay") {
@@ -759,7 +767,7 @@
     }
 
     api.updateChoices = function () {
-
+        ieLeakMitigation();
         var choicesData = $(this).closest("div[data-choices]");
 
         var selects = choicesData.find("select");
@@ -877,7 +885,7 @@
     }
 
     api.updatePageFromAction = function (event) {
-        
+        ieLeakMitigation();
         var button = getButton(event);
 
         if (!button || button.name === "Redisplay") {
@@ -994,6 +1002,7 @@
 
 
     api.updateOnSelect = function () {
+        ieLeakMitigation();
         var propOrParm = $(this).closest("div.nof-property > div.nof-object");
 
         if (propOrParm.length == 0) {
@@ -1236,6 +1245,7 @@
     }
 
     api.updatePageFromLink = function () {
+        ieLeakMitigation();
         startLinkFeedBack();
         return updatePage($(this), true);
     };
@@ -1406,6 +1416,8 @@
     };
 
     api.getFileFromDialog = function (event) {
+        ieLeakMitigation();
+
         if (supportsHtml5FileHandling()) {
             var button = getButton(event);
             startSubmitFeedBack(button);
@@ -1434,6 +1446,8 @@
     
 
     api.getFileFromAction = function (event) {
+        ieLeakMitigation();
+
         if (supportsHtml5FileHandling()) {
 
             var button = getButton(event);
@@ -1456,6 +1470,7 @@
     };
 
     api.getFileFromLink = function () {
+        ieLeakMitigation();
         if (supportsHtml5FileHandling()) {
             startLinkFeedBack();
             return getFile($(this).attr("href"), 'GET', null,
@@ -1501,12 +1516,14 @@
     };
 
     api.markedClicked = function () {
+        ieLeakMitigation();
         $("form button.nof-lastClicked").removeClass("nof-lastClicked");
         $(this).addClass("nof-lastClicked");
         return true;
     };
 
     api.allowSubmit = function () {
+        ieLeakMitigation();
         // this allows these buttons to submit form even if invalid - for finders/selectors etc
         $(this).closest("form").validate().cancelSubmit = true;
         return true;
