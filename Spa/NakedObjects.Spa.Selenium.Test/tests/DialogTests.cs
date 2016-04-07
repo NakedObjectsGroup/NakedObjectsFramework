@@ -323,6 +323,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void NullableBooleanParams()
         {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
+
+            //Test for visibility of the * mandatory indicator. Should only be on the first one
+            //because the other mandatory param has a default value and therefore can't be selected
+            //back to null anyway.
+            var prams = WaitForCss(".parameter .value", 4);
+            Assert.AreEqual("*", prams[0].Text);
+            Assert.AreEqual("", prams[1].Text);
+            Assert.AreEqual("", prams[2].Text);
+            Assert.AreEqual("", prams[3].Text);
+
             var current = WaitForCss("#current1");
             var married = WaitForCss("#married1");
             var salaried = WaitForCss("#salaried1");
