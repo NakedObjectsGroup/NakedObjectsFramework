@@ -64,15 +64,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product Inventory:\r\n2 Items");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text == "Special Offers:\r\n1 Item");
-
-            //Test NotCounted collection
-            GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
-            WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
-
-            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count == 1);
-            collections = br.FindElements(By.CssSelector(".collection"));
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product - Order Info:\r\nUnknown Size");
-
         }
 
         public virtual void NonNavigableReferenceProperty()
@@ -144,7 +135,28 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             // cancel table view 
             Click(WaitForCss(".icon-summary"));
-            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));
+            WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));           
+        }
+        public virtual void NotCountedCollection()
+        {
+            //Test NotCounted collection
+            GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
+            WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
+
+            Assert.IsTrue(WaitForCssNo(".collection", 0).Text.Contains("Unknown Size"));
+
+            var iconList = WaitForCssNo(".collection .icon-list", 0);
+            Click(iconList);
+            WaitForCss("table");
+            Assert.IsTrue(WaitForCssNo(".collection",0).Text.Contains("1 Item"));
+
+            //wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].Text == "Product - Order Info:\r\n1 Item");
+
+            // cancel table view 
+            Click(WaitForCss(".icon-summary"));
+            WaitUntilGone(dr => dr.FindElement(By.CssSelector(".table")));
+
+            Assert.IsTrue(WaitForCssNo(".collection", 0).Text.Contains("Unknown Size"));
         }
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
@@ -289,6 +301,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void OpenCollectionAsList() { base.OpenCollectionAsList(); }
+        [TestMethod]
+        public override void NotCountedCollection() { base.NotCountedCollection(); }
 
         [TestMethod]
         public override void ClickOnLineItemWithCollectionAsList() { base.ClickOnLineItemWithCollectionAsList(); }
@@ -344,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -410,6 +424,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();
             base.OpenCollectionAsList();
+            base.NotCountedCollection();
             base.ClickOnLineItemWithCollectionAsList();
             base.ClickOnLineItemWithCollectionAsTable();
             base.AttachmentProperty();
