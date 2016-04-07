@@ -25,7 +25,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         //This test is a hangover from when the button was named 'Get'
         //for query-only actions, and 'Do' for others.  This has since
         //been reverted to OK for both.
-
         public virtual void OKButtonNaming()
         {
             Url(OrdersMenuUrl);
@@ -37,7 +36,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Create New Sales Person");
             Assert.AreEqual("OK", OKButton().GetAttribute("value"));
         }
-
         public virtual void PasswordParam()
         {
             GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
@@ -167,10 +165,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("List Products");
             SelectDropDownOnField("#category1", "Clothing");
                 var x = new SelectElement(WaitForCss("#subcategory1")).Options;
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bib-Shorts");
+
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
 
             SelectDropDownOnField("#category1", "Accessories");
-            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "Bike Racks");
+            wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
+
+            var msg = OKButton().AssertIsDisabled().GetAttribute("title");
+            Assert.AreEqual("Missing mandatory fields: Sub Category; ", msg);
+
+            SelectDropDownOnField("#subcategory1", "Bike Racks");
+             msg = OKButton().AssertIsEnabled ().GetAttribute("title");
+            Assert.AreEqual("", msg);
+
 
         }
         public virtual void ConditionalChoicesDefaults()
@@ -450,7 +457,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
