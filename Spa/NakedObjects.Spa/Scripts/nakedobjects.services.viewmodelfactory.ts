@@ -511,7 +511,7 @@ module NakedObjects {
                 propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
-            if (fieldEntryType !== EntryType.FreeForm) {
+            if (!propertyRep.isScalar()) {
 
                 const currentChoice = ChoiceViewModel.create(value, id);
 
