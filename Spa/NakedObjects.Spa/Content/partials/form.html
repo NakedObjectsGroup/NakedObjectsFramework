@@ -14,7 +14,7 @@
                 <div ng-switch-when="ref" ng-switch="property.isEditable">
 
                     <div ng-switch-when="false" class="value" ng-class="property.color">
-                        {{property.value}}
+                        {{property.formattedValue}}
                     </div>
 
                     <div ng-switch-when="true" class="input-control text" ng-switch="property.entryType">

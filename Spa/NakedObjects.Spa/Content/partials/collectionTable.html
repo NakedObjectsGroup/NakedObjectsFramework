@@ -19,7 +19,7 @@
                 </td> 
                 <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
                     <div ng-switch-when="ref" class="clickable-area">
-                        {{property.value}}
+                        {{property.formattedValue}}
                     </div>
 
                     <div ng-switch-when="scalar" ng-switch="property.returnType">
