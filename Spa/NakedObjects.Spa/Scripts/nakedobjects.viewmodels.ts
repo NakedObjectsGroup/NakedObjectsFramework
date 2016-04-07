@@ -71,6 +71,19 @@ module NakedObjects {
         return menu;
     }
 
+    export function toTriStateBoolean(valueToSet: string | boolean | number) {
+     
+        // looks stupid but note type checking
+        if (valueToSet === true || valueToSet === "true") {
+            return true;
+        }
+        if (valueToSet === false || valueToSet === "false") {
+            return false;
+        }
+        return null;
+    }
+
+
 
     export function createActionMenuMap(avms: ActionViewModel[]) {
 

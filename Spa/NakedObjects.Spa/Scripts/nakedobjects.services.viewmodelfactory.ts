@@ -273,7 +273,14 @@ module NakedObjects {
                 const returnType = parmRep.extensions().returnType();
 
                 if (returnType === "boolean") {
-                    parmViewModel.value = previousValue ? previousValue.toString().toLowerCase() === "true" : parmRep.default().scalar();
+                    const valueToSet = (previousValue ? previousValue.toValueString() : null) || parmRep.default().scalar();
+                    let bValueToSet = toTriStateBoolean(valueToSet);
+
+                    parmViewModel.value = bValueToSet;
+                    if (bValueToSet !== null) {
+                        parmViewModel.description = parmRep.extensions().description();
+                    }
+
                 } else if (IsDateOrDateTime(parmRep)) {
                     parmViewModel.value = toUtcDate(previousValue || new Value(parmViewModel.dflt));
                 } else {
