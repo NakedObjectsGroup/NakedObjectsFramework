@@ -534,6 +534,7 @@ module NakedObjects {
             if (check(search)) {
                 set(search);
                 setNewSearch(search);
+                $location.replace();
             }
         }
 
