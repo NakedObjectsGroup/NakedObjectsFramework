@@ -264,6 +264,12 @@ module NakedObjects {
                         else  {
                             $(element).val("");
                         }
+
+                        setTimeout(() => {
+                            $(element).change();
+                        }, 1);
+
+
                     }).catch(() => {
                         // error clear everything 
                         element.find("option").remove();
@@ -644,10 +650,25 @@ module NakedObjects {
     app.directive("geminiFieldmandatorycheck", () => ({
         require: "ngModel",
         link(scope: any, elm: any, attrs: any, ctrl: any) {
-            ctrl.$validators.geminiFieldmandatorycheck = (modelValue: any, viewValue: string) => {
+            ctrl.$validators.geminiFieldmandatorycheck = (modelValue: any, viewValue: string | ChoiceViewModel | string[] | ChoiceViewModel[]) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-                return viewModel.validate(modelValue, viewValue, true);
+                let val: string;
+
+                if (viewValue instanceof ChoiceViewModel) {
+                    val = viewValue.value;
+                }
+                else if (viewValue instanceof Array) {
+                    if ((viewValue as any).length) {
+                        return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => ctrl.$validators.geminiFieldmandatorycheck(v, v));
+                    }
+                    val = "";
+                }
+                else {
+                    val = viewValue as string;
+                }
+
+                return viewModel.validate(modelValue, val, true);
             };
         }
     }));

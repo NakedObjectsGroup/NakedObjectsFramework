@@ -81,7 +81,6 @@
                     <!--"EntryType.Choices"-->
                     <div ng-switch-when="1">
                         <select id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="parameter.choice" ng-options="c as c.name for c in parameter.choices" gemini-fieldmandatorycheck>
-                            <option></option>
                             <option value="" disabled>{{parameter.description}}</option>
                         </select>
                     </div>

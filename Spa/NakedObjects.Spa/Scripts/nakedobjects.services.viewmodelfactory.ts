@@ -214,8 +214,8 @@ module NakedObjects {
 
             parmViewModel.choices = [];
 
-
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
+
                 parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
             }
 

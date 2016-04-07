@@ -204,7 +204,7 @@ module NakedObjects.Models {
     }
 
 
-    export function validateMandatory(model: IHasExtensions, viewValue: string): string {
+    export function validateMandatory(model: IHasExtensions, viewValue: string | ChoiceViewModel): string {
         // first check 
         const isMandatory = !model.extensions().optional();
 
