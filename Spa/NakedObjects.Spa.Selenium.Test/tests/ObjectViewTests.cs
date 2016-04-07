@@ -17,7 +17,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     public abstract class ObjectViewTestsRoot : AWTest
     {
-        public virtual void Actions()
+        public virtual void ActionsAlreadyOpen()
         {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
@@ -30,6 +30,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Last Order", actions[4].Text);
             Assert.AreEqual("Open Orders", actions[5].Text);
             Assert.AreEqual("Recent Orders", actions[6].Text);
+        }
+
+        public virtual void OpenActionsMenuNotAlreadyOpen()
+        {
+            GeminiUrl("object?o1=___1.Customer--309");
+            WaitForView(Pane.Single, PaneType.Object, "The Gear Store, AW00000309");
+            OpenObjectActions();
+            OpenSubMenu("Orders");
+            GetObjectActions(7);
         }
 
         public virtual void Properties()
@@ -259,7 +268,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
     public abstract class ObjectViewTests : ObjectViewTestsRoot
     {
         [TestMethod]
-        public override void Actions() { base.Actions(); }
+        public override void ActionsAlreadyOpen() { base.ActionsAlreadyOpen(); }
+        [TestMethod]
+        public override void OpenActionsMenuNotAlreadyOpen() { base.OpenActionsMenuNotAlreadyOpen(); }
 
         [TestMethod]
         public override void Properties() { base.Properties(); }
@@ -391,7 +402,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public void MegaObjectViewTest()
         {
-            base.Actions();
+            base.ActionsAlreadyOpen();
+            base.OpenActionsMenuNotAlreadyOpen();
             base.Properties();
             base.Collections();
             base.DateAndCurrencyProperties();

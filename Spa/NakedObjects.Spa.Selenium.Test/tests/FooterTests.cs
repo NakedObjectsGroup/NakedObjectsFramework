@@ -52,6 +52,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
             ClickForwardButton();
             WaitForView(Pane.Single, PaneType.Object, cusTitle);
+            OpenObjectActions();
+            OpenSubMenu("Orders");
+            OpenActionDialog("Create New Order");
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Object, orderTitle);
 
         }
         public virtual void Cicero()

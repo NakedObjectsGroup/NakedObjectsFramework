@@ -247,6 +247,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 throw new NotFoundException(string.Format("menu not found {0}", menuName));
             }
         }
+        protected virtual void OpenObjectActions(Pane pane = Pane.Single)
+        {
+            string paneSelector = CssSelectorFor(pane);
+            var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .menu")).Single(el => el.Text == "Actions"));
+            Click(actions);
+            wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .actions .action")).Count > 0);
+        }
+
 
         protected virtual void OpenSubMenu(string menuName, Pane pane = Pane.Single)
         {
