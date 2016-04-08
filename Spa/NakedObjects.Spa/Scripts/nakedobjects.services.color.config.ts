@@ -5,32 +5,25 @@
 module NakedObjects {
 
     app.run((color: IColor) => {
+        //Note: colour is determined by the FIRST matching rule
+        const awm = "AdventureWorksModel.";
+        //Match specific class
+        color.addType(awm + "Customer", 1);
+        color.addType(awm + "Product", 4);
+        color.addType(awm + "Employee", 5);
+        color.addType(awm + "SalesPerson", 6);
+        color.addType(awm + "SpecialOffer", 7);
+        color.addType(awm + "Vendor", 9);
+        color.addType(awm + "WorkOrder", 12);
 
-        color.addType("AdventureWorksModel.Customer", 1);
-        color.addType("AdventureWorksModel.Individual", 1);
-        color.addType("AdventureWorksModel.Store", 1);
-        color.addType("AdventureWorksModel.SalesOrderHeader", 2);
-        color.addType("AdventureWorksModel.SalesOrderDetail", 3);
-        color.addType("AdventureWorksModel.Product", 4);
-        color.addType("AdventureWorksModel.Employee", 5);
-        color.addType("AdventureWorksModel.SalesPerson", 6);
-        color.addType("AdventureWorksModel.SpecialOffer", 7);
-        color.addType("AdventureWorksModel.Person", 8);
-        color.addType("AdventureWorksModel.Vendor", 9);
-        color.addType("AdventureWorksModel.PurchaseOrderHeader", 10);
-        color.addType("AdventureWorksModel.PurchaseOrderHeader", 11);
-        color.addType("AdventureWorksModel.WorkOrder", 12);
+        //Match Regex on name
+        color.addMatch(/.*SalesOrder.*/, 2); //Matches ..Header & ..Detail
+        color.addMatch(/.*PurchaseOrder.*/, 10); //Matches ..Header & ..Detail
 
-        //const matchBusiness = /AdventureWorksModel.Business*/;
+        //Match on sub-type
+        color.addSubtype(awm + "BusinessEntity", 8); //Matches Person and Store
 
-        //color.addMatch(matchBusiness, 8);
-
-        //// matches Person and Store 
-        //color.addSubtype("AdventureWorksModel.BusinessEntity", 6);
-
-        //// matches SalesOrderHeader
-        //color.addSubtype("AdventureWorksModel.ICreditCardCreator", 5);
-
+        //Default colour -  must be specified last
         color.setDefault(0);
     });
 }

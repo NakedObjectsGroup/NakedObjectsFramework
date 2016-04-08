@@ -31,7 +31,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Open Orders", actions[5].Text);
             Assert.AreEqual("Recent Orders", actions[6].Text);
         }
-
         public virtual void OpenActionsMenuNotAlreadyOpen()
         {
             GeminiUrl("object?o1=___1.Customer--309");
@@ -40,7 +39,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenSubMenu("Orders");
             GetObjectActions(7);
         }
-
         public virtual void Properties()
         {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
@@ -55,7 +53,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
-
         public virtual void Collections() { 
             //Test collection count
             GeminiUrl("object?i1=View&o1=___1.Product--821");
@@ -65,7 +62,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text == "Special Offers:\r\n1 Item");
         }
-
         public virtual void NonNavigableReferenceProperty()
         {
             //Tests properties of types that have had the NonNavigable Facet added to them 
@@ -84,7 +80,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var links = cat.FindElements(By.CssSelector(".reference.clickable-area"));
             Assert.AreEqual(0, links.Count());
         }
-
         public virtual void DateAndCurrencyProperties() {
             GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 24);
@@ -276,6 +271,39 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
         }
+
+        public virtual void Colours()
+        {
+            //Specific type matches
+            GeminiUrl("object?i1=View&o1=___1.Customer--226");
+            WaitForCss(".object.object-color1");
+            var terr = GetReferenceFromProperty("Sales Territory");
+            GeminiUrl("object?i1=View&o1=___1.Product--404");
+            WaitForCss(".object.object-color4");
+
+            //Regex matches
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--59289&c1_Details=List");
+            WaitForCss(".object.object-color2");
+            var detailLink = WaitForCssNo("tr", 1);
+            Assert.IsTrue(detailLink.GetAttribute("class").Contains("link-color2"));
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
+            WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
+            WaitForCss(".object.object-color2");
+
+            //SubType matching
+            GeminiUrl("object?i1=View&o1=___1.Person--3238");
+            WaitForCss(".object.object-color8");
+            GeminiUrl("object?i1=View&o1=___1.Store--1334");
+            WaitForView(Pane.Single, PaneType.Object, "Chic Department Stores");
+            WaitForCss(".object.object-color8");
+
+            //Default
+            GeminiUrl("object?i1=View&o1=___1.PersonCreditCard--10768--6875");
+            WaitForCss(".object.object-color0");
+            var cc = GetReferenceFromProperty("Credit Card");
+            Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
+        }
+
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
     {
@@ -328,9 +356,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void QueryOnlyActionDoesNotReloadAutomatically() { base.QueryOnlyActionDoesNotReloadAutomatically(); }
         [TestMethod]
         public override void PotentActionDoesReloadAutomatically() { base.PotentActionDoesReloadAutomatically(); }
-
         [TestMethod]
         public override void NonNavigableReferenceProperty() { base.NonNavigableReferenceProperty(); }
+        [TestMethod]
+        public override void Colours() { base.Colours(); }
     }
     #region browsers specific subclasses
 
@@ -358,7 +387,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -438,6 +467,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.QueryOnlyActionDoesNotReloadAutomatically();
             base.PotentActionDoesReloadAutomatically();
             base.NonNavigableReferenceProperty();
+            base.Colours();
         }
     }
     [TestClass]
