@@ -33,7 +33,9 @@ namespace RestfulObjects.Mvc {
             // defaults 
             CacheSettings = new Tuple<int, int, int>(0, 3600, 86400);
             DefaultPageSize = 20;
-            InlineDetailsInMemberRepresentations = true;
+            InlineDetailsInActionMemberRepresentations = true;
+            InlineDetailsInCollectionMemberRepresentations = true;
+            InlineDetailsInPropertyMemberRepresentations = true;
         }
 
         protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
@@ -43,8 +45,11 @@ namespace RestfulObjects.Mvc {
 
         public static bool IsReadOnly { get; set; }
 
-        public static bool InlineDetailsInMemberRepresentations { get; set; }
+        public static bool InlineDetailsInActionMemberRepresentations { get; set; }
 
+        public static bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+
+        public static bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
         public static RestControlFlags.DomainModelType DomainModel {
             get { return RestControlFlags.ConfiguredDomainModelType; }
@@ -712,7 +717,7 @@ namespace RestfulObjects.Mvc {
             if (arguments.IsMalformed) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
-            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, arguments.Page, arguments.PageSize, arguments.DomainModel, InlineDetailsInMemberRepresentations);
+            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, arguments.Page, arguments.PageSize, arguments.DomainModel, InlineDetailsInActionMemberRepresentations);
         }
 
         private string GetIfMatchTag() {
