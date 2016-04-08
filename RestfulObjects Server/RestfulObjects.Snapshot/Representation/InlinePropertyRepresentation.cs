@@ -34,9 +34,9 @@ namespace RestfulObjects.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
 
-            if (strategy.ShowChoices()) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
+            if (strategy.ShowChoices()) {              
                 RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
+                optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
             }
 
             if (optionals.Any()) {
