@@ -92,9 +92,9 @@ namespace RestfulObjects.Mvc.Model {
             return voFlag != null && (bool) voFlag.Value;
         }
 
-        private static bool GetInlinePropertyDetailsFlag(JObject jObject) {
+        private static bool? GetInlinePropertyDetailsFlag(JObject jObject) {
             var flag = jObject[RestControlFlags.InlinePropertyDetailsReserved] as JValue;
-            return flag != null && (bool)flag.Value;
+            return flag == null ? null : (bool?)flag.Value;
         }
 
         private static int GetPageValue(JObject jObject) {
@@ -177,7 +177,7 @@ namespace RestfulObjects.Mvc.Model {
                     arg.SearchTerm = GetSearchTerm(jObject);
                     arg.Page = GetPageValue(jObject);
                     arg.PageSize = GetPageSizeValue(jObject);
-                    arg.InlinePropertyDetails = true; //GetInlinePropertyDetailsFlag(jObject);
+                    arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
@@ -241,11 +241,13 @@ namespace RestfulObjects.Mvc.Model {
                 string domainModel = collection[RestControlFlags.DomainModelReserved];
                 string page = collection[RestControlFlags.PageReserved];
                 string pageSize = collection[RestControlFlags.PageSizeReserved];
+                string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
 
                 args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
                 args.DomainModel = domainModel;
                 args.Page = page != null ? int.Parse(page) : 0;
                 args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
+                args.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?)null;
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
