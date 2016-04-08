@@ -139,7 +139,9 @@
     <Compile Include="Strategies\FormActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\AbstractCollectionRepresentationStrategy.cs" />
-    <Compile Include="Strategies\PropertyRepresentationStrategy.cs" />
+    <Compile Include="Strategies\AbstractPropertyRepresentationStrategy.cs" />
+    <Compile Include="Strategies\PropertyWithDetailsRepresentationStrategy.cs" />
+    <Compile Include="Strategies\PropertyMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\MemberRepresentationStrategy.cs" />
     <Compile Include="Representation\NullRepresentation.cs" />
     <Compile Include="Representation\PromptRepresentation.cs" />

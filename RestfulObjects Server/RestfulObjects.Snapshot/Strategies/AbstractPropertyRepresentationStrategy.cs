@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -19,19 +18,19 @@ using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
     [DataContract]
-    public class PropertyRepresentationStrategy : MemberRepresentationStrategy {
-        public PropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+    public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentationStrategy {
+        protected AbstractPropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
-        private IDictionary<string, object> customExtensions;
+        protected IDictionary<string, object> CustomExtensions { get; set; }
 
-        private void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
+        protected void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
             if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
                 links.Add(createPrompt());
             }
         }
 
-        private LinkRepresentation CreatePromptLink() {
+        protected LinkRepresentation CreatePromptLink() {
             var opts = new List<OptionalProperty>();
 
             if (propertyContext.Property.IsAutoCompleteEnabled) {
@@ -51,7 +50,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()), Flags, opts.ToArray());
         }
 
-        private LinkRepresentation CreatePersistPromptLink() {
+        protected LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
             KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
@@ -80,7 +79,7 @@ namespace RestfulObjects.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new PromptRelType(GetHelper()) {Method = RelMethod.Put}, Flags, opts.ToArray());
         }
 
-        private void AddMutatorLinks(List<LinkRepresentation> links) {
+        protected void AddMutatorLinks(List<LinkRepresentation> links) {
             if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
                 links.Add(CreateModifyLink());
 
@@ -99,78 +98,44 @@ namespace RestfulObjects.Snapshot.Strategies {
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
         }
 
-        public new LinkRepresentation[] GetLinks(bool inline) {
-            var links = new List<LinkRepresentation>(base.GetLinks(inline));
-
-            if (!propertyContext.Target.IsTransient) {
-                AddMutatorLinks(links);
-            }
-
-            AddPrompt(links, propertyContext.Target.IsTransient ? (Func<LinkRepresentation>) CreatePersistPromptLink : CreatePromptLink);
-
-            return links.ToArray();
-        }
-
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-
-            if (customExtensions == null) {
-
-
-                if (IsUnconditionalChoices()) {
-                    customExtensions = new Dictionary<string, object>();
-
-                    Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                    Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
-
-                    OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
-                    MapRepresentation map = MapRepresentation.Create(op);
-
-                   
-                    customExtensions[JsonPropertyNames.CustomChoices] = map;
-                }
+            if (CustomExtensions == null) {
+                AddChoicesCustomExtension();
 
                 string mask = propertyContext.Property.Mask;
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
-                   
-
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
-                    customExtensions[JsonPropertyNames.CustomMask] = mask;
+                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions[JsonPropertyNames.CustomMask] = mask;
                 }
 
                 var multipleLines = propertyContext.Property.NumberOfLines;
 
-                if (multipleLines > 1) {        
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
-                    customExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
+                if (multipleLines > 1) {
+                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
                 var notNavigable = propertyContext.Property.NotNavigable;
 
                 if (notNavigable) {
-                    customExtensions = customExtensions ?? new Dictionary<string, object>();
-                    customExtensions[JsonPropertyNames.CustomNotNavigable] = notNavigable;
+                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions[JsonPropertyNames.CustomNotNavigable] = notNavigable;
                 }
 
-
-                customExtensions = RestUtils.AddRangeExtension(propertyContext.Property, customExtensions);
+                CustomExtensions = RestUtils.AddRangeExtension(propertyContext.Property, CustomExtensions);
             }
 
-            return customExtensions;
+            return CustomExtensions;
         }
 
-        private bool IsUnconditionalChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (propertyContext.Property.Specification.IsParseable || (propertyContext.Property.Specification.IsCollection && propertyContext.Property.ElementSpecification.IsParseable)) &&
-                   !propertyContext.Property.GetChoicesParameters().Any();
-        }
+        protected abstract void AddChoicesCustomExtension();
 
         public bool UseDateOverDateTime() {
             return propertyContext.Property.IsDateOnly;
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
-
             return RestUtils.GetExtensions(
                 friendlyname: propertyContext.Property.Name,
                 description: propertyContext.Property.Description,
@@ -194,5 +159,22 @@ namespace RestfulObjects.Snapshot.Strategies {
         public bool GetHasChoices() {
             return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any();
         }
+
+        public abstract bool ShowChoices();
+
+        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) {
+            return flags.InlineDetailsInPropertyMemberRepresentations || propertyContext.Property.RenderEagerly;
+        }
+
+        public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+          
+            if (inline && !InlineDetails(propertyContext, flags)) {
+                return new PropertyMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            }
+
+            return new PropertyWithDetailsRepresentationStrategy(inline, oidStrategy, req, propertyContext, flags);
+        }
+
+        public abstract LinkRepresentation[] GetLinks();
     }
 }

@@ -92,6 +92,11 @@ namespace RestfulObjects.Mvc.Model {
             return voFlag != null && (bool) voFlag.Value;
         }
 
+        private static bool GetInlinePropertyDetailsFlag(JObject jObject) {
+            var flag = jObject[RestControlFlags.InlinePropertyDetailsReserved] as JValue;
+            return flag != null && (bool)flag.Value;
+        }
+
         private static int GetPageValue(JObject jObject) {
             var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
             return pageValue == null ? 0 : Convert.ToInt32(pageValue.Value);
@@ -172,6 +177,7 @@ namespace RestfulObjects.Mvc.Model {
                     arg.SearchTerm = GetSearchTerm(jObject);
                     arg.Page = GetPageValue(jObject);
                     arg.PageSize = GetPageSizeValue(jObject);
+                    arg.InlinePropertyDetails = true; //GetInlinePropertyDetailsFlag(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);

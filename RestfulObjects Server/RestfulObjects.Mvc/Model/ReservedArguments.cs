@@ -7,6 +7,7 @@
 
 namespace RestfulObjects.Mvc.Model {
     public class ReservedArguments {
+        public virtual bool InlinePropertyDetails { get; set; }
         public virtual bool ValidateOnly { get; set; }
         public virtual string DomainModel { get; set; }
         public virtual int ReservedArgumentsCount { get; set; }

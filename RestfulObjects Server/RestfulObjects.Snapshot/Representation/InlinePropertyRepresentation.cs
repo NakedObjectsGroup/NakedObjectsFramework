@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -17,29 +18,32 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class InlinePropertyRepresentation : InlineMemberAbstractRepresentation {
-        protected InlinePropertyRepresentation(IOidStrategy oidStrategy, PropertyRepresentationStrategy strategy)
-            : base(oidStrategy, strategy
-                .GetFlags()) {
+        protected InlinePropertyRepresentation(IOidStrategy oidStrategy, AbstractPropertyRepresentationStrategy strategy)
+            : base(oidStrategy, strategy.GetFlags()) {
             MemberType = MemberTypes.Property;
             Id = strategy.GetId();
-            HasChoices = strategy.GetHasChoices();
-            Links = strategy.GetLinks(true);
+            Links = strategy.GetLinks();
             Extensions = strategy.GetExtensions();
             SetHeader(strategy.GetTarget());
         }
 
-        [DataMember(Name = JsonPropertyNames.HasChoices)]
-        public bool HasChoices { get; set; }
-
         public static InlinePropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var propertyRepresentationStrategy = new PropertyRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, oidStrategy, req, propertyContext, flags);
 
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, propertyRepresentationStrategy.UseDateOverDateTime())));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
-            RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
-            
-            return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, propertyRepresentationStrategy}, optionals);
+
+            if (strategy.ShowChoices()) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
+                RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
+            }
+
+            if (optionals.Any()) {
+                return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals);
+            }
+
+            return new InlinePropertyRepresentation(oidStrategy, strategy);
         }
     }
 }

@@ -17,10 +17,10 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class PropertyRepresentation : MemberAbstractRepresentation {
-        protected PropertyRepresentation(IOidStrategy oidStrategy, PropertyRepresentationStrategy strategy)
+        protected PropertyRepresentation(IOidStrategy oidStrategy, AbstractPropertyRepresentationStrategy strategy)
             : base(oidStrategy, strategy) {
             HasChoices = strategy.GetHasChoices();
-            Links = strategy.GetLinks(false);
+            Links = strategy.GetLinks();
             Extensions = strategy.GetExtensions();
         }
 
@@ -28,15 +28,15 @@ namespace RestfulObjects.Snapshot.Representations {
         public bool HasChoices { get; set; }
 
         public static PropertyRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var propertyRepresentationStrategy = new PropertyRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(false, oidStrategy, req, propertyContext, flags);
 
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, propertyRepresentationStrategy.UseDateOverDateTime())));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
 
             RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
             
-            return CreateWithOptionals<PropertyRepresentation>(new object[] {oidStrategy, propertyRepresentationStrategy}, optionals);
+            return CreateWithOptionals<PropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals);
         }
     }
 }

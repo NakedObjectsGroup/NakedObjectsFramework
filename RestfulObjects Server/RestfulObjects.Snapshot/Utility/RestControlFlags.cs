@@ -34,6 +34,7 @@ namespace RestfulObjects.Snapshot.Utility {
         // custom extensions 
         public const string PageReserved = ReservedPrefix + JsonPropertyNames.Page;
         public const string PageSizeReserved = ReservedPrefix + JsonPropertyNames.PageSize;
+        public const string InlinePropertyDetailsReserved = ReservedPrefix + "inline-property-details";
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
