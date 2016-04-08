@@ -170,6 +170,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CheckIndividualItem(8, endDate, futureDate, false);
         }
 
+        //To test an error that was previously being thrown by the RO server
+        public virtual void EmptyParam()
+        {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&as1=open&c1=Table");
+            WaitForView(Pane.Single, PaneType.List);
+            Reload();
+            SelectCheckBox("#item1-6");
+            SelectCheckBox("#item1-9");
+            OpenActionDialog("Append To Description");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            Reload();
+        }
+
         public virtual void ZeroParamAction()
         {
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
@@ -293,6 +309,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void DateParam() { base.DateParam(); }
+        [TestMethod]
+        public override void EmptyParam() { base.EmptyParam(); }
+
 
         [TestMethod]
         public override void ZeroParamAction() { base.ZeroParamAction(); }
