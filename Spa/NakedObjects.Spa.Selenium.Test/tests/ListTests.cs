@@ -289,7 +289,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ListTestsFirefox : ListTests
     {
         [ClassInitialize]
