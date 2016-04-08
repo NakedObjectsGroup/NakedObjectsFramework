@@ -525,7 +525,7 @@ module NakedObjects {
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
 
-                if (propertyViewModel.choice) {
+                if (fieldEntryType === EntryType.Choices) {
                     propertyViewModel.value = propertyViewModel.choice.name;
                     propertyViewModel.formattedValue = propertyViewModel.choice.name;
                 } else if (propertyViewModel.password) {
