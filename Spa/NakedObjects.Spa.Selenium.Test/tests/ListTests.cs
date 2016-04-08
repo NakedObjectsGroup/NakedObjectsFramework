@@ -213,6 +213,34 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 == "Page 1 of 1; viewing 11 of 11 items");
         }
+
+        public virtual void ReloadingListGetsUpdatedObject()
+        {
+            Url(SpecialOffersMenuUrl);
+            Click(GetObjectAction("Current Special Offers"));
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
+            WaitForCss(".reference", 16);
+            var row = WaitForCssNo(".reference", 1);
+            Click(row);
+            WaitForView(Pane.Single, PaneType.Object, "Volume Discount 11 to 14");
+            EditObject();
+            ClearFieldThenType("#description1", "Volume Discount 11 - 14");
+            SaveObject();
+
+            ClickBackButton();
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
+            Reload();
+            WaitForCss(".reference", 16);
+            row = WaitForCssNo(".reference", 1);
+            Click(row);
+            WaitForView(Pane.Single, PaneType.Object, "Volume Discount 11 - 14");
+
+            //Now revert
+            EditObject();
+            ClearFieldThenType("#description1", "Volume Discount 11 to 14");
+            SaveObject();
+        }
     }
     public abstract class ListTests : ListTestsRoot
     {
@@ -232,6 +260,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void PagingTableView() { base.PagingTableView(); }
         [TestMethod]
         public override void ListDoesNotRefreshWithoutReload() { base.ListDoesNotRefreshWithoutReload(); }
+        [TestMethod]
+        public override void ReloadingListGetsUpdatedObject() { base.ReloadingListGetsUpdatedObject(); }
     }
 
     #region browsers specific subclasses
