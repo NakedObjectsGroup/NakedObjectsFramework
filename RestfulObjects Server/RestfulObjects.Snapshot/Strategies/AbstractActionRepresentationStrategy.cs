@@ -139,7 +139,7 @@ namespace RestfulObjects.Snapshot.Strategies {
                 if (actionContext.Target.IsViewModelEditView) {
                     strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
-                else if (flags.InlineDetailsInMemberRepresentations) {
+                else if (flags.InlineDetailsInActionMemberRepresentations) {
                     strategy = new ActionMemberWithDetailsRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
                 else {

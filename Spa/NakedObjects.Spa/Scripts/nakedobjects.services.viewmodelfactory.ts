@@ -634,7 +634,7 @@ module NakedObjects {
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
-            const links = collectionRep.value();
+            const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
             const state = routeData.collections[collectionRep.collectionId()];
 
@@ -653,8 +653,8 @@ module NakedObjects {
                 collectionViewModel.color = `${linkColor}${c}`;
             });
 
-            if (links) {
-                collectionViewModel.items = viewModelFactory.getItems(links, state === CollectionViewState.Table, routeData, collectionViewModel);
+            if (itemLinks) {
+                collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
             }
             else if (state === CollectionViewState.List || state === CollectionViewState.Table) {
 
@@ -697,10 +697,8 @@ module NakedObjects {
                     context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
 
 
-            collectionPlaceholderViewModel.reload = () =>
-                recreate().then(() => {
-                    $route.reload();
-                });
+            collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
+
             return collectionPlaceholderViewModel;
         };
         viewModelFactory.servicesViewModel = (servicesRep: DomainServicesRepresentation) => {

@@ -27,7 +27,7 @@ namespace RestfulObjects.Snapshot.Representations {
         }
 
         public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(true, oidStrategy, req, propertyContext, flags);
 
             int? size = collectionRepresentationStrategy.GetSize();
 

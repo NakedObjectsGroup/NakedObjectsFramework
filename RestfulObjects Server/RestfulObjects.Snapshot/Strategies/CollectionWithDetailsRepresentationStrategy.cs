@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -12,12 +13,12 @@ using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
 
 namespace RestfulObjects.Snapshot.Strategies {
-    public class CollectionMemberRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+    public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
+        public CollectionWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {}
 
         public override LinkRepresentation[] GetValue() {
-            return null;
+            return Collection.ToEnumerable().Select(CreateValueLink).ToArray();
         }
 
         public override int? GetSize() {

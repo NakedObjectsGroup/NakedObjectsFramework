@@ -17,7 +17,7 @@ using RestfulObjects.Snapshot.Utility;
 namespace RestfulObjects.Snapshot.Representations {
     [DataContract]
     public class CollectionRepresentation : MemberAbstractRepresentation {
-        protected CollectionRepresentation(IOidStrategy oidStrategy, CollectionRepresentationStrategy strategy)
+        protected CollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy)
             : base(oidStrategy, strategy) {
             Value = strategy.GetValue();
             Extensions = strategy.GetExtensions();
@@ -27,7 +27,8 @@ namespace RestfulObjects.Snapshot.Representations {
         public LinkRepresentation[] Value { get; set; }
 
         public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
-            var collectionRepresentationStrategy = new CollectionRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, oidStrategy, req, propertyContext, flags);
+
             if (optionals.Count == 0) {
                 return new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
             }

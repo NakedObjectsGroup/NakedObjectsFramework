@@ -55,5 +55,25 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public abstract int? GetSize();
+
+        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) {
+            return flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
+        }
+
+        private static bool DoNotCount(PropertyContextFacade propertyContext) {
+            return propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
+        }
+
+        public static AbstractCollectionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+            if (inline && DoNotCount(propertyContext)) {
+                return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            }
+
+            if (inline && !InlineDetails(propertyContext, flags)) {
+                return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            }
+
+            return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+        }
     }
 }

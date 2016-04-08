@@ -132,7 +132,8 @@
     <Compile Include="Strategies\AbstractActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionMemberWithDetailsRepresentationStrategy.cs" />
     <Compile Include="Strategies\ActionMemberRepresentationStrategy.cs" />
-    <Compile Include="Strategies\CollectionRepresentationStrategy.cs" />
+    <Compile Include="Strategies\CollectionMemberNotCountedRepresentationStrategy.cs" />
+    <Compile Include="Strategies\CollectionWithDetailsRepresentationStrategy.cs" />
     <Compile Include="Strategies\CollectionMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\FormActionMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\FormActionRepresentationStrategy.cs" />

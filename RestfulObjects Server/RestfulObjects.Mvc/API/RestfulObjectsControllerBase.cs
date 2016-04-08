@@ -717,7 +717,13 @@ namespace RestfulObjects.Mvc {
             if (arguments.IsMalformed) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
-            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, arguments.Page, arguments.PageSize, arguments.DomainModel, InlineDetailsInActionMemberRepresentations);
+            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, 
+                arguments.Page,
+                arguments.PageSize, 
+                arguments.DomainModel,
+                InlineDetailsInActionMemberRepresentations,
+                InlineDetailsInCollectionMemberRepresentations,
+                InlineDetailsInPropertyMemberRepresentations);
         }
 
         private string GetIfMatchTag() {

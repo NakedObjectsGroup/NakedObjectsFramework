@@ -49,7 +49,9 @@ namespace RestfulObjects.Snapshot.Utility {
         public bool FollowLinks { get; private set; }
         public bool SortBy { get; private set; }
         public bool BlobsClobs { get; private set; }
-        public bool InlineDetailsInMemberRepresentations { get; set; }
+        public bool InlineDetailsInActionMemberRepresentations { get; set; }
+        public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+        public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
@@ -124,8 +126,10 @@ namespace RestfulObjects.Snapshot.Utility {
         public static RestControlFlags FlagsFromArguments(bool validateOnly,
                                                           int page,
                                                           int pageSize,
-                                                          string domainModel = null,
-                                                          bool inlineDetailsInMemberRepresentations = true) {
+                                                          string domainModel,
+                                                          bool inlineDetailsInActionMemberRepresentations,
+                                                          bool inlineDetailsInCollectionMemberRepresentations,
+                                                          bool inlineDetailsInPropertyMemberRepresentations) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -141,7 +145,9 @@ namespace RestfulObjects.Snapshot.Utility {
                 BlobsClobs = false,
                 PageSize = DefaultPageSize(pageSize),
                 Page = DefaultPage(page),
-                InlineDetailsInMemberRepresentations = inlineDetailsInMemberRepresentations
+                InlineDetailsInActionMemberRepresentations = inlineDetailsInActionMemberRepresentations,
+                InlineDetailsInCollectionMemberRepresentations = inlineDetailsInCollectionMemberRepresentations,
+                InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations
             };
 
             return controlFlags;
