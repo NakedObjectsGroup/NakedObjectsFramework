@@ -1472,6 +1472,7 @@ module NakedObjects {
         };
 
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
+            //TODO: problem here is that unless collections are in-lined value will be null.
             const max = source.value().length;
             if (!startNo) {
                 startNo = 1;
