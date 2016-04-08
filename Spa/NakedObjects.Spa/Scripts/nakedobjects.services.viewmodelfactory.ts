@@ -516,6 +516,7 @@ module NakedObjects {
             if (fieldEntryType === EntryType.Choices) {
                 propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
             } else {
+                // use choice for draggable/droppable references
                 propertyViewModel.choice = currentChoice;
             }
 
