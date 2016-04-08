@@ -55,5 +55,15 @@ namespace AdventureWorksModel.Sales
             }
         }
 
+        //To test an empty param
+        public void AppendToDescription([ContributedAction] IQueryable<SpecialOffer> offers, [Optionally] string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+            foreach (SpecialOffer offer in offers)
+            {
+                offer.Description += text;
+            }
+        }
+
     }
 }

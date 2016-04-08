@@ -7,8 +7,10 @@
 
 using System;
 using System.Linq;
+using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -134,6 +136,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "The requested view of unsaved object details has expired.",
                 title);
         }
+
+        public virtual void ConditionalChoicesOnTransient()
+        {
+            GeminiUrl("home?m1=ProductRepository");
+            Click(GetObjectAction("New Product"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Product");
+            // set product category and sub category
+            SelectDropDownOnField("#productcategory1", "Clothing");
+
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
+
+            SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
+
+            SelectDropDownOnField("#productcategory1", "Bikes");
+
+            wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
+
+            SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot
@@ -158,6 +179,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void BackAndForwardOverTransient() { base.BackAndForwardOverTransient(); }
         [TestMethod]
         public override void RequestForExpiredTransient() { base.RequestForExpiredTransient(); }
+        [TestMethod]
+        public override void ConditionalChoicesOnTransient() { base.ConditionalChoicesOnTransient(); }
     }
     #region browsers specific subclasses
 
@@ -254,6 +277,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.SwapPanesWithTransients();
             base.BackAndForwardOverTransient();
             base.RequestForExpiredTransient();
+            base.ConditionalChoicesOnTransient();
         }
     }
     [TestClass]
