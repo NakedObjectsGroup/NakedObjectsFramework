@@ -143,12 +143,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
             WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
 
-            Assert.IsTrue(WaitForCssNo(".collection", 0).Text.Contains("Unknown Size"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("Unknown Size"));
 
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
-            Assert.IsTrue(WaitForCssNo(".collection",0).Text.Contains("1 Item"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
 
             //wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].Text == "Product - Order Info:\r\n1 Item");
 
@@ -156,7 +156,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".icon-summary"));
             WaitUntilGone(dr => dr.FindElement(By.CssSelector(".table")));
 
-            Assert.IsTrue(WaitForCssNo(".collection", 0).Text.Contains("Unknown Size"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("Unknown Size"));
         }
         public virtual void ClickOnLineItemWithCollectionAsList()
         {
@@ -358,7 +358,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
