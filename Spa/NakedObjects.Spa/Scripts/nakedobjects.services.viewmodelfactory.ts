@@ -511,15 +511,12 @@ module NakedObjects {
                 propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
-            if (!propertyRep.isScalar()) {
+            const currentChoice = ChoiceViewModel.create(value, id);
 
-                const currentChoice = ChoiceViewModel.create(value, id);
-
-                if (fieldEntryType === EntryType.Choices) {
-                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
-                } else {
-                    propertyViewModel.choice = currentChoice;
-                }
+            if (fieldEntryType === EntryType.Choices) {
+                propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+            } else {
+                propertyViewModel.choice = currentChoice;
             }
 
             if (propertyRep.isScalar()) {
