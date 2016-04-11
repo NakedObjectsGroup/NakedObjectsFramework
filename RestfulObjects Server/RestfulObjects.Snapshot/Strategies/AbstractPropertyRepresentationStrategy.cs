@@ -161,7 +161,10 @@ namespace RestfulObjects.Snapshot.Strategies {
         public abstract bool ShowChoices();
 
         private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) {
-            return flags.InlineDetailsInPropertyMemberRepresentations || propertyContext.Property.RenderEagerly;
+            return flags.InlineDetailsInPropertyMemberRepresentations ||
+                    propertyContext.Property.RenderEagerly ||
+                    propertyContext.Target.IsViewModelEditView ||
+                    propertyContext.Target.IsTransient;
         }
 
         public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
