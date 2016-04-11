@@ -276,22 +276,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Specific type matches
             GeminiUrl("object?i1=View&o1=___1.Customer--226");
+            WaitForView(Pane.Single, PaneType.Object, "Leisure Activities, AW00000226");
             WaitForCss(".object.object-color1");
             var terr = GetReferenceFromProperty("Sales Territory");
             GeminiUrl("object?i1=View&o1=___1.Product--404");
+            WaitForView(Pane.Single, PaneType.Object, "External Lock Washer 4");
             WaitForCss(".object.object-color4");
 
             //Regex matches
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--59289&c1_Details=List");
+            WaitForView(Pane.Single, PaneType.Object, "SO59289"); 
             WaitForCss(".object.object-color2");
             var detailLink = WaitForCssNo("tr", 1);
-            Assert.IsTrue(detailLink.GetAttribute("class").Contains("link-color2"));
+            Assert.AreEqual("ng-scope link-color2", detailLink.GetAttribute("class"));
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
 
             //SubType matching
             GeminiUrl("object?i1=View&o1=___1.Person--3238");
+            WaitForView(Pane.Single, PaneType.Object, "Maria Cox");
             WaitForCss(".object.object-color8");
             GeminiUrl("object?i1=View&o1=___1.Store--1334");
             WaitForView(Pane.Single, PaneType.Object, "Chic Department Stores");
@@ -387,7 +391,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
