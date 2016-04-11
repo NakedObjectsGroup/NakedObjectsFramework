@@ -1656,7 +1656,7 @@ module NakedObjects.Test.Helpers {
         specialOfferRepositoryMenuRequestHandler = $httpBackend.when("GET", root + "/menus/SpecialOfferRepository");
         specialOfferRepositoryMenuRequestHandler.respond(specialOfferRepositoryMenuRepresentation);
 
-        vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634");
+        vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634?x-ro-inline-property-details=false");
         vendorDomainObjectRequestHandler.respond(vendorObjectRepresentation);
 
         listAllVendorsWithWebAddressesResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke?x-ro-page=1&x-ro-pageSize=20");
