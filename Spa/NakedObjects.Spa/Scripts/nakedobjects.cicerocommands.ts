@@ -26,6 +26,7 @@ module NakedObjects {
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
     import isDateOrDateTime = Models.isDateOrDateTime;
     import toDateString = Models.toDateString;
+    import CollectionRepresentation = Models.CollectionRepresentation;
 
     export abstract class Command {
 
@@ -1461,7 +1462,7 @@ module NakedObjects {
                 this.getObject().then((obj: DomainObjectRepresentation) => {
                     const openCollIds = openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
-                    this.renderItems(coll, start, end);
+                    this.renderCollectionItems(coll, start, end);
                 });
                 return;
             }
@@ -1470,6 +1471,16 @@ module NakedObjects {
                 this.renderItems(list, start, end);
             });
         };
+
+        private renderCollectionItems(coll: CollectionMember, startNo: number, endNo: number) {
+            if (coll.value()) {
+                this.renderItems(coll, startNo, endNo);
+            } else {
+                this.context.getCollectionDetails(coll).then((details: CollectionRepresentation) => {
+                    this.renderItems(details, startNo, endNo);
+                });
+            }
+        }
 
         private renderItems(source: IHasLinksAsValue, startNo: number, endNo: number): void {
             //TODO: problem here is that unless collections are in-lined value will be null.
