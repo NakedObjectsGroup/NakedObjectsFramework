@@ -133,13 +133,17 @@ namespace RestfulObjects.Snapshot.Strategies {
             return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
 
+        private static bool InlineDetails(ActionContextFacade actionContext, RestControlFlags flags) {
+            return flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
+        }
+
         public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
             AbstractActionRepresentationStrategy strategy;
             if (inline) {
                 if (actionContext.Target.IsViewModelEditView) {
                     strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
-                else if (flags.InlineDetailsInActionMemberRepresentations) {
+                else if (InlineDetails(actionContext, flags)) {
                     strategy = new ActionMemberWithDetailsRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
                 else {

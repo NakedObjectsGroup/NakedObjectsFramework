@@ -259,23 +259,23 @@ module NakedObjects {
                 });
         };
 
-        context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => {
+        function editOrReloadObject(paneId: number, object: DomainObjectRepresentation, inlineDetails: boolean) {
             const parms: _.Dictionary<Object> = {};
-            parms[roInlinePropertyDetails] = true;
+            parms[roInlinePropertyDetails] = inlineDetails;
 
             return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink(), parms).
                 then(obj => {
                     currentObjects[paneId] = obj;
                     return $q.when(obj);
                 });
+        }
+
+        context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => {
+            return editOrReloadObject(paneId, object, true);
         };
 
         context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => {
-            return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink()).
-                then(obj => {
-                    currentObjects[paneId] = obj;
-                    return $q.when(obj);
-                });
+            return editOrReloadObject(paneId, object, false);
         };
 
         context.getService = (paneId: number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
