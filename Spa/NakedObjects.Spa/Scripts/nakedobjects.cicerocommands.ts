@@ -186,7 +186,15 @@ module NakedObjects {
 
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
             const oid = this.routeData().objectId;
-            return this.context.getObjectByOid(1, oid, this.routeData().interactionMode);
+            //TODO: Consider view model & transient modes?
+
+            return this.context.getObjectByOid(1, oid, this.routeData().interactionMode).then((obj: DomainObjectRepresentation) => {
+                if (this.routeData().interactionMode === InteractionMode.Edit) {
+                    return this.context.getObjectForEdit(1, obj);
+                } else {
+                    return this.$q.when(obj); //To wrap a known object as a promise
+                }
+            });
         }
 
         protected isList(): boolean {
