@@ -28,7 +28,9 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         protected override bool AddChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && propertyContext.Property.Specification.IsEnum;
+            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+                   (propertyContext.Property.Specification.IsEnum ||
+                    propertyContext.Property.Specification.IsParseable);
         }
     }
 }
