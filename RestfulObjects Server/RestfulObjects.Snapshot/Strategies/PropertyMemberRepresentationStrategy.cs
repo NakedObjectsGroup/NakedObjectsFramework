@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
@@ -18,16 +19,16 @@ namespace RestfulObjects.Snapshot.Strategies {
         public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
-        protected override void AddChoicesCustomExtension() {
-            // do nothing
-        }
-
         public override bool ShowChoices() {
             return false;
         }
 
         public override LinkRepresentation[] GetLinks() {
             return GetLinks(true);
+        }
+
+        protected override bool AddChoices() {
+            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && propertyContext.Property.Specification.IsEnum;
         }
     }
 }

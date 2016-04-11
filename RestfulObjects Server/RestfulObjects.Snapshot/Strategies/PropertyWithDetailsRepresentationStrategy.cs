@@ -42,24 +42,10 @@ namespace RestfulObjects.Snapshot.Strategies {
             return links.ToArray();
         }
 
-        private bool IsUnconditionalChoices() {
+        protected override bool AddChoices() {
             return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
                    (propertyContext.Property.Specification.IsParseable || (propertyContext.Property.Specification.IsCollection && propertyContext.Property.ElementSpecification.IsParseable)) &&
                    !propertyContext.Property.GetChoicesParameters().Any();
-        }
-
-        protected override void AddChoicesCustomExtension() {
-            if (IsUnconditionalChoices()) {
-                CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
-
-                Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
-
-                OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
-                MapRepresentation map = MapRepresentation.Create(op);
-
-                CustomExtensions[JsonPropertyNames.CustomChoices] = map;
-            }
         }
     }
 }
