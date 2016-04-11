@@ -896,7 +896,7 @@ module NakedObjects {
         };
      
         doEdit = () => {
-            this.contextService.reloadObject(this.onPaneId, this.domainObject).
+            this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
                     this.urlManager.pushUrlState(this.onPaneId);

@@ -70,7 +70,7 @@ module NakedObjects {
     export const roSearchTerm = "x-ro-searchTerm";
     export const roPage = "x-ro-page";
     export const roPageSize = "x-ro-pageSize";
-
+    export const roInlinePropertyDetails = "x-ro-inline-property-details";
     export const roValidateOnly = "x-ro-validate-only";
 
     //NOF custom RO constants

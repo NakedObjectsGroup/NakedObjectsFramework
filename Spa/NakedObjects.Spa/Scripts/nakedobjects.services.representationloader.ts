@@ -21,9 +21,9 @@ module NakedObjects {
         validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
 
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string) => ng.IPromise<T>;
-        retrieveFromLink: <T extends IHateoasModel>(link: Link) => ng.IPromise<T>;
+        retrieveFromLink: <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
-        invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>) => ng.IPromise<ActionResultRepresentation>;
+        invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>) => ng.IPromise<ActionResultRepresentation>;
     }
 
     app.service("repLoader", function($http: ng.IHttpService, $q: ng.IQService, $rootScope: ng.IRootScopeService, $cacheFactory: ng.ICacheFactoryService) {
@@ -155,13 +155,19 @@ module NakedObjects {
 
 
 
-        repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link): ng.IPromise<T> => {
+        repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
 
             const response = link.getTarget();
+            let urlParms = "";
+
+            if (parms) {
+                const urlParmString = _.reduce(parms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+                urlParms = urlParmString !== "" ?  `?${urlParmString}` : "";
+            }
 
             const config = {
                 withCredentials: true,
-                url: link.href(),
+                url: link.href() + urlParms,
                 method: link.method(),
                 cache: false
             };
@@ -170,7 +176,7 @@ module NakedObjects {
         };
 
 
-        repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<string>): ng.IPromise<ActionResultRepresentation> => {
+        repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.IPromise<ActionResultRepresentation> => {
             const invokeMap = action.getInvokeMap();
             _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));

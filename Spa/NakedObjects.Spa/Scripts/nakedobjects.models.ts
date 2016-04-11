@@ -85,7 +85,7 @@ module NakedObjects.Models {
         etagDigest: string;
         hateoasUrl: string;
         method: string;
-        urlParms: _.Dictionary<string>;
+        //urlParms: _.Dictionary<Object>;
         populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
         getUrl(): string;
@@ -169,7 +169,7 @@ module NakedObjects.Models {
         etagDigest: string;
         hateoasUrl = "";
         method = "GET";
-        urlParms: _.Dictionary<string>;
+        urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
         }
@@ -180,7 +180,9 @@ module NakedObjects.Models {
 
         getBody(): RoInterfaces.IRepresentation {
             if (this.method === "POST" || this.method === "PUT") {
-                return _.clone(this.model);
+                const m = _.clone(this.model);
+                const up = _.clone(this.urlParms);
+                return _.merge(m, up);
             }
 
             return {};
@@ -207,21 +209,34 @@ module NakedObjects.Models {
             const url = this.hateoasUrl;
             const attrAsJson = _.clone(this.model);
 
-            if (_.keys(attrAsJson).length > 0 && (this.method === "GET" || this.method === "DELETE")) {
+            if (this.method === "GET" || this.method === "DELETE") {
 
-                const urlParmsAsJson = _.clone(this.urlParms);
-                const asJson = _.merge(attrAsJson, urlParmsAsJson);
-                if (_.keys(asJson).length > 0) {
-                    const map = JSON.stringify(asJson);
-                    const parmString = encodeURI(map);
-                    return url + "?" + parmString;
+                if (_.keys(attrAsJson).length > 0) {
+                    // there are model parms so encode everything into json 
+
+                    const urlParmsAsJson = _.clone(this.urlParms);
+                    const asJson = _.merge(attrAsJson, urlParmsAsJson);
+                    if (_.keys(asJson).length > 0) {
+                        const map = JSON.stringify(asJson);
+                        const parmString = encodeURI(map);
+                        return url + "?" + parmString;
+                    }
+                    return url;
                 }
-                return url;
+                if (_.keys(this.urlParms).length > 0) {
+                    // there are only url reserved parms so they can just be appended to url
+                    const urlParmString = _.reduce(this.urlParms, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+
+                    return  url + "?" + urlParmString;
+                }
             }
 
-            const urlParmString = _.reduce(this.urlParms || {}, (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n, "");
+            return url;
+        }
 
-            return urlParmString !== "" ? url + "?" + urlParmString : url;
+        setUrlParameter(name: string, value: Object) {
+            this.urlParms = this.urlParms || {};
+            this.urlParms[name] = value;
         }
     }
 
@@ -663,10 +678,7 @@ module NakedObjects.Models {
             value.set(this.map, name);
         }
 
-        setUrlParameter(name: string, value: string) {
-            this.urlParms = this.urlParms || {};
-            this.urlParms[name] = value;
-        }
+       
     }
 
     export class ActionResultRepresentation extends ResourceRepresentation<RoInterfaces.IActionInvokeRepresentation> {
@@ -1532,6 +1544,10 @@ module NakedObjects.Models {
 
         getUpdateMap(): UpdateMap {
             return new UpdateMap(this, this.updateMap());
+        }
+
+        setInlinePropertyDetails(flag: boolean) {
+            this.setUrlParameter(roInlinePropertyDetails, flag);
         }
     }
 

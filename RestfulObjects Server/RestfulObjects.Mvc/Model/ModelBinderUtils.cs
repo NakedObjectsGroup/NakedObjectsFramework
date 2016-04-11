@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -94,7 +95,7 @@ namespace RestfulObjects.Mvc.Model {
 
         private static bool? GetInlinePropertyDetailsFlag(JObject jObject) {
             var flag = jObject[RestControlFlags.InlinePropertyDetailsReserved] as JValue;
-            return flag == null ? null : (bool?)flag.Value;
+            return flag == null ? (bool?) null : (bool) flag.Value;
         }
 
         private static int GetPageValue(JObject jObject) {

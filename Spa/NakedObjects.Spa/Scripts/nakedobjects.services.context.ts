@@ -69,6 +69,8 @@ module NakedObjects {
 
         reloadObject: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
 
+        getObjectForEdit: (paneId: number, object: DomainObjectRepresentation) => angular.IPromise<DomainObjectRepresentation>;
+
         setError: (reject: ErrorWrapper) => void;
 
         isSubTypeOf(toCheckType: string, againstType: string): ng.IPromise<boolean>;
@@ -246,12 +248,24 @@ module NakedObjects {
 
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
+            object.setInlinePropertyDetails(false);
 
             return repLoader.populate<DomainObjectRepresentation>(object, isDirty).
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
                     dirtyCache.clearDirty(type, id);
                     addRecentlyViewed(obj);
+                    return $q.when(obj);
+                });
+        };
+
+        context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => {
+            const parms: _.Dictionary<Object> = {};
+            parms[roInlinePropertyDetails] = true;
+
+            return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink(), parms).
+                then(obj => {
+                    currentObjects[paneId] = obj;
                     return $q.when(obj);
                 });
         };
@@ -445,8 +459,8 @@ module NakedObjects {
         context.getActionExtensionsFromObject = (paneId: number, objectId: string, actionId: string) =>
             context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions()));
 
-        function getPagingParms(page: number, pageSize: number): _.Dictionary<string> {
-            return (page && pageSize) ? { "x-ro-page": page.toString(), "x-ro-pageSize": pageSize.toString() } : {};
+        function getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
+            return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
         }
 
         context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
@@ -561,6 +575,8 @@ module NakedObjects {
         function invokeActionInternal(invokeMap: InvokeMap, action: IInvokableAction, paneId: number, setDirty: () => void) {
 
             focusManager.setCurrentPane(paneId);
+
+            invokeMap.setUrlParameter(roInlinePropertyDetails, false);
 
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
