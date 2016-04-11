@@ -1231,7 +1231,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         [TestMethod]
         public override void Action() { base.Action(); }
-        [TestMethod]
+        [TestMethod, Ignore] //TODO: pending re-consideration of how Back & Forward should work
         public override void BackAndForward() { base.BackAndForward(); }
         [TestMethod]
         public override void Cancel() { base.Cancel(); }
