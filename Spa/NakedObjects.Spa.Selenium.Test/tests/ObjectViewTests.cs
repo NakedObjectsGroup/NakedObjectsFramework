@@ -99,7 +99,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
             var header = WaitForCss("thead");
-            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            var cols = WaitForCss("th", 3).ToArray();
             Assert.AreEqual(3, cols.Length);
             Assert.AreEqual("", cols[0].Text); //Title
             Assert.AreEqual("Rate Change Date", cols[1].Text);
@@ -391,7 +391,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
