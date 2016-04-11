@@ -1859,7 +1859,7 @@ module NakedObjects.Models {
 
         constructor(againstType: string, toCheckType: string) {
             super();
-            this.hateoasUrl = `${appPath}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
+            this.hateoasUrl = `${getAppPath()}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
             this.urlParms = {};
             this.urlParms["supertype"] = againstType;
         }
@@ -1887,7 +1887,7 @@ module NakedObjects.Models {
 
         constructor() {
             super();
-            this.hateoasUrl = appPath;
+            this.hateoasUrl = getAppPath();
         }
 
         wrapped = () => this.resource() as RoInterfaces.IHomePageRepresentation;

@@ -224,13 +224,6 @@ module NakedObjects {
         const dirtyCache = new DirtyCache();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
-        function getAppPath() {
-            if (appPath.charAt(appPath.length - 1) === "/") {
-                return appPath.length > 1 ? appPath.substring(0, appPath.length - 2) : "";
-            }
-            return appPath;
-        }
-
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
 
