@@ -40,8 +40,8 @@ module NakedObjects {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, type: string, id: string[], isTransient: boolean) => ng.IPromise<DomainObjectRepresentation>;
-        getObjectByOid: (paneId: number, objectId: string) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId: number, type: string, id: string[], interactionMode : InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
+        getObjectByOid: (paneId: number, objectId: string, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
@@ -95,7 +95,7 @@ module NakedObjects {
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
-        getDomainObject: (paneId: number, type: string, id: string, transient: boolean) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId: number, type: string, id: string, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
@@ -232,7 +232,7 @@ module NakedObjects {
         }
 
         // exposed for test mocking
-        context.getDomainObject = (paneId: number, type: string, id: string, transient: boolean): ng.IPromise<DomainObjectRepresentation> => {
+        context.getDomainObject = (paneId: number, type: string, id: string, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
 
             const isDirty = dirtyCache.getDirty(type, id);
 
@@ -241,14 +241,14 @@ module NakedObjects {
             }
 
             // deeper cache for transients
-            if (transient) {
+            if (interactionMode === InteractionMode.Transient) {
                 const transientObj = transientCache.get(paneId, type, id);
                 return transientObj ? $q.when(transientObj) : $q.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.ExpiredTransient, ""));
             }
 
             const object = new DomainObjectRepresentation();
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
-            object.setInlinePropertyDetails(false);
+            object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
             return repLoader.populate<DomainObjectRepresentation>(object, isDirty).
                 then((obj: DomainObjectRepresentation) => {
@@ -396,14 +396,14 @@ module NakedObjects {
                 });
         };
 
-        context.getObject = (paneId: number, type: string, id: string[], transient: boolean) => {
+        context.getObject = (paneId: number, type: string, id: string[], interactionMode: InteractionMode) => {
             const oid = _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
-            return oid ? context.getDomainObject(paneId, type, oid, transient) : context.getService(paneId, type);
+            return oid ? context.getDomainObject(paneId, type, oid, interactionMode) : context.getService(paneId, type);
         };
 
-        context.getObjectByOid = (paneId: number, objectId: string) => {
+        context.getObjectByOid = (paneId: number, objectId: string, interactionMode: InteractionMode) => {
             const [dt, ...id] = objectId.split(keySeparator);
-            return context.getObject(paneId, dt, id, false);
+            return context.getObject(paneId, dt, id, interactionMode);
         };
 
         context.getCachedList = (paneId: number, page: number, pageSize: number) => {
@@ -457,7 +457,7 @@ module NakedObjects {
             context.getMenu(menuId).then(menu => $q.when(menu.actionMember(actionId).extensions()));
 
         context.getActionExtensionsFromObject = (paneId: number, objectId: string, actionId: string) =>
-            context.getObjectByOid(paneId, objectId).then(object => $q.when(object.actionMember(actionId).extensions()));
+            context.getObjectByOid(paneId, objectId, InteractionMode.View).then(object => $q.when(object.actionMember(actionId).extensions()));
 
         function getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
@@ -473,7 +473,7 @@ module NakedObjects {
 
         context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
-            const promise = () => context.getObjectByOid(paneId, objectId).
+            const promise = () => context.getObjectByOid(paneId, objectId, InteractionMode.View).
                 then(object => context.getInvokableAction(object.actionMember(actionId))).
                 then(details => repLoader.invoke(details, parms, urlParms));
 

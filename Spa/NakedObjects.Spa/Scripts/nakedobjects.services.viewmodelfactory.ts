@@ -540,7 +540,7 @@ module NakedObjects {
                     _.forEach(items, itemViewModel => {
                         const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
 
-                        context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, false).
+                        context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, routeData.interactionMode).
                             then((obj: DomainObjectRepresentation) => {
 
                                 itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData, ext.tableViewColumns());
@@ -828,8 +828,7 @@ module NakedObjects {
                         cvm.outputMessageThenClearIt();
                     } else {
                         const [domainType, ...id] = routeData.objectId.split(keySeparator);
-                        const transient = routeData.interactionMode === InteractionMode.Transient;
-                        context.getObject(1, domainType, id, transient) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                        context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
                                 const openCollIds = openCollectionIds(routeData);

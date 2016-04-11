@@ -186,7 +186,7 @@ module NakedObjects {
 
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
             const oid = this.routeData().objectId;
-            return this.context.getObjectByOid(1, oid);
+            return this.context.getObjectByOid(1, oid, this.routeData().interactionMode);
         }
 
         protected isList(): boolean {

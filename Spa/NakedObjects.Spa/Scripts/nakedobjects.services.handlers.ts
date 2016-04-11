@@ -237,7 +237,7 @@ module NakedObjects {
 
             deRegObject[routeData.paneId].deReg();
 
-            context.getObject(routeData.paneId, dt, id, routeData.interactionMode === InteractionMode.Transient).
+            context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
