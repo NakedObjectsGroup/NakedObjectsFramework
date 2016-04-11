@@ -30,7 +30,6 @@ module NakedObjects {
     import IsDateOrDateTime = Models.isDateOrDateTime;
     import toUtcDate = Models.toUtcDate;
     import isDateOrDateTime = Models.isDateOrDateTime;
-    import FriendlyTypeName = Models.friendlyTypeName;
     import PlusTitle = Models.typePlusTitle;
     import Title = Models.typePlusTitle;
     import FriendlyNameForProperty = Models.friendlyNameForProperty;
@@ -38,6 +37,7 @@ module NakedObjects {
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
+    import IHasExtensions = Models.IHasExtensions;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -65,7 +65,7 @@ module NakedObjects {
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
     }
 
-    app.service("viewModelFactory", function ($q: ng.IQService,
+    app.service("viewModelFactory", function($q: ng.IQService,
         $timeout: ng.ITimeoutService,
         $location: ng.ILocationService,
         $filter: ng.IFilterService,
@@ -104,9 +104,7 @@ module NakedObjects {
         function initLinkViewModel(linkViewModel: LinkViewModel, linkRep: Link) {
             linkViewModel.title = linkRep.title();
 
-            color.toColorNumberFromHref(linkRep.href()).then((c: number) => {
-                linkViewModel.color = `${linkColor}${c}`;
-            });
+            color.toColorNumberFromHref(linkRep.href()).then((c: number) =>  linkViewModel.color = `${linkColor}${c}`);
 
             linkViewModel.link = linkRep;
 
@@ -161,6 +159,14 @@ module NakedObjects {
             const recentItemViewModel = viewModelFactory.itemViewModel(linkRep, paneId, selected) as RecentItemViewModel;
             recentItemViewModel.friendlyName = obj.extensions().friendlyName();
             return recentItemViewModel;
+        };
+
+        function setColor(vm: ValueViewModel) {
+            if (vm.value) {
+                color.toColorNumberFromType(vm.returnType).then((c: number) => vm.color = `${linkColor}${c}`);
+            } else {
+                vm.color = "";
+            }
         }
 
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
@@ -189,25 +195,6 @@ module NakedObjects {
             parmViewModel.password = parmRep.extensions().dataType() === "password";
             parmViewModel.clientValid = true;
 
-            parmViewModel.validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
-                const message = mandatoryOnly ? Models.validateMandatory(parmRep, viewValue) : Models.validate(parmRep, modelValue, viewValue, parmViewModel.localFilter);
-
-                if (message !== mandatory) {
-                    parmViewModel.message = message;
-                }
-
-                parmViewModel.clientValid = !message;
-                return parmViewModel.clientValid;
-            };
-
-            parmViewModel.drop = (newValue: IDraggableViewModel) => {
-                context.isSubTypeOf(newValue.draggableType, parmViewModel.returnType).
-                    then((canDrop: boolean) => {
-                        if (canDrop) {
-                            parmViewModel.setNewValue(newValue);
-                        }
-                    });
-            };
 
             const fieldEntryType = parmRep.entryType();
             parmViewModel.entryType = fieldEntryType;
@@ -215,7 +202,6 @@ module NakedObjects {
             parmViewModel.choices = [];
 
             if (fieldEntryType === EntryType.Choices || fieldEntryType === EntryType.MultipleChoices) {
-
                 parmViewModel.choices = _.map(parmRep.choices(), (v, n) => ChoiceViewModel.create(v, parmRep.id(), n));
             }
 
@@ -297,16 +283,15 @@ module NakedObjects {
                 parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
 
-            if (parmViewModel.value) {
-                color.toColorNumberFromType(parmViewModel.returnType).then((c: number) => {
-                    parmViewModel.color = `${linkColor}${c}`;
-                });
-            } else {
-                parmViewModel.color = "";
-            }
+            setColor(parmViewModel);
+
+            parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+
+            parmViewModel.drop = _.partial(drop, parmViewModel);
 
             return parmViewModel;
         };
+
 
         viewModelFactory.actionViewModel = (actionRep: ActionMember | ActionRepresentation, vm: MessageViewModel, routeData: PaneRouteData) => {
             const actionViewModel = new ActionViewModel();
@@ -318,12 +303,7 @@ module NakedObjects {
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => !!actionRep.disabledReason();
-
-            if (actionViewModel.disabled()) {
-                actionViewModel.description = actionRep.disabledReason();
-            } else {
-                actionViewModel.description = actionRep.extensions().description();
-            }
+            actionViewModel.description = actionViewModel.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
 
             actionViewModel.parameters = () => {
                 // don't use actionRep directly as it may change and we've closed around the original value
@@ -342,27 +322,25 @@ module NakedObjects {
 
             // open dialog on current pane always - invoke action goes to pane indicated by click
             actionViewModel.doInvoke = showDialog() ?
-                (right?: boolean) => {
-                    focusManager.setCurrentPane(paneId);
-                    focusManager.focusOverrideOff();
-                    urlManager.setDialog(actionRep.actionId(), paneId);
-                    focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
-                } :
-                (right?: boolean) => {
-                    focusManager.focusOverrideOff();
-                    const pps = actionViewModel.parameters();
-                    actionViewModel.executeInvoke(pps, right).
-                        catch((reject: ErrorWrapper) => {
-                            const parent = actionRep.parent as DomainObjectRepresentation;
-                            const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
-                            const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
-                            context.handleWrappedError(reject, parent, reset, display);
-                        });
-                };
+            (right?: boolean) => {
+                focusManager.setCurrentPane(paneId);
+                focusManager.focusOverrideOff();
+                urlManager.setDialog(actionRep.actionId(), paneId);
+                focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
+            } :
+            (right?: boolean) => {
+                focusManager.focusOverrideOff();
+                const pps = actionViewModel.parameters();
+                actionViewModel.executeInvoke(pps, right).
+                    catch((reject: ErrorWrapper) => {
+                        const parent = actionRep.parent as DomainObjectRepresentation;
+                        const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
+                        const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
+                        context.handleWrappedError(reject, parent, reset, display);
+                    });
+            };
 
-            actionViewModel.makeInvokable = (details: IInvokableAction) => {
-                actionViewModel.actionRep = details;
-            }
+            actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.actionRep = details;
 
             return actionViewModel;
         };
@@ -399,134 +377,117 @@ module NakedObjects {
             messageViewModel.message = msg;
         };
 
+        function drop(vm: ValueViewModel, newValue: IDraggableViewModel) {
+            context.isSubTypeOf(newValue.draggableType, vm.returnType).
+                then((canDrop: boolean) => {
+                    if (canDrop) {
+                        vm.setNewValue(newValue);
+                    }
+                });
+        };
+
+        function validate(rep: IHasExtensions, vm: ValueViewModel, modelValue: any, viewValue: string, mandatoryOnly: boolean) {
+            const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
+
+            if (message !== mandatory) {
+                vm.message = message;
+            }
+
+            vm.clientValid = !message;
+            return vm.clientValid;
+        };
+
+        function setupReference(vm: PropertyViewModel, value: Value, rep: IHasExtensions) {
+            vm.type = "ref";
+            if (value.isNull()) {
+                vm.reference = "";
+                vm.value = vm.description;
+                vm.formattedValue = "";
+                vm.refType = "null";
+            } else {
+                vm.reference = value.link().href();
+                vm.value = value.toString();
+                vm.formattedValue = value.toString();
+                vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
+            }
+        }
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
-
-            propertyViewModel.title = propertyRep.extensions().friendlyName();
-            propertyViewModel.optional = propertyRep.extensions().optional();
             propertyViewModel.onPaneId = paneId;
             propertyViewModel.propertyRep = propertyRep;
+            propertyViewModel.entryType = propertyRep.entryType();
+            propertyViewModel.id = id;
+            propertyViewModel.argId = `${id.toLowerCase()}`;
+            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
+            propertyViewModel.isEditable = !propertyRep.disabledReason();
+            propertyViewModel.title = propertyRep.extensions().friendlyName();
+            propertyViewModel.optional = propertyRep.extensions().optional();
+            propertyViewModel.returnType = propertyRep.extensions().returnType();
+            propertyViewModel.draggableType = propertyRep.extensions().returnType();
+            propertyViewModel.format = propertyRep.extensions().format();
             propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
             propertyViewModel.password = propertyRep.extensions().dataType() === "password";
+
             propertyViewModel.clientValid = true;
 
             const required = propertyViewModel.optional ? "" : "* ";
-
             propertyViewModel.description = required + propertyRep.extensions().description();
 
-            const value = previousValue || propertyRep.value();
-
-            if (isDateOrDateTime(propertyRep)) {
-                propertyViewModel.value = toUtcDate(value);
-            } else if (propertyRep.isScalar()) {
-                propertyViewModel.value = value.scalar();
-            } else if (value.isNull()) {
-                // ie null reference 
-                propertyViewModel.value = propertyViewModel.description;
-            } else {
-                propertyViewModel.value = value.toString();
-            }
-
-            propertyViewModel.validate = (modelValue: any, viewValue: string, mandatoryOnly: boolean) => {
-                const message = mandatoryOnly ? Models.validateMandatory(propertyRep, viewValue) : Models.validate(propertyRep, modelValue, viewValue, propertyViewModel.localFilter);
-
-                if (message !== mandatory) {
-                    propertyViewModel.message = message;
-                }
-
-                propertyViewModel.clientValid = !message;
-                return propertyViewModel.clientValid;
-            };
-
-            const returnType = propertyRep.extensions().returnType();
-            const format = propertyRep.extensions().format();
-            propertyViewModel.type = propertyRep.isScalar() ? "scalar" : "ref";
-            propertyViewModel.returnType = returnType;
-            propertyViewModel.format = format;
-            propertyViewModel.reference = propertyRep.isScalar() || value.isNull() ? "" : value.link().href();
-            propertyViewModel.draggableType = propertyViewModel.returnType;
-
-            propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
-
-            propertyViewModel.drop = (newValue: IDraggableViewModel) => {
-                context.isSubTypeOf(newValue.draggableType, propertyViewModel.returnType).
-                    then((canDrop: boolean) => {
-                        if (canDrop) {
-                            propertyViewModel.setNewValue(newValue);
-                        }
-                    });
-            };
-
-            propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),
                     propertyRep.attachmentLink().type().asString,
                     propertyRep.attachmentLink().title());
             }
 
-            // only set color if has value 
+            const value = previousValue || propertyRep.value();
+            const currentChoice = ChoiceViewModel.create(value, id);
 
-            if (propertyViewModel.value) {
-                color.toColorNumberFromType(propertyRep.extensions().returnType()).then((c: number) => {
-                    propertyViewModel.color = `${linkColor}${c}`;
-                });
-            } else {
-                propertyViewModel.color = "";
-            }
-
-
-            propertyViewModel.id = id;
-            propertyViewModel.argId = `${id.toLowerCase()}`;
-            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-            propertyViewModel.isEditable = !propertyRep.disabledReason();
-            propertyViewModel.choices = [];
-
-            const fieldEntryType = propertyRep.entryType();
-            propertyViewModel.entryType = fieldEntryType;
-
-            if (fieldEntryType === EntryType.Choices) {
+            if (propertyRep.entryType() === EntryType.Choices) {
                 const choices = propertyRep.choices();
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
+                propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+            } else {
+                // use choice for draggable/droppable references
+                propertyViewModel.choices = [];
+                propertyViewModel.choice = currentChoice;
             }
 
-            if (fieldEntryType === EntryType.AutoComplete) {
+            if (propertyRep.entryType() === EntryType.AutoComplete) {
 
                 propertyViewModel.prompt = (searchTerm: string) => {
                     const createcvm = _.partial(createChoiceViewModels, id, searchTerm);
-                    return context.autoComplete(propertyRep, id, parentValues, searchTerm).
-                        then(createcvm);
+                    return context.autoComplete(propertyRep, id, parentValues, searchTerm).then(createcvm);
                 };
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
             }
 
-            if (fieldEntryType === EntryType.ConditionalChoices) {
+            if (propertyRep.entryType() === EntryType.ConditionalChoices) {
 
                 propertyViewModel.conditionalChoices = (args: _.Dictionary<Value>) => {
                     const createcvm = _.partial(createChoiceViewModels, id, null);
-                    return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).
-                        then(createcvm);
+                    return context.conditionalChoices(propertyRep, id, () => <_.Dictionary<Value>>{}, args).then(createcvm);
                 };
                 // fromPairs definition faulty
                 propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
-            const currentChoice = ChoiceViewModel.create(value, id);
-
-            if (fieldEntryType === EntryType.Choices) {
-                propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
-            } else {
-                // use choice for draggable/droppable references
-                propertyViewModel.choice = currentChoice;
-            }
-
             if (propertyRep.isScalar()) {
+                if (isDateOrDateTime(propertyRep)) {
+                    propertyViewModel.value = toUtcDate(value);
+                } else {
+                    propertyViewModel.value = value.scalar();
+                }
+                propertyViewModel.reference = "";
+                propertyViewModel.type = "scalar";
+
                 const remoteMask = propertyRep.extensions().mask();
                 const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
 
-                if (fieldEntryType === EntryType.Choices) {
+                if (propertyRep.entryType() === EntryType.Choices) {
                     if (propertyViewModel.choice) {
                         propertyViewModel.value = propertyViewModel.choice.name;
                         propertyViewModel.formattedValue = propertyViewModel.choice.name;
@@ -536,34 +497,27 @@ module NakedObjects {
                 } else {
                     propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
                 }
-            } else if (value.isNull()) {
-                // ie null reference 
-                propertyViewModel.formattedValue = "";
             } else {
-                propertyViewModel.formattedValue = value.toString();
+                // is reference
+                setupReference(propertyViewModel, value, propertyRep);          
             }
+
+            // only set color if has value 
+            setColor(propertyViewModel);
 
             if (!previousValue) {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
 
-            if (!propertyRep.isScalar()) {
-                if (value.isNull()) {
-                    propertyViewModel.refType = "null";
-                }
-                else if (propertyRep.extensions().notNavigable()) {
-                    propertyViewModel.refType = "notNavigable";
-                } else {
-                    propertyViewModel.refType = "navigable";
-                }
-            }
+            propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
+            propertyViewModel.validate = _.partial(validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
+            propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
+            propertyViewModel.drop = _.partial(drop, propertyViewModel);
+            propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
 
-
-            propertyViewModel.isDirty = () => {
-                return !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
-            };
             return propertyViewModel;
         };
+
 
         viewModelFactory.getItems = (links: Link[], populateItems: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
             const selectedItems = routeData.selectedItems;
@@ -573,8 +527,8 @@ module NakedObjects {
             if (populateItems) {
 
                 const getActionExtensions = routeData.objectId ?
-                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                    () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -628,7 +582,6 @@ module NakedObjects {
 
             return `${count} ${postfix}`;
         }
-    
 
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
@@ -644,9 +597,9 @@ module NakedObjects {
             collectionViewModel.title = collectionRep.extensions().friendlyName();
 
             const size = collectionRep.size();
-       
+
             collectionViewModel.size = getCollectionCount(size);
-           
+
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
 
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => {
@@ -655,8 +608,7 @@ module NakedObjects {
 
             if (itemLinks) {
                 collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-            }
-            else if (state === CollectionViewState.List || state === CollectionViewState.Table) {
+            } else if (state === CollectionViewState.List || state === CollectionViewState.Table) {
 
                 context.getCollectionDetails(collectionRep).then((details: CollectionRepresentation) => {
                     collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
@@ -664,18 +616,18 @@ module NakedObjects {
                 });
             } else {
                 collectionViewModel.items = [];
-            } 
-                
+            }
+
 
             switch (state) {
-                case CollectionViewState.List:
-                    collectionViewModel.template = collectionListTemplate;
-                    break;
-                case CollectionViewState.Table:
-                    collectionViewModel.template = collectionTableTemplate;
-                    break;
-                default:
-                    collectionViewModel.template = collectionSummaryTemplate;
+            case CollectionViewState.List:
+                collectionViewModel.template = collectionListTemplate;
+                break;
+            case CollectionViewState.Table:
+                collectionViewModel.template = collectionTableTemplate;
+                break;
+            default:
+                collectionViewModel.template = collectionSummaryTemplate;
             }
 
             collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
@@ -693,8 +645,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
+                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
@@ -755,8 +707,7 @@ module NakedObjects {
             const items = _.map(context.getRecentlyViewed(), o => ({ obj: o, link: selfLinkWithTitle(o) }));
             recentItemsViewModel.items = _.map(items, i => viewModelFactory.recentItemViewModel(i.obj, i.link, paneId, false));
             return recentItemsViewModel;
-        }
-
+        };
 
         viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
@@ -856,13 +807,13 @@ module NakedObjects {
                         let output = "";
                         if (routeData.menuId) {
                             context.getMenu(routeData.menuId)
-                                .then((menu: MenuRepresentation) => {                                  
-                                    output += menu.title() + " menu" + "\n";                                                                      
+                                .then((menu: MenuRepresentation) => {
+                                    output += menu.title() + " menu" + "\n";
                                     return routeData.dialogId ? context.getInvokableAction(menu.actionMember(routeData.dialogId)) : $q.when(null);
                                 }).then((details: IInvokableAction) => {
-                                    if (details) {                                       
+                                    if (details) {
                                         output += renderActionDialog(details, routeData, mask);
-                                    }                                  
+                                    }
                                 }).finally(() => {
                                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                 });
@@ -887,14 +838,14 @@ module NakedObjects {
                                     const coll = obj.collectionMember(id);
                                     output += `Collection: ${coll.extensions().friendlyName()} on ${TypePlusTitle(obj)}\n`;
                                     switch (coll.size()) {
-                                        case 0:
-                                            output += "empty";
-                                            break;
-                                        case 1:
-                                            output += "1 item";
-                                            break;
-                                        default:
-                                            output += `${coll.size()} items`;
+                                    case 0:
+                                        output += "empty";
+                                        break;
+                                    case 1:
+                                        output += "1 item";
+                                        break;
+                                    default:
+                                        output += `${coll.size()} items`;
                                     }
                                     cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                 } else {
@@ -905,8 +856,8 @@ module NakedObjects {
                                         cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                                     } else if (routeData.interactionMode === InteractionMode.Edit ||
                                         routeData.interactionMode === InteractionMode.Form) {
-                                         let output = "Editing ";
-                                         output += PlusTitle(obj) + "\n";
+                                        let output = "Editing ";
+                                        output += PlusTitle(obj) + "\n";
                                         if (routeData.dialogId) {
                                             context.getInvokableAction(obj.actionMember(routeData.dialogId))
                                                 .then((details: IInvokableAction) => {
@@ -941,7 +892,7 @@ module NakedObjects {
                                     return false;
                                 };
 
-                                context.handleWrappedError(reject, null, () => { }, () => { }, custom);
+                                context.handleWrappedError(reject, null, () => {}, () => {}, custom);
                             });
                     }
                 };
@@ -964,7 +915,7 @@ module NakedObjects {
                                 }
                                 const actionMember = menu.actionMember(routeData.actionId);
                                 const actionName = actionMember.extensions().friendlyName();
-                                let output = `Result from ${actionName}:\n${description}`;
+                                const output = `Result from ${actionName}:\n${description}`;
                                 cvm.clearInputRenderOutputAndAppendAlertIfAny(output);
                             });
                         });
@@ -1028,7 +979,7 @@ module NakedObjects {
         }
         const remoteMask = field.extensions().mask();
         const format = field.extensions().format();
-        let formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
+        const formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
         return formattedValue || "empty";
     }
 
