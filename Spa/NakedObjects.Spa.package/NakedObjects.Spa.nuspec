@@ -30,10 +30,11 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\Spa\NakedObjects.Spa\Content\**\*.*" target="Content" />
-    <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="fonts" />
-    <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="images" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.*" target="Scripts" />
-    <file src="..\..\Spa\NakedObjects.Spa\index.html" target="" />
+    <file src="..\..\Spa\NakedObjects.Spa\Content\partials\*.*" target="Content\Content\partials" />
+    <file src="..\..\Spa\NakedObjects.Spa\Content\gemini.css" target="Content\Content" />
+    <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
+    <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.*" target="Content\Scripts" />
+    <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>
 </package>
