@@ -219,17 +219,14 @@ param($rootPath, $toolsPath, $package, $project)
 
 	Mandatory. The name of the package. The following are valid.   
 	nakedobjects.batch         
-	nakedobjects.authorisation.wif
 	nakedobjects.core    
 	nakedobjects.xat         
 	nakedobjects.ide            
 	nakedobjects.programmingmodel
-	restfulobjects.mvc          
-	restfulobjects.server      
-	nakedobjects.sample.icons
+	nakedobjects.rest-assemblies          
+	nakedobjects.rest-filetemplates      
 	nakedobjects.facade.impl 
 	nakedobjects.facade        
-	nakedobjects.mvc.selenium   
 	nakedobjects.spa   
 
 	.PARAMETER NewVersion
@@ -246,17 +243,14 @@ param($rootPath, $toolsPath, $package, $project)
 		# validate parms 
 
 		$supportedPackages = "nakedobjects.batch",           
-							 "nakedobjects.authorisation.wif",
 							 "nakedobjects.core",        
 							 "nakedobjects.xat",              							
 							 "nakedobjects.ide",              
 							 "nakedobjects.programmingmodel", 
-							 "restfulobjects.mvc",            
-							 "restfulobjects.server",         
-							 "nakedobjects.sample.icons",     
+							 "nakedobjects.rest-assemblies",            
+							 "nakedobjects.rest-filetemplates",             
 							 "nakedobjects.facade.impl",     
 							 "nakedobjects.facade",          
-							 "nakedobjects.mvc.selenium"  
 							 "nakedobjects.spa"     
 	
 		if (!($Package -is [string])){
