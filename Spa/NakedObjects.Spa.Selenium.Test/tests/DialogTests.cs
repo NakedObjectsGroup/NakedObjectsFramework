@@ -188,7 +188,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            //wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+            Thread.Sleep(1000);
 
             var slct = new SelectElement(WaitForCss("select#subcategories1"));
 
@@ -457,7 +457,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
