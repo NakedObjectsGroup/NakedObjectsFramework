@@ -92,6 +92,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.facade.proj 
 		build build.ro.proj 
 		build build.batch.proj
+		build build.spa.proj
 	}
 
 	<#
@@ -144,6 +145,7 @@ param($rootPath, $toolsPath, $package, $project)
 		build build.facade.proj 
 		build build.ro.proj /t:RestfulObjectsPackageNoTest
 		build build.batch.proj
+		build build.spa.proj
 	}
 
 	<#
@@ -228,6 +230,7 @@ param($rootPath, $toolsPath, $package, $project)
 	nakedobjects.facade.impl 
 	nakedobjects.facade        
 	nakedobjects.mvc.selenium   
+	nakedobjects.spa   
 
 	.PARAMETER NewVersion
 
@@ -253,7 +256,8 @@ param($rootPath, $toolsPath, $package, $project)
 							 "nakedobjects.sample.icons",     
 							 "nakedobjects.facade.impl",     
 							 "nakedobjects.facade",          
-							 "nakedobjects.mvc.selenium"     
+							 "nakedobjects.mvc.selenium"  
+							 "nakedobjects.spa"     
 	
 		if (!($Package -is [string])){
 			return "package must be string";
