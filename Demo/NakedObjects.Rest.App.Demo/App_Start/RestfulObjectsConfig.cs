@@ -63,7 +63,7 @@ namespace NakedObjects.Rest.App.Demo {
 
                 RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = false;
 
-                RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = true;
+                RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = false;
 
             }
         }
