@@ -439,7 +439,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         protected IWebElement GetButton(string text, Pane pane = Pane.Single)
         {
             string selector = CssSelectorFor(pane) + ".header .action";
-            return wait.Until(d => br.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
+            return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
         }
 
         protected IWebElement EditButton(Pane pane = Pane.Single)

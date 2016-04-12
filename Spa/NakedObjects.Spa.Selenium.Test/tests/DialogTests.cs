@@ -188,11 +188,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-            wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+            //wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
 
             var slct = new SelectElement(WaitForCss("select#subcategories1"));
 
-            //Assert.AreEqual(2, slct.AllSelectedOptions.Count);
+            Assert.AreEqual(2, slct.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", slct.AllSelectedOptions.First().Text);
             Assert.AreEqual("Road Bikes", slct.AllSelectedOptions.Last().Text);
 
@@ -457,7 +457,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

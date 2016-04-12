@@ -134,9 +134,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             GeminiUrl("home/list?&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Home, "Home");
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
-            Reload(Pane.Right);
-            wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .summary .details")).Text == "Page 1 of 1574; viewing 20 of 31465 items");
-        }
+         }
         public virtual void SplitObjectHome()
         {
             GeminiUrl("object/home?o1=___1.Store--350");
@@ -155,29 +153,24 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("object/list?o1=___1.Store--350&m2=OrderRepository&a2=HighestValueOrders");
             WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
-            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Highest Value Orders");
         }
         public virtual void SplitListHome()
         {
             GeminiUrl("list/home?m1=OrderRepository&a1=HighestValueOrders");
-            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Home, "Home");
         }
         public virtual void SplitListObject()
         {
             GeminiUrl("list/object?m1=OrderRepository&a1=HighestValueOrders&o2=___1.Store--604");
-            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Highest Value Orders");
             WaitForView(Pane.Right, PaneType.Object, "Mechanical Sports Center");
         }
         public virtual void SplitListList()
         {
             GeminiUrl("list/list?m2=PersonRepository&pm2_firstName=%22a%22&pm2_lastName=%22a%22&a2=FindContactByName&p2=1&ps2=20&s2=0&m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
-            Reload(Pane.Left);
             WaitForView(Pane.Left, PaneType.List, "Current Special Offers");
-            Reload(Pane.Right);
             WaitForView(Pane.Right, PaneType.List, "Find Contact By Name");
         }
         #endregion
