@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>RestfulObjects.Server.Nof2</id>
+    <id>NakedObjects.Rest.Nof2</id>
     <version>0.3.0-beta</version>
-    <title>Restful Objects Server (for NOF2)</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Add to an ASP.NET Empty Web Application project to auto-create a Restful Objects API for a domain model running under NOF2</description>
+    <description>A version of the NakedObjects.Rest server designed to run against the much older NOF version 2</description>
     <dependencies>
-      <dependency id="RestfulObjects.Mvc" version="[8.0.0-beta1, 9)" />
+      <dependency id="NakedObjects.Rest-Assemblies" version="[8.0.0-beta1, 9)" />
       <dependency id="WebActivator" version="1.5" />
     </dependencies>
     <frameworkAssemblies>
