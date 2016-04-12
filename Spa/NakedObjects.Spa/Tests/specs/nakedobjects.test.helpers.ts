@@ -1630,6 +1630,7 @@ module NakedObjects.Test.Helpers {
     let menusRequestHandler: ng.mock.IRequestHandler;
     let vendorRepositoryMenuRequestHandler: ng.mock.IRequestHandler;
     let vendorDomainObjectRequestHandler: ng.mock.IRequestHandler;
+    let vendorEditDomainObjectRequestHandler: ng.mock.IRequestHandler;
     let listAllVendorsWithWebAddressesResultRequestHandler: ng.mock.IRequestHandler;
     let listSpecialOffersWithNoMinimumQtyResultRequestHandler: ng.mock.IRequestHandler;
     let specialOfferRepositoryMenuRequestHandler: ng.mock.IRequestHandler;
@@ -1658,6 +1659,9 @@ module NakedObjects.Test.Helpers {
 
         vendorDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634?x-ro-inline-property-details=false");
         vendorDomainObjectRequestHandler.respond(vendorObjectRepresentation);
+
+        vendorEditDomainObjectRequestHandler = $httpBackend.when("GET", root + "/objects/AdventureWorksModel.Vendor/1634?x-ro-inline-property-details=true");
+        vendorEditDomainObjectRequestHandler.respond(vendorObjectRepresentation);
 
         listAllVendorsWithWebAddressesResultRequestHandler = $httpBackend.when("GET", root + "/services/AdventureWorksModel.VendorRepository/actions/AllVendorsWithWebAddresses/invoke?x-ro-page=1&x-ro-pageSize=20");
         listAllVendorsWithWebAddressesResultRequestHandler.respond(listAllVendorsWithWebAddressesResultResultRepresentation);
