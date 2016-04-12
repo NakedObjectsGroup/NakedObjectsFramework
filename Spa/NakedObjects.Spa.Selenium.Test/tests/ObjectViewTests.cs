@@ -271,7 +271,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
         }
-
         public virtual void Colours()
         {
             //Specific type matches
@@ -287,8 +286,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--59289&c1_Details=List");
             WaitForView(Pane.Single, PaneType.Object, "SO59289"); 
             WaitForCss(".object.object-color2");
-            var detailLink = WaitForCssNo("tr", 1);
-            Assert.AreEqual("ng-scope link-color2", detailLink.GetAttribute("class"));
+             WaitForCss("tr", 2);
+           wait.Until(dr => dr.FindElements(By.CssSelector("tr.link-color2")).Count == 2);
             GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
             WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
             WaitForCss(".object.object-color2");
