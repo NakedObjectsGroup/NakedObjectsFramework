@@ -138,10 +138,7 @@ module NakedObjects {
 
                                 if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
-
-                                    context.getInvokableAction(action).then((details: IInvokableAction) => {
-                                        setDialog($scope, details, routeData);
-                                    });                           
+                                    context.getInvokableAction(action).then((details: IInvokableAction) =>  setDialog($scope, details, routeData));                                                    
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
@@ -198,10 +195,7 @@ module NakedObjects {
             context.clearWarnings();
             context.clearMessages();
             $scope.recentTemplate = recentTemplate;
-
             $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
-
-
         };
 
         handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
@@ -262,9 +256,7 @@ module NakedObjects {
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
                         focusTarget = FocusTarget.Dialog;
-                        context.getInvokableAction(action).then((details: IInvokableAction) => {
-                            setDialog($scope, details, routeData);                         
-                        });
+                        context.getInvokableAction(action).then((details: IInvokableAction) => setDialog($scope, details, routeData));
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.SubAction;
                     } else if (ovm.isInEdit) {

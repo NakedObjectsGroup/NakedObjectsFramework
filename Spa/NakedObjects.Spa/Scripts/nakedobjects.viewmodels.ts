@@ -83,8 +83,6 @@ module NakedObjects {
         return null;
     }
 
-
-
     export function createActionMenuMap(avms: ActionViewModel[]) {
 
         // first create a menu for each action 
@@ -418,14 +416,10 @@ module NakedObjects {
                     this.context.handleWrappedError(reject, parent, () => { }, display);
                 });
 
-        doClose = () => {
-            this.urlManager.closeDialog(this.onPaneId);
-        };
+        doClose = () => this.urlManager.closeDialog(this.onPaneId);
 
-        doCancel = () => {
-            this.urlManager.cancelDialog(this.onPaneId);
-        };
-
+        doCancel = () => this.urlManager.cancelDialog(this.onPaneId);
+       
         clearMessages = () => {
             this.message = "";
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
@@ -534,12 +528,9 @@ module NakedObjects {
                 };
 
                 // show dialog if more than 1 parm (single parm is collection itself)
-                const showDialog = () => {
-                    return this.contextService.getInvokableAction(a.actionRep as ActionMember).then((ia: IInvokableAction) => {
-                        return _.keys(ia.parameters()).length > 1;
-                    });
-                }
-
+                const showDialog = () => this.contextService.getInvokableAction(a.actionRep as ActionMember).
+                    then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
+                   
                 a.doInvoke = () => {};
 
                 showDialog().

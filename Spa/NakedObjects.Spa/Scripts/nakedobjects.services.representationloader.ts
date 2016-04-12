@@ -48,7 +48,6 @@ module NakedObjects {
                 errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
                 category = ErrorCategory.HttpServerError;
                 error = errorRep;
-                message = promiseCallback.headers("warning") || "Unknown server HTTP error";
             } else {
                 category = ErrorCategory.HttpClientError;
                 message = promiseCallback.headers("warning") || "Unknown client HTTP error";
