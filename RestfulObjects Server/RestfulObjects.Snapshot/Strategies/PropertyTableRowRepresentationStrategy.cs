@@ -37,24 +37,26 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public override object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
-            IObjectFacade valueNakedObject = property.GetValue(target);
-            string title = RestUtils.SafeGetTitle(property, valueNakedObject);
+            //IObjectFacade valueNakedObject = property.GetValue(target);
+            //string title = RestUtils.SafeGetTitle(property, valueNakedObject);
 
-            if (valueNakedObject == null) {
-                return null;
-            }
-            if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject(), useDateOverDateTime);
-            }
+            //if (valueNakedObject == null) {
+            //    return null;
+            //}
+            //if (property.Specification.IsParseable || property.Specification.IsCollection) {
+            //    return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject(), useDateOverDateTime);
+            //}
 
-            if (valueOnly) {
-                return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
-            }
+            //if (valueOnly) {
+            //    return RefValueRepresentation.Create(oidStrategy, new ValueRelType(property, new UriMtHelper(oidStrategy, req, valueNakedObject)), flags);
+            //}
 
-            var titleProperty =  new OptionalProperty(JsonPropertyNames.Title, title);
+            //var titleProperty =  new OptionalProperty(JsonPropertyNames.Title, title);
 
-            return MapRepresentation.Create(titleProperty);
+            //return MapRepresentation.Create(titleProperty);
 
+            // todo minimise this 
+            return Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
         }
     }
 }
