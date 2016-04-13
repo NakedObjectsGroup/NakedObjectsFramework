@@ -31,7 +31,7 @@ namespace RestfulObjects.Snapshot.Representations {
             var strategy = AbstractPropertyRepresentationStrategy.GetStrategy(true, oidStrategy, req, propertyContext, flags);
 
             if (!RestUtils.IsBlobOrClob(propertyContext.Specification) && !RestUtils.IsAttachment(propertyContext.Specification)) {
-                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
 
             if (strategy.ShowChoices()) {              

@@ -117,7 +117,6 @@ namespace RestfulObjects.Snapshot.Representations {
                 KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
 
                     var useDate = p.IsDateOnly;
-
                     return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
                 }).ToArray();
                 OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();

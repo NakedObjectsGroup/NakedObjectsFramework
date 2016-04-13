@@ -140,6 +140,7 @@
     <Compile Include="Strategies\ActionRepresentationStrategy.cs" />
     <Compile Include="Strategies\AbstractCollectionRepresentationStrategy.cs" />
     <Compile Include="Strategies\AbstractPropertyRepresentationStrategy.cs" />
+    <Compile Include="Strategies\PropertyTableRowRepresentationStrategy.cs" />
     <Compile Include="Strategies\PropertyWithDetailsRepresentationStrategy.cs" />
     <Compile Include="Strategies\PropertyMemberRepresentationStrategy.cs" />
     <Compile Include="Strategies\MemberRepresentationStrategy.cs" />

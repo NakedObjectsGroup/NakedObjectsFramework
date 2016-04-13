@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
 using RestfulObjects.Snapshot.Utility;
@@ -53,7 +54,7 @@ namespace RestfulObjects.Snapshot.Strategies {
         protected LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
-            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => Representation.GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
+            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
             OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
             var objectMembers = new OptionalProperty(JsonPropertyNames.PromptMembers, MapRepresentation.Create(props));
@@ -168,7 +169,11 @@ namespace RestfulObjects.Snapshot.Strategies {
         }
 
         public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-          
+
+            if (flags.InlineCollectionItems) {
+                return new PropertyTableRowRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+            }
+
             if (inline && !InlineDetails(propertyContext, flags)) {
                 return new PropertyMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
@@ -192,6 +197,10 @@ namespace RestfulObjects.Snapshot.Strategies {
 
                 CustomExtensions[JsonPropertyNames.CustomChoices] = map;
             }
+        }
+
+        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
+            return Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
         }
     }
 }
