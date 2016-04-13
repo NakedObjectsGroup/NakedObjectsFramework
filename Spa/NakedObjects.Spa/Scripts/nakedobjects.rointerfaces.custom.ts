@@ -35,6 +35,10 @@
         members: { [index: string]: IActionMember };
     }
 
+    export interface ICustomLink extends RoInterfaces.ILink {
+        members: { [index: string]: IPropertyMember };
+    }
+
     export interface IMenuRepresentation extends IResourceRepresentation {
         members: { [index: string]: IActionMember };
         title: string;

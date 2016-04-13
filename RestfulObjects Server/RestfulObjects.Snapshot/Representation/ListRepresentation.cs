@@ -37,7 +37,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
         protected ListRepresentation(IOidStrategy oidStrategy, IObjectFacade list, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
-            Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no)).ToArray();
+            Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no, actionContext)).ToArray();
 
             SetLinks(req, actionContext);
             SetExtensions();
@@ -75,7 +75,7 @@ namespace RestfulObjects.Snapshot.Representations {
             caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        private LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no) {
+        protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext = null) {
             var helper = new UriMtHelper(oidStrategy, req, no);
             ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 

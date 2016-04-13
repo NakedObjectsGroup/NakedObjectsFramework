@@ -98,6 +98,11 @@ namespace RestfulObjects.Mvc.Model {
             return flag == null ? (bool?) null : (bool) flag.Value;
         }
 
+        private static bool? GetInlineCollectionItemsFlag(JObject jObject) {
+            var flag = jObject[RestControlFlags.InlineCollectionItemsReserved] as JValue;
+            return flag == null ? (bool?)null : (bool)flag.Value;
+        }
+
         private static int GetPageValue(JObject jObject) {
             var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
             return pageValue == null ? 0 : Convert.ToInt32(pageValue.Value);
@@ -179,6 +184,7 @@ namespace RestfulObjects.Mvc.Model {
                     arg.Page = GetPageValue(jObject);
                     arg.PageSize = GetPageSizeValue(jObject);
                     arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
+                    arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
@@ -243,12 +249,14 @@ namespace RestfulObjects.Mvc.Model {
                 string page = collection[RestControlFlags.PageReserved];
                 string pageSize = collection[RestControlFlags.PageSizeReserved];
                 string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
+                string inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
 
                 args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
                 args.DomainModel = domainModel;
                 args.Page = page != null ? int.Parse(page) : 0;
                 args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
                 args.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?)null;
+                args.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?)null;
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);

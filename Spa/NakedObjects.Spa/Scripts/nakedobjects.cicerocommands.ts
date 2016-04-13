@@ -1484,7 +1484,8 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                this.context.getCollectionDetails(coll).then((details: CollectionRepresentation) => {
+                // todo
+                this.context.getCollectionDetails(coll, CollectionViewState.List).then((details: CollectionRepresentation) => {
                     this.renderItems(details, startNo, endNo);
                 });
             }

@@ -355,7 +355,51 @@ namespace RestfulObjects.Snapshot.Utility {
             return customExtensions;
         }
 
+        private static bool IsColumn(IAssociationFacade property, string[] columns) {
+            return columns == null || columns.Contains(property.Id);
+        }
 
+        private static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
+                                                                 string[] columns,
+                                                                 RelType rt,
+                                                                 IOidStrategy oidStrategy,
+                                                                 HttpRequestMessage req,
+                                                                 RestControlFlags flags) {
+            var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
+
+            var properties = no.Specification.Properties.Where(p => p.IsVisible(no) && IsColumn(p, columns)).Select(p => new PropertyContextFacade { Property = p, Target = no });
+
+            var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(oidStrategy, req, p, flags)).ToArray();
+            var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object)m));
+
+            optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
+
+            return LinkRepresentation.Create(oidStrategy,
+                                             rt,
+                                             flags,
+                                             optionals.ToArray());
+        }
+
+        public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
+                                                                 PropertyContextFacade propertyContext,
+                                                                 IOidStrategy oidStrategy,
+                                                                 HttpRequestMessage req,
+                                                                 RestControlFlags flags) {
+            var columns = propertyContext.Property.TableViewData?.Item2;
+            var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy, req, no));
+            return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
+        }
+
+        public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
+                                                                 ActionContextFacade actionContext,
+                                                                 IOidStrategy oidStrategy,
+                                                                 HttpRequestMessage req,
+                                                                 RestControlFlags flags) {
+            var columns = actionContext?.Action?.TableViewData?.Item2;
+            var helper = new UriMtHelper(oidStrategy, req, no);
+            ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
+            return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
+        }
 
 
     }

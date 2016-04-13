@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
@@ -18,7 +19,8 @@ namespace RestfulObjects.Snapshot.Strategies {
             : base(oidStrategy, req, propertyContext, flags) {}
 
         public override LinkRepresentation[] GetValue() {
-            return Collection.ToEnumerable().Select(CreateValueLink).ToArray();
+            Func<IObjectFacade, LinkRepresentation> createLink = no => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);
+            return Collection.ToEnumerable().Select(createLink).ToArray();
         }
 
         public override int? GetSize() {

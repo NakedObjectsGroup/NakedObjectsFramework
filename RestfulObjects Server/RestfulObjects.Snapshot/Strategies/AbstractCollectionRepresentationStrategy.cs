@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.ServiceModel;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using RestfulObjects.Snapshot.Constants;
@@ -52,6 +54,11 @@ namespace RestfulObjects.Snapshot.Strategies {
         protected LinkRepresentation CreateValueLink(IObjectFacade no) {
             return LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, no)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
+        }
+
+       
+        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) {
+            return RestUtils.CreateTableRowValueLink(no, propertyContext, OidStrategy, req, Flags);
         }
 
         public abstract int? GetSize();

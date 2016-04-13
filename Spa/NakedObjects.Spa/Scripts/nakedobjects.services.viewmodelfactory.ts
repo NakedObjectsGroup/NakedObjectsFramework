@@ -50,12 +50,12 @@ module NakedObjects {
 
         menuViewModel(menuRep: MenuRepresentation, routeData: PaneRouteData): MenuViewModel;
 
-        tableRowViewModel(objectRep: DomainObjectRepresentation, routedata: PaneRouteData, idsToShow?: string[]): TableRowViewModel;
+        tableRowViewModel(properties : _.Dictionary<PropertyMember>, paneId : number): TableRowViewModel;
         parameterViewModel(parmRep: Parameter, previousValue: Value, paneId: number): ParameterViewModel;
         propertyViewModel(propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>): PropertyViewModel;
         ciceroViewModel(): CiceroViewModel;
         handleErrorResponse(err: ErrorMap, vm: MessageViewModel, vms: ValueViewModel[]): void;
-        getItems(links: Link[], populateItems: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
+        getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
     }
@@ -152,6 +152,14 @@ module NakedObjects {
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
+
+            const members = linkRep.members();
+
+            if (members) {
+                itemViewModel.target = viewModelFactory.tableRowViewModel(members, paneId);
+                itemViewModel.target.title = itemViewModel.title;
+            }
+
             return itemViewModel;
         };
 
@@ -519,12 +527,12 @@ module NakedObjects {
         };
 
 
-        viewModelFactory.getItems = (links: Link[], populateItems: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
+        viewModelFactory.getItems = (links: Link[], tableView: boolean, routeData: PaneRouteData, listViewModel: ListViewModel | CollectionViewModel) => {
             const selectedItems = routeData.selectedItems;
 
             const items = _.map(links, (link, i) => viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]));
 
-            if (populateItems) {
+            if (tableView) {
 
                 const getActionExtensions = routeData.objectId ?
                 () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
@@ -532,36 +540,23 @@ module NakedObjects {
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
-
                 // clear existing header 
                 listViewModel.header = null;
 
                 getExtensions().then((ext: Extensions) => {
+                    if (!listViewModel.header) {
+                        const firstItem = items[0].target;
+                        const propertiesHeader = _.map(firstItem.properties, property => property.title);
+
+                        listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+
+                        focusManager.focusOverrideOff();
+                        focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                    }
+
                     _.forEach(items, itemViewModel => {
-                        const tempTgt = itemViewModel.link.getTarget() as DomainObjectRepresentation;
-
-                        context.getObject(routeData.paneId, tempTgt.getDtId().dt, tempTgt.getDtId().id, routeData.interactionMode).
-                            then((obj: DomainObjectRepresentation) => {
-
-                                itemViewModel.target = viewModelFactory.tableRowViewModel(obj, routeData, ext.tableViewColumns());
-                                itemViewModel.target.hasTitle = ext.tableViewTitle();
-                                itemViewModel.target.title = obj.title();
-
-                                if (!listViewModel.header) {
-
-                                    const propertiesHeader = _.map(itemViewModel.target.properties, property => property.title);
-
-                                    if (itemViewModel.target.hasTitle) {
-                                        listViewModel.header = [""].concat(propertiesHeader);
-                                    } else {
-                                        listViewModel.header = propertiesHeader;
-                                    }
-
-                                    focusManager.focusOverrideOff();
-                                    focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
-                                }
-
-                            });
+                        itemViewModel.target.hasTitle = ext.tableViewTitle();
+                        itemViewModel.target.title = itemViewModel.title;
                     });
                 });
             }
@@ -606,18 +601,16 @@ module NakedObjects {
                 collectionViewModel.color = `${linkColor}${c}`;
             });
 
-            if (itemLinks) {
-                collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-            } else if (state === CollectionViewState.List || state === CollectionViewState.Table) {
-
-                context.getCollectionDetails(collectionRep).then((details: CollectionRepresentation) => {
-                    collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
+            if (state === CollectionViewState.List) {
+                collectionViewModel.items = viewModelFactory.getItems(itemLinks, false, routeData, collectionViewModel);
+            } else if (state === CollectionViewState.Table) {
+                context.getCollectionDetails(collectionRep, state).then((details: CollectionRepresentation) => {
+                    collectionViewModel.items = viewModelFactory.getItems(details.value(), true, routeData, collectionViewModel);
                     collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                 });
             } else {
                 collectionViewModel.items = [];
             }
-
 
             switch (state) {
             case CollectionViewState.List:
@@ -709,13 +702,20 @@ module NakedObjects {
             return recentItemsViewModel;
         };
 
-        viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
-            const tableRowViewModel = new TableRowViewModel();
-            const properties = idsToShow ? _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
-            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
+        //viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
+        //    const tableRowViewModel = new TableRowViewModel();
+        //    const properties = idsToShow ? _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
+        //    tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
 
+        //    return tableRowViewModel;
+        //};
+
+        viewModelFactory.tableRowViewModel = (properties : _.Dictionary<PropertyMember> , paneId : number): TableRowViewModel => {
+            const tableRowViewModel = new TableRowViewModel();
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, paneId, () => <_.Dictionary<Value>>{}));
             return tableRowViewModel;
         };
+
 
         let cachedToolBarViewModel: ToolBarViewModel;
 

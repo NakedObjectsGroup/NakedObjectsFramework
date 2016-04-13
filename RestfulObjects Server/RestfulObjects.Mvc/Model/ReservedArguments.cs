@@ -16,5 +16,6 @@ namespace RestfulObjects.Mvc.Model {
         public int Page { get; set; }
         public int PageSize { get; set; }
         public virtual bool HasValue => false;
+        public virtual bool? InlineCollectionItems { get; set; }
     }
 }

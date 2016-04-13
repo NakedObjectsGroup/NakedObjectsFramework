@@ -72,6 +72,7 @@ module NakedObjects {
     export const roPageSize = "x-ro-pageSize";
     export const roInlinePropertyDetails = "x-ro-inline-property-details";
     export const roValidateOnly = "x-ro-validate-only";
+    export const roInlineCollectionItems = "x-ro-inline-collection-items";
 
     //NOF custom RO constants
     export const nofChoices = "x-ro-nof-choices";

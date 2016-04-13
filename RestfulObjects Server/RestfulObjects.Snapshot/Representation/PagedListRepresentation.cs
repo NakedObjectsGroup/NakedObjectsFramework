@@ -62,5 +62,13 @@ namespace RestfulObjects.Snapshot.Representations {
         public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
             return new PagedListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
+
+        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext) {
+            return RestUtils.CreateTableRowValueLink(no, actionContext, OidStrategy, req, Flags);
+        }
+
+        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext = null) {
+            return !Flags.InlineCollectionItems ? base.CreateObjectLink(oidStrategy, req, no, actionContext) : CreateTableRowValueLink(oidStrategy, req, no, actionContext);
+        }
     }
 }

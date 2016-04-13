@@ -26,6 +26,7 @@ module NakedObjects.Models {
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
     import IObjectOfType = RoInterfaces.IObjectOfType;
     import IRange = RoInterfaces.Custom.IRange;
+    import ICustomLink = NakedObjects.RoInterfaces.Custom.ICustomLink;
 
 
     // helper functions 
@@ -1170,7 +1171,7 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IMember;
 
-        constructor(wrapped: T, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation) {
+        constructor(wrapped: T) {
             super(wrapped);
         }
 
@@ -1194,18 +1195,18 @@ module NakedObjects.Models {
             return isScalarType(this.extensions().returnType());
         }
 
-        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id: string): Member<RoInterfaces.IMember> {
+        static wrapMember(toWrap: RoInterfaces.IPropertyMember | RoInterfaces.ICollectionMember | RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation | Link, id: string): Member<RoInterfaces.IMember> {
 
             if (toWrap.memberType === "property") {
-                return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation, id);
+                return new PropertyMember(toWrap as RoInterfaces.IPropertyMember, parent as DomainObjectRepresentation | Link, id);
             }
 
             if (toWrap.memberType === "collection") {
                 return new CollectionMember(toWrap as RoInterfaces.ICollectionMember, parent as DomainObjectRepresentation, id);
             }
 
-            if (toWrap.memberType === "action") {
-                return new ActionMember(toWrap as RoInterfaces.IActionMember, parent, id);
+            if (toWrap.memberType === "action") { 
+                return new ActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
             }
 
             return null;
@@ -1217,8 +1218,8 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IPropertyMember;
 
-        constructor(wrapped: RoInterfaces.IPropertyMember, parent: DomainObjectRepresentation, private propId: string) {
-            super(wrapped, parent);
+        constructor(wrapped: RoInterfaces.IPropertyMember, public parent: DomainObjectRepresentation | Link, private propId: string) {
+            super(wrapped);
         }
 
         // inlined 
@@ -1345,8 +1346,8 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.ICollectionMember;
 
-        constructor(wrapped: RoInterfaces.ICollectionMember, parent: DomainObjectRepresentation, private id: string) {
-            super(wrapped, parent);
+        constructor(wrapped: RoInterfaces.ICollectionMember, public parent: DomainObjectRepresentation, private id: string) {
+            super(wrapped);
         }
 
         collectionId(): string {
@@ -1374,8 +1375,8 @@ module NakedObjects.Models {
 
         wrapped = () => this.resource() as RoInterfaces.IActionMember;
 
-        constructor(wrapped: RoInterfaces.IActionMember, parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
-            super(wrapped, parent);
+        constructor(wrapped: RoInterfaces.IActionMember, public parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation, private id: string) {
+            super(wrapped);
         }
 
         actionId(): string {
@@ -1986,6 +1987,11 @@ module NakedObjects.Models {
 
         arguments(): IValue | RoInterfaces.IValueMap | RoInterfaces.IObjectOfType | RoInterfaces.IPromptMap {
             return this.wrapped.arguments;
+        }
+
+        members(): _.Dictionary<PropertyMember> {
+            const members = (this.wrapped as ICustomLink).members ;
+            return _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember);
         }
 
         private lazyExtensions: Extensions;

@@ -723,7 +723,8 @@ namespace RestfulObjects.Mvc {
                 arguments.DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
-                arguments.InlinePropertyDetails.HasValue ? arguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations);
+                arguments.InlinePropertyDetails.HasValue ? arguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                arguments.InlineCollectionItems.HasValue && arguments.InlineCollectionItems.Value);
         }
 
         private string GetIfMatchTag() {

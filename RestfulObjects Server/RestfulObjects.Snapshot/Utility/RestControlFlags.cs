@@ -35,6 +35,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public const string PageReserved = ReservedPrefix + JsonPropertyNames.Page;
         public const string PageSizeReserved = ReservedPrefix + JsonPropertyNames.PageSize;
         public const string InlinePropertyDetailsReserved = ReservedPrefix + "inline-property-details";
+        public const string InlineCollectionItemsReserved = ReservedPrefix + "inline-collection-items";
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
@@ -53,6 +54,7 @@ namespace RestfulObjects.Snapshot.Utility {
         public bool InlineDetailsInActionMemberRepresentations { get; set; }
         public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
         public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
+        public bool InlineCollectionItems { get; set; }
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
@@ -130,7 +132,8 @@ namespace RestfulObjects.Snapshot.Utility {
                                                           string domainModel,
                                                           bool inlineDetailsInActionMemberRepresentations,
                                                           bool inlineDetailsInCollectionMemberRepresentations,
-                                                          bool inlineDetailsInPropertyMemberRepresentations) {
+                                                          bool inlineDetailsInPropertyMemberRepresentations,
+                                                          bool inlineCollectionItems) {
             // validate domainModel 
             if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
@@ -148,10 +151,13 @@ namespace RestfulObjects.Snapshot.Utility {
                 Page = DefaultPage(page),
                 InlineDetailsInActionMemberRepresentations = inlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations = inlineDetailsInCollectionMemberRepresentations,
-                InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations
+                InlineDetailsInPropertyMemberRepresentations = inlineDetailsInPropertyMemberRepresentations,
+                InlineCollectionItems = inlineCollectionItems
             };
 
             return controlFlags;
         }
+
+        
     }
 }

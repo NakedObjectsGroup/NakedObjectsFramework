@@ -46,7 +46,7 @@ module NakedObjects {
         getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
-        getCollectionDetails: (collectionMember: CollectionMember) => ng.IPromise<CollectionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState) => ng.IPromise<CollectionRepresentation>;
 
         getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<IInvokableAction>;
 
@@ -290,12 +290,17 @@ module NakedObjects {
 
         context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
             const details = actionMember.getDetails();
-            return repLoader.populate(details);
+            return repLoader.populate(details, true);
         };
 
-        context.getCollectionDetails = (collectionMember: CollectionMember): ng.IPromise<CollectionRepresentation> => {
+        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState): ng.IPromise<CollectionRepresentation> => {
             const details = collectionMember.getDetails();
-            return repLoader.populate(details);
+
+            if (state === CollectionViewState.Table) {
+                details.setUrlParameter(roInlineCollectionItems, true);
+            }
+
+            return repLoader.populate(details, true);
         };
 
         context.getInvokableAction = (action: ActionMember | ActionRepresentation | IInvokableAction): ng.IPromise<IInvokableAction> => {

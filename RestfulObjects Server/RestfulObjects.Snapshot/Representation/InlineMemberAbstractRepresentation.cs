@@ -47,5 +47,7 @@ namespace RestfulObjects.Snapshot.Representations {
 
             return InlinePropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
         }
+
+       
     }
 }
