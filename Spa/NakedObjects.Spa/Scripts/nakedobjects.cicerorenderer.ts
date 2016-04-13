@@ -70,7 +70,7 @@ module NakedObjects {
                 });
         };
         renderer.renderList = (routeData: PaneRouteData, cvm: CiceroViewModel) => {
-            const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+            const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
             listPromise.then((list: ListRepresentation) => {
                 const page = list.pagination().page;
                 const numPages = list.pagination().numPages;

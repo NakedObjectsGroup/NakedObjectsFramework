@@ -42,8 +42,8 @@ module NakedObjects {
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
         getObject: (paneId: number, type: string, id: string[], interactionMode : InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getObjectByOid: (paneId: number, objectId: string, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
-        getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getListFromMenu: (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, state: CollectionViewState, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, state: CollectionViewState, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
         getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState) => ng.IPromise<CollectionRepresentation>;
@@ -435,7 +435,6 @@ module NakedObjects {
             }
         }
 
-
         const handleResult = (paneId: number, result: ActionResultRepresentation, page: number, pageSize: number) => {
 
             if (result.resultType() === "list") {
@@ -461,16 +460,24 @@ module NakedObjects {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
         }
 
-        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
+        context.getListFromMenu = (paneId: number, menuId: string, actionId: string, parms: _.Dictionary<Value>, state: CollectionViewState, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
+            if (state === CollectionViewState.Table) {
+                urlParms[roInlineCollectionItems] = true;
+            }
+
             const promise = () => context.getMenu(menuId).
                 then(menu => context.getInvokableAction(menu.actionMember(actionId))).
                 then(details => repLoader.invoke(details, parms, urlParms));
             return getList(paneId, promise, page, pageSize);
         };
 
-        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, page?: number, pageSize?: number) => {
+        context.getListFromObject = (paneId: number, objectId: string, actionId: string, parms: _.Dictionary<Value>, state: CollectionViewState, page?: number, pageSize?: number) => {
             const urlParms = getPagingParms(page, pageSize);
+            if (state === CollectionViewState.Table) {
+                urlParms[roInlineCollectionItems] = true;
+            }
+
             const promise = () => context.getObjectByOid(paneId, objectId, InteractionMode.View).
                 then(object => context.getInvokableAction(object.actionMember(actionId))).
                 then(details => repLoader.invoke(details, parms, urlParms));

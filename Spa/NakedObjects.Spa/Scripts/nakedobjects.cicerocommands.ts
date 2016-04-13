@@ -204,7 +204,7 @@ module NakedObjects {
         protected getList(): ng.IPromise<ListRepresentation> {
             const routeData = this.routeData();
             //TODO: Currently covers only the list-from-menu; need to cover list from object action
-            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
         }
 
         protected isMenu(): boolean {

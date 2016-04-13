@@ -370,7 +370,7 @@ module NakedObjects.Test {
                     beforeEach(inject((context: IContext) => {
                         testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
                         // cache list
-                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.state, testRouteData.page, testRouteData.pageSize);
                         $httpBackend.flush();
                     }));
 
@@ -415,7 +415,7 @@ module NakedObjects.Test {
                     beforeEach(inject((context: IContext) => {
                         testEventSpy = setupEventSpy(testScope, FocusTarget.ListItem, 0, 1, 1);
                         // cache list
-                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.state, testRouteData.page, testRouteData.pageSize);
                         $httpBackend.flush();
                     }));
 
@@ -437,7 +437,7 @@ module NakedObjects.Test {
                         testRouteData.actionsOpen = "true";
                         testEventSpy = setupEventSpy(testScope, FocusTarget.SubAction, 0, 1, 1);
                         // cache list
-                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.state, testRouteData.page, testRouteData.pageSize);
                         $httpBackend.flush();
                     }));
 
@@ -459,7 +459,7 @@ module NakedObjects.Test {
                         testRouteData.dialogId = "ExtendOffers";
                         testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
                         // cache list
-                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.state,testRouteData.page, testRouteData.pageSize);
                         $httpBackend.flush();
                     }));
 
@@ -483,7 +483,7 @@ module NakedObjects.Test {
                         testRouteData.dialogId = "ExtendOffers";
                         testEventSpy = setupEventSpy(testScope, FocusTarget.Dialog, 0, 1, 1);
                         // cache list
-                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.page, testRouteData.pageSize);
+                        context.getListFromMenu(testRouteData.paneId, testRouteData.menuId, testRouteData.actionId, testRouteData.actionParams, testRouteData.state,testRouteData.page, testRouteData.pageSize);
                         $httpBackend.flush();
                     }));
 

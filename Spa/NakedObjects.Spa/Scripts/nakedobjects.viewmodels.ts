@@ -466,7 +466,6 @@ module NakedObjects {
             this.listRep = list;
             this.routeData = routeData;
 
-            const links = list.value();
             this.state = routeData.state;
 
             this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
@@ -474,19 +473,29 @@ module NakedObjects {
             this.onPaneId = routeData.paneId;
 
             this.pluralName = "Objects";
-            this.items = this.viewModelFactory.getItems(links, this.state === CollectionViewState.Table, routeData, this);
-
-            this.allSelected = _.every(this.items, item => item.selected);
-
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
             const totalCount = this.listRep.pagination().totalCount;
-            const count = links.length;
 
-            this.size = count;
 
-            this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+            if (this.state === CollectionViewState.Table) {
+                this.recreate(this.page, this.pageSize).then((list: ListRepresentation) => {
+                    this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
+                    this.allSelected = _.every(this.items, item => item.selected);
+                    const count = this.items.length;
+                    this.size = count;
+                    this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+                });
+            } else {
+                this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
+                this.allSelected = _.every(this.items, item => item.selected);
+                const count = this.items.length;
+                this.size = count;
+                this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+            }
+
+            
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
@@ -560,9 +569,10 @@ module NakedObjects {
 
         private recreate = (page: number, pageSize: number) => {
             return this.routeData.objectId ?
-                this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, page, pageSize) :
-                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, page, pageSize);
+                this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state, page, pageSize) :
+                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state,  page, pageSize);
         };
+
         private pageOrRecreate = (newPage: number, newPageSize : number, newState?: CollectionViewState) => {
             this.recreate(newPage, newPageSize).
                 then((list: ListRepresentation) => {

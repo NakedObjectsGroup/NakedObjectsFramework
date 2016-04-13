@@ -535,30 +535,34 @@ module NakedObjects {
             if (tableView) {
 
                 const getActionExtensions = routeData.objectId ?
-                () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
-                () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                    () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
                 // clear existing header 
                 listViewModel.header = null;
 
-                getExtensions().then((ext: Extensions) => {
-                    if (!listViewModel.header) {
-                        const firstItem = items[0].target;
-                        const propertiesHeader = _.map(firstItem.properties, property => property.title);
+                if (items.length > 0) {
 
-                        listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+                    getExtensions().then((ext: Extensions) => {
+                        _.forEach(items, itemViewModel => {
+                            itemViewModel.target.hasTitle = ext.tableViewTitle();
+                            itemViewModel.target.title = itemViewModel.title;
+                        });
 
-                        focusManager.focusOverrideOff();
-                        focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
-                    }
+                        if (!listViewModel.header) {
+                            const firstItem = items[0].target;
+                            const propertiesHeader = _.map(firstItem.properties, property => property.title);
 
-                    _.forEach(items, itemViewModel => {
-                        itemViewModel.target.hasTitle = ext.tableViewTitle();
-                        itemViewModel.target.title = itemViewModel.title;
+                            listViewModel.header = firstItem.hasTitle ? [""].concat(propertiesHeader) : propertiesHeader;
+
+                            focusManager.focusOverrideOff();
+                            focusManager.focusOn(FocusTarget.TableItem, 0, routeData.paneId);
+                        }
+
                     });
-                });
+                }
             }
 
             return items;
@@ -638,8 +642,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize) :
-                context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
@@ -899,7 +903,7 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.page, routeData.pageSize);
+                        const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
                         listPromise.then((list: ListRepresentation) => {
                             context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                                 const count = list.value().length;
