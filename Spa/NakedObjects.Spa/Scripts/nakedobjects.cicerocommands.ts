@@ -1105,7 +1105,9 @@ module NakedObjects {
         "the context out again. Hitting Enter on the empty input field has the same effect.\n" +
         "Typically, when the user enters a command and the output has been updated, the input field will automatically be cleared " +
         "- ready for the next command. However, the user may recall the previous command, including arguments, just by hitting the up-arrow key.\n"+
-        "The user might then edit or extend that previous command and hit Enter to run it again.";
+        "The user might then edit or extend that previous command and hit Enter to run it again.\n" +
+        "For advanced users: commands may be chained using a semi-colon between them,\n" +
+        "however commands that do, or might, result in data updates cannot be chained.";
     }
 
     export class Menu extends Command {
