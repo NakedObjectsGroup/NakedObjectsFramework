@@ -48,7 +48,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Product: HL Grip Tape\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
             //Not available in current context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("ac");
             WaitForOutput("The command: action is not available in the current context");
             //multi clause search
@@ -121,7 +121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("back");
             WaitForOutput("Customers menu");
             EnterCommand("Ba");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("forward");
             WaitForOutput("Customers menu");
             EnterCommand("fO  ");
@@ -173,7 +173,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid contexts
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("cancel");
             WaitForOutput("The command: cancel is not available in the current context");
             CiceroUrl("home?m1=ProductRepository");
@@ -188,7 +188,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void Clipboard()
         {
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
 
 
             CiceroUrl("object?o1=___1.Person--12941");
@@ -221,7 +221,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Attempt to copy from home
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("clipboard c");
             WaitForOutput("Clipboard copy may only be used in the context of viewing an object");
             //Attempt to copy from list
@@ -248,7 +248,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("edit");
             WaitForOutput("The command: edit is not available in the current context");
         }
@@ -320,7 +320,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("enter");
             WaitForOutput("The command: enter is not available in the current context");
 
@@ -412,7 +412,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //home
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("gemini");
             WaitForView(Pane.Single, PaneType.Home);
 
@@ -423,7 +423,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //No arguments
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("ge x");
             WaitForOutput("Too many arguments provided");
         }
@@ -477,7 +477,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Special Offer: No Discount");
             //Wrong context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("go x");
             WaitForOutput("The command: goto is not available in the current context");
             CiceroUrl("home?m1=ProductRepository&d1=RandomProduct");
@@ -519,12 +519,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Help from home
             CiceroUrl("home");
             EnterCommand("help");
+            WaitForOutputStarting("Cicero is a user interface purpose-designed");
+            EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\nback\r\nclipboard\r\nforward\r\ngemini\r\nhelp\r\nmenu\r\nwhere");
             //Now try an object context
             CiceroUrl("object?o1=___1.Product--943");
             WaitForOutput("Product: LL Mountain Frame - Black, 40");
             //First with no params
-            EnterCommand("help");
+            EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nedit\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\nproperty\r\nreload\r\nwhere");
             //Now with params
             EnterCommand("help me");
@@ -538,7 +540,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //List context
             CiceroUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0");
             WaitForOutputStarting("Result from Current Special Offers:");
-            EnterCommand("help");
+            EnterCommand("help ?");
             WaitForOutput("Commands available in current context:\r\naction\r\nback\r\nclipboard\r\nforward\r\ngemini\r\ngoto\r\nhelp\r\nmenu\r\npage\r\nreload\r\nselection\r\nshow\r\nwhere");
         }
         public virtual void Menu()
@@ -569,7 +571,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Test for exact match taking precedence over partial matches
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("menu orders"); //which would match 3, but one exactly
             WaitForOutput("Orders menu");
 
@@ -601,7 +603,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid contexts
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("ok");
             WaitForOutput("The command: ok is not available in the current context");
             CiceroUrl("home?m1=ProductRepository");
@@ -694,7 +696,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("page 1");
             WaitForOutput("The command: page is not available in the current context");
             CiceroUrl("object?o1=___1.SalesOrderHeader--51131");
@@ -784,7 +786,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid contexts
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("root");
             WaitForOutput("The command: root is not available in the current context");
 
@@ -812,7 +814,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("save");
             WaitForOutput("The command: save is not available in the current context");
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("save");
             WaitForOutput("The command: save is not available in the current context");
             CiceroUrl("object?o1=___1.Customer--29688&d1=LastOrder");
@@ -894,7 +896,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Invalid context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("show 1");
             WaitForOutput("The command: show is not available in the current context");
             CiceroUrl("home?m1=CustomerRepository");
@@ -913,13 +915,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CiceroUrl("object?o1=___1.Product--358");
             WaitForOutput("Product: HL Grip Tape");
             //Do something to change the output
-            EnterCommand("help");
+            EnterCommand("help ?");
             WaitForOutputStarting("Commands");
             EnterCommand("where");
             WaitForOutput("Product: HL Grip Tape");
 
             //Empty command == where
-            EnterCommand("help");
+            EnterCommand("help ?");
             WaitForOutputStarting("Commands");
             ClearFieldThenType("input", Keys.Enter);
             WaitForOutput("Product: HL Grip Tape");
@@ -931,7 +933,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void SpaceBarAutoComplete()
         {
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             TypeIntoFieldWithoutClearing("input", "sel"+Keys.Space);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
@@ -948,7 +950,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Single character
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             TypeIntoFieldWithoutClearing("input", "f" + Keys.Space);
             WaitForOutput("Command word must have at least 2 characters");
 
@@ -970,7 +972,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void UnrecognisedCommand()
         {
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("m");
             WaitForOutput("Command word must have at least 2 characters");
 
@@ -982,7 +984,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             CiceroUrl("home");
             EnterCommand("he");
-            WaitForOutputStarting("Commands available");
+            WaitForOutputStarting("Cicero is");
             Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
             TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
             wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
@@ -996,7 +998,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //TODO
             //CiceroUrl("home");
-            //WaitForOutput("Welcome to Cicero");
+            //WaitForOutputStarting("Welcome to Cicero");
             //EnterCommand("me pr; act rand; ok;show 1");
             //WaitForOutput("The command: show is not available in the current context");
             ////Test that the up arrow produces full string
@@ -1193,13 +1195,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             //Happy case
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("menu pr; action rand; ok");
             WaitForOutputStarting("Product:");
 
             //Try to chain a command that may never be chained
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("menu pr; action rand; ok; edit");
             WaitForOutputStarting("edit command may not be chained. Use Where command to see where execution stopped.");
             EnterCommand("where");
@@ -1213,14 +1215,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Try to chain a command that is not avialable in the current context
             CiceroUrl("home");
-            WaitForOutput("Welcome to Cicero");
+            WaitForOutputStarting("Welcome to Cicero");
             EnterCommand("menu pr;action rand;ok;show 1");
             WaitForOutput("The command: show is not available in the current context");
 
 
             //Error in execution -  Timing problem?
             //CiceroUrl("home");
-            //WaitForOutput("Welcome to Cicero");
+            //WaitForOutputStarting("Welcome to Cicero");
             //EnterCommand("menu special; ac current; ok; show 20");
             //WaitForOutput("The highest numbered item is 16");
             //EnterCommand("where");
@@ -1372,7 +1374,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
 
             base.Action();
-           // base.BackAndForward(); TODO: pending review of back & forward in Cicero
+            // base.BackAndForward(); TODO: pending review of back & forward in Cicero
             base.Cancel();
             base.Clipboard();
             base.Edit();
@@ -1385,7 +1387,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Page();
             base.Property();
             base.Root();
-            base.Save(); 
+            base.Save();
             base.Show();
             base.Where();
             base.SpaceBarAutoComplete();

@@ -823,7 +823,7 @@ module NakedObjects {
                                 });
                         } else {
                             cvm.clearInput();
-                            cvm.output = "Welcome to Cicero";
+                            cvm.output = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
                         }
                     }
                 };

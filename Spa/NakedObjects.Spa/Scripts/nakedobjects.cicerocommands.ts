@@ -1060,7 +1060,8 @@ module NakedObjects {
     export class Help extends Command {
 
         fullCommand = "help";
-        helpText = "If no argument is specified, help lists the commands available\n" +
+        helpText = "If no argument is specified, help provides a basic explanation of how to use Cicero.\n" +
+        "If help is followed by a question mark as an argument, this lists the commands available\n" +
         "in the current context. If help is followed by another command word as an argument\n" +
         "(or an abbreviation of it), a description of the specified Command is returned.";
         protected minArguments = 0;
@@ -1072,18 +1073,39 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
             const arg = this.argumentAsString(args, 0);
-            if (arg) {
+            if (!arg ) {
+                this.clearInputAndSetMessage(this.basicHelp);
+            } else if (arg == "?") {
+                const commands = this.commandFactory.allCommandsForCurrentContext();
+                this.clearInputAndSetMessage(commands);
+            } else {
                 try {
                     const c = this.commandFactory.getCommand(arg);
                     this.clearInputAndSetMessage(c.fullCommand + " command:\n" + c.helpText);
                 } catch (Error) {
                     this.clearInputAndSetMessage(Error.message);
                 }
-            } else {
-                const commands = this.commandFactory.allCommandsForCurrentContext();
-                this.clearInputAndSetMessage(commands);
             }
         };
+
+        basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS or Windows Narrator.\n" +
+        "The display has only two fields: a read-only output field, and a single input field. The input field should always have the focus.\n"+
+        "All interactions consist of typing a command into the input field and hitting Enter.\n"+
+        "When the output field updates (either instantaneously, or after the server has responded) its contents will be read out automatically.\n" +
+        "The user should never have to navigate around the screen.\n" +
+        "Commands, such as 'action', 'field' and 'save', may be typed in full or abbreviated to the first two characters or more.\n" +
+        "Some commands take one or more arguments. There must be a space between the command word and the first argument.\n" +
+        "Arguments may contain spaces if needed. If more than one argument is specified they must be separated by commas.\n"+
+        "Commands are not case sensitive. The commands available to the user vary according to the context.\n" +
+        "The command 'help ?' will list the commands available to the user in the current context. ‘help’ followed by another command word " +
+        "(in full or abbreviated) will give more details about what that command does and how to use it.\n"+
+        "Some commands will change the context (for example, using the Go command to navigate to an associated object), " +
+        "in which case the next context will be read out. Other commands - help being an example - do not change the context, " +
+        "but will read out information to the user. If the user needs a reminder of the current context, the 'Where' command will read "+
+        "the context out again. Hitting Enter on the empty input field has the same effect.\n" +
+        "Typically, when the user enters a command and the output has been updated, the input field will automatically be cleared " +
+        "- ready for the next command. However, the user may recall the previous command, including arguments, just by hitting the up-arrow key.\n"+
+        "The user might then edit or extend that previous command and hit Enter to run it again.";
     }
 
     export class Menu extends Command {
