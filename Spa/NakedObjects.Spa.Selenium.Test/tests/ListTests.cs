@@ -82,8 +82,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
-            wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr")).Count > 1);
-            var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+            wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
+            var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1)"));
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }

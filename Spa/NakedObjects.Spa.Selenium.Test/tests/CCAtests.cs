@@ -161,6 +161,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#todate1", futureDate + Keys.Escape);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
+            Thread.Sleep(1000);
             Reload();
 
             //Check that exactly two rows were updated
