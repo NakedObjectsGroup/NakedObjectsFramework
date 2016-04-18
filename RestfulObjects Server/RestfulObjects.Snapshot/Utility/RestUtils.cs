@@ -18,6 +18,7 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility.Restricted;
 using RestfulObjects.Snapshot.Constants;
 using RestfulObjects.Snapshot.Representations;
+using RestfulObjects.Snapshot.Strategies;
 
 namespace RestfulObjects.Snapshot.Utility {
     public static class RestUtils {
@@ -367,7 +368,9 @@ namespace RestfulObjects.Snapshot.Utility {
                                                                  RestControlFlags flags) {
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
 
-            var properties = no.Specification.Properties.Where(p => p.IsVisible(no) && IsColumn(p, columns)).Select(p => new PropertyContextFacade { Property = p, Target = no });
+            columns = columns ?? no.Specification.Properties.Select(p => p.Id).ToArray();
+
+            var properties = columns.Select( c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade { Property = p, Target = no });
 
             var propertyReps = properties.Select(p => InlineMemberAbstractRepresentation.Create(oidStrategy, req, p, flags)).ToArray();
             var members = CreateMap(propertyReps.ToDictionary(m => m.Id, m => (object)m));
