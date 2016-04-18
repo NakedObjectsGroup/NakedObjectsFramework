@@ -6,7 +6,7 @@
         rel?: string;
         href: string;
         type?: string;
-        method?: string;
+        method?: "POST" | "PUT" | "GET" | "DELETE";
         title?: string;
         arguments?: IValue | IValueMap;
         extensions?: IExtensions;

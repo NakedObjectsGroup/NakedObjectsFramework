@@ -85,7 +85,7 @@ module NakedObjects.Models {
     export interface IHateoasModel {
         etagDigest: string;
         hateoasUrl: string;
-        method: string;
+        method: "POST"| "PUT" | "GET" | "DELETE";
         //urlParms: _.Dictionary<Object>;
         populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
@@ -169,7 +169,7 @@ module NakedObjects.Models {
 
         etagDigest: string;
         hateoasUrl = "";
-        method = "GET";
+        method: "POST" | "PUT" | "GET" | "DELETE"  = "GET";
         urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
@@ -1964,7 +1964,7 @@ module NakedObjects.Models {
             return decodeURIComponent(this.wrapped.href);
         }
 
-        method(): string {
+        method(): "POST" | "PUT" | "GET" | "DELETE" {
             return this.wrapped.method;
         }
 
