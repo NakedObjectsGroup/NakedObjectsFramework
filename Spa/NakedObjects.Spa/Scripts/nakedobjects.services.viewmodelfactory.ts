@@ -588,7 +588,7 @@ module NakedObjects {
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.collections[collectionRep.collectionId()];
+            const state = routeData.collections[collectionRep.collectionId()] || CollectionViewState.Summary;
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
