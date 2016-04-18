@@ -605,15 +605,18 @@ module NakedObjects {
                 collectionViewModel.color = `${linkColor}${c}`;
             });
 
-            if (state === CollectionViewState.List) {
-                collectionViewModel.items = viewModelFactory.getItems(itemLinks, false, routeData, collectionViewModel);
-            } else if (state === CollectionViewState.Table) {
+            const getDetails = itemLinks == null || state === CollectionViewState.Table;
+
+            if (state === CollectionViewState.Summary) {
+                collectionViewModel.items = [];
+            }
+            else if (getDetails) {
                 context.getCollectionDetails(collectionRep, state).then((details: CollectionRepresentation) => {
-                    collectionViewModel.items = viewModelFactory.getItems(details.value(), true, routeData, collectionViewModel);
+                    collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
                     collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                 });
             } else {
-                collectionViewModel.items = [];
+                collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
             }
 
             switch (state) {
