@@ -709,14 +709,6 @@ module NakedObjects {
             return recentItemsViewModel;
         };
 
-        //viewModelFactory.tableRowViewModel = (objectRep: DomainObjectRepresentation, routeData: PaneRouteData, idsToShow?: string[]): TableRowViewModel => {
-        //    const tableRowViewModel = new TableRowViewModel();
-        //    const properties = idsToShow ? _.pick(objectRep.propertyMembers(), idsToShow) as _.Dictionary<PropertyMember> : objectRep.propertyMembers();
-        //    tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, routeData.paneId, () => <_.Dictionary<Value>>{}));
-
-        //    return tableRowViewModel;
-        //};
-
         viewModelFactory.tableRowViewModel = (properties : _.Dictionary<PropertyMember> , paneId : number): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
             tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, paneId, () => <_.Dictionary<Value>>{}));

@@ -23,7 +23,7 @@ module NakedObjects {
     import DateString = Models.toDateString;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
-    import CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
+    import CollectionRepresentation = Models.CollectionRepresentation;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -211,7 +211,7 @@ module NakedObjects {
         paneArgId: string;
         choices: ChoiceViewModel[];
 
-        type: string;
+        type: "scalar" | "ref";
         reference: string;
         choice: ChoiceViewModel;
         multiChoices: ChoiceViewModel[];
@@ -439,7 +439,7 @@ module NakedObjects {
         isEditable: boolean;
         attachment: AttachmentViewModel;
         draggableType: string;
-        refType : string;
+        refType : "null" | "navigable" | "notNavigable";
 
         doClick(right?: boolean): void {}
 
