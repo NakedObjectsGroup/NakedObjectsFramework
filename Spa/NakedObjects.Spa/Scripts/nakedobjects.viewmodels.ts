@@ -634,12 +634,12 @@ module NakedObjects {
             item.checkboxChange(i);
         });
 
-        description(): string { return this.size.toString() }
+        description(): string { return this.size ? this.size.toString() : "" }
 
         template: string;
 
         disableActions(): boolean {
-            return !this.actions || this.actions.length === 0 || this.items.length === 0;
+            return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
         }
 
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
