@@ -40,7 +40,7 @@ module NakedObjects {
         function handleError(promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) {
             let message: string;
             let category: ErrorCategory;
-            let error: ErrorRepresentation | ErrorMap = null;
+            let error: ErrorRepresentation | ErrorMap | string = null;
 
             if (promiseCallback.status === HttpStatusCode.InternalServerError) {
                 // this error contains an error representatation 
@@ -48,18 +48,27 @@ module NakedObjects {
                 errorRep.populate(promiseCallback.data as RoInterfaces.IErrorRepresentation);
                 category = ErrorCategory.HttpServerError;
                 error = errorRep;
+            }
+            else if (promiseCallback.status === -1) {
+                // failed to connect
+                category = ErrorCategory.ClientError;
+                error = `Failed to connect to server: ${promiseCallback.config ? promiseCallback.config.url : "unknown"}`;
             } else {
                 category = ErrorCategory.HttpClientError;
                 message = promiseCallback.headers("warning") || "Unknown client HTTP error";
 
                 if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
                     // these errors should contain a map                            
-                    error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType, promiseCallback.status, message);
+                    error = new ErrorMap(promiseCallback.data as RoInterfaces.IValueMap | RoInterfaces.IObjectOfType,
+                        promiseCallback.status,
+                        message);
+                } else {
+                    error = message;
                 }
             }
 
             const rr = new ErrorWrapper(category, promiseCallback.status, error);
-            
+                      
             return $q.reject(rr);
         }
 
