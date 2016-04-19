@@ -52,15 +52,12 @@
                         <div ng-switch-when="ref" class="clickable-area">
                             {{property.formattedValue}}
                         </div>
-                        <div ng-switch-when="scalar" ng-switch="property.returnType">
-                            <div ng-switch-when="string" ng-switch="property.format">
-                                <div ng-switch-default class="clickable-area">{{property.formattedValue}}</div>
-                            </div>
+                        <div ng-switch-when="scalar" ng-switch="property.returnType">                     
                             <div ng-switch-when="boolean" class="clickable-area">
                                 <input type="checkbox" ng-checked="property.value" disabled="disabled" />
                             </div>
                             <div ng-switch-default class="clickable-area">
-                                {{property.value}}
+                                <div class="clickable-area">{{property.formattedValue}}</div>
                             </div>
                         </div>
 

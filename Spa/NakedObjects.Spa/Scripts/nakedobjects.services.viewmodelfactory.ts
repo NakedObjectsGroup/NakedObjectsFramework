@@ -63,6 +63,7 @@ module NakedObjects {
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
+        propertyTableViewModel(propertyRep: PropertyMember, id: string,  paneId: number): PropertyViewModel;
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -420,6 +421,62 @@ module NakedObjects {
             }
         }
 
+        viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember, id: string,  paneId: number) => {
+            const propertyViewModel = new PropertyViewModel();
+
+            propertyViewModel.onPaneId = paneId;
+            propertyViewModel.propertyRep = propertyRep;
+            propertyViewModel.entryType = propertyRep.entryType();
+            propertyViewModel.id = id;
+            propertyViewModel.argId = `${id.toLowerCase()}`;
+            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
+           
+            propertyViewModel.title = propertyRep.extensions().friendlyName();         
+            propertyViewModel.format = propertyRep.extensions().format();
+            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
+            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
+      
+            const value = propertyRep.value();
+            
+            if (propertyRep.isScalar()) {
+                if (isDateOrDateTime(propertyRep)) {
+                    propertyViewModel.value = toUtcDate(value);
+                } else {
+                    propertyViewModel.value = value.scalar();
+                }
+                propertyViewModel.type = "scalar";
+
+                const remoteMask = propertyRep.extensions().mask();
+                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+
+                if (propertyRep.entryType() === EntryType.Choices) {
+                    const currentChoice = ChoiceViewModel.create(value, id);
+                
+                    const choices = propertyRep.choices();
+                    propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                   
+                    if (propertyViewModel.choice) {
+                        propertyViewModel.value = propertyViewModel.choice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    }
+                } else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = obscuredText;
+                } else {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                }
+            } else {
+                // is reference   
+                propertyViewModel.type = "ref";
+                propertyViewModel.formattedValue = value.isNull() ? "" : value.toString();
+            }
+
+            // only set color if has value 
+            setColor(propertyViewModel);
+
+            return propertyViewModel;
+        };
+
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
 
@@ -711,7 +768,7 @@ module NakedObjects {
 
         viewModelFactory.tableRowViewModel = (properties : _.Dictionary<PropertyMember> , paneId : number): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
-            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, paneId, () => <_.Dictionary<Value>>{}));
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(property, id, paneId));
             return tableRowViewModel;
         };
 
