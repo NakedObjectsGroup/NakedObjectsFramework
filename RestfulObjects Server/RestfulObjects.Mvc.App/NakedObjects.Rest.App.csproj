@@ -215,17 +215,17 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
+    <ProjectReference Include="..\RestfulObjects.Mvc\NakedObjects.Rest.csproj">
       <Project>{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}</Project>
-      <Name>RestfulObjects.Mvc</Name>
+      <Name>NakedObjects.Rest</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj">
+    <ProjectReference Include="..\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj">
       <Project>{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}</Project>
-      <Name>RestfulObjects.Snapshot</Name>
+      <Name>NakedObjects.Rest.Snapshot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj">
+    <ProjectReference Include="..\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj">
       <Project>{D1857EE7-DE8A-41AA-9509-CF40697A0589}</Project>
-      <Name>RestfulObjects.Test.Data</Name>
+      <Name>NakedObjects.Rest.Test.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

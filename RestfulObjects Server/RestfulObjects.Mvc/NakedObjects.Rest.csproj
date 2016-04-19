@@ -133,9 +133,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj">
+    <ProjectReference Include="..\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj">
       <Project>{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}</Project>
-      <Name>RestfulObjects.Snapshot</Name>
+      <Name>NakedObjects.Rest.Snapshot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

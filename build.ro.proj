@@ -44,13 +44,13 @@
   </Target>
 
   <ItemGroup>
-    <Files Include="$(ROPath)\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Mvc\NakedObjects.Rest.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Mvc.App\NakedObjects.Rest.App.csproj"/>
     
-    <Files Include="$(ROPath)\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Test\RestfulObjects.Test.fsproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Test.Nof4\RestfulObjects.Test.Nof4.fsproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test\NakedObjects.Rest.Test.fsproj"/>
+    <Files Include="$(ROPath)\RestfulObjects.Test.Nof4\NakedObjects.Rest.Test.Nof4.fsproj"/>
   </ItemGroup>
 
   <Target Name="Clean" DependsOnTargets="Config">

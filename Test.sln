@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksModel", "Samples\AdventureWorksModel\AdventureWorksModel.csproj", "{FDDBA108-8B58-40C6-A375-FFB92B1933DD}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Batch.Test", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.DatabaseHelpers", "Test\NakedObjects.DatabaseHelpers\NakedObjects.DatabaseHelpers.csproj", "{DDE874EE-B28B-4577-A28A-6D35690D6310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.App", "Test\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj", "{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.App", "Test\RestfulObjects.Test.App\NakedObjects.Rest.Test.App.csproj", "{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,7 +11,7 @@
     <AssemblyName>NakedObjects.Rest.Test.Nof4</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
-    <Name>RestfulObjects.Test.Nof4</Name>
+    <Name>NakedObjects.Rest.Test.Nof4</Name>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
@@ -73,28 +73,28 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj">
-      <Name>RestfulObjects.Mvc.App</Name>
+    <ProjectReference Include="..\RestfulObjects.Mvc.App\NakedObjects.Rest.App.csproj">
+      <Name>NakedObjects.Rest.App</Name>
       <Project>{8aac6fab-eab9-4255-8bd6-07386dfe543c}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj">
-      <Name>RestfulObjects.Mvc</Name>
+    <ProjectReference Include="..\RestfulObjects.Mvc\NakedObjects.Rest.csproj">
+      <Name>NakedObjects.Rest</Name>
       <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj">
-      <Name>RestfulObjects.Snapshot</Name>
+    <ProjectReference Include="..\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj">
+      <Name>NakedObjects.Rest.Snapshot</Name>
       <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj">
-      <Name>RestfulObjects.Test.Data</Name>
+    <ProjectReference Include="..\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj">
+      <Name>NakedObjects.Rest.Test.Data</Name>
       <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Test\RestfulObjects.Test.fsproj">
-      <Name>RestfulObjects.Test</Name>
+    <ProjectReference Include="..\RestfulObjects.Test\NakedObjects.Rest.Test.fsproj">
+      <Name>NakedObjects.Rest.Test</Name>
       <Project>{3bbbe57e-abd7-48ae-b4e4-b3eceb4d7a0a}</Project>
       <Private>True</Private>
     </ProjectReference>

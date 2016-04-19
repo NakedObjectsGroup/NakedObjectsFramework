@@ -1,26 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{39C8221D-7032-45C1-8B3B-3DB84D1B1D37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Mvc", "RestfulObjects Server\RestfulObjects.Mvc\RestfulObjects.Mvc.csproj", "{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest", "RestfulObjects Server\RestfulObjects.Mvc\NakedObjects.Rest.csproj", "{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Snapshot", "RestfulObjects Server\RestfulObjects.Snapshot\RestfulObjects.Snapshot.csproj", "{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Snapshot", "RestfulObjects Server\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj", "{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.Data", "RestfulObjects Server\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.Data", "RestfulObjects Server\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RestfulObjects.Test", "RestfulObjects Server\RestfulObjects.Test\RestfulObjects.Test.fsproj", "{3BBBE57E-ABD7-48AE-B4E4-B3ECEB4D7A0A}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Rest.Test", "RestfulObjects Server\RestfulObjects.Test\NakedObjects.Rest.Test.fsproj", "{3BBBE57E-ABD7-48AE-B4E4-B3ECEB4D7A0A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RestfulObjects.Test.Nof4", "RestfulObjects Server\RestfulObjects.Test.Nof4\RestfulObjects.Test.Nof4.fsproj", "{06FDCA93-7842-4C66-9084-5DE8E1257E6F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Rest.Test.Nof4", "RestfulObjects Server\RestfulObjects.Test.Nof4\NakedObjects.Rest.Test.Nof4.fsproj", "{06FDCA93-7842-4C66-9084-5DE8E1257E6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{876DD888-C7DF-433C-8742-1D840057C5D5}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Mvc.App", "RestfulObjects Server\RestfulObjects.Mvc.App\RestfulObjects.Mvc.App.csproj", "{8AAC6FAB-EAB9-4255-8BD6-07386DFE543C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.App", "RestfulObjects Server\RestfulObjects.Mvc.App\NakedObjects.Rest.App.csproj", "{8AAC6FAB-EAB9-4255-8BD6-07386DFE543C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736FFEA3-DE9B-4FC8-A1DB-6134515B0AD5}"
 	ProjectSection(SolutionItems) = preProject
