@@ -81,7 +81,7 @@
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
     <MSBuild Projects="@(TFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" /noshadow'/>
+    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\NakedObjects.Rest.Test.Nof4.dll" /noshadow'/>
   </Target>
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >

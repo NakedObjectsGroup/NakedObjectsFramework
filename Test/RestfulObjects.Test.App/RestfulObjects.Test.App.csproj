@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RestfulObjects.Test.App</RootNamespace>
-    <AssemblyName>RestfulObjects.Test.App</AssemblyName>
+    <AssemblyName>NakedObjects.Rest.Test.App</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />

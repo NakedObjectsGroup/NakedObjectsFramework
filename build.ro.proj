@@ -119,7 +119,7 @@
   </Target>
 
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
-    <NUnit Assemblies="$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\RestfulObjects.Test.Nof4.dll" ToolPath="$(NUnitPath)" ContinueOnError="false"  Force32Bit="true"  OutputXmlFile="$(TestResultsPath)\RestfulObjects.Test.Nof4.xml" />
+    <NUnit Assemblies="$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\NakedObjects.Rest.Test.Nof4.dll" ToolPath="$(NUnitPath)" ContinueOnError="false"  Force32Bit="true"  OutputXmlFile="$(TestResultsPath)\NakedObjects.Rest.Test.Nof4.xml" />
   </Target>
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
