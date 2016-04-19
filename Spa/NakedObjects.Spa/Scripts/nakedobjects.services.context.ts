@@ -135,7 +135,7 @@ module NakedObjects {
 
         getDirty(type: string, id: string) {
             const key = this.getKey(type, id);
-            return this.dirtyObjects[key];
+            return this.dirtyObjects[key] || false;
         }
 
         clearDirty(type: string, id: string) {
@@ -299,8 +299,10 @@ module NakedObjects {
             if (state === CollectionViewState.Table) {
                 details.setUrlParameter(roInlineCollectionItems, true);
             }
+            const parent = collectionMember.parent;
+            const isDirty = dirtyCache.getDirty(parent.domainType(), parent.instanceId());
 
-            return repLoader.populate(details, true);
+            return repLoader.populate(details, isDirty);
         };
 
         context.getInvokableAction = (action: ActionMember | ActionRepresentation | IInvokableAction): ng.IPromise<IInvokableAction> => {
