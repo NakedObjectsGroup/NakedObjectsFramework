@@ -8,7 +8,7 @@
     <ProjectGuid>{3bbbe57e-abd7-48ae-b4e4-b3eceb4d7a0a}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>web_rest_test</RootNamespace>
-    <AssemblyName>RestfulObjects.Test</AssemblyName>
+    <AssemblyName>NakedObjects.Rest.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
     <Name>RestfulObjects.Test</Name>
