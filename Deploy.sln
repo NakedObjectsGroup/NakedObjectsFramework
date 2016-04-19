@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F43
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{90D7847A-AD0E-488D-9CBD-7967B039A115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.App", "Test\RestfulObjects.Test.App\RestfulObjects.Test.App.csproj", "{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.App", "Test\RestfulObjects.Test.App\NakedObjects.Rest.Test.App.csproj", "{E06A6C1C-A5D1-449F-BFE1-5DD57D0D3209}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.Data", "RestfulObjects Server\RestfulObjects.Test.Data\RestfulObjects.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.Data", "RestfulObjects Server\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
