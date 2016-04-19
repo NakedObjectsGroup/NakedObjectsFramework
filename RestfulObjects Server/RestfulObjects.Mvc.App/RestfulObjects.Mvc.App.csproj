@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RestfulObjects.Mvc.App</RootNamespace>
-    <AssemblyName>RestfulObjects.Mvc.App</AssemblyName>
+    <AssemblyName>NakedObjects.Rest.App</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />

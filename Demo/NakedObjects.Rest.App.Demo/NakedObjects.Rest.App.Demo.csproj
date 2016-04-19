@@ -128,6 +128,14 @@
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-beta1\lib\net451\NakedObjects.Reflector.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NakedObjects.Rest, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Rest-Assemblies.8.0.0-beta1\lib\net452\NakedObjects.Rest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NakedObjects.Rest.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NakedObjects.Rest-Assemblies.8.0.0-beta1\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-beta1\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
@@ -142,14 +150,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RestfulObjects.Mvc, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest-Assemblies.8.0.0-beta1\lib\net452\RestfulObjects.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RestfulObjects.Snapshot, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Rest-Assemblies.8.0.0-beta1\lib\net452\RestfulObjects.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

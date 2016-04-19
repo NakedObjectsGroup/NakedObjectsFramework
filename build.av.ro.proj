@@ -86,11 +86,11 @@
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
     <ItemGroup>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\RestfulObjects.Snapshot.dll"/>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\RestfulObjects.Mvc.dll"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.dll"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.dll"/>
 
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\RestfulObjects.Snapshot.pdb"/>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\RestfulObjects.Mvc.pdb"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.pdb"/>
+      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.pdb"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net452" />

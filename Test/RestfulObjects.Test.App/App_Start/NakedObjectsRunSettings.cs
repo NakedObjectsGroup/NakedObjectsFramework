@@ -13,9 +13,9 @@ using System.Linq;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Value;
-using RestfulObjects.Test.Data;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using RestfulObjects.Test.Data;
 
 namespace RestfulObjects.Test.App {
     public class NakedObjectsRunSettings {
