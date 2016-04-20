@@ -145,7 +145,7 @@ namespace RestfulObjects.Test.Data {
             public static void Seed() {
 
                 using (var context = new CodeFirstContext("RestTest")) {
-                  //  SeedCodeFirstDatabase(context);
+                    SeedCodeFirstDatabase(context);
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace RestfulObjects.Test.Data {
                 (new CodeFirstContext(name)).Database.Create();
             }
 
-           // CodeFirstInitializer.Seed();
+            CodeFirstInitializer.Seed();
         }
     }
 
