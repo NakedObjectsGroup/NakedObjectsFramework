@@ -5,14 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Web.Routing;
-using NakedObjects.Rest.App.Demo;
+using NakedObjects.Rest.Test.App;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
 
-namespace NakedObjects.Rest.App.Demo {
+namespace NakedObjects.Rest.Test.App {
     public static class RestfulObjectsActivator {
         public static void PreStart() {
             RestfulObjectsConfig.RestPreStart();

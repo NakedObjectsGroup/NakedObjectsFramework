@@ -5,21 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Web.Http;
 using System.Web.Routing;
-using NakedObjects.Rest.App.Demo;
-using WebActivatorEx;
 
-[assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
-[assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
+namespace NakedObjects.Rest.Test.App {
+    public static class WebApiConfig {
+        public static void Register(HttpConfiguration config) {
+            // Web API configuration and services
 
-namespace NakedObjects.Rest.App.Demo {
-    public static class RestfulObjectsActivator {
-        public static void PreStart() {
-            RestfulObjectsConfig.RestPreStart();
-        }
+            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
 
-        public static void PostStart() {
-            RestfulObjectsConfig.RestPostStart();
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new {id = RouteParameter.Optional}
+                );
+
+            
         }
     }
 }
