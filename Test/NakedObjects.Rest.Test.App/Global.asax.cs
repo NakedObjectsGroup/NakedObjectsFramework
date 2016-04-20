@@ -10,8 +10,13 @@ using System.Web.Routing;
 namespace NakedObjects.Rest.Test.App {
     public class WebApiApplication : System.Web.HttpApplication {
         protected void Application_Start() {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-           
+
+            try {
+                GlobalConfiguration.Configure(WebApiConfig.Register);
+            }
+            catch {
+                // temp hack
+            }
 
         }
 
