@@ -144,10 +144,6 @@
       <HintPath>..\..\packages\NakedObjects.Rest-Assemblies.8.0.0-beta1\lib\net452\NakedObjects.Rest.Snapshot.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NakedObjects.Rest.Test.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RestfulObjects Server\RestfulObjects.Test.Data\bin\Debug\NakedObjects.Rest.Test.Data.dll</HintPath>
-    </Reference>
     <Reference Include="NakedObjects.Snapshot.Xml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NakedObjects.Core.8.0.0-beta1\lib\net451\NakedObjects.Snapshot.Xml.dll</HintPath>
       <Private>True</Private>
@@ -243,6 +239,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RestfulObjects Server\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj">
+      <Project>{D1857EE7-DE8A-41AA-9509-CF40697A0589}</Project>
+      <Name>NakedObjects.Rest.Test.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
