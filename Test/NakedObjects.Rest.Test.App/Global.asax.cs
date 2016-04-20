@@ -10,11 +10,13 @@ using System.Web.Routing;
 namespace NakedObjects.Rest.Test.App {
     public class WebApiApplication : System.Web.HttpApplication {
         protected void Application_Start() {
-            AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+           
+
+        }
+
+        protected void Application_PostAuthorizeRequest() {
+            HttpContext.Current.SetSessionStateBehavior(System.Web.SessionState.SessionStateBehavior.Required);
         }
     }
 }
