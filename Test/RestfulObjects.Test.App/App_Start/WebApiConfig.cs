@@ -13,7 +13,7 @@ namespace RestfulObjects.Test.App {
         public static void Register(HttpConfiguration config) {
             // Web API configuration and services
 
-            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
+           // RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
 
             // Web API routes
             config.MapHttpAttributeRoutes();
