@@ -1,0 +1,17 @@
+﻿The Example Model folder contains a minimal domain model, consisting of
+one domain entity class (Customer) which has only one user-modifiable
+property (Name). There is a minimal service (CustomerRepository) for 
+creating a new Customer or retrieving all Customers, and an ExampleDbContext
+to auto-create a database using Entity Framework.
+
+Two of these types are referenced in the NakedObjectsRunSettings, which
+configures the application.
+
+We recommend that when writing a real application you create your domain model(s)
+in separate projects to the Run project. These model projects should not have
+the Naked Objects framework packages installed, only the 
+NakedObjects.ProgrammmingModel package.
+
+Once you have started writing your own domain model, we suggest deleting
+this whole directory, and references to its types.
+
