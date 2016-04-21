@@ -144,14 +144,11 @@ namespace RestfulObjects.Test.Data {
 
             public static void Seed() {
 
-                try {
-                    using (var context = new CodeFirstContext("RestTest")) {
-                        SeedCodeFirstDatabase(context);
-                    }
+
+                using (var context = new CodeFirstContext("RestTest")) {
+                    SeedCodeFirstDatabase(context);
                 }
-                catch {
-                    // hack
-                }
+
             }
         }
 

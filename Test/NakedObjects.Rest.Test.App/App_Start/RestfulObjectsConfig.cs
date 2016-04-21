@@ -53,11 +53,11 @@ namespace NakedObjects.Rest.Test.App {
                 // in the the member. This will increase the size of the initial representation but reduce 
                 // the number of messages.   
 
-                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations = false;
+                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations = true;
 
-                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = false;
+                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = true;
 
-                RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = false;
+                RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = true;
             }
         }
     }
