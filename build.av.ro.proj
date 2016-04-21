@@ -117,15 +117,15 @@
   <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
 
     <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\UnityConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\WebApiConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\Web.config.transform"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\UnityConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\UnityWebApiActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\WebApiConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\BasicAuthenticationHandler.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\Controllers*\RestfulObjectsController.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\Web.config.transform"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
