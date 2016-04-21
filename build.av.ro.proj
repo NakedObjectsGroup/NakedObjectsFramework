@@ -1,7 +1,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="RestfulObjectsPackageTest"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  
   <PropertyGroup>
-    <ROPath>RestfulObjects Server</ROPath>
+    <ROPath>Rest</ROPath>
     <ROMVC>RestfulObjects.Mvc</ROMVC>
     <ROSVR>RestfulObjects.Server</ROSVR>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
