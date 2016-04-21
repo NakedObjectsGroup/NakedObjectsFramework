@@ -61,6 +61,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
+            Thread.Sleep(1000);
             string maxQty = "Max Qty:";
             CheckIndividualItem(2, maxQty, newMax);
             CheckIndividualItem(3, maxQty,newMax);
@@ -279,17 +280,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
             GeminiUrl("object?o1=___1.SpecialOffer--" + (itemNo + 1));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Count == 9);
-            var properties = br.FindElements(By.CssSelector(".property"));
             var html = label + "\r\n" + value;
-            var prop = properties.First(p => p.Text.StartsWith(label));
             if (equal)
             {
-                Assert.AreEqual(html, prop.Text);
+                wait.Until( dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text == html);
             }
             else
             {
-                Assert.AreNotEqual(html, prop.Text);
+                wait.Until(dr => dr.FindElements(By.CssSelector(".property")).First(p => p.Text.StartsWith(label)).Text != html);
             }
         }
         #endregion

@@ -201,8 +201,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected void SelectCheckBox(string css, bool alreadySelected = false)
         {
-            var checkbox = wait.Until(dr => dr.FindElement(By.CssSelector(css)));
-            Assert.AreEqual(alreadySelected, checkbox.Selected);
+            wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == alreadySelected);
+            var checkbox = br.FindElement(By.CssSelector(css));
             checkbox.Click();
             wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == !alreadySelected);
         }
