@@ -997,12 +997,8 @@ module NakedObjects {
                     return;
                 }
                 this.getList().then((list: ListRepresentation) => {
-                    if (itemNo < 1 || itemNo > list.value().length) {
-                        this.clearInputAndSetMessage(arg0 + " is out of range for displayed items");
-                        return;
-                    }
-                    const link = list.value()[itemNo - 1]; // On UI, first item is '1'
-                    this.urlManager.setItem(link);
+                    this.attemptGotoLinkNumber(itemNo, list.value());
+                    return;
                 });
                 return;
             }
@@ -1010,13 +1006,14 @@ module NakedObjects {
                 this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
                         if (this.isCollection()) {
-                            const item = this.argumentAsNumber(args, 0);
-                            //TODO: validate range
+                            const itemNo = this.argumentAsNumber(args, 0);
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
-                            const link = coll.value()[item - 1];
-                            this.urlManager.setItem(link);
-                            return;
+                            //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
+                            this.context.getCollectionDetails(coll, CollectionViewState.List).then((coll: CollectionRepresentation) => {
+                                this.attemptGotoLinkNumber(itemNo, coll.value());
+                                return;
+                        });
                         } else {
                             const matchingProps = this.matchingProperties(obj, arg0);
                             const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
@@ -1049,6 +1046,15 @@ module NakedObjects {
                     });
             }
         };
+
+        private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): void {
+            if (itemNo < 1 || itemNo > links.length) {
+                this.clearInputAndSetMessage(itemNo.toString() + " is out of range for displayed items");
+            } else {
+                const link = links[itemNo - 1]; // On UI, first item is '1'
+                this.urlManager.setItem(link);
+            }
+        }
 
         private openCollection(collection: CollectionMember): void {
             this.closeAnyOpenCollections();
@@ -1508,7 +1514,6 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                // todo
                 this.context.getCollectionDetails(coll, CollectionViewState.List).then((details: CollectionRepresentation) => {
                     this.renderItems(details, startNo, endNo);
                 });

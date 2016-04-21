@@ -513,6 +513,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("go de,tails");
             WaitForOutput("Too many arguments provided");
 
+            //Goto applied to collection lines
+            EnterCommand("go details");
+            WaitForOutputStarting("Collection: Details");
+
+            EnterCommand("go 4");
+            WaitForOutput("4 is out of range for displayed items");
+
+            EnterCommand("go 2");
+            WaitForOutput("Sales Order Detail: 1 x ML Road Tire");
+
         }
         public virtual void Help()
         {
@@ -1311,7 +1321,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+    [TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
