@@ -133,8 +133,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj">
-      <Project>{6F3B3F67-FD4B-4DDF-BA3A-3FC9FCC4953A}</Project>
+    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj">
+      <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
       <Name>NakedObjects.Rest.Snapshot</Name>
     </ProjectReference>
   </ItemGroup>

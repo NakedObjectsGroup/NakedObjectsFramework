@@ -103,26 +103,6 @@
     <Content Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestfulObjects.Mvc.App\NakedObjects.Rest.App.csproj">
-      <Name>NakedObjects.Rest.App</Name>
-      <Project>{8aac6fab-eab9-4255-8bd6-07386dfe543c}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Mvc\NakedObjects.Rest.csproj">
-      <Name>NakedObjects.Rest</Name>
-      <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj">
-      <Name>NakedObjects.Rest.Snapshot</Name>
-      <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj">
-      <Name>NakedObjects.Rest.Test.Data</Name>
-      <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -162,6 +142,23 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Mvc\NakedObjects.Rest.csproj">
+      <Name>NakedObjects.Rest</Name>
+      <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj">
+      <Name>NakedObjects.Rest.Snapshot</Name>
+      <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
+      <Name>NakedObjects.Rest.Test.Data</Name>
+      <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

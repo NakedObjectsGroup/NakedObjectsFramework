@@ -390,8 +390,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RestfulObjects Server\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj">
-      <Project>{D1857EE7-DE8A-41AA-9509-CF40697A0589}</Project>
+    <ProjectReference Include="..\..\RestfulObjects Server\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
+      <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
       <Name>NakedObjects.Rest.Test.Data</Name>
     </ProjectReference>
   </ItemGroup>
