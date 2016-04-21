@@ -389,12 +389,6 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\RestfulObjects Server\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
-      <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
-      <Name>NakedObjects.Rest.Test.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

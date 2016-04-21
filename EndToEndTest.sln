@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{CF1D41
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestfulObjects.Test.EndToEnd", "Test\NakedObjects.Rest.Test.EndToEnd\RestfulObjects.Test.EndToEnd.csproj", "{C178C7AB-4238-49C1-B005-7264AD6F967A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.EndToEnd", "Test\NakedObjects.Rest.Test.EndToEnd\NakedObjects.Rest.Test.EndToEnd.csproj", "{C178C7AB-4238-49C1-B005-7264AD6F967A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

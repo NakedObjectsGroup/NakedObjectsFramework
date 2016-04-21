@@ -144,11 +144,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Rest.Mvc\NakedObjects.Rest.csproj">
-      <Name>NakedObjects.Rest</Name>
-      <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj">
       <Name>NakedObjects.Rest.Snapshot</Name>
       <Project>{6f3b3f67-fd4b-4ddf-ba3a-3fc9fcc4953a}</Project>
@@ -157,6 +152,11 @@
     <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj">
       <Name>NakedObjects.Rest.Test.Data</Name>
       <Project>{d1857ee7-de8a-41aa-9509-cf40697a0589}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj">
+      <Name>NakedObjects.Rest</Name>
+      <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>

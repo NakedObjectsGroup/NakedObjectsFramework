@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.App"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B06C54C-B897-4895-8DEB-3E76C2D82278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.Data", "RestfulObjects Server\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.Data", "Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{D1857EE7-DE8A-41AA-9509-CF40697A0589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

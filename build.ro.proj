@@ -2,8 +2,8 @@
  
   <PropertyGroup>
     <ROPath>Rest</ROPath>
-    <ROMVC>RestfulObjects.Mvc</ROMVC>
-    <ROSVR>RestfulObjects.Server</ROSVR>
+    <ROMVC>NakedObjects.Rest-Assemblies</ROMVC>
+    <ROSVR>NakedObjects.Rest-FileTemplates</ROSVR>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
@@ -45,7 +45,7 @@
 
   <ItemGroup>
     <Files Include="$(ROPath)\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj"/>
-    <Files Include="$(ROPath)\NakedObjects.Rest.Mvc\NakedObjects.Rest.csproj"/>
+    <Files Include="$(ROPath)\NakedObjects.Rest\NakedObjects.Rest.csproj"/>
     <Files Include="$(ROPath)\NakedObjects.Rest.App\NakedObjects.Rest.App.csproj"/>
     
     <Files Include="$(ROPath)\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj"/>
@@ -125,16 +125,16 @@
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
     <ItemGroup>
       <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.dll"/>
-      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.dll"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest\bin\%(Configuration.Identity)\NakedObjects.Rest.dll"/>
       <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.pdb"/>
-      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.pdb"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest\bin\%(Configuration.Identity)\NakedObjects.Rest.pdb"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net452" />
 
     <ItemGroup>
-      <RestApiSrc Include="*$(ROPath)\RestfulObjects.Snapshot\**\*.cs" />
-      <RestApiSrc Include="*$(ROPath)\RestfulObjects.Mvc\**\*.cs" />
+      <RestApiSrc Include="*$(ROPath)\NakedObjects.Rest.Snapshot\**\*.cs" />
+      <RestApiSrc Include="*$(ROPath)\NakedObjects.Rest\**\*.cs" />
     </ItemGroup>
 
     <Copy SourceFiles="@(RestApiSrc)" DestinationFolder="$(ROPath)\$(ROMVC).package\src\%(RecursiveDir)" />

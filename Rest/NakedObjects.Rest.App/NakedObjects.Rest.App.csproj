@@ -215,7 +215,7 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Rest.Mvc\NakedObjects.Rest.csproj">
+    <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj">
       <Project>{dfd82203-da17-43a4-96e8-5f2c558cf9a4}</Project>
       <Name>NakedObjects.Rest</Name>
     </ProjectReference>
