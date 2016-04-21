@@ -213,7 +213,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         private static string PathTo(string fileName) {
             string machineName = Environment.MachineName;
-            string suffix = @"Test\RestfulObjects.Test.EndToEnd\Json reference files\" + fileName + Txt;
+            string suffix = @"Test\NakedObjects.Rest.Test.EndToEnd\Json reference files\" + fileName + Txt;
 
             if (machineName == "YOGA") {  //Richard's
                 return @"C:\NakedObjectsFramework\" + suffix;
