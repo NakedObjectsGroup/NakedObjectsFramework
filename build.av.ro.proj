@@ -26,22 +26,22 @@
   </Target>
 
   <ItemGroup>
-    <Files Include="$(ROPath)\RestfulObjects.Snapshot\NakedObjects.Rest.Snapshot.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Mvc\NakedObjects.Rest.csproj"/>
-    <Files Include="$(ROPath)\RestfulObjects.Mvc.App\NakedObjects.Rest.App.csproj"/>
+    <Files Include="$(ROPath)\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj"/>
+    <Files Include="$(ROPath)\NakedObjects.Rest.Mvc\NakedObjects.Rest.csproj"/>
+    <Files Include="$(ROPath)\NakedObjects.Rest.App\NakedObjects.Rest.App.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <TFiles Include="$(ROPath)\RestfulObjects.Test.Data\NakedObjects.Rest.Test.Data.csproj"/>
-    <TFiles Include="$(ROPath)\RestfulObjects.Test\NakedObjects.Rest.Test.fsproj"/>
-    <TFiles Include="$(ROPath)\RestfulObjects.Test.Nof4\NakedObjects.Rest.Test.Nof4.fsproj"/>
+    <TFiles Include="$(ROPath)\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj"/>
+    <TFiles Include="$(ROPath)\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj"/>
+    <TFiles Include="$(ROPath)\NakedObjects.Rest.Test.Nof4\NakedObjects.Rest.Test.Nof4.fsproj"/>
   </ItemGroup>
   
   <Target Name="Init" DependsOnTargets="Config" >
     <MakeDir Directories="$(TestResultsPath)"/>
 
     <ItemGroup>
-      <CFGFiles Include="$(RoPath)\RestfulObjects.Test.Nof4\App.config"/>
+      <CFGFiles Include="$(RoPath)\NakedObjects.Rest.Test.Nof4\App.config"/>
     </ItemGroup>
 
     <FileUpdate Files="@(CFGFiles)"
@@ -81,16 +81,16 @@
   <Target Name="RestfulObjectsTest" DependsOnTargets="RestfulObjects">
     <MSBuild Projects="@(TFiles)" Properties="Configuration=%(Configuration.Identity)"/>
 
-    <Exec Command='nunit-console "$(ROPath)\RestfulObjects.Test.Nof4\bin\%(Configuration.Identity)\NakedObjects.Rest.Test.Nof4.dll" /noshadow'/>
+    <Exec Command='nunit-console "$(ROPath)\NakedObjects.Rest.Test.Nof4\bin\%(Configuration.Identity)\NakedObjects.Rest.Test.Nof4.dll" /noshadow'/>
   </Target>
 
   <Target Name="RestfulObjectsMvcPackage" DependsOnTargets="RestfulObjects" >
     <ItemGroup>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.dll"/>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.dll"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.dll"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.dll"/>
 
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.pdb"/>
-      <RestApiLib Include="$(ROPath)\RestfulObjects.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.pdb"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Snapshot\bin\%(Configuration.Identity)\NakedObjects.Rest.Snapshot.pdb"/>
+      <RestApiLib Include="$(ROPath)\NakedObjects.Rest.Mvc\bin\%(Configuration.Identity)\NakedObjects.Rest.pdb"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(RestApiLib)" DestinationFolder="$(ROPath)\$(ROMVC).package\lib\net452" />
@@ -117,15 +117,15 @@
   <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
 
     <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\WebApiConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\RestfulObjects.Mvc.App\Web.config.transform"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\UnityConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\UnityWebApiActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\WebApiConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\RestfulObjectsConfig.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\RestfulObjectsActivator.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\App_Start*\BasicAuthenticationHandler.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\Controllers*\RestfulObjectsController.cs"/>
+      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.Mvc.App\Web.config.transform"/>
     </ItemGroup>
 
     <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
