@@ -22,26 +22,43 @@ using NakedObjects.Rest.Snapshot.Strategies;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public static class RestUtils {
-        private static readonly Dictionary<Type, PredefinedType> SimpleTypeMap = new Dictionary<Type, PredefinedType> {
-            {typeof (sbyte), PredefinedType.Integer},
-            {typeof (byte), PredefinedType.Integer},
-            {typeof (short), PredefinedType.Integer},
-            {typeof (ushort), PredefinedType.Integer},
-            {typeof (int), PredefinedType.Integer},
-            {typeof (uint), PredefinedType.Integer},
-            {typeof (long), PredefinedType.Integer},
-            {typeof (ulong), PredefinedType.Integer},
-            {typeof (char), PredefinedType.String},
-            {typeof (bool), PredefinedType.Boolean},
-            {typeof (string), PredefinedType.String},
-            {typeof (float), PredefinedType.Number},
-            {typeof (double), PredefinedType.Number},
-            {typeof (decimal), PredefinedType.Number},
-            {typeof (byte[]), PredefinedType.Blob},
-            {typeof (sbyte[]), PredefinedType.Blob},
-            {typeof (char[]), PredefinedType.Clob},
-            {typeof (void), PredefinedType.Void}
+        private static readonly Dictionary<Type, PredefinedJsonType> SimpleTypeMap = new Dictionary<Type, PredefinedJsonType> {
+            {typeof (sbyte), PredefinedJsonType.Number},
+            {typeof (byte), PredefinedJsonType.Number},
+            {typeof (short), PredefinedJsonType.Number},
+            {typeof (ushort), PredefinedJsonType.Number},
+            {typeof (int), PredefinedJsonType.Number},
+            {typeof (uint), PredefinedJsonType.Number},
+            {typeof (long), PredefinedJsonType.Number},
+            {typeof (ulong), PredefinedJsonType.Number},
+            {typeof (char), PredefinedJsonType.String},
+            {typeof (bool), PredefinedJsonType.Boolean},
+            {typeof (string), PredefinedJsonType.String},
+            {typeof (float), PredefinedJsonType.Number},
+            {typeof (double), PredefinedJsonType.Number},
+            {typeof (decimal), PredefinedJsonType.Number},
+            {typeof (void), PredefinedJsonType.Void}
         };
+
+        private static readonly Dictionary<Type, PredefinedFormatType> SimpleFormatMap = new Dictionary<Type, PredefinedFormatType> {
+            {typeof (sbyte), PredefinedFormatType.Int},
+            {typeof (byte), PredefinedFormatType.Int},
+            {typeof (short), PredefinedFormatType.Int},
+            {typeof (ushort), PredefinedFormatType.Int},
+            {typeof (int), PredefinedFormatType.Int},
+            {typeof (uint), PredefinedFormatType.Int},
+            {typeof (long), PredefinedFormatType.Int},
+            {typeof (ulong), PredefinedFormatType.Int},
+            {typeof (char), PredefinedFormatType.String},          
+            {typeof (string), PredefinedFormatType.String},
+            {typeof (float), PredefinedFormatType.Decimal},
+            {typeof (double), PredefinedFormatType.Decimal},
+            {typeof (decimal), PredefinedFormatType.Decimal},
+            {typeof (byte[]), PredefinedFormatType.Blob},
+            {typeof (sbyte[]), PredefinedFormatType.Blob},
+            {typeof (char[]), PredefinedFormatType.Clob}
+        };
+
 
         public static MapRepresentation GetExtensions(string friendlyname,
                                                       string description,
@@ -102,16 +119,16 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 Tuple<string, string> jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
                 exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
 
-                // blob and clobs are arrays so do this check first so they are not caught be the collection test after. 
-                if (jsonDataType.Item1 == PredefinedType.Number.ToRoString()) {
+                if (jsonDataType.Item2 != null) {
                     exts.Add(JsonPropertyNames.Format, jsonDataType.Item2);
                 }
-                else if (jsonDataType.Item1 == PredefinedType.String.ToRoString()) {
-                    exts.Add(JsonPropertyNames.Format, jsonDataType.Item2);
+
+                if (jsonDataType.Item1 == PredefinedJsonType.String.ToRoString()) {
                     exts.Add(JsonPropertyNames.MaxLength, maxLength ?? 0);
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
-                else if (returnType.IsCollection) {
+                // blob and clobs are arrays hence additional checks
+                else if (returnType.IsCollection && (jsonDataType.Item1 == PredefinedJsonType.List.ToRoString() || jsonDataType.Item1 == PredefinedJsonType.Set.ToRoString())) {
                     exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy, useDateOverDateTime).Item1);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName);
                 }
@@ -161,7 +178,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return valueNakedObject == null ? "" : property.GetTitle(valueNakedObject);
         }
 
-        public static PredefinedType TypeToPredefinedType(Type toMapType, bool useDateOverDateTime = false) {
+        private static PredefinedJsonType? TypeToPredefinedJsonType(Type toMapType) {
+
             if (SimpleTypeMap.ContainsKey(toMapType)) {
                 return SimpleTypeMap[toMapType];
             }
@@ -171,29 +189,59 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return SimpleTypeMap[underlyingType];
             }
 
-            if (typeof (DateTime).IsAssignableFrom(toMapType)) {
-                return useDateOverDateTime ?  PredefinedType.Date : PredefinedType.Date_time;
+            if (typeof(DateTime).IsAssignableFrom(toMapType)) {
+                return PredefinedJsonType.String;
             }
 
-            if (IsGenericType(toMapType, typeof (ISet<>))) {
-                return PredefinedType.Set;
+            if (IsGenericType(toMapType, typeof(ISet<>))) {
+                return PredefinedJsonType.Set;
             }
 
-            if (IsGenericType(toMapType, typeof (ICollection<>)) || IsGenericType(toMapType, typeof (IQueryable<>))) {
-                return PredefinedType.List;
+            if (IsGenericType(toMapType, typeof(ICollection<>)) || IsGenericType(toMapType, typeof(IQueryable<>))) {
+                return PredefinedJsonType.List;
             }
 
-            if (typeof (ICollection).IsAssignableFrom(toMapType) || typeof (IQueryable).IsAssignableFrom(toMapType)) {
-                return PredefinedType.List;
+            if (typeof(ICollection).IsAssignableFrom(toMapType) || typeof(IQueryable).IsAssignableFrom(toMapType)) {
+                return PredefinedJsonType.List;
             }
 
             // to catch nof2 InternalCollections 
 
-            if (typeof (IEnumerable).IsAssignableFrom(toMapType) && !toMapType.IsArray) {
-                return PredefinedType.List;
+            if (typeof(IEnumerable).IsAssignableFrom(toMapType) && !toMapType.IsArray) {
+                return PredefinedJsonType.List;
             }
 
-            return PredefinedType.String;
+            return null;
+        }
+
+        public static PredefinedFormatType? TypeToPredefinedFormatType(Type toMapType, bool useDateOverDateTime = false) {
+         
+            if (SimpleFormatMap.ContainsKey(toMapType)) {
+                return SimpleFormatMap[toMapType];
+            }
+
+            if (toMapType.IsEnum) {
+                Type underlyingType = Enum.GetUnderlyingType(toMapType);
+                return SimpleFormatMap[underlyingType];
+            }
+
+            if (typeof(DateTime).IsAssignableFrom(toMapType)) {
+                return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
+            }
+
+            return null;
+        }
+
+
+        public static Tuple<PredefinedJsonType, PredefinedFormatType?> TypeToPredefinedTypes (Type toMapType, bool useDateOverDateTime = false) {
+            PredefinedJsonType? pst = TypeToPredefinedJsonType(toMapType);
+
+            if (pst.HasValue) {
+                PredefinedFormatType? pft = TypeToPredefinedFormatType(toMapType, useDateOverDateTime);
+                return new Tuple<PredefinedJsonType, PredefinedFormatType?>(pst.Value, pft);
+            }
+
+            return null;
         }
 
         private static bool IsGenericType(Type type, Type toMatch) {
@@ -208,8 +256,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
-            PredefinedType predefinedType = TypeToPredefinedType(toMap.GetType(), useDateOverDateTime);
-            if (predefinedType == PredefinedType.Date_time) {
+            PredefinedFormatType? predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), useDateOverDateTime);
+            if (predefinedFormatType == PredefinedFormatType.Date_time) {
                 var dt = (DateTime) toMap;
                 if (dt.Kind == DateTimeKind.Unspecified) {
                     // default datetimes to utc
@@ -218,57 +266,46 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
                 return dt.ToUniversalTime();
             }
-            if (predefinedType == PredefinedType.Date) {
+            if (predefinedFormatType == PredefinedFormatType.Date) {
                 return ToDateFormatString((DateTime) toMap);
             }
 
-            return predefinedType == PredefinedType.String ? toMap.ToString() : toMap;
+            return predefinedFormatType == PredefinedFormatType.String ? toMap.ToString() : toMap;
         }
 
-        public static PredefinedType? SpecToPredefinedType(ITypeFacade spec, bool useDateOverDateTime = false) {
+        public static Tuple<PredefinedJsonType, PredefinedFormatType?> SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime = false) {
             if (spec.IsFileAttachment || spec.IsImage) {
-                return PredefinedType.Blob;
+                return new Tuple<PredefinedJsonType, PredefinedFormatType?>(PredefinedJsonType.String, PredefinedFormatType.Blob);
             }
 
             if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
                 Type underlyingType = spec.GetUnderlyingType();
-                return TypeToPredefinedType(underlyingType, useDateOverDateTime);
+                return TypeToPredefinedTypes(underlyingType, useDateOverDateTime);
             }
             return null;
         }
 
         public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime = false) {
-            PredefinedType? pdt = SpecToPredefinedType(spec, useDateOverDateTime);
-            return pdt.HasValue ? pdt.Value.ToRoString() : spec.DomainTypeName(oidStrategy);
+            if (!spec.IsVoid) {
+                var pdt = SpecToPredefinedTypes(spec);
+                return pdt != null ? pdt.Item1.ToRoString() : spec.DomainTypeName(oidStrategy);
+            }
+            return null;
         }
 
         public static bool IsPredefined(ITypeFacade spec) {
-            PredefinedType? pdt = SpecToPredefinedType(spec);
-            return pdt.HasValue;
+            var pdts = SpecToPredefinedTypes(spec);
+            return pdts != null;
         }
 
         public static Tuple<string, string> SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
-            PredefinedType? pdt = SpecToPredefinedType(spec, useDateOverDateTime);
+            var types = SpecToPredefinedTypes(spec, useDateOverDateTime);
 
-            if (pdt.HasValue) {
-                switch (pdt.Value) {
-                    case PredefinedType.Number:
-                        return new Tuple<string, string>(pdt.Value.ToRoString(), PredefinedType.Decimal.ToRoString());
-                    case PredefinedType.Integer:
-                        return new Tuple<string, string>(PredefinedType.Number.ToRoString(), pdt.Value.ToRoString());
-                    case PredefinedType.Boolean:
-                        return new Tuple<string, string>(pdt.Value.ToRoString(), null);
-                    case PredefinedType.List:
-                        return new Tuple<string, string>(PredefinedType.List.ToRoString(), null);
-                    case PredefinedType.Set:
-                        return new Tuple<string, string>(PredefinedType.Set.ToRoString(), null);
-                    case PredefinedType.String:
-                        return new Tuple<string, string>(pdt.Value.ToRoString(), pdt.Value.ToRoString());
-                    case PredefinedType.Void:
-                        return new Tuple<string, string>(null, null);
-                    default:
-                        return new Tuple<string, string>(PredefinedType.String.ToRoString(), pdt.Value.ToRoString());
-                }
+            if (types != null) {
+                var pdtString = types.Item1.ToRoString();
+                var pftString = types.Item2.HasValue ? types.Item2.Value.ToRoString() : null;
+
+                return new Tuple<string, string>(pdtString, pftString);
             }
             return new Tuple<string, string>(spec.DomainTypeName(oidStrategy), null);
         }
@@ -280,8 +317,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static bool IsBlobOrClob(ITypeFacade spec) {
             if (spec.IsParseable || spec.IsCollection) {
                 Type underlyingType = spec.GetUnderlyingType();
-                PredefinedType pdt = TypeToPredefinedType(underlyingType);
-                return pdt == PredefinedType.Blob || pdt == PredefinedType.Clob;
+                PredefinedFormatType? pdt = TypeToPredefinedFormatType(underlyingType);
+                return pdt == PredefinedFormatType.Blob || pdt == PredefinedFormatType.Clob;
             }
             return false;
         }

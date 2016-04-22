@@ -10,12 +10,16 @@ using System.Linq;
 
 namespace NakedObjects.Rest.Snapshot.Constants {
     public static class PredefinedTypeExtensions {
-        public static string ToRoString(this PredefinedType pdt) {
+        public static string ToRoString(this PredefinedFormatType pdt) {
             return pdt.ToString().Replace('_', '-').ToLower();
         }
 
+        public static string ToRoString(this PredefinedJsonType pjt) {
+            return pjt.ToString().ToLower();
+        }
+
         public static string[] PredefinedTypeValues() {
-            return Enum.GetValues(typeof (PredefinedType)).Cast<PredefinedType>().Select(pdt => pdt.ToRoString()).ToArray();
+            return Enum.GetValues(typeof (PredefinedFormatType)).Cast<PredefinedFormatType>().Select(pdt => pdt.ToRoString()).ToArray();
         }
     }
 }

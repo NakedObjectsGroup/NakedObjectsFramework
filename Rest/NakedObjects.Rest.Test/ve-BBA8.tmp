@@ -153,7 +153,7 @@ let GetMostSimpleObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
@@ -190,7 +190,7 @@ let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) 
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
@@ -574,7 +574,7 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                
                TObjectJson
                    ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oid "Bool" "" "boolean" false (TObjectVal(true))))
-                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "int" false (TObjectVal(1))))
+                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "integer" false (TObjectVal(1))))
                       //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
                       TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("3"))))
                       //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
@@ -588,23 +588,23 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                           ("EnumByAttributeChoices", 
                            
                            TObjectJson
-                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "int" false 
+                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "integer" false 
                                     (TObjectVal(0))))
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(7.3))))
-                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1))))
-                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "int" false (TObjectVal(8))))
-                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "int" false (TObjectVal(0))))
+                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
+                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(8))))
+                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "integer" false (TObjectVal(0))))
                       TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
-                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "int" false (TObjectVal(9))))
+                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(9))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oid "Password" "" "string" false (TObjectVal(null))))
-                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "int" false (TObjectVal(10))))
+                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(10))))
                       //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                       TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0 emptyValue))
-                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "int" false (TObjectVal(12))))
+                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(12))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("13"))))
-                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "int" false (TObjectVal(14))))
-                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "int" false (TObjectVal(15))))
-                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "int" false (TObjectVal(16)))) ]))
+                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(14))))
+                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(15))))
+                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(16)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
@@ -800,7 +800,7 @@ let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) 
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
@@ -841,7 +841,7 @@ let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControll
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
@@ -1108,7 +1108,7 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                
                TObjectJson
                    ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oid "Bool" "" "boolean" false (TObjectVal(false))))
-                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "int" false (TObjectVal(2))))
+                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "integer" false (TObjectVal(2))))
                       //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
                       TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("3"))))
                       //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
@@ -1126,23 +1126,23 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                           ("EnumByAttributeChoices", 
                            
                            TObjectJson
-                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "int" false 
+                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "integer" false 
                                     (TObjectVal(1))))
                       TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(300.7))))
-                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1))))
-                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "int" false (TObjectVal(400))))
-                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "int" false (TObjectVal(400))))
+                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
+                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "integer" false (TObjectVal(400))))
+                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "integer" false (TObjectVal(400))))
                       TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
-                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "int" false (TObjectVal(500))))
+                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "integer" false (TObjectVal(500))))
                       TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oid "Password" "" "string" false (TObjectVal(null))))
-                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "int" false (TObjectVal(3))))
+                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "integer" false (TObjectVal(3))))
                       //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
                       TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0 emptyValue))
-                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "int" false (TObjectVal(4))))
+                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "integer" false (TObjectVal(4))))
                       TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("44"))))
-                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "int" false (TObjectVal(5))))
-                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "int" false (TObjectVal(6))))
-                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "int" false (TObjectVal(7)))) ]))
+                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "integer" false (TObjectVal(5))))
+                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "integer" false (TObjectVal(6))))
+                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "integer" false (TObjectVal(7)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
@@ -1573,7 +1573,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
    
@@ -1590,7 +1590,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class9 class10"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
@@ -1606,7 +1606,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))                                                  
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))                                                  
                                                   TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(1)); TProperty("max", TObjectVal(500))]))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
@@ -1629,7 +1629,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.CustomChoices, 
                                                             TObjectJson([ TProperty("1", TObjectVal(1))
                                                                           TProperty("2", TObjectVal(2))
@@ -1653,7 +1653,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.CustomChoices, 
                                                             TObjectJson([ TProperty("1", TObjectVal(1))
                                                                           TProperty("2", TObjectVal(2))
@@ -1674,7 +1674,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
@@ -1740,7 +1740,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
@@ -1935,7 +1935,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           ("AnActionReturnsScalar", 
-                           TObjectJson(makeActionMemberNumber "objects" "AnActionReturnsScalar" oid "An Action Returns Scalar" "" "int" []))
+                           TObjectJson(makeActionMemberNumber "objects" "AnActionReturnsScalar" oid "An Action Returns Scalar" "" "integer" []))
                       
                       TProperty
                           ("AnActionReturnsScalarEmpty", 
@@ -1950,7 +1950,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                            
                            TObjectJson
                                (makeActionMemberNumber "objects" "AnActionReturnsScalarWithParameters" oid "An Action Returns Scalar With Parameters" "" 
-                                    "int" [ p33; p34 ]))
+                                    "integer" [ p33; p34 ]))
                       TProperty("AnActionReturnsVoid", TObjectJson(makeObjectActionVoidMember "AnActionReturnsVoid" oid))
                       
                       TProperty
@@ -1964,7 +1964,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                           ("AnActionValidateParameters", 
                            
                            TObjectJson
-                               (makeActionMemberNumber "objects" "AnActionValidateParameters" oid "An Action Validate Parameters" "" "int" [ p37; p38 ]))
+                               (makeActionMemberNumber "objects" "AnActionValidateParameters" oid "An Action Validate Parameters" "" "integer" [ p37; p38 ]))
                       
                       TProperty
                           ("AnActionWithCollectionParameter", 
@@ -2017,7 +2017,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           ("AnActionWithValueParameterWithDefault", TObjectJson(makeObjectActionMember "AnActionWithValueParameterWithDefault" oid mst [ p22 ]))
-                      TProperty("AnError", TObjectJson(makeActionMemberNumber "objects" "AnError" oid "An Error" "" "int" []))
+                      TProperty("AnError", TObjectJson(makeActionMemberNumber "objects" "AnError" oid "An Error" "" "integer" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorCollection" oid mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParms "AnErrorQuery" oid mst))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParms "AzContributedAction" oid mst))
@@ -2240,7 +2240,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
@@ -2251,7 +2251,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.CustomRange, TObjectJson([TProperty("min", TObjectVal(1)); TProperty("max", TObjectVal(500))]))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
@@ -2264,7 +2264,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class9 class10"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
@@ -2281,7 +2281,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.CustomChoices, 
                                                             TObjectJson([ TProperty("1", TObjectVal(1))
                                                                           TProperty("2", TObjectVal(2))
@@ -2300,7 +2300,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.CustomChoices, 
                                                             TObjectJson([ TProperty("1", TObjectVal(1))
                                                                           TProperty("2", TObjectVal(2))
@@ -2316,7 +2316,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
@@ -2369,7 +2369,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
@@ -2459,7 +2459,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
               (JsonPropertyNames.Members, 
                
                TObjectJson
-                   ([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1))))
+                   ([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1))))
                       
                       TProperty
                           ("ADisabledAction", 
@@ -2572,7 +2572,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       
                       TProperty
                           ("AnActionReturnsScalar", 
-                           TObjectJson(makeActionMemberNumberSimple "objects" "AnActionReturnsScalar" oid "An Action Returns Scalar" "" "int" []))
+                           TObjectJson(makeActionMemberNumberSimple "objects" "AnActionReturnsScalar" oid "An Action Returns Scalar" "" "integer" []))
                       
                       TProperty
                           ("AnActionReturnsScalarEmpty", 
@@ -2587,7 +2587,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                            
                            TObjectJson
                                (makeActionMemberNumberSimple "objects" "AnActionReturnsScalarWithParameters" oid "An Action Returns Scalar With Parameters" "" 
-                                    "int" [ p33; p34 ]))
+                                    "integer" [ p33; p34 ]))
                       TProperty("AnActionReturnsVoid", TObjectJson(makeObjectActionVoidMemberSimple "AnActionReturnsVoid" oid))
                       
                       TProperty
@@ -2601,7 +2601,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                           ("AnActionValidateParameters", 
                            
                            TObjectJson
-                               (makeActionMemberNumberSimple "objects" "AnActionValidateParameters" oid "An Action Validate Parameters" "" "int" 
+                               (makeActionMemberNumberSimple "objects" "AnActionValidateParameters" oid "An Action Validate Parameters" "" "integer" 
                                     [ p37; p38 ]))
                       
                       TProperty
@@ -2665,7 +2665,7 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                       TProperty
                           ("AnActionWithValueParameterWithDefault", 
                            TObjectJson(makeObjectActionMemberSimple "AnActionWithValueParameterWithDefault" oid mst [ p22 ]))
-                      TProperty("AnError", TObjectJson(makeActionMemberNumberSimple "objects" "AnError" oid "An Error" "" "int" []))
+                      TProperty("AnError", TObjectJson(makeActionMemberNumberSimple "objects" "AnError" oid "An Error" "" "integer" []))
                       TProperty("AnErrorCollection", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorCollection" oid mst))
                       TProperty("AnErrorQuery", TObjectJson(makeObjectActionCollectionMemberNoParmsSimple "AnErrorQuery" oid mst))
                       TProperty("AzContributedAction", TObjectJson(makeObjectActionMemberNoParmsSimple "AzContributedAction" oid mst))
@@ -3138,7 +3138,7 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   
                                   TProperty
                                       ("AnEmptySet", TObjectJson(makeCollectionMemberSimple "AnEmptySet" oid "An Empty Set" "an empty set for testing" "set" 0 emptyValue))
-                                  TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1)))) ]))
+                                  TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Collection"))

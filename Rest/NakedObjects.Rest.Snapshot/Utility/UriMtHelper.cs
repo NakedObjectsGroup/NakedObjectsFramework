@@ -140,7 +140,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             : this(oidStrategy, req) {
             cachedId = "";
             if (assoc.IsCollection) {
-                CachedType = assoc.IsASet ? PredefinedType.Set.ToRoString() : PredefinedType.List.ToRoString();
+                CachedType = assoc.IsASet ? PredefinedJsonType.Set.ToRoString() : PredefinedJsonType.List.ToRoString();
             }
             else {
                 CachedType = assoc.Specification.DomainTypeName(oidStrategy);
@@ -507,7 +507,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) {
-            return RestUtils.SpecToTypeAndFormatString(parameterValueSpec, oidStrategy, true).Item1;
+            return RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy);
         }
 
         public void AddListRepresentationParameter(MediaTypeHeaderValue mediaType, RestControlFlags flags) {

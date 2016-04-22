@@ -52,7 +52,7 @@ let GetValueProperty(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -270,7 +270,7 @@ let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -316,7 +316,7 @@ let GetValuePropertyUserAuth(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A User Hidden Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -361,7 +361,7 @@ let GetValuePropertySimpleOnly(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -408,7 +408,7 @@ let GetEnumValueProperty(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Enum By Attribute Choices"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.CustomDataType, TObjectVal("custom"))
                                   TProperty(JsonPropertyNames.CustomChoices, 
@@ -528,7 +528,7 @@ let GetValuePropertyWithMediaType(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -576,7 +576,7 @@ let GetChoicesValueProperty(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Choices Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.CustomChoices, 
                                             TObjectJson([ TProperty("1", TObjectVal(1))
@@ -619,7 +619,7 @@ let GetDisabledValueProperty(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -658,7 +658,7 @@ let GetUserDisabledValueProperty(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A User Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -701,7 +701,7 @@ let GetUserDisabledValuePropertyAuthorised(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A User Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1027,7 +1027,7 @@ let InvokeConditionalChoicesValue(api : RestfulObjectsControllerBase) =
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roType = ttc "integer"
+    let roType = ttc "int"
     
     let expected = 
         [ TProperty(JsonPropertyNames.Id, TObjectVal("AConditionalChoicesValue"))
@@ -1084,7 +1084,7 @@ let InvokeConditionalChoicesValueErrorMissingParm(api : RestfulObjectsController
     let result = api.GetPropertyPrompt(oType, oid, pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roType = ttc "integer"
+    let roType = ttc "int"
     
     let expected = 
         [ TProperty(JsonPropertyNames.Id, TObjectVal("AConditionalChoicesValue"))
@@ -1398,7 +1398,7 @@ let PutValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -1539,7 +1539,7 @@ let PutValuePropertyConcurrencySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -1586,7 +1586,7 @@ let PutUserDisabledValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A User Disabled Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
@@ -1648,7 +1648,7 @@ let DeleteValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
@@ -1711,7 +1711,7 @@ let PutNullValuePropertySuccess(api : RestfulObjectsControllerBase) =
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]

@@ -48,7 +48,7 @@ let makeValueParm  contribName pmid pid fid rt =
                                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
                                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
@@ -1544,7 +1544,7 @@ let VerifyPostInvokeActionReturnScalar refType oType oid f (api : RestfulObjects
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roType = ttc "integer"
+    let roType = ttc "int"
     
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(999))
@@ -2992,7 +2992,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnScalar refType oType oid f (ap
     let result = f (oType, ktc "1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
-    let roType = "integer"
+    let roType = "int"
     
     let resultObject = 
         TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(555))

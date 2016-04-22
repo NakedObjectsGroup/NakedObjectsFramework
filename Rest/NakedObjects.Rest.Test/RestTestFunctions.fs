@@ -800,7 +800,7 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
                       TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"));
-                      TProperty(JsonPropertyNames.Format, TObjectVal("integer"));
+                      TProperty(JsonPropertyNames.Format, TObjectVal("int"));
                       TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
                       TProperty(JsonPropertyNames.Optional, TObjectVal(opt))];
 
@@ -860,7 +860,7 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
                       TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"));
-                      TProperty(JsonPropertyNames.Format, TObjectVal("integer"));
+                      TProperty(JsonPropertyNames.Format, TObjectVal("int"));
                       TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
                       TProperty(JsonPropertyNames.Optional, TObjectVal(opt))];
 

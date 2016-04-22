@@ -678,7 +678,7 @@ let GetActionPropertyViewModelWithMediaType(api : RestfulObjectsControllerBase) 
 
 // 18.2 get action returns scalar no parms 
 let VerifyScalarAction refType oType oid f (api : RestfulObjectsControllerBase) = 
-    let eType = "integer"
+    let eType = "int"
     let pid = "AnActionReturnsScalar"
     let ourl = sprintf "%s/%s" refType oid
     let purl = sprintf "%s/actions/%s" ourl pid
@@ -697,7 +697,7 @@ let VerifyScalarAction refType oType oid f (api : RestfulObjectsControllerBase) 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action Returns Scalar"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                  TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
           TProperty(JsonPropertyNames.Links, 
@@ -860,7 +860,7 @@ let VerifyQueryActionWithParms refType oType oid f (api : RestfulObjectsControll
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
     let parm2 = 
@@ -948,7 +948,7 @@ let VerifyCollectionActionWithParms refType oType oid f (api : RestfulObjectsCon
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
     let parm2 = 
@@ -1035,7 +1035,7 @@ let VerifyCollectionActionWithParmsSimpleOnly refType oType oid f (api : Restful
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
     let parm2 = 
@@ -1122,7 +1122,7 @@ let VerifyActionWithValueParm refType oType oid f (api : RestfulObjectsControlle
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
     let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
@@ -1194,7 +1194,7 @@ let VerifyActionWithValueParmWithChoices refType oType oid f (api : RestfulObjec
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm3"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.CustomChoices, 
                                                         TObjectJson([ TProperty("1", TObjectVal(1))
                                                                       TProperty("2", TObjectVal(2))
@@ -1274,7 +1274,7 @@ let VerifyActionWithValueParmWithDefault refType oType oid f (api : RestfulObjec
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm5"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ]))
                       TProperty(JsonPropertyNames.Default, TObjectVal(4)) ])
     
@@ -1803,7 +1803,7 @@ let InvokeParmWithConditionalChoicesViewModelErrorMalformedParm(api : RestfulObj
 let VerifyInvokeValueParmWithConditionalChoices refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionWithValueParametersWithConditionalChoices"
     let pmid0 = "parm3"
-    let roType1 = (ttc "integer")
+    let roType1 = (ttc "int")
     let roType2 = (ttc "string")
     let ourl = sprintf "%s/%s" refType oid
     let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
@@ -1872,7 +1872,7 @@ let InvokeValueParmWithConditionalChoicesViewModel(api : RestfulObjectsControlle
 let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oid f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionWithValueParametersWithConditionalChoices"
     let pmid0 = "parm3"
-    let roType1 = (ttc "integer")
+    let roType1 = (ttc "int")
     let ourl = sprintf "%s/%s" refType oid
     let prurl = sprintf "%s/actions/%s/params/%s/prompt" ourl pid pmid0
     let parms = new JObject(new JProperty("parm3", new JObject(new JProperty("value", 100))))
@@ -2024,7 +2024,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm1"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
     let parm7 = 
@@ -2041,7 +2041,7 @@ let VerifyActionWithChoicesAndDefault refType oType oid f (api : RestfulObjectsC
                                 TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm7"))
                                               TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                              TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                               TProperty(JsonPropertyNames.CustomChoices, 
                                                         TObjectJson([ TProperty("1", TObjectVal(1))
                                                                       TProperty("2", TObjectVal(2))

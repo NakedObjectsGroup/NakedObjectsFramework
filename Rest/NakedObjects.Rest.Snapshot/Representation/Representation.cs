@@ -248,7 +248,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
 
                 if (spec.IsDateTime) {
-                    exts.Add(JsonPropertyNames.Format, PredefinedType.Date_time.ToRoString());
+                    exts.Add(JsonPropertyNames.Format, PredefinedFormatType.Date_time.ToRoString());
                 }
             }
         }

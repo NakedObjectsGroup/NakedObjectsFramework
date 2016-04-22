@@ -53,7 +53,7 @@ let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
                                                                            TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Id"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])) ]))
                       TProperty(JsonPropertyNames.Extensions, 
@@ -110,7 +110,7 @@ let GetMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                                                            TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Id"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])) ]))
                       TProperty(JsonPropertyNames.Extensions, 
@@ -245,7 +245,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBas
           
           TProperty
               (JsonPropertyNames.Members, 
-               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "integer" false (TObjectVal(5)))) ]))
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(5)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
@@ -339,7 +339,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                              (JsonPropertyNames.FriendlyName, TObjectVal("A Choices Value"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.CustomChoices, 
                                                                                                    TObjectJson([ TProperty("1", TObjectVal(1))
@@ -368,7 +368,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                                               TObjectVal("A Conditional Choices Value"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]))
                                          TProperty("ADateTimeValue", 
@@ -414,7 +414,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                            TObjectJson([ TProperty
                                                                                              (JsonPropertyNames.FriendlyName, TObjectVal("A Disabled Value"))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]))
@@ -455,7 +455,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                  TProperty(JsonPropertyNames.Extensions, 
                                                                            TObjectJson([ TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          
                                                                                          TProperty
                                                                                              (JsonPropertyNames.FriendlyName, 
@@ -476,7 +476,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                  TProperty(JsonPropertyNames.Extensions, 
                                                                            TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          
@@ -498,7 +498,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
                                                                            TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Id"))
                                                                                          TProperty(JsonPropertyNames.Description, TObjectVal(""))
                                                                                          TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("integer"))
+                                                                                         TProperty(JsonPropertyNames.Format, TObjectVal("int"))
                                                                                          TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                                                                          TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])) ]))
                       TProperty(JsonPropertyNames.Extensions, 
