@@ -14,9 +14,9 @@ using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
-using RestfulObjects.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Constants;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class UriMtHelper {
         public static Func<HttpRequestMessage, string> GetAuthority;
         public static Func<string> GetApplicationPath;

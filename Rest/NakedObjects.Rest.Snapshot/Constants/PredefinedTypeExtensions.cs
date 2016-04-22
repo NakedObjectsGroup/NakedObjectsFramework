@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace RestfulObjects.Snapshot.Constants {
+namespace NakedObjects.Rest.Snapshot.Constants {
     public static class PredefinedTypeExtensions {
         public static string ToRoString(this PredefinedType pdt) {
             return pdt.ToString().Replace('_', '-').ToLower();

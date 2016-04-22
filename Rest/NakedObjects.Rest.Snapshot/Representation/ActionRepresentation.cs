@@ -9,11 +9,11 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Strategies;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Strategies;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ActionRepresentation : Representation {
         protected ActionRepresentation(IOidStrategy oidStrategy, AbstractActionRepresentationStrategy strategy)

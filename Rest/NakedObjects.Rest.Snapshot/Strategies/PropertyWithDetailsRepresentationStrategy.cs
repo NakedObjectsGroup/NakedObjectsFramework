@@ -12,11 +12,11 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
 
-namespace RestfulObjects.Snapshot.Strategies {
+namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         private readonly bool inline;

@@ -12,7 +12,7 @@ using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class FieldFacadeAdapter {
         private readonly IAssociationFacade association;
         private readonly IActionParameterFacade parameter;

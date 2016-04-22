@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public class ArgumentMap : ReservedArguments {
         public IDictionary<string, IValue> Map { get; set; }
 

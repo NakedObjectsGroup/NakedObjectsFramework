@@ -7,7 +7,7 @@
 
 using System;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     public class OptionalProperty {
         public OptionalProperty(string name, object value) : this(name, value, value == null ? typeof (object) : value.GetType()) {}
 

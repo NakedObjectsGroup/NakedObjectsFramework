@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     public enum CacheType {
         Transactional,
         UserInfo,

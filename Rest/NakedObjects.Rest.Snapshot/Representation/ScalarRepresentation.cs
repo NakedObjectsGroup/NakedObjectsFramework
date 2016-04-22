@@ -11,10 +11,10 @@ using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility.Restricted;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ScalarRepresentation : Representation {
         protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)

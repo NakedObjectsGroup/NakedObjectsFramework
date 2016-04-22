@@ -8,11 +8,11 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Strategies {
+namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractStrategy {
         protected AbstractStrategy(IOidStrategy oidStrategy, RestControlFlags flags) {
             OidStrategy = oidStrategy;

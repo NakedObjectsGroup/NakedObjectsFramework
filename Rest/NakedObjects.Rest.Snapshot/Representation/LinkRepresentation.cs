@@ -8,10 +8,10 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class LinkRepresentation : RefValueRepresentation {
         protected LinkRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)

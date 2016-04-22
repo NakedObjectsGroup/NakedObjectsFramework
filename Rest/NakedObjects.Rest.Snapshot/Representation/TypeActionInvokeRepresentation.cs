@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class TypeActionInvokeRepresentation : Representation {
         protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags)

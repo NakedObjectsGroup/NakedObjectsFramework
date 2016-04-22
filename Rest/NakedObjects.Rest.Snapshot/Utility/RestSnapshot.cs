@@ -17,10 +17,10 @@ using System.Web.Http;
 using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Representations;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class RestSnapshot {
         private readonly IList<string> allowHeaders = new List<string>();
         private readonly ILog logger = LogManager.GetLogger<RestSnapshot>();

@@ -7,9 +7,9 @@
 
 using System.Linq;
 using System.Net.Http.Headers;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     public class MapRepresentation : Representation {
         private MediaTypeHeaderValue mediaType;
         public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}

@@ -12,11 +12,11 @@ using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Strategies;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Strategies;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ObjectRepresentation : Representation {
         protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)

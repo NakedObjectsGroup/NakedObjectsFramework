@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class BadPersistArgumentsException : BadArgumentsNOSException {
         public BadPersistArgumentsException(string message, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, contexts) {
             Flags = flags;

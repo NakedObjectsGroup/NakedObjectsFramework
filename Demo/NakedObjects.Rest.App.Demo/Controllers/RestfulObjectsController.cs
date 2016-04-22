@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using NakedObjects.Facade;
-using RestfulObjects.Mvc;
-using RestfulObjects.Mvc.Model;
+using NakedObjects.Rest;
+using NakedObjects.Rest.Model;
 
 namespace MvcTestApp.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {

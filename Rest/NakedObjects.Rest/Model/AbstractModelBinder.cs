@@ -12,9 +12,9 @@ using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
 using Common.Logging;
 using Newtonsoft.Json.Linq;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public abstract class AbstractModelBinder : ModelBinderProvider, IModelBinder {
         #region IModelBinder Members
 

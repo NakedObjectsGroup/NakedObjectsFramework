@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public class PromptArgumentMap : ArgumentMap {
         public IDictionary<string, IValue> MemberMap { get; set; }
 

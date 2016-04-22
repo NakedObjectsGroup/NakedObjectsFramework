@@ -8,7 +8,7 @@
 using System.Web.Http.Controllers;
 using System.Web.Http.ModelBinding;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public class SingleValueArgumentBinder : AbstractModelBinder {
         public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
             BindModelOnSuccessOrFail(bindingContext,

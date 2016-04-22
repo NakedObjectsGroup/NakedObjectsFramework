@@ -10,10 +10,10 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Strategies {
+namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :

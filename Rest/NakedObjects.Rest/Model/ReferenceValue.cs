@@ -9,9 +9,9 @@ using System;
 using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Utility.Restricted;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public class ReferenceValue : IValue {
         private static readonly ILog Logger = LogManager.GetLogger<ReferenceValue>();
         private readonly string internalValue;

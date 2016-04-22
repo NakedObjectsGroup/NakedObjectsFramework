@@ -7,9 +7,9 @@
 
 using System;
 using System.Net.Http.Headers;
-using RestfulObjects.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Constants;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class UserRelType : RelType {
         public UserRelType(UriMtHelper helper) : base(RelValues.User, helper) {}
         public UserRelType(string name, UriMtHelper helper) : base(name, helper) {}

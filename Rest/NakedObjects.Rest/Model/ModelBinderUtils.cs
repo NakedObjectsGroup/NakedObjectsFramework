@@ -16,10 +16,10 @@ using System.Web;
 using Common.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
         private static readonly ILog Logger = LogManager.GetLogger(typeof (ModelBinderUtils));
 

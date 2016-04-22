@@ -9,10 +9,10 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class UserRepresentation : Representation {
         private UserRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags)

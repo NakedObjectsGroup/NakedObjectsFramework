@@ -7,9 +7,9 @@
 
 using System;
 using System.Net.Http.Headers;
-using RestfulObjects.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Constants;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class PromptRelType : RelType {
         public PromptRelType(UriMtHelper helper) : base(RelValues.Prompt, helper) {}
         public PromptRelType(string name, UriMtHelper helper) : base(name, helper) {}

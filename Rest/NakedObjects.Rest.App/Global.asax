@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="RestfulObjects.Mvc.App.WebApiApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="NakedObjects.Rest.App.WebApiApplication" Language="C#" %>

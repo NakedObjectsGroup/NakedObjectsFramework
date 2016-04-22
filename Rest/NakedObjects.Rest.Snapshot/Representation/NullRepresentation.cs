@@ -9,9 +9,9 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Runtime.Serialization;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class NullRepresentation : Representation {
         public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}

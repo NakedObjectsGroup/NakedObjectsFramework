@@ -14,9 +14,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RestfulObjects.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Representations;
 
-namespace RestfulObjects.Mvc.Media {
+namespace NakedObjects.Rest.Media {
     public class JsonNetFormatter : MediaTypeFormatter {
         private readonly JsonSerializerSettings jsonSerializerSettings;
 

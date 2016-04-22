@@ -11,11 +11,11 @@ using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Strategies {
+namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
         private readonly RelType self;
         private IEnumerable<ParameterRepresentation> parameterList;

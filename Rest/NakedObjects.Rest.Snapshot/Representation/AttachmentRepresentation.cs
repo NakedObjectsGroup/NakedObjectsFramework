@@ -12,9 +12,9 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 

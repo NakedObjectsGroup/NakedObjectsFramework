@@ -7,8 +7,8 @@
 
 using System.Web.Http;
 using System.Web.Routing;
-using RestfulObjects.Mvc;
-using RestfulObjects.Mvc.Media;
+using NakedObjects.Rest;
+using NakedObjects.Rest.Media;
 
 namespace MvcTestApp {
     public class RestfulObjectsConfig {

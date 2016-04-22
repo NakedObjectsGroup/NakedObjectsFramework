@@ -7,10 +7,10 @@
 module NakedObjects.Rest.Test.D
 
 open NUnit.Framework
-open RestfulObjects.Mvc
-open RestfulObjects.Mvc.Media
+open NakedObjects.Rest
+open NakedObjects.Rest.Media
 open System
-open RestfulObjects.Snapshot.Utility
+open NakedObjects.Rest.Snapshot.Utility
 open System.Web.Http
 open Microsoft.Practices.Unity
 open RestfulObjects.Test.Data

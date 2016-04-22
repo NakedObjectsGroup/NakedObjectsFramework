@@ -7,11 +7,11 @@
 module Error10
 
 open NUnit.Framework
-open RestfulObjects.Mvc
+open NakedObjects.Rest
 open System.Net
 open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
-open RestfulObjects.Snapshot.Constants
+open NakedObjects.Rest.Snapshot.Constants
 open System.Linq
 open RestTestFunctions
 

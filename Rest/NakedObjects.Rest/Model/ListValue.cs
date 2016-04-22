@@ -10,9 +10,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Mvc.Model {
+namespace NakedObjects.Rest.Model {
     public class ListValue : IValue {
         // this is cloned from TypeUtils 
         private const string NakedObjectsProxyPrefix = "NakedObjects.Proxy.";

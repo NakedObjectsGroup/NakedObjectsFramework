@@ -8,7 +8,7 @@
 using System;
 using NakedObjects.Facade;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class TypeActionResourceNotFoundException : ResourceNotFoundNOSException {
         public TypeActionResourceNotFoundException(string resourceId, string domainId) : base(resourceId) {
             DomainId = domainId;

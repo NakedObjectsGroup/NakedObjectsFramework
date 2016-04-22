@@ -11,10 +11,10 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class CollectionValueRepresentation : Representation {
         protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)

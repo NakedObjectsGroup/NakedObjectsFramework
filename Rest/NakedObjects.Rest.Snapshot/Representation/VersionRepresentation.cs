@@ -10,10 +10,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class VersionRepresentation : Representation {
         private VersionRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)

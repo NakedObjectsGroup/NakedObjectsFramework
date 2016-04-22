@@ -17,12 +17,12 @@ using System.Web.Routing;
 using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Mvc.Media;
-using RestfulObjects.Mvc.Model;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Media;
+using NakedObjects.Rest.Model;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Mvc {
+namespace NakedObjects.Rest {
     [ServiceContract]
     public class RestfulObjectsControllerBase : ApiController {
         #region static and routes

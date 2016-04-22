@@ -8,7 +8,7 @@
     <ProjectGuid>{DFD82203-DA17-43A4-96E8-5F2C558CF9A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RestfulObjects.Mvc</RootNamespace>
+    <RootNamespace>NakedObjects.Rest</RootNamespace>
     <AssemblyName>NakedObjects.Rest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

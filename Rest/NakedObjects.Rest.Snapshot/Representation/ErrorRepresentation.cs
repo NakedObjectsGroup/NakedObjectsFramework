@@ -10,10 +10,10 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Representations {
+namespace NakedObjects.Rest.Snapshot.Representations {
     public class ErrorRepresentation : Representation {
         public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {

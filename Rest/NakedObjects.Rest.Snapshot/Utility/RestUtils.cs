@@ -16,11 +16,11 @@ using System.Net.Mime;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility.Restricted;
-using RestfulObjects.Snapshot.Constants;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Strategies;
+using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Strategies;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public static class RestUtils {
         private static readonly Dictionary<Type, PredefinedType> SimpleTypeMap = new Dictionary<Type, PredefinedType> {
             {typeof (sbyte), PredefinedType.Integer},

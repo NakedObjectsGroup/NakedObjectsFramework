@@ -7,12 +7,12 @@
 module ObjectCollection17
 
 open NUnit.Framework
-open RestfulObjects.Mvc
+open NakedObjects.Rest
 open System.Net
 open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
 open System.Web
-open RestfulObjects.Snapshot.Constants
+open NakedObjects.Rest.Snapshot.Constants
 open System.Web.Http
 open System.Linq
 open RestTestFunctions

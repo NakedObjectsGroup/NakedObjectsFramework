@@ -12,10 +12,10 @@ open System.Net.Http
 open System.Net.Http.Headers
 open System.IO
 open Newtonsoft.Json.Linq
-open RestfulObjects.Snapshot.Constants
+open NakedObjects.Rest.Snapshot.Constants
 open NUnit.Framework
 open System.Linq
-open RestfulObjects.Mvc.Model
+open NakedObjects.Rest.Model
 
 let mapCodeToType (code : string) : string = code
 let mapTypeToCode (typ : string) : string = typ

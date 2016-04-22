@@ -10,10 +10,10 @@ using System.Linq;
 using System.Net.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using RestfulObjects.Snapshot.Representations;
-using RestfulObjects.Snapshot.Utility;
+using NakedObjects.Rest.Snapshot.Representations;
+using NakedObjects.Rest.Snapshot.Utility;
 
-namespace RestfulObjects.Snapshot.Strategies {
+namespace NakedObjects.Rest.Snapshot.Strategies {
     public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
         public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}

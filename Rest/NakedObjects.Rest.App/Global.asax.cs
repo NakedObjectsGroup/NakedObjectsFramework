@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Http;
 using MvcTestApp;
 
-namespace RestfulObjects.Mvc.App {
+namespace NakedObjects.Rest.App {
     public class WebApiApplication : HttpApplication {
         protected void Application_Start() {
             GlobalConfiguration.Configure(WebApiConfig.Register);

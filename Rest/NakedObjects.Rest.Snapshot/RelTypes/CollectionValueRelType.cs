@@ -7,9 +7,9 @@
 
 using System;
 using System.Net.Http.Headers;
-using RestfulObjects.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Constants;
 
-namespace RestfulObjects.Snapshot.Utility {
+namespace NakedObjects.Rest.Snapshot.Utility {
     public class CollectionValueRelType : RelType {
         public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) {}
         public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) {}
