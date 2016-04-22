@@ -24,14 +24,15 @@ module NakedObjects.Models {
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
-    import IObjectOfType = RoInterfaces.IObjectOfType;
     import IRange = RoInterfaces.Custom.IRange;
-    import ICustomLink = NakedObjects.RoInterfaces.Custom.ICustomLink;
-    import httpMethodsType = NakedObjects.RoInterfaces.httpMethodsType;
-    import valueType = NakedObjects.RoInterfaces.valueType;
-    import resultTypeType = NakedObjects.RoInterfaces.resultTypeType;
-    import memberTypeType = NakedObjects.RoInterfaces.memberTypeType;
-    import IMember = NakedObjects.RoInterfaces.IMember;
+    import ICustomLink = RoInterfaces.Custom.ICustomLink;
+    import httpMethodsType = RoInterfaces.httpMethodsType;
+    import resultTypeType = RoInterfaces.resultTypeType;
+    import memberTypeType = RoInterfaces.memberTypeType;
+    import IMember = RoInterfaces.IMember;
+    import scalarValueType = RoInterfaces.scalarValueType;
+    import valueType = RoInterfaces.valueType;
+
 
     // helper functions 
 
@@ -90,7 +91,6 @@ module NakedObjects.Models {
         etagDigest: string;
         hateoasUrl: string;
         method: httpMethodsType;
-        //urlParms: _.Dictionary<Object>;
         populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
         getUrl(): string;
@@ -364,13 +364,14 @@ module NakedObjects.Models {
 
     export class Value {
 
-        private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
+        // note this is different from constructor parm as we wrap ILink
+        private wrapped: Link | Array<Link | valueType> | scalarValueType;
 
-        constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean) {
+        constructor(raw: Link | Array<Link | valueType> | valueType) {
             // can only be Link, number, boolean, string or null    
 
             if (raw instanceof Array) {
-                this.wrapped = raw as Array<Link | ILink | number | string | boolean>;
+                this.wrapped = raw as Array<Link | valueType>;
             } else if (raw instanceof Link) {
                 this.wrapped = raw;
             } else if (isILink(raw)) {
@@ -400,12 +401,12 @@ module NakedObjects.Models {
             return this.isReference() ? <Link>this.wrapped : null;
         }
 
-        scalar(): number | string | boolean {
-            return this.isScalar() ? this.wrapped as number | string | boolean : null;
+        scalar(): scalarValueType {
+            return this.isScalar() ? this.wrapped as scalarValueType : null;
         }
 
         list(): Value[] {
-            return this.isList() ? _.map(this.wrapped as Array<Link | number | string | boolean>, i => new Value(i)) : null;
+            return this.isList() ? _.map(this.wrapped as Array<Link | valueType>, i => new Value(i)) : null;
         }
 
         toString(): string {
@@ -488,7 +489,7 @@ module NakedObjects.Models {
     }
 
     export class Result {
-        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) {}
+        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: resultTypeType) {}
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
@@ -694,11 +695,6 @@ module NakedObjects.Models {
             super();
         }
 
-        getInvokeMap(): InvokeMap {
-            // needs to be initialised 
-            return null;
-        }
-
         // links 
         selfLink(): Link {
             return linkByRel(this.links(), "self");
@@ -873,12 +869,6 @@ module NakedObjects.Models {
 
         getUp(): DomainObjectRepresentation {
             return <DomainObjectRepresentation> this.upLink().getTarget();
-        }
-
-        getInvoke(): ActionResultRepresentation {
-            const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
-            ar.getInvokeMap = () => new InvokeMap(this.invokeLink());
-            return ar;
         }
 
         getInvokeMap(): InvokeMap {

@@ -24,10 +24,11 @@ module NakedObjects {
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
+    import scalarValueType = RoInterfaces.scalarValueType;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
-        value: number | string | boolean | Date;
+        value: scalarValueType | Date;
         reference: string;
         choice: ChoiceViewModel;
         color: string;
@@ -167,7 +168,7 @@ module NakedObjects {
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
-        value: number | string | boolean;
+        value: scalarValueType;
         reference: string;
         choice: ChoiceViewModel;
         domainType: string;
@@ -205,7 +206,7 @@ module NakedObjects {
 
         localFilter: ILocalFilter;
         formattedValue: string;
-        value: number | string | boolean | Date;
+        value: scalarValueType | Date;
         id: string;
         argId: string;
         paneArgId: string;
@@ -318,7 +319,7 @@ module NakedObjects {
                     return new Value((this.value as Date).toISOString());
                 }
 
-                return new Value(this.value as number | string | boolean);
+                return new Value(this.value as scalarValueType);
             }
 
             // reference
