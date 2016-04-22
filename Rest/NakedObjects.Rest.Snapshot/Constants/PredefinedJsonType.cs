@@ -6,17 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Rest.Snapshot.Constants {
-    public enum PredefinedFormatType {
+    public enum PredefinedJsonType {
+        Number,
         String,
-        Date_time,
-        Date,
-        Time,
-        Utc_millisec,
-        Big_integer,
-        Big_decimal,
-        Blob,
-        Clob,
-        Decimal,
-        Int
+        Boolean,
+        List,
+        Set,
+        Void
     }
 }
