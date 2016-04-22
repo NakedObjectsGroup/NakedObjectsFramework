@@ -3,6 +3,7 @@
   <PropertyGroup>
     <SpaPath>Spa</SpaPath>
     <Spa>NakedObjects.Spa</Spa>
+    <Run>NakedObjects.Run</Run>
     <BuiltPackagesPath>build\packages</BuiltPackagesPath>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
@@ -94,8 +95,17 @@
     <Copy SourceFiles="@(SpaPackage)" DestinationFolder="$(PackageSourcePath)" />
   </Target>
 
-  
+  <Target Name="RunPackage" DependsOnTargets="SpaPackage" >
+
+    <Exec WorkingDirectory="$(SpaPath)\$(Run).package" Command="..\$(Nuget) pack $(Run).nuspec" />
+    <ItemGroup>
+      <RunPackage Include="$(SpaPath)\$(Run).package\*.nupkg"/>
+    </ItemGroup>
+
+    <Copy SourceFiles="@(RunPackage)" DestinationFolder="$(BuiltPackagesPath)" />
+    <Copy SourceFiles="@(RunPackage)" DestinationFolder="$(PackageSourcePath)" />
+  </Target>
   <Target Name="SpaBuild" >
-    <MSBuild Projects="$(MSBuildProjectFile)" Targets="SpaPackage"/>
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="RunPackage"/>
   </Target> 
 </Project>
