@@ -19,12 +19,12 @@ module NakedObjects.Test.Masks {
             }));
 
 
-            function testMask(input: any, mask: string, format: string, expectedResult: string) {
+            function testMask(input: any, mask: string, format: formatType, expectedResult: string) {
                 const result = maskService.toLocalFilter(mask, format).filter(input);
                 expect(result).toBe(expectedResult);
             }
 
-            function testDefaultMask(input: any, format: string, expectedResult: string) {
+            function testDefaultMask(input: any, format: formatType, expectedResult: string) {
                 testMask(input, "", format, expectedResult);
             }
 

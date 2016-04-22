@@ -217,7 +217,7 @@ module NakedObjects {
         multiChoices: ChoiceViewModel[];
         returnType: string;
         title: string;
-        format: string;
+        format: formatType;
         arguments: _.Dictionary<Value>;
         mask: string;
         password: boolean;

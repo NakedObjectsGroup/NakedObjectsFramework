@@ -1,12 +1,14 @@
 ﻿module NakedObjects.RoInterfaces {
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
 
+    export type httpMethodsType = "POST" | "PUT" | "GET" | "DELETE";
+
     export interface ILink {
         id?: string;
         rel?: string;
         href: string;
         type?: string;
-        method?: "POST" | "PUT" | "GET" | "DELETE";
+        method?: httpMethodsType;
         title?: string;
         arguments?: IValue | IValueMap;
         extensions?: IExtensions;
@@ -21,7 +23,7 @@
         elementType?: string;
         domainType?: string;
         pluralName?: string;
-        format?: string;
+        format?: formatType;
         memberOrder?: number;
         isService?: boolean;
         minLength?: number;
@@ -66,8 +68,11 @@
         optionalCapabilities: IOptionalCapabilities;
     }
 
+    export type scalarValueType = string | number | boolean;
+    export type valueType = scalarValueType | ILink;
+
     export interface IValue {
-        value: string | number | boolean | ILink | (string | number | boolean | ILink)[];
+        value: valueType | valueType[];
         invalidReason?: string;
     }
 
@@ -97,7 +102,7 @@
     }
 
     export interface IScalarValueRepresentation extends IResourceRepresentation {
-        value: string | number | boolean;
+        value: scalarValueType;
     }
 
     export interface IMember extends IResourceRepresentation {
@@ -106,8 +111,8 @@
     }
 
     export interface IPropertyMember extends IMember {
-        value?: string | number | boolean | ILink;
-        choices?: (string | number | boolean | ILink)[];
+        value?: valueType;
+        choices?: valueType[];
         hasChoices: boolean;
     }
 
@@ -135,8 +140,8 @@
     }
 
     export interface IParameterRepresentation extends IResourceRepresentation {
-        choices?: (string | number | boolean | ILink)[];
-        default?: number | string | boolean | ILink;
+        choices?: valueType[];
+        default?: valueType;
     }
 
     export interface IActionRepresentation extends IResourceRepresentation {
@@ -147,8 +152,8 @@
 
     export interface IPropertyRepresentation extends IResourceRepresentation {
         id: string;
-        value?: string | number | boolean | ILink;
-        choices?: (string | number | boolean | ILink)[];
+        value?: valueType;
+        choices?: valueType[];
         disabledReason?: string;
     }
 
@@ -203,6 +208,6 @@
 
     export interface IPromptRepresentation extends IResourceRepresentation {
         id: string;
-        choices?: (string | number | boolean | ILink)[];
+        choices?: valueType[];
     }
 }

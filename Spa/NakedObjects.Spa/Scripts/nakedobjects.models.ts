@@ -27,7 +27,8 @@ module NakedObjects.Models {
     import IObjectOfType = RoInterfaces.IObjectOfType;
     import IRange = RoInterfaces.Custom.IRange;
     import ICustomLink = NakedObjects.RoInterfaces.Custom.ICustomLink;
-
+    import httpMethodsType = NakedObjects.RoInterfaces.httpMethodsType;
+    import valueType = NakedObjects.RoInterfaces.valueType;
 
     // helper functions 
 
@@ -169,7 +170,7 @@ module NakedObjects.Models {
 
         etagDigest: string;
         hateoasUrl = "";
-        method: "POST" | "PUT" | "GET" | "DELETE"  = "GET";
+        method: httpMethodsType;
         urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
@@ -653,7 +654,7 @@ module NakedObjects.Models {
         pattern = () => this.wrapped.pattern;
 
         //Nof custom:
-        choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: (string | number | boolean | ILink)[]; };
+        choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: valueType[]; };
         menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
         mask = () => this.wrapped["x-ro-nof-mask"] as string;
         tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
@@ -1964,7 +1965,7 @@ module NakedObjects.Models {
             return decodeURIComponent(this.wrapped.href);
         }
 
-        method(): "POST" | "PUT" | "GET" | "DELETE" {
+        method(): httpMethodsType {
             return this.wrapped.method;
         }
 

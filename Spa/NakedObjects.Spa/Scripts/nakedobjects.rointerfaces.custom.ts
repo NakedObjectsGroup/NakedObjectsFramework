@@ -3,7 +3,7 @@
     //NOF custom RO constants
 
     export interface ICustomExtensions extends RoInterfaces.IExtensions {
-        "x-ro-nof-choices"?: { [index: string]: (string | number | boolean | ILink)[]; };
+        "x-ro-nof-choices"?: { [index: string]: valueType[]; };
         "x-ro-nof-menuPath"?: string;
         "x-ro-nof-mask"?: string;
         "x-ro-nof-interactionMode"?: string;
