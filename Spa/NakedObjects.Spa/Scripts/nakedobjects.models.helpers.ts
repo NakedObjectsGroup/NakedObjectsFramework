@@ -118,7 +118,7 @@ module NakedObjects.Models {
         const format = model.extensions().format();
 
         switch (format) {
-            case ("integer"):
+            case ("int"):
                 if (!isInteger(newValue)) {
                     return "Not an integer";
                 }

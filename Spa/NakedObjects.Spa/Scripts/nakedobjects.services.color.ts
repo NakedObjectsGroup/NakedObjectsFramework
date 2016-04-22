@@ -120,29 +120,5 @@ module NakedObjects {
         colorService.setDefault = (def: number) => {
             defaultColor = def;
         }
-
-        // for backward compat 
-        const colorPrefix = "bg-color-";
-        const numColorMap = [
-            "blue",
-            "blueLight",
-            "blueDark",
-            "green",
-            "greenLight",
-            "greenDark",
-            "red",
-            "yellow",
-            "orange",
-            "orange",
-            "orangeDark",
-            "pink",
-            "pinkDark",
-            "purple",
-            "grayDark",
-            "magenta",
-            "teal",
-            "redLight",
-            "darkBlue"
-        ];
     });
 }

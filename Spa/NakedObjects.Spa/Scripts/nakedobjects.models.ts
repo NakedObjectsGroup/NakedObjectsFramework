@@ -24,9 +24,14 @@ module NakedObjects.Models {
     import IValue = RoInterfaces.IValue;
     import IResourceRepresentation = RoInterfaces.IResourceRepresentation;
     import ICustomListRepresentation = RoInterfaces.Custom.ICustomListRepresentation;
-    import IObjectOfType = RoInterfaces.IObjectOfType;
     import IRange = RoInterfaces.Custom.IRange;
-    import ICustomLink = NakedObjects.RoInterfaces.Custom.ICustomLink;
+    import ICustomLink = RoInterfaces.Custom.ICustomLink;
+    import httpMethodsType = RoInterfaces.httpMethodsType;
+    import resultTypeType = RoInterfaces.resultTypeType;
+    import memberTypeType = RoInterfaces.memberTypeType;
+    import IMember = RoInterfaces.IMember;
+    import scalarValueType = RoInterfaces.scalarValueType;
+    import valueType = RoInterfaces.valueType;
 
 
     // helper functions 
@@ -85,8 +90,7 @@ module NakedObjects.Models {
     export interface IHateoasModel {
         etagDigest: string;
         hateoasUrl: string;
-        method: "POST"| "PUT" | "GET" | "DELETE";
-        //urlParms: _.Dictionary<Object>;
+        method: httpMethodsType;
         populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
         getUrl(): string;
@@ -169,7 +173,7 @@ module NakedObjects.Models {
 
         etagDigest: string;
         hateoasUrl = "";
-        method: "POST" | "PUT" | "GET" | "DELETE"  = "GET";
+        method: httpMethodsType;
         urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
@@ -360,13 +364,14 @@ module NakedObjects.Models {
 
     export class Value {
 
-        private wrapped: Link | Array<Link | ILink | number | string | boolean> | number | string | boolean;
+        // note this is different from constructor parm as we wrap ILink
+        private wrapped: Link | Array<Link | valueType> | scalarValueType;
 
-        constructor(raw: Link | Array<Link | ILink | number | string | boolean> | RoInterfaces.ILink | number | string | boolean) {
+        constructor(raw: Link | Array<Link | valueType> | valueType) {
             // can only be Link, number, boolean, string or null    
 
             if (raw instanceof Array) {
-                this.wrapped = raw as Array<Link | ILink | number | string | boolean>;
+                this.wrapped = raw as Array<Link | valueType>;
             } else if (raw instanceof Link) {
                 this.wrapped = raw;
             } else if (isILink(raw)) {
@@ -396,12 +401,12 @@ module NakedObjects.Models {
             return this.isReference() ? <Link>this.wrapped : null;
         }
 
-        scalar(): number | string | boolean {
-            return this.isScalar() ? this.wrapped as number | string | boolean : null;
+        scalar(): scalarValueType {
+            return this.isScalar() ? this.wrapped as scalarValueType : null;
         }
 
         list(): Value[] {
-            return this.isList() ? _.map(this.wrapped as Array<Link | number | string | boolean>, i => new Value(i)) : null;
+            return this.isList() ? _.map(this.wrapped as Array<Link | valueType>, i => new Value(i)) : null;
         }
 
         toString(): string {
@@ -484,7 +489,7 @@ module NakedObjects.Models {
     }
 
     export class Result {
-        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: string) {}
+        constructor(public wrapped: RoInterfaces.IDomainObjectRepresentation | RoInterfaces.Custom.ICustomListRepresentation | RoInterfaces.IScalarValueRepresentation, private resultType: resultTypeType) {}
 
         object(): DomainObjectRepresentation {
             if (!this.isNull() && this.resultType === "object") {
@@ -653,7 +658,7 @@ module NakedObjects.Models {
         pattern = () => this.wrapped.pattern;
 
         //Nof custom:
-        choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: (string | number | boolean | ILink)[]; };
+        choices = () => this.wrapped["x-ro-nof-choices"] as { [index: string]: valueType[]; };
         menuPath = () => this.wrapped["x-ro-nof-menuPath"] as string;
         mask = () => this.wrapped["x-ro-nof-mask"] as string;
         tableViewTitle = () => this.wrapped["x-ro-nof-tableViewTitle"] as boolean;
@@ -690,11 +695,6 @@ module NakedObjects.Models {
             super();
         }
 
-        getInvokeMap(): InvokeMap {
-            // needs to be initialised 
-            return null;
-        }
-
         // links 
         selfLink(): Link {
             return linkByRel(this.links(), "self");
@@ -706,7 +706,7 @@ module NakedObjects.Models {
         }
 
         // properties 
-        resultType(): string {
+        resultType(): resultTypeType {
             return this.wrapped().resultType;
         }
 
@@ -869,12 +869,6 @@ module NakedObjects.Models {
 
         getUp(): DomainObjectRepresentation {
             return <DomainObjectRepresentation> this.upLink().getTarget();
-        }
-
-        getInvoke(): ActionResultRepresentation {
-            const ar = <ActionResultRepresentation>this.invokeLink().getTarget();
-            ar.getInvokeMap = () => new InvokeMap(this.invokeLink());
-            return ar;
         }
 
         getInvokeMap(): InvokeMap {
@@ -1179,7 +1173,7 @@ module NakedObjects.Models {
             super.update(newValue);
         }
 
-        memberType(): string {
+        memberType(): memberTypeType {
             return this.wrapped().memberType;
         }
 
@@ -1463,9 +1457,9 @@ module NakedObjects.Models {
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.propertyMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "property") as _.Dictionary<PropertyMember>;
-            this.collectionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
-            this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
+            this.propertyMemberMap = _.pickBy(this.memberMap, (m : Member<IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
+            this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
+            this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {
@@ -1964,7 +1958,7 @@ module NakedObjects.Models {
             return decodeURIComponent(this.wrapped.href);
         }
 
-        method(): "POST" | "PUT" | "GET" | "DELETE" {
+        method(): httpMethodsType {
             return this.wrapped.method;
         }
 
