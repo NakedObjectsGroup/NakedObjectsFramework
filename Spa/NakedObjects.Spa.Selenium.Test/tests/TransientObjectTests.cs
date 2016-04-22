@@ -155,6 +155,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
         }
+
+        public virtual void TransientWithHiddenNonOptionalFields()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
+            Click(GetObjectAction("Create New Work Order", Pane.Single, "Work Orders"));
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Work Order");
+            ClearFieldThenType("#orderqty1", "1");
+            SaveObject();
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot
@@ -181,6 +191,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void RequestForExpiredTransient() { base.RequestForExpiredTransient(); }
         [TestMethod]
         public override void ConditionalChoicesOnTransient() { base.ConditionalChoicesOnTransient(); }
+        [TestMethod]
+        public override void TransientWithHiddenNonOptionalFields() { base.TransientWithHiddenNonOptionalFields(); }
     }
     #region browsers specific subclasses
 
@@ -208,7 +220,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
@@ -278,6 +290,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.BackAndForwardOverTransient();
             base.RequestForExpiredTransient();
             base.ConditionalChoicesOnTransient();
+            base.TransientWithHiddenNonOptionalFields();
         }
     }
     [TestClass]

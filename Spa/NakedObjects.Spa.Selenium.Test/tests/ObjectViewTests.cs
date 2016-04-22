@@ -306,6 +306,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var cc = GetReferenceFromProperty("Credit Card");
             Assert.IsTrue(cc.GetAttribute("class").Contains("link-color0"));
         }
+        public virtual void ZeroIntValues()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SpecialOffer--13");
+            WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+
+            Assert.AreEqual("Max Qty:", properties[7].Text);
+            Assert.AreEqual("Min Qty:\r\n0", properties[6].Text);
+
+        }
 
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
@@ -363,6 +373,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void NonNavigableReferenceProperty() { base.NonNavigableReferenceProperty(); }
         [TestMethod]
         public override void Colours() { base.Colours(); }
+        [TestMethod]
+        public override void ZeroIntValues() { base.ZeroIntValues(); }
     }
     #region browsers specific subclasses
 
@@ -471,6 +483,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PotentActionDoesReloadAutomatically();
             base.NonNavigableReferenceProperty();
             base.Colours();
+            base.ZeroIntValues();
         }
     }
     [TestClass]

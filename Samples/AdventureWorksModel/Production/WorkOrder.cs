@@ -63,7 +63,7 @@ namespace AdventureWorksModel {
 
         #region EndDate
 
-        [Optionally]
+        [Hidden(WhenTo.UntilPersisted)] //Mandatory  -  for testing only
         [MemberOrder(32)]
         [Mask("d")]
         public virtual DateTime? EndDate { get; set; }
