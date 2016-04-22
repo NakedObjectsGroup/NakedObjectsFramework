@@ -1032,10 +1032,13 @@ module NakedObjects {
         } else {
             properScalarValue = value.scalar();
         }
-        const remoteMask = field.extensions().mask();
-        const format = field.extensions().format();
-        const formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
-        return formattedValue || "empty";
+        if (properScalarValue === "" || properScalarValue == null) {
+            return "empty";
+        } else {
+            const remoteMask = field.extensions().mask();
+            const format = field.extensions().format();
+            return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
+        }
     }
 
     function renderActionDialogIfOpen(
