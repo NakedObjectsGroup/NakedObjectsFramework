@@ -486,14 +486,14 @@ module NakedObjects {
                     this.allSelected = _.every(this.items, item => item.selected);
                     const count = this.items.length;
                     this.size = count;
-                    this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+                    this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
                 });
             } else {
                 this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
                 this.allSelected = _.every(this.items, item => item.selected);
                 const count = this.items.length;
                 this.size = count;
-                this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+                this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
             }
 
             
@@ -511,7 +511,7 @@ module NakedObjects {
 
                     if (selected.length === 0) {
 
-                        const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
+                        const em = new ErrorMap({}, 0, noItemsSelected);
                         const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
 
                         return this.$q.reject(rp);
