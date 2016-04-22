@@ -87,6 +87,5 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string PageSize = "pageSize";
         public const string NumPages = "numPages";
         public const string TotalCount = "totalCount";
-        
     }
 }

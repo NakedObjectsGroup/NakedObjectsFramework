@@ -19,7 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         }
 
         public static string[] PredefinedTypeValues() {
-            return Enum.GetValues(typeof (PredefinedFormatType)).Cast<PredefinedFormatType>().Select(pdt => pdt.ToRoString()).ToArray();
+            return Enum.GetValues(typeof(PredefinedFormatType)).Cast<PredefinedFormatType>().Select(pdt => pdt.ToRoString()).ToArray();
         }
     }
 }

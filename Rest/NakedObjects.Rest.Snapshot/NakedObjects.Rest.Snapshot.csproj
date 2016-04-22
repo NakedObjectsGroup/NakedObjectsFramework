@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\JsonPropertyNames.cs" />
+    <Compile Include="Constants\PredefinedJsonType.cs" />
     <Compile Include="Constants\PredefinedTypeExtensions.cs" />
     <Compile Include="Constants\RelParamValues.cs" />
     <Compile Include="Constants\PredefinedFormatType.cs" />
