@@ -29,6 +29,9 @@ module NakedObjects.Models {
     import ICustomLink = NakedObjects.RoInterfaces.Custom.ICustomLink;
     import httpMethodsType = NakedObjects.RoInterfaces.httpMethodsType;
     import valueType = NakedObjects.RoInterfaces.valueType;
+    import resultTypeType = NakedObjects.RoInterfaces.resultTypeType;
+    import memberTypeType = NakedObjects.RoInterfaces.memberTypeType;
+    import IMember = NakedObjects.RoInterfaces.IMember;
 
     // helper functions 
 
@@ -86,7 +89,7 @@ module NakedObjects.Models {
     export interface IHateoasModel {
         etagDigest: string;
         hateoasUrl: string;
-        method: "POST"| "PUT" | "GET" | "DELETE";
+        method: httpMethodsType;
         //urlParms: _.Dictionary<Object>;
         populate(wrapped: RoInterfaces.IRepresentation) : void;
         getBody(): RoInterfaces.IRepresentation;
@@ -707,7 +710,7 @@ module NakedObjects.Models {
         }
 
         // properties 
-        resultType(): string {
+        resultType(): resultTypeType {
             return this.wrapped().resultType;
         }
 
@@ -1180,7 +1183,7 @@ module NakedObjects.Models {
             super.update(newValue);
         }
 
-        memberType(): string {
+        memberType(): memberTypeType {
             return this.wrapped().memberType;
         }
 
@@ -1464,9 +1467,9 @@ module NakedObjects.Models {
         private resetMemberMaps() {
             const members = this.wrapped().members;
             this.memberMap = _.mapValues(members, (m, id) => Member.wrapMember(m, this, id));
-            this.propertyMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "property") as _.Dictionary<PropertyMember>;
-            this.collectionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
-            this.actionMemberMap = _.pickBy(this.memberMap, m => m.memberType() === "action") as _.Dictionary<ActionMember>;
+            this.propertyMemberMap = _.pickBy(this.memberMap, (m : Member<IMember>) => m.memberType() === "property") as _.Dictionary<PropertyMember>;
+            this.collectionMemberMap = _.pickBy(this.memberMap, (m: Member<IMember>) => m.memberType() === "collection") as _.Dictionary<CollectionMember>;
+            this.actionMemberMap = _.pickBy(this.memberMap, (m: Member<IMember>) => m.memberType() === "action") as _.Dictionary<ActionMember>;
         }
 
         private initMemberMaps() {

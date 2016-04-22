@@ -105,8 +105,10 @@
         value: scalarValueType;
     }
 
+    export type memberTypeType = "action" | "collection" | "property";
+
     export interface IMember extends IResourceRepresentation {
-        memberType: string;
+        memberType: memberTypeType;
         disabledReason?: string;
     }
 
@@ -134,8 +136,10 @@
         members: { [index: string]: IMember };
     }
 
+    export type resultTypeType = "object" | "list" | "scalar" | "void";
+
     export interface IActionInvokeRepresentation extends IResourceRepresentation {
-        resultType: string;
+        resultType: resultTypeType;
         result?: IDomainObjectRepresentation | ICustomListRepresentation | IScalarValueRepresentation;
     }
 
