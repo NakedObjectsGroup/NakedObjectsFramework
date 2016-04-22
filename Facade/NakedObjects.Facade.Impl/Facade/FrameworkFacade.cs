@@ -513,7 +513,7 @@ namespace NakedObjects.Facade.Impl {
             if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
                 ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
             }
-            else if (toPut == null && (property.IsMandatory && property.IsUsable(context.Target).IsAllowed)) {
+            else if (toPut == null && property.IsMandatory && property.IsVisible(context.Target) && property.IsUsable(context.Target).IsAllowed) {
                 // only check user editable fields
                 context.Reason = "Mandatory";
                 context.ErrorCause = Cause.Other;
