@@ -22,7 +22,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(GetObjectAction("Highest Value Orders"));
             WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
             //Test content of collection
-            Assert.AreEqual("Page 1 of 1574; viewing 20 of 31465 items", WaitForCss(".collection .summary .details").Text);
+            Assert.IsTrue(WaitForCss(".collection .summary .details").Text.StartsWith("Page 1 of 1574; viewing 20 of"));
             WaitForCss(".icon-table");
             WaitUntilElementDoesNotExist(".icon-list");
             WaitUntilElementDoesNotExist(".icon-summary");

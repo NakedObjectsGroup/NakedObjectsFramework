@@ -848,10 +848,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "Order Qty: 0 Order Quantity must be > 0");
 
             //Co-validation
-            CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit&pp1_StartDate=%2212%20Jan%202015%22");
+            CiceroUrl("object?o1=___1.WorkOrder--43133&i1=Edit&pp1_StartDate=%222015-10-17%22");
             WaitForOutputStarting("Editing Work Order:");
             EnterCommand("save");
-            WaitForOutput("StartDate must be before EndDate");
+            WaitForOutput("StartDate must be before DueDate");
         }
         public virtual void Show()
         {
