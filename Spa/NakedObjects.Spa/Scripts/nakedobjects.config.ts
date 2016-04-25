@@ -34,5 +34,5 @@ module NakedObjects {
     export const objectColor = "object-color";
     export const linkColor = "link-color";
 
-    export const showDirtyFlag = true;
+    export const showDirtyFlag = false;
 }
