@@ -368,6 +368,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(current);
             Assert.AreEqual("true", current.GetAttribute("checked"));
         }
+
+        public virtual void WarningShownWithinDialogAndInFooter()
+        {
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
+            ClearFieldThenType("#accountnumber1", "AW1");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
+        }
     }
     public abstract class DialogTests : DialogTestsRoot
     {
@@ -430,12 +439,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void NullableBooleanParams() { base.NullableBooleanParams(); }
+
+        [TestMethod]
+        public override void WarningShownWithinDialogAndInFooter() { base.WarningShownWithinDialogAndInFooter(); }
     }
 
     #region browsers specific subclasses
 
-    // [TestClass, Ignore]
-    public class DialogTestsIe : DialogTests
+            // [TestClass, Ignore]
+        public class DialogTestsIe : DialogTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -457,7 +469,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
@@ -540,6 +552,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CoValidationOfMultipleParameters();
             base.ParameterDescriptionRenderedAsPlacholder();
             base.NullableBooleanParams();
+            base.WarningShownWithinDialogAndInFooter();
         }
     }
 
