@@ -1427,6 +1427,7 @@ module NakedObjects.Models {
 
         constructor() {
             super();
+            this.method = "GET";
         }
 
         id(): string {
@@ -1883,6 +1884,7 @@ module NakedObjects.Models {
         constructor() {
             super();
             this.hateoasUrl = getAppPath();
+            this.method = "GET";
         }
 
         wrapped = () => this.resource() as RoInterfaces.IHomePageRepresentation;
