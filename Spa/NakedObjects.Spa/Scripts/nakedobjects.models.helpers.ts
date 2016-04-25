@@ -226,7 +226,7 @@ module NakedObjects.Models {
         }
 
         // if optional but empty always valid 
-        if (modelValue == null) {
+        if (modelValue == null || modelValue === "") {
             return "";
         }
 

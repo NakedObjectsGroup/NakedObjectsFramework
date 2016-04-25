@@ -173,7 +173,7 @@ module NakedObjects.Models {
 
         etagDigest: string;
         hateoasUrl = "";
-        method: httpMethodsType;
+        method: httpMethodsType = "GET";
         urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
