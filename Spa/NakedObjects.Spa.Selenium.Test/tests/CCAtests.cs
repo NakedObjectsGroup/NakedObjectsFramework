@@ -296,10 +296,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
     public abstract class CCAtests : CCAtestsRoot
     {
 
-        [TestMethod, Ignore]//Passes locally, but too unreliable on server
+        [TestMethod]
         public override void ListViewWithParmDialogAlreadyOpen() { base.ListViewWithParmDialogAlreadyOpen(); }
 
-        [TestMethod, Ignore]//Passes locally, but too unreliable on server
+        [TestMethod]
         public override void ListViewWithParmDialogNotOpen() { base.ListViewWithParmDialogNotOpen(); }
 
         [TestMethod]
@@ -314,7 +314,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void EmptyParam() { base.EmptyParam(); }
 
 
-        [TestMethod, Ignore] //Passes locally, but too unreliable on server
+        [TestMethod]
         public override void ZeroParamAction() { base.ZeroParamAction(); }
 
         [TestMethod]
@@ -354,7 +354,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class CCAtestsFirefox : CCAtests
     {
         [ClassInitialize]
