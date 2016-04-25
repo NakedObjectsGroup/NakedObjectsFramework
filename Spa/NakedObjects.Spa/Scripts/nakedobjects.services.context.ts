@@ -31,6 +31,8 @@ module NakedObjects {
     import IInvokableAction = Models.IInvokableAction;
     import CollectionMember = NakedObjects.Models.CollectionMember;
     import CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
+    import typeFromUrl = Models.typeFromUrl;
+    import idFromUrl = Models.idFromUrl;
 
     export interface IContext {
 
@@ -52,6 +54,9 @@ module NakedObjects {
 
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
+
+        getIsDirty : (objOrLink : DomainObjectRepresentation | Link) => boolean;
+
 
         //The object values are only needed on a transient object / editable view model
         autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
@@ -261,6 +266,24 @@ module NakedObjects {
                     currentObjects[paneId] = obj;
                     return $q.when(obj);
                 });
+        }
+
+        context.getIsDirty = (objOrLink : DomainObjectRepresentation | Link) =>
+        {
+            if (objOrLink instanceof DomainObjectRepresentation) {
+                return  dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId()); 
+            }
+            if (objOrLink instanceof Link) {
+                const href = objOrLink.href();
+                const type = typeFromUrl(href);
+                const id = idFromUrl(href);
+
+                if (type && id) {
+                    return dirtyCache.getDirty(type, id);
+                }                
+            }
+
+            return false;
         }
 
         context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => {

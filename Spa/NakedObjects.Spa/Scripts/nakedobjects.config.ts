@@ -33,4 +33,6 @@ module NakedObjects {
     export const keySeparator = "--";
     export const objectColor = "object-color";
     export const linkColor = "link-color";
+
+    export const showDirtyFlag = true;
 }

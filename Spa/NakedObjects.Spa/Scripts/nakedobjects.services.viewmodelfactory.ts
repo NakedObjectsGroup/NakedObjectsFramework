@@ -38,6 +38,7 @@ module NakedObjects {
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
     import IHasExtensions = Models.IHasExtensions;
+    import dirtyMarker = Models.dirtyMarker;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -94,10 +95,13 @@ module NakedObjects {
 
             errorViewModel.description = "";
 
-            errorViewModel.code = error.errorCode;
+            errorViewModel.code = error ? error.errorCode : "Unknown";
 
-            errorViewModel.isConcurrencyError = error.category === ErrorCategory.HttpClientError && error.httpErrorCode === HttpStatusCode.PreconditionFailed;
-
+            if (error) {
+                errorViewModel.isConcurrencyError =
+                    error.category === ErrorCategory.HttpClientError &&
+                    error.httpErrorCode === HttpStatusCode.PreconditionFailed;
+            }
             return errorViewModel;
         };
 
@@ -120,6 +124,8 @@ module NakedObjects {
             linkViewModel.choice = ChoiceViewModel.create(value, "");
 
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
+
+            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep);
         }
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>

@@ -12,6 +12,10 @@
 
 module NakedObjects.Models {
 
+    export function dirtyMarker(context: IContext, objOrLink: DomainObjectRepresentation | Link) {
+        return (showDirtyFlag && context.getIsDirty(objOrLink)) ? "*" : "";
+    }
+
     export function toDateString(dt: Date) {
 
         const year = dt.getFullYear().toString();
@@ -85,6 +89,12 @@ module NakedObjects.Models {
         const typeRegex = /(objects|services)\/([\w|\.]+)/;
         const results = (typeRegex).exec(url);
         return (results && results.length > 2) ? results[2] : "";
+    }
+
+    export function idFromUrl(href: string) {
+        const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+        const results = (urlRegex).exec(href);
+        return (results && results.length > 3) ? results[3] : "";
     }
 
     export function friendlyTypeName(fullName: string) {
