@@ -1078,7 +1078,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter end date,15 Oct 2007");
             WaitForOutputContaining("End Date: 15 Oct 2007");
             EnterCommand("save");
-            WaitForOutput("StartDate must be before EndDate");
+            WaitForOutput("StartDate must be before DueDate");
             EnterCommand("enter end date,15 Oct 2008");
             WaitForOutputContaining("End Date: 15 Oct 2008");
             EnterCommand("save");
