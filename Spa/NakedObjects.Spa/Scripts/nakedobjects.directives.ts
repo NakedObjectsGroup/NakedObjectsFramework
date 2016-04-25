@@ -528,7 +528,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window: ng.IWindowService): ng.IDirective => {
+    app.directive("geminiAttachment", ($window: ng.IWindowService, $http : ng.IHttpService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -540,17 +540,8 @@ module NakedObjects {
                     return;
                 }
 
-                function downloadFile(url: string, mt: string, success: (resp: Blob) => void) {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("GET", url, true);
-                    xhr.responseType = "blob";
-                    xhr.setRequestHeader("Accept", mt);
-                    xhr.onreadystatechange = () => {
-                        if (xhr.readyState === 4) {
-                            success(<Blob>xhr.response);
-                        }
-                    };
-                    xhr.send(null);
+                function downloadFile(avm: AttachmentViewModel, success: (resp: Blob) => void) {
+                    avm.downloadFile().then(blob => success(blob));
                 }
 
                 function displayInline(mt: string) {
@@ -563,7 +554,7 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
                     const url = attachment.href;
                     const mt = attachment.mimeType;
-                    downloadFile(url, mt, resp => {
+                    downloadFile(attachment, resp => {
                         if (window.navigator.msSaveBlob) {
                             // internet explorer 
                             window.navigator.msSaveBlob(resp, attachment.title);
@@ -588,7 +579,7 @@ module NakedObjects {
                         const anchor = element.find("a");
                         if (displayInline(mt)) {
 
-                            downloadFile(url, mt, resp => {
+                            downloadFile(attachment, resp => {
                                 const reader = new FileReader();
                                 reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
                                 reader.readAsDataURL(resp);

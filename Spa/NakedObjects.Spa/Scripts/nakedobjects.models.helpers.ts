@@ -16,6 +16,10 @@ module NakedObjects.Models {
         return (showDirtyFlag && context.getIsDirty(objOrLink)) ? "*" : "";
     }
 
+    export function toOid(id : string[]) {
+        return  _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
+    }
+
     export function toDateString(dt: Date) {
 
         const year = dt.getFullYear().toString();

@@ -24,6 +24,10 @@ module NakedObjects {
         retrieveFromLink: <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
         invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>) => ng.IPromise<ActionResultRepresentation>;
+
+        getFile: (url: string, mt: string, ignoreCache: boolean) => ng.IPromise<Blob>;
+
+        clearCache: (url : string) => void ; 
     }
 
     app.service("repLoader", function($http: ng.IHttpService, $q: ng.IQService, $rootScope: ng.IRootScopeService, $cacheFactory: ng.ICacheFactoryService) {
@@ -190,6 +194,35 @@ module NakedObjects {
             _.each(parms, (v, k) => invokeMap.setParameter(k, v));
             return this.retrieve(invokeMap, ActionResultRepresentation);
         };
+
+        repLoader.clearCache = (url: string) => {
+            $cacheFactory.get("$http").remove(url);
+        }
+
+        repLoader.getFile = (url: string, mt: string, ignoreCache: boolean): ng.IPromise<Blob> => {
+
+            if (ignoreCache) {
+                // clear cache of existing values
+                $cacheFactory.get("$http").remove(url);
+            }
+
+            const config: ng.IRequestConfig = {
+                method: "GET",
+                url: url,
+                responseType: "blob",
+                headers: { "Accept": mt },
+                cache: true
+            };
+
+            return $http(config).
+                then((promiseCallback: ng.IHttpPromiseCallbackArg<Blob>) => {
+                    return $q.when(promiseCallback.data);
+                }).
+                catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
+                    return handleError(promiseCallback);
+                });
+        }
+
     });
 
 }

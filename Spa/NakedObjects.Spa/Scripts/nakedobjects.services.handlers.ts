@@ -15,6 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
+    import toOid = Models.toOid;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -231,10 +232,15 @@ module NakedObjects {
 
             deRegObject[routeData.paneId].deReg();
 
+            const wasDirty = context.getIsDirty({ dt: dt, id: toOid(id) }); 
+
             context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                    if (wasDirty) {
+                        ovm.clearCachedFiles();
+                    }
 
                     $scope.object = ovm;
 

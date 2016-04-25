@@ -118,6 +118,9 @@ module NakedObjects {
 
             return attachmentViewModel;
         }
+
+        downloadFile: () => ng.IPromise<Blob>;
+        clearCachedFile : () => void ;
     }
 
     export class ChoiceViewModel {
@@ -869,6 +872,10 @@ module NakedObjects {
             this.cancelHandler()();
         };
 
+        clearCachedFiles = () => {
+            _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
+        }
+
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
         private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
@@ -880,6 +887,7 @@ module NakedObjects {
         };
 
         doSave = (viewObject: boolean) => {
+            this.clearCachedFiles();
             this.setProperties();
             const propMap = this.propertyMap();
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
@@ -902,6 +910,7 @@ module NakedObjects {
         };
      
         doEdit = () => {
+            this.clearCachedFiles();
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
@@ -911,12 +920,14 @@ module NakedObjects {
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
 
-        doReload = () =>
-            this.contextService.reloadObject(this.onPaneId, this.domainObject).
-            then((updatedObject: DomainObjectRepresentation) => {
-                this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-            }).
-            catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
+        doReload = () => {
+            this.clearCachedFiles();
+            this.contextService.reloadObject(this.onPaneId, this.domainObject)
+                .then((updatedObject: DomainObjectRepresentation) => {
+                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                })
+                .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
+        }
 
 
         hideEdit = () => this.domainObject.extensions().interactionMode() === "form" ||

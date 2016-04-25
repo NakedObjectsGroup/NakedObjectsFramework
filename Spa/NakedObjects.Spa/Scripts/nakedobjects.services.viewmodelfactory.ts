@@ -64,7 +64,9 @@ module NakedObjects {
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
-        propertyTableViewModel(propertyRep: PropertyMember, id: string,  paneId: number): PropertyViewModel;
+        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;
+
+        attachmentViewModel(propertyRep : PropertyMember) : AttachmentViewModel;
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -130,6 +132,18 @@ module NakedObjects {
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
             $q.when(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
+
+        viewModelFactory.attachmentViewModel = (propertyRep : PropertyMember) => {
+            const href = propertyRep.attachmentLink().href();
+            const mimeType = propertyRep.attachmentLink().type().asString;
+            const title = propertyRep.attachmentLink().title();
+            const parent = propertyRep.parent as DomainObjectRepresentation;
+
+            const avm = AttachmentViewModel.create(href, mimeType, title);
+            avm.downloadFile = () => context.getFile(parent, href, mimeType);
+            avm.clearCachedFile = () => context.clearCachedFile(href);
+            return avm;
+        };
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
             const linkViewModel = new LinkViewModel();
@@ -507,9 +521,7 @@ module NakedObjects {
             propertyViewModel.description = required + propertyRep.extensions().description();
 
             if (propertyRep.attachmentLink() != null) {
-                propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),
-                    propertyRep.attachmentLink().type().asString,
-                    propertyRep.attachmentLink().title());
+                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
             }
 
             const value = previousValue || propertyRep.value();

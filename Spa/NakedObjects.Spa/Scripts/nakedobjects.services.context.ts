@@ -33,6 +33,7 @@ module NakedObjects {
     import CollectionRepresentation = NakedObjects.Models.CollectionRepresentation;
     import typeFromUrl = Models.typeFromUrl;
     import idFromUrl = Models.idFromUrl;
+    import toOid = Models.toOid;
 
     export interface IContext {
 
@@ -55,7 +56,7 @@ module NakedObjects {
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
-        getIsDirty : (objOrLink : DomainObjectRepresentation | Link) => boolean;
+        getIsDirty : (objOrLink : DomainObjectRepresentation | Link | {dt : string, id : string }) => boolean;
 
 
         //The object values are only needed on a transient object / editable view model
@@ -96,6 +97,8 @@ module NakedObjects {
 
         getRecentlyViewed() : DomainObjectRepresentation[];
 
+        getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
+        clearCachedFile : (url : string) => void;
     }
 
     interface IContextInternal extends IContext {
@@ -229,6 +232,15 @@ module NakedObjects {
         const dirtyCache = new DirtyCache();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
+        context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
+            const isDirty = context.getIsDirty(object);
+            return repLoader.getFile(url, mt, isDirty);
+        }
+
+        context.clearCachedFile = (url: string) => {
+             repLoader.clearCache(url);
+        }
+
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
 
@@ -268,19 +280,29 @@ module NakedObjects {
                 });
         }
 
-        context.getIsDirty = (objOrLink : DomainObjectRepresentation | Link) =>
-        {
+        function isDtAndId(object: any): object is { dt: string, id: string } {
+            return object && "dt" in object && "id" in object;
+        }
+
+        context.getIsDirty = (objOrLink: DomainObjectRepresentation | Link | { dt: string, id: string }) => {
             if (objOrLink instanceof DomainObjectRepresentation) {
-                return  dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId()); 
+                return dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId());
             }
+            let type: string = null;
+            let id: string = null;
+
             if (objOrLink instanceof Link) {
                 const href = objOrLink.href();
-                const type = typeFromUrl(href);
-                const id = idFromUrl(href);
+                type = typeFromUrl(href);
+                id = idFromUrl(href);
+            }
+            else if (isDtAndId(objOrLink)) {
+                type = objOrLink.dt;
+                id = objOrLink.id;
+            }
 
-                if (type && id) {
-                    return dirtyCache.getDirty(type, id);
-                }                
+            if (type && id) {
+                return dirtyCache.getDirty(type, id);
             }
 
             return false;
@@ -420,7 +442,7 @@ module NakedObjects {
         };
 
         context.getObject = (paneId: number, type: string, id: string[], interactionMode: InteractionMode) => {
-            const oid = _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
+            const oid = toOid(id);
             return oid ? context.getDomainObject(paneId, type, oid, interactionMode) : context.getService(paneId, type);
         };
 
