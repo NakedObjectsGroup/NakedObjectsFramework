@@ -173,7 +173,7 @@ module NakedObjects.Models {
 
         etagDigest: string;
         hateoasUrl = "";
-        method: httpMethodsType;
+        method: httpMethodsType = "GET";
         urlParms: _.Dictionary<Object>;
 
         constructor(protected model?: RoInterfaces.IRepresentation) {
@@ -1427,7 +1427,6 @@ module NakedObjects.Models {
 
         constructor() {
             super();
-            this.method = "GET";
         }
 
         id(): string {
@@ -1858,7 +1857,6 @@ module NakedObjects.Models {
             this.hateoasUrl = `${getAppPath()}/domain-types/${toCheckType}/type-actions/isSubtypeOf/invoke`;
             this.urlParms = {};
             this.urlParms["supertype"] = againstType;
-            this.method = "GET";
         }
 
         selfLink(): Link {
@@ -1885,7 +1883,6 @@ module NakedObjects.Models {
         constructor() {
             super();
             this.hateoasUrl = getAppPath();
-            this.method = "GET";
         }
 
         wrapped = () => this.resource() as RoInterfaces.IHomePageRepresentation;
