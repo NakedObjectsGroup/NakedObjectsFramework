@@ -2,8 +2,7 @@
  
   <PropertyGroup>
     <ROPath>Rest</ROPath>
-    <ROMVC>NakedObjects.Rest-Assemblies</ROMVC>
-    <ROSVR>NakedObjects.Rest-FileTemplates</ROSVR>
+    <ROMVC>NakedObjects.Rest</ROMVC>
     <InstalledPackagesPath>packages</InstalledPackagesPath>
     <TestResultsPath>test-results</TestResultsPath>
     <CommunityTargets>$(MSBuildProjectDirectory)\.build\MSBuild.Community.Tasks.targets</CommunityTargets>
@@ -114,50 +113,7 @@
    
   </Target>
 
-  <Target Name="RestfulObjectsServerPackage" DependsOnTargets="RestfulObjects">
-
-    <ItemGroup>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\NakedObjectsRunSettings.cs.pp"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\UnityConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\UnityWebApiActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\WebApiConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\RestfulObjectsConfig.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\RestfulObjectsActivator.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\Controllers*\RestfulObjectsController.cs"/>
-      <ROSSrcFiles Include="$(ROPath)\NakedObjects.Rest.App\Web.config.transform"/>
-    </ItemGroup>
-
-    <Copy SourceFiles="@(ROSSrcFiles)" DestinationFolder="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)" />
-
-    <ItemGroup>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityConfig.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\UnityWebApiActivator.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\WebApiConfig.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsConfig.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\RestfulObjectsActivator.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\App_Start*\BasicAuthenticationHandler.cs"/>
-      <ROSUpdate Include="$(ROPath)\$(ROSVR).package\content\Controllers*\RestfulObjectsController.cs"/>
-    </ItemGroup>
-       
-    <FileUpdate Files="@(ROSUpdate)"
-							 RegEx= 'MvcTestApp'
-							 ReplacementText ='$rootnamespace$'/>
-
-    <Move SourceFiles="@(ROSUpdate)" DestinationFiles="$(ROPath)\$(ROSVR).package\content\%(RecursiveDir)%(Filename)%(Extension).pp"/>
-
-    <Exec WorkingDirectory="$(ROPath)\$(ROSVR).package" Command="nuget pack $(ROSVR).nuspec -Symbols" />
-    <ItemGroup>
-      <!--Don't push symbols causes problems in Account Feed-->
-      <ROSPackage Include="$(ROPath)\$(ROSVR).package\*.nupkg" Exclude="$(ROPath)\$(ROSVR).package\*.symbols.nupkg"/>
-    </ItemGroup>
-
-    <Exec Command='appveyor PushArtifact "%(ROSPackage.FullPath)"'/> 
-   
-    
-  </Target>
-
-  <Target Name="RestfulObjectsPackage" DependsOnTargets="RestfulObjectsServerPackage;RestfulObjectsMvcPackage"/>
+  <Target Name="RestfulObjectsPackage" DependsOnTargets="RestfulObjectsMvcPackage"/>
 
   <Target Name="RestfulObjectsPackageTest" DependsOnTargets="RestfulObjectsTest">
     <MSBuild Projects="$(MSBuildProjectFile)" Targets="RestfulObjectsPackage"/>

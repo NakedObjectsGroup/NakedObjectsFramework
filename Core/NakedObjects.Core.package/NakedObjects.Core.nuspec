@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
 <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
     <description>
-  This package is typically used indirectly e.g. by the NakedObjects.Rest-FileTemplates</description>
+  This package is typically used indirectly e.g. by the NakedObjects.Run</description>
     <tags>naked objects nakedobjects ddd domain driven design</tags>
     <dependencies>
       <dependency id="NakedObjects.ProgrammingModel" version="[7.0.3, 8)" />

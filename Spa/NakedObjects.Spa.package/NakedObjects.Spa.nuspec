@@ -10,7 +10,6 @@
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Single Page Application user interface to run against a NakedObjects.Rest server.
-    Add into a clean TypeScript project, or into the same project as NakedObjects.Rest-FileTemplates.
     </summary>
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Single Page Application client for a Naked Objects application.</description>

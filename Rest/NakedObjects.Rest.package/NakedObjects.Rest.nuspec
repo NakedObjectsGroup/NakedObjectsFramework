@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NakedObjects.Rest-Assemblies</id>
+    <id>NakedObjects.Rest</id>
     <version>8.0.0-beta1</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -11,8 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <summary>Installs the assemblies used to create the NakedObjects.Rest server.</summary>
-    <description>This package will initially be added automatically when you install NakedObjects.Rest-FileTemplates. 
-It is a separate package to allow the assemblies to be updated without impacting the template files.</description>
+    <description>This package will initially be added automatically when you install NakedObjects.Run</description>
     <dependencies>
       <dependency id="NakedObjects.Facade" version="[8.0.0-beta1, 9)" />
       <dependency id="Newtonsoft.Json" version="[6.0.8, 7.0)" />

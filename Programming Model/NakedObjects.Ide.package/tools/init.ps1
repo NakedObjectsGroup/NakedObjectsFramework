@@ -223,8 +223,7 @@ param($rootPath, $toolsPath, $package, $project)
 	nakedobjects.xat         
 	nakedobjects.ide            
 	nakedobjects.programmingmodel
-	nakedobjects.rest-assemblies          
-	nakedobjects.rest-filetemplates      
+	nakedobjects.rest            
 	nakedobjects.facade.impl 
 	nakedobjects.facade        
 	nakedobjects.spa   
@@ -247,8 +246,7 @@ param($rootPath, $toolsPath, $package, $project)
 							 "nakedobjects.xat",              							
 							 "nakedobjects.ide",              
 							 "nakedobjects.programmingmodel", 
-							 "nakedobjects.rest-assemblies",            
-							 "nakedobjects.rest-filetemplates",             
+							 "nakedobjects.rest",                       
 							 "nakedobjects.facade.impl",     
 							 "nakedobjects.facade",          
 							 "nakedobjects.spa"     
