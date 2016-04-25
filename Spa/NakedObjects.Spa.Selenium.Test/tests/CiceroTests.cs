@@ -1073,14 +1073,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Work Order:");
             EnterCommand("edit");
             WaitForOutputStarting("Editing Work Order:");
-            EnterCommand("enter start date,17 Oct 2007"); //Seems to be necessary to clear the date fields fully
-            WaitForOutputContaining("Start Date: 17 Oct 2007");
-            EnterCommand("enter end date,15 Oct 2007");
-            WaitForOutputContaining("End Date: 15 Oct 2007");
+            EnterCommand("enter start date,17 Sep 2007"); //Seems to be necessary to clear the date fields fully
+            WaitForOutputContaining("Start Date: 17 Sep 2007");
+            EnterCommand("enter due date,15 Sep 2007");
+            WaitForOutputContaining("Due Date: 15 Sep 2007");
             EnterCommand("save");
             WaitForOutput("StartDate must be before DueDate");
-            EnterCommand("enter end date,15 Oct 2008");
-            WaitForOutputContaining("End Date: 15 Oct 2008");
+            EnterCommand("enter due date,28 Sep 2008");
+            WaitForOutputContaining("Due Date: 28 Sep 2008");
             EnterCommand("save");
             WaitForOutputStarting("Work Order:");
         }
@@ -1382,7 +1382,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public void MegaCiceroTests()
         {
-
             base.Action();
             // base.BackAndForward(); TODO: pending review of back & forward in Cicero
             base.Cancel();

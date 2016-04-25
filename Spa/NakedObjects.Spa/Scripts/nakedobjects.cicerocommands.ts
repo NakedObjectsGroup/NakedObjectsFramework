@@ -1094,23 +1094,29 @@ module NakedObjects {
             }
         };
 
-        basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS or Windows Narrator.\n" +
-        "The display has only two fields: a read-only output field, and a single input field. The input field should always have the focus.\n"+
-        "All interactions consist of typing a command into the input field and hitting Enter.\n"+
-        "When the output field updates (either instantaneously, or after the server has responded) its contents will be read out automatically.\n" +
+        basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS.\n" +
+        "The display has only two fields: a read-only output field, and a single input field.\n" +
+        "The input field always has the focus.\n"+
+        "Commands are types into the input field followed by the Enter key.\n"+
+        "When the output field updates (either instantaneously or after the server has responded)\n" + 
+        "its contents will be read out automatically.\n" +
         "The user should never have to navigate around the screen.\n" +
-        "Commands, such as 'action', 'field' and 'save', may be typed in full or abbreviated to the first two characters or more.\n" +
-        "Some commands take one or more arguments. There must be a space between the command word and the first argument.\n" +
-        "Arguments may contain spaces if needed. If more than one argument is specified they must be separated by commas.\n"+
+        "Commands, such as 'action', 'field' and 'save', may be typed in full\n" +
+        "or abbreviated to the first two characters or more.\n" +
+        "Some commands take one or more arguments.\n" +
+        "There must be a space between the command word and the first argument.\n" +
+        "Arguments may contain spaces if needed.\n"+ 
+        "If more than one argument is specified they must be separated by commas.\n"+
         "Commands are not case sensitive. The commands available to the user vary according to the context.\n" +
-        "The command 'help ?' will list the commands available to the user in the current context. ‘help’ followed by another command word " +
-        "(in full or abbreviated) will give more details about what that command does and how to use it.\n"+
-        "Some commands will change the context (for example, using the Go command to navigate to an associated object), " +
-        "in which case the next context will be read out. Other commands - help being an example - do not change the context, " +
-        "but will read out information to the user. If the user needs a reminder of the current context, the 'Where' command will read "+
-        "the context out again. Hitting Enter on the empty input field has the same effect.\n" +
-        "Typically, when the user enters a command and the output has been updated, the input field will automatically be cleared " +
-        "- ready for the next command. However, the user may recall the previous command, including arguments, just by hitting the up-arrow key.\n"+
+        "The command 'help ?' will list the commands available to the user in the current context.\n"
+        "‘help’ followed by another command word (in full or abbreviated) will give more details about  that command.\n"+
+        "Some commands will change the context, for example using the Go command to navigate to an associated object\n" +
+        "in which case the new context will be read out.\n"
+        "Other commands - help being an example - do not change the context, but will read out information to the user.\n"+
+        "If the user needs a reminder of the current context, the 'Where' command will read the context out again.\n" +
+        "Hitting Enter on the empty input field has the same effect.\n" +
+        "When the user enters a command and the output has been updated, the input field will  be cleared\n" +
+        "- ready for the next command. The user may recall the previous command, by hitting the up- arrow key.\n"+
         "The user might then edit or extend that previous command and hit Enter to run it again.\n" +
         "For advanced users: commands may be chained using a semi-colon between them,\n" +
         "however commands that do, or might, result in data updates cannot be chained.";

@@ -16,6 +16,7 @@ namespace NakedObjects.Rest.App.Demo {
     public static class RestfulObjectsActivator {
         public static void PreStart() {
             RestfulObjectsConfig.RestPreStart();
+            RestfulObjectsConfig.RegisterRestfulObjectsRoutes(RouteTable.Routes);
         }
 
         public static void PostStart() {
