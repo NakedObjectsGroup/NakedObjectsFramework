@@ -1108,10 +1108,10 @@ module NakedObjects {
         "Arguments may contain spaces if needed.\n"+ 
         "If more than one argument is specified they must be separated by commas.\n"+
         "Commands are not case sensitive. The commands available to the user vary according to the context.\n" +
-        "The command 'help ?' will list the commands available to the user in the current context.\n"
+        "The command 'help ?' will list the commands available to the user in the current context.\n"+
         "‘help’ followed by another command word (in full or abbreviated) will give more details about  that command.\n"+
         "Some commands will change the context, for example using the Go command to navigate to an associated object\n" +
-        "in which case the new context will be read out.\n"
+        "in which case the new context will be read out.\n"+
         "Other commands - help being an example - do not change the context, but will read out information to the user.\n"+
         "If the user needs a reminder of the current context, the 'Where' command will read the context out again.\n" +
         "Hitting Enter on the empty input field has the same effect.\n" +
