@@ -12,8 +12,8 @@
 
 module NakedObjects.Models {
 
-    export function dirtyMarker(context: IContext, objOrLink: DomainObjectRepresentation | Link) {
-        return (showDirtyFlag && context.getIsDirty(objOrLink)) ? "*" : "";
+    export function dirtyMarker(context: IContext, oid : ObjectIdWrapper) {
+        return (showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
     }
 
     export function toOid(id : string[]) {

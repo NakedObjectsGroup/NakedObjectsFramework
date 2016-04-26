@@ -16,6 +16,7 @@ module NakedObjects {
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import toOid = Models.toOid;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -220,22 +221,21 @@ module NakedObjects {
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            const [dt, ...id] = routeData.objectId.split(keySeparator);
+            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
 
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
 
-            color.toColorNumberFromType(dt).then((c: number) => {
+            color.toColorNumberFromType(oid.domainType).then((c: number) => {
                 $scope.backgroundColor = `${objectColor}${c}`;
             });
 
             deRegObject[routeData.paneId].deReg();
 
-            // todo create an 'oid' object to encapsulate dt/id etc
-            const wasDirty = context.getIsDirty({ dt: dt, id: toOid(id) }); 
+            const wasDirty = context.getIsDirty(oid); 
 
-            context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
+            context.getObject(routeData.paneId, oid.domainType, oid.splitInstanceId, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);

@@ -34,6 +34,7 @@ module NakedObjects {
     import typeFromUrl = Models.typeFromUrl;
     import idFromUrl = Models.idFromUrl;
     import toOid = Models.toOid;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface IContext {
 
@@ -56,7 +57,7 @@ module NakedObjects {
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
-        getIsDirty : (objOrLink : DomainObjectRepresentation | Link | {dt : string, id : string }) => boolean;
+        getIsDirty : (oid : ObjectIdWrapper) => boolean;
 
 
         //The object values are only needed on a transient object / editable view model
@@ -238,7 +239,7 @@ module NakedObjects {
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
-            const isDirty = context.getIsDirty(object);
+            const isDirty = context.getIsDirty(ObjectIdWrapper.fromObject(object));
             return repLoader.getFile(url, mt, isDirty);
         }
 
@@ -289,27 +290,10 @@ module NakedObjects {
                 });
         }
 
-        function isDtAndId(object: any): object is { dt: string, id: string } {
-            return object && "dt" in object && "id" in object;
-        }
+        context.getIsDirty = (oid: ObjectIdWrapper) => {
 
-        context.getIsDirty = (objOrLink: DomainObjectRepresentation | Link | { dt: string, id: string }) => {
-            if (objOrLink instanceof DomainObjectRepresentation) {
-
-                return dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId()) !== DirtyState.Clean;
-            }
-            let type: string = null;
-            let id: string = null;
-
-            if (objOrLink instanceof Link) {
-                const href = objOrLink.href();
-                type = typeFromUrl(href);
-                id = idFromUrl(href);
-            }
-            else if (isDtAndId(objOrLink)) {
-                type = objOrLink.dt;
-                id = objOrLink.id;
-            }
+            const type = oid.domainType;
+            const id = oid.instanceId;
 
             if (type && id) {
                 return dirtyCache.getDirty(type, id) !== DirtyState.Clean;

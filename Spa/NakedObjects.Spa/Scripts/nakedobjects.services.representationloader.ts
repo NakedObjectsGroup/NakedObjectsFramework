@@ -19,14 +19,11 @@ module NakedObjects {
 
     export interface IRepLoader {
         validate: (map: IHateoasModel, digest?: string) => ng.IPromise<boolean>;
-
         retrieve: <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string) => ng.IPromise<T>;
         retrieveFromLink: <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>) => ng.IPromise<T>;
         populate: <T>(m: IHateoasModel, ignoreCache?: boolean) => ng.IPromise<T>;
         invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>) => ng.IPromise<ActionResultRepresentation>;
-
         getFile: (url: string, mt: string, ignoreCache: boolean) => ng.IPromise<Blob>;
-
         clearCache: (url : string) => void ; 
     }
 
@@ -131,10 +128,7 @@ module NakedObjects {
             return httpPopulate(config, ignoreCache, response);
         };
 
-        repLoader.retrieve = <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string): ng.IPromise<T> => {
-
-            const response = new rc();
-
+        function setConfigFromMap(map: IHateoasModel, digest? : string) {
             const config = {
                 withCredentials: true,
                 url: map.getUrl(),
@@ -144,28 +138,20 @@ module NakedObjects {
             };
 
             addIfMatchHeader(config, digest);
+            return config;
+        }
 
+
+        repLoader.retrieve = <T extends IHateoasModel>(map: IHateoasModel, rc: { new(): IHateoasModel }, digest?: string): ng.IPromise<T> => {
+            const response = new rc();
+            const config = setConfigFromMap(map, digest);
             return httpPopulate(config, true, response);
         };
 
         repLoader.validate = (map: IHateoasModel, digest?: string): ng.IPromise<boolean> => {
-
-          
-
-            const config = {
-                withCredentials: true,
-                url: map.getUrl(),
-                method: map.method,
-                cache: false,
-                data: map.getBody()
-            };
-
-            addIfMatchHeader(config, digest);
-
+            const config = setConfigFromMap(map, digest);
             return httpValidate(config);
         };
-
-
 
         repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
 

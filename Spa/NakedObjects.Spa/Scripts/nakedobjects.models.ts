@@ -169,6 +169,64 @@ module NakedObjects.Models {
 
     // abstract classes 
 
+    export class ObjectIdWrapper {
+
+        domainType: string;
+        instanceId: string;
+        splitInstanceId: string[];
+
+
+        static safeSplit(id: string) {
+            if (id) {
+                return id.split(keySeparator);
+            }
+            return [];
+        }
+
+        static fromObject(object: DomainObjectRepresentation) {
+            const oid = new ObjectIdWrapper();
+            oid.domainType = object.domainType();
+            oid.instanceId = object.instanceId();
+            oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            return oid;
+        }
+
+        static fromLink(link: Link) {
+            const oid = new ObjectIdWrapper();
+            const href = link.href();
+            oid.domainType = typeFromUrl(href);
+            oid.instanceId = idFromUrl(href);
+            oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            return oid;
+        }
+
+        static fromObjectId(objectId : string) {
+            const oid = new ObjectIdWrapper();
+            const [dt, ...id] =objectId.split(keySeparator);
+            oid.domainType = dt;
+            oid.splitInstanceId = id;
+            oid.instanceId = toOid(id);
+            return oid;
+        }
+
+        static fromRaw(dt: string, id: string) {
+            const oid = new ObjectIdWrapper();
+            oid.domainType = dt;
+            oid.instanceId = id;
+            oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            return oid;
+        }
+
+        static fromSplitRaw(dt: string, id: string[]) {
+            const oid = new ObjectIdWrapper();
+            oid.domainType = dt;
+            oid.splitInstanceId = id;
+            oid.instanceId = toOid(id);
+            return oid;
+        }
+    }
+
+
     export abstract class HateosModel implements IHateoasModel {
 
         etagDigest: string;

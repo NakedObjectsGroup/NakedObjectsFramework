@@ -26,6 +26,7 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -772,7 +773,7 @@ module NakedObjects {
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
-            this.title = this.title + dirtyMarker(this.contextService, obj);
+            this.title = this.title + dirtyMarker(this.contextService, ObjectIdWrapper.fromObject(obj));
          
             this.friendlyName = this.domainObject.extensions().friendlyName();
             this.domainType = this.domainObject.domainType();

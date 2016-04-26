@@ -39,6 +39,7 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import IHasExtensions = Models.IHasExtensions;
     import dirtyMarker = Models.dirtyMarker;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -127,7 +128,7 @@ module NakedObjects {
 
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
 
-            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep);
+            linkViewModel.title = linkViewModel.title + dirtyMarker(context, ObjectIdWrapper.fromLink(linkRep));
         }
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
