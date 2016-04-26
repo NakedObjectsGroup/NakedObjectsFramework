@@ -657,13 +657,19 @@ module NakedObjects {
             return `${count} ${postfix}`;
         }
 
+        function getDefaultTableState(exts: Extensions) {
+            if (exts.renderEagerly()) {
+                return exts.tableViewColumns() || exts.tableViewTitle() ? CollectionViewState.Table : CollectionViewState.List;
+            }
+            return CollectionViewState.Summary;
+        }
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.collections[collectionRep.collectionId()] || CollectionViewState.Summary;
+            const state = routeData.collections[collectionRep.collectionId()] || getDefaultTableState(collectionRep.extensions());
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;

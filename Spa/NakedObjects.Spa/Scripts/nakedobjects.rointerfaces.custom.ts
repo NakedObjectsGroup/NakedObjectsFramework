@@ -15,6 +15,7 @@
         "x-ro-nof-dataType"?: string;
         "x-ro-nof-range"?: IRange;
         "x-ro-nof-notNavigable"?: boolean;
+        "x-ro-nof-renderEagerly"? : boolean;
     }
 
     export interface IRange {
