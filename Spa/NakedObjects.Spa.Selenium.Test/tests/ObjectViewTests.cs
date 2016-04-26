@@ -60,7 +60,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product Inventory:\r\n2 Items");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text == "Special Offers:\r\n1 Item");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
         public virtual void NonNavigableReferenceProperty()
         {

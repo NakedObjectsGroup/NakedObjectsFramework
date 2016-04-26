@@ -144,7 +144,7 @@ module NakedObjects.Models {
                         description = "The requested software feature is not implemented";
                         break;
                     case ClientErrorCode.SoftwareError:
-                        description = "A software error ocuured";
+                        description = "A software error occurred";
                         break;
                     case ClientErrorCode.ConnectionProblem:
                         description = "The client failed to connect to the server";
