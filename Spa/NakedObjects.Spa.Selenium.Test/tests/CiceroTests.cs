@@ -118,17 +118,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu");
             EnterCommand("action random store");
             WaitForOutput("Customers menu\r\nAction dialog: Random Store");
+            EnterCommand("OK");
+            WaitForOutputContaining("Customer:");
+            EnterCommand("Go details");
+            WaitForOutputContaining("Store:");
             EnterCommand("back");
-            WaitForOutput("Customers menu");
-            EnterCommand("Ba");
-            WaitForOutputStarting("Welcome to Cicero");
+            WaitForOutputContaining("Customer:");
+            EnterCommand("back");
+            WaitForOutputContaining("Customers menu");
             EnterCommand("forward");
-            WaitForOutput("Customers menu");
-            EnterCommand("fO  ");
-            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
-            //Can't go forward beyond most recent
-            EnterCommand("forward");
-            WaitForOutput("Customers menu\r\nAction dialog: Random Store");
+            WaitForOutputContaining("Customer:");
+            EnterCommand("fo");
+            WaitForOutputContaining("Store:");
+            EnterCommand("fo"); //can't go further forward
+            WaitForOutputContaining("Store:");
 
             //No arguments
             EnterCommand("back x");
@@ -1253,7 +1256,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         [TestMethod]
         public override void Action() { base.Action(); }
-        [TestMethod, Ignore] //TODO: pending re-consideration of how Back & Forward should work
+        [TestMethod]
         public override void BackAndForward() { base.BackAndForward(); }
         [TestMethod]
         public override void Cancel() { base.Cancel(); }
@@ -1331,7 +1334,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Comment out if MegaTest is commented in
+   //[TestClass] //Comment out if MegaTest is commented in
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1393,7 +1396,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaCiceroTests()
         {
             base.Action();
-            // base.BackAndForward(); TODO: pending review of back & forward in Cicero
+            base.BackAndForward();
             base.Cancel();
             base.Clipboard();
             base.Edit();
