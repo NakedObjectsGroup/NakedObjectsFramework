@@ -670,7 +670,11 @@ module NakedObjects {
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
+            const size = collectionRep.size();
+
             let state = routeData.collections[collectionRep.collectionId()];
+
+            state = size === 0 ? CollectionViewState.Summary : state;
 
             if (state == null) {
                 state = getDefaultTableState(collectionRep.extensions());
@@ -680,8 +684,6 @@ module NakedObjects {
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-
-            const size = collectionRep.size();
 
             collectionViewModel.size = getCollectionCount(size);
 
@@ -693,7 +695,7 @@ module NakedObjects {
 
             const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
-            if (state === CollectionViewState.Summary || size === 0) {
+            if (state === CollectionViewState.Summary) {
                 collectionViewModel.items = [];
             }
             else if (getDetails) {
