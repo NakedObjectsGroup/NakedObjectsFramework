@@ -670,7 +670,11 @@ module NakedObjects {
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.collections[collectionRep.collectionId()] || getDefaultTableState(collectionRep.extensions());
+            let state = routeData.collections[collectionRep.collectionId()];
+
+            if (state == null) {
+                state = getDefaultTableState(collectionRep.extensions());
+            }
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
