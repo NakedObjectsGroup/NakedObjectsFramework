@@ -244,9 +244,9 @@ module NakedObjects {
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
 
-            const isDirty = dirtyCache.getDirty(type, id);
+            const forceReload = dirtyCache.getDirty(type, id) && autoLoadDirty;
 
-            if (!isDirty && isSameObject(currentObjects[paneId], type, id)) {
+            if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
             }
 
@@ -260,10 +260,12 @@ module NakedObjects {
             object.hateoasUrl = getAppPath() + "/objects/" + type + "/" + id;
             object.setInlinePropertyDetails(interactionMode === InteractionMode.Edit);
 
-            return repLoader.populate<DomainObjectRepresentation>(object, isDirty).
+            return repLoader.populate<DomainObjectRepresentation>(object, forceReload).
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
-                    dirtyCache.clearDirty(type, id);
+                    if (forceReload) {
+                        dirtyCache.clearDirty(type, id);
+                    }
                     addRecentlyViewed(obj);
                     return $q.when(obj);
                 });
@@ -276,6 +278,7 @@ module NakedObjects {
             return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink(), parms).
                 then(obj => {
                     currentObjects[paneId] = obj;
+                    dirtyCache.clearDirty(obj.domainType(), obj.instanceId());
                     return $q.when(obj);
                 });
         }

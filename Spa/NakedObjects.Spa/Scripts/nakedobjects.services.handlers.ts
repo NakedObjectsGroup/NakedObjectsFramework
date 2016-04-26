@@ -232,6 +232,7 @@ module NakedObjects {
 
             deRegObject[routeData.paneId].deReg();
 
+            // todo create an 'oid' object to encapsulate dt/id etc
             const wasDirty = context.getIsDirty({ dt: dt, id: toOid(id) }); 
 
             context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
