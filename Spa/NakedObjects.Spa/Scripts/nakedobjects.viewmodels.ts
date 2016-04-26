@@ -159,6 +159,7 @@ module NakedObjects {
     }
 
     export class ErrorViewModel {
+        title : string;
         message: string;
         stackTrace: string[];
         code: string;

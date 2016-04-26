@@ -92,19 +92,25 @@ module NakedObjects {
         viewModelFactory.errorViewModel = (error: ErrorWrapper) => {
             const errorViewModel = new ErrorViewModel();
 
-            errorViewModel.message = error ? error.message : "Unknown";
-            const stackTrace = error ? error.stackTrace : null;
-            errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
-
-            errorViewModel.description = "";
-
-            errorViewModel.code = error ? error.errorCode : "Unknown";
-
             if (error) {
+                errorViewModel.title = error.title;
+                errorViewModel.description = error.description;
+                errorViewModel.code = error.errorCode;
+                errorViewModel.message = error.message;
+                const stackTrace = error.stackTrace;
+
+                errorViewModel.stackTrace = stackTrace && stackTrace.length !== 0 ? stackTrace : null;
+
                 errorViewModel.isConcurrencyError =
                     error.category === ErrorCategory.HttpClientError &&
                     error.httpErrorCode === HttpStatusCode.PreconditionFailed;
             }
+            
+            errorViewModel.description = errorViewModel.description || "No description available";
+            errorViewModel.code = errorViewModel.code || "No code available";
+            errorViewModel.message = errorViewModel.message || "No message available";
+            errorViewModel.stackTrace = errorViewModel.stackTrace || ["No stack trace available"];
+
             return errorViewModel;
         };
 

@@ -120,7 +120,8 @@ module NakedObjects.Models {
         ExpiredTransient,
         WrongType,
         NotImplemented,
-        SoftwareError
+        SoftwareError,
+        ConnectionProblem = -1
     }
 
     export class ErrorWrapper {
@@ -130,11 +131,40 @@ module NakedObjects.Models {
             if (rc === ErrorCategory.ClientError) {
                 this.clientErrorCode = code as ClientErrorCode;
                 this.errorCode = ClientErrorCode[this.clientErrorCode];
+                let description = "Unknown software error";
+
+                switch (this.clientErrorCode) {
+                    case ClientErrorCode.ExpiredTransient:
+                        description = "The requested view of unsaved object details has expired";
+                        break;
+                    case ClientErrorCode.WrongType:
+                        description = "An unexpected type of result was returned";
+                        break;
+                    case ClientErrorCode.NotImplemented:
+                        description = "The requested software feature is not implemented";
+                        break;
+                    case ClientErrorCode.SoftwareError:
+                        description = "A software error ocuured";
+                        break;
+                    case ClientErrorCode.ConnectionProblem:
+                        description = "The client failed to connect to the server";
+                        break;
+                }
+
+                this.description = description;
+                this.title = "Client Error";
             }
 
             if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
                 this.httpErrorCode = code as HttpStatusCode;
                 this.errorCode = `${HttpStatusCode[this.httpErrorCode]}(${this.httpErrorCode})`;
+
+                this.description = rc === ErrorCategory.HttpServerError
+                    ? "A software error has occurred on the server"
+                    : "An HTTP error code has been received from the server\n" +
+                      "You can look up the meaning of this code in the Restful Objects specification.";
+
+                this.title = "Error message received from server";
             }
 
             if (err instanceof ErrorMap) {
@@ -148,12 +178,14 @@ module NakedObjects.Models {
                 this.error = er;
                 this.stackTrace = err.stackTrace();
             } else {
-                this.message = (err as string) || "No message";
+                this.message = (err as string);
                 this.error = null;
                 this.stackTrace = [];
             }
         }
 
+        title : string;
+        description : string;
         errorCode: string;
         httpErrorCode: HttpStatusCode;
         clientErrorCode: ClientErrorCode;

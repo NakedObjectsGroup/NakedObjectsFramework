@@ -28,7 +28,6 @@
     <Content Include="Content\partials\collectionSummary.html" />
     <Content Include="Content\partials\cicero.html" />
     <Content Include="Content\partials\homePlaceholder.html" />
-    <Content Include="Content\partials\httpError.html" />
     <Content Include="Content\partials\concurrencyError.html" />
     <Content Include="Content\partials\ListPlaceholder.html" />
     <Content Include="Content\partials\null.html" />

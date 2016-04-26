@@ -15,8 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
-    import toOid = Models.toOid;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -206,13 +205,9 @@ module NakedObjects {
 
             if (evm.isConcurrencyError) {
                 $scope.errorTemplate = concurrencyTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
-                $scope.errorTemplate = httpErrorTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.ClientError) {
+            } else {
                 $scope.errorTemplate = errorTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
-                $scope.errorTemplate = errorTemplate;
-            }
+            } 
         };
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
