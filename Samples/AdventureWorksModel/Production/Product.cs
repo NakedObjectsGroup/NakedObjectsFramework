@@ -350,7 +350,7 @@ namespace AdventureWorksModel {
 
         private ICollection<ProductReview> _ProductReviews = new List<ProductReview>();
 
-        [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
+        [TableView(true, "Rating", "Comments")]
         public virtual ICollection<ProductReview> ProductReviews {
             get { return _ProductReviews.ToArray(); } //deliberately returned as array to test Bug #13269
             set { _ProductReviews = value; }
@@ -363,10 +363,7 @@ namespace AdventureWorksModel {
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity), 
-                nameof(AdventureWorksModel.ProductInventory.Location),
-                    nameof(AdventureWorksModel.ProductInventory.Shelf),
-                        nameof(AdventureWorksModel.ProductInventory.Bin))]
+        [TableView(false, "Quantity", "Location", "Shelf", "Bin")]
         public virtual ICollection<ProductInventory> ProductInventory {
             get { return _ProductInventory; }
             set { _ProductInventory = value; }
