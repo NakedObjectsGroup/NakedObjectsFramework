@@ -693,7 +693,7 @@ module NakedObjects {
 
             const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
-            if (state === CollectionViewState.Summary) {
+            if (state === CollectionViewState.Summary || size === 0) {
                 collectionViewModel.items = [];
             }
             else if (getDetails) {
