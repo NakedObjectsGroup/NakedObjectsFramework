@@ -49,7 +49,9 @@ namespace AdventureWorksModel
         private ICollection<BusinessEntityAddress> _addresses = new List<BusinessEntityAddress>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(false, "AddressType", "Address")] 
+        [TableView(false,
+            nameof(BusinessEntityAddress.AddressType),
+            nameof(BusinessEntityAddress.Address))] 
         public virtual ICollection<BusinessEntityAddress> Addresses
         {
             get { return _addresses; }
