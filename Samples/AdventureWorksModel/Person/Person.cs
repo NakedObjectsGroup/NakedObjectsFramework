@@ -243,7 +243,6 @@ namespace AdventureWorksModel {
 
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(false, "EmailAddress")] 
         public virtual ICollection<EmailAddress> EmailAddresses {
             get {
                 return _EmailAddresses;
