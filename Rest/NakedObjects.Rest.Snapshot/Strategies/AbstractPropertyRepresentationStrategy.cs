@@ -117,11 +117,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                     CustomExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
-                var notNavigable = propertyContext.Property.NotNavigable;
-
-                if (notNavigable) {
+                if (propertyContext.Property.NotNavigable) {
                     CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
-                    CustomExtensions[JsonPropertyNames.CustomNotNavigable] = notNavigable;
+                    CustomExtensions[JsonPropertyNames.CustomNotNavigable] = true;
                 }
 
                 CustomExtensions = RestUtils.AddRangeExtension(propertyContext.Property, CustomExtensions);

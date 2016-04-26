@@ -46,7 +46,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-            return GetTableViewCustomExtensions(propertyContext.Property.TableViewData);
+            var exts = GetTableViewCustomExtensions(propertyContext.Property.TableViewData);
+
+            if (propertyContext.Property.RenderEagerly) {
+                exts = exts ?? new Dictionary<string, object>();
+                exts[JsonPropertyNames.CustomRenderEagerly] = true;
+            }
+            return exts;
         }
 
         public abstract LinkRepresentation[] GetValue();

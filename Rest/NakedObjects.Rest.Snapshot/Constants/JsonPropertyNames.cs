@@ -75,6 +75,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string CustomDataType = "x-ro-nof-dataType";
         public const string CustomRange = "x-ro-nof-range";
         public const string CustomNotNavigable = "x-ro-nof-notNavigable";
+        public const string CustomRenderEagerly = "x-ro-nof-renderEagerly";
 
         public const string CustomWarnings = "x-ro-nof-warnings";
         public const string CustomMessages = "x-ro-nof-messages";

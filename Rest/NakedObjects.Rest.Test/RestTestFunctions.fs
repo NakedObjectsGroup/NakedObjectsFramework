@@ -1188,18 +1188,23 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
 
       let detailsLink = makeLinkPropWithMethodAndTypesValue "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true (TObjectJson(dValue))
+      let renderEagerly = mName = "AnEagerCollection"
+
+      let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                      TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                      TProperty(JsonPropertyNames.PluralName, TObjectVal(cName));
+                      TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                      TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                      TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
+
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
         TProperty(JsonPropertyNames.Value, cValue );
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                             TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                             TProperty(JsonPropertyNames.PluralName, TObjectVal(cName));
-                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                             TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]));
+        TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( detailsLink);
                                                       ]))]
 
@@ -1213,18 +1218,23 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
      
       let detailsLink = makeLinkPropWithMethodAndTypesValue "GET" detailsRelValue (sprintf "objects/%s/collections/%s" oName mName) RepresentationTypes.ObjectCollection "" cType true (TObjectJson(dValue))
+      let renderEagerly = mName = "AnEagerCollection"
+
+      let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                      TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                      TProperty(JsonPropertyNames.PluralName, TObjectVal(cName));
+                      TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                      TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                      TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
+
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
         TProperty(JsonPropertyNames.Size, TObjectVal( size) );
         TProperty(JsonPropertyNames.Value, cValue );
         TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
-        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                             TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                             TProperty(JsonPropertyNames.PluralName, TObjectVal(cName));
-                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                             TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]));
+        TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson(detailsLink) ]))]
 
    
@@ -1235,6 +1245,7 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
       let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
 
       let presHint = mName = "ACollection"
+      let renderEagerly = mName = "AnEagerCollection"
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -1244,6 +1255,8 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
                       TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
+
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1277,6 +1290,7 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
+      let renderEagerly = mName = "AnEagerCollection"
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -1286,6 +1300,8 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
                       TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
+
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
         TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1300,6 +1316,7 @@ let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cTy
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
+      let renderEagerly = mName = "AnEagerCollection"
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -1309,6 +1326,7 @@ let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cTy
                       TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
