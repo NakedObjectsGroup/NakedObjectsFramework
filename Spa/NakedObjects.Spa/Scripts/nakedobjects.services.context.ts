@@ -111,44 +111,49 @@ module NakedObjects {
         setPreviousUrl: (url: string) => void;
     }
 
+    enum DirtyState {
+        DirtyMustReload, 
+        DirtyMayReload,
+        Clean
+    }
+
     class DirtyCache {
-        private dirtyObjects: _.Dictionary<boolean> = {};
+        private dirtyObjects: _.Dictionary<DirtyState> = {};
 
         private getKey(type: string, id: string) {
             return type + keySeparator + id;
         }
 
-        setDirty(obj: DomainObjectRepresentation | Link) {
+        setDirty(obj: DomainObjectRepresentation | Link, alwaysReload : boolean = false) {
             if (obj instanceof DomainObjectRepresentation) {
-                this.setDirtyObject(obj);
+                this.setDirtyObject(obj, alwaysReload ? DirtyState.DirtyMustReload : DirtyState.DirtyMayReload);
             }
             if (obj instanceof Link) {
-                this.setDirtyLink(obj);
+                this.setDirtyLink(obj, alwaysReload ? DirtyState.DirtyMustReload : DirtyState.DirtyMayReload);
             }
         }
 
 
-        setDirtyObject(objectRepresentation: DomainObjectRepresentation) {
+        setDirtyObject(objectRepresentation: DomainObjectRepresentation, dirtyState : DirtyState) {
             const key = this.getKey(objectRepresentation.domainType(), objectRepresentation.instanceId());
-            this.dirtyObjects[key] = true;
+            this.dirtyObjects[key] = dirtyState;
         }
 
-        setDirtyLink(link: Link) {
+        setDirtyLink(link: Link, dirtyState: DirtyState) {
             const href = link.href().split("/");
             const [id, dt] = href.reverse();
             const key = this.getKey(dt, id);
-            this.dirtyObjects[key] = true;
+            this.dirtyObjects[key] = dirtyState;
         }
-
 
         getDirty(type: string, id: string) {
             const key = this.getKey(type, id);
-            return this.dirtyObjects[key] || false;
+            return this.dirtyObjects[key] || DirtyState.Clean;
         }
 
         clearDirty(type: string, id: string) {
             const key = this.getKey(type, id);
-            this.dirtyObjects = _.omit(this.dirtyObjects, key) as _.Dictionary<boolean>;
+            this.dirtyObjects = _.omit(this.dirtyObjects, key) as _.Dictionary<DirtyState>;
         }
     }
 
@@ -244,7 +249,8 @@ module NakedObjects {
         // exposed for test mocking
         context.getDomainObject = (paneId: number, type: string, id: string, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
 
-            const forceReload = dirtyCache.getDirty(type, id) && autoLoadDirty;
+            const dirtyState = dirtyCache.getDirty(type, id);
+            const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload)  && autoLoadDirty);
 
             if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
@@ -289,7 +295,8 @@ module NakedObjects {
 
         context.getIsDirty = (objOrLink: DomainObjectRepresentation | Link | { dt: string, id: string }) => {
             if (objOrLink instanceof DomainObjectRepresentation) {
-                return dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId());
+
+                return dirtyCache.getDirty(objOrLink.domainType(), objOrLink.instanceId()) !== DirtyState.Clean;
             }
             let type: string = null;
             let id: string = null;
@@ -305,7 +312,7 @@ module NakedObjects {
             }
 
             if (type && id) {
-                return dirtyCache.getDirty(type, id);
+                return dirtyCache.getDirty(type, id) !== DirtyState.Clean;
             }
 
             return false;
@@ -348,8 +355,8 @@ module NakedObjects {
                 details.setUrlParameter(roInlineCollectionItems, true);
             }
             const parent = collectionMember.parent;
-            const isDirty = dirtyCache.getDirty(parent.domainType(), parent.instanceId());
-
+            const isDirty = dirtyCache.getDirty(parent.domainType(), parent.instanceId()) !== DirtyState.Clean;
+        
             return repLoader.populate(details, isDirty);
         };
 
@@ -685,7 +692,7 @@ module NakedObjects {
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(updatedObject);
+            dirtyCache.setDirty(updatedObject, true);
 
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);
