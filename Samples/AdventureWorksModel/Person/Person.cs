@@ -258,7 +258,9 @@ namespace AdventureWorksModel {
         private ICollection<PersonPhone> _PhoneNumbers = new List<PersonPhone>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
-        [TableView(false, "PhoneNumberType", "PhoneNumber")] 
+        [TableView(false, 
+            nameof(PersonPhone.PhoneNumberType),
+            nameof(PersonPhone.PhoneNumber))] 
         public virtual ICollection<PersonPhone> PhoneNumbers {
             get {
                 return _PhoneNumbers;

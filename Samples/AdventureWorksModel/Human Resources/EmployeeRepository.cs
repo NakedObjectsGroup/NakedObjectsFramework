@@ -32,7 +32,10 @@ namespace AdventureWorksModel {
         #region FindEmployeeByName
 
         [FinderAction]
-        [TableView(true, "Current", "Title", "Manager")]
+        [TableView(true, 
+            nameof(Employee.Current),
+            nameof(Employee.JobTitle),
+            nameof(Employee.Manager))]
         public IQueryable<Employee> FindEmployeeByName([Optionally] string firstName, string lastName) {
             IQueryable<Person> matchingContacts = ContactRepository.FindContactByName(firstName, lastName);
 

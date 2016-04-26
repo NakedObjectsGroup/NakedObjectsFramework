@@ -136,25 +136,13 @@ namespace AdventureWorksModel {
         #endregion
 
         #region collections
-        //private ICollection<Employee> _directReports = new List<Employee>();
-
-        //public virtual ICollection<Employee> DirectReports {
-        //    get { return _directReports; }
-        //    set { _directReports = value; }
-        //}
-
-        //private ICollection<EmployeeAddress> _addresses = new List<EmployeeAddress>();
-
-        //[Disabled]
-        //[TableView(true)]
-        //public virtual ICollection<EmployeeAddress> Addresses {
-        //    get { return _addresses; }
-        //    set { _addresses = value; }
-        //}
-
         private ICollection<EmployeeDepartmentHistory> _departmentHistory = new List<EmployeeDepartmentHistory>();
 
-        [TableView(true, "StartDate", "EndDate", "Department", "Shift")]
+        [TableView(true, 
+            nameof(EmployeeDepartmentHistory.StartDate),
+            nameof(EmployeeDepartmentHistory.EndDate),
+            nameof(EmployeeDepartmentHistory.Department),
+            nameof(EmployeeDepartmentHistory.Shift))]
         public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory {
             get { return _departmentHistory; }
             set { _departmentHistory = value; }
@@ -162,7 +150,9 @@ namespace AdventureWorksModel {
 
         private ICollection<EmployeePayHistory> _payHistory = new List<EmployeePayHistory>();
 
-        [TableView(true, "RateChangeDate", "Rate")]
+        [TableView(true, 
+            nameof(EmployeePayHistory.RateChangeDate),
+            nameof(EmployeePayHistory.Rate))]
         public virtual ICollection<EmployeePayHistory> PayHistory {
             get { return _payHistory; }
             set { _payHistory = value; }

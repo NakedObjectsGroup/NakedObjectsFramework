@@ -21,7 +21,7 @@ namespace AdventureWorksModel {
         #region FindContactByName
 
         [FinderAction]
-        [TableView(true, "Phone", "EmailAddress", "AdditionalContactInfo")]
+        [TableView(true, nameof(Person.AdditionalContactInfo))]
         public IQueryable<Person> FindContactByName([Optionally] string firstName, string lastName) {
             IQueryable<Person> query = from obj in Instances<Person>()
                 where (firstName == null || obj.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        [TableView(true, "Phone", "EmailAddress", "AdditionalContactInfo")]
+        [TableView(true, nameof(Person.AdditionalContactInfo))]
         public IQueryable<Person> RandomContacts() {
             Person contact1 = RandomContact();
             Person contact2 = contact1;
