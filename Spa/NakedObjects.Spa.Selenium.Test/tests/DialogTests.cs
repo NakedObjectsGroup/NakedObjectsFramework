@@ -264,6 +264,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
+
+        public virtual void AutoCompleteScalarField()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
+            WaitForView(Pane.Single, PaneType.Object, "SO54461");
+            ClearFieldThenType("#comment1", "parc");
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count ==2);
+        }
         #endregion
         #region Parameter validation
 
@@ -422,6 +430,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void AutoCompleteParmDefault() { base.AutoCompleteParmDefault(); }
         [TestMethod]
         public override void AutoCompleteParmShowSingleItem() { base.AutoCompleteParmShowSingleItem(); }
+        [TestMethod]
+        public override void AutoCompleteScalarField() { base.AutoCompleteScalarField(); }
         #endregion
 
         #region Parameter validation
@@ -546,6 +556,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.AutoCompleteParm();
             base.AutoCompleteParmDefault();
             base.AutoCompleteParmShowSingleItem();
+            base.AutoCompleteScalarField();
             base.MandatoryParameterEnforced();
             base.ValidateSingleValueParameter();
             base.ValidateSingleRefParamFromChoices();

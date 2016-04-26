@@ -338,6 +338,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("enter cus, 456x");
             WaitForOutput("None of the choices matches 456x");
 
+            //Auto-complete on a scalar field
+            CiceroUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
+            WaitForOutputContaining("Action dialog: Add Comment");
+            EnterCommand("enter comment,parc");
+            WaitForOutputContaining("Multiple matches:");
+            WaitForOutputContaining("Leave parcel with neighbour");
+            EnterCommand("enter comment,payment");
+            WaitForOutputContaining("Comment: Payment on delivery");
+
+
             //Auto-complete on an object edit
             CiceroUrl("object?i1=Edit&o1=___1.Product--415");
             WaitForOutput("Editing Product: Internal Lock Washer 5");
