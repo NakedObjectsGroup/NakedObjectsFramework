@@ -7,44 +7,79 @@
 // tested 
 module NakedObjects {
 
+    let pane1Dereg = () => {};
+    let pane2Dereg = () => { };
+
     app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleHome($scope, routeData.pane1);
+
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleHome($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane2Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleHome($scope, routeData.pane2);
+
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleHome($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1ObjectController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleObject($scope, routeData.pane1);
+
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleObject($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2ObjectController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane2Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleObject($scope, routeData.pane2);
+
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleObject($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleList($scope, routeData.pane1);
+
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleList($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane2Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleList($scope, routeData.pane2);
+
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleList($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1RecentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleRecent($scope, routeData.pane1);
+
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleRecent($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2RecentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane2Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleRecent($scope, routeData.pane2);
+
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleRecent($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
@@ -52,6 +87,9 @@ module NakedObjects {
     });
 
     app.controller("ErrorController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+        pane2Dereg();
+
         const routeData = urlManager.getRouteData();
         handlers.handleError($scope, routeData.pane1);
     });

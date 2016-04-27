@@ -37,84 +37,103 @@ module NakedObjects {
             //Gemini2 Urls below:
             when(`/${geminiPath}/${homePath}`, {
                 templateUrl: singleHomeTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch : false
             }).
             when(`/${geminiPath}/${objectPath}`, {
                 templateUrl: singleObjectTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${listPath}`, {
                 templateUrl: singleListTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${recentPath}`, {
                 templateUrl: singleRecentTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${homePath}/${homePath}`, {
                 templateUrl: splitHomeHomeTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${homePath}/${objectPath}`, {
                 templateUrl: splitHomeObjectTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${homePath}/${listPath}`, {
                 templateUrl: splitHomeListTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${homePath}/${recentPath}`, {
                 templateUrl: splitHomeRecentTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${objectPath}/${homePath}`, {
                 templateUrl: splitObjectHomeTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${objectPath}/${objectPath}`, {
                 templateUrl: splitObjectObjectTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${objectPath}/${listPath}`, {
                 templateUrl: splitObjectListTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${objectPath}/${recentPath}`, {
                 templateUrl: splitObjectRecentTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${listPath}/${homePath}`, {
                 templateUrl: splitListHomeTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${listPath}/${objectPath}`, {
                 templateUrl: splitListObjectTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${listPath}/${listPath}`, {
                 templateUrl: splitListListTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${listPath}/${recentPath}`, {
                 templateUrl: splitListRecentTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
-
             when(`/${geminiPath}/${recentPath}/${homePath}`, {
                 templateUrl: splitRecentHomeTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${recentPath}/${objectPath}`, {
                 templateUrl: splitRecentObjectTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${recentPath}/${listPath}`, {
                 templateUrl: splitRecentListTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
             when(`/${geminiPath}/${recentPath}/${recentPath}`, {
                 templateUrl: splitRecentRecentTemplate,
-                controller: "BackgroundController"
+                controller: "BackgroundController",
+                reloadOnSearch: false
             }).
 
 
