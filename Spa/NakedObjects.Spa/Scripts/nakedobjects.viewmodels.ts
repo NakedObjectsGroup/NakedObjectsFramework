@@ -774,7 +774,7 @@ module NakedObjects {
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
 
-            this.title = this.title + dirtyMarker(this.contextService, ObjectIdWrapper.fromObject(obj));
+            this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
          
             this.friendlyName = this.domainObject.extensions().friendlyName();
             this.domainType = this.domainObject.domainType();

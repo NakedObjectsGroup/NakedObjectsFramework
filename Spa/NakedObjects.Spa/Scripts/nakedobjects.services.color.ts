@@ -3,7 +3,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IColor {
 

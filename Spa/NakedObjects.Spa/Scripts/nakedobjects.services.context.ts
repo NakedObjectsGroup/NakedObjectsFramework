@@ -217,7 +217,7 @@ module NakedObjects {
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
-            const isDirty = context.getIsDirty(ObjectIdWrapper.fromObject(object));
+            const isDirty = context.getIsDirty(object.getOid());
             return repLoader.getFile(url, mt, isDirty);
         }
 
@@ -266,7 +266,7 @@ module NakedObjects {
             return repLoader.retrieveFromLink<DomainObjectRepresentation>(object.selfLink(), parms).
                 then(obj => {
                     currentObjects[paneId] = obj;
-                    const oid = ObjectIdWrapper.fromObject(obj);
+                    const oid = obj.getOid();
                     dirtyCache.clearDirty(oid);
                     return $q.when(obj);
                 });
@@ -318,7 +318,7 @@ module NakedObjects {
                 details.setUrlParameter(roInlineCollectionItems, true);
             }
             const parent = collectionMember.parent;
-            const oid = ObjectIdWrapper.fromObject(parent);
+            const oid = parent.getOid();
             const isDirty = dirtyCache.getDirty(oid) !== DirtyState.Clean;
         
             return repLoader.populate(details, isDirty);
@@ -623,7 +623,7 @@ module NakedObjects {
 
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
-                    return () => dirtyCache.setDirty(ObjectIdWrapper.fromObject(parent));
+                    return () => dirtyCache.setDirty(parent.getOid());
                 } else if (parent instanceof ListRepresentation && parms) {
 
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
@@ -639,7 +639,7 @@ module NakedObjects {
                             .map(v => v.link())
                             .value();
 
-                        return () => _.forEach(links, l => dirtyCache.setDirty(ObjectIdWrapper.fromLink(l)));
+                        return () => _.forEach(links, l => dirtyCache.setDirty(l.getOid()));
                     }
                 }
             }
@@ -661,7 +661,7 @@ module NakedObjects {
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(ObjectIdWrapper.fromObject(updatedObject), true);
+            dirtyCache.setDirty(updatedObject.getOid(), true);
 
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);

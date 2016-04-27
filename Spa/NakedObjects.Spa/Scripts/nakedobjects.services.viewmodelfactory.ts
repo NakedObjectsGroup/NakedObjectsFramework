@@ -134,7 +134,7 @@ module NakedObjects {
 
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
 
-            linkViewModel.title = linkViewModel.title + dirtyMarker(context, ObjectIdWrapper.fromLink(linkRep));
+            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>

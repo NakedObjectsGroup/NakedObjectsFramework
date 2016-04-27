@@ -300,23 +300,6 @@ module NakedObjects.Models {
             return {};
         }
 
-        getDtId() {
-            if (this.hateoasUrl) {
-                const segments = this.hateoasUrl.split("/");
-                if (segments.length >= 2) {
-                    segments.reverse();
-                    const [idr, dt] = segments;
-                    const id = idr.split(keySeparator);
-                    return {
-                        dt,
-                        id
-                    };
-                }
-            }
-            return { dt: "", id: [] as string[]  };
-        }
-
-
         getUrl() {
             const url = this.hateoasUrl;
             const attrAsJson = _.clone(this.model);
@@ -1652,6 +1635,15 @@ module NakedObjects.Models {
         setInlinePropertyDetails(flag: boolean) {
             this.setUrlParameter(roInlinePropertyDetails, flag);
         }
+
+        private oid: ObjectIdWrapper;
+        getOid(): ObjectIdWrapper {
+            if (!this.oid) {
+                this.oid = ObjectIdWrapper.fromObject(this);
+            }
+
+            return this.oid;
+        } 
     }
 
     export class MenuRepresentation extends ResourceRepresentation<RoInterfaces.Custom.IMenuRepresentation> implements IHasActions {
@@ -2136,6 +2128,17 @@ module NakedObjects.Models {
             this.copyToHateoasModel(target);
             return target;
         }
+
+        // helper 
+
+        private oid: ObjectIdWrapper;
+        getOid(): ObjectIdWrapper {
+            if (!this.oid) {
+                this.oid = ObjectIdWrapper.fromLink(this);
+            }
+
+            return this.oid;
+        }       
     }
 
     export interface IHasActions extends IHasExtensions {
