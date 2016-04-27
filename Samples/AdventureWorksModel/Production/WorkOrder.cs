@@ -185,7 +185,7 @@ namespace AdventureWorksModel {
 
         [Hidden(WhenTo.Always)]
         [NotMapped]
-        public virtual string AnAlawaysHiddenReadOnlyProperty {
+        public virtual string AnAlwaysHiddenReadOnlyProperty {
             get { return ""; }
         }
 
