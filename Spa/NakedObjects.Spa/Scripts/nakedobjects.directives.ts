@@ -2,7 +2,6 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.viewmodels.ts" />
-/// <reference path="nakedobjects.app.ts" />
 /// <reference path="typings/moment/moment.d.ts"/>
 
 module NakedObjects {
@@ -409,7 +408,7 @@ module NakedObjects {
         element.attr("placeholder", fn(scope));
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any, attr: any) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any) => {
         scope.$on(geminiFocusEvent, (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
 
             $timeout(() => {
@@ -528,7 +527,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window: ng.IWindowService, $http : ng.IHttpService): ng.IDirective => {
+    app.directive("geminiAttachment", ($window: ng.IWindowService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -540,29 +539,26 @@ module NakedObjects {
                     return;
                 }
 
-                function downloadFile(avm: AttachmentViewModel, success: (resp: Blob) => void) {
-                    avm.downloadFile().then(blob => success(blob));
-                }
-
                 function displayInline(mt: string) {
                     return mt === "image/jpeg" ||
-                        mt === "image/gif" ||
-                        mt === "application/octet-stream";
+                           mt === "image/gif" ||
+                           mt === "application/octet-stream";
                 }
 
                 const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
-                    const url = attachment.href;
-                    const mt = attachment.mimeType;
-                    downloadFile(attachment, resp => {
-                        if (window.navigator.msSaveBlob) {
-                            // internet explorer 
-                            window.navigator.msSaveBlob(resp, attachment.title);
-                        } else {
-                            const burl = URL.createObjectURL(resp);
-                            $window.location.href = burl;
-                        }
-                    });
+
+                    attachment.downloadFile()
+                        .then(blob => {
+                            if (window.navigator.msSaveBlob) {
+                                // internet explorer 
+                                window.navigator.msSaveBlob(blob, attachment.title);
+                            } else {
+                                const burl = URL.createObjectURL(blob);
+                                $window.location.href = burl;
+                            }
+                        });
+
                     return false;
                 };
 
@@ -578,12 +574,12 @@ module NakedObjects {
 
                         const anchor = element.find("a");
                         if (displayInline(mt)) {
-
-                            downloadFile(attachment, resp => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
-                                reader.readAsDataURL(resp);
-                            });
+                            attachment.downloadFile()
+                                .then(blob => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
+                                    reader.readAsDataURL(blob);
+                                });
                         } else {
                             anchor.html(title);
                         }
@@ -650,7 +646,7 @@ module NakedObjects {
                     val = viewValue.value;
                 }
                 else if (viewValue instanceof Array) {
-                    if ((viewValue as any).length) {
+                    if (viewValue.length) {
                         return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => ctrl.$validators.geminiFieldmandatorycheck(v, v));
                     }
                     val = "";
