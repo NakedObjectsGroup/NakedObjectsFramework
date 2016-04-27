@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
@@ -179,5 +180,14 @@ namespace AdventureWorksModel {
         public string Validate(DateTime startDate, DateTime dueDate) {
             return startDate > dueDate ? "StartDate must be before DueDate" : null;
         }
+
+        // for testing 
+
+        [Hidden(WhenTo.Always)]
+        [NotMapped]
+        public virtual string AnAlawaysHiddenReadOnlyProperty {
+            get { return ""; }
+        }
+
     }
 }
