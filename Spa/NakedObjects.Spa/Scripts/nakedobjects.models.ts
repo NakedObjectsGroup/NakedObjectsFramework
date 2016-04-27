@@ -823,7 +823,22 @@ module NakedObjects.Models {
 
     }
 
+    export interface IHasExtensions {
+        extensions(): Extensions;
+    }
+
     // matches an action representation 18.0 
+
+    export interface IField extends IHasExtensions {
+        id(): string;
+        choices(): _.Dictionary<Value>;
+        isScalar(): boolean;
+        isCollectionContributed(): boolean;
+
+        entryType(): EntryType;
+        getPromptMap(): PromptMap;
+        promptLink(): Link;
+    }
 
     // matches 18.2.1
     export class Parameter
@@ -924,7 +939,7 @@ module NakedObjects.Models {
 
     // this interface guarantees that an action can be invoked. 
     // An ActionRepresentation is always invokable 
-    // An Actionmember is not 
+    // An ActionMember is not 
     export interface IInvokableAction extends IHasExtensions{
         parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation;
         actionId(): string;
@@ -1291,7 +1306,13 @@ module NakedObjects.Models {
             }
 
             if (toWrap.memberType === "action") { 
-                return new ActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+                const member = new ActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+
+                if (member.invokeLink()) {
+                    return new InvokableActionMember(toWrap as RoInterfaces.IActionMember, parent as DomainObjectRepresentation | MenuRepresentation | ListRepresentation, id);
+                }
+
+                return member;
             }
 
             return null;
@@ -1476,9 +1497,20 @@ module NakedObjects.Models {
 
         // 1.1 inlined 
 
-
         invokeLink(): Link {
             return linkByNamespacedRel(this.links(), "invoke");
+        }      
+
+        disabledReason(): string {
+            return this.wrapped().disabledReason;
+        }
+    }
+
+    export class InvokableActionMember extends ActionMember {
+
+        
+        constructor(wrapped: RoInterfaces.IActionMember,  parent: DomainObjectRepresentation | MenuRepresentation | ListRepresentation,  id: string) {
+            super(wrapped, parent, id);
         }
 
         getInvokeMap(): InvokeMap {
@@ -1505,12 +1537,9 @@ module NakedObjects.Models {
         parameters(): _.Dictionary<Parameter> {
             this.initParameterMap();
             return this.parameterMap;
-        }
-
-        disabledReason(): string {
-            return this.wrapped().disabledReason;
-        }
+        }    
     }
+
 
     export class DomainObjectRepresentation extends ResourceRepresentation<RoInterfaces.IDomainObjectRepresentation> implements IHasActions {
 
@@ -2151,25 +2180,4 @@ module NakedObjects.Models {
     }
 
     export enum EntryType {FreeForm, Choices, MultipleChoices, ConditionalChoices, MultipleConditionalChoices, AutoComplete}
-
-    //TODO: Review name (common capbilities of PropertyMember and Parameter)
-    export interface IField extends IHasExtensions {
-        id(): string;
-        choices(): _.Dictionary<Value>;
-        isScalar(): boolean;
-
-        //hasChoices(): boolean;
-        //hasPrompt(): boolean;
-        //isMultipleChoices(): boolean;
-        //hasConditionalChoices(): boolean;
-        isCollectionContributed(): boolean;
-
-        entryType(): EntryType;
-        getPromptMap(): PromptMap;
-        promptLink(): Link;
-    }
-
-    export interface IHasExtensions {
-        extensions(): Extensions;
-    }
 }

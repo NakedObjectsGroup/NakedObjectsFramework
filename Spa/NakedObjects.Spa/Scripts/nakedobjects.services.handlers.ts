@@ -73,7 +73,7 @@ module NakedObjects {
         const deRegDialog = [, new DeReg(), new DeReg()];
         const deRegObject = [, new DeReg(), new DeReg()];
 
-        function setDialog($scope: INakedObjectsScope, action: IInvokableAction | ActionViewModel, routeData: PaneRouteData) {
+        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionRepresentation | ActionViewModel, routeData: PaneRouteData) {
             deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
@@ -139,7 +139,7 @@ module NakedObjects {
 
                                 if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
-                                    context.getInvokableAction(action).then((details: IInvokableAction) =>  setDialog($scope, details, routeData));                                                    
+                                    context.getInvokableAction(action).then(details =>  setDialog($scope, details, routeData));                                                    
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
@@ -258,7 +258,7 @@ module NakedObjects {
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
                         focusTarget = FocusTarget.Dialog;
-                        context.getInvokableAction(action).then((details: IInvokableAction) => setDialog($scope, details, routeData));
+                        context.getInvokableAction(action).then(details => setDialog($scope, details, routeData));
                     } else if (routeData.actionsOpen) {
                         focusTarget = FocusTarget.SubAction;
                     } else if (ovm.isInEdit) {

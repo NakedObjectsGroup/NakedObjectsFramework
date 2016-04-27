@@ -27,6 +27,7 @@ module NakedObjects {
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -339,7 +340,9 @@ module NakedObjects {
     }
 
     export class ActionViewModel {
-        actionRep: ActionMember | ActionRepresentation | IInvokableAction;
+        actionRep: ActionMember | ActionRepresentation;
+        invokableActionRep : IInvokableAction; 
+
         menuPath: string;
         title: string;
         description: string;
@@ -374,7 +377,7 @@ module NakedObjects {
             this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], this.onPaneId));
 
             this.title = this.actionMember().extensions().friendlyName();
-            this.isQueryOnly = this.actionMember().invokeLink().method() === "GET";
+            this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.message = "";
             return this;
         }
@@ -535,8 +538,8 @@ module NakedObjects {
                         return allpps;
                     }
 
-                    if (a.actionRep.invokeLink()) {
-                        return wrappedInvoke(getParms(a.actionRep), right);
+                    if (a.invokableActionRep) {
+                        return wrappedInvoke(getParms(a.invokableActionRep), right);
                     }
 
                     return this.contextService.getActionDetails(a.actionRep as ActionMember).
@@ -811,7 +814,7 @@ module NakedObjects {
                         const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                         const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
 
-                        const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
+                        const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                         const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
                         return wrappedInvoke(allpps, right).
                             catch((reject: ErrorWrapper) => {

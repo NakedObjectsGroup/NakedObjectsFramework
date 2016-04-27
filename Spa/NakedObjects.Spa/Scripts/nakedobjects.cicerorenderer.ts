@@ -10,6 +10,7 @@ module NakedObjects {
     import PlusTitle = Models.typePlusTitle;
     import FriendlyNameForParam = Models.friendlyNameForParam;
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
 
     export interface ICiceroRenderer {
 
@@ -99,12 +100,12 @@ module NakedObjects {
             return _.filter(_.keys(routeData.collections), k => routeData.collections[k] != CollectionViewState.Summary);
         }
 
-        function renderActionDialogIfOpen(
-            repWithActions: IHasActions,
-            routeData: PaneRouteData): string {
+        function renderActionDialogIfOpen(repWithActions: IHasActions,
+                                          routeData: PaneRouteData): string {
             let output = "";
             if (routeData.dialogId) {
-                const actionMember = repWithActions.actionMember(routeData.dialogId);
+                // can safely downcast as we know we're in a dialog
+                const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
                 const actionName = actionMember.extensions().friendlyName();
                 output += `Action dialog: ${actionName}. `;
                 _.forEach(routeData.dialogFields, (value, key) => {

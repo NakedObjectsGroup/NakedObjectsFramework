@@ -40,6 +40,7 @@ module NakedObjects {
     import IHasExtensions = Models.IHasExtensions;
     import dirtyMarker = Models.dirtyMarker;
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -336,6 +337,12 @@ module NakedObjects {
             const paneId = routeData.paneId;
 
             actionViewModel.actionRep = actionRep;
+
+            if (actionRep instanceof ActionRepresentation || actionRep instanceof InvokableActionMember) {
+                actionViewModel.invokableActionRep = actionRep;
+            }
+
+
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => !!actionRep.disabledReason();
@@ -343,14 +350,14 @@ module NakedObjects {
 
             actionViewModel.parameters = () => {
                 // don't use actionRep directly as it may change and we've closed around the original value
-                const parameters = _.pickBy(actionViewModel.actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+                const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
                 return _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
             };
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-                return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
+                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, clickHandler.pane(paneId, right), parmMap));
             };
 
             // form actions should never show dialogs
@@ -376,7 +383,7 @@ module NakedObjects {
                     });
             };
 
-            actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.actionRep = details;
+            actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.invokableActionRep = details;
 
             return actionViewModel;
         };
@@ -1085,7 +1092,7 @@ module NakedObjects {
         mask: IMask): string {
         let output = "";
         if (routeData.dialogId) {
-            const actionMember = repWithActions.actionMember(routeData.dialogId);
+            const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
             const actionName = actionMember.extensions().friendlyName();
             output += `Action dialog: ${actionName}\n`;
             _.forEach(routeData.dialogFields, (value, paramId) => {

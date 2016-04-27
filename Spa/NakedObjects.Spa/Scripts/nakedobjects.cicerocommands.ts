@@ -28,6 +28,8 @@ module NakedObjects {
     import toDateString = Models.toDateString;
     import CollectionRepresentation = Models.CollectionRepresentation;
     import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    import IInvokableAction = NakedObjects.Models.IInvokableAction;
 
     export abstract class Command {
 
@@ -280,9 +282,7 @@ module NakedObjects {
             }
         }
 
-        protected matchingParameters(
-            action: ActionMember,
-            match: string): Parameter[] {
+        protected matchingParameters(action: InvokableActionMember, match: string): Parameter[] {
             let params = _.map(action.parameters(), p => p);
             if (match) {
                 params = this.matchFriendlyNameAndOrMenuPath(params, match);
@@ -1182,7 +1182,7 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
 
-            this.getActionForCurrentDialog().then((action: ActionMember) => {
+            this.getActionForCurrentDialog().then((action: IInvokableAction) => {
 
                 if (chained && action.invokeLink().method() !== "GET") {
                     this.mayNotBeChained(" unless the action is query-only");
