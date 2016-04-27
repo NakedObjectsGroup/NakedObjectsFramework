@@ -617,7 +617,7 @@ module NakedObjects {
             if (tableView) {
 
                 const getActionExtensions = routeData.objectId ?
-                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                    () => context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
                     () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
@@ -739,8 +739,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                    context.getListFromObject(routeData.paneId, routeData, routeData.page, routeData.pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
@@ -920,8 +920,9 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const [domainType, ...id] = routeData.objectId.split(keySeparator);
-                        context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                        const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+
+                        context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
                                 const openCollIds = openCollectionIds(routeData);
@@ -992,7 +993,7 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                        const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
                         listPromise.then((list: ListRepresentation) => {
                             context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                                 const count = list.value().length;

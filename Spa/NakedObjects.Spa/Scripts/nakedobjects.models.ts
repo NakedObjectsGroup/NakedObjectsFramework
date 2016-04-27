@@ -201,12 +201,20 @@ module NakedObjects.Models {
 
     // abstract classes 
 
+    function toOid(id: string[]) {
+        return _.reduce(id, (a, v) => `${a}${a ? keySeparator : ""}${v}`, "");
+    }
+
     export class ObjectIdWrapper {
 
         domainType: string;
         instanceId: string;
         splitInstanceId: string[];
+        isService : boolean;
 
+        getKey() {
+            return this.domainType + keySeparator + this.instanceId;
+        }
 
         static safeSplit(id: string) {
             if (id) {
@@ -220,15 +228,21 @@ module NakedObjects.Models {
             oid.domainType = object.domainType();
             oid.instanceId = object.instanceId();
             oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            oid.isService = !oid.instanceId;
             return oid;
         }
 
         static fromLink(link: Link) {
-            const oid = new ObjectIdWrapper();
             const href = link.href();
+            return this.fromHref(href);
+        }
+
+        static fromHref(href: string) {
+            const oid = new ObjectIdWrapper();
             oid.domainType = typeFromUrl(href);
             oid.instanceId = idFromUrl(href);
             oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            oid.isService = !oid.instanceId;
             return oid;
         }
 
@@ -238,6 +252,7 @@ module NakedObjects.Models {
             oid.domainType = dt;
             oid.splitInstanceId = id;
             oid.instanceId = toOid(id);
+            oid.isService = !oid.instanceId;
             return oid;
         }
 
@@ -246,6 +261,7 @@ module NakedObjects.Models {
             oid.domainType = dt;
             oid.instanceId = id;
             oid.splitInstanceId = this.safeSplit(oid.instanceId);
+            oid.isService = !oid.instanceId;
             return oid;
         }
 
@@ -254,6 +270,7 @@ module NakedObjects.Models {
             oid.domainType = dt;
             oid.splitInstanceId = id;
             oid.instanceId = toOid(id);
+            oid.isService = !oid.instanceId;
             return oid;
         }
     }

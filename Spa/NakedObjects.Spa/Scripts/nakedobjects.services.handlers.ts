@@ -159,7 +159,7 @@ module NakedObjects {
             const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
             const getActionExtensions = routeData.objectId ?
-            () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+            () => context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
             () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
 
@@ -230,7 +230,7 @@ module NakedObjects {
 
             const wasDirty = context.getIsDirty(oid); 
 
-            context.getObject(routeData.paneId, oid.domainType, oid.splitInstanceId, routeData.interactionMode).
+            context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);

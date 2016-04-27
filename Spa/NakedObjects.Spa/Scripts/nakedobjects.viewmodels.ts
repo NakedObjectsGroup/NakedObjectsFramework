@@ -576,8 +576,8 @@ module NakedObjects {
 
         private recreate = (page: number, pageSize: number) => {
             return this.routeData.objectId ?
-                this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state, page, pageSize) :
-                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state,  page, pageSize);
+                this.contextService.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
+                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData,  page, pageSize);
         };
 
         private pageOrRecreate = (newPage: number, newPageSize : number, newState?: CollectionViewState) => {

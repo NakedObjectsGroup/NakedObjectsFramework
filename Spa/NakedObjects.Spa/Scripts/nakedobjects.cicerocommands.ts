@@ -27,6 +27,7 @@ module NakedObjects {
     import isDateOrDateTime = Models.isDateOrDateTime;
     import toDateString = Models.toDateString;
     import CollectionRepresentation = Models.CollectionRepresentation;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export abstract class Command {
 
@@ -185,10 +186,10 @@ module NakedObjects {
         }
 
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
-            const oid = this.routeData().objectId;
+            const oid =  ObjectIdWrapper.fromObjectId(this.routeData().objectId);
             //TODO: Consider view model & transient modes?
 
-            return this.context.getObjectByOid(1, oid, this.routeData().interactionMode).then((obj: DomainObjectRepresentation) => {
+            return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: DomainObjectRepresentation) => {
                 if (this.routeData().interactionMode === InteractionMode.Edit) {
                     return this.context.getObjectForEdit(1, obj);
                 } else {
@@ -204,7 +205,7 @@ module NakedObjects {
         protected getList(): ng.IPromise<ListRepresentation> {
             const routeData = this.routeData();
             //TODO: Currently covers only the list-from-menu; need to cover list from object action
-            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+            return this.context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
         }
 
         protected isMenu(): boolean {

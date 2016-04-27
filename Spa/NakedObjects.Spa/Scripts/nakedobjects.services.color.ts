@@ -3,8 +3,8 @@
 /// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
- 
     export interface IColor {
 
         toColorNumberFromHref(href: string): ng.IPromise<number>;
@@ -27,9 +27,8 @@ module NakedObjects {
         let defaultColor = 0;
 
         function typeFromUrl(url: string): string {
-            const typeRegex = /(objects|services)\/([\w|\.]+)/;
-            const results = (typeRegex).exec(url);
-            return (results && results.length > 2) ? results[2] : "";
+            const oid = ObjectIdWrapper.fromHref(url);
+            return oid.domainType;
         }
 
         function isSubtypeOf(subtype: string, index: number, count: number): ng.IPromise<number> {

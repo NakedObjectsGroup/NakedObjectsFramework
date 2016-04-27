@@ -9,6 +9,7 @@ module NakedObjects {
     import TypePlusTitle = Models.typePlusTitle;
     import PlusTitle = Models.typePlusTitle;
     import FriendlyNameForParam = Models.friendlyNameForParam;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface ICiceroRenderer {
 
@@ -38,8 +39,9 @@ module NakedObjects {
 
         };
         renderer.renderObject = (routeData: PaneRouteData, cvm: CiceroViewModel) => {
-            const [domainType, ...id] = routeData.objectId.split(keySeparator);
-            context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+
+            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+            context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                 .then((obj: DomainObjectRepresentation) => {
                     let output = "";
                     const openCollIds = openCollectionIds(routeData);
@@ -70,7 +72,7 @@ module NakedObjects {
                 });
         };
         renderer.renderList = (routeData: PaneRouteData, cvm: CiceroViewModel) => {
-            const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+            const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
             listPromise.then((list: ListRepresentation) => {
                 const page = list.pagination().page;
                 const numPages = list.pagination().numPages;
