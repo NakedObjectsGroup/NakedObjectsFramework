@@ -91,7 +91,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Search For Orders");
             var details = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
-       }
+        }
         public virtual void RefChoicesParmKeepsValue()
         {
             Url(ProductServiceUrl);
@@ -106,9 +106,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-            var selected = new SelectElement(WaitForCss("select#subcategories1"));
 
-            Assert.AreEqual(2, selected.AllSelectedOptions.Count);
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+            var selected = new SelectElement(WaitForCss("select#subcategories1"));
+            //Assert.AreEqual(2, selected.AllSelectedOptions.Count);
             Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.ElementAt(0).Text);
             Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.ElementAt(1).Text);
 
@@ -118,15 +119,24 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void MultipleRefChoicesChangeDefaults()
         {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
-            WaitForCss(".value  select").SendKeys("Road Bikes");
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+            var selected = new SelectElement(WaitForCss("select#subcategories1"));
+            //Assert.AreEqual(2, selected.AllSelectedOptions.Count);
+            Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.ElementAt(0).Text);
+            Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.ElementAt(1).Text);
+
+            br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
+
             IKeyboard kb = ((IHasInputDevices)br).Keyboard;
-
             kb.PressKey(Keys.Control);
-            br.FindElement(By.CssSelector(".value  select option[label='Touring Bikes']")).Click();
+            br.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
             kb.ReleaseKey(Keys.Control);
-
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
             wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
@@ -159,12 +169,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("HL Road Frame - Black, 58");
         }
-        public virtual void ConditionalChoices() {
+        public virtual void ConditionalChoices()
+        {
             GeminiUrl("home?m1=ProductRepository");
             WaitForView(Pane.Single, PaneType.Home);
             OpenActionDialog("List Products");
             SelectDropDownOnField("#category1", "Clothing");
-                var x = new SelectElement(WaitForCss("#subcategory1")).Options;
+            var x = new SelectElement(WaitForCss("#subcategory1")).Options;
 
             wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
 
@@ -175,7 +186,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Missing mandatory fields: Sub Category; ", msg);
 
             SelectDropDownOnField("#subcategory1", "Bike Racks");
-             msg = OKButton().AssertIsEnabled ().GetAttribute("title");
+            msg = OKButton().AssertIsEnabled().GetAttribute("title");
             Assert.AreEqual("", msg);
 
 
@@ -270,7 +281,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
             WaitForView(Pane.Single, PaneType.Object, "SO54461");
             ClearFieldThenType("#comment1", "parc");
-            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count ==2);
+            wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count == 2);
         }
         #endregion
         #region Parameter validation
@@ -308,6 +319,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection")).Count == 2);
+            Thread.Sleep(1000);
             SelectDropDownOnField("#reason1", "Price");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
@@ -456,8 +468,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-            // [TestClass, Ignore]
-        public class DialogTestsIe : DialogTests
+    // [TestClass, Ignore]
+    public class DialogTestsIe : DialogTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -479,7 +491,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    // [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

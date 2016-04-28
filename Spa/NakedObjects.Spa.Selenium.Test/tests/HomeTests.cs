@@ -43,29 +43,27 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GoToMenuFromHomePage("Customers");
             OpenSubMenu("Stores");
             OpenSubMenu("Individuals");
-            var actions = WaitForCss(".actions .action", CustomerServiceActions);
-            Assert.AreEqual(10, actions.Count);
-            Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
-            Assert.AreEqual("Find Store By Name", actions[1].Text);
-            Assert.AreEqual("Create New Store Customer", actions[2].Text);
-            Assert.AreEqual("Random Store", actions[3].Text);
-            Assert.AreEqual("Find Individual Customer By Name", actions[4].Text);
-            Assert.AreEqual("Create New Individual Customer", actions[5].Text);
-            Assert.AreEqual("Random Individual", actions[6].Text);
-            Assert.AreEqual("Customer Dashboard", actions[7].Text);
-            Assert.AreEqual("Throw Domain Exception", actions[8].Text);
-            Assert.AreEqual("Find Customer", actions[9].Text);
+            AssertAction(0,"Find Customer By Account Number");
+            AssertAction(1,"Find Store By Name");
+            AssertAction(2,"Create New Store Customer");
+            AssertAction(3,"Random Store");
+            AssertAction(4,"Find Individual Customer By Name");
+            AssertAction(5,"Create New Individual Customer");
+            AssertAction(6,"Random Individual");
+            AssertAction(7,"Customer Dashboard");
+            AssertAction(8,"Throw Domain Exception");
+            AssertAction(9,"Find Customer");
 
 
             GoToMenuFromHomePage("Sales");
-            actions = WaitForCss(".actions .action", 4); ;
-            Assert.AreEqual("Create New Sales Person", actions[0].Text);
-            Assert.AreEqual("Find Sales Person By Name", actions[1].Text);
-            Assert.AreEqual("List Accounts For Sales Person", actions[2].Text);
-            Assert.AreEqual("Random Sales Person", actions[3].Text);
+            AssertAction(0, "Create New Sales Person");
+            AssertAction(1, "Find Sales Person By Name");
+            AssertAction(2, "List Accounts For Sales Person");
+            AssertAction(3, "Random Sales Person");
 
             //AssertHasFocus(actions[0]);
         }
+
 
         public virtual void OpenAndCloseSubMenus()
         {

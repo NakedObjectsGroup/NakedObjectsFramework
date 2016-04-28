@@ -131,10 +131,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void RequestForExpiredTransient()
         {
             GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
-            string title = WaitForCss(".title").Text;
-            Assert.AreEqual(
-                "The requested view of unsaved object details has expired.",
-                title);
+            wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
         }
 
         public virtual void ConditionalChoicesOnTransient()

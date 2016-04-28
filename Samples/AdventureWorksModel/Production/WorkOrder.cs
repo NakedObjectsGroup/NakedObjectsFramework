@@ -189,5 +189,9 @@ namespace AdventureWorksModel {
             get { return ""; }
         }
 
+        public void ChangeScrappedQuantity(short newQty)
+        {
+            this.ScrappedQty = newQty;
+        }
     }
 }

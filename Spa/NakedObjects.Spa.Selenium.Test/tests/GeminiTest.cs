@@ -141,9 +141,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected virtual void Click(IWebElement element)
         {
-            element.AssertIsEnabled();
+            WaitUntilEnabled(element);
             ScrollTo(element);
             element.Click();
+        }
+
+        protected void WaitUntilEnabled(IWebElement element)
+        {
+            wait.Until(dr => element.GetAttribute("disabled") == null);
         }
 
 
@@ -486,6 +491,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             return br.FindElements(By.CssSelector(selector));
         }
 
+        protected void AssertAction(int number, string actionName)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action"))[number].Text == actionName);
+        }
+
         protected virtual void AssertActionNotDisplayed(string action)
         {
             wait.Until(dr => dr.FindElements(By.CssSelector(".actions .action")).FirstOrDefault(el => el.Text == action) == null);
@@ -503,17 +513,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
             return action;
         }
 
-        protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single)
+        protected IWebElement OpenActionDialog(string actionName, Pane pane = Pane.Single, int? noOfParams = null)
         {
             Click(GetObjectAction(actionName, pane));
-            var selector = CssSelectorFor(pane) + " .dialog ";
-            var dialog = wait.Until(d => d.FindElement(By.CssSelector(selector)));
-
-            Assert.AreEqual(actionName, WaitForCss(selector + "> .title").Text);
+            var dialogSelector = CssSelectorFor(pane) + " .dialog ";
+            wait.Until(d => d.FindElement(By.CssSelector(dialogSelector+ "> .title")).Text == actionName);
             //Check it has OK & cancel buttons
-            wait.Until(d => br.FindElement(By.CssSelector(selector + ".ok")));
-            wait.Until(d => br.FindElement(By.CssSelector(selector + ".cancel")));
-            return dialog;
+            wait.Until(d => br.FindElement(By.CssSelector(dialogSelector + ".ok")));
+            wait.Until(d => br.FindElement(By.CssSelector(dialogSelector + ".cancel")));
+            //Wait for params if required
+            if (noOfParams != null)
+            {
+                wait.Until(dr => dr.FindElements(By.CssSelector(dialogSelector +" .parameter")).Count ==noOfParams.Value);
+            }
+            return WaitForCss(dialogSelector);
+        }
+
+        protected IWebElement GetInputNumber(IWebElement dialog, int no)
+        {
+            wait.Until(dr => dialog.FindElements(By.CssSelector(".parameter .value input")).Count >= no+1);
+            return dialog.FindElements(By.CssSelector(".parameter .value input"))[no];
         }
 
         protected IWebElement OKButton()

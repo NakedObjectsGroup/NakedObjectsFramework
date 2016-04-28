@@ -193,8 +193,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("home");
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             OpenSubMenu("Orders");
-            var dialog = OpenActionDialog("Search For Orders");
-
+            var dialog = OpenActionDialog("Search For Orders", Pane.Single, 2);
+            GetInputNumber(dialog, 0).SendKeys("1 Jan 2003");
+            GetInputNumber(dialog, 1).SendKeys("1 Dec 2003" + Keys.Escape);
             dialog.FindElements(By.CssSelector(".parameter .value input"))[0].SendKeys("1 Jan 2003");
             dialog.FindElements(By.CssSelector(".parameter .value input"))[1].SendKeys("1 Dec 2003" + Keys.Escape);
             Click(OKButton());
@@ -402,7 +403,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
