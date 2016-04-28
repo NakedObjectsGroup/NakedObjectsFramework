@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Spa</id>
-    <version>8.0.0-beta1</version>
+    <version>8.0.0-beta2</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -15,17 +15,17 @@
     <description>Single Page Application client for a Naked Objects application.</description>
     <dependencies>
       <dependency id="AngularJS.Core" version="[1.5.0, 2)" />
-      <dependency id="AngularJS.Route" version="[1.5.0, 2)"  />
-      <dependency id="AngularJS.Touch" version="[1.5.0, 2)"  />
-      <dependency id="angularjs.TypeScript.DefinitelyTyped" version="[4.1.9, 5)"  />
-      <dependency id="jQuery" version="[2.1.4, 3)"  />
-      <dependency id="jquery.TypeScript.DefinitelyTyped" version="[2.2.8, 3)"  />
-      <dependency id="jQuery.UI.Combined" version="[1.11.4, 2)"  />
-      <dependency id="lodash" version="[4.6.0, 5)"  />
-      <dependency id="lodash.TypeScript.DefinitelyTyped" version="[2.2.7, 3)"  />
+      <dependency id="AngularJS.Route" version="[1.5.0, 2)" />
+      <dependency id="AngularJS.Touch" version="[1.5.0, 2)" />
+      <dependency id="angularjs.TypeScript.DefinitelyTyped" version="[4.1.9, 5)" />
+      <dependency id="jQuery" version="[2.1.4, 3)" />
+      <dependency id="jquery.TypeScript.DefinitelyTyped" version="[2.2.8, 3)" />
+      <dependency id="jQuery.UI.Combined" version="[1.11.4, 2)" />
+      <dependency id="lodash" version="[4.6.0, 5)" />
+      <dependency id="lodash.TypeScript.DefinitelyTyped" version="[2.2.7, 3)" />
       <dependency id="Microsoft.TypeScript.MSBuild" version="[1.8.6, 2)" />
-      <dependency id="Moment.js" version="[2.12.0, 3)"  />
-      <dependency id="moment.TypeScript.DefinitelyTyped" version="[1.7.6, 2)"  />
+      <dependency id="Moment.js" version="[2.12.0, 3)" />
+      <dependency id="moment.TypeScript.DefinitelyTyped" version="[1.7.6, 2)" />
     </dependencies>
   </metadata>
   <files>

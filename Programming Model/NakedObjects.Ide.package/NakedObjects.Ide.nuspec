@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Ide</id>
-    <version>8.0.0-beta1</version>
-      <authors>Naked Objects Group Ltd</authors>
+    <version>8.0.0-beta2</version>
+    <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>

@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Core</id>
-    <version>8.0.0-beta1</version>
+    <version>8.0.0-beta2</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-<summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+    <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
     <description>
   This package is typically used indirectly e.g. by the NakedObjects.Run</description>
     <tags>naked objects nakedobjects ddd domain driven design</tags>

@@ -226,7 +226,8 @@ param($rootPath, $toolsPath, $package, $project)
 	nakedobjects.rest            
 	nakedobjects.facade.impl 
 	nakedobjects.facade        
-	nakedobjects.spa   
+	nakedobjects.spa
+	nakedobjects.run    
 
 	.PARAMETER NewVersion
 
@@ -249,7 +250,8 @@ param($rootPath, $toolsPath, $package, $project)
 							 "nakedobjects.rest",                       
 							 "nakedobjects.facade.impl",     
 							 "nakedobjects.facade",          
-							 "nakedobjects.spa"     
+							 "nakedobjects.spa",
+					  		 "nakedobjects.run"   
 	
 		if (!($Package -is [string])){
 			return "package must be string";
