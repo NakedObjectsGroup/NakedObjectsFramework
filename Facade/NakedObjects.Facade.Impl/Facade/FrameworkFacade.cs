@@ -504,20 +504,26 @@ namespace NakedObjects.Facade.Impl {
             return context;
         }
 
+        private static bool IsVisibleAndUsable(PropertyContext context) {
+            var property = (IOneToOneAssociationSpec)context.Property;
+            return property.IsVisible(context.Target) && property.IsUsable(context.Target).IsAllowed;
+        }
+
+
         private PropertyContext CanSetProperty(INakedObjectAdapter nakedObject, string propertyName, object toPut = null) {
             PropertyContext context = GetProperty(nakedObject, propertyName, false);
             context.ProposedValue = toPut;
             var property = (IOneToOneAssociationSpec)context.Property;
 
-            if (property.IsVisible(context.Target) && property.IsUsable(context.Target).IsAllowed) {
-                if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
+            if (toPut != null && ConsentHandler(CanSetPropertyValue(context), context, Cause.WrongType)) {
+                if (IsVisibleAndUsable(context)) {
                     ConsentHandler(property.IsAssociationValid(context.Target, context.ProposedNakedObject), context, Cause.Other);
                 }
-                else if (toPut == null && property.IsMandatory) {
-                    // only check user editable fields
-                    context.Reason = "Mandatory";
-                    context.ErrorCause = Cause.Other;
-                }
+            }
+            else if (toPut == null && property.IsMandatory && IsVisibleAndUsable(context)) {
+                // only check user editable fields
+                context.Reason = "Mandatory";
+                context.ErrorCause = Cause.Other;
             }
 
             return context;

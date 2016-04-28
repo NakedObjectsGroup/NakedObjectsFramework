@@ -220,17 +220,14 @@ type CNof4TestsDomainType() =
         // 
         // [<Test>]
         // member x.PersistWithValueTransientObjectFormalOnly() = Objects9.PersistWithValueTransientObjectFormalOnly x.api
-        [<Test>]
-        [<Ignore>] // temp ignore untill fix persist id
+        [<Test>]        
         member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
         
         [<Test>]
         member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
         
-        [<Test>]
-        [<Ignore>]
-         // temp ignore untill fix persist id
-         member x.PersistWithValueTransientObjectValidateOnly() = 
+        [<Test>]        
+        member x.PersistWithValueTransientObjectValidateOnly() = 
             Objects9.PersistWithValueTransientObjectValidateOnly x.api
         
         [<Test>]
@@ -246,7 +243,6 @@ type CNof4TestsDomainType() =
             Objects9.PersistWithValueTransientObjectValidateOnlyFail x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore untill fix persist id
         member x.PersistWithReferenceTransientObjectValidateOnlyFail() = 
             Objects9.PersistWithReferenceTransientObjectValidateOnlyFail x.api
         
@@ -266,11 +262,9 @@ type CNof4TestsDomainType() =
             Objects9.PersistWithValueTransientObjectFailInvalid x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore untill fix persist id
         member x.PersistWithReferenceTransientObjectFail() = Objects9.PersistWithReferenceTransientObjectFail x.api
         
         [<Test>]
-        [<Ignore>] // temp ignore untill fix persist id
         member x.PersistWithReferenceTransientObjectFailInvalid() = 
             Objects9.PersistWithReferenceTransientObjectFailInvalid x.api
         
