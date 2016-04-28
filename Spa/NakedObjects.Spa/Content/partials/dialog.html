@@ -46,7 +46,7 @@
                     <!--"EntryType.FreeForm"-->
                     <div ng-switch-when="0">
                         <div tabindex="0" class="value droppable" ng-model="$parent.parameter.choice" ng-class="parameter.color" gemini-drop gemini-fieldmandatorycheck>
-                            {{parameter.value}}
+                            {{parameter.value || parameter.description}}
                         </div>
                     </div>
 

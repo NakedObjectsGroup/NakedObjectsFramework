@@ -42,8 +42,8 @@
                         </select>
 
                         <!--"EntryType.FreeForm"-->
-                        <div ng-switch-when="0" tabindex="0" class="value droppable" ng-model="$parent.property.choice" ng-class="property.color" gemini-drop gemini-fieldmandatorycheck>
-                            {{property.value}}
+                        <div ng-switch-when="0" tabindex="0" class="value droppable" ng-model="$parent.property.choice" ng-class="property.color" placeholder="{{property.description}}" gemini-drop gemini-fieldmandatorycheck>
+                            {{property.value || property.description}}
                         </div>
                     </div>
                 </div>

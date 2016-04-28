@@ -214,7 +214,7 @@ module NakedObjects {
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
             const required = parmViewModel.optional ? "" : "* ";
-            parmViewModel.description = required + parmRep.extensions().description();
+            parmViewModel.description = parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
@@ -249,6 +249,11 @@ module NakedObjects {
                         then(createcvm);
                 };
                 parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
+                parmViewModel.description = parmViewModel.description || autoCompletePrompt;
+            }
+
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
+                parmViewModel.description = parmViewModel.description || dropPrompt;
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
@@ -325,6 +330,8 @@ module NakedObjects {
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
             parmViewModel.drop = _.partial(drop, parmViewModel);
+
+            parmViewModel.description = required + parmViewModel.description;
 
             return parmViewModel;
         };
@@ -453,6 +460,9 @@ module NakedObjects {
                 vm.formattedValue = value.toString();
                 vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
             }
+            if (vm.entryType === EntryType.FreeForm) {
+                vm.description = vm.description || dropPrompt;
+            }
         }
 
         viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember, id: string,  paneId: number) => {
@@ -532,7 +542,7 @@ module NakedObjects {
             propertyViewModel.clientValid = true;
 
             const required = propertyViewModel.optional ? "" : "* ";
-            propertyViewModel.description = required + propertyRep.extensions().description();
+            propertyViewModel.description = propertyRep.extensions().description();
 
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
@@ -558,6 +568,7 @@ module NakedObjects {
                     return context.autoComplete(propertyRep, id, parentValues, searchTerm).then(createcvm);
                 };
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
+                propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
             }
 
             if (propertyRep.entryType() === EntryType.ConditionalChoices) {
@@ -606,11 +617,15 @@ module NakedObjects {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
 
+            propertyViewModel.description = required + propertyViewModel.description;
+
             propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
             propertyViewModel.validate = _.partial(validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
             propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
             propertyViewModel.drop = _.partial(drop, propertyViewModel);
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
+
+
 
             return propertyViewModel;
         };

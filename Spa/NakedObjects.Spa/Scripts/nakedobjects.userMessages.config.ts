@@ -30,6 +30,8 @@ module NakedObjects {
     export const unknownCollectionSize = "Unknown Size";
     export const emptyCollectionSize = "Empty";
     export const noItemsSelected = "Must select items for collection contributed action";
+    export const dropPrompt = "Drop here";
+    export const autoCompletePrompt = "AutoComplete";
 
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
