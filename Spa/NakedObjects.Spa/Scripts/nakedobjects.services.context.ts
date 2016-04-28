@@ -584,6 +584,10 @@ module NakedObjects {
                         context.setObject(paneId, resultObject);
                         urlManager.setObject(resultObject, paneId);
 
+                        // update angular cache 
+                        const url = resultObject.selfLink().href() + `?${roInlinePropertyDetails}=false`;
+                        repLoader.addToCache(url, resultObject.wrapped());
+
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
