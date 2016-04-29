@@ -394,7 +394,8 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+        setParms = () =>
+            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 

@@ -500,7 +500,10 @@ module NakedObjects {
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel> ui.draggable.data(draggableVmKey);
 
-                droppableScope.$apply(() => droppableVm.drop(draggableVm));
+                droppableScope.$apply(() => {
+                    droppableVm.drop(draggableVm);
+                    $(element).change();
+                });         
             }
         });
 

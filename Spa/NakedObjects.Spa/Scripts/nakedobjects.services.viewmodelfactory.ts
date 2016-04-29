@@ -254,6 +254,13 @@ module NakedObjects {
 
             if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
                 parmViewModel.description = parmViewModel.description || dropPrompt;
+
+                const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
+
+                if (!val.isNull()) {
+                    parmViewModel.reference = val.link().href();
+                    parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                }
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
