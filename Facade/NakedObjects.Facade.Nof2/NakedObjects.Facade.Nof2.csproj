@@ -56,27 +56,28 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.3.3.0\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.Core.3.3.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nakedobjects.net, Version=2.1.3910.26471, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\..\..\nof2-standalone\lib\nakedobjects.net.dll</HintPath>
+    <Reference Include="nakedobjects.net">
+      <HintPath>lib\nakedobjects.net.dll</HintPath>
     </Reference>
     <Reference Include="sdm.systems.application">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.systems.application.dll</HintPath>
+      <HintPath>lib\sdm.systems.application.dll</HintPath>
     </Reference>
     <Reference Include="sdm.systems.reflector">
-      <HintPath>..\..\..\nof2-standalone\lib\sdm.systems.reflector.dll</HintPath>
+      <HintPath>lib\sdm.systems.reflector.dll</HintPath>
     </Reference>
-    <Reference Include="Spring.Core, Version=1.0.1.0, Culture=neutral">
-      <HintPath>..\..\..\nof2-standalone\lib\Spring.Core.dll</HintPath>
+    <Reference Include="Spring.Core">
+      <HintPath>lib\Spring.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

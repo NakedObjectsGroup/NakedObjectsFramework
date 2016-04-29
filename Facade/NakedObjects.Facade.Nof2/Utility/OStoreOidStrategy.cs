@@ -19,6 +19,10 @@ namespace NakedObjects.Facade.Nof2.Utility {
             throw new NotImplementedException();
         }
 
+        public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
+            throw new NotImplementedException();
+        }
+
         public object GetServiceByServiceName(IOidTranslation serviceName) {
             throw new NotImplementedException();
         }

@@ -121,6 +121,7 @@ namespace NakedObjects.Facade.Nof2 {
 
         public IActionFacade MementoAction { get; private set; }
         public string EnumIntegralValue { get; private set; }
+        public string PresentationHint { get; }
         public bool IsPaged { get; private set; }
 
         public IOidFacade Oid {

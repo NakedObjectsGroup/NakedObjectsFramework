@@ -42,6 +42,10 @@ namespace NakedObjects.Facade.Nof2.Utility {
             return results.elementAt(0).getObject();
         }
 
+        public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
+            throw new NotImplementedException();
+        }
+
         public object GetServiceByServiceName(IOidTranslation serviceName) {
             Type type = ValidateServiceId(serviceName);
 

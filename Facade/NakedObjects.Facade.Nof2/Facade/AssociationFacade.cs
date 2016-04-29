@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedObjects.Facade.Contexts;
 using org.nakedobjects.@object;
@@ -64,6 +65,8 @@ namespace NakedObjects.Facade.Nof2 {
             get { return false; }
         }
 
+        public bool NotNavigable { get; }
+
         public IDictionary<string, object> ExtensionData {
             get { return null; }
         }
@@ -107,13 +110,14 @@ namespace NakedObjects.Facade.Nof2 {
             get { return new TypeFacade(assoc.getSpecification(), target, FrameworkFacade); }
         }
 
+        Choices IFieldFacade.IsChoicesEnabled {
+            get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
+        }
+
         public ITypeFacade ElementSpecification {
             get { return new TypeFacade(org.nakedobjects.@object.NakedObjects.getSpecificationLoader().loadSpecification(typeof (object).FullName), null, FrameworkFacade); }
         }
 
-        Choices IAssociationFacade.IsChoicesEnabled {
-            get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
-        }
 
         public bool IsAutoCompleteEnabled {
             get { return false; }
@@ -127,6 +131,8 @@ namespace NakedObjects.Facade.Nof2 {
         public bool IsAjax { get; private set; }
         public bool IsNullable { get; private set; }
         public bool IsPassword { get; private set; }
+        public bool IsDateOnly { get; }
+        public DataType? DataType { get; }
         public bool DoNotCount { get; private set; }
         public bool RenderEagerly { get; private set; }
         public int NumberOfLines { get; private set; }

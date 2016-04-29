@@ -69,6 +69,10 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             throw new NotImplementedException();
         }
 
+        MenuContextFacade IFrameworkFacade.GetMainMenus() {
+            throw new NotImplementedException();
+        }
+
         public IMenuFacade[] GetMainMenus() {
             throw new NotImplementedException();
         }
@@ -101,6 +105,14 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         }
 
         public ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments) {
+            throw new NotImplementedException();
+        }
+
+        public PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName) {
+            throw new NotImplementedException();
+        }
+
+        public ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) {
             throw new NotImplementedException();
         }
 
@@ -218,6 +230,14 @@ namespace NakedObjects.Facade.Nof2.Implementation {
             return MapErrors(() => CreateObject(typeName, arguments));
         }
 
+        public ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments) {
+            throw new NotImplementedException();
+        }
+
+        public ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments) {
+            throw new NotImplementedException();
+        }
+
         public UserCredentials Validate(string user, string password) {
             // HACK: hard-coded for now...
             return new UserCredentials("WELFARE\\sdmtraining3", password, new List<string>());
@@ -232,6 +252,10 @@ namespace NakedObjects.Facade.Nof2.Implementation {
         }
 
         public object Wrap(object arm, IObjectFacade objectFacade) {
+            throw new NotImplementedException();
+        }
+
+        public void Inject(object toInject) {
             throw new NotImplementedException();
         }
 

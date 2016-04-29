@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Nof2.Contexts;
 using org.nakedobjects.@object;
+using System.ComponentModel.DataAnnotations;
 
 namespace NakedObjects.Facade.Nof2 {
     public class ActionParameterFacade : IActionParameterFacade {
@@ -34,6 +35,10 @@ namespace NakedObjects.Facade.Nof2 {
             get { return new TypeFacade(nakedObjectActionParameter.getSpecification(), target, FrameworkFacade); }
         }
 
+        Choices IFieldFacade.IsChoicesEnabled {
+            get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
+        }
+
         public ITypeFacade ElementType { get; private set; }
 
         public IActionFacade Action {
@@ -44,9 +49,7 @@ namespace NakedObjects.Facade.Nof2 {
             get { return nakedObjectActionParameter.getId(); }
         }
 
-        Choices IActionParameterFacade.IsChoicesEnabled {
-            get { return IsChoicesEnabled ? Choices.Single : Choices.NotEnabled; }
-        }
+       
 
         public bool IsAutoCompleteEnabled {
             get { return false; }
@@ -61,6 +64,8 @@ namespace NakedObjects.Facade.Nof2 {
         public bool IsAjax { get; private set; }
         public bool IsNullable { get; private set; }
         public bool IsPassword { get; private set; }
+        public bool IsDateOnly { get; }
+        public DataType? DataType { get; }
         public bool IsFindMenuEnabled { get; private set; }
 
         public IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
