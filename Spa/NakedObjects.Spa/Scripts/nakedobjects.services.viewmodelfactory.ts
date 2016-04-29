@@ -213,7 +213,7 @@ module NakedObjects {
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
-            const required = parmViewModel.optional ? "" : "* ";
+            let required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
@@ -313,7 +313,8 @@ module NakedObjects {
 
                     parmViewModel.value = bValueToSet;
                     if (bValueToSet !== null) {
-                        parmViewModel.description = parmRep.extensions().description();
+                        // reset required indicator
+                        required = "";
                     }
 
                 } else if (IsDateOrDateTime(parmRep)) {
