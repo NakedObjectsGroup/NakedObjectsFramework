@@ -955,9 +955,11 @@ module NakedObjects {
         goBack: () => void;
         goForward: () => void;
         swapPanes: () => void;
+        logOff: () => void;
         singlePane: (right?: boolean) => void;
         recent: (right?: boolean) => void;
         cicero: () => void;
+        userName : string;
 
         warnings: string[];
         messages: string[];

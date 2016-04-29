@@ -86,7 +86,8 @@ module NakedObjects {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route: any) {
+        $route: any,
+        $window : any) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -876,6 +877,11 @@ module NakedObjects {
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
 
+                tvm.logOff = () => {
+                    $location.path("/");
+                    $timeout(() => $window.location.reload());
+                };
+
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 
@@ -896,6 +902,8 @@ module NakedObjects {
                     focusManager.focusOverrideOff();
                     navigation.forward();
                 });
+
+                context.getUser().then(user => tvm.userName = user.userName());
 
                 cachedToolBarViewModel = tvm;
             }

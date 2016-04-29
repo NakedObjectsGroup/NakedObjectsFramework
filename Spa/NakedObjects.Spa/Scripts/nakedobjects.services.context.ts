@@ -32,12 +32,14 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    import UserRepresentation = NakedObjects.Models.UserRepresentation;
 
     export interface IContext {
 
         getCachedList: (paneId: number, page: number, pageSize: number) => ListRepresentation;
         clearCachedList: (paneId: number, page: number, pageSize: number) => void;
 
+        getUser: () => ng.IPromise<UserRepresentation>;
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
@@ -212,6 +214,7 @@ module NakedObjects {
         let currentServices: DomainServicesRepresentation = null;
         let currentMenus: MenusRepresentation = null;
         let currentVersion: VersionRepresentation = null;
+        let currentUser: UserRepresentation = null;
 
         const recentcache = new RecentCache();
         const dirtyCache = new DirtyCache();
@@ -413,6 +416,23 @@ module NakedObjects {
                 then((version: VersionRepresentation) => {
                     currentVersion = version;
                     return $q.when(version);
+                });
+        };
+
+        context.getUser = () => {
+
+            if (currentUser) {
+                return $q.when(currentUser);
+            }
+
+            return context.getHome().
+                then((home: HomePageRepresentation) => {
+                    const u = home.getUser();
+                    return repLoader.populate<UserRepresentation>(u);
+                }).
+                then((user: UserRepresentation) => {
+                    currentUser = user;
+                    return $q.when(user);
                 });
         };
 
