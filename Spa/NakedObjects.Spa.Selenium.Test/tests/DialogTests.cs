@@ -96,6 +96,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
+            Thread.Sleep(500);
             SelectDropDownOnField("#subcategory1", "Forks");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
@@ -120,10 +121,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
-            var selected = new SelectElement(WaitForCss("select#subcategories1"));
-            //Assert.AreEqual(2, selected.AllSelectedOptions.Count);
-            Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.ElementAt(0).Text);
-            Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.ElementAt(1).Text);
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
 
             br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
@@ -298,13 +297,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
-            var qty = WaitForCss("input#quantity1");
-            qty.SendKeys("0");
+            //var qty = WaitForCss("input#quantity1");
+            //qty.SendKeys("0");
+            ClearFieldThenType("#quantity1", "0");
             Click(OKButton());
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Quantity must be > 0", validation.Text);
-            qty = WaitForCss("input#quantity1");
+
+            var qty = WaitForCss("input#quantity1");
             qty.SendKeys(Keys.Backspace + "1");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
@@ -489,7 +490,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

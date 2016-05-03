@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -79,7 +80,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?i1=Edit&o1=___1.Product--817");
             WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
-
+            wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
+            Thread.Sleep(500);
             ClearFieldThenType("#daystomanufacture1", "0");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
                 .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);

@@ -194,8 +194,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             var input = WaitForCss(cssFieldId);
             input.SendKeys(Keys.Control + "a");
+            Thread.Sleep(100);
             input.SendKeys(Keys.Delete);
-            wait.Until(dr => input.GetAttribute("value") == "");
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
             input.SendKeys(characters);
         }
         protected virtual void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
