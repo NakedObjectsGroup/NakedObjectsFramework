@@ -97,7 +97,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
             SelectDropDownOnField("#subcategory1", "Forks");
-            Thread.Sleep(500);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
@@ -329,6 +328,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
             wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#qtyintostock1")).GetAttribute("value") == "550");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");
@@ -489,7 +489,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
