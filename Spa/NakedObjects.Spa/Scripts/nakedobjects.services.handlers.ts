@@ -86,10 +86,11 @@ module NakedObjects {
 
             deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
             deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
+
+            dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
         }
 
         let versionValidated = false;
-
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
             color.toColorNumberFromHref($location.absUrl()).then((c: number) => {

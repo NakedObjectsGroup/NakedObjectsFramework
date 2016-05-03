@@ -388,6 +388,8 @@ module NakedObjects {
         isQueryOnly: boolean;
         onPaneId: number;
 
+        deregister: () => void; 
+
         actionViewModel: ActionViewModel;
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
@@ -427,10 +429,16 @@ module NakedObjects {
                     this.context.handleWrappedError(reject, parent, () => { }, display);
                 });
 
-        doClose = () => this.urlManager.closeDialog(this.onPaneId);
+        doClose = () => {
+            this.deregister();
+            this.urlManager.closeDialog(this.onPaneId);
+        }
 
-        doCancel = () => this.urlManager.cancelDialog(this.onPaneId);
-       
+        doCancel = () => {
+            this.deregister();
+            this.urlManager.cancelDialog(this.onPaneId);
+        }
+
         clearMessages = () => {
             this.message = "";
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
