@@ -106,12 +106,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Categories");
 
-
-            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
-            var selected = new SelectElement(WaitForCss("select#subcategories1"));
-            //Assert.AreEqual(2, selected.AllSelectedOptions.Count);
-            Assert.AreEqual("Mountain Bikes", selected.AllSelectedOptions.ElementAt(0).Text);
-            Assert.AreEqual("Touring Bikes", selected.AllSelectedOptions.ElementAt(1).Text);
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
+            wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
 
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
@@ -331,6 +327,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
             ClearFieldThenType("#qtyreceived1", "100");
             ClearFieldThenType("#qtyrejected1", "50");
             ClearFieldThenType("#qtyintostock1", "49");
@@ -491,7 +488,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    // [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

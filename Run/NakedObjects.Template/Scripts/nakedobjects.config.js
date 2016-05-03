@@ -27,5 +27,8 @@ var NakedObjects;
     NakedObjects.keySeparator = "--"; //Do not change this unless you change the Restful API configuration to match
     NakedObjects.objectColor = "object-color";
     NakedObjects.linkColor = "link-color";
+
+    export const autoLoadDirty = true;
+    export const showDirtyFlag = false || !autoLoadDirty;
+
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.config.js.map

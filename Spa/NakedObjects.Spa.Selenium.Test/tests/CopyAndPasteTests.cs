@@ -101,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CopyToClipboard(title);
             string selector = "#pane1 .parameter .value";
             var target = WaitForCss(selector);
-            Assert.AreEqual("", target.Text);
+            Assert.AreEqual("* Drop here", target.Text);
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
@@ -148,7 +148,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var field = WaitForCss(fieldCss);
             Assert.AreEqual("Ben Miller", field.Text);
             field.SendKeys(Keys.Delete);
-            Assert.AreEqual("", WaitForCss(fieldCss).Text);
+            Assert.AreEqual("* Drop here", WaitForCss(fieldCss).Text);
 
         }
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()

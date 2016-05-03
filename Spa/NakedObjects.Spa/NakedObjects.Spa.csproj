@@ -114,6 +114,8 @@
     <Content Include="fonts\iconFont.svg" />
     <Content Include="fonts\license.txt" />
     <Content Include="index.html" />
+    <None Include="Scripts\nakedobjects.config.ts.pp" />
+    <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.config.ts" />
