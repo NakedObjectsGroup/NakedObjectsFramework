@@ -59,7 +59,7 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck/>                         
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" placeholder="{{parameter.description}}" gemini-autocomplete gemini-fieldmandatorycheck/>                         
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
