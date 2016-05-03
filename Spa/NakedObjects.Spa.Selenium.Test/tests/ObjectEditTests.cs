@@ -254,11 +254,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
             WaitForView(Pane.Single, PaneType.Object);
-            ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
-            ClearFieldThenType("input#startdate1", "");
+            //ClearFieldThenType("input#startdate1", ""); //Seems to be necessary to clear the date fields fully
+            //ClearFieldThenType("input#startdate1", "");
             ClearFieldThenType("input#startdate1", "17 Oct 2007");
-            ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
-            ClearFieldThenType("input#duedate1", "");
+            //ClearFieldThenType("input#duedate1", ""); //Seems to be necessary to clear the date fields fully
+            //ClearFieldThenType("input#duedate1", "");
             ClearFieldThenType("input#duedate1", "15 Oct 2007");
             Click(SaveButton());
             WaitForMessage("StartDate must be before DueDate");
@@ -355,7 +355,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   //[TestClass]
+   [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
