@@ -578,7 +578,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    [TestClass, Ignore]
     public class MegaDialogTestsFirefox : MegaDialogTestsRoot
     {
         [ClassInitialize]
