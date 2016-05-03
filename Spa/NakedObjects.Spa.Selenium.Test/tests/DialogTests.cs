@@ -97,6 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(ProductServiceUrl);
             OpenActionDialog("List Products By Sub Category");
             SelectDropDownOnField("#subcategory1", "Forks");
+            Thread.Sleep(500);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
             wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
