@@ -55,7 +55,7 @@
     <Content Include="Content\partials\splitObjectObject.html" />
     <Content Include="Content\partials\singleObject.html" />
     <Content Include="Content\partials\collections.html" />
-    <Content Include="Content\gemini.css" />
+    <Content Include="Content\nakedobjects.css" />
     <Content Include="Content\partials\splitObjectRecent.html" />
     <Content Include="Content\partials\splitRecentHome.html" />
     <Content Include="Content\partials\splitRecentList.html" />
