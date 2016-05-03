@@ -99,7 +99,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectDropDownOnField("#subcategory1", "Forks");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
-            AssertTopItemInListIs("HL Fork");
+            wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
         }
         public virtual void MultipleRefChoicesDefaults()
         {

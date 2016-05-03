@@ -170,8 +170,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Right, PaneType.Object, "SO56672");
             OpenSubMenu("Orders", Pane.Left);
             OpenActionDialog("Create New Order", Pane.Left);
+            Thread.Sleep(500);
             CancelDialog(Pane.Left);
             OpenActionDialog("Add New Sales Reasons", Pane.Right);
+            Thread.Sleep(500);
             CancelDialog(Pane.Right);
         }
 
