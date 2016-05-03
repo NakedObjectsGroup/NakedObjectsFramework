@@ -148,8 +148,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var field = WaitForCss(fieldCss);
             Assert.AreEqual("Ben Miller", field.Text);
             field.SendKeys(Keys.Delete);
-            Assert.AreEqual("* Drop here", WaitForCss(fieldCss).Text);
-
+            wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).Text == "* Drop here");
         }
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
         {
