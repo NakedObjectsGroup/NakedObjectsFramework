@@ -756,51 +756,54 @@ module NakedObjects {
             const paneId = routeData.paneId;
             const size = collectionRep.size();
 
-            let state = routeData.collections[collectionRep.collectionId()];
-
-            state = size === 0 ? CollectionViewState.Summary : state;
-
-            if (state == null) {
-                state = getDefaultTableState(collectionRep.extensions());
-            }
-
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
-
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-
-            collectionViewModel.size = getCollectionCount(size);
-
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
+            color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
 
-            color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => {
-                collectionViewModel.color = `${linkColor}${c}`;
-            });
+            collectionViewModel.refresh = (routeData: PaneRouteData) => {
 
-            const getDetails = itemLinks == null || state === CollectionViewState.Table;
+                let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
 
-            if (state === CollectionViewState.Summary) {
-                collectionViewModel.items = [];
+                if (state == null) {
+                    state = getDefaultTableState(collectionRep.extensions());
+                }
+
+                collectionViewModel.size = getCollectionCount(size);
+
+                const getDetails = itemLinks == null || state === CollectionViewState.Table;
+
+                if (state === CollectionViewState.Summary) {
+                    collectionViewModel.items = [];
+                } else if (getDetails) {
+                    context.getCollectionDetails(collectionRep, state)
+                        .then((details: CollectionRepresentation) => {
+                            collectionViewModel.items = viewModelFactory
+                                .getItems(details.value(),
+                                    state === CollectionViewState.Table,
+                                    routeData,
+                                    collectionViewModel);
+                            collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                        });
+                } else {
+                    collectionViewModel.items = viewModelFactory
+                        .getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                }
+
+                switch (state) {
+                case CollectionViewState.List:
+                    collectionViewModel.template = collectionListTemplate;
+                    break;
+                case CollectionViewState.Table:
+                    collectionViewModel.template = collectionTableTemplate;
+                    break;
+                default:
+                    collectionViewModel.template = collectionSummaryTemplate;
+                }
             }
-            else if (getDetails) {
-                context.getCollectionDetails(collectionRep, state).then((details: CollectionRepresentation) => {
-                    collectionViewModel.items = viewModelFactory.getItems(details.value(), state === CollectionViewState.Table, routeData, collectionViewModel);
-                    collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
-                });
-            } else {
-                collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-            }
 
-            switch (state) {
-            case CollectionViewState.List:
-                collectionViewModel.template = collectionListTemplate;
-                break;
-            case CollectionViewState.Table:
-                collectionViewModel.template = collectionTableTemplate;
-                break;
-            default:
-                collectionViewModel.template = collectionSummaryTemplate;
-            }
+            collectionViewModel.refresh(routeData);
 
             collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
             collectionViewModel.doList = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);

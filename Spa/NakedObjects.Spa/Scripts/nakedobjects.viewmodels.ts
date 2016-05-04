@@ -706,6 +706,7 @@ module NakedObjects {
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
+        refresh: (routeData: PaneRouteData) => void;
     }
 
     export class ServicesViewModel {
@@ -792,6 +793,9 @@ module NakedObjects {
             };
         }
 
+        // must be careful with this - OK for changes on client but after server updates should use  reset.
+        // because parameters may have appeared or disappeared etc and refesh just updates existsing views. 
+        // so OK for view changes but not eg for a parameter that disappears after saving
 
         refresh(routeData: PaneRouteData) {
                 
@@ -939,6 +943,7 @@ module NakedObjects {
             this.setProperties();
             const propMap = this.propertyMap();
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
+                then(obj => this.reset(obj, this.urlManager.getRouteData().pane()[this.onPaneId])).
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
 

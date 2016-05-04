@@ -81,7 +81,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GetObjectAction("Random Individual");
             OpenActionDialog("Find Individual Customer By Name");
             AssertActionNotDisplayed("Random Store");
-            AssertActionNotDisplayed("Random Individual");
+
+            // to check this behaviour has changed submenu remain open when dialog opened
+            //AssertActionNotDisplayed("Random Individual");
         }
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
