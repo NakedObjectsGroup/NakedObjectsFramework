@@ -15,6 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -72,7 +73,7 @@ module NakedObjects {
         const deRegDialog = [, new DeReg(), new DeReg()];
         const deRegObject = [, new DeReg(), new DeReg()];
 
-        function setDialog($scope: INakedObjectsScope, action: IInvokableAction | ActionViewModel, routeData: PaneRouteData) {
+        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionRepresentation | ActionViewModel, routeData: PaneRouteData) {
             deRegDialog[routeData.paneId].deReg();
 
             $scope.dialogTemplate = dialogTemplate;
@@ -85,10 +86,11 @@ module NakedObjects {
 
             deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
             deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
+
+            dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
         }
 
         let versionValidated = false;
-
 
         handlers.handleBackground = ($scope: INakedObjectsScope) => {
             color.toColorNumberFromHref($location.absUrl()).then((c: number) => {
@@ -138,7 +140,10 @@ module NakedObjects {
 
                                 if (routeData.dialogId) {
                                     const action = menu.actionMember(routeData.dialogId);
-                                    context.getInvokableAction(action).then((details: IInvokableAction) =>  setDialog($scope, details, routeData));                                                    
+                                    context.getInvokableAction(action)
+                                        .then(details => setDialog($scope, details, routeData));
+                                } else {
+                                    $scope.dialogTemplate = null;
                                 }
 
                                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
@@ -146,6 +151,7 @@ module NakedObjects {
                                 context.handleWrappedError(reject, null, () => {}, () => {});
                             });
                     } else {
+                        $scope.actionsTemplate = null;
                         focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                     }
                 }).catch((reject: ErrorWrapper) => {
@@ -158,7 +164,7 @@ module NakedObjects {
             const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
             const getActionExtensions = routeData.objectId ?
-            () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+            () => context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
             () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
 
@@ -171,14 +177,18 @@ module NakedObjects {
                 let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
                 if (routeData.dialogId) {
-                    const actionViewModel = _.find(collectionViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
+                    const actionViewModel = _.find(collectionViewModel.actions,
+                        a => a.actionRep.actionId() === routeData.dialogId);
 
-                    context.getInvokableAction(actionViewModel.actionRep).then((details: IInvokableAction) => {
-                        actionViewModel.makeInvokable(details);
-                        setDialog($scope, actionViewModel, routeData);
-                    });
+                    context.getInvokableAction(actionViewModel.actionRep)
+                        .then((details: IInvokableAction) => {
+                            actionViewModel.makeInvokable(details);
+                            setDialog($scope, actionViewModel, routeData);
+                        });
 
                     focusTarget = FocusTarget.Dialog;
+                } else {
+                    $scope.dialogTemplate = null;
                 }
 
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
@@ -204,13 +214,9 @@ module NakedObjects {
 
             if (evm.isConcurrencyError) {
                 $scope.errorTemplate = concurrencyTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
-                $scope.errorTemplate = httpErrorTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.ClientError) {
+            } else {
                 $scope.errorTemplate = errorTemplate;
-            } else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
-                $scope.errorTemplate = errorTemplate;
-            }
+            } 
         };
 
         handlers.handleToolBar = ($scope: INakedObjectsScope) => {
@@ -219,22 +225,27 @@ module NakedObjects {
 
         handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            const [dt, ...id] = routeData.objectId.split(keySeparator);
+            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
 
             // to ease transition 
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
 
-            color.toColorNumberFromType(dt).then((c: number) => {
+            color.toColorNumberFromType(oid.domainType).then((c: number) => {
                 $scope.backgroundColor = `${objectColor}${c}`;
             });
 
             deRegObject[routeData.paneId].deReg();
 
-            context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
+            const wasDirty = context.getIsDirty(oid); 
+
+            context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
 
                     const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                    if (wasDirty) {
+                        ovm.clearCachedFiles();
+                    }
 
                     $scope.object = ovm;
 
@@ -256,12 +267,15 @@ module NakedObjects {
                     if (routeData.dialogId) {
                         const action = object.actionMember(routeData.dialogId);
                         focusTarget = FocusTarget.Dialog;
-                        context.getInvokableAction(action).then((details: IInvokableAction) => setDialog($scope, details, routeData));
+                        context.getInvokableAction(action).then(details => setDialog($scope, details, routeData));
                     } else if (routeData.actionsOpen) {
+                        $scope.dialogTemplate = null;
                         focusTarget = FocusTarget.SubAction;
                     } else if (ovm.isInEdit) {
+                        $scope.dialogTemplate = null;
                         focusTarget = FocusTarget.Property;
                     } else {
+                        $scope.dialogTemplate = null;
                         focusTarget = FocusTarget.ObjectTitle;
                     }
 

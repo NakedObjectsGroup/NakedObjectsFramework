@@ -65,18 +65,9 @@ var NakedObjects;
     NakedObjects.roInlinePropertyDetails = "x-ro-inline-property-details";
     NakedObjects.roValidateOnly = "x-ro-validate-only";
     NakedObjects.roInlineCollectionItems = "x-ro-inline-collection-items";
-    //NOF custom RO constants
-    NakedObjects.nofChoices = "x-ro-nof-choices";
-    NakedObjects.nofMenuPath = "x-ro-nof-menuPath";
-    NakedObjects.nofMask = "x-ro-nof-mask";
-    NakedObjects.nofInteractionMode = "x-ro-nof-interactionMode";
-    NakedObjects.nofDataType = "x-ro-nof-dataType";
-    NakedObjects.nofTableViewTitle = "x-ro-nof-tableViewTitle";
-    NakedObjects.nofTableViewColumns = "x-ro-nof-tableViewColumns";
-    NakedObjects.nofMultipleLines = "x-ro-nof-multipleLines";
+    //NOF custom RO constants  
     NakedObjects.nofWarnings = "x-ro-nof-warnings";
     NakedObjects.nofMessages = "x-ro-nof-messages";
-    NakedObjects.nofNotNavigable = "x-ro-nof-notNavigable";
     NakedObjects.supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.constants.js.map

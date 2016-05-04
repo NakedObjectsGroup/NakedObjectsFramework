@@ -2,7 +2,6 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.viewmodels.ts" />
-/// <reference path="nakedobjects.app.ts" />
 /// <reference path="typings/moment/moment.d.ts"/>
 
 module NakedObjects {
@@ -409,7 +408,7 @@ module NakedObjects {
         element.attr("placeholder", fn(scope));
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any, attr: any) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any) => {
         scope.$on(geminiFocusEvent, (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
 
             $timeout(() => {
@@ -501,7 +500,10 @@ module NakedObjects {
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel> ui.draggable.data(draggableVmKey);
 
-                droppableScope.$apply(() => droppableVm.drop(draggableVm));
+                droppableScope.$apply(() => {
+                    droppableVm.drop(draggableVm);
+                    $(element).change();
+                });         
             }
         });
 
@@ -540,38 +542,26 @@ module NakedObjects {
                     return;
                 }
 
-                function downloadFile(url: string, mt: string, success: (resp: Blob) => void) {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("GET", url, true);
-                    xhr.responseType = "blob";
-                    xhr.setRequestHeader("Accept", mt);
-                    xhr.onreadystatechange = () => {
-                        if (xhr.readyState === 4) {
-                            success(<Blob>xhr.response);
-                        }
-                    };
-                    xhr.send(null);
-                }
-
                 function displayInline(mt: string) {
                     return mt === "image/jpeg" ||
-                        mt === "image/gif" ||
-                        mt === "application/octet-stream";
+                           mt === "image/gif" ||
+                           mt === "application/octet-stream";
                 }
 
                 const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
-                    const url = attachment.href;
-                    const mt = attachment.mimeType;
-                    downloadFile(url, mt, resp => {
-                        if (window.navigator.msSaveBlob) {
-                            // internet explorer 
-                            window.navigator.msSaveBlob(resp, attachment.title);
-                        } else {
-                            const burl = URL.createObjectURL(resp);
-                            $window.location.href = burl;
-                        }
-                    });
+
+                    attachment.downloadFile()
+                        .then(blob => {
+                            if (window.navigator.msSaveBlob) {
+                                // internet explorer 
+                                window.navigator.msSaveBlob(blob, attachment.title);
+                            } else {
+                                const burl = URL.createObjectURL(blob);
+                                $window.location.href = burl;
+                            }
+                        });
+
                     return false;
                 };
 
@@ -587,12 +577,12 @@ module NakedObjects {
 
                         const anchor = element.find("a");
                         if (displayInline(mt)) {
-
-                            downloadFile(url, mt, resp => {
-                                const reader = new FileReader();
-                                reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
-                                reader.readAsDataURL(resp);
-                            });
+                            attachment.downloadFile()
+                                .then(blob => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
+                                    reader.readAsDataURL(blob);
+                                });
                         } else {
                             anchor.html(title);
                         }
@@ -659,7 +649,7 @@ module NakedObjects {
                     val = viewValue.value;
                 }
                 else if (viewValue instanceof Array) {
-                    if ((viewValue as any).length) {
+                    if (viewValue.length) {
                         return _.every(viewValue as (string | ChoiceViewModel)[], (v: any) => ctrl.$validators.geminiFieldmandatorycheck(v, v));
                     }
                     val = "";

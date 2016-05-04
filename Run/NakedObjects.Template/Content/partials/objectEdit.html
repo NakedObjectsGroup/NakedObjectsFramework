@@ -42,8 +42,8 @@
                         </select>
 
                         <!--"EntryType.FreeForm"-->
-                        <div ng-switch-when="0" tabindex="0" class="value droppable" ng-model="$parent.property.choice" ng-class="property.color" gemini-drop gemini-fieldmandatorycheck>
-                            {{property.value}}
+                        <div ng-switch-when="0" tabindex="0" class="value droppable" ng-model="$parent.property.choice" ng-class="property.color" placeholder="{{property.description}}" gemini-drop gemini-fieldmandatorycheck>
+                            {{property.value || property.description}}
                         </div>
                     </div>
                 </div>
@@ -67,6 +67,12 @@
                     </div>
 
                     <div ng-switch-when="true" class="input-control text" ng-switch="property.entryType">
+
+                        <!--"EntryType.AutoComplete"-->
+                        <div ng-switch-when="5">
+                            <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck />
+                        </div>
+
 
                         <!--"EntryType.ConditionalChoices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>

@@ -194,7 +194,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\gemini.css" />
+    <Content Include="Content\nakedobjects.css" />
     <Content Include="Content\partials\actions.html" />
     <Content Include="Content\partials\blank.html" />
     <Content Include="Content\partials\cicero.html" />
@@ -211,7 +211,6 @@
     <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\home.html" />
     <Content Include="Content\partials\homePlaceholder.html" />
-    <Content Include="Content\partials\httpError.html" />
     <Content Include="Content\partials\List.html" />
     <Content Include="Content\partials\ListAsTable.html" />
     <Content Include="Content\partials\ListPlaceholder.html" />

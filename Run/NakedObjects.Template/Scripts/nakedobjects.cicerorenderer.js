@@ -4,6 +4,7 @@ var NakedObjects;
     var TypePlusTitle = NakedObjects.Models.typePlusTitle;
     var PlusTitle = NakedObjects.Models.typePlusTitle;
     var FriendlyNameForParam = NakedObjects.Models.friendlyNameForParam;
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     NakedObjects.app.service("ciceroRenderer", function (context) {
         var renderer = this;
         renderer.renderHome = function (routeData, cvm) {
@@ -23,14 +24,14 @@ var NakedObjects;
             }
         };
         renderer.renderObject = function (routeData, cvm) {
-            var _a = routeData.objectId.split(NakedObjects.keySeparator), domainType = _a[0], id = _a.slice(1);
-            context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+            var oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+            context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                 .then(function (obj) {
                 var output = "";
                 var openCollIds = openCollectionIds(routeData);
                 if (_.some(openCollIds)) {
-                    var id_1 = openCollIds[0];
-                    var coll = obj.collectionMember(id_1);
+                    var id = openCollIds[0];
+                    var coll = obj.collectionMember(id);
                     output += "Collection: " + coll.extensions().friendlyName();
                     output += " on " + TypePlusTitle(obj) + ",  ";
                     switch (coll.size()) {
@@ -56,7 +57,7 @@ var NakedObjects;
             });
         };
         renderer.renderList = function (routeData, cvm) {
-            var listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+            var listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
             listPromise.then(function (list) {
                 var page = list.pagination().page;
                 var numPages = list.pagination().numPages;
@@ -84,6 +85,7 @@ var NakedObjects;
         function renderActionDialogIfOpen(repWithActions, routeData) {
             var output = "";
             if (routeData.dialogId) {
+                // can safely downcast as we know we're in a dialog
                 var actionMember_1 = repWithActions.actionMember(routeData.dialogId);
                 var actionName = actionMember_1.extensions().friendlyName();
                 output += "Action dialog: " + actionName + ". ";

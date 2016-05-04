@@ -7,6 +7,7 @@ var NakedObjects;
     var ErrorWrapper = NakedObjects.Models.ErrorWrapper;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     NakedObjects.app.service("handlers", function ($routeParams, $location, $q, $cacheFactory, repLoader, context, viewModelFactory, color, navigation, urlManager, focusManager) {
         var handlers = this;
         var perPaneListViews = [
@@ -57,6 +58,7 @@ var NakedObjects;
             $scope.dialog = dialogViewModel;
             deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms));
             deRegDialog[routeData.paneId].add($scope.$watch(function () { return $location.search(); }, dialogViewModel.setParms, true));
+            dialogViewModel.deregister = function () { return deRegDialog[routeData.paneId].deReg(); };
         }
         var versionValidated = false;
         handlers.handleBackground = function ($scope) {
@@ -98,7 +100,11 @@ var NakedObjects;
                         var focusTarget = routeData.dialogId ? NakedObjects.FocusTarget.Dialog : NakedObjects.FocusTarget.SubAction;
                         if (routeData.dialogId) {
                             var action = menu.actionMember(routeData.dialogId);
-                            context.getInvokableAction(action).then(function (details) { return setDialog($scope, details, routeData); });
+                            context.getInvokableAction(action)
+                                .then(function (details) { return setDialog($scope, details, routeData); });
+                        }
+                        else {
+                            $scope.dialogTemplate = null;
                         }
                         focusManager.focusOn(focusTarget, 0, routeData.paneId);
                     }).catch(function (reject) {
@@ -106,6 +112,7 @@ var NakedObjects;
                     });
                 }
                 else {
+                    $scope.actionsTemplate = null;
                     focusManager.focusOn(NakedObjects.FocusTarget.Menu, 0, routeData.paneId);
                 }
             }).catch(function (reject) {
@@ -115,7 +122,7 @@ var NakedObjects;
         handlers.handleList = function ($scope, routeData) {
             var cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
             var getActionExtensions = routeData.objectId ?
-                function () { return context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId); } :
+                function () { return context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId); } :
                 function () { return context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId); };
             if (cachedList) {
                 $scope.listTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
@@ -126,11 +133,15 @@ var NakedObjects;
                 var focusTarget = routeData.actionsOpen ? NakedObjects.FocusTarget.SubAction : NakedObjects.FocusTarget.ListItem;
                 if (routeData.dialogId) {
                     var actionViewModel_1 = _.find(collectionViewModel.actions, function (a) { return a.actionRep.actionId() === routeData.dialogId; });
-                    context.getInvokableAction(actionViewModel_1.actionRep).then(function (details) {
+                    context.getInvokableAction(actionViewModel_1.actionRep)
+                        .then(function (details) {
                         actionViewModel_1.makeInvokable(details);
                         setDialog($scope, actionViewModel_1, routeData);
                     });
                     focusTarget = NakedObjects.FocusTarget.Dialog;
+                }
+                else {
+                    $scope.dialogTemplate = null;
                 }
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 getActionExtensions().then(function (ext) { return $scope.title = ext.friendlyName(); });
@@ -154,13 +165,7 @@ var NakedObjects;
             if (evm.isConcurrencyError) {
                 $scope.errorTemplate = NakedObjects.concurrencyTemplate;
             }
-            else if (routeData.errorCategory === ErrorCategory.HttpClientError) {
-                $scope.errorTemplate = NakedObjects.httpErrorTemplate;
-            }
-            else if (routeData.errorCategory === ErrorCategory.ClientError) {
-                $scope.errorTemplate = NakedObjects.errorTemplate;
-            }
-            else if (routeData.errorCategory === ErrorCategory.HttpServerError) {
+            else {
                 $scope.errorTemplate = NakedObjects.errorTemplate;
             }
         };
@@ -168,17 +173,21 @@ var NakedObjects;
             $scope.toolBar = viewModelFactory.toolBarViewModel();
         };
         handlers.handleObject = function ($scope, routeData) {
-            var _a = routeData.objectId.split(NakedObjects.keySeparator), dt = _a[0], id = _a.slice(1);
+            var oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
             // to ease transition 
             $scope.objectTemplate = NakedObjects.blankTemplate;
             $scope.actionsTemplate = NakedObjects.nullTemplate;
-            color.toColorNumberFromType(dt).then(function (c) {
+            color.toColorNumberFromType(oid.domainType).then(function (c) {
                 $scope.backgroundColor = "" + NakedObjects.objectColor + c;
             });
             deRegObject[routeData.paneId].deReg();
-            context.getObject(routeData.paneId, dt, id, routeData.interactionMode).
+            var wasDirty = context.getIsDirty(oid);
+            context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then(function (object) {
                 var ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                if (wasDirty) {
+                    ovm.clearCachedFiles();
+                }
                 $scope.object = ovm;
                 if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
                     $scope.objectTemplate = NakedObjects.formTemplate;
@@ -200,12 +209,15 @@ var NakedObjects;
                     context.getInvokableAction(action).then(function (details) { return setDialog($scope, details, routeData); });
                 }
                 else if (routeData.actionsOpen) {
+                    $scope.dialogTemplate = null;
                     focusTarget = NakedObjects.FocusTarget.SubAction;
                 }
                 else if (ovm.isInEdit) {
+                    $scope.dialogTemplate = null;
                     focusTarget = NakedObjects.FocusTarget.Property;
                 }
                 else {
+                    $scope.dialogTemplate = null;
                     focusTarget = NakedObjects.FocusTarget.ObjectTitle;
                 }
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);

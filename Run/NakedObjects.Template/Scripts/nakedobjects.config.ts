@@ -33,4 +33,7 @@ module NakedObjects {
     export const keySeparator = "--"; //Do not change this unless you change the Restful API configuration to match
     export const objectColor = "object-color";
     export const linkColor = "link-color";
+
+    export const autoLoadDirty = true;
+    export const showDirtyFlag = false || !autoLoadDirty;
 }

@@ -20,9 +20,8 @@ var NakedObjects;
             }
         }
         function handleError(promiseCallback) {
-            var message;
             var category;
-            var error = null;
+            var error;
             if (promiseCallback.status === HttpStatusCode.InternalServerError) {
                 // this error contains an error representatation 
                 var errorRep = new ErrorRepresentation();
@@ -37,10 +36,12 @@ var NakedObjects;
             }
             else {
                 category = ErrorCategory.HttpClientError;
-                message = promiseCallback.headers("warning") || "Unknown client HTTP error";
-                if (promiseCallback.status === HttpStatusCode.BadRequest || promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
+                var message = promiseCallback.headers("warning") || "Unknown client HTTP error";
+                if (promiseCallback.status === HttpStatusCode.BadRequest ||
+                    promiseCallback.status === HttpStatusCode.UnprocessableEntity) {
                     // these errors should contain a map                            
-                    error = new ErrorMap(promiseCallback.data, promiseCallback.status, message);
+                    error = new ErrorMap(promiseCallback
+                        .data, promiseCallback.status, message);
                 }
                 else {
                     error = message;
@@ -51,14 +52,14 @@ var NakedObjects;
         }
         function httpValidate(config) {
             $rootScope.$broadcast("ajax-change", ++loadingCount);
-            return $http(config).
-                then(function () {
+            return $http(config)
+                .then(function () {
                 return $q.when(true);
-            }).
-                catch(function (promiseCallback) {
+            })
+                .catch(function (promiseCallback) {
                 return handleError(promiseCallback);
-            }).
-                finally(function () {
+            })
+                .finally(function () {
                 $rootScope.$broadcast("ajax-change", --loadingCount);
             });
         }
@@ -68,20 +69,21 @@ var NakedObjects;
                 // clear cache of existing values
                 $cacheFactory.get("$http").remove(config.url);
             }
-            return $http(config).
-                then(function (promiseCallback) {
+            return $http(config)
+                .then(function (promiseCallback) {
                 response.populate(promiseCallback.data);
                 response.etagDigest = promiseCallback.headers("ETag");
                 return $q.when(response);
-            }).
-                catch(function (promiseCallback) {
+            })
+                .catch(function (promiseCallback) {
                 return handleError(promiseCallback);
-            }).
-                finally(function () {
+            })
+                .finally(function () {
                 $rootScope.$broadcast("ajax-change", --loadingCount);
             });
         }
-        repLoader.populate = function (model, ignoreCache) {
+        repLoader
+            .populate = function (model, ignoreCache) {
             var response = model;
             var useCache = !ignoreCache;
             var config = {
@@ -93,8 +95,7 @@ var NakedObjects;
             };
             return httpPopulate(config, ignoreCache, response);
         };
-        repLoader.retrieve = function (map, rc, digest) {
-            var response = new rc();
+        function setConfigFromMap(map, digest) {
             var config = {
                 withCredentials: true,
                 url: map.getUrl(),
@@ -103,20 +104,19 @@ var NakedObjects;
                 data: map.getBody()
             };
             addIfMatchHeader(config, digest);
+            return config;
+        }
+        repLoader.retrieve = function (map, rc, digest) {
+            var response = new rc();
+            var config = setConfigFromMap(map, digest);
             return httpPopulate(config, true, response);
         };
         repLoader.validate = function (map, digest) {
-            var config = {
-                withCredentials: true,
-                url: map.getUrl(),
-                method: map.method,
-                cache: false,
-                data: map.getBody()
-            };
-            addIfMatchHeader(config, digest);
+            var config = setConfigFromMap(map, digest);
             return httpValidate(config);
         };
-        repLoader.retrieveFromLink = function (link, parms) {
+        repLoader
+            .retrieveFromLink = function (link, parms) {
             var response = link.getTarget();
             var urlParms = "";
             if (parms) {
@@ -131,11 +131,38 @@ var NakedObjects;
             };
             return httpPopulate(config, true, response);
         };
-        repLoader.invoke = function (action, parms, urlParms) {
+        repLoader
+            .invoke = function (action, parms, urlParms) {
             var invokeMap = action.getInvokeMap();
             _.each(urlParms, function (v, k) { return invokeMap.setUrlParameter(k, v); });
             _.each(parms, function (v, k) { return invokeMap.setParameter(k, v); });
             return _this.retrieve(invokeMap, ActionResultRepresentation);
+        };
+        repLoader.clearCache = function (url) {
+            $cacheFactory.get("$http").remove(url);
+        };
+        repLoader.addToCache = function (url, m) {
+            $cacheFactory.get("$http").put(url, m);
+        };
+        repLoader.getFile = function (url, mt, ignoreCache) {
+            if (ignoreCache) {
+                // clear cache of existing values
+                $cacheFactory.get("$http").remove(url);
+            }
+            var config = {
+                method: "GET",
+                url: url,
+                responseType: "blob",
+                headers: { "Accept": mt },
+                cache: true
+            };
+            return $http(config)
+                .then(function (promiseCallback) {
+                return $q.when(promiseCallback.data);
+            })
+                .catch(function (promiseCallback) {
+                return handleError(promiseCallback);
+            });
         };
     });
 })(NakedObjects || (NakedObjects = {}));

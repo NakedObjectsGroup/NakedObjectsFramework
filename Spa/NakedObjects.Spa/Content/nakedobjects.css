@@ -190,6 +190,11 @@
         margin: 1px;
     }
 
+    .reference img {
+        max-width: 245px;
+        max-height: 100px;
+    }
+
     .input-control input:not([type='checkbox']), textarea  {
         width: 245px;
     }

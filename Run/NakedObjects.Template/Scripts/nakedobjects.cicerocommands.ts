@@ -27,6 +27,9 @@ module NakedObjects {
     import isDateOrDateTime = Models.isDateOrDateTime;
     import toDateString = Models.toDateString;
     import CollectionRepresentation = Models.CollectionRepresentation;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    import IInvokableAction = NakedObjects.Models.IInvokableAction;
 
     export abstract class Command {
 
@@ -185,10 +188,10 @@ module NakedObjects {
         }
 
         protected getObject(): ng.IPromise<DomainObjectRepresentation> {
-            const oid = this.routeData().objectId;
+            const oid =  ObjectIdWrapper.fromObjectId(this.routeData().objectId);
             //TODO: Consider view model & transient modes?
 
-            return this.context.getObjectByOid(1, oid, this.routeData().interactionMode).then((obj: DomainObjectRepresentation) => {
+            return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: DomainObjectRepresentation) => {
                 if (this.routeData().interactionMode === InteractionMode.Edit) {
                     return this.context.getObjectForEdit(1, obj);
                 } else {
@@ -204,7 +207,7 @@ module NakedObjects {
         protected getList(): ng.IPromise<ListRepresentation> {
             const routeData = this.routeData();
             //TODO: Currently covers only the list-from-menu; need to cover list from object action
-            return this.context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+            return this.context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
         }
 
         protected isMenu(): boolean {
@@ -279,9 +282,7 @@ module NakedObjects {
             }
         }
 
-        protected matchingParameters(
-            action: ActionMember,
-            match: string): Parameter[] {
+        protected matchingParameters(action: InvokableActionMember, match: string): Parameter[] {
             let params = _.map(action.parameters(), p => p);
             if (match) {
                 params = this.matchFriendlyNameAndOrMenuPath(params, match);
@@ -997,12 +998,8 @@ module NakedObjects {
                     return;
                 }
                 this.getList().then((list: ListRepresentation) => {
-                    if (itemNo < 1 || itemNo > list.value().length) {
-                        this.clearInputAndSetMessage(arg0 + " is out of range for displayed items");
-                        return;
-                    }
-                    const link = list.value()[itemNo - 1]; // On UI, first item is '1'
-                    this.urlManager.setItem(link);
+                    this.attemptGotoLinkNumber(itemNo, list.value());
+                    return;
                 });
                 return;
             }
@@ -1010,13 +1007,14 @@ module NakedObjects {
                 this.getObject()
                     .then((obj: DomainObjectRepresentation) => {
                         if (this.isCollection()) {
-                            const item = this.argumentAsNumber(args, 0);
-                            //TODO: validate range
+                            const itemNo = this.argumentAsNumber(args, 0);
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
-                            const link = coll.value()[item - 1];
-                            this.urlManager.setItem(link);
-                            return;
+                            //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
+                            this.context.getCollectionDetails(coll, CollectionViewState.List).then((coll: CollectionRepresentation) => {
+                                this.attemptGotoLinkNumber(itemNo, coll.value());
+                                return;
+                        });
                         } else {
                             const matchingProps = this.matchingProperties(obj, arg0);
                             const matchingRefProps = _.filter(matchingProps, (p) => { return !p.isScalar() });
@@ -1049,6 +1047,15 @@ module NakedObjects {
                     });
             }
         };
+
+        private attemptGotoLinkNumber(itemNo: number, links: Models.Link[]): void {
+            if (itemNo < 1 || itemNo > links.length) {
+                this.clearInputAndSetMessage(itemNo.toString() + " is out of range for displayed items");
+            } else {
+                const link = links[itemNo - 1]; // On UI, first item is '1'
+                this.urlManager.setItem(link);
+            }
+        }
 
         private openCollection(collection: CollectionMember): void {
             this.closeAnyOpenCollections();
@@ -1088,23 +1095,29 @@ module NakedObjects {
             }
         };
 
-        basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS or Windows Narrator.\n" +
-        "The display has only two fields: a read-only output field, and a single input field. The input field should always have the focus.\n"+
-        "All interactions consist of typing a command into the input field and hitting Enter.\n"+
-        "When the output field updates (either instantaneously, or after the server has responded) its contents will be read out automatically.\n" +
+        basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS.\n" +
+        "The display has only two fields: a read-only output field, and a single input field.\n" +
+        "The input field always has the focus.\n"+
+        "Commands are types into the input field followed by the Enter key.\n"+
+        "When the output field updates (either instantaneously or after the server has responded)\n" + 
+        "its contents will be read out automatically.\n" +
         "The user should never have to navigate around the screen.\n" +
-        "Commands, such as 'action', 'field' and 'save', may be typed in full or abbreviated to the first two characters or more.\n" +
-        "Some commands take one or more arguments. There must be a space between the command word and the first argument.\n" +
-        "Arguments may contain spaces if needed. If more than one argument is specified they must be separated by commas.\n"+
+        "Commands, such as 'action', 'field' and 'save', may be typed in full\n" +
+        "or abbreviated to the first two characters or more.\n" +
+        "Some commands take one or more arguments.\n" +
+        "There must be a space between the command word and the first argument.\n" +
+        "Arguments may contain spaces if needed.\n"+ 
+        "If more than one argument is specified they must be separated by commas.\n"+
         "Commands are not case sensitive. The commands available to the user vary according to the context.\n" +
-        "The command 'help ?' will list the commands available to the user in the current context. ‘help’ followed by another command word " +
-        "(in full or abbreviated) will give more details about what that command does and how to use it.\n"+
-        "Some commands will change the context (for example, using the Go command to navigate to an associated object), " +
-        "in which case the next context will be read out. Other commands - help being an example - do not change the context, " +
-        "but will read out information to the user. If the user needs a reminder of the current context, the 'Where' command will read "+
-        "the context out again. Hitting Enter on the empty input field has the same effect.\n" +
-        "Typically, when the user enters a command and the output has been updated, the input field will automatically be cleared " +
-        "- ready for the next command. However, the user may recall the previous command, including arguments, just by hitting the up-arrow key.\n"+
+        "The command 'help ?' will list the commands available to the user in the current context.\n"+
+        "‘help’ followed by another command word (in full or abbreviated) will give more details about  that command.\n"+
+        "Some commands will change the context, for example using the Go command to navigate to an associated object\n" +
+        "in which case the new context will be read out.\n"+
+        "Other commands - help being an example - do not change the context, but will read out information to the user.\n"+
+        "If the user needs a reminder of the current context, the 'Where' command will read the context out again.\n" +
+        "Hitting Enter on the empty input field has the same effect.\n" +
+        "When the user enters a command and the output has been updated, the input field will  be cleared\n" +
+        "- ready for the next command. The user may recall the previous command, by hitting the up- arrow key.\n"+
         "The user might then edit or extend that previous command and hit Enter to run it again.\n" +
         "For advanced users: commands may be chained using a semi-colon between them,\n" +
         "however commands that do, or might, result in data updates cannot be chained.";
@@ -1169,7 +1182,7 @@ module NakedObjects {
 
         doExecute(args: string, chained: boolean): void {
 
-            this.getActionForCurrentDialog().then((action: ActionMember) => {
+            this.getActionForCurrentDialog().then((action: IInvokableAction) => {
 
                 if (chained && action.invokeLink().method() !== "GET") {
                     this.mayNotBeChained(" unless the action is query-only");
@@ -1508,7 +1521,6 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                // todo
                 this.context.getCollectionDetails(coll, CollectionViewState.List).then((details: CollectionRepresentation) => {
                     this.renderItems(details, startNo, endNo);
                 });

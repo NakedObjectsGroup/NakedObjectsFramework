@@ -18,17 +18,30 @@ var NakedObjects;
     var Title = NakedObjects.Models.typePlusTitle;
     var FriendlyNameForProperty = NakedObjects.Models.friendlyNameForProperty;
     var FriendlyNameForParam = NakedObjects.Models.friendlyNameForParam;
-    NakedObjects.app.service("viewModelFactory", function ($q, $timeout, $location, $filter, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, clickHandler, commandFactory, $rootScope, $route) {
+    var ActionRepresentation = NakedObjects.Models.ActionRepresentation;
+    var dirtyMarker = NakedObjects.Models.dirtyMarker;
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    var InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    NakedObjects.app.service("viewModelFactory", function ($q, $timeout, $location, $filter, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, clickHandler, commandFactory, $rootScope, $route, $window) {
         var _this = this;
         var viewModelFactory = this;
         viewModelFactory.errorViewModel = function (error) {
             var errorViewModel = new NakedObjects.ErrorViewModel();
-            errorViewModel.message = error ? error.message : "Unknown";
-            var stackTrace = error ? error.stackTrace : null;
-            errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
-            errorViewModel.description = "";
-            errorViewModel.code = error.errorCode;
-            errorViewModel.isConcurrencyError = error.category === ErrorCategory.HttpClientError && error.httpErrorCode === HttpStatusCode.PreconditionFailed;
+            if (error) {
+                errorViewModel.title = error.title;
+                errorViewModel.description = error.description;
+                errorViewModel.code = error.errorCode;
+                errorViewModel.message = error.message;
+                var stackTrace = error.stackTrace;
+                errorViewModel.stackTrace = stackTrace && stackTrace.length !== 0 ? stackTrace : null;
+                errorViewModel.isConcurrencyError =
+                    error.category === ErrorCategory.HttpClientError &&
+                        error.httpErrorCode === HttpStatusCode.PreconditionFailed;
+            }
+            errorViewModel.description = errorViewModel.description || "No description available";
+            errorViewModel.code = errorViewModel.code || "No code available";
+            errorViewModel.message = errorViewModel.message || "No message available";
+            errorViewModel.stackTrace = errorViewModel.stackTrace || ["No stack trace available"];
             return errorViewModel;
         };
         function initLinkViewModel(linkViewModel, linkRep) {
@@ -43,9 +56,20 @@ var NakedObjects;
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = NakedObjects.ChoiceViewModel.create(value, "");
             linkViewModel.canDropOn = function (targetType) { return context.isSubTypeOf(targetType, linkViewModel.domainType); };
+            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
         var createChoiceViewModels = function (id, searchTerm, choices) {
             return $q.when(_.map(choices, function (v, k) { return NakedObjects.ChoiceViewModel.create(v, id, k, searchTerm); }));
+        };
+        viewModelFactory.attachmentViewModel = function (propertyRep) {
+            var href = propertyRep.attachmentLink().href();
+            var mimeType = propertyRep.attachmentLink().type().asString;
+            var title = propertyRep.attachmentLink().title();
+            var parent = propertyRep.parent;
+            var avm = NakedObjects.AttachmentViewModel.create(href, mimeType, title);
+            avm.downloadFile = function () { return context.getFile(parent, href, mimeType); };
+            avm.clearCachedFile = function () { return context.clearCachedFile(href); };
+            return avm;
         };
         viewModelFactory.linkViewModel = function (linkRep, paneId) {
             var linkViewModel = new NakedObjects.LinkViewModel();
@@ -99,7 +123,7 @@ var NakedObjects;
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
             var required = parmViewModel.optional ? "" : "* ";
-            parmViewModel.description = required + parmRep.extensions().description();
+            parmViewModel.description = parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = "" + parmViewModel.id.toLowerCase();
@@ -127,6 +151,15 @@ var NakedObjects;
                         then(createcvm);
                 };
                 parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
+                parmViewModel.description = parmViewModel.description || NakedObjects.autoCompletePrompt;
+            }
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
+                parmViewModel.description = parmViewModel.description || NakedObjects.dropPrompt;
+                var val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
+                if (!val.isNull()) {
+                    parmViewModel.reference = val.link().href();
+                    parmViewModel.choice = NakedObjects.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                }
             }
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
                 parmViewModel.conditionalChoices = function (args) {
@@ -173,7 +206,8 @@ var NakedObjects;
                     var bValueToSet = NakedObjects.toTriStateBoolean(valueToSet);
                     parmViewModel.value = bValueToSet;
                     if (bValueToSet !== null) {
-                        parmViewModel.description = parmRep.extensions().description();
+                        // reset required indicator
+                        required = "";
                     }
                 }
                 else if (IsDateOrDateTime(parmRep)) {
@@ -193,6 +227,7 @@ var NakedObjects;
             setColor(parmViewModel);
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel);
             parmViewModel.drop = _.partial(drop, parmViewModel);
+            parmViewModel.description = required + parmViewModel.description;
             return parmViewModel;
         };
         viewModelFactory.actionViewModel = function (actionRep, vm, routeData) {
@@ -200,19 +235,22 @@ var NakedObjects;
             var parms = routeData.actionParams;
             var paneId = routeData.paneId;
             actionViewModel.actionRep = actionRep;
+            if (actionRep instanceof ActionRepresentation || actionRep instanceof InvokableActionMember) {
+                actionViewModel.invokableActionRep = actionRep;
+            }
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = function () { return !!actionRep.disabledReason(); };
             actionViewModel.description = actionViewModel.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
             actionViewModel.parameters = function () {
                 // don't use actionRep directly as it may change and we've closed around the original value
-                var parameters = _.pickBy(actionViewModel.actionRep.parameters(), function (p) { return !p.isCollectionContributed(); });
+                var parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), function (p) { return !p.isCollectionContributed(); });
                 return _.map(parameters, function (parm) { return viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId); });
             };
             actionViewModel.executeInvoke = function (pps, right) {
                 var parmMap = _.zipObject(_.map(pps, function (p) { return p.id; }), _.map(pps, function (p) { return p.getValue(); }));
                 _.forEach(pps, function (p) { return urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId); });
-                return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
+                return context.getInvokableAction(actionViewModel.actionRep).then(function (details) { return context.invokeAction(details, clickHandler.pane(paneId, right), parmMap); });
             };
             // form actions should never show dialogs
             var showDialog = function () { return actionRep.extensions().hasParams() && (routeData.interactionMode !== NakedObjects.InteractionMode.Form); };
@@ -235,7 +273,7 @@ var NakedObjects;
                         context.handleWrappedError(reject, parent, reset, display);
                     });
                 };
-            actionViewModel.makeInvokable = function (details) { return actionViewModel.actionRep = details; };
+            actionViewModel.makeInvokable = function (details) { return actionViewModel.invokableActionRep = details; };
             return actionViewModel;
         };
         viewModelFactory.handleErrorResponse = function (err, messageViewModel, valueViewModels) {
@@ -299,7 +337,59 @@ var NakedObjects;
                 vm.formattedValue = value.toString();
                 vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
             }
+            if (vm.entryType === EntryType.FreeForm) {
+                vm.description = vm.description || NakedObjects.dropPrompt;
+            }
         }
+        viewModelFactory.propertyTableViewModel = function (propertyRep, id, paneId) {
+            var propertyViewModel = new NakedObjects.PropertyViewModel();
+            propertyViewModel.onPaneId = paneId;
+            propertyViewModel.propertyRep = propertyRep;
+            propertyViewModel.entryType = propertyRep.entryType();
+            propertyViewModel.id = id;
+            propertyViewModel.argId = "" + id.toLowerCase();
+            propertyViewModel.paneArgId = "" + propertyViewModel.argId + paneId;
+            propertyViewModel.title = propertyRep.extensions().friendlyName();
+            propertyViewModel.format = propertyRep.extensions().format();
+            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
+            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
+            var value = propertyRep.value();
+            if (propertyRep.isScalar()) {
+                if (isDateOrDateTime(propertyRep)) {
+                    propertyViewModel.value = toUtcDate(value);
+                }
+                else {
+                    propertyViewModel.value = value.scalar();
+                }
+                propertyViewModel.type = "scalar";
+                var remoteMask = propertyRep.extensions().mask();
+                var localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+                if (propertyRep.entryType() === EntryType.Choices) {
+                    var currentChoice_1 = NakedObjects.ChoiceViewModel.create(value, id);
+                    var choices = propertyRep.choices();
+                    propertyViewModel.choices = _.map(choices, function (v, n) { return NakedObjects.ChoiceViewModel.create(v, id, n); });
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, function (c) { return c.match(currentChoice_1); });
+                    if (propertyViewModel.choice) {
+                        propertyViewModel.value = propertyViewModel.choice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    }
+                }
+                else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = NakedObjects.obscuredText;
+                }
+                else {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                }
+            }
+            else {
+                // is reference   
+                propertyViewModel.type = "ref";
+                propertyViewModel.formattedValue = value.isNull() ? "" : value.toString();
+            }
+            // only set color if has value 
+            setColor(propertyViewModel);
+            return propertyViewModel;
+        };
         viewModelFactory.propertyViewModel = function (propertyRep, id, previousValue, paneId, parentValues) {
             var propertyViewModel = new NakedObjects.PropertyViewModel();
             propertyViewModel.onPaneId = paneId;
@@ -318,9 +408,9 @@ var NakedObjects;
             propertyViewModel.password = propertyRep.extensions().dataType() === "password";
             propertyViewModel.clientValid = true;
             var required = propertyViewModel.optional ? "" : "* ";
-            propertyViewModel.description = required + propertyRep.extensions().description();
+            propertyViewModel.description = propertyRep.extensions().description();
             if (propertyRep.attachmentLink() != null) {
-                propertyViewModel.attachment = NakedObjects.AttachmentViewModel.create(propertyRep.attachmentLink().href(), propertyRep.attachmentLink().type().asString, propertyRep.attachmentLink().title());
+                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
             }
             var value = previousValue || propertyRep.value();
             var currentChoice = NakedObjects.ChoiceViewModel.create(value, id);
@@ -340,6 +430,7 @@ var NakedObjects;
                     return context.autoComplete(propertyRep, id, parentValues, searchTerm).then(createcvm);
                 };
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
+                propertyViewModel.description = propertyViewModel.description || NakedObjects.autoCompletePrompt;
             }
             if (propertyRep.entryType() === EntryType.ConditionalChoices) {
                 propertyViewModel.conditionalChoices = function (args) {
@@ -384,6 +475,7 @@ var NakedObjects;
             if (!previousValue) {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
+            propertyViewModel.description = required + propertyViewModel.description;
             propertyViewModel.isDirty = function () { return !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString(); };
             propertyViewModel.validate = _.partial(validate, propertyRep, propertyViewModel);
             propertyViewModel.canDropOn = function (targetType) { return context.isSubTypeOf(propertyViewModel.returnType, targetType); };
@@ -396,7 +488,7 @@ var NakedObjects;
             var items = _.map(links, function (link, i) { return viewModelFactory.itemViewModel(link, routeData.paneId, selectedItems[i]); });
             if (tableView) {
                 var getActionExtensions = routeData.objectId ?
-                    function () { return context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId); } :
+                    function () { return context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId); } :
                     function () { return context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId); };
                 var getExtensions = listViewModel instanceof NakedObjects.CollectionViewModel ? function () { return $q.when(listViewModel.collectionRep.extensions()); } : getActionExtensions;
                 // clear existing header 
@@ -429,15 +521,25 @@ var NakedObjects;
             var postfix = count === 1 ? "Item" : "Items";
             return count + " " + postfix;
         }
+        function getDefaultTableState(exts) {
+            if (exts.renderEagerly()) {
+                return exts.tableViewColumns() || exts.tableViewTitle() ? NakedObjects.CollectionViewState.Table : NakedObjects.CollectionViewState.List;
+            }
+            return NakedObjects.CollectionViewState.Summary;
+        }
         viewModelFactory.collectionViewModel = function (collectionRep, routeData) {
             var collectionViewModel = new NakedObjects.CollectionViewModel();
             var itemLinks = collectionRep.value();
             var paneId = routeData.paneId;
-            var state = routeData.collections[collectionRep.collectionId()] || NakedObjects.CollectionViewState.Summary;
+            var size = collectionRep.size();
+            var state = routeData.collections[collectionRep.collectionId()];
+            state = size === 0 ? NakedObjects.CollectionViewState.Summary : state;
+            if (state == null) {
+                state = getDefaultTableState(collectionRep.extensions());
+            }
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-            var size = collectionRep.size();
             collectionViewModel.size = getCollectionCount(size);
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then(function (c) {
@@ -476,8 +578,8 @@ var NakedObjects;
             collectionPlaceholderViewModel.description = function () { return ("Page " + routeData.page); };
             var recreate = function () {
                 return routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                    context.getListFromObject(routeData.paneId, routeData, routeData.page, routeData.pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
             };
             collectionPlaceholderViewModel.reload = function () { return recreate().then(function () { return $route.reload(); }); };
             return collectionPlaceholderViewModel;
@@ -528,7 +630,7 @@ var NakedObjects;
         };
         viewModelFactory.tableRowViewModel = function (properties, paneId) {
             var tableRowViewModel = new NakedObjects.TableRowViewModel();
-            tableRowViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyViewModel(property, id, null, paneId, function () { return {}; }); });
+            tableRowViewModel.properties = _.map(properties, function (property, id) { return viewModelFactory.propertyTableViewModel(property, id, paneId); });
             return tableRowViewModel;
         };
         var cachedToolBarViewModel;
@@ -564,6 +666,10 @@ var NakedObjects;
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
+                tvm_1.logOff = function () {
+                    $location.path("/");
+                    $timeout(function () { return $window.location.reload(); });
+                };
                 tvm_1.template = NakedObjects.appBarTemplate;
                 tvm_1.footerTemplate = NakedObjects.footerTemplate;
                 $rootScope.$on("ajax-change", function (event, count) {
@@ -583,6 +689,7 @@ var NakedObjects;
                     focusManager.focusOverrideOff();
                     navigation.forward();
                 });
+                context.getUser().then(function (user) { return tvm_1.userName = user.userName(); });
                 cachedToolBarViewModel = tvm_1;
             }
             return cachedToolBarViewModel;
@@ -636,14 +743,14 @@ var NakedObjects;
                         cvm.outputMessageThenClearIt();
                     }
                     else {
-                        var _a = routeData.objectId.split(NakedObjects.keySeparator), domainType = _a[0], id = _a.slice(1);
-                        context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                        var oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                        context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then(function (obj) {
                             var output = "";
                             var openCollIds = openCollectionIds(routeData);
                             if (_.some(openCollIds)) {
-                                var id_1 = openCollIds[0];
-                                var coll = obj.collectionMember(id_1);
+                                var id = openCollIds[0];
+                                var coll = obj.collectionMember(id);
                                 output += "Collection: " + coll.extensions().friendlyName() + " on " + TypePlusTitle(obj) + "\n";
                                 switch (coll.size()) {
                                     case 0:
@@ -711,7 +818,7 @@ var NakedObjects;
                         cvm.outputMessageThenClearIt();
                     }
                     else {
-                        var listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                        var listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
                         listPromise.then(function (list) {
                             context.getMenu(routeData.menuId).then(function (menu) {
                                 var count = list.value().length;
@@ -789,10 +896,14 @@ var NakedObjects;
         else {
             properScalarValue = value.scalar();
         }
-        var remoteMask = field.extensions().mask();
-        var format = field.extensions().format();
-        var formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
-        return formattedValue || "empty";
+        if (properScalarValue === "" || properScalarValue == null) {
+            return "empty";
+        }
+        else {
+            var remoteMask = field.extensions().mask();
+            var format = field.extensions().format();
+            return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
+        }
     }
     NakedObjects.renderFieldValue = renderFieldValue;
     function renderActionDialogIfOpen(repWithActions, routeData, mask) {

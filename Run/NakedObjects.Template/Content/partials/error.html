@@ -1,7 +1,7 @@
-﻿<div class="title">Error</div>
+﻿<div class="title">{{error.title}}</div>
 <div class="message">Message: {{error.message}}</div>
 <div class="code">Code: {{error.code}}</div>
-<div class="description">A software error has occurred</div>
- <div class="stacktrace">
+<div class="description">Description: {{error.description}}.</div>
+ <div class="stacktrace">Stack Trace :
      <div class="line" ng-repeat="line in error.stackTrace track by $index">{{line}}</div>
  </div>

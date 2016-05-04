@@ -3,8 +3,8 @@
 /// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
 
- 
     export interface IColor {
 
         toColorNumberFromHref(href: string): ng.IPromise<number>;
@@ -27,9 +27,8 @@ module NakedObjects {
         let defaultColor = 0;
 
         function typeFromUrl(url: string): string {
-            const typeRegex = /(objects|services)\/([\w|\.]+)/;
-            const results = (typeRegex).exec(url);
-            return (results && results.length > 2) ? results[2] : "";
+            const oid = ObjectIdWrapper.fromHref(url);
+            return oid.domainType;
         }
 
         function isSubtypeOf(subtype: string, index: number, count: number): ng.IPromise<number> {
@@ -120,29 +119,5 @@ module NakedObjects {
         colorService.setDefault = (def: number) => {
             defaultColor = def;
         }
-
-        // for backward compat 
-        const colorPrefix = "bg-color-";
-        const numColorMap = [
-            "blue",
-            "blueLight",
-            "blueDark",
-            "green",
-            "greenLight",
-            "greenDark",
-            "red",
-            "yellow",
-            "orange",
-            "orange",
-            "orangeDark",
-            "pink",
-            "pinkDark",
-            "purple",
-            "grayDark",
-            "magenta",
-            "teal",
-            "redLight",
-            "darkBlue"
-        ];
     });
 }

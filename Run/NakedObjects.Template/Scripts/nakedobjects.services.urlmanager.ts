@@ -19,6 +19,7 @@ module NakedObjects {
     import Value = Models.Value;
     import MenuRepresentation = Models.MenuRepresentation;
     import IAction = NakedObjects.Models.IInvokableAction;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -307,11 +308,9 @@ module NakedObjects {
         }
 
         function getOidFromHref(href: string) {
-            const urlRegex = /(objects|services)\/(.*)\/(.*)/;
-            const results = (urlRegex).exec(href);
-            return `${results[2]}${keySeparator}${results[3]}`;
+            const oid = ObjectIdWrapper.fromHref(href);
+            return oid.getKey();
         }
-
 
         function setValue(paneId: number, search: any, p: { id: () => string }, pv: Value, valueType: string) {
             setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(), search);

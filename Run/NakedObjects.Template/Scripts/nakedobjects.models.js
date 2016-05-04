@@ -87,6 +87,7 @@ var NakedObjects;
             ClientErrorCode[ClientErrorCode["WrongType"] = 1] = "WrongType";
             ClientErrorCode[ClientErrorCode["NotImplemented"] = 2] = "NotImplemented";
             ClientErrorCode[ClientErrorCode["SoftwareError"] = 3] = "SoftwareError";
+            ClientErrorCode[ClientErrorCode["ConnectionProblem"] = -1] = "ConnectionProblem";
         })(Models.ClientErrorCode || (Models.ClientErrorCode = {}));
         var ClientErrorCode = Models.ClientErrorCode;
         var ErrorWrapper = (function () {
@@ -96,10 +97,35 @@ var NakedObjects;
                 if (rc === ErrorCategory.ClientError) {
                     this.clientErrorCode = code;
                     this.errorCode = ClientErrorCode[this.clientErrorCode];
+                    var description = "Unknown software error";
+                    switch (this.clientErrorCode) {
+                        case ClientErrorCode.ExpiredTransient:
+                            description = "The requested view of unsaved object details has expired";
+                            break;
+                        case ClientErrorCode.WrongType:
+                            description = "An unexpected type of result was returned";
+                            break;
+                        case ClientErrorCode.NotImplemented:
+                            description = "The requested software feature is not implemented";
+                            break;
+                        case ClientErrorCode.SoftwareError:
+                            description = "A software error occurred";
+                            break;
+                        case ClientErrorCode.ConnectionProblem:
+                            description = "The client failed to connect to the server";
+                            break;
+                    }
+                    this.description = description;
+                    this.title = "Client Error";
                 }
                 if (rc === ErrorCategory.HttpClientError || rc === ErrorCategory.HttpServerError) {
                     this.httpErrorCode = code;
                     this.errorCode = HttpStatusCode[this.httpErrorCode] + "(" + this.httpErrorCode + ")";
+                    this.description = rc === ErrorCategory.HttpServerError
+                        ? "A software error has occurred on the server"
+                        : "An HTTP error code has been received from the server\n" +
+                            "You can look up the meaning of this code in the Restful Objects specification.";
+                    this.title = "Error message received from server";
                 }
                 if (err instanceof ErrorMap) {
                     var em = err;
@@ -114,7 +140,7 @@ var NakedObjects;
                     this.stackTrace = err.stackTrace();
                 }
                 else {
-                    this.message = err || "No message";
+                    this.message = err;
                     this.error = null;
                     this.stackTrace = [];
                 }
@@ -123,6 +149,69 @@ var NakedObjects;
         }());
         Models.ErrorWrapper = ErrorWrapper;
         // abstract classes 
+        function toOid(id) {
+            return _.reduce(id, function (a, v) { return ("" + a + (a ? NakedObjects.keySeparator : "") + v); }, "");
+        }
+        var ObjectIdWrapper = (function () {
+            function ObjectIdWrapper() {
+            }
+            ObjectIdWrapper.prototype.getKey = function () {
+                return this.domainType + NakedObjects.keySeparator + this.instanceId;
+            };
+            ObjectIdWrapper.safeSplit = function (id) {
+                if (id) {
+                    return id.split(NakedObjects.keySeparator);
+                }
+                return [];
+            };
+            ObjectIdWrapper.fromObject = function (object) {
+                var oid = new ObjectIdWrapper();
+                oid.domainType = object.domainType();
+                oid.instanceId = object.instanceId();
+                oid.splitInstanceId = this.safeSplit(oid.instanceId);
+                oid.isService = !oid.instanceId;
+                return oid;
+            };
+            ObjectIdWrapper.fromLink = function (link) {
+                var href = link.href();
+                return this.fromHref(href);
+            };
+            ObjectIdWrapper.fromHref = function (href) {
+                var oid = new ObjectIdWrapper();
+                oid.domainType = Models.typeFromUrl(href);
+                oid.instanceId = Models.idFromUrl(href);
+                oid.splitInstanceId = this.safeSplit(oid.instanceId);
+                oid.isService = !oid.instanceId;
+                return oid;
+            };
+            ObjectIdWrapper.fromObjectId = function (objectId) {
+                var oid = new ObjectIdWrapper();
+                var _a = objectId.split(NakedObjects.keySeparator), dt = _a[0], id = _a.slice(1);
+                oid.domainType = dt;
+                oid.splitInstanceId = id;
+                oid.instanceId = toOid(id);
+                oid.isService = !oid.instanceId;
+                return oid;
+            };
+            ObjectIdWrapper.fromRaw = function (dt, id) {
+                var oid = new ObjectIdWrapper();
+                oid.domainType = dt;
+                oid.instanceId = id;
+                oid.splitInstanceId = this.safeSplit(oid.instanceId);
+                oid.isService = !oid.instanceId;
+                return oid;
+            };
+            ObjectIdWrapper.fromSplitRaw = function (dt, id) {
+                var oid = new ObjectIdWrapper();
+                oid.domainType = dt;
+                oid.splitInstanceId = id;
+                oid.instanceId = toOid(id);
+                oid.isService = !oid.instanceId;
+                return oid;
+            };
+            return ObjectIdWrapper;
+        }());
+        Models.ObjectIdWrapper = ObjectIdWrapper;
         var HateosModel = (function () {
             function HateosModel(model) {
                 this.model = model;
@@ -139,21 +228,6 @@ var NakedObjects;
                     return _.merge(m, up);
                 }
                 return {};
-            };
-            HateosModel.prototype.getDtId = function () {
-                if (this.hateoasUrl) {
-                    var segments = this.hateoasUrl.split("/");
-                    if (segments.length >= 2) {
-                        segments.reverse();
-                        var idr = segments[0], dt = segments[1];
-                        var id = idr.split(NakedObjects.keySeparator);
-                        return {
-                            dt: dt,
-                            id: id
-                        };
-                    }
-                }
-                return { dt: "", id: [] };
             };
             HateosModel.prototype.getUrl = function () {
                 var url = this.hateoasUrl;
@@ -575,6 +649,7 @@ var NakedObjects;
                 this.dataType = function () { return _this.wrapped["x-ro-nof-dataType"]; };
                 this.range = function () { return _this.wrapped["x-ro-nof-range"]; };
                 this.notNavigable = function () { return _this.wrapped["x-ro-nof-notNavigable"]; };
+                this.renderEagerly = function () { return _this.wrapped["x-ro-nof-renderEagerly"]; };
             }
             return Extensions;
         }());
@@ -600,10 +675,6 @@ var NakedObjects;
                 _super.call(this);
                 this.wrapped = function () { return _this.resource(); };
             }
-            ActionResultRepresentation.prototype.getInvokeMap = function () {
-                // needs to be initialised 
-                return null;
-            };
             // links 
             ActionResultRepresentation.prototype.selfLink = function () {
                 return linkByRel(this.links(), "self");
@@ -633,7 +704,6 @@ var NakedObjects;
             return ActionResultRepresentation;
         }(ResourceRepresentation));
         Models.ActionResultRepresentation = ActionResultRepresentation;
-        // matches an action representation 18.0 
         // matches 18.2.1
         var Parameter = (function (_super) {
             __extends(Parameter, _super);
@@ -738,12 +808,6 @@ var NakedObjects;
             };
             ActionRepresentation.prototype.getUp = function () {
                 return this.upLink().getTarget();
-            };
-            ActionRepresentation.prototype.getInvoke = function () {
-                var _this = this;
-                var ar = this.invokeLink().getTarget();
-                ar.getInvokeMap = function () { return new InvokeMap(_this.invokeLink()); };
-                return ar;
             };
             ActionRepresentation.prototype.getInvokeMap = function () {
                 return new InvokeMap(this.invokeLink());
@@ -1022,7 +1086,11 @@ var NakedObjects;
                     return new CollectionMember(toWrap, parent, id);
                 }
                 if (toWrap.memberType === "action") {
-                    return new ActionMember(toWrap, parent, id);
+                    var member = new ActionMember(toWrap, parent, id);
+                    if (member.invokeLink()) {
+                        return new InvokableActionMember(toWrap, parent, id);
+                    }
+                    return member;
                 }
                 return null;
             };
@@ -1180,30 +1248,38 @@ var NakedObjects;
             ActionMember.prototype.invokeLink = function () {
                 return linkByNamespacedRel(this.links(), "invoke");
             };
-            ActionMember.prototype.getInvokeMap = function () {
-                var invokeLink = this.invokeLink();
-                if (invokeLink) {
-                    return new InvokeMap(this.invokeLink());
-                }
-                return null;
-            };
-            ActionMember.prototype.initParameterMap = function () {
-                var _this = this;
-                if (!this.parameterMap) {
-                    var parameters = this.wrapped().parameters;
-                    this.parameterMap = _.mapValues(parameters, function (p, id) { return new Parameter(p, _this, id); });
-                }
-            };
-            ActionMember.prototype.parameters = function () {
-                this.initParameterMap();
-                return this.parameterMap;
-            };
             ActionMember.prototype.disabledReason = function () {
                 return this.wrapped().disabledReason;
             };
             return ActionMember;
         }(Member));
         Models.ActionMember = ActionMember;
+        var InvokableActionMember = (function (_super) {
+            __extends(InvokableActionMember, _super);
+            function InvokableActionMember(wrapped, parent, id) {
+                _super.call(this, wrapped, parent, id);
+            }
+            InvokableActionMember.prototype.getInvokeMap = function () {
+                var invokeLink = this.invokeLink();
+                if (invokeLink) {
+                    return new InvokeMap(this.invokeLink());
+                }
+                return null;
+            };
+            InvokableActionMember.prototype.initParameterMap = function () {
+                var _this = this;
+                if (!this.parameterMap) {
+                    var parameters = this.wrapped().parameters;
+                    this.parameterMap = _.mapValues(parameters, function (p, id) { return new Parameter(p, _this, id); });
+                }
+            };
+            InvokableActionMember.prototype.parameters = function () {
+                this.initParameterMap();
+                return this.parameterMap;
+            };
+            return InvokableActionMember;
+        }(ActionMember));
+        Models.InvokableActionMember = InvokableActionMember;
         var DomainObjectRepresentation = (function (_super) {
             __extends(DomainObjectRepresentation, _super);
             function DomainObjectRepresentation() {
@@ -1297,6 +1373,12 @@ var NakedObjects;
             };
             DomainObjectRepresentation.prototype.setInlinePropertyDetails = function (flag) {
                 this.setUrlParameter(NakedObjects.roInlinePropertyDetails, flag);
+            };
+            DomainObjectRepresentation.prototype.getOid = function () {
+                if (!this.oid) {
+                    this.oid = ObjectIdWrapper.fromObject(this);
+                }
+                return this.oid;
             };
             return DomainObjectRepresentation;
         }(ResourceRepresentation));
@@ -1726,6 +1808,12 @@ var NakedObjects;
                 var target = this.getHateoasTarget(this.type().representationType);
                 this.copyToHateoasModel(target);
                 return target;
+            };
+            Link.prototype.getOid = function () {
+                if (!this.oid) {
+                    this.oid = ObjectIdWrapper.fromLink(this);
+                }
+                return this.oid;
             };
             return Link;
         }());

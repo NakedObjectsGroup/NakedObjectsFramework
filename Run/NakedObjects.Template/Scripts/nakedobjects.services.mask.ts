@@ -12,20 +12,21 @@ module NakedObjects {
         [index: string]: { [index: string]: ILocalFilter };
     }
 
+    export type formatType = "string" | "date-time" | "date" | "time" | "utc-millsec" | "big-integer" | "big-decimal" | "blob"  | "clob" | "decimal" | "int";
+
     export interface IMask {
-        toLocalFilter(remoteMask: string, format: string): ILocalFilter;
-        defaultLocalFilter(format: string): ILocalFilter;
+        toLocalFilter(remoteMask: string, format: formatType): ILocalFilter;
+        defaultLocalFilter(format: formatType): ILocalFilter;
 
         // use angular number mask to format
-        setNumberMaskMapping(customMask: string, format: string, fractionSize?: number): void;
+        setNumberMaskMapping(customMask: string, format: formatType, fractionSize?: number): void;
 
         // use angular date mask to format
-        setDateMaskMapping(customMask: string, format: string, mask?: string, tz?: string): void;
+        setDateMaskMapping(customMask: string, format: formatType, mask?: string, tz?: string): void;
 
         // use angular currency mask to format
-        setCurrencyMaskMapping(customMask: string, format: string, symbol?: string, fractionSize?: number): void;
+        setCurrencyMaskMapping(customMask: string, format: formatType, symbol?: string, fractionSize?: number): void;
     }
-
 
     app.service("mask", function($filter: ng.IFilterService) {
         const maskService = <IMask>this;
@@ -78,7 +79,7 @@ module NakedObjects {
             }
         }
 
-        maskService.defaultLocalFilter = (format: string): ILocalFilter => {
+        maskService.defaultLocalFilter = (format: formatType): ILocalFilter => {
             switch (format) {
             case ("string"):
                 return new LocalStringFilter();
@@ -107,24 +108,27 @@ module NakedObjects {
             }
         };
 
-        function customFilter(format: string, remoteMask: string) {
-            if (maskMap[format] && remoteMask) {
-                return maskMap[format][remoteMask];
+        function customFilter(format: formatType, remoteMask: string) {
+            if (maskMap[format as string] && remoteMask) {
+                return maskMap[format as string ][remoteMask];
             }
             return undefined;
         }
 
-        maskService.toLocalFilter = (remoteMask: string, format: string) => {
+        maskService.toLocalFilter = (remoteMask: string, format: formatType) => {
             return customFilter(format, remoteMask) || maskService.defaultLocalFilter(format);
         };
-        maskService.setNumberMaskMapping = (customMask: string, format: string, fractionSize?: number) => {
-            maskMap[format][customMask] = new LocalNumberFilter(fractionSize);
+
+        maskService.setNumberMaskMapping = (customMask: string, format: formatType, fractionSize?: number) => {
+            maskMap[format as string][customMask] = new LocalNumberFilter(fractionSize);
         };
-        maskService.setDateMaskMapping = (customMask: string, format: string, mask: string, tz: string) => {
-            maskMap[format][customMask] = new LocalDateFilter(mask, tz);
+
+        maskService.setDateMaskMapping = (customMask: string, format: formatType, mask: string, tz: string) => {
+            maskMap[format as string][customMask] = new LocalDateFilter(mask, tz);
         };
-        maskService.setCurrencyMaskMapping = (customMask: string, format: string, symbol ?: string, fractionSize ?: number) => {
-            maskMap[format][customMask] = new LocalCurrencyFilter(symbol, fractionSize);
+
+        maskService.setCurrencyMaskMapping = (customMask: string, format: formatType, symbol ?: string, fractionSize ?: number) => {
+            maskMap[format as string][customMask] = new LocalCurrencyFilter(symbol, fractionSize);
         };
     });
 }

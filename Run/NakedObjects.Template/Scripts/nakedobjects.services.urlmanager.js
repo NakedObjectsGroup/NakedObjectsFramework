@@ -11,6 +11,7 @@ var NakedObjects;
     var DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
     var Value = NakedObjects.Models.Value;
     var MenuRepresentation = NakedObjects.Models.MenuRepresentation;
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     NakedObjects.app.service("urlManager", function ($routeParams, $location) {
         var helper = this;
         // keep in alphabetic order to help avoid name collisions 
@@ -198,9 +199,8 @@ var NakedObjects;
             return _.pick(search, toCapture);
         }
         function getOidFromHref(href) {
-            var urlRegex = /(objects|services)\/(.*)\/(.*)/;
-            var results = (urlRegex).exec(href);
-            return "" + results[2] + NakedObjects.keySeparator + results[3];
+            var oid = ObjectIdWrapper.fromHref(href);
+            return oid.getKey();
         }
         function setValue(paneId, search, p, pv, valueType) {
             setId("" + valueType + paneId + "_" + p.id(), pv.toJsonString(), search);

@@ -10,42 +10,35 @@ var NakedObjects;
     var ActionResultRepresentation = NakedObjects.Models.ActionResultRepresentation;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
     var HomePageRepresentation = NakedObjects.Models.HomePageRepresentation;
-    var Link = NakedObjects.Models.Link;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var PromptRepresentation = NakedObjects.Models.PromptRepresentation;
     var DomainTypeActionInvokeRepresentation = NakedObjects.Models.DomainTypeActionInvokeRepresentation;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    var DirtyState;
+    (function (DirtyState) {
+        DirtyState[DirtyState["DirtyMustReload"] = 0] = "DirtyMustReload";
+        DirtyState[DirtyState["DirtyMayReload"] = 1] = "DirtyMayReload";
+        DirtyState[DirtyState["Clean"] = 2] = "Clean";
+    })(DirtyState || (DirtyState = {}));
     var DirtyCache = (function () {
         function DirtyCache() {
             this.dirtyObjects = {};
         }
-        DirtyCache.prototype.getKey = function (type, id) {
-            return type + NakedObjects.keySeparator + id;
+        DirtyCache.prototype.setDirty = function (oid, alwaysReload) {
+            if (alwaysReload === void 0) { alwaysReload = false; }
+            this.setDirtyInternal(oid, alwaysReload ? DirtyState.DirtyMustReload : DirtyState.DirtyMayReload);
         };
-        DirtyCache.prototype.setDirty = function (obj) {
-            if (obj instanceof DomainObjectRepresentation) {
-                this.setDirtyObject(obj);
-            }
-            if (obj instanceof Link) {
-                this.setDirtyLink(obj);
-            }
+        DirtyCache.prototype.setDirtyInternal = function (oid, dirtyState) {
+            var key = oid.getKey();
+            this.dirtyObjects[key] = dirtyState;
         };
-        DirtyCache.prototype.setDirtyObject = function (objectRepresentation) {
-            var key = this.getKey(objectRepresentation.domainType(), objectRepresentation.instanceId());
-            this.dirtyObjects[key] = true;
+        DirtyCache.prototype.getDirty = function (oid) {
+            var key = oid.getKey();
+            return this.dirtyObjects[key] || DirtyState.Clean;
         };
-        DirtyCache.prototype.setDirtyLink = function (link) {
-            var href = link.href().split("/");
-            var _a = href.reverse(), id = _a[0], dt = _a[1];
-            var key = this.getKey(dt, id);
-            this.dirtyObjects[key] = true;
-        };
-        DirtyCache.prototype.getDirty = function (type, id) {
-            var key = this.getKey(type, id);
-            return this.dirtyObjects[key] || false;
-        };
-        DirtyCache.prototype.clearDirty = function (type, id) {
-            var key = this.getKey(type, id);
+        DirtyCache.prototype.clearDirty = function (oid) {
+            var key = oid.getKey();
             this.dirtyObjects = _.omit(this.dirtyObjects, key);
         };
         return DirtyCache;
@@ -110,13 +103,24 @@ var NakedObjects;
         var currentServices = null;
         var currentMenus = null;
         var currentVersion = null;
+        var currentUser = null;
         var recentcache = new RecentCache();
         var dirtyCache = new DirtyCache();
         var currentLists = {};
+        context.getFile = function (object, url, mt) {
+            var isDirty = context.getIsDirty(object.getOid());
+            return repLoader.getFile(url, mt, isDirty);
+        };
+        context.clearCachedFile = function (url) {
+            repLoader.clearCache(url);
+        };
         // exposed for test mocking
-        context.getDomainObject = function (paneId, type, id, interactionMode) {
-            var isDirty = dirtyCache.getDirty(type, id);
-            if (!isDirty && isSameObject(currentObjects[paneId], type, id)) {
+        context.getDomainObject = function (paneId, oid, interactionMode) {
+            var type = oid.domainType;
+            var id = oid.instanceId;
+            var dirtyState = dirtyCache.getDirty(oid);
+            var forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && NakedObjects.autoLoadDirty);
+            if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
             }
             // deeper cache for transients
@@ -127,10 +131,12 @@ var NakedObjects;
             var object = new DomainObjectRepresentation();
             object.hateoasUrl = NakedObjects.getAppPath() + "/objects/" + type + "/" + id;
             object.setInlinePropertyDetails(interactionMode === NakedObjects.InteractionMode.Edit);
-            return repLoader.populate(object, isDirty).
+            return repLoader.populate(object, forceReload).
                 then(function (obj) {
                 currentObjects[paneId] = obj;
-                dirtyCache.clearDirty(type, id);
+                if (forceReload) {
+                    dirtyCache.clearDirty(oid);
+                }
                 addRecentlyViewed(obj);
                 return $q.when(obj);
             });
@@ -141,9 +147,17 @@ var NakedObjects;
             return repLoader.retrieveFromLink(object.selfLink(), parms).
                 then(function (obj) {
                 currentObjects[paneId] = obj;
+                var oid = obj.getOid();
+                dirtyCache.clearDirty(oid);
                 return $q.when(obj);
             });
         }
+        context.getIsDirty = function (oid) {
+            if (!oid.isService) {
+                return dirtyCache.getDirty(oid) !== DirtyState.Clean;
+            }
+            return false;
+        };
         context.getObjectForEdit = function (paneId, object) {
             return editOrReloadObject(paneId, object, true);
         };
@@ -174,7 +188,8 @@ var NakedObjects;
                 details.setUrlParameter(NakedObjects.roInlineCollectionItems, true);
             }
             var parent = collectionMember.parent;
-            var isDirty = dirtyCache.getDirty(parent.domainType(), parent.instanceId());
+            var oid = parent.getOid();
+            var isDirty = dirtyCache.getDirty(oid) !== DirtyState.Clean;
             return repLoader.populate(details, isDirty);
         };
         context.getInvokableAction = function (action) {
@@ -250,13 +265,22 @@ var NakedObjects;
                 return $q.when(version);
             });
         };
-        context.getObject = function (paneId, type, id, interactionMode) {
-            var oid = _.reduce(id, function (a, v) { return ("" + a + (a ? NakedObjects.keySeparator : "") + v); }, "");
-            return oid ? context.getDomainObject(paneId, type, oid, interactionMode) : context.getService(paneId, type);
+        context.getUser = function () {
+            if (currentUser) {
+                return $q.when(currentUser);
+            }
+            return context.getHome().
+                then(function (home) {
+                var u = home.getUser();
+                return repLoader.populate(u);
+            }).
+                then(function (user) {
+                currentUser = user;
+                return $q.when(user);
+            });
         };
-        context.getObjectByOid = function (paneId, objectId, interactionMode) {
-            var _a = objectId.split(NakedObjects.keySeparator), dt = _a[0], id = _a.slice(1);
-            return context.getObject(paneId, dt, id, interactionMode);
+        context.getObject = function (paneId, oid, interactionMode) {
+            return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
         context.getCachedList = function (paneId, page, pageSize) {
             var index = urlManager.getListCacheIndex(paneId, page, pageSize);
@@ -302,13 +326,17 @@ var NakedObjects;
         context.getActionExtensionsFromMenu = function (menuId, actionId) {
             return context.getMenu(menuId).then(function (menu) { return $q.when(menu.actionMember(actionId).extensions()); });
         };
-        context.getActionExtensionsFromObject = function (paneId, objectId, actionId) {
-            return context.getObjectByOid(paneId, objectId, NakedObjects.InteractionMode.View).then(function (object) { return $q.when(object.actionMember(actionId).extensions()); });
+        context.getActionExtensionsFromObject = function (paneId, oid, actionId) {
+            return context.getObject(paneId, oid, NakedObjects.InteractionMode.View).then(function (object) { return $q.when(object.actionMember(actionId).extensions()); });
         };
         function getPagingParms(page, pageSize) {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
         }
-        context.getListFromMenu = function (paneId, menuId, actionId, parms, state, page, pageSize) {
+        context.getListFromMenu = function (paneId, routeData, page, pageSize) {
+            var menuId = routeData.menuId;
+            var actionId = routeData.actionId;
+            var parms = routeData.actionParams;
+            var state = routeData.state;
             var urlParms = getPagingParms(page, pageSize);
             if (state === NakedObjects.CollectionViewState.Table) {
                 urlParms[NakedObjects.roInlineCollectionItems] = true;
@@ -318,12 +346,17 @@ var NakedObjects;
                 then(function (details) { return repLoader.invoke(details, parms, urlParms); }); };
             return getList(paneId, promise, page, pageSize);
         };
-        context.getListFromObject = function (paneId, objectId, actionId, parms, state, page, pageSize) {
+        context.getListFromObject = function (paneId, routeData, page, pageSize) {
+            var objectId = routeData.objectId;
+            var actionId = routeData.actionId;
+            var parms = routeData.actionParams;
+            var state = routeData.state;
+            var oid = ObjectIdWrapper.fromObjectId(objectId);
             var urlParms = getPagingParms(page, pageSize);
             if (state === NakedObjects.CollectionViewState.Table) {
                 urlParms[NakedObjects.roInlineCollectionItems] = true;
             }
-            var promise = function () { return context.getObjectByOid(paneId, objectId, NakedObjects.InteractionMode.View).
+            var promise = function () { return context.getObject(paneId, oid, NakedObjects.InteractionMode.View).
                 then(function (object) { return context.getInvokableAction(object.actionMember(actionId)); }).
                 then(function (details) { return repLoader.invoke(details, parms, urlParms); }); };
             return getList(paneId, promise, page, pageSize);
@@ -381,6 +414,9 @@ var NakedObjects;
                         resultObject.etagDigest = result.etagDigest;
                         context.setObject(paneId, resultObject);
                         urlManager.setObject(resultObject, paneId);
+                        // update angular cache 
+                        var url = resultObject.selfLink().href() + ("?" + NakedObjects.roInlinePropertyDetails + "=false");
+                        repLoader.addToCache(url, resultObject.wrapped());
                         // if render in edit must be  a form 
                         if (resultObject.extensions().interactionMode() === "form") {
                             urlManager.pushUrlState(paneId);
@@ -414,7 +450,7 @@ var NakedObjects;
             var actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
-                    return function () { return dirtyCache.setDirty(parent); };
+                    return function () { return dirtyCache.setDirty(parent.getOid()); };
                 }
                 else if (parent instanceof ListRepresentation && parms) {
                     var ccaParm = _.find(action.parameters(), function (p) { return p.isCollectionContributed(); });
@@ -427,7 +463,7 @@ var NakedObjects;
                             .filter(function (v) { return v.isReference(); })
                             .map(function (v) { return v.link(); })
                             .value();
-                        return function () { return _.forEach(links_1, function (l) { return dirtyCache.setDirty(l); }); };
+                        return function () { return _.forEach(links_1, function (l) { return dirtyCache.setDirty(l.getOid()); }); };
                     }
                 }
             }
@@ -440,11 +476,11 @@ var NakedObjects;
                 var setDirty = getSetDirtyFunction(iAction, parms);
                 return invokeActionInternal(im, iAction, paneId, setDirty);
             };
-            return context.getInvokableAction(action).then(function (details) { return invokeOnMap(details); });
+            return invokeOnMap(action);
         };
         function setNewObject(updatedObject, paneId, viewSavedObject) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(updatedObject);
+            dirtyCache.setDirty(updatedObject.getOid(), true);
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);
             }

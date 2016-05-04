@@ -12,6 +12,10 @@ var NakedObjects;
 (function (NakedObjects) {
     var Models;
     (function (Models) {
+        function dirtyMarker(context, oid) {
+            return (NakedObjects.showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
+        }
+        Models.dirtyMarker = dirtyMarker;
         function toDateString(dt) {
             var year = dt.getFullYear().toString();
             var month = (dt.getMonth() + 1).toString();
@@ -78,6 +82,12 @@ var NakedObjects;
             return (results && results.length > 2) ? results[2] : "";
         }
         Models.typeFromUrl = typeFromUrl;
+        function idFromUrl(href) {
+            var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            var results = (urlRegex).exec(href);
+            return (results && results.length > 3) ? results[3] : "";
+        }
+        Models.idFromUrl = idFromUrl;
         function friendlyTypeName(fullName) {
             var shortName = _.last(fullName.split("."));
             var result = shortName.replace(/([A-Z])/g, " $1").trim();
@@ -106,7 +116,7 @@ var NakedObjects;
         function validateNumber(model, newValue, filter) {
             var format = model.extensions().format();
             switch (format) {
-                case ("integer"):
+                case ("int"):
                     if (!isInteger(newValue)) {
                         return "Not an integer";
                     }
@@ -188,7 +198,7 @@ var NakedObjects;
                 return mandatory;
             }
             // if optional but empty always valid 
-            if (modelValue == null) {
+            if (modelValue == null || modelValue === "") {
                 return "";
             }
             // check type 

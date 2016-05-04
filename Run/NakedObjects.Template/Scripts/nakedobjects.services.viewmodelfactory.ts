@@ -38,6 +38,9 @@ module NakedObjects {
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
     import IHasExtensions = Models.IHasExtensions;
+    import dirtyMarker = Models.dirtyMarker;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -63,6 +66,9 @@ module NakedObjects {
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
+        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;
+
+        attachmentViewModel(propertyRep : PropertyMember) : AttachmentViewModel;
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -80,22 +86,32 @@ module NakedObjects {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route: any) {
+        $route: any,
+        $window : any) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
         viewModelFactory.errorViewModel = (error: ErrorWrapper) => {
             const errorViewModel = new ErrorViewModel();
 
-            errorViewModel.message = error ? error.message : "Unknown";
-            const stackTrace = error ? error.stackTrace : null;
-            errorViewModel.stackTrace = !stackTrace || stackTrace.length === 0 ? ["Empty"] : stackTrace;
+            if (error) {
+                errorViewModel.title = error.title;
+                errorViewModel.description = error.description;
+                errorViewModel.code = error.errorCode;
+                errorViewModel.message = error.message;
+                const stackTrace = error.stackTrace;
 
-            errorViewModel.description = "";
+                errorViewModel.stackTrace = stackTrace && stackTrace.length !== 0 ? stackTrace : null;
 
-            errorViewModel.code = error.errorCode;
-
-            errorViewModel.isConcurrencyError = error.category === ErrorCategory.HttpClientError && error.httpErrorCode === HttpStatusCode.PreconditionFailed;
+                errorViewModel.isConcurrencyError =
+                    error.category === ErrorCategory.HttpClientError &&
+                    error.httpErrorCode === HttpStatusCode.PreconditionFailed;
+            }
+            
+            errorViewModel.description = errorViewModel.description || "No description available";
+            errorViewModel.code = errorViewModel.code || "No code available";
+            errorViewModel.message = errorViewModel.message || "No message available";
+            errorViewModel.stackTrace = errorViewModel.stackTrace || ["No stack trace available"];
 
             return errorViewModel;
         };
@@ -119,10 +135,24 @@ module NakedObjects {
             linkViewModel.choice = ChoiceViewModel.create(value, "");
 
             linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
+
+            linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
 
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
             $q.when(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
+
+        viewModelFactory.attachmentViewModel = (propertyRep : PropertyMember) => {
+            const href = propertyRep.attachmentLink().href();
+            const mimeType = propertyRep.attachmentLink().type().asString;
+            const title = propertyRep.attachmentLink().title();
+            const parent = propertyRep.parent as DomainObjectRepresentation;
+
+            const avm = AttachmentViewModel.create(href, mimeType, title);
+            avm.downloadFile = () => context.getFile(parent, href, mimeType);
+            avm.clearCachedFile = () => context.clearCachedFile(href);
+            return avm;
+        };
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
             const linkViewModel = new LinkViewModel();
@@ -184,8 +214,8 @@ module NakedObjects {
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
             parmViewModel.dflt = parmRep.default().toValueString();
             parmViewModel.optional = parmRep.extensions().optional();
-            const required = parmViewModel.optional ? "" : "* ";
-            parmViewModel.description = required + parmRep.extensions().description();
+            let required = parmViewModel.optional ? "" : "* ";
+            parmViewModel.description = parmRep.extensions().description();
             parmViewModel.message = "";
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
@@ -220,6 +250,18 @@ module NakedObjects {
                         then(createcvm);
                 };
                 parmViewModel.minLength = parmRep.promptLink().extensions().minLength();
+                parmViewModel.description = parmViewModel.description || autoCompletePrompt;
+            }
+
+            if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
+                parmViewModel.description = parmViewModel.description || dropPrompt;
+
+                const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
+
+                if (!val.isNull()) {
+                    parmViewModel.reference = val.link().href();
+                    parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                }
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
@@ -272,7 +314,8 @@ module NakedObjects {
 
                     parmViewModel.value = bValueToSet;
                     if (bValueToSet !== null) {
-                        parmViewModel.description = parmRep.extensions().description();
+                        // reset required indicator
+                        required = "";
                     }
 
                 } else if (IsDateOrDateTime(parmRep)) {
@@ -297,6 +340,8 @@ module NakedObjects {
 
             parmViewModel.drop = _.partial(drop, parmViewModel);
 
+            parmViewModel.description = required + parmViewModel.description;
+
             return parmViewModel;
         };
 
@@ -308,6 +353,12 @@ module NakedObjects {
             const paneId = routeData.paneId;
 
             actionViewModel.actionRep = actionRep;
+
+            if (actionRep instanceof ActionRepresentation || actionRep instanceof InvokableActionMember) {
+                actionViewModel.invokableActionRep = actionRep;
+            }
+
+
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
             actionViewModel.disabled = () => !!actionRep.disabledReason();
@@ -315,14 +366,14 @@ module NakedObjects {
 
             actionViewModel.parameters = () => {
                 // don't use actionRep directly as it may change and we've closed around the original value
-                const parameters = _.pickBy(actionViewModel.actionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+                const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
                 return _.map(parameters, parm => viewModelFactory.parameterViewModel(parm, parms[parm.id()], paneId));
             };
 
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-                return context.invokeAction(actionRep, clickHandler.pane(paneId, right), parmMap);
+                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, clickHandler.pane(paneId, right), parmMap));
             };
 
             // form actions should never show dialogs
@@ -348,7 +399,7 @@ module NakedObjects {
                     });
             };
 
-            actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.actionRep = details;
+            actionViewModel.makeInvokable = (details: IInvokableAction) => actionViewModel.invokableActionRep = details;
 
             return actionViewModel;
         };
@@ -418,7 +469,66 @@ module NakedObjects {
                 vm.formattedValue = value.toString();
                 vm.refType = rep.extensions().notNavigable() ? "notNavigable" : "navigable";
             }
+            if (vm.entryType === EntryType.FreeForm) {
+                vm.description = vm.description || dropPrompt;
+            }
         }
+
+        viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember, id: string,  paneId: number) => {
+            const propertyViewModel = new PropertyViewModel();
+
+            propertyViewModel.onPaneId = paneId;
+            propertyViewModel.propertyRep = propertyRep;
+            propertyViewModel.entryType = propertyRep.entryType();
+            propertyViewModel.id = id;
+            propertyViewModel.argId = `${id.toLowerCase()}`;
+            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
+           
+            propertyViewModel.title = propertyRep.extensions().friendlyName();         
+            propertyViewModel.format = propertyRep.extensions().format();
+            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
+            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
+      
+            const value = propertyRep.value();
+            
+            if (propertyRep.isScalar()) {
+                if (isDateOrDateTime(propertyRep)) {
+                    propertyViewModel.value = toUtcDate(value);
+                } else {
+                    propertyViewModel.value = value.scalar();
+                }
+                propertyViewModel.type = "scalar";
+
+                const remoteMask = propertyRep.extensions().mask();
+                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+
+                if (propertyRep.entryType() === EntryType.Choices) {
+                    const currentChoice = ChoiceViewModel.create(value, id);
+                
+                    const choices = propertyRep.choices();
+                    propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                   
+                    if (propertyViewModel.choice) {
+                        propertyViewModel.value = propertyViewModel.choice.name;
+                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                    }
+                } else if (propertyViewModel.password) {
+                    propertyViewModel.formattedValue = obscuredText;
+                } else {
+                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                }
+            } else {
+                // is reference   
+                propertyViewModel.type = "ref";
+                propertyViewModel.formattedValue = value.isNull() ? "" : value.toString();
+            }
+
+            // only set color if has value 
+            setColor(propertyViewModel);
+
+            return propertyViewModel;
+        };
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
             const propertyViewModel = new PropertyViewModel();
@@ -441,12 +551,10 @@ module NakedObjects {
             propertyViewModel.clientValid = true;
 
             const required = propertyViewModel.optional ? "" : "* ";
-            propertyViewModel.description = required + propertyRep.extensions().description();
+            propertyViewModel.description = propertyRep.extensions().description();
 
             if (propertyRep.attachmentLink() != null) {
-                propertyViewModel.attachment = AttachmentViewModel.create(propertyRep.attachmentLink().href(),
-                    propertyRep.attachmentLink().type().asString,
-                    propertyRep.attachmentLink().title());
+                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
             }
 
             const value = previousValue || propertyRep.value();
@@ -469,6 +577,7 @@ module NakedObjects {
                     return context.autoComplete(propertyRep, id, parentValues, searchTerm).then(createcvm);
                 };
                 propertyViewModel.minLength = propertyRep.promptLink().extensions().minLength();
+                propertyViewModel.description = propertyViewModel.description || autoCompletePrompt;
             }
 
             if (propertyRep.entryType() === EntryType.ConditionalChoices) {
@@ -517,11 +626,15 @@ module NakedObjects {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
 
+            propertyViewModel.description = required + propertyViewModel.description;
+
             propertyViewModel.isDirty = () => !!previousValue || propertyViewModel.getValue().toValueString() !== propertyViewModel.originalValue.toValueString();
             propertyViewModel.validate = _.partial(validate, propertyRep, propertyViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
             propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
             propertyViewModel.drop = _.partial(drop, propertyViewModel);
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
+
+
 
             return propertyViewModel;
         };
@@ -535,7 +648,7 @@ module NakedObjects {
             if (tableView) {
 
                 const getActionExtensions = routeData.objectId ?
-                    () => context.getActionExtensionsFromObject(routeData.paneId, routeData.objectId, routeData.actionId) :
+                    () => context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
                     () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
 
                 const getExtensions = listViewModel instanceof CollectionViewModel ? () => $q.when(listViewModel.collectionRep.extensions()) : getActionExtensions;
@@ -582,20 +695,32 @@ module NakedObjects {
             return `${count} ${postfix}`;
         }
 
+        function getDefaultTableState(exts: Extensions) {
+            if (exts.renderEagerly()) {
+                return exts.tableViewColumns() || exts.tableViewTitle() ? CollectionViewState.Table : CollectionViewState.List;
+            }
+            return CollectionViewState.Summary;
+        }
 
         viewModelFactory.collectionViewModel = (collectionRep: CollectionMember, routeData: PaneRouteData) => {
             const collectionViewModel = new CollectionViewModel();
 
             const itemLinks = collectionRep.value();
             const paneId = routeData.paneId;
-            const state = routeData.collections[collectionRep.collectionId()] || CollectionViewState.Summary;
+            const size = collectionRep.size();
+
+            let state = routeData.collections[collectionRep.collectionId()];
+
+            state = size === 0 ? CollectionViewState.Summary : state;
+
+            if (state == null) {
+                state = getDefaultTableState(collectionRep.extensions());
+            }
 
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
 
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-
-            const size = collectionRep.size();
 
             collectionViewModel.size = getCollectionCount(size);
 
@@ -645,8 +770,8 @@ module NakedObjects {
 
             const recreate = () =>
                 routeData.objectId ?
-                    context.getListFromObject(routeData.paneId, routeData.objectId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize) :
-                    context.getListFromMenu(routeData.paneId, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                    context.getListFromObject(routeData.paneId, routeData, routeData.page, routeData.pageSize) :
+                    context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
 
 
             collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
@@ -711,7 +836,7 @@ module NakedObjects {
 
         viewModelFactory.tableRowViewModel = (properties : _.Dictionary<PropertyMember> , paneId : number): TableRowViewModel => {
             const tableRowViewModel = new TableRowViewModel();
-            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyViewModel(property, id, null, paneId, () => <_.Dictionary<Value>>{}));
+            tableRowViewModel.properties = _.map(properties, (property, id) => viewModelFactory.propertyTableViewModel(property, id, paneId));
             return tableRowViewModel;
         };
 
@@ -752,6 +877,11 @@ module NakedObjects {
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
 
+                tvm.logOff = () => {
+                    $location.path("/");
+                    $timeout(() => $window.location.reload());
+                };
+
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 
@@ -772,6 +902,8 @@ module NakedObjects {
                     focusManager.focusOverrideOff();
                     navigation.forward();
                 });
+
+                context.getUser().then(user => tvm.userName = user.userName());
 
                 cachedToolBarViewModel = tvm;
             }
@@ -826,8 +958,9 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const [domainType, ...id] = routeData.objectId.split(keySeparator);
-                        context.getObject(1, domainType, id, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+                        const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+
+                        context.getObject(1, oid, routeData.interactionMode) //TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
                             .then((obj: DomainObjectRepresentation) => {
                                 let output = "";
                                 const openCollIds = openCollectionIds(routeData);
@@ -898,7 +1031,7 @@ module NakedObjects {
                     if (cvm.message) {
                         cvm.outputMessageThenClearIt();
                     } else {
-                        const listPromise = context.getListFromMenu(1, routeData.menuId, routeData.actionId, routeData.actionParams, routeData.state, routeData.page, routeData.pageSize);
+                        const listPromise = context.getListFromMenu(1, routeData, routeData.page, routeData.pageSize);
                         listPromise.then((list: ListRepresentation) => {
                             context.getMenu(routeData.menuId).then((menu: MenuRepresentation) => {
                                 const count = list.value().length;
@@ -975,10 +1108,13 @@ module NakedObjects {
         } else {
             properScalarValue = value.scalar();
         }
-        const remoteMask = field.extensions().mask();
-        const format = field.extensions().format();
-        const formattedValue = mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
-        return formattedValue || "empty";
+        if (properScalarValue === "" || properScalarValue == null) {
+            return "empty";
+        } else {
+            const remoteMask = field.extensions().mask();
+            const format = field.extensions().format();
+            return mask.toLocalFilter(remoteMask, format).filter(properScalarValue);
+        }
     }
 
     function renderActionDialogIfOpen(
@@ -987,7 +1123,7 @@ module NakedObjects {
         mask: IMask): string {
         let output = "";
         if (routeData.dialogId) {
-            const actionMember = repWithActions.actionMember(routeData.dialogId);
+            const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
             const actionName = actionMember.extensions().friendlyName();
             output += `Action dialog: ${actionName}\n`;
             _.forEach(routeData.dialogFields, (value, paramId) => {

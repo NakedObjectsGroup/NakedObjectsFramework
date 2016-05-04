@@ -74,21 +74,11 @@ module NakedObjects {
     export const roValidateOnly = "x-ro-validate-only";
     export const roInlineCollectionItems = "x-ro-inline-collection-items";
 
-    //NOF custom RO constants
-    export const nofChoices = "x-ro-nof-choices";
-    export const nofMenuPath = "x-ro-nof-menuPath";
-    export const nofMask = "x-ro-nof-mask";
-    export const nofInteractionMode = "x-ro-nof-interactionMode";
-    export const nofDataType = "x-ro-nof-dataType";
-
-    export const nofTableViewTitle = "x-ro-nof-tableViewTitle";
-    export const nofTableViewColumns = "x-ro-nof-tableViewColumns";
-    export const nofMultipleLines = "x-ro-nof-multipleLines";
+    //NOF custom RO constants  
     export const nofWarnings = "x-ro-nof-warnings";
     export const nofMessages = "x-ro-nof-messages";
-    export const nofNotNavigable = "x-ro-nof-notNavigable";
-
-
+   
+  
     export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
 
 }

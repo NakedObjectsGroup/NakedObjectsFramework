@@ -24,10 +24,14 @@ module NakedObjects {
     import ActionRepresentation = Models.ActionRepresentation;
     import IInvokableAction = Models.IInvokableAction;
     import CollectionRepresentation = Models.CollectionRepresentation;
+    import scalarValueType = RoInterfaces.scalarValueType;
+    import dirtyMarker = Models.dirtyMarker;
+    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
-        value: number | string | boolean | Date;
+        value: scalarValueType | Date;
         reference: string;
         choice: ChoiceViewModel;
         color: string;
@@ -116,6 +120,9 @@ module NakedObjects {
 
             return attachmentViewModel;
         }
+
+        downloadFile: () => ng.IPromise<Blob>;
+        clearCachedFile : () => void ;
     }
 
     export class ChoiceViewModel {
@@ -153,6 +160,7 @@ module NakedObjects {
     }
 
     export class ErrorViewModel {
+        title : string;
         message: string;
         stackTrace: string[];
         code: string;
@@ -167,7 +175,7 @@ module NakedObjects {
 
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
 
-        value: number | string | boolean;
+        value: scalarValueType;
         reference: string;
         choice: ChoiceViewModel;
         domainType: string;
@@ -205,7 +213,7 @@ module NakedObjects {
 
         localFilter: ILocalFilter;
         formattedValue: string;
-        value: number | string | boolean | Date;
+        value: scalarValueType | Date;
         id: string;
         argId: string;
         paneArgId: string;
@@ -217,7 +225,7 @@ module NakedObjects {
         multiChoices: ChoiceViewModel[];
         returnType: string;
         title: string;
-        format: string;
+        format: formatType;
         arguments: _.Dictionary<Value>;
         mask: string;
         password: boolean;
@@ -318,7 +326,7 @@ module NakedObjects {
                     return new Value((this.value as Date).toISOString());
                 }
 
-                return new Value(this.value as number | string | boolean);
+                return new Value(this.value as scalarValueType);
             }
 
             // reference
@@ -332,7 +340,9 @@ module NakedObjects {
     }
 
     export class ActionViewModel {
-        actionRep: ActionMember | ActionRepresentation | IInvokableAction;
+        actionRep: ActionMember | ActionRepresentation;
+        invokableActionRep : IInvokableAction; 
+
         menuPath: string;
         title: string;
         description: string;
@@ -367,7 +377,7 @@ module NakedObjects {
             this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], this.onPaneId));
 
             this.title = this.actionMember().extensions().friendlyName();
-            this.isQueryOnly = this.actionMember().invokeLink().method() === "GET";
+            this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.message = "";
             return this;
         }
@@ -378,13 +388,16 @@ module NakedObjects {
         isQueryOnly: boolean;
         onPaneId: number;
 
+        deregister: () => void; 
+
         actionViewModel: ActionViewModel;
 
         clientValid = () => _.every(this.parameters, p => p.clientValid);
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () => _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+        setParms = () =>
+            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
@@ -416,10 +429,16 @@ module NakedObjects {
                     this.context.handleWrappedError(reject, parent, () => { }, display);
                 });
 
-        doClose = () => this.urlManager.closeDialog(this.onPaneId);
+        doClose = () => {
+            this.deregister();
+            this.urlManager.closeDialog(this.onPaneId);
+        }
 
-        doCancel = () => this.urlManager.cancelDialog(this.onPaneId);
-       
+        doCancel = () => {
+            this.deregister();
+            this.urlManager.cancelDialog(this.onPaneId);
+        }
+
         clearMessages = () => {
             this.message = "";
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
@@ -485,14 +504,14 @@ module NakedObjects {
                     this.allSelected = _.every(this.items, item => item.selected);
                     const count = this.items.length;
                     this.size = count;
-                    this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+                    this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
                 });
             } else {
                 this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
                 this.allSelected = _.every(this.items, item => item.selected);
                 const count = this.items.length;
                 this.size = count;
-                this.description = () => `Page ${this.page} of ${this.numPages}; viewing ${count} of ${totalCount} items`;
+                this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
             }
 
             
@@ -510,7 +529,7 @@ module NakedObjects {
 
                     if (selected.length === 0) {
 
-                        const em = new ErrorMap({}, 0, "Must select items for collection contributed action");
+                        const em = new ErrorMap({}, 0, noItemsSelected);
                         const rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
 
                         return this.$q.reject(rp);
@@ -528,8 +547,8 @@ module NakedObjects {
                         return allpps;
                     }
 
-                    if (a.actionRep.invokeLink()) {
-                        return wrappedInvoke(getParms(a.actionRep), right);
+                    if (a.invokableActionRep) {
+                        return wrappedInvoke(getParms(a.invokableActionRep), right);
                     }
 
                     return this.contextService.getActionDetails(a.actionRep as ActionMember).
@@ -569,8 +588,8 @@ module NakedObjects {
 
         private recreate = (page: number, pageSize: number) => {
             return this.routeData.objectId ?
-                this.contextService.getListFromObject(this.routeData.paneId, this.routeData.objectId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state, page, pageSize) :
-                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData.menuId, this.routeData.actionId, this.routeData.actionParams, this.routeData.state,  page, pageSize);
+                this.contextService.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
+                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData,  page, pageSize);
         };
 
         private pageOrRecreate = (newPage: number, newPageSize : number, newState?: CollectionViewState) => {
@@ -766,6 +785,9 @@ module NakedObjects {
             this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
             this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+
+            this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
+         
             this.friendlyName = this.domainObject.extensions().friendlyName();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
@@ -801,7 +823,7 @@ module NakedObjects {
                         const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
                         const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
 
-                        const parmValueMap = _.mapValues(a.actionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
+                        const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
                         const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
                         return wrappedInvoke(allpps, right).
                             catch((reject: ErrorWrapper) => {
@@ -864,6 +886,10 @@ module NakedObjects {
             this.cancelHandler()();
         };
 
+        clearCachedFiles = () => {
+            _.forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
+        }
+
         private saveHandler = () => this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
         private validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
@@ -875,6 +901,7 @@ module NakedObjects {
         };
 
         doSave = (viewObject: boolean) => {
+            this.clearCachedFiles();
             this.setProperties();
             const propMap = this.propertyMap();
             this.saveHandler()(this.domainObject, propMap, this.onPaneId, viewObject).
@@ -897,6 +924,7 @@ module NakedObjects {
         };
      
         doEdit = () => {
+            this.clearCachedFiles();
             this.contextService.getObjectForEdit(this.onPaneId, this.domainObject).
                 then((updatedObject: DomainObjectRepresentation) => {
                     this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
@@ -906,12 +934,14 @@ module NakedObjects {
                 catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
         };
 
-        doReload = () =>
-            this.contextService.reloadObject(this.onPaneId, this.domainObject).
-            then((updatedObject: DomainObjectRepresentation) => {
-                this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
-            }).
-            catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
+        doReload = () => {
+            this.clearCachedFiles();
+            this.contextService.reloadObject(this.onPaneId, this.domainObject)
+                .then((updatedObject: DomainObjectRepresentation) => {
+                    this.reset(updatedObject, this.urlManager.getRouteData().pane()[this.onPaneId]);
+                })
+                .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
+        }
 
 
         hideEdit = () => this.domainObject.extensions().interactionMode() === "form" ||
@@ -921,8 +951,6 @@ module NakedObjects {
         disableActions(): boolean {
             return !this.actions || this.actions.length === 0;
         }
-
-
 
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
     }
@@ -935,9 +963,11 @@ module NakedObjects {
         goBack: () => void;
         goForward: () => void;
         swapPanes: () => void;
+        logOff: () => void;
         singlePane: (right?: boolean) => void;
         recent: (right?: boolean) => void;
         cicero: () => void;
+        userName : string;
 
         warnings: string[];
         messages: string[];

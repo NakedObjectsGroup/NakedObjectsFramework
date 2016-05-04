@@ -15,6 +15,7 @@ var NakedObjects;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
     var DateString = NakedObjects.Models.toDateString;
+    var dirtyMarker = NakedObjects.Models.dirtyMarker;
     function tooltip(onWhat, fields) {
         if (onWhat.clientValid()) {
             return "";
@@ -254,7 +255,9 @@ var NakedObjects;
             this.actionMember = function () { return _this.actionViewModel.actionRep; };
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
             this.tooltip = function () { return tooltip(_this, _this.parameters); };
-            this.setParms = function () { return _.forEach(_this.parameters, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); }); };
+            this.setParms = function () {
+                return _.forEach(_this.parameters, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
+            };
             this.executeInvoke = function (right) {
                 var pps = _this.parameters;
                 _.forEach(pps, function (p) { return _this.urlManager.setFieldValue(_this.actionMember().actionId(), p.parameterRep, p.getValue(), _this.onPaneId); });
@@ -283,8 +286,14 @@ var NakedObjects;
                     _this.context.handleWrappedError(reject, parent, function () { }, display);
                 });
             };
-            this.doClose = function () { return _this.urlManager.closeDialog(_this.onPaneId); };
-            this.doCancel = function () { return _this.urlManager.cancelDialog(_this.onPaneId); };
+            this.doClose = function () {
+                _this.deregister();
+                _this.urlManager.closeDialog(_this.onPaneId);
+            };
+            this.doCancel = function () {
+                _this.deregister();
+                _this.urlManager.cancelDialog(_this.onPaneId);
+            };
             this.clearMessages = function () {
                 _this.message = "";
                 _.each(_this.actionViewModel.parameters, function (parm) { return parm.clearMessage(); });
@@ -298,7 +307,7 @@ var NakedObjects;
             var parameters = _.filter(actionViewModel.parameters(), function (p) { return !p.isCollectionContributed; });
             this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], _this.onPaneId); });
             this.title = this.actionMember().extensions().friendlyName();
-            this.isQueryOnly = this.actionMember().invokeLink().method() === "GET";
+            this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.message = "";
             return this;
         };
@@ -340,8 +349,8 @@ var NakedObjects;
             };
             this.recreate = function (page, pageSize) {
                 return _this.routeData.objectId ?
-                    _this.contextService.getListFromObject(_this.routeData.paneId, _this.routeData.objectId, _this.routeData.actionId, _this.routeData.actionParams, _this.routeData.state, page, pageSize) :
-                    _this.contextService.getListFromMenu(_this.routeData.paneId, _this.routeData.menuId, _this.routeData.actionId, _this.routeData.actionParams, _this.routeData.state, page, pageSize);
+                    _this.contextService.getListFromObject(_this.routeData.paneId, _this.routeData, page, pageSize) :
+                    _this.contextService.getListFromMenu(_this.routeData.paneId, _this.routeData, page, pageSize);
             };
             this.pageOrRecreate = function (newPage, newPageSize, newState) {
                 _this.recreate(newPage, newPageSize).
@@ -400,7 +409,7 @@ var NakedObjects;
                     _this.allSelected = _.every(_this.items, function (item) { return item.selected; });
                     var count = _this.items.length;
                     _this.size = count;
-                    _this.description = function () { return ("Page " + _this.page + " of " + _this.numPages + "; viewing " + count + " of " + totalCount + " items"); };
+                    _this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count, totalCount); };
                 });
             }
             else {
@@ -408,7 +417,7 @@ var NakedObjects;
                 this.allSelected = _.every(this.items, function (item) { return item.selected; });
                 var count_1 = this.items.length;
                 this.size = count_1;
-                this.description = function () { return ("Page " + _this.page + " of " + _this.numPages + "; viewing " + count_1 + " of " + totalCount + " items"); };
+                this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count_1, totalCount); };
             }
             var actions = this.listRep.actionMembers();
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
@@ -418,7 +427,7 @@ var NakedObjects;
                 a.executeInvoke = function (pps, right) {
                     var selected = _.filter(_this.items, function (i) { return i.selected; });
                     if (selected.length === 0) {
-                        var em = new ErrorMap({}, 0, "Must select items for collection contributed action");
+                        var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
                         var rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
                         return _this.$q.reject(rp);
                     }
@@ -431,8 +440,8 @@ var NakedObjects;
                         allpps.push(collectionParmVm);
                         return allpps;
                     };
-                    if (a.actionRep.invokeLink()) {
-                        return wrappedInvoke(getParms(a.actionRep), right);
+                    if (a.invokableActionRep) {
+                        return wrappedInvoke(getParms(a.invokableActionRep), right);
                     }
                     return _this.contextService.getActionDetails(a.actionRep).
                         then(function (details) { return wrappedInvoke(getParms(details), right); });
@@ -560,6 +569,9 @@ var NakedObjects;
                 _this.editComplete();
                 _this.cancelHandler()();
             };
+            this.clearCachedFiles = function () {
+                _.forEach(_this.properties, function (p) { return p.attachment ? p.attachment.clearCachedFile() : null; });
+            };
             this.saveHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.saveObject : _this.contextService.updateObject; };
             this.validateHandler = function () { return _this.domainObject.isTransient() ? _this.contextService.validateSaveObject : _this.contextService.validateUpdateObject; };
             this.handleWrappedError = function (reject) {
@@ -568,6 +580,7 @@ var NakedObjects;
                 _this.contextService.handleWrappedError(reject, _this.domainObject, reset, display);
             };
             this.doSave = function (viewObject) {
+                _this.clearCachedFiles();
                 _this.setProperties();
                 var propMap = _this.propertyMap();
                 _this.saveHandler()(_this.domainObject, propMap, _this.onPaneId, viewObject).
@@ -587,6 +600,7 @@ var NakedObjects;
                 });
             };
             this.doEdit = function () {
+                _this.clearCachedFiles();
                 _this.contextService.getObjectForEdit(_this.onPaneId, _this.domainObject).
                     then(function (updatedObject) {
                     _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]);
@@ -596,11 +610,12 @@ var NakedObjects;
                     catch(function (reject) { return _this.handleWrappedError(reject); });
             };
             this.doReload = function () {
-                return _this.contextService.reloadObject(_this.onPaneId, _this.domainObject).
-                    then(function (updatedObject) {
+                _this.clearCachedFiles();
+                _this.contextService.reloadObject(_this.onPaneId, _this.domainObject)
+                    .then(function (updatedObject) {
                     _this.reset(updatedObject, _this.urlManager.getRouteData().pane()[_this.onPaneId]);
-                }).
-                    catch(function (reject) { return _this.handleWrappedError(reject); });
+                })
+                    .catch(function (reject) { return _this.handleWrappedError(reject); });
             };
             this.hideEdit = function () { return _this.domainObject.extensions().interactionMode() === "form" ||
                 _this.domainObject.extensions().interactionMode() === "transient" ||
@@ -622,6 +637,7 @@ var NakedObjects;
             this.collections = _.map(this.domainObject.collectionMembers(), function (collection) { return _this.viewModelFactory.collectionViewModel(collection, _this.routeData); });
             this.unsaved = routeData.interactionMode === NakedObjects.InteractionMode.Transient;
             this.title = this.unsaved ? "Unsaved " + this.domainObject.extensions().friendlyName() : this.domainObject.title();
+            this.title = this.title + dirtyMarker(this.contextService, obj.getOid());
             this.friendlyName = this.domainObject.extensions().friendlyName();
             this.domainType = this.domainObject.domainType();
             this.instanceId = this.domainObject.instanceId();
@@ -650,7 +666,7 @@ var NakedObjects;
                         _this.setProperties();
                         var pairs = _.map(_this.editProperties(), function (p) { return [p.id, p.getValue()]; });
                         var prps = _.fromPairs(pairs);
-                        var parmValueMap = _.mapValues(a.actionRep.parameters(), function (p) { return ({ parm: p, value: prps[p.id()] }); });
+                        var parmValueMap = _.mapValues(a.invokableActionRep.parameters(), function (p) { return ({ parm: p, value: prps[p.id()] }); });
                         var allpps = _.map(parmValueMap, function (o) { return _this.viewModelFactory.parameterViewModel(o.parm, o.value, _this.onPaneId); });
                         return wrappedInvoke(allpps, right).
                             catch(function (reject) {

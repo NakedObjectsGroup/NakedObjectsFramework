@@ -12,6 +12,10 @@
 
 module NakedObjects.Models {
 
+    export function dirtyMarker(context: IContext, oid : ObjectIdWrapper) {
+        return (showDirtyFlag && context.getIsDirty(oid)) ? "*" : "";
+    }
+
     export function toDateString(dt: Date) {
 
         const year = dt.getFullYear().toString();
@@ -87,6 +91,12 @@ module NakedObjects.Models {
         return (results && results.length > 2) ? results[2] : "";
     }
 
+    export function idFromUrl(href: string) {
+        const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+        const results = (urlRegex).exec(href);
+        return (results && results.length > 3) ? results[3] : "";
+    }
+
     export function friendlyTypeName(fullName: string) {
         const shortName = _.last(fullName.split("."));
         const result = shortName.replace(/([A-Z])/g, " $1").trim();
@@ -118,7 +128,7 @@ module NakedObjects.Models {
         const format = model.extensions().format();
 
         switch (format) {
-            case ("integer"):
+            case ("int"):
                 if (!isInteger(newValue)) {
                     return "Not an integer";
                 }
@@ -226,7 +236,7 @@ module NakedObjects.Models {
         }
 
         // if optional but empty always valid 
-        if (modelValue == null) {
+        if (modelValue == null || modelValue === "") {
             return "";
         }
 

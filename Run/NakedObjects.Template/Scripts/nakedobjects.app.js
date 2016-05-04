@@ -29,83 +29,103 @@ var NakedObjects;
             //Gemini2 Urls below:
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath, {
             templateUrl: singleHomeTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath, {
             templateUrl: singleObjectTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath, {
             templateUrl: singleListTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath, {
             templateUrl: singleRecentTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.homePath, {
             templateUrl: splitHomeHomeTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.objectPath, {
             templateUrl: splitHomeObjectTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.listPath, {
             templateUrl: splitHomeListTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.recentPath, {
             templateUrl: splitHomeRecentTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath + "/" + NakedObjects.homePath, {
             templateUrl: splitObjectHomeTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath + "/" + NakedObjects.objectPath, {
             templateUrl: splitObjectObjectTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath + "/" + NakedObjects.listPath, {
             templateUrl: splitObjectListTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath + "/" + NakedObjects.recentPath, {
             templateUrl: splitObjectRecentTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.homePath, {
             templateUrl: splitListHomeTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.objectPath, {
             templateUrl: splitListObjectTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.listPath, {
             templateUrl: splitListListTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.recentPath, {
             templateUrl: splitListRecentTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.homePath, {
             templateUrl: splitRecentHomeTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.objectPath, {
             templateUrl: splitRecentObjectTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.listPath, {
             templateUrl: splitRecentListTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.recentPath, {
             templateUrl: splitRecentRecentTemplate,
-            controller: "BackgroundController"
+            controller: "BackgroundController",
+            reloadOnSearch: false
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.errorPath, {
             templateUrl: singleErrorTemplate,

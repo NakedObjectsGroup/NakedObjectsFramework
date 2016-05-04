@@ -3,6 +3,7 @@
 /// <reference path="nakedobjects.app.ts" />
 var NakedObjects;
 (function (NakedObjects) {
+    var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     NakedObjects.app.service("color", function (context, $q) {
         var colorService = this;
         var colorCache = {};
@@ -10,9 +11,8 @@ var NakedObjects;
         var subtypeCache = [];
         var defaultColor = 0;
         function typeFromUrl(url) {
-            var typeRegex = /(objects|services)\/([\w|\.]+)/;
-            var results = (typeRegex).exec(url);
-            return (results && results.length > 2) ? results[2] : "";
+            var oid = ObjectIdWrapper.fromHref(url);
+            return oid.domainType;
         }
         function isSubtypeOf(subtype, index, count) {
             if (index >= count) {
@@ -80,29 +80,6 @@ var NakedObjects;
         colorService.setDefault = function (def) {
             defaultColor = def;
         };
-        // for backward compat 
-        var colorPrefix = "bg-color-";
-        var numColorMap = [
-            "blue",
-            "blueLight",
-            "blueDark",
-            "green",
-            "greenLight",
-            "greenDark",
-            "red",
-            "yellow",
-            "orange",
-            "orange",
-            "orangeDark",
-            "pink",
-            "pinkDark",
-            "purple",
-            "grayDark",
-            "magenta",
-            "teal",
-            "redLight",
-            "darkBlue"
-        ];
     });
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.services.color.js.map

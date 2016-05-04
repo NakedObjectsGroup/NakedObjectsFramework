@@ -2,7 +2,6 @@
 /// <reference path="nakedobjects.models.ts" />
 /// <reference path="nakedobjects.services.viewmodelfactory.ts" />
 /// <reference path="nakedobjects.viewmodels.ts" />
-/// <reference path="nakedobjects.app.ts" />
 /// <reference path="typings/moment/moment.d.ts"/>
 var NakedObjects;
 (function (NakedObjects) {
@@ -326,7 +325,7 @@ var NakedObjects;
         var fn = $parse(attrs.geminiPlaceholder);
         element.attr("placeholder", fn(scope));
     }; });
-    NakedObjects.app.directive("geminiFocuson", function ($timeout, focusManager) { return function (scope, elem, attr) {
+    NakedObjects.app.directive("geminiFocuson", function ($timeout, focusManager) { return function (scope, elem) {
         scope.$on(NakedObjects.geminiFocusEvent, function (e, target, index, paneId, count) {
             $timeout(function () {
                 var focusElements;
@@ -407,7 +406,10 @@ var NakedObjects;
                 var droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 var droppableVm_1 = droppableScope.property || droppableScope.parameter;
                 var draggableVm_1 = ui.draggable.data(draggableVmKey);
-                droppableScope.$apply(function () { return droppableVm_1.drop(draggableVm_1); });
+                droppableScope.$apply(function () {
+                    droppableVm_1.drop(draggableVm_1);
+                    $(element).change();
+                });
             }
         });
         element.on("keydown keypress", function (event) {
@@ -440,18 +442,6 @@ var NakedObjects;
                 if (!ngModel) {
                     return;
                 }
-                function downloadFile(url, mt, success) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", url, true);
-                    xhr.responseType = "blob";
-                    xhr.setRequestHeader("Accept", mt);
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4) {
-                            success(xhr.response);
-                        }
-                    };
-                    xhr.send(null);
-                }
                 function displayInline(mt) {
                     return mt === "image/jpeg" ||
                         mt === "image/gif" ||
@@ -459,15 +449,14 @@ var NakedObjects;
                 }
                 var clickHandler = function () {
                     var attachment = ngModel.$modelValue;
-                    var url = attachment.href;
-                    var mt = attachment.mimeType;
-                    downloadFile(url, mt, function (resp) {
+                    attachment.downloadFile()
+                        .then(function (blob) {
                         if (window.navigator.msSaveBlob) {
                             // internet explorer 
-                            window.navigator.msSaveBlob(resp, attachment.title);
+                            window.navigator.msSaveBlob(blob, attachment.title);
                         }
                         else {
-                            var burl = URL.createObjectURL(resp);
+                            var burl = URL.createObjectURL(blob);
                             $window.location.href = burl;
                         }
                     });
@@ -483,10 +472,11 @@ var NakedObjects;
                         element.append(link);
                         var anchor_1 = element.find("a");
                         if (displayInline(mt)) {
-                            downloadFile(url, mt, function (resp) {
+                            attachment.downloadFile()
+                                .then(function (blob) {
                                 var reader = new FileReader();
                                 reader.onloadend = function () { return anchor_1.html("<img src='" + reader.result + "' alt='" + title_1 + "' />"); };
-                                reader.readAsDataURL(resp);
+                                reader.readAsDataURL(blob);
                             });
                         }
                         else {
