@@ -22,7 +22,9 @@ module NakedObjects {
         handleError($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleToolBar($scope: INakedObjectsScope): void;
         handleObject($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleObjectSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHome($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleHomeSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
@@ -119,10 +121,66 @@ module NakedObjects {
             });
         };
 
-        handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+        function setNewMenu($scope: INakedObjectsScope, newMenuId: string, routeData: PaneRouteData) {
+            context.getMenu(newMenuId)
+                .then((menu: MenuRepresentation) => {
+                    $scope.actionsTemplate = actionsTemplate;
+                    $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
+                    setNewDialog($scope, menu, routeData.dialogId, routeData);                 
+                })
+                .catch((reject: ErrorWrapper) => {
+                    context.handleWrappedError(reject, null, () => { }, () => { });
+                });
+        }
+
+        function setNewDialog($scope: INakedObjectsScope, menu: MenuRepresentation, newDialogId: string, routeData: PaneRouteData) {
+            if (newDialogId) {
+                const action = menu.actionMember(routeData.dialogId);
+                context.getInvokableAction(action).then(details => {
+                    setDialog($scope, details, routeData);
+                    focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
+                });
+                return;
+            }
+            $scope.dialogTemplate = null;
+            $scope.dialog = null;
+            focusManager.focusOn(FocusTarget.SubAction, 0, routeData.paneId);
+        }
+
+
+        handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
             context.clearWarnings();
             context.clearMessages();
+
+            if (routeData.menuId) {
+
+                const currentMenu = $scope.menu;
+                const currentMenuId = currentMenu ? currentMenu.id : null;
+                const newMenuId = routeData.menuId;
+
+                const currentDialog = $scope.dialog;
+                const currentDialogId = currentDialog ? currentDialog.id : null;
+                const newDialogId = routeData.dialogId;
+            
+                if (currentMenuId !== newMenuId) {
+                    // menu changed set new menu and if necessary new dialog
+                    setNewMenu($scope, newMenuId, routeData);
+                }
+                else if (currentDialogId !== newDialogId) {
+                    // dialog changed set new dialog only 
+                    setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData);
+                }
+            } else {
+                $scope.actionsTemplate = null;
+                $scope.menu = null;
+                focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
+            }
+        };
+
+
+        handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
             $scope.homeTemplate = homePlaceholderTemplate;
 
             context.getMenus().
@@ -130,30 +188,7 @@ module NakedObjects {
                     $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);
                     $scope.homeTemplate = homeTemplate;
 
-                    if (routeData.menuId) {
-                        context.getMenu(routeData.menuId).
-                            then((menu: MenuRepresentation) => {
-                                $scope.actionsTemplate = actionsTemplate;
-                                $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
-
-                                const focusTarget = routeData.dialogId ? FocusTarget.Dialog : FocusTarget.SubAction;
-
-                                if (routeData.dialogId) {
-                                    const action = menu.actionMember(routeData.dialogId);
-                                    context.getInvokableAction(action)
-                                        .then(details => setDialog($scope, details, routeData));
-                                } else {
-                                    $scope.dialogTemplate = null;
-                                }
-
-                                focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                            }).catch((reject: ErrorWrapper) => {
-                                context.handleWrappedError(reject, null, () => {}, () => {});
-                            });
-                    } else {
-                        $scope.actionsTemplate = null;
-                        focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
-                    }
+                    handlers.handleHomeSearch($scope, routeData);
                 }).catch((reject: ErrorWrapper) => {
                     context.handleWrappedError(reject, null, () => {}, () => {});
                 });
@@ -223,7 +258,53 @@ module NakedObjects {
             $scope.toolBar = viewModelFactory.toolBarViewModel();
         };
 
-        handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+        function handleNewObjectSearch ($scope: INakedObjectsScope, routeData: PaneRouteData)  {
+
+            const ovm = $scope.object;
+
+            let newObjectTemplate: string;
+            let newActionsTemplate: string;
+
+            if (routeData.interactionMode === InteractionMode.Form) {
+                newObjectTemplate = formTemplate;
+                newActionsTemplate = formActionsTemplate;
+            } else if (routeData.interactionMode === InteractionMode.View) {
+                newObjectTemplate = objectViewTemplate;
+                newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+            } else {
+                newObjectTemplate = objectEditTemplate;
+                newActionsTemplate = nullTemplate;
+            }
+
+            // only update if changed
+            if ($scope.objectTemplate !== newObjectTemplate) {
+                $scope.objectTemplate = newObjectTemplate;
+            }
+            if ($scope.actionsTemplate !== newActionsTemplate) {
+                $scope.actionsTemplate = newActionsTemplate;
+            }
+
+            let focusTarget: FocusTarget;
+
+            if (routeData.dialogId) {
+                const action = ovm.domainObject.actionMember(routeData.dialogId);
+                focusTarget = FocusTarget.Dialog;
+                context.getInvokableAction(action).then(details => setDialog($scope, details, routeData));
+            } else if (routeData.actionsOpen) {
+                $scope.dialogTemplate = null;
+                focusTarget = FocusTarget.SubAction;
+            } else if (ovm.isInEdit) {
+                $scope.dialogTemplate = null;
+                focusTarget = FocusTarget.Property;
+            } else {
+                $scope.dialogTemplate = null;
+                focusTarget = FocusTarget.ObjectTitle;
+            }
+
+            focusManager.focusOn(focusTarget, 0, routeData.paneId);
+        };
+
+        function handleNewObject ($scope: INakedObjectsScope, routeData: PaneRouteData) {
 
             const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
 
@@ -231,13 +312,11 @@ module NakedObjects {
             $scope.objectTemplate = blankTemplate;
             $scope.actionsTemplate = nullTemplate;
 
-            color.toColorNumberFromType(oid.domainType).then((c: number) => {
-                $scope.backgroundColor = `${objectColor}${c}`;
-            });
+            color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
 
             deRegObject[routeData.paneId].deReg();
 
-            const wasDirty = context.getIsDirty(oid); 
+            const wasDirty = context.getIsDirty(oid);
 
             context.getObject(routeData.paneId, oid, routeData.interactionMode).
                 then((object: DomainObjectRepresentation) => {
@@ -248,38 +327,9 @@ module NakedObjects {
                     }
 
                     $scope.object = ovm;
-
-                    if (routeData.interactionMode === InteractionMode.Form) {
-                        $scope.objectTemplate = formTemplate;
-                        $scope.actionsTemplate = formActionsTemplate;
-                    } else if (routeData.interactionMode === InteractionMode.View) {
-                        $scope.objectTemplate = objectViewTemplate;
-                        $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                    } else {
-                        $scope.objectTemplate = objectEditTemplate;
-                        $scope.actionsTemplate = nullTemplate;
-                    }
-
                     $scope.collectionsTemplate = collectionsTemplate;
 
-                    let focusTarget: FocusTarget;
-
-                    if (routeData.dialogId) {
-                        const action = object.actionMember(routeData.dialogId);
-                        focusTarget = FocusTarget.Dialog;
-                        context.getInvokableAction(action).then(details => setDialog($scope, details, routeData));
-                    } else if (routeData.actionsOpen) {
-                        $scope.dialogTemplate = null;
-                        focusTarget = FocusTarget.SubAction;
-                    } else if (ovm.isInEdit) {
-                        $scope.dialogTemplate = null;
-                        focusTarget = FocusTarget.Property;
-                    } else {
-                        $scope.dialogTemplate = null;
-                        focusTarget = FocusTarget.ObjectTitle;
-                    }
-
-                    focusManager.focusOn(focusTarget, 0, routeData.paneId);
+                    handleNewObjectSearch($scope, routeData);
 
                     deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                     deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
@@ -294,9 +344,27 @@ module NakedObjects {
                         }
                         return false;
                     };
-                    context.handleWrappedError(reject, null, () => {}, () => {}, handler);
+                    context.handleWrappedError(reject, null, () => { }, () => { }, handler);
                 });
 
+        };
+
+
+        handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+            handleNewObject($scope, routeData);
+        };
+
+        handlers.handleObjectSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
+            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+            const ovm = $scope.object;
+
+            if (!ovm || !oid.isSame(ovm.domainObject.getOid())) {
+                handleNewObject($scope, routeData);
+            } else {
+                ovm.refresh(routeData);
+                handleNewObjectSearch($scope, routeData);
+            }      
         };
     });
 }

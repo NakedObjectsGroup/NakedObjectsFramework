@@ -39,8 +39,8 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import IHasExtensions = Models.IHasExtensions;
     import dirtyMarker = Models.dirtyMarker;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
+    import InvokableActionMember = Models.InvokableActionMember;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -256,12 +256,18 @@ module NakedObjects {
             if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
                 parmViewModel.description = parmViewModel.description || dropPrompt;
 
-                const val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
+                parmViewModel.refresh = (newValue : Value ) =>  {
 
-                if (!val.isNull()) {
-                    parmViewModel.reference = val.link().href();
-                    parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                    const val = newValue && !newValue.isNull() ? newValue : parmRep.default();
+
+                    if (!val.isNull()) {
+                        parmViewModel.reference = val.link().href();
+                        parmViewModel.choice = ChoiceViewModel
+                            .create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                    }
                 }
+
+                parmViewModel.refresh(previousValue);
             }
 
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
@@ -297,32 +303,46 @@ module NakedObjects {
                     }
                 }
 
-                if (previousValue || parmViewModel.dflt) {
-                    const toSet = previousValue || parmRep.default();
-                    if (fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices || parmViewModel.isCollectionContributed) {
-                        setCurrentChoices(toSet);
-                    } else {
-                        setCurrentChoice(toSet);
+                parmViewModel.refresh = (newValue: Value) => {
+
+                    if (newValue || parmViewModel.dflt) {
+                        const toSet = newValue || parmRep.default();
+                        if (fieldEntryType === EntryType.MultipleChoices ||
+                            fieldEntryType === EntryType.MultipleConditionalChoices ||
+                            parmViewModel.isCollectionContributed) {
+                            setCurrentChoices(toSet);
+                        } else {
+                            setCurrentChoice(toSet);
+                        }
                     }
                 }
+
+                parmViewModel.refresh(previousValue);
+
             } else {
                 const returnType = parmRep.extensions().returnType();
 
-                if (returnType === "boolean") {
-                    const valueToSet = (previousValue ? previousValue.toValueString() : null) || parmRep.default().scalar();
-                    let bValueToSet = toTriStateBoolean(valueToSet);
+                parmViewModel.refresh = (newValue: Value) => {
 
-                    parmViewModel.value = bValueToSet;
-                    if (bValueToSet !== null) {
-                        // reset required indicator
-                        required = "";
+                    if (returnType === "boolean") {
+                        const valueToSet = (newValue ? newValue.toValueString() : null) ||
+                            parmRep.default().scalar();
+                        let bValueToSet = toTriStateBoolean(valueToSet);
+
+                        parmViewModel.value = bValueToSet;
+                        if (bValueToSet !== null) {
+                            // reset required indicator
+                            required = "";
+                        }
+
+                    } else if (IsDateOrDateTime(parmRep)) {
+                        parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
+                    } else {
+                        parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
                     }
-
-                } else if (IsDateOrDateTime(parmRep)) {
-                    parmViewModel.value = toUtcDate(previousValue || new Value(parmViewModel.dflt));
-                } else {
-                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
                 }
+
+                parmViewModel.refresh(previousValue);
             }
 
             const remoteMask = parmRep.extensions().mask();
@@ -342,6 +362,8 @@ module NakedObjects {
 
             parmViewModel.description = required + parmViewModel.description;
 
+            parmViewModel.refresh = parmViewModel.refresh || ((newValue : Value) => {});
+         
             return parmViewModel;
         };
 
@@ -357,7 +379,6 @@ module NakedObjects {
             if (actionRep instanceof ActionRepresentation || actionRep instanceof InvokableActionMember) {
                 actionViewModel.invokableActionRep = actionRep;
             }
-
 
             actionViewModel.title = actionRep.extensions().friendlyName();
             actionViewModel.menuPath = actionRep.extensions().menuPath() || "";
@@ -557,18 +578,23 @@ module NakedObjects {
                 propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
             }
 
-            const value = previousValue || propertyRep.value();
-            const currentChoice = ChoiceViewModel.create(value, id);
-
+            let setupChoice: (newValue: Value) => void;
+        
             if (propertyRep.entryType() === EntryType.Choices) {
                 const choices = propertyRep.choices();
                 propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
-                propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+
+                setupChoice = (newValue: Value) => {
+                    const currentChoice = ChoiceViewModel.create(newValue, id);
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
+                }
             } else {
                 // use choice for draggable/droppable references
                 propertyViewModel.choices = [];
-                propertyViewModel.choice = currentChoice;
+
+                setupChoice = (newValue: Value) => propertyViewModel.choice = ChoiceViewModel.create(newValue, id);
             }
+
 
             if (propertyRep.entryType() === EntryType.AutoComplete) {
 
@@ -590,12 +616,16 @@ module NakedObjects {
                 propertyViewModel.arguments = (<any>_).fromPairs(_.map(propertyRep.promptLink().arguments(), (v: any, key: string) => [key, new Value(v.value)]));
             }
 
-            if (propertyRep.isScalar()) {
-                if (isDateOrDateTime(propertyRep)) {
-                    propertyViewModel.value = toUtcDate(value);
-                } else {
-                    propertyViewModel.value = value.scalar();
+            function callIfChanged(newValue: Value, doRefresh: (newValue: Value) => void) {
+                const value = newValue || propertyRep.value();
+
+                if (propertyViewModel.currentValue == null || value.toValueString() !== propertyViewModel.currentValue.toValueString()) {
+                    doRefresh(value);
+                    propertyViewModel.currentValue = value;
                 }
+            }
+
+            if (propertyRep.isScalar()) {
                 propertyViewModel.reference = "";
                 propertyViewModel.type = "scalar";
 
@@ -604,20 +634,38 @@ module NakedObjects {
                 propertyViewModel.localFilter = localFilter;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
 
-                if (propertyRep.entryType() === EntryType.Choices) {
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue,
+                (value: Value) => {
+
+                    setupChoice(value);
+                    if (isDateOrDateTime(propertyRep)) {
+                        propertyViewModel.value = toUtcDate(value);
+                    } else {
+                        propertyViewModel.value = value.scalar();
                     }
-                } else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = obscuredText;
-                } else {
-                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-                }
+
+                    if (propertyRep.entryType() === EntryType.Choices) {
+                        if (propertyViewModel.choice) {
+                            propertyViewModel.value = propertyViewModel.choice.name;
+                            propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                        }
+                    } else if (propertyViewModel.password) {
+                        propertyViewModel.formattedValue = obscuredText;
+                    } else {
+                        propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                    }
+                });
+
             } else {
                 // is reference
-                setupReference(propertyViewModel, value, propertyRep);          
+
+                propertyViewModel.refresh = (newValue: Value) => callIfChanged(newValue, (value: Value) => {
+                    setupChoice(value);
+                    setupReference(propertyViewModel, value, propertyRep);               
+                });
             }
+
+            propertyViewModel.refresh(previousValue);
 
             // only set color if has value 
             setColor(propertyViewModel);
@@ -633,7 +681,6 @@ module NakedObjects {
             propertyViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(propertyViewModel.returnType, targetType);
             propertyViewModel.drop = _.partial(drop, propertyViewModel);
             propertyViewModel.doClick = (right?: boolean) => urlManager.setProperty(propertyRep, clickHandler.pane(paneId, right));
-
 
 
             return propertyViewModel;
@@ -810,6 +857,10 @@ module NakedObjects {
 
         viewModelFactory.menuViewModel = (menuRep: MenuRepresentation, routeData: PaneRouteData) => {
             const menuViewModel = new MenuViewModel();
+
+            menuViewModel.id = menuRep.menuId();
+            menuViewModel.menuRep = menuRep;
+
             const actions = menuRep.actionMembers();
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, menuViewModel, routeData));

@@ -209,6 +209,7 @@ module NakedObjects {
 
         isDirty = () => false;
 
+        currentValue: Value;
         originalValue: Value;
 
         localFilter: ILocalFilter;
@@ -241,6 +242,8 @@ module NakedObjects {
         multipleLines: number;
 
         entryType: EntryType;
+
+        refresh: (newValue: Value) => void;
 
         prompt(searchTerm: string): ng.IPromise<ChoiceViewModel[]> {
             return null;
@@ -337,6 +340,7 @@ module NakedObjects {
     export class ParameterViewModel extends ValueViewModel {
         parameterRep: Parameter;
         dflt: string;
+        
     }
 
     export class ActionViewModel {
@@ -356,7 +360,7 @@ module NakedObjects {
         parameters: () => ParameterViewModel[];
         stopWatchingParms: () => void;
 
-        makeInvokable : (details : IInvokableAction) => void;
+        makeInvokable : (details : IInvokableAction) => void;       
     }
 
     export class DialogViewModel extends MessageViewModel {
@@ -373,12 +377,14 @@ module NakedObjects {
             this.onPaneId = routeData.paneId;
 
             const fields = routeData.dialogFields;
-            const parameters = _.filter(actionViewModel.parameters(), p => !p.isCollectionContributed);
-            this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], this.onPaneId));
+           
+            const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
+            this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
 
             this.title = this.actionMember().extensions().friendlyName();
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.message = "";
+            this.id = actionViewModel.actionRep.actionId();
             return this;
         }
 
@@ -387,6 +393,7 @@ module NakedObjects {
         message: string;
         isQueryOnly: boolean;
         onPaneId: number;
+        id : string;
 
         deregister: () => void; 
 
@@ -738,10 +745,12 @@ module NakedObjects {
     }
 
     export class MenuViewModel extends MessageViewModel {
+        id : string;
         title: string;
         actions: ActionViewModel[];
         actionsMap: { name: string; actions: ActionViewModel[] }[];
         color: string;
+        menuRep: Models.MenuRepresentation;
     }
 
     export class TableRowViewModel {
@@ -765,6 +774,47 @@ module NakedObjects {
             const pps = _.filter(this.properties, property => property.isEditable);
             return _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
         };
+
+        wrapAction(a: ActionViewModel) {
+            const wrappedInvoke = a.executeInvoke;
+            a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
+                this.setProperties();
+                const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
+                const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
+
+                const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
+                const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
+                return wrappedInvoke(allpps, right).
+                    catch((reject: ErrorWrapper) => {
+                        this.handleWrappedError(reject);
+                        return this.$q.reject(reject);
+                    });
+            };
+        }
+
+
+        refresh(routeData: PaneRouteData) {
+                
+            this.routeData = routeData;
+            const iMode = this.domainObject.extensions().interactionMode();
+            this.isInEdit = routeData.interactionMode !== InteractionMode.View || iMode === "form" || iMode === "transient";
+            this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
+
+            _.forEach(this.properties, p => p.refresh(this.props[p.id]));
+            this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
+
+            this.unsaved = routeData.interactionMode === InteractionMode.Transient;
+
+            this.title = this.unsaved ? `Unsaved ${this.domainObject.extensions().friendlyName()}` : this.domainObject.title();
+
+            this.title = this.title + dirtyMarker(this.contextService, this.domainObject.getOid());
+
+            if (routeData.interactionMode === InteractionMode.Form) {
+                _.forEach(this.actions, a =>  this.wrapAction(a));
+            }
+
+            return this;
+        }
 
         reset(obj: DomainObjectRepresentation, routeData: PaneRouteData) {
             this.domainObject = obj;
@@ -815,23 +865,7 @@ module NakedObjects {
             this.message = "";
 
             if (routeData.interactionMode === InteractionMode.Form) {
-                _.forEach(this.actions, a => {
-
-                    const wrappedInvoke = a.executeInvoke;
-                    a.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
-                        this.setProperties();
-                        const pairs = _.map(this.editProperties(), p => [p.id, p.getValue()]);
-                        const prps = (<any>_).fromPairs(pairs) as _.Dictionary<Value>;
-
-                        const parmValueMap = _.mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
-                        const allpps = _.map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
-                        return wrappedInvoke(allpps, right).
-                            catch((reject: ErrorWrapper) => {
-                                this.handleWrappedError(reject);
-                                return this.$q.reject(reject);
-                            });
-                    };
-                });
+                _.forEach(this.actions, a => this.wrapAction(a));
             }
 
             return this;

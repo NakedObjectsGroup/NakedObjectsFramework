@@ -16,7 +16,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleHome($scope, routeData.pane1);
 
-        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleHome($scope, urlManager.getRouteData().pane1)) as () => void;
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleHomeSearch($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
@@ -25,7 +25,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleHome($scope, routeData.pane2);
 
-        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleHome($scope, urlManager.getRouteData().pane2)) as () => void;
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleHomeSearch($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1ObjectController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
@@ -34,7 +34,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleObject($scope, routeData.pane1);
 
-        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleObject($scope, urlManager.getRouteData().pane1)) as () => void;
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleObjectSearch($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2ObjectController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
@@ -43,7 +43,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleObject($scope, routeData.pane2);
 
-        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleObject($scope, urlManager.getRouteData().pane2)) as () => void;
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleObjectSearch($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
