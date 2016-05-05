@@ -31,7 +31,7 @@ module NakedObjects {
     }
 
     app.service("handlers",
-        function($routeParams: ng.route.IRouteParamsService,
+        function ($routeParams: ng.route.IRouteParamsService,
             $location: ng.ILocationService,
             $q: ng.IQService,
             $cacheFactory: ng.ICacheFactoryService,
@@ -148,31 +148,35 @@ module NakedObjects {
                     .then((menu: MenuRepresentation) => {
                         $scope.actionsTemplate = actionsTemplate;
                         $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
-                        setNewDialog($scope, menu, routeData.dialogId, routeData);
+                        setNewDialog($scope, menu, routeData.dialogId, routeData, FocusTarget.SubAction);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => {}, () => {});
+                        context.handleWrappedError(reject, null, () => { }, () => { });
                     });
             }
 
             function setNewDialog($scope: INakedObjectsScope,
-                                  menu: MenuRepresentation,
-                                  newDialogId: string,
-                                  routeData: PaneRouteData) {
+                holder: MenuRepresentation | DomainObjectRepresentation | ListViewModel,
+                newDialogId: string,
+                routeData: PaneRouteData,
+                focusTarget: FocusTarget,
+                actionViewModel?: ActionViewModel) {
                 if (newDialogId) {
-                    const action = menu.actionMember(routeData.dialogId);
+                    const action = holder.actionMember(routeData.dialogId);
                     context.getInvokableAction(action)
                         .then(details => {
-                            setDialog($scope, details, routeData);
+                            if (actionViewModel) {
+                                actionViewModel.makeInvokable(details);
+                            }
+                            setDialog($scope, actionViewModel || details, routeData);
                             focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
                         });
                     return;
                 }
                 $scope.dialogTemplate = null;
                 $scope.dialog = null;
-                focusManager.focusOn(FocusTarget.SubAction, 0, routeData.paneId);
+                focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
-
 
             handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -194,7 +198,7 @@ module NakedObjects {
                         setNewMenu($scope, newMenuId, routeData);
                     } else if (currentDialogId !== newDialogId) {
                         // dialog changed set new dialog only 
-                        setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData);
+                        setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData, FocusTarget.SubAction);
                     }
                 } else {
                     $scope.actionsTemplate = null;
@@ -218,7 +222,7 @@ module NakedObjects {
                         handlers.handleHomeSearch($scope, routeData);
                     })
                     .catch((reject: ErrorWrapper) => {
-                        context.handleWrappedError(reject, null, () => {}, () => {});
+                        context.handleWrappedError(reject, null, () => { }, () => { });
                     });
             };
 
@@ -228,212 +232,222 @@ module NakedObjects {
                     context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
             }
 
+            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
+                // only update templates if changed 
+                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                const newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                const listViewModel = $scope.collection;
 
-
-        handlers.handleListSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-
-            const listKey = urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
-            const collectionViewModel = $scope.collection;
-
-            if (listKey !== collectionViewModel.id) {
-                handlers.handleList($scope, routeData);
-            } else {
-                $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
-                collectionViewModel.refresh(routeData);
-                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-
-                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
-
-                if (routeData.dialogId) {
-                    const actionViewModel = _.find(collectionViewModel.actions,
-                        a => a.actionRep.actionId() === routeData.dialogId);
-
-                    context.getInvokableAction(actionViewModel.actionRep)
-                        .then((details: IInvokableAction) => {
-                            actionViewModel.makeInvokable(details);
-                            setDialog($scope, actionViewModel, routeData);
-                        });
-
-                    focusTarget = FocusTarget.Dialog;
-                } else {
-                    $scope.dialogTemplate = null;
+                if ($scope.listTemplate !== newListTemplate) {
+                    $scope.listTemplate = newListTemplate;
+                    listViewModel.refresh(routeData);
                 }
 
-                focusManager.focusOn(focusTarget, 0, routeData.paneId);
-            }        
-        };
-
-
-        handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-
-            const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
-
-            if (cachedList) {
-                $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
-                const collectionViewModel = perPaneListViews[routeData.paneId];
-                collectionViewModel.reset(cachedList, routeData);
-                $scope.collection = collectionViewModel;
-                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
-
-                if (routeData.dialogId) {
-                    const actionViewModel = _.find(collectionViewModel.actions,  a => a.actionRep.actionId() === routeData.dialogId);
-
-                    context.getInvokableAction(actionViewModel.actionRep)
-                        .then((details: IInvokableAction) => {
-                            actionViewModel.makeInvokable(details);
-                            setDialog($scope, actionViewModel, routeData);
-                        });
-
-                    focusTarget = FocusTarget.Dialog;
-                } else {
-                    $scope.dialogTemplate = null;
+                if ($scope.actionsTemplate !== newActionsTemplate) {
+                    $scope.actionsTemplate = newActionsTemplate;
                 }
 
-                focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
-            } else {
-                $scope.listTemplate = listPlaceholderTemplate;
-                $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-                getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
-                focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
-            }
-        };
+                const focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
-        handlers.handleRecent = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-            context.clearWarnings();
-            context.clearMessages();
-            $scope.recentTemplate = recentTemplate;
-            $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
-        };
+                const currentDialog = $scope.dialog;
+                const currentDialogId = currentDialog ? currentDialog.id : null;
+                const newDialogId = routeData.dialogId;
 
-        handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-            const evm = viewModelFactory.errorViewModel(context.getError());
-            $scope.error = evm;
-
-            if (evm.isConcurrencyError) {
-                $scope.errorTemplate = concurrencyTemplate;
-            } else {
-                $scope.errorTemplate = errorTemplate;
-            } 
-        };
-
-        handlers.handleToolBar = ($scope: INakedObjectsScope) => {
-            $scope.toolBar = viewModelFactory.toolBarViewModel();
-        };
-
-        function handleNewObjectSearch ($scope: INakedObjectsScope, routeData: PaneRouteData)  {
-
-            const ovm = $scope.object;
-
-            let newObjectTemplate: string;
-            let newActionsTemplate: string;
-
-            if (routeData.interactionMode === InteractionMode.Form) {
-                newObjectTemplate = formTemplate;
-                newActionsTemplate = formActionsTemplate;
-            } else if (routeData.interactionMode === InteractionMode.View) {
-                newObjectTemplate = objectViewTemplate;
-                newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-            } else {
-                newObjectTemplate = objectEditTemplate;
-                newActionsTemplate = nullTemplate;
+                if (currentDialogId !== newDialogId) {
+                    const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === newDialogId);
+                    setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
+                }
             }
 
-            // only update if changed
-            if ($scope.objectTemplate !== newObjectTemplate) {
-                $scope.objectTemplate = newObjectTemplate;
-            }
-            if ($scope.actionsTemplate !== newActionsTemplate) {
-                $scope.actionsTemplate = newActionsTemplate;
-            }
 
-            let focusTarget: FocusTarget;
+            handlers.handleListSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            if (routeData.dialogId) {
-                const action = ovm.domainObject.actionMember(routeData.dialogId);
-                focusTarget = FocusTarget.Dialog;
-                context.getInvokableAction(action).then(details => setDialog($scope, details, routeData));
-            } else if (routeData.actionsOpen) {
-                $scope.dialogTemplate = null;
-                focusTarget = FocusTarget.SubAction;
-            } else if (ovm.isInEdit) {
-                $scope.dialogTemplate = null;
-                focusTarget = FocusTarget.Property;
-            } else {
-                $scope.dialogTemplate = null;
-                focusTarget = FocusTarget.ObjectTitle;
-            }
+                const listKey = urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+                const listViewModel = $scope.collection;
 
-            focusManager.focusOn(focusTarget, 0, routeData.paneId);
-        };
+                if (listKey !== listViewModel.id) {
+                    handlers.handleList($scope, routeData);
+                } else {
+                    handleListSearchChanged($scope, routeData);
+                }
+            };
 
-        function handleNewObject ($scope: INakedObjectsScope, routeData: PaneRouteData) {
 
-            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+            handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            // to ease transition 
-            $scope.objectTemplate = blankTemplate;
-            $scope.actionsTemplate = nullTemplate;
+                const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
 
-            color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
+                if (cachedList) {
+                    const listViewModel = perPaneListViews[routeData.paneId];
+                    listViewModel.reset(cachedList, routeData);
+                    $scope.collection = listViewModel;
 
-            deRegObject[routeData.paneId].deReg();
+                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
 
-            const wasDirty = context.getIsDirty(oid);
+                    $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                    let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
-            context.getObject(routeData.paneId, oid, routeData.interactionMode).
-                then((object: DomainObjectRepresentation) => {
+                    if (routeData.dialogId) {
+                        const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
 
-                    const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
-                    if (wasDirty) {
-                        ovm.clearCachedFiles();
+                        context.getInvokableAction(actionViewModel.actionRep)
+                            .then((details: IInvokableAction) => {
+                                actionViewModel.makeInvokable(details);
+                                setDialog($scope, actionViewModel, routeData);
+                            });
+
+                        focusTarget = FocusTarget.Dialog;
+                    } else {
+                        $scope.dialogTemplate = null;
                     }
 
-                    $scope.object = ovm;
-                    $scope.collectionsTemplate = collectionsTemplate;
+                    focusManager.focusOn(focusTarget, 0, routeData.paneId);
 
-                    handleNewObjectSearch($scope, routeData);
+                    getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
+                } else {
+                    $scope.listTemplate = listPlaceholderTemplate;
+                    $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
+                    getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
+                    focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
+                }
+            };
 
-                    deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
-                    deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
-                    deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
+            handlers.handleRecent = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                context.clearWarnings();
+                context.clearMessages();
+                $scope.recentTemplate = recentTemplate;
+                $scope.recent = viewModelFactory.recentItemsViewModel(routeData.paneId);
+            };
 
-                }).catch((reject: ErrorWrapper) => {
+            handlers.handleError = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                const evm = viewModelFactory.errorViewModel(context.getError());
+                $scope.error = evm;
 
-                    const handler = (cc: ClientErrorCode) => {
-                        if (cc === ClientErrorCode.ExpiredTransient) {
-                            $scope.objectTemplate = expiredTransientTemplate;
-                            return true;
+                if (evm.isConcurrencyError) {
+                    $scope.errorTemplate = concurrencyTemplate;
+                } else {
+                    $scope.errorTemplate = errorTemplate;
+                }
+            };
+
+            handlers.handleToolBar = ($scope: INakedObjectsScope) => {
+                $scope.toolBar = viewModelFactory.toolBarViewModel();
+            };
+
+            function handleNewObjectSearch($scope: INakedObjectsScope, routeData: PaneRouteData) {
+
+                const ovm = $scope.object;
+
+                let newObjectTemplate: string;
+                let newActionsTemplate: string;
+
+                if (routeData.interactionMode === InteractionMode.Form) {
+                    newObjectTemplate = formTemplate;
+                    newActionsTemplate = formActionsTemplate;
+                } else if (routeData.interactionMode === InteractionMode.View) {
+                    newObjectTemplate = objectViewTemplate;
+                    newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                } else {
+                    newObjectTemplate = objectEditTemplate;
+                    newActionsTemplate = nullTemplate;
+                }
+
+                // only update if changed
+                if ($scope.objectTemplate !== newObjectTemplate) {
+                    $scope.objectTemplate = newObjectTemplate;
+                }
+                if ($scope.actionsTemplate !== newActionsTemplate) {
+                    $scope.actionsTemplate = newActionsTemplate;
+                }
+
+                let focusTarget: FocusTarget;
+
+                const currentDialog = $scope.dialog;
+                const currentDialogId = currentDialog ? currentDialog.id : null;
+                const newDialogId = routeData.dialogId;
+
+                if (routeData.dialogId) {
+                    focusTarget = FocusTarget.Dialog;
+                } else if (routeData.actionsOpen) {
+                    focusTarget = FocusTarget.SubAction;
+                } else if (ovm.isInEdit) {
+                    focusTarget = FocusTarget.Property;
+                } else {
+                    focusTarget = FocusTarget.ObjectTitle;
+                }
+
+                if (currentDialogId !== newDialogId) {
+                    setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+                } else {
+                    focusManager.focusOn(focusTarget, 0, routeData.paneId);
+                }
+            };
+
+            function handleNewObject($scope: INakedObjectsScope, routeData: PaneRouteData) {
+
+                const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+
+                // to ease transition 
+                $scope.objectTemplate = blankTemplate;
+                $scope.actionsTemplate = nullTemplate;
+
+                color.toColorNumberFromType(oid.domainType).then(c => $scope.backgroundColor = `${objectColor}${c}`);
+
+                deRegObject[routeData.paneId].deReg();
+
+                const wasDirty = context.getIsDirty(oid);
+
+                context.getObject(routeData.paneId, oid, routeData.interactionMode).
+                    then((object: DomainObjectRepresentation) => {
+
+                        const ovm = perPaneObjectViews[routeData.paneId].reset(object, routeData);
+                        if (wasDirty) {
+                            ovm.clearCachedFiles();
                         }
-                        return false;
-                    };
-                    context.handleWrappedError(reject, null, () => { }, () => { }, handler);
-                });
 
-        };
+                        $scope.object = ovm;
+                        $scope.collectionsTemplate = collectionsTemplate;
 
+                        handleNewObjectSearch($scope, routeData);
 
-        handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-            handleNewObject($scope, routeData);
-        };
+                        deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
 
-        handlers.handleObjectSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                    }).catch((reject: ErrorWrapper) => {
 
-            const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
-            const ovm = $scope.object;
+                        const handler = (cc: ClientErrorCode) => {
+                            if (cc === ClientErrorCode.ExpiredTransient) {
+                                $scope.objectTemplate = expiredTransientTemplate;
+                                return true;
+                            }
+                            return false;
+                        };
+                        context.handleWrappedError(reject, null, () => { }, () => { }, handler);
+                    });
 
-            const newOrChangedObject = (obj: DomainObjectRepresentation) => {
-                const oldOid = obj.getOid();
-                return !oid.isSame(oldOid) || context.mustReload(oldOid);
-            }
+            };
 
-            if (!ovm || newOrChangedObject(ovm.domainObject)) {
+            handlers.handleObject = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 handleNewObject($scope, routeData);
-            } else {
-                ovm.refresh(routeData);
-                handleNewObjectSearch($scope, routeData);
-            }      
-        };
-    });
+            };
+
+            handlers.handleObjectSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
+                const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                const ovm = $scope.object;
+
+                const newOrChangedObject = (obj: DomainObjectRepresentation) => {
+                    const oldOid = obj.getOid();
+                    return !oid.isSame(oldOid) || context.mustReload(oldOid);
+                }
+
+                if (!ovm || newOrChangedObject(ovm.domainObject)) {
+                    handleNewObject($scope, routeData);
+                } else {
+                    ovm.refresh(routeData);
+                    handleNewObjectSearch($scope, routeData);
+                }
+            };
+        });
 }

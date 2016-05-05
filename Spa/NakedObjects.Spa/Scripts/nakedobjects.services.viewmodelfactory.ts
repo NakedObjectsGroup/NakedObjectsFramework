@@ -780,11 +780,10 @@ module NakedObjects {
                     } else if (getDetails) {
                         context.getCollectionDetails(collectionRep, state)
                             .then((details: CollectionRepresentation) => {
-                                collectionViewModel.items = viewModelFactory
-                                    .getItems(details.value(),
-                                        state === CollectionViewState.Table,
-                                        routeData,
-                                        collectionViewModel);
+                                collectionViewModel.items = viewModelFactory.getItems(details.value(),
+                                                                                      state === CollectionViewState.Table,
+                                                                                      routeData,
+                                                                                      collectionViewModel);
                                 collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                             });
                     } else {

@@ -578,7 +578,7 @@ module NakedObjects {
                 a.doInvoke = () => {};
 
                 showDialog().
-                    then((show: boolean) => a.doInvoke = show ?
+                    then((show: boolean) => a.doInvoke = show ? // todo this doesn't look right ?
                         (right?: boolean) => {
                             this.focusManager.focusOverrideOff();
                             this.urlManager.setDialog(a.actionRep.actionId(), this.onPaneId);
@@ -685,7 +685,10 @@ module NakedObjects {
         actions: ActionViewModel[];
         actionsMap: { name: string; actions: ActionViewModel[] }[];
 
-      
+        actionMember = (id: string) => {
+            const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
+            return actionViewModel.actionRep;
+        }
     }
 
     export class CollectionViewModel {
@@ -717,6 +720,8 @@ module NakedObjects {
 
         collectionRep: CollectionMember | CollectionRepresentation;
         refresh: (routeData: PaneRouteData) => void;
+
+       
     }
 
     export class ServicesViewModel {
