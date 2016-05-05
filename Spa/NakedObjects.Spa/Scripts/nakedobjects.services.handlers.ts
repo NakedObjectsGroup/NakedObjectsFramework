@@ -156,9 +156,9 @@ module NakedObjects {
             }
 
             function setNewDialog($scope: INakedObjectsScope,
-                menu: MenuRepresentation,
-                newDialogId: string,
-                routeData: PaneRouteData) {
+                                  menu: MenuRepresentation,
+                                  newDialogId: string,
+                                  routeData: PaneRouteData) {
                 if (newDialogId) {
                     const action = menu.actionMember(routeData.dialogId);
                     context.getInvokableAction(action)
@@ -199,6 +199,8 @@ module NakedObjects {
                 } else {
                     $scope.actionsTemplate = null;
                     $scope.menu = null;
+                    $scope.dialogTemplate = null;
+                    $scope.dialog = null;
                     focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                 }
             };
