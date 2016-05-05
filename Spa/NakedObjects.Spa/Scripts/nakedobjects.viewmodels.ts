@@ -26,8 +26,7 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+   
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -488,13 +487,39 @@ module NakedObjects {
             super();
         }
 
+        refresh(routeData: PaneRouteData) {
+
+            this.routeData = routeData;
+            if (!this.state || this.state !== routeData.state) {
+                this.state = routeData.state;
+                const totalCount = this.listRep.pagination().totalCount;
+                if (this.state === CollectionViewState.Table) {
+                    this.recreate(this.page, this.pageSize)
+                        .then((list: ListRepresentation) => {
+                            this.items = this.viewModelFactory
+                                .getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
+                            this.allSelected = _.every(this.items, item => item.selected);
+                            const count = this.items.length;
+                            this.size = count;
+                            this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+                        });
+                } else {
+                    this.items = this.viewModelFactory
+                        .getItems(this.listRep.value(), this.state === CollectionViewState.Table, routeData, this);
+                    this.allSelected = _.every(this.items, item => item.selected);
+                    const count = this.items.length;
+                    this.size = count;
+                    this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+                }
+            }
+        }
+
+
         reset(list: ListRepresentation, routeData: PaneRouteData) {
             this.listRep = list;
             this.routeData = routeData;
 
-            this.state = routeData.state;
-
-            this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
+            this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
 
             this.onPaneId = routeData.paneId;
 
@@ -502,27 +527,11 @@ module NakedObjects {
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            const totalCount = this.listRep.pagination().totalCount;
-
-
-            if (this.state === CollectionViewState.Table) {
-                this.recreate(this.page, this.pageSize).then((list: ListRepresentation) => {
-                    this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
-                    this.allSelected = _.every(this.items, item => item.selected);
-                    const count = this.items.length;
-                    this.size = count;
-                    this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
-                });
-            } else {
-                this.items = this.viewModelFactory.getItems(list.value(), this.state === CollectionViewState.Table, routeData, this);
-                this.allSelected = _.every(this.items, item => item.selected);
-                const count = this.items.length;
-                this.size = count;
-                this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
-            }
-
+            //clear state so we always refresh items
+            this.state = null;
+          
+            this.refresh(routeData);
             
-
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
             this.actionsMap = createActionMenuMap(this.actions);
@@ -603,6 +612,8 @@ module NakedObjects {
             this.recreate(newPage, newPageSize).
                 then((list: ListRepresentation) => {
                     this.routeData.state = newState || this.routeData.state;
+                    this.routeData.page = newPage;
+                    this.routeData.pageSize = newPageSize;
                     this.reset(list, this.routeData);
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
@@ -611,6 +622,7 @@ module NakedObjects {
                     this.contextService.handleWrappedError(reject, null, () => {}, display);
                 });
         };
+
         listRep: ListRepresentation;
         routeData: PaneRouteData;
 
@@ -673,10 +685,7 @@ module NakedObjects {
         actions: ActionViewModel[];
         actionsMap: { name: string; actions: ActionViewModel[] }[];
 
-        isSame(paneId: number, key: string) {
-            return this.id === key;
-        }
-
+      
     }
 
     export class CollectionViewModel {
@@ -688,6 +697,7 @@ module NakedObjects {
         items: ItemViewModel[];
         header: string[];
         onPaneId: number;
+        currentState: CollectionViewState;
 
         id: string;
 
@@ -793,9 +803,9 @@ module NakedObjects {
             };
         }
 
-        // must be careful with this - OK for changes on client but after server updates should use  reset.
+        // must be careful with this - OK for changes on client but after server updates should use  reset
         // because parameters may have appeared or disappeared etc and refesh just updates existsing views. 
-        // so OK for view changes but not eg for a parameter that disappears after saving
+        // So OK for view state changes but not eg for a parameter that disappears after saving
 
         refresh(routeData: PaneRouteData) {
                 
@@ -805,7 +815,7 @@ module NakedObjects {
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
 
             _.forEach(this.properties, p => p.refresh(this.props[p.id]));
-            this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
+            _.forEach(this.collections, c => c.refresh(this.routeData));
 
             this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 

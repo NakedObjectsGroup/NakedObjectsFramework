@@ -26,189 +26,220 @@ module NakedObjects {
         handleHome($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleHomeSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleListSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
     }
 
-    app.service("handlers", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $q: ng.IQService, $cacheFactory: ng.ICacheFactoryService, repLoader: IRepLoader, context: IContext, viewModelFactory: IViewModelFactory, color: IColor, navigation: INavigation, urlManager: IUrlManager, focusManager: IFocusManager) {
-        const handlers = <IHandlers>this;
+    app.service("handlers",
+        function($routeParams: ng.route.IRouteParamsService,
+            $location: ng.ILocationService,
+            $q: ng.IQService,
+            $cacheFactory: ng.ICacheFactoryService,
+            repLoader: IRepLoader,
+            context: IContext,
+            viewModelFactory: IViewModelFactory,
+            color: IColor,
+            navigation: INavigation,
+            urlManager: IUrlManager,
+            focusManager: IFocusManager) {
+            const handlers = <IHandlers>this;
 
-        const perPaneListViews = [
-            , new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-            new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
-        ];
+            const perPaneListViews = [
+                , new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+            ];
 
-        const perPaneObjectViews = [
-            , new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
-            new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
-        ];
+            const perPaneObjectViews = [
+                , new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
+            ];
 
-        const perPaneDialogViews = [
-            , new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
-            new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)
-        ];
+            const perPaneDialogViews = [
+                , new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)
+            ];
 
-        const perPaneMenusViews = [
-            , new MenusViewModel(viewModelFactory),
-            new MenusViewModel(viewModelFactory)
-        ];
+            const perPaneMenusViews = [
+                , new MenusViewModel(viewModelFactory),
+                new MenusViewModel(viewModelFactory)
+            ];
 
-        function setVersionError(error: string) {
-            context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
-            urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
-        }
-
-
-        class DeReg {
-
-            private deRegers: (() => void)[];
-
-            add(newF: () => void) {
-                this.deRegers.push(newF);
+            function setVersionError(error: string) {
+                context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
+                urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
             }
 
-            deReg() {
-                _.forEach(this.deRegers, d => d());
-                this.deRegers = [];
-            }
-        }
 
-        const deRegDialog = [, new DeReg(), new DeReg()];
-        const deRegObject = [, new DeReg(), new DeReg()];
+            class DeReg {
 
-        function setDialog($scope: INakedObjectsScope, action: ActionMember | ActionRepresentation | ActionViewModel, routeData: PaneRouteData) {
-            deRegDialog[routeData.paneId].deReg();
+                private deRegers: (() => void)[];
 
-            $scope.dialogTemplate = dialogTemplate;
-            const dialogViewModel = perPaneDialogViews[routeData.paneId];
-            const isAlreadyViewModel = action instanceof ActionViewModel;
-            const actionViewModel = !isAlreadyViewModel ? viewModelFactory.actionViewModel(action as ActionMember | ActionRepresentation, dialogViewModel, routeData) : action as ActionViewModel;
+                add(newF: () => void) {
+                    this.deRegers.push(newF);
+                }
 
-            dialogViewModel.reset(actionViewModel, routeData);
-            $scope.dialog = dialogViewModel;
-
-            deRegDialog[routeData.paneId].add($scope.$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
-            deRegDialog[routeData.paneId].add($scope.$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
-
-            dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
-        }
-
-        let versionValidated = false;
-
-        handlers.handleBackground = ($scope: INakedObjectsScope) => {
-            color.toColorNumberFromHref($location.absUrl()).then((c: number) => {
-                $scope.backgroundColor = `${objectColor}${c}`;
-            });
-
-            navigation.push();
-
-            // Just do once - cached but still pointless repeating each page refresh
-
-            if (versionValidated) {
-                return;
+                deReg() {
+                    _.forEach(this.deRegers, d => d());
+                    this.deRegers = [];
+                }
             }
 
-            context.getVersion().then((v: VersionRepresentation) => {
-                const specVersion = parseFloat(v.specVersion());
-                const domainModel = v.optionalCapabilities().domainModel;
+            const deRegDialog = [, new DeReg(), new DeReg()];
+            const deRegObject = [, new DeReg(), new DeReg()];
 
-                if (specVersion < 1.1) {
-                    setVersionError("Restful Objects server must support spec version 1.1 or greater for NakedObjects Gemini\r\n (8.2:specVersion)");
-                } else if (domainModel !== "simple" && domainModel !== "selectable") {
-                    setVersionError(`NakedObjects Gemini requires domain metadata representation to be simple or selectable not "${domainModel}"\r\n (8.2:optionalCapabilities)`);
+            function setDialog($scope: INakedObjectsScope,
+                action: ActionMember | ActionRepresentation | ActionViewModel,
+                routeData: PaneRouteData) {
+                deRegDialog[routeData.paneId].deReg();
+
+                $scope.dialogTemplate = dialogTemplate;
+                const dialogViewModel = perPaneDialogViews[routeData.paneId];
+                const isAlreadyViewModel = action instanceof ActionViewModel;
+                const actionViewModel = !isAlreadyViewModel
+                    ? viewModelFactory.actionViewModel(action as ActionMember | ActionRepresentation,
+                        dialogViewModel,
+                        routeData)
+                    : action as ActionViewModel;
+
+                dialogViewModel.reset(actionViewModel, routeData);
+                $scope.dialog = dialogViewModel;
+
+                deRegDialog[routeData.paneId].add($scope
+                    .$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
+                deRegDialog[routeData.paneId].add($scope
+                    .$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
+
+                dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
+            }
+
+            let versionValidated = false;
+
+            handlers.handleBackground = ($scope: INakedObjectsScope) => {
+                color.toColorNumberFromHref($location.absUrl())
+                    .then((c: number) => {
+                        $scope.backgroundColor = `${objectColor}${c}`;
+                    });
+
+                navigation.push();
+
+                // Just do once - cached but still pointless repeating each page refresh
+
+                if (versionValidated) {
+                    return;
+                }
+
+                context.getVersion()
+                    .then((v: VersionRepresentation) => {
+                        const specVersion = parseFloat(v.specVersion());
+                        const domainModel = v.optionalCapabilities().domainModel;
+
+                        if (specVersion < 1.1) {
+                            setVersionError("Restful Objects server must support spec version 1.1 or greater for NakedObjects Gemini\r\n (8.2:specVersion)");
+                        } else if (domainModel !== "simple" && domainModel !== "selectable") {
+                            setVersionError(`NakedObjects Gemini requires domain metadata representation to be simple or selectable not "${domainModel}"\r\n (8.2:optionalCapabilities)`);
+                        } else {
+                            versionValidated = true;
+                        }
+                    });
+            };
+
+            function setNewMenu($scope: INakedObjectsScope, newMenuId: string, routeData: PaneRouteData) {
+                context.getMenu(newMenuId)
+                    .then((menu: MenuRepresentation) => {
+                        $scope.actionsTemplate = actionsTemplate;
+                        $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
+                        setNewDialog($scope, menu, routeData.dialogId, routeData);
+                    })
+                    .catch((reject: ErrorWrapper) => {
+                        context.handleWrappedError(reject, null, () => {}, () => {});
+                    });
+            }
+
+            function setNewDialog($scope: INakedObjectsScope,
+                menu: MenuRepresentation,
+                newDialogId: string,
+                routeData: PaneRouteData) {
+                if (newDialogId) {
+                    const action = menu.actionMember(routeData.dialogId);
+                    context.getInvokableAction(action)
+                        .then(details => {
+                            setDialog($scope, details, routeData);
+                            focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
+                        });
+                    return;
+                }
+                $scope.dialogTemplate = null;
+                $scope.dialog = null;
+                focusManager.focusOn(FocusTarget.SubAction, 0, routeData.paneId);
+            }
+
+
+            handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
+                context.clearWarnings();
+                context.clearMessages();
+
+                if (routeData.menuId) {
+
+                    const currentMenu = $scope.menu;
+                    const currentMenuId = currentMenu ? currentMenu.id : null;
+                    const newMenuId = routeData.menuId;
+
+                    const currentDialog = $scope.dialog;
+                    const currentDialogId = currentDialog ? currentDialog.id : null;
+                    const newDialogId = routeData.dialogId;
+
+                    if (currentMenuId !== newMenuId) {
+                        // menu changed set new menu and if necessary new dialog
+                        setNewMenu($scope, newMenuId, routeData);
+                    } else if (currentDialogId !== newDialogId) {
+                        // dialog changed set new dialog only 
+                        setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData);
+                    }
                 } else {
-                    versionValidated = true;
+                    $scope.actionsTemplate = null;
+                    $scope.menu = null;
+                    focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                 }
-            });
-        };
+            };
 
-        function setNewMenu($scope: INakedObjectsScope, newMenuId: string, routeData: PaneRouteData) {
-            context.getMenu(newMenuId)
-                .then((menu: MenuRepresentation) => {
-                    $scope.actionsTemplate = actionsTemplate;
-                    $scope.menu = viewModelFactory.menuViewModel(menu, routeData);
-                    setNewDialog($scope, menu, routeData.dialogId, routeData);                 
-                })
-                .catch((reject: ErrorWrapper) => {
-                    context.handleWrappedError(reject, null, () => { }, () => { });
-                });
-        }
 
-        function setNewDialog($scope: INakedObjectsScope, menu: MenuRepresentation, newDialogId: string, routeData: PaneRouteData) {
-            if (newDialogId) {
-                const action = menu.actionMember(routeData.dialogId);
-                context.getInvokableAction(action).then(details => {
-                    setDialog($scope, details, routeData);
-                    focusManager.focusOn(FocusTarget.Dialog, 0, routeData.paneId);
-                });
-                return;
+            handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
+                $scope.homeTemplate = homePlaceholderTemplate;
+
+                context.getMenus()
+                    .then((menus: MenusRepresentation) => {
+                        $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);
+                        $scope.homeTemplate = homeTemplate;
+
+                        handlers.handleHomeSearch($scope, routeData);
+                    })
+                    .catch((reject: ErrorWrapper) => {
+                        context.handleWrappedError(reject, null, () => {}, () => {});
+                    });
+            };
+
+            function getActionExtensions(routeData: PaneRouteData) {
+                return routeData.objectId ?
+                    context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
+                    context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
             }
-            $scope.dialogTemplate = null;
-            $scope.dialog = null;
-            focusManager.focusOn(FocusTarget.SubAction, 0, routeData.paneId);
-        }
 
 
-        handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            context.clearWarnings();
-            context.clearMessages();
+        handlers.handleListSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
-            if (routeData.menuId) {
+            const listKey = urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+            const collectionViewModel = $scope.collection;
 
-                const currentMenu = $scope.menu;
-                const currentMenuId = currentMenu ? currentMenu.id : null;
-                const newMenuId = routeData.menuId;
-
-                const currentDialog = $scope.dialog;
-                const currentDialogId = currentDialog ? currentDialog.id : null;
-                const newDialogId = routeData.dialogId;
-            
-                if (currentMenuId !== newMenuId) {
-                    // menu changed set new menu and if necessary new dialog
-                    setNewMenu($scope, newMenuId, routeData);
-                }
-                else if (currentDialogId !== newDialogId) {
-                    // dialog changed set new dialog only 
-                    setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData);
-                }
+            if (listKey !== collectionViewModel.id) {
+                handlers.handleList($scope, routeData);
             } else {
-                $scope.actionsTemplate = null;
-                $scope.menu = null;
-                focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
-            }
-        };
-
-
-        handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-
-            $scope.homeTemplate = homePlaceholderTemplate;
-
-            context.getMenus().
-                then((menus: MenusRepresentation) => {
-                    $scope.menus = perPaneMenusViews[routeData.paneId].reset(menus, routeData);
-                    $scope.homeTemplate = homeTemplate;
-
-                    handlers.handleHomeSearch($scope, routeData);
-                }).catch((reject: ErrorWrapper) => {
-                    context.handleWrappedError(reject, null, () => {}, () => {});
-                });
-        };
-
-        handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
-
-            const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
-
-            const getActionExtensions = routeData.objectId ?
-            () => context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
-            () => context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
-
-
-            if (cachedList) {
                 $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
-                const collectionViewModel = perPaneListViews[routeData.paneId];
-                collectionViewModel.reset(cachedList, routeData);
-                $scope.collection = collectionViewModel;
+                collectionViewModel.refresh(routeData);
                 $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+
                 let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
 
                 if (routeData.dialogId) {
@@ -227,11 +258,42 @@ module NakedObjects {
                 }
 
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
-                getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
+            }        
+        };
+
+
+        handlers.handleList = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+
+            const cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
+
+            if (cachedList) {
+                $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                const collectionViewModel = perPaneListViews[routeData.paneId];
+                collectionViewModel.reset(cachedList, routeData);
+                $scope.collection = collectionViewModel;
+                $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
+                let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
+
+                if (routeData.dialogId) {
+                    const actionViewModel = _.find(collectionViewModel.actions,  a => a.actionRep.actionId() === routeData.dialogId);
+
+                    context.getInvokableAction(actionViewModel.actionRep)
+                        .then((details: IInvokableAction) => {
+                            actionViewModel.makeInvokable(details);
+                            setDialog($scope, actionViewModel, routeData);
+                        });
+
+                    focusTarget = FocusTarget.Dialog;
+                } else {
+                    $scope.dialogTemplate = null;
+                }
+
+                focusManager.focusOn(focusTarget, 0, routeData.paneId);
+                getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
             } else {
                 $scope.listTemplate = listPlaceholderTemplate;
                 $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
-                getActionExtensions().then((ext: Extensions) => $scope.title = ext.friendlyName());
+                getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
                 focusManager.focusOn(FocusTarget.Action, 0, routeData.paneId);
             }
         };

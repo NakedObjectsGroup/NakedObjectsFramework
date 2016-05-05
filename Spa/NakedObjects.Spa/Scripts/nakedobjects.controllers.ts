@@ -52,7 +52,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleList($scope, routeData.pane1);
 
-        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleList($scope, urlManager.getRouteData().pane1)) as () => void;
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleListSearch($scope, urlManager.getRouteData().pane1)) as () => void;
     });
 
     app.controller("Pane2ListController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
@@ -61,7 +61,7 @@ module NakedObjects {
         const routeData = urlManager.getRouteData();
         handlers.handleList($scope, routeData.pane2);
 
-        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleList($scope, urlManager.getRouteData().pane2)) as () => void;
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleListSearch($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("Pane1RecentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {

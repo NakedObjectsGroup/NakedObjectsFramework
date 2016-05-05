@@ -260,10 +260,9 @@ module NakedObjects {
 
                     const val = newValue && !newValue.isNull() ? newValue : parmRep.default();
 
-                    if (!val.isNull()) {
+                    if (!val.isNull() && val.isReference()) {
                         parmViewModel.reference = val.link().href();
-                        parmViewModel.choice = ChoiceViewModel
-                            .create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                        parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
                     }
                 }
 
@@ -770,36 +769,40 @@ module NakedObjects {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
 
-                collectionViewModel.size = getCollectionCount(size);
+                if (state !== collectionViewModel.currentState) {
 
-                const getDetails = itemLinks == null || state === CollectionViewState.Table;
+                    collectionViewModel.size = getCollectionCount(size);
 
-                if (state === CollectionViewState.Summary) {
-                    collectionViewModel.items = [];
-                } else if (getDetails) {
-                    context.getCollectionDetails(collectionRep, state)
-                        .then((details: CollectionRepresentation) => {
-                            collectionViewModel.items = viewModelFactory
-                                .getItems(details.value(),
-                                    state === CollectionViewState.Table,
-                                    routeData,
-                                    collectionViewModel);
-                            collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
-                        });
-                } else {
-                    collectionViewModel.items = viewModelFactory
-                        .getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
-                }
+                    const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
-                switch (state) {
-                case CollectionViewState.List:
-                    collectionViewModel.template = collectionListTemplate;
-                    break;
-                case CollectionViewState.Table:
-                    collectionViewModel.template = collectionTableTemplate;
-                    break;
-                default:
-                    collectionViewModel.template = collectionSummaryTemplate;
+                    if (state === CollectionViewState.Summary) {
+                        collectionViewModel.items = [];
+                    } else if (getDetails) {
+                        context.getCollectionDetails(collectionRep, state)
+                            .then((details: CollectionRepresentation) => {
+                                collectionViewModel.items = viewModelFactory
+                                    .getItems(details.value(),
+                                        state === CollectionViewState.Table,
+                                        routeData,
+                                        collectionViewModel);
+                                collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                            });
+                    } else {
+                        collectionViewModel.items = viewModelFactory
+                            .getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                    }
+
+                    switch (state) {
+                    case CollectionViewState.List:
+                        collectionViewModel.template = collectionListTemplate;
+                        break;
+                    case CollectionViewState.Table:
+                        collectionViewModel.template = collectionTableTemplate;
+                        break;
+                    default:
+                        collectionViewModel.template = collectionSummaryTemplate;
+                    }
+                    collectionViewModel.currentState = state;
                 }
             }
 
