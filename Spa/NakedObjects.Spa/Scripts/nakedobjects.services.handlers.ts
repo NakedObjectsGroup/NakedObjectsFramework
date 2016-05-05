@@ -209,7 +209,6 @@ module NakedObjects {
                 }
             };
 
-
             handlers.handleHome = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
                 $scope.homeTemplate = homePlaceholderTemplate;
@@ -281,29 +280,9 @@ module NakedObjects {
                     const listViewModel = perPaneListViews[routeData.paneId];
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
-
-                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
-
-                    $scope.actionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                    let focusTarget = routeData.actionsOpen ? FocusTarget.SubAction : FocusTarget.ListItem;
-
-                    if (routeData.dialogId) {
-                        const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === routeData.dialogId);
-
-                        context.getInvokableAction(actionViewModel.actionRep)
-                            .then((details: IInvokableAction) => {
-                                actionViewModel.makeInvokable(details);
-                                setDialog($scope, actionViewModel, routeData);
-                            });
-
-                        focusTarget = FocusTarget.Dialog;
-                    } else {
-                        $scope.dialogTemplate = null;
-                    }
-
-                    focusManager.focusOn(focusTarget, 0, routeData.paneId);
-
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
+
+                    handleListSearchChanged($scope, routeData);
                 } else {
                     $scope.listTemplate = listPlaceholderTemplate;
                     $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
