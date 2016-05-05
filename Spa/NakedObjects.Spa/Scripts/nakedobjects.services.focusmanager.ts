@@ -52,7 +52,7 @@ module NakedObjects {
 
                 $timeout(() => {
                     $rootScope.$broadcast(geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
-                }, 0, false);
+                }, 100, false);
             }
         };
         helper.refresh = (paneId: number) => {

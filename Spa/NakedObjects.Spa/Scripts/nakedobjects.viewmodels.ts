@@ -678,9 +678,7 @@ module NakedObjects {
         id: string;
 
         doSummary(): void { }
-
         doTable(): void { }
-
         doList(): void { }
 
         description(): string { return this.size.toString() }
@@ -693,8 +691,6 @@ module NakedObjects {
 
         collectionRep: CollectionMember | CollectionRepresentation;
         refresh: (routeData: PaneRouteData) => void;
-
-
     }
 
     export class ServicesViewModel {
