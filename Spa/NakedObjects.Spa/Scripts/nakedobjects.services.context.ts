@@ -57,6 +57,7 @@ module NakedObjects {
 
         getIsDirty : (oid : ObjectIdWrapper) => boolean;
 
+        mustReload : (oid: ObjectIdWrapper) => boolean;
 
         //The object values are only needed on a transient object / editable view model
         autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
@@ -234,7 +235,6 @@ module NakedObjects {
             const type = oid.domainType;
             const id = oid.instanceId;
 
-
             const dirtyState = dirtyCache.getDirty(oid);
             const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload)  && autoLoadDirty);
 
@@ -276,22 +276,16 @@ module NakedObjects {
                 });
         }
 
-        context.getIsDirty = (oid: ObjectIdWrapper) => {
+        context.getIsDirty = (oid: ObjectIdWrapper) => !oid.isService && dirtyCache.getDirty(oid) !== DirtyState.Clean;
 
-            if (!oid.isService) {
-                return dirtyCache.getDirty(oid) !== DirtyState.Clean;
-            }
-
-            return false;
-        }
-
-        context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => {
-            return editOrReloadObject(paneId, object, true);
+        context.mustReload = (oid: ObjectIdWrapper) => {
+            const dirtyState = dirtyCache.getDirty(oid);
+            return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && autoLoadDirty);
         };
 
-        context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => {
-            return editOrReloadObject(paneId, object, false);
-        };
+        context.getObjectForEdit = (paneId: number, object: DomainObjectRepresentation) => editOrReloadObject(paneId, object, true);
+
+        context.reloadObject = (paneId: number, object: DomainObjectRepresentation) => editOrReloadObject(paneId, object, false);
 
         context.getService = (paneId: number, serviceType: string): ng.IPromise<DomainObjectRepresentation> => {
 

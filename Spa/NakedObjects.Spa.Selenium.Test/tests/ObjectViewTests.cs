@@ -265,7 +265,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("object?o1=___1.Person--8410&as1=open");
             WaitForView(Pane.Single, PaneType.Object);
             var original = WaitForCss(".property:nth-child(3) .value").Text;
-            var dialog = OpenActionDialog("Update Middle Name"); //This is deliberately wrongly marked up as QueryOnly
+            var dialog = OpenActionDialog("Update Middle Name"); 
             var field1 = WaitForCss(".parameter:nth-child(1) input");
             var newValue = DateTime.Now.Millisecond.ToString();
             ClearFieldThenType(".parameter:nth-child(1) input", newValue);

@@ -421,7 +421,12 @@ module NakedObjects {
             const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
             const ovm = $scope.object;
 
-            if (!ovm || !oid.isSame(ovm.domainObject.getOid())) {
+            const newOrChangedObject = (obj: DomainObjectRepresentation) => {
+                const oldOid = obj.getOid();
+                return !oid.isSame(oldOid) || context.mustReload(oldOid);
+            }
+
+            if (!ovm || newOrChangedObject(ovm.domainObject)) {
                 handleNewObject($scope, routeData);
             } else {
                 ovm.refresh(routeData);
