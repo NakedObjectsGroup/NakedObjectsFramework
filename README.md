@@ -19,13 +19,14 @@ The best way to try NOF8 is to run the NakedObjects.Template application, which 
 The developer manual for NOF 8 is available here: .
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
 
+When searching the NuGet package gallery for new releases of NOF8 (which are quite frequent at present) please ensure you have the 'include pre-releases' checkbox selected.
 
 For further help please visit the Naked Objects Forum:  http://nakedobjectsforum.azurewebsites.net/
 
 NOF7
 ====
 
-
+NOF7 packages are available on the NuGet public gallery as stable releases.
 
 The developer manual for NOF7 may be downloaded from here:
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/7.0/Documentation/DeveloperManual.docx?raw=true
