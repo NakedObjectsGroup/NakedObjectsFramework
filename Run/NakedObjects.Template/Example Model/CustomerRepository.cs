@@ -19,6 +19,12 @@ namespace ExampleModel
         {
             return Container.Instances<Customer>();
         }
+
+        public IQueryable<Customer> FindCustomerByName(string name)
+        {
+            return AllCustomers().Where(c => c.Name.ToUpper().Contains(name.ToUpper()));
+        }
+
     }
 
 }
