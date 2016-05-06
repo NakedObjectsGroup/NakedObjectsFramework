@@ -10,7 +10,6 @@
 **/obj
 **/bld
 UpgradeLog.htm
-*.zip
 *.mdf
 *.ldf
 Documentation/~$veloperManual.docx
@@ -23,3 +22,4 @@ RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
 .vs/config/applicationhost.config
 /Tiny App/packages
 /Tiny App/.vs/config/applicationhost.config
+Spa/NakedObjects.Spa/Content/content.zip
