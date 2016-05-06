@@ -66,9 +66,11 @@ module NakedObjects {
 
         isHome(paneId?: number): boolean;
         cicero(): void;
+
+        reload(): void;
     }
 
-    app.service("urlManager", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) {
+    app.service("urlManager", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window : ng.IWindowService) {
         const helper = <IUrlManager>this;
 
         // keep in alphabetic order to help avoid name collisions 
@@ -757,6 +759,11 @@ module NakedObjects {
                 $location.path(newPath).search(search);
             }
         };
+
+        helper.reload = () => {
+            $window.location.reload(true);
+        }
+
         helper.isHome = (paneId = 1) => {
             const path = $location.path();
             const segments = path.split("/");

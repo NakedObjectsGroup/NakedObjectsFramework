@@ -773,7 +773,8 @@ module NakedObjects {
                     context.reloadObject(1, toReload).
                         then((updatedObject: DomainObjectRepresentation) => {
                             onReload(updatedObject);
-                            urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                            const em  = new ErrorMap({}, 0, concurrencyError);
+                            displayMessages(em);
                         });
                 }
                 break;

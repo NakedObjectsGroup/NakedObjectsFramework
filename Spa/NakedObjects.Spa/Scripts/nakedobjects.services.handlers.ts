@@ -35,6 +35,7 @@ module NakedObjects {
             $location: ng.ILocationService,
             $q: ng.IQService,
             $cacheFactory: ng.ICacheFactoryService,
+            $rootScope : ng.IRootScopeService,
             repLoader: IRepLoader,
             context: IContext,
             viewModelFactory: IViewModelFactory,
@@ -44,23 +45,23 @@ module NakedObjects {
             focusManager: IFocusManager) {
             const handlers = <IHandlers>this;
 
-            const perPaneListViews = [
-                , new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+            const perPaneListViews = [,
+                new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
                 new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
             ];
 
-            const perPaneObjectViews = [
-                , new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
+            const perPaneObjectViews = [,
+                new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q),
                 new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q)
             ];
 
-            const perPaneDialogViews = [
-                , new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager),
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager)
+            const perPaneDialogViews = [,
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
             ];
 
-            const perPaneMenusViews = [
-                , new MenusViewModel(viewModelFactory),
+            const perPaneMenusViews = [,
+                new MenusViewModel(viewModelFactory),
                 new MenusViewModel(viewModelFactory)
             ];
 
@@ -392,6 +393,7 @@ module NakedObjects {
                         deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
                         deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on("nof-display-error", ovm.displayError()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {
 

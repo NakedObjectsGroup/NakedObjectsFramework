@@ -191,9 +191,14 @@ module NakedObjects {
     }
 
     export class MessageViewModel {
-        message: string;
+        previousMessage : string = "";
+        message: string = "";
         clearMessage() {
-            this.message = "";
+            if (this.message === this.previousMessage) {
+                this.message = this.previousMessage = "";
+            } else {
+                this.previousMessage = this.message;
+            }
         }
     }
 
@@ -340,7 +345,8 @@ module NakedObjects {
             private context: IContext,
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
-            private focusManager: IFocusManager) {
+            private focusManager: IFocusManager,
+            private $rootScope: ng.IRootScopeService) {
             super();
         }
 
@@ -403,9 +409,15 @@ module NakedObjects {
 
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const parent = this.actionMember().parent as DomainObjectRepresentation;
-                    const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
-                    this.context.handleWrappedError(reject, parent, () => { }, display);
+                    const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
+
+                    this.context.handleWrappedError(reject,
+                                                    parent,
+                                                    () => {
+                                                        this.doClose();
+                                                        this.$rootScope.$broadcast("nof-display-error", new ErrorMap({}, 0, concurrencyError))
+                                                    },
+                                                    () => { });
                 });
 
         doClose = () => {
@@ -801,6 +813,9 @@ module NakedObjects {
                 _.forEach(this.actions, a => this.wrapAction(a));
             }
 
+            // leave message from previous refresh 
+            this.clearMessage();
+
             return this;
         }
 
@@ -857,6 +872,10 @@ module NakedObjects {
             }
 
             return this;
+        }
+
+        displayError() {
+            return (event : ng.IAngularEvent, em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
         }
 
         routeData: PaneRouteData;
