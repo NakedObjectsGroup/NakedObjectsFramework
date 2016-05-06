@@ -14,19 +14,20 @@ NOF8
 
 NOF8, currently at Beta stage, introduces a radically different user interface based on the Single Page Application (SPA) architecture. It uses identical domain model programming conventions as NOF7; indeed it is possible to run the NOF8 client and the NOF7 client alongside each other, as two different 'run' projects talking to the same domain model projects.
 
-The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: 
+The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Run/NakedObjects.Template.zip 
 
-The draft developer manual for NOF 8 is available here: .
+The developer manual for NOF 8 is available here: .
+https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
 
 
-Getting Started
-===============
+For further help please visit the Naked Objects Forum:  http://nakedobjectsforum.azurewebsites.net/
 
-There is a comprehensive Developer Manual for the Naked Objects Framework, available as a .docx:
+NOF7
+====
 
-For Release 7.0
+
+
+The developer manual for NOF7 may be downloaded from here:
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/7.0/Documentation/DeveloperManual.docx?raw=true
 
-At the start of the manual, under 'Writing your first Naked Objects application' is a very simple worked example.
 
-For help, and to view future development plans, please visit the Naked Objects Forum:  http://nakedobjectsforum.azurewebsites.net/
