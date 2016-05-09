@@ -115,6 +115,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 ext = ext ?? new Dictionary<string, object>();
                 ext[IdConstants.MenuPath] = ActionContext.MenuPath;
             }
+
+            if (ActionContext.Action.RenderEagerly) {
+                ext = ext ?? new Dictionary<string, object>();
+                ext[JsonPropertyNames.CustomRenderEagerly] = true;
+            }
+
             return ext;
         }
 
