@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
-using NakedObjects.Persistor.Entity.Configuration;
 using RestfulObjects.Test.Data;
+using NakedObjects.Core.Configuration;
+using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Architecture.Menu;
 
 namespace MvcTestApp {
     public static class NakedObjectsRunSettings {

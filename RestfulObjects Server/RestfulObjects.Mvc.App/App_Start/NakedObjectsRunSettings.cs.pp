@@ -6,14 +6,29 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Menu;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 
 namespace $rootnamespace$ {
-    public class NakedObjectsSettings {
+    public class NakedObjectsRunSettings {
 
 	    public static string RestRoot {
             get { return ""; }
+        }
+
+		private static string[] Namespaces {
+            get {
+                return new string[] { };
+            }
+        }
+
+		private static Type[] Services {
+            get {
+                return new Type[] {
+                };
+            }
         }
 	    
 		private static Type[] Types {
@@ -23,32 +38,19 @@ namespace $rootnamespace$ {
             }
         }
 
-        private static Type[] Services {
-            get {
-                return new Type[] {
-                };
-            }
-        }
-
-        //private static Type[] AssociatedTypes() {
-        //    var allTypes = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.GetName().Name == "AdventureWorksModel").GetTypes();
-        //    return allTypes.Where(t => t.BaseType == typeof (AWDomainObject) && !t.IsAbstract).ToArray();
-        //}
-
         public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services);
+            return new ReflectorConfiguration(Types, Services, Namespaces, MainMenus);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
             var config = new EntityObjectStoreConfiguration();
-            //config.UsingEdmxContext("Model").AssociateTypes(AssociatedTypes);
-            //config.SpecifyTypesNotAssociatedWithAnyContext(() => new[] {typeof (AWDomainObject)});
+            //e.g. config.UsingCodeFirstContext(() => new MyDbContext());
             return config;
         }
 
-		public static IMenuBuilder[] MainMenus(IMenuFactory factory) {
-            //e.g. var menu1 = factory.NewMenu<MyService1>(true); //then add to returned array
-            return new IMenuBuilder[] {  };
+        public static IMenu[] MainMenus(IMenuFactory factory) {
+            //e.g. var menu1 = factory.NewMenu<MyRepository>(true);
+            return new IMenu[] { };
         }
     }
 }
