@@ -1,10 +1,6 @@
 NakedObjectsFramework
 =====================
 
-Core Framework [![Build status](https://ci.appveyor.com/api/projects/status/6kqdsbqoet1vy69n?svg=true)](https://ci.appveyor.com/project/scascarini/nakedobjectsframework)
-
-End to End Tests [![Build status](https://ci.appveyor.com/api/projects/status/gqonv2m2wolshs8u?svg=true)](https://ci.appveyor.com/project/scascarini/nakedobjectsframework-2dqwa)
-
 The Master branch of this repository contains source for version 8 of the Naked Objects Framework (NOF8), which is currently at Beta stage. Note that both NOF7 and NOF8 can be used without cloning the repository, because both may be installed as NuGet packages from the public NuGet gallery - indeed that is the recommended approach.
 
 NOF8
