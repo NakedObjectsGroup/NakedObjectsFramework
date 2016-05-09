@@ -877,7 +877,14 @@ module NakedObjects {
         }
 
         displayError() {
-            return (event : ng.IAngularEvent, em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+            return (event: ng.IAngularEvent, em: ErrorMap) => {
+                this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
+                this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
+                    .then(obj => {
+                        this.reset(obj, this.routeData);
+                        this.viewModelFactory.handleErrorResponse(em, this, this.properties);
+                    });
+            }
         }
 
         routeData: PaneRouteData;
