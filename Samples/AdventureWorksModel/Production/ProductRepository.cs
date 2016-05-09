@@ -262,6 +262,38 @@ namespace AdventureWorksModel {
             return new List<ProductClassEnum> {ProductClassEnum.H};
         }
 
+        [FinderAction]
+        [MemberOrder(7)]
+        public IQueryable<Product> FindByOptionalProductLinesAndClasses([Optionally]IEnumerable<ProductLineEnum> productLine, [Optionally]IEnumerable<ProductClassEnum> productClass) {
+            IQueryable<Product> products = Container.Instances<Product>();
+
+            if (productLine != null) {
+                foreach (ProductLineEnum pl in productLine) {
+                    string pls = Enum.GetName(typeof(ProductLineEnum), pl);
+                    products = products.Where(p => p.ProductLine == pls);
+                }
+            }
+
+            if (productClass != null) {
+                foreach (ProductClassEnum pc in productClass) {
+                    string pcs = Enum.GetName(typeof(ProductClassEnum), pc);
+                    products = products.Where(p => p.Class == pcs);
+                }
+            }
+
+            return products;
+        }
+
+        public virtual IList<ProductLineEnum> Default0FindByOptionalProductLinesAndClasses() {
+            return new List<ProductLineEnum> { ProductLineEnum.M, ProductLineEnum.S };
+        }
+
+        public virtual IList<ProductClassEnum> Default1FindByOptionalProductLinesAndClasses() {
+            return new List<ProductClassEnum> { ProductClassEnum.H };
+        }
+
+
+
         #endregion
 
         #region FindByProductLineAndClass
