@@ -27,7 +27,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List);
             Reload();
             var rand = new Random();
-            var newMax = rand.Next(10, 10000).ToString();
+            var newMax = rand.Next(10, 999).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
 
             //Now select items
@@ -57,7 +57,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectCheckBox("#item1-4");
             OpenActionDialog("Change Max Quantity");
             var rand = new Random();
-            var newMax = rand.Next(10, 10000).ToString();
+            var newMax = rand.Next(10, 999).ToString();
             TypeIntoFieldWithoutClearing("#newmax1", newMax);
             Click(OKButton());
             WaitUntilElementDoesNotExist(".dialog");
@@ -354,7 +354,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass, Ignore]
+    [TestClass]
     public class CCAtestsFirefox : CCAtests
     {
         [ClassInitialize]
