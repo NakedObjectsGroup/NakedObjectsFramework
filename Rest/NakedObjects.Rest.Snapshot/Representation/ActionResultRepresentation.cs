@@ -89,7 +89,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedCollection = ((IEnumerable) (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject())).Cast<object>();
+                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject()) as IEnumerable;
+                        var proposedCollection = proposedEnumerable == null ? new object[]{} : proposedEnumerable.Cast<object>();
+
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
                     }
