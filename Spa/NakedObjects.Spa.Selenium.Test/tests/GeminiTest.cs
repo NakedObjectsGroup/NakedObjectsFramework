@@ -193,10 +193,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         protected virtual void ClearFieldThenType(string cssFieldId, string characters)
         {
             var input = WaitForCss(cssFieldId);
-            input.SendKeys(Keys.Control + "a");
-            Thread.Sleep(100);
-            input.SendKeys(Keys.Delete);
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
+            if (input.GetAttribute("value") != "")
+            {
+                input.SendKeys(Keys.Control + "a");
+                Thread.Sleep(100);
+                input.SendKeys(Keys.Delete);
+                wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
+            }
             input.SendKeys(characters);
         }
         protected virtual void TypeIntoFieldWithoutClearing(string cssFieldId, string characters)
