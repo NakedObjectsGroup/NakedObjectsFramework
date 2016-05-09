@@ -12,14 +12,13 @@ module NakedObjects {
     import ClientErrorCode = Models.ClientErrorCode;
     import HttpStatusCode = Models.HttpStatusCode;
     import DomainObjectRepresentation = Models.DomainObjectRepresentation;
-    import ActionMember = Models.ActionMember;
     import PropertyMember = Models.PropertyMember;
     import Link = Models.Link;
     import Parameter = Models.Parameter;
     import Value = Models.Value;
     import MenuRepresentation = Models.MenuRepresentation;
-    import IAction = NakedObjects.Models.IInvokableAction;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    import IAction = Models.IInvokableAction;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -501,6 +500,12 @@ module NakedObjects {
             newValues[`${akm.page}${paneId}`] = "1";
             newValues[`${akm.pageSize}${paneId}`] = defaultPageSize.toString();
             newValues[`${akm.selected}${paneId}`] = "0";
+
+            const newState = actionMember.extensions().renderEagerly() ?
+                CollectionViewState[CollectionViewState.Table] :
+                CollectionViewState[CollectionViewState.List];
+
+            newValues[`${akm.collection}${paneId}`] = newState;
 
             executeTransition(newValues, paneId, Transition.ToList, () => true);
         };
