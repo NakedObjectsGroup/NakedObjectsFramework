@@ -102,15 +102,16 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 memberOrder: ActionContext.Action.MemberOrder,
                 dataType: null,
                 presentationHint: ActionContext.Action.PresentationHint,
-                customExtensions: GetCustomPropertyExtensions(),
+                customExtensions: GetCustomActionExtensions(),
                 returnType: ActionContext.Action.ReturnType,
                 elementType: ActionContext.Action.ElementType,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);
         }
 
-        protected IDictionary<string, object> GetCustomPropertyExtensions() {
+        protected IDictionary<string, object> GetCustomActionExtensions() {
             var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
+
             if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
                 ext = ext ?? new Dictionary<string, object>();
                 ext[IdConstants.MenuPath] = ActionContext.MenuPath;

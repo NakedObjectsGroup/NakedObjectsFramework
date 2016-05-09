@@ -753,7 +753,10 @@ let VerifyQueryAction refType oType oid f (api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.ElementType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false))
+                                  TProperty(JsonPropertyNames.CustomTableViewTitle, TObjectVal(true))
+                                  TProperty(JsonPropertyNames.CustomTableViewColumns, TArray([ TObjectVal("Id")]))
+                                  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) ]))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
                              TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)

@@ -137,6 +137,8 @@ namespace RestfulObjects.Test.Data {
 
         public virtual void AnActionReturnsVoid() {}
 
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [TableView(true, nameof(MostSimple.Id))]
         public virtual IQueryable<MostSimple> AnActionReturnsQueryable() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }

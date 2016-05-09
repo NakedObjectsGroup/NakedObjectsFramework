@@ -591,17 +591,29 @@ let makeActionMemberCollection oType  mName (oName : string)  fName desc rType e
         let hParms = Seq.length parms > 0    
         
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
+        
+        let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                        TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                        TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                        TProperty(JsonPropertyNames.ElementType, TObjectVal(eType));
+                        TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"));
+                        TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                        TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]
+        
+        let exts = 
+            if mName = "AnActionReturnsQueryable" then 
+                let exts = TProperty(JsonPropertyNames.CustomTableViewTitle, TObjectVal(true)) :: extArray
+                let exts = TProperty(JsonPropertyNames.CustomTableViewColumns, TArray([ TObjectVal("Id")])) :: exts
+                let exts = TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: exts
+                exts
+            else 
+                extArray
+              
                      
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                                  TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(eType));
-                                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"));
-                                                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
+          TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                       
@@ -615,19 +627,31 @@ let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc r
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
+        let hParms = Seq.length parms > 0      
+
+        let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                        TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                        TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                        TProperty(JsonPropertyNames.ElementType, TObjectVal(eType));
+                        TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"));
+                        TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                        TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]
+
+        let exts = 
+            if mName = "AnActionReturnsQueryable" then 
+                let exts = TProperty(JsonPropertyNames.CustomTableViewTitle, TObjectVal(true)) :: extArray
+                let exts = TProperty(JsonPropertyNames.CustomTableViewColumns, TArray([ TObjectVal("Id")])) :: exts
+                let exts = TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: exts
+                exts
+            else 
+                extArray
 
 
-        let hParms = Seq.length parms > 0         
+           
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
-          TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                               TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                               TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                               TProperty(JsonPropertyNames.ElementType, TObjectVal(eType));
-                                                               TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"));
-                                                               TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                               TProperty(JsonPropertyNames.HasParams, TObjectVal(hParms))]));
+          TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
  ]))]
