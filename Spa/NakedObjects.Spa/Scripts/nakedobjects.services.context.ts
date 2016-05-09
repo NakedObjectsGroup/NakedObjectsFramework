@@ -773,8 +773,6 @@ module NakedObjects {
                     context.reloadObject(1, toReload).
                         then((updatedObject: DomainObjectRepresentation) => {
                             onReload(updatedObject);
-                            const em  = new ErrorMap({}, 0, concurrencyError);
-                            displayMessages(em);
                         });
                 }
                 break;

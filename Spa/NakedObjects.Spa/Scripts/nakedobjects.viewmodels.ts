@@ -410,14 +410,16 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
-
+                    const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
                     this.context.handleWrappedError(reject,
                                                     parent,
                                                     () => {
+                                                        // this should just be called if concurrency
                                                         this.doClose();
-                                                        this.$rootScope.$broadcast("nof-display-error", new ErrorMap({}, 0, concurrencyError))
+                                                        this.$rootScope.$broadcast("nof-display-error",
+                                                                new ErrorMap({}, 0, concurrencyError));
                                                     },
-                                                    () => { });
+                                                    display);
                 });
 
         doClose = () => {
