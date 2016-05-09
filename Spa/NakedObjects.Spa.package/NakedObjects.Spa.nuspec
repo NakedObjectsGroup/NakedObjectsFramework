@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Spa</id>
-    <version>8.0.0-beta2</version>
+    <version>8.0.0-beta3</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -33,7 +33,8 @@
     <file src="..\..\Spa\NakedObjects.Spa\Content\nakedobjects.css" target="Content\Content" />
     <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
     <file src="..\..\Spa\NakedObjects.Spa\images\*.*" target="Content\images" />
-    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.*" target="Content\Scripts" exclude="nakedobjects.config.ts; nakedobjects.services.color.config.ts"/> <!--But config.ts.pp files will be included-->
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\nakedobjects*.*" target="Content\Scripts" exclude="nakedobjects.config.ts; nakedobjects.services.color.config.ts" />
+    <!--But config.ts.pp files will be included-->
     <file src="..\..\Spa\NakedObjects.Spa\index.html" target="Content" />
   </files>
 </package>
