@@ -138,6 +138,10 @@ module NakedObjects {
             const key = oid.getKey();
             this.dirtyObjects = _.omit(this.dirtyObjects, key) as _.Dictionary<DirtyState>;
         }
+
+        clear() {
+            this.dirtyObjects = {};
+        }
     }
 
     function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
@@ -172,6 +176,11 @@ module NakedObjects {
             paneObjects = _.remove(paneObjects, o => isSameObject(o, type, id));
             this.transientCache[paneId] = paneObjects;
         }
+
+        clear() {
+            this.transientCache = [, [], []];
+        }
+
     }
 
     class RecentCache {
@@ -195,6 +204,10 @@ module NakedObjects {
 
         items(): DomainObjectRepresentation[] {
             return this.recentCache;
+        }
+
+        clear() {
+            this.recentCache = [];
         }
     }
 
@@ -349,11 +362,11 @@ module NakedObjects {
         };
 
         context.clearMessages = () => {
-            $rootScope.$broadcast("nof-message", []);
+            $rootScope.$broadcast(geminiMessageEvent, []);
         };
 
         context.clearWarnings = () => {
-            $rootScope.$broadcast("nof-warning", []);
+            $rootScope.$broadcast(geminiWarningEvent, []);
         };
 
 
@@ -565,8 +578,8 @@ module NakedObjects {
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
 
-            $rootScope.$broadcast("nof-warning", warnings);
-            $rootScope.$broadcast("nof-message", messages);
+            $rootScope.$broadcast(geminiWarningEvent, warnings);
+            $rootScope.$broadcast(geminiMessageEvent, messages);
 
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
@@ -820,7 +833,28 @@ module NakedObjects {
             recentcache.add(obj);
         }
 
-        context.getRecentlyViewed = () =>  recentcache.items();      
+        context.getRecentlyViewed = () => recentcache.items();      
+
+        function logoff() {
+            for (let pane = 1; pane <= 2; pane++) {
+                delete currentObjects[pane];
+            }
+            currentServices = null;
+            currentMenus = null;
+            currentVersion = null;
+            currentUser = null;
+
+            transientCache.clear();
+            recentcache.clear();
+            dirtyCache.clear();
+
+            _.forEach(currentMenuList, (k, v) => delete currentMenuList[v]);
+            _.forEach(currentLists, (k, v) => delete currentLists[v]);
+
+        }
+
+        $rootScope.$on(geminiLogoffEvent, () => logoff());
+
     });
 
 }

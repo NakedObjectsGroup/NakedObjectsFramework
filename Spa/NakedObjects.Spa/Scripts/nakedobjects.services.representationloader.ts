@@ -58,8 +58,7 @@ module NakedObjects {
                 } else if (promiseCallback.status === -1) {
                     // failed to connect
                     category = ErrorCategory.ClientError;
-                    error = `Failed to connect to server: ${
-                        promiseCallback.config ? promiseCallback.config.url : "unknown"}`;
+                    error = `Failed to connect to server: ${promiseCallback.config ? promiseCallback.config.url : "unknown"}`;
                 } else {
                     category = ErrorCategory.HttpClientError;
                     const message = promiseCallback.headers("warning") || "Unknown client HTTP error";
@@ -83,7 +82,7 @@ module NakedObjects {
 
 
             function httpValidate(config: ng.IRequestConfig): ng.IPromise<boolean> {
-                $rootScope.$broadcast("ajax-change", ++loadingCount);
+                $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
                 return $http(config)
                     .then(() => {
@@ -93,14 +92,14 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     })
                     .finally(() => {
-                        $rootScope.$broadcast("ajax-change", --loadingCount);
+                        $rootScope.$broadcast(geminiAjaxChangeEvent, --loadingCount);
                     });
             }
 
 
             function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.
             IPromise<IHateoasModel> {
-                $rootScope.$broadcast("ajax-change", ++loadingCount);
+                $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
                 if (ignoreCache) {
                     // clear cache of existing values
@@ -117,7 +116,7 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     })
                     .finally(() => {
-                        $rootScope.$broadcast("ajax-change", --loadingCount);
+                        $rootScope.$broadcast(geminiAjaxChangeEvent, --loadingCount);
                     });
             }
 
@@ -229,6 +228,13 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     });
             };
+
+
+            function logoff() {
+                $cacheFactory.get("$http").removeAll();
+            }
+
+            $rootScope.$on(geminiLogoffEvent, () => logoff());
         });
 
 }

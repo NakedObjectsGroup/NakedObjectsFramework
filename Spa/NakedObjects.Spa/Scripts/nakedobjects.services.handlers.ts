@@ -14,7 +14,6 @@ module NakedObjects {
     import MenuRepresentation = Models.MenuRepresentation;
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
-    import IInvokableAction = Models.IInvokableAction;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
 
     export interface IHandlers {
@@ -65,6 +64,7 @@ module NakedObjects {
                 new MenusViewModel(viewModelFactory)
             ];
 
+        
             function setVersionError(error: string) {
                 context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
                 urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
@@ -178,6 +178,25 @@ module NakedObjects {
                 $scope.dialog = null;
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
+
+
+            function logoff() {
+                for (let pane = 1; pane <= 2; pane++) {
+                    deRegDialog[pane].deReg();
+                    deRegObject[pane].deReg();
+
+                    deRegDialog[pane] = new DeReg();
+                    deRegObject[pane] = new DeReg();
+
+                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);              
+                }
+            }
+
+            $rootScope.$on(geminiLogoffEvent, () => logoff());
+
 
             handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
@@ -392,8 +411,8 @@ module NakedObjects {
 
                         deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on("nof-display-error", ovm.displayError()) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiPaneSwapEvent, ovm.setProperties) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiDisplayErrorEvent, ovm.displayError()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {
 

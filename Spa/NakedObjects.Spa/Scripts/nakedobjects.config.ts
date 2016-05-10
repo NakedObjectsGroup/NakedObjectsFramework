@@ -23,6 +23,8 @@ module NakedObjects {
         return appPath;
     }
 
+    export const logoffUrl = appPath + "/Account/Logoff";
+    export const postLogoffUrl =  "/#/gemini/home";
 
     export const defaultPageSize = 20; // can be overriden by server 
     export const listCacheSize = 5;

@@ -19,8 +19,6 @@ module NakedObjects {
         CheckBox,
     }
 
-    export const geminiFocusEvent = "geminiFocuson";
-
     export interface IFocusManager {
         focusOn(target: FocusTarget, index: number, paneId: number, count?: number): void;
 

@@ -86,8 +86,8 @@ module NakedObjects {
         clickHandler: IClickHandler,
         commandFactory: ICommandFactory,
         $rootScope: ng.IRootScopeService,
-        $route: any,
-        $window : any) {
+        $route: ng.route.IRouteService,
+        $http : ng.IHttpService) {
 
         var viewModelFactory = <IViewModelFactoryInternal>this;
 
@@ -915,7 +915,7 @@ module NakedObjects {
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
-                    $rootScope.$broadcast("pane-swap");
+                    $rootScope.$broadcast(geminiPaneSwapEvent);
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
@@ -934,30 +934,30 @@ module NakedObjects {
                 };
 
                 tvm.logOff = () => {
-                    $location.path("/");
-                    $timeout(() => $window.location.reload());
+                    const config = {
+                        withCredentials: true,
+                        url: logoffUrl,
+                        method: "POST",
+                        cache: false
+                    };
+
+                    $http(config).finally(() => {
+                        window.location.href = postLogoffUrl;
+                        $rootScope.$broadcast(geminiLogoffEvent);                      
+                    });
                 };
 
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 
-                $rootScope.$on("ajax-change", (event, count) =>
-                    tvm.loading = count > 0 ? "Loading..." : "");
+                $rootScope.$on(geminiAjaxChangeEvent, (event, count) =>
+                    tvm.loading = count > 0 ? loadingMessage : "");
 
-                $rootScope.$on("nof-warning", (event, warnings) =>
+                $rootScope.$on(geminiWarningEvent, (event, warnings) =>
                     tvm.warnings = warnings);
 
-                $rootScope.$on("nof-message", (event, messages) =>
+                $rootScope.$on(geminiMessageEvent, (event, messages) =>
                     tvm.messages = messages);
-
-                $rootScope.$on("back", () => {
-                    focusManager.focusOverrideOff();
-                    navigation.back();
-                });
-                $rootScope.$on("forward", () => {
-                    focusManager.focusOverrideOff();
-                    navigation.forward();
-                });
 
                 context.getUser().then(user => tvm.userName = user.userName());
 
@@ -1116,6 +1116,13 @@ module NakedObjects {
             }
             return cvm;
         };
+
+        function logoff() {
+            cvm = null;
+        }
+
+        $rootScope.$on(geminiLogoffEvent, () => logoff());
+
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
@@ -1206,5 +1213,6 @@ module NakedObjects {
         });
         return output;
     }
+
 
 }

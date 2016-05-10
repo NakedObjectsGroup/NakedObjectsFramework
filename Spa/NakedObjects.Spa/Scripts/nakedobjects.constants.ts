@@ -81,4 +81,12 @@ module NakedObjects {
   
     export const supportedDateFormats = ["D/M/YYYY", "D/M/YY", "D MMM YYYY", "D MMMM YYYY", "D MMM YY", "D MMMM YY"];
 
+    // events 
+    export const geminiFocusEvent = "nof-focus-on";
+    export const geminiLogoffEvent = "nof-logoff";
+    export const geminiPaneSwapEvent = "nof-pane-swap";
+    export const geminiDisplayErrorEvent = "nof-display-error";
+    export const geminiAjaxChangeEvent = "nof-ajax-change";
+    export const geminiWarningEvent = "nof-warning";
+    export const geminiMessageEvent = "nof-message";
 }

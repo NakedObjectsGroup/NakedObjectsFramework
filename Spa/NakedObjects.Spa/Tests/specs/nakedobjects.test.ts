@@ -35,7 +35,7 @@ module NakedObjects.Test {
 
         function getEventTestFunc(t: FocusTarget, i: number, p: number, c: number) {
             return (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
-                expect(e.name).toBe("geminiFocuson");
+                expect(e.name).toBe(geminiFocusEvent);
                 expect(target).toBe(t);
                 expect(index).toBe(i);
                 expect(paneId).toBe(p);
@@ -46,7 +46,7 @@ module NakedObjects.Test {
         function setupEventSpy(ts: INakedObjectsScope, target: FocusTarget, index: number, paneId: number, count: number) {
             const tes = jasmine.createSpy("event", getEventTestFunc(target, index, paneId, count));
             tes.and.callThrough();
-            testScope.$on("geminiFocuson", tes);
+            testScope.$on(geminiFocusEvent, tes);
             return tes;
         }
 

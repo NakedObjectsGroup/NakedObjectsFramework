@@ -416,8 +416,7 @@ module NakedObjects {
                                                     () => {
                                                         // this should just be called if concurrency
                                                         this.doClose();
-                                                        this.$rootScope.$broadcast("nof-display-error",
-                                                                new ErrorMap({}, 0, concurrencyError));
+                                                        this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
                                                     },
                                                     display);
                 });

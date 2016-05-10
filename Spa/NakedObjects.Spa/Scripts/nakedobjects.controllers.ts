@@ -8,7 +8,7 @@
 module NakedObjects {
 
     let pane1Dereg = () => {};
-    let pane2Dereg = () => { };
+    let pane2Dereg = () => {};
 
     app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         pane1Dereg();
