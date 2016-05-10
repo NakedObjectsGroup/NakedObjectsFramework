@@ -251,17 +251,9 @@ module NakedObjects {
                     context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
             }
 
-            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
-                // only update templates if changed 
-                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+            function handleListActionsAndDialog($scope: INakedObjectsScope, routeData: PaneRouteData) {
+                
                 const newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                const listViewModel = $scope.collection;
-
-                if ($scope.listTemplate !== newListTemplate) {
-                    $scope.listTemplate = newListTemplate;
-                    listViewModel.refresh(routeData);
-                }
-
                 if ($scope.actionsTemplate !== newActionsTemplate) {
                     $scope.actionsTemplate = newActionsTemplate;
                 }
@@ -273,9 +265,24 @@ module NakedObjects {
                 const newDialogId = routeData.dialogId;
 
                 if (currentDialogId !== newDialogId) {
+                    const listViewModel = $scope.collection;
                     const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === newDialogId);
                     setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
                 }
+            }
+
+
+            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
+                // only update templates if changed 
+                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                const listViewModel = $scope.collection;
+
+                if ($scope.listTemplate !== newListTemplate) {
+                    $scope.listTemplate = newListTemplate;
+                    listViewModel.refresh(routeData);
+                }
+
+                handleListActionsAndDialog($scope, routeData);
             }
 
 
@@ -298,11 +305,12 @@ module NakedObjects {
 
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
+                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
 
-                    handleListSearchChanged($scope, routeData);
+                    handleListActionsAndDialog($scope, routeData);
                 } else {
                     $scope.listTemplate = listPlaceholderTemplate;
                     $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
