@@ -75,13 +75,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&as1=open&d1=ChangeDiscount&f1_newDiscount=%22%22&c1=Table");
-            WaitForView(Pane.Single, PaneType.List);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
             Reload();
-            var cells = WaitForCss("td", 64);
             var rand = new Random();
-            var newPct = "0." + rand.Next(51, 59);
+            var newPct = "0." + rand.Next(51, 59);           
             TypeIntoFieldWithoutClearing("#newdiscount1", newPct);
+            WaitForCss("td", 64);
             //Now select items
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-8");
@@ -91,14 +90,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CheckIndividualItem(7, "Discount Pct:", newPct, false);
             CheckIndividualItem(8, "Discount Pct:", newPct);
 
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
             //Reset to below 50%
-            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table");
-            WaitForView(Pane.Single, PaneType.List);
+            GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1=0&c1=Table&as1=open&d1=ChangeDiscount");
             Reload();
-            WaitForCss("td", 64);
-            OpenObjectActions();
-            OpenActionDialog("Change Discount");
             TypeIntoFieldWithoutClearing("#newdiscount1", "0.10");
+            var cells = WaitForCss("td", 64);
             SelectCheckBox("#item1-6");
             SelectCheckBox("#item1-8");
             Click(OKButton());
