@@ -216,7 +216,7 @@ module NakedObjects {
             parmViewModel.optional = parmRep.extensions().optional();
             let required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
-            parmViewModel.message = "";
+            parmViewModel.setMessage("");
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = `${parmViewModel.id.toLowerCase()}`;
             parmViewModel.paneArgId = `${parmViewModel.argId}${paneId}`;
@@ -414,7 +414,7 @@ module NakedObjects {
                     catch((reject: ErrorWrapper) => {
                         const parent = actionRep.parent as DomainObjectRepresentation;
                         const reset = (updatedObject: DomainObjectRepresentation) => this.reset(updatedObject, urlManager.getRouteData().pane()[this.onPaneId]);
-                        const display = (em: ErrorMap) => vm.message = em.invalidReason() || em.warningMessage;
+                        const display = (em: ErrorMap) => vm.setMessage(em.invalidReason() || em.warningMessage);
                         context.handleWrappedError(reject, parent, reset, display);
                     });
             };
@@ -441,7 +441,7 @@ module NakedObjects {
                             requiredFieldsMissing = true;
                             valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : `${r} ${valueViewModel.description}`;
                         } else {
-                            valueViewModel.message = reason;
+                            valueViewModel.setMessage(reason);
                             fieldValidationErrors = true;
                         }
                     }
@@ -453,7 +453,7 @@ module NakedObjects {
             if (fieldValidationErrors) msg = `${msg} See field validation message(s). `;
 
             if (!msg) msg = err.warningMessage;
-            messageViewModel.message = msg;
+            messageViewModel.setMessage(msg);
         };
 
         function drop(vm: ValueViewModel, newValue: IDraggableViewModel) {
@@ -469,7 +469,7 @@ module NakedObjects {
             const message = mandatoryOnly ? Models.validateMandatory(rep, viewValue) : Models.validate(rep, modelValue, viewValue, vm.localFilter);
 
             if (message !== mandatory) {
-                vm.message = message;
+                vm.setMessage(message);
             }
 
             vm.clientValid = !message;

@@ -195,10 +195,18 @@ module NakedObjects {
         message: string = "";
         clearMessage() {
             if (this.message === this.previousMessage) {
-                this.message = this.previousMessage = "";
+                this.resetMessage();
             } else {
                 this.previousMessage = this.message;
             }
+        }
+
+        resetMessage() {
+            this.message = this.previousMessage = "";
+        }
+
+        setMessage(msg: string) {
+            this.message = msg;
         }
     }
 
@@ -361,7 +369,7 @@ module NakedObjects {
 
             this.title = this.actionMember().extensions().friendlyName();
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
-            this.message = "";
+            this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
             return this;
         }
@@ -395,7 +403,7 @@ module NakedObjects {
             this.executeInvoke(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
-                        this.message = actionResult.warningsOrMessages() || noResultMessage;
+                        this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
@@ -432,7 +440,7 @@ module NakedObjects {
         }
 
         clearMessages = () => {
-            this.message = "";
+            this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
         };
 
@@ -543,9 +551,9 @@ module NakedObjects {
                     } :
                     (right?: boolean) => {
                         actionViewModel.executeInvoke([], right).
-                            then(result => this.message = result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "").
+                            then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
-                                const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                                const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                                 this.contextService.handleWrappedError(reject, null, () => { }, display);
                             });
                     });
@@ -604,7 +612,7 @@ module NakedObjects {
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                     this.contextService.handleWrappedError(reject, null, () => { }, display);
                 });
         };
@@ -866,7 +874,7 @@ module NakedObjects {
                 this.color = `${objectColor}${c}`;
             });
 
-            this.message = "";
+            this.resetMessage();
 
             if (routeData.interactionMode === InteractionMode.Form) {
                 _.forEach(this.actions, a => this.wrapAction(a));
@@ -963,7 +971,7 @@ module NakedObjects {
 
             return this.validateHandler()(this.domainObject, propMap).
                 then(() => {
-                    this.message = "";
+                    this.resetMessage();
                     return true;
                 }).
                 catch((reject: ErrorWrapper) => {
