@@ -198,6 +198,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 input.SendKeys(Keys.Control + "a");
                 Thread.Sleep(100);
                 input.SendKeys(Keys.Delete);
+                Thread.Sleep(100);
                 wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
             }
             input.SendKeys(characters);

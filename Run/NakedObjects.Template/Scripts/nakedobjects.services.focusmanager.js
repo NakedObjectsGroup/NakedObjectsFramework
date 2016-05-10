@@ -36,7 +36,7 @@ var NakedObjects;
                 }
                 $timeout(function () {
                     $rootScope.$broadcast(NakedObjects.geminiFocusEvent, currentTarget, currentIndex, paneId, ++count);
-                }, 0, false);
+                }, 100, false);
             }
         };
         helper.refresh = function (paneId) {

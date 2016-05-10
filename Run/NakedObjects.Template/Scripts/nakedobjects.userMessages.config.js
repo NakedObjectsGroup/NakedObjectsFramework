@@ -29,6 +29,7 @@ var NakedObjects;
     NakedObjects.noItemsSelected = "Must select items for collection contributed action";
     NakedObjects.dropPrompt = "Drop here";
     NakedObjects.autoCompletePrompt = "(auto-complete)";
+    NakedObjects.concurrencyError = "Object has been updated by another user\n. Object has been reloaded.";
     NakedObjects.outOfRange = function (val, min, max, filter) { return ("Value is outside the range " + (filter.filter(min) || "unlimited") + " to " + (filter.filter(max) || "unlimited")); };
     NakedObjects.pageMessage = function (p, tp, c, tc) { return ("Page " + p + " of " + tp + "; viewing " + c + " of " + tc + " items"); };
 })(NakedObjects || (NakedObjects = {}));

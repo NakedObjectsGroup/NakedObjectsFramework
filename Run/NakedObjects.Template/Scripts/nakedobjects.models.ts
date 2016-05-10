@@ -273,6 +273,11 @@ module NakedObjects.Models {
             oid.isService = !oid.instanceId;
             return oid;
         }
+
+        isSame(other: ObjectIdWrapper) {
+            return other && other.domainType === this.domainType && other.instanceId === this.instanceId;
+        }
+
     }
 
 
