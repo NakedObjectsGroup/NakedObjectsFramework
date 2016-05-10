@@ -942,8 +942,8 @@ module NakedObjects {
                     };
 
                     $http(config).finally(() => {
-                        window.location.href = postLogoffUrl;
-                        $rootScope.$broadcast(geminiLogoffEvent);                      
+                        $rootScope.$broadcast(geminiLogoffEvent);
+                        $timeout(() => window.location.href = postLogoffUrl);
                     });
                 };
 
