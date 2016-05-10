@@ -1056,29 +1056,31 @@ var NakedObjects;
                 "(or an abbreviation of it), a description of the specified Command is returned.";
             this.minArguments = 0;
             this.maxArguments = 1;
-            this.basicHelp = "Cicero is a user interface purpose-designed to work with speech screen reader such as JAWS.\n" +
+            this.basicHelp = "Cicero is a user interface purpose-designed to work with an audio screen-reader.\n" +
                 "The display has only two fields: a read-only output field, and a single input field.\n" +
                 "The input field always has the focus.\n" +
-                "Commands are types into the input field followed by the Enter key.\n" +
+                "Commands are typed into the input field followed by the Enter key.\n" +
                 "When the output field updates (either instantaneously or after the server has responded)\n" +
-                "its contents will be read out automatically.\n" +
-                "The user should never have to navigate around the screen.\n" +
+                "its contents are read out automatically, so \n" +
+                "the user never has to navigate around the screen.\n" +
                 "Commands, such as 'action', 'field' and 'save', may be typed in full\n" +
-                "or abbreviated to the first two characters or more.\n" +
+                "or abbreviated to the first two or more characters.\n" +
+                "Commands are not case sensitive.\n" +
                 "Some commands take one or more arguments.\n" +
-                "There must be a space between the command word and the first argument.\n" +
+                "There must be a space between the command word and the first argument,\n" +
+                "and a comman between arguments.|n" +
                 "Arguments may contain spaces if needed.\n" +
-                "If more than one argument is specified they must be separated by commas.\n" +
-                "Commands are not case sensitive. The commands available to the user vary according to the context.\n" +
-                "The command 'help ?' will list the commands available to the user in the current context.\n" +
-                "‘help’ followed by another command word (in full or abbreviated) will give more details about  that command.\n" +
-                "Some commands will change the context, for example using the Go command to navigate to an associated object\n" +
+                "The commands available to the user vary according to the context.\n" +
+                "The command 'help ?' (note that there is a space between help and '?')\n" +
+                "will list the commands available to the user in the current context.\n" +
+                "‘help’ followed by another command word (in full or abbreviated) will give more details about that command.\n" +
+                "Some commands will change the context, for example using the Go command to navigate to an associated object, \n" +
                 "in which case the new context will be read out.\n" +
                 "Other commands - help being an example - do not change the context, but will read out information to the user.\n" +
                 "If the user needs a reminder of the current context, the 'Where' command will read the context out again.\n" +
                 "Hitting Enter on the empty input field has the same effect.\n" +
-                "When the user enters a command and the output has been updated, the input field will  be cleared\n" +
-                "- ready for the next command. The user may recall the previous command, by hitting the up- arrow key.\n" +
+                "When the user enters a command and the output has been updated, the input field will  be cleared, \n" +
+                "ready for the next command. The user may recall the previous command, by hitting the up- arrow key.\n" +
                 "The user might then edit or extend that previous command and hit Enter to run it again.\n" +
                 "For advanced users: commands may be chained using a semi-colon between them,\n" +
                 "however commands that do, or might, result in data updates cannot be chained.";

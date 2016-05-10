@@ -11,6 +11,7 @@ var NakedObjects;
     var Value = NakedObjects.Models.Value;
     var EntryType = NakedObjects.Models.EntryType;
     var ErrorWrapper = NakedObjects.Models.ErrorWrapper;
+    var DomainObjectRepresentation = NakedObjects.Models.DomainObjectRepresentation;
     var ErrorMap = NakedObjects.Models.ErrorMap;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
@@ -142,9 +143,16 @@ var NakedObjects;
     NakedObjects.RecentItemViewModel = RecentItemViewModel;
     var MessageViewModel = (function () {
         function MessageViewModel() {
+            this.previousMessage = "";
+            this.message = "";
         }
         MessageViewModel.prototype.clearMessage = function () {
-            this.message = "";
+            if (this.message === this.previousMessage) {
+                this.message = this.previousMessage = "";
+            }
+            else {
+                this.previousMessage = this.message;
+            }
         };
         return MessageViewModel;
     }());
@@ -160,23 +168,6 @@ var NakedObjects;
         };
         ValueViewModel.prototype.conditionalChoices = function (args) {
             return null;
-        };
-        ValueViewModel.prototype.getMemento = function () {
-            if (this.entryType === EntryType.Choices) {
-                return (this.choice && this.choice.search) ? this.choice.search : this.getValue().toString();
-            }
-            if (this.entryType === EntryType.MultipleChoices) {
-                var ss = _.map(this.multiChoices, function (c) {
-                    return c.search;
-                });
-                if (ss.length === 0) {
-                    return "";
-                }
-                return _.reduce(ss, function (m, s) {
-                    return m + "-" + s;
-                });
-            }
-            return this.getValue().toString();
         };
         ValueViewModel.prototype.setNewValue = function (newValue) {
             this.value = newValue.value;
@@ -244,7 +235,7 @@ var NakedObjects;
     NakedObjects.ActionViewModel = ActionViewModel;
     var DialogViewModel = (function (_super) {
         __extends(DialogViewModel, _super);
-        function DialogViewModel(color, context, viewModelFactory, urlManager, focusManager) {
+        function DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope) {
             var _this = this;
             _super.call(this);
             this.color = color;
@@ -252,6 +243,7 @@ var NakedObjects;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
+            this.$rootScope = $rootScope;
             this.actionMember = function () { return _this.actionViewModel.actionRep; };
             this.clientValid = function () { return _.every(_this.parameters, function (p) { return p.clientValid; }); };
             this.tooltip = function () { return tooltip(_this, _this.parameters); };
@@ -281,9 +273,13 @@ var NakedObjects;
                     // else leave open if opening on other pane and dialog has result
                 }).
                     catch(function (reject) {
-                    var parent = _this.actionMember().parent;
+                    var parent = _this.actionMember().parent instanceof DomainObjectRepresentation ? _this.actionMember().parent : null;
                     var display = function (em) { return _this.viewModelFactory.handleErrorResponse(em, _this, _this.parameters); };
-                    _this.context.handleWrappedError(reject, parent, function () { }, display);
+                    _this.context.handleWrappedError(reject, parent, function () {
+                        // this should just be called if concurrency
+                        _this.doClose();
+                        _this.$rootScope.$broadcast("nof-display-error", new ErrorMap({}, 0, NakedObjects.concurrencyError));
+                    }, display);
                 });
             };
             this.doClose = function () {
@@ -304,15 +300,13 @@ var NakedObjects;
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
             var fields = routeData.dialogFields;
-            var parameters = _.filter(actionViewModel.parameters(), function (p) { return !p.isCollectionContributed; });
-            this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p.parameterRep, fields[p.parameterRep.id()], _this.onPaneId); });
+            var parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), function (p) { return !p.isCollectionContributed(); });
+            this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p, fields[p.id()], _this.onPaneId); });
             this.title = this.actionMember().extensions().friendlyName();
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
             this.message = "";
+            this.id = actionViewModel.actionRep.actionId();
             return this;
-        };
-        DialogViewModel.prototype.isSame = function (paneId, otherAction) {
-            return this.onPaneId === paneId && this.actionMember().invokeLink().href() === otherAction.invokeLink().href();
         };
         return DialogViewModel;
     }(MessageViewModel));
@@ -356,6 +350,8 @@ var NakedObjects;
                 _this.recreate(newPage, newPageSize).
                     then(function (list) {
                     _this.routeData.state = newState || _this.routeData.state;
+                    _this.routeData.page = newPage;
+                    _this.routeData.pageSize = newPageSize;
                     _this.reset(list, _this.routeData);
                     _this.urlManager.setListPaging(newPage, newPageSize, _this.routeData.state, _this.onPaneId);
                 }).
@@ -390,91 +386,106 @@ var NakedObjects;
                 item.checkboxChange(i);
             }); };
             this.actionsTooltip = function () { return actionsTooltip(_this, !!_this.routeData.actionsOpen); };
+            this.actionMember = function (id) {
+                var actionViewModel = _.find(_this.actions, function (a) { return a.actionRep.actionId() === id; });
+                return actionViewModel.actionRep;
+            };
         }
+        ListViewModel.prototype.updateItems = function (value) {
+            var _this = this;
+            this.items = this.viewModelFactory.getItems(value, this.state === NakedObjects.CollectionViewState.Table, this.routeData, this);
+            var totalCount = this.listRep.pagination().totalCount;
+            this.allSelected = _.every(this.items, function (item) { return item.selected; });
+            var count = this.items.length;
+            this.size = count;
+            this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count, totalCount); };
+        };
+        ListViewModel.prototype.refresh = function (routeData) {
+            var _this = this;
+            this.routeData = routeData;
+            if (!this.state || this.state !== routeData.state) {
+                this.state = routeData.state;
+                if (this.state === NakedObjects.CollectionViewState.Table) {
+                    this.recreate(this.page, this.pageSize).then(function (list) { return _this.updateItems(list.value()); });
+                }
+                else {
+                    this.updateItems(this.listRep.value());
+                }
+            }
+        };
+        ListViewModel.prototype.collectionContributedActionDecorator = function (actionViewModel) {
+            var _this = this;
+            var wrappedInvoke = actionViewModel.executeInvoke;
+            actionViewModel.executeInvoke = function (pps, right) {
+                var selected = _.filter(_this.items, function (i) { return i.selected; });
+                if (selected.length === 0) {
+                    var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
+                    var rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
+                    return _this.$q.reject(rp);
+                }
+                var getParms = function (action) {
+                    var parms = _.values(action.parameters());
+                    var contribParm = _.find(parms, function (p) { return p.isCollectionContributed(); });
+                    var parmValue = new Value(_.map(selected, function (i) { return i.link; }));
+                    var collectionParmVm = _this.viewModelFactory
+                        .parameterViewModel(contribParm, parmValue, _this.onPaneId);
+                    var allpps = _.clone(pps);
+                    allpps.push(collectionParmVm);
+                    return allpps;
+                };
+                if (actionViewModel.invokableActionRep) {
+                    return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
+                }
+                return _this.contextService.getActionDetails(actionViewModel.actionRep)
+                    .then(function (details) { return wrappedInvoke(getParms(details), right); });
+            };
+        };
+        ListViewModel.prototype.collectionContributedInvokeDecorator = function (actionViewModel) {
+            var _this = this;
+            var showDialog = function () { return _this.contextService.getInvokableAction(actionViewModel.actionRep).
+                then(function (ia) { return _.keys(ia.parameters()).length > 1; }); };
+            actionViewModel.doInvoke = function () { };
+            showDialog().
+                then(function (show) { return actionViewModel.doInvoke = show ?
+                function (right) {
+                    _this.focusManager.focusOverrideOff();
+                    _this.urlManager.setDialog(actionViewModel.actionRep.actionId(), _this.onPaneId);
+                } :
+                function (right) {
+                    actionViewModel.executeInvoke([], right).
+                        then(function (result) { return _this.message = result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""; }).
+                        catch(function (reject) {
+                        var display = function (em) { return _this.message = em.invalidReason() || em.warningMessage; };
+                        _this.contextService.handleWrappedError(reject, null, function () { }, display);
+                    });
+                }; });
+        };
+        ListViewModel.prototype.decorate = function (actionViewModel) {
+            this.collectionContributedActionDecorator(actionViewModel);
+            this.collectionContributedInvokeDecorator(actionViewModel);
+        };
         ListViewModel.prototype.reset = function (list, routeData) {
             var _this = this;
             this.listRep = list;
             this.routeData = routeData;
-            this.state = routeData.state;
-            this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize, routeData.state);
+            this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
             this.onPaneId = routeData.paneId;
             this.pluralName = "Objects";
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            var totalCount = this.listRep.pagination().totalCount;
-            if (this.state === NakedObjects.CollectionViewState.Table) {
-                this.recreate(this.page, this.pageSize).then(function (list) {
-                    _this.items = _this.viewModelFactory.getItems(list.value(), _this.state === NakedObjects.CollectionViewState.Table, routeData, _this);
-                    _this.allSelected = _.every(_this.items, function (item) { return item.selected; });
-                    var count = _this.items.length;
-                    _this.size = count;
-                    _this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count, totalCount); };
-                });
-            }
-            else {
-                this.items = this.viewModelFactory.getItems(list.value(), this.state === NakedObjects.CollectionViewState.Table, routeData, this);
-                this.allSelected = _.every(this.items, function (item) { return item.selected; });
-                var count_1 = this.items.length;
-                this.size = count_1;
-                this.description = function () { return NakedObjects.pageMessage(_this.page, _this.numPages, count_1, totalCount); };
-            }
+            //clear state so we always refresh items
+            this.state = null;
+            this.refresh(routeData);
             var actions = this.listRep.actionMembers();
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
             this.actionsMap = createActionMenuMap(this.actions);
-            _.forEach(this.actions, function (a) {
-                var wrappedInvoke = a.executeInvoke;
-                a.executeInvoke = function (pps, right) {
-                    var selected = _.filter(_this.items, function (i) { return i.selected; });
-                    if (selected.length === 0) {
-                        var em = new ErrorMap({}, 0, NakedObjects.noItemsSelected);
-                        var rp = new ErrorWrapper(ErrorCategory.HttpClientError, HttpStatusCode.UnprocessableEntity, em);
-                        return _this.$q.reject(rp);
-                    }
-                    var getParms = function (action) {
-                        var parms = _.values(action.parameters());
-                        var contribParm = _.find(parms, function (p) { return p.isCollectionContributed(); });
-                        var parmValue = new Value(_.map(selected, function (i) { return i.link; }));
-                        var collectionParmVm = _this.viewModelFactory.parameterViewModel(contribParm, parmValue, _this.onPaneId);
-                        var allpps = _.clone(pps);
-                        allpps.push(collectionParmVm);
-                        return allpps;
-                    };
-                    if (a.invokableActionRep) {
-                        return wrappedInvoke(getParms(a.invokableActionRep), right);
-                    }
-                    return _this.contextService.getActionDetails(a.actionRep).
-                        then(function (details) { return wrappedInvoke(getParms(details), right); });
-                };
-                // show dialog if more than 1 parm (single parm is collection itself)
-                var showDialog = function () { return _this.contextService.getInvokableAction(a.actionRep).
-                    then(function (ia) { return _.keys(ia.parameters()).length > 1; }); };
-                a.doInvoke = function () { };
-                showDialog().
-                    then(function (show) { return a.doInvoke = show ?
-                    function (right) {
-                        _this.focusManager.focusOverrideOff();
-                        _this.urlManager.setDialog(a.actionRep.actionId(), _this.onPaneId);
-                    } :
-                    function (right) {
-                        a.executeInvoke([], right).
-                            then(function (result) {
-                            _this.message = result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : "";
-                        }).
-                            catch(function (reject) {
-                            var display = function (em) { return _this.message = em.invalidReason() || em.warningMessage; };
-                            _this.contextService.handleWrappedError(reject, null, function () { }, display);
-                        });
-                    }; });
-            });
+            _.forEach(this.actions, function (a) { return _this.decorate(a); });
             return this;
         };
         ListViewModel.prototype.description = function () { return this.size ? this.size.toString() : ""; };
         ListViewModel.prototype.disableActions = function () {
             return !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
-        };
-        ListViewModel.prototype.isSame = function (paneId, key) {
-            return this.id === key;
         };
         return ListViewModel;
     }(MessageViewModel));
@@ -584,10 +595,10 @@ var NakedObjects;
                 _this.setProperties();
                 var propMap = _this.propertyMap();
                 _this.saveHandler()(_this.domainObject, propMap, _this.onPaneId, viewObject).
+                    then(function (obj) { return _this.reset(obj, _this.urlManager.getRouteData().pane()[_this.onPaneId]); }).
                     catch(function (reject) { return _this.handleWrappedError(reject); });
             };
             this.doSaveValidate = function () {
-                //this.setProperties();
                 var propMap = _this.propertyMap();
                 return _this.validateHandler()(_this.domainObject, propMap).
                     then(function () {
@@ -622,6 +633,43 @@ var NakedObjects;
                 _.every(_this.properties, function (p) { return !p.isEditable; }); };
             this.canDropOn = function (targetType) { return _this.contextService.isSubTypeOf(targetType, _this.domainType); };
         }
+        DomainObjectViewModel.prototype.wrapAction = function (a) {
+            var _this = this;
+            var wrappedInvoke = a.executeInvoke;
+            a.executeInvoke = function (pps, right) {
+                _this.setProperties();
+                var pairs = _.map(_this.editProperties(), function (p) { return [p.id, p.getValue()]; });
+                var prps = _.fromPairs(pairs);
+                var parmValueMap = _.mapValues(a.invokableActionRep.parameters(), function (p) { return ({ parm: p, value: prps[p.id()] }); });
+                var allpps = _.map(parmValueMap, function (o) { return _this.viewModelFactory.parameterViewModel(o.parm, o.value, _this.onPaneId); });
+                return wrappedInvoke(allpps, right).
+                    catch(function (reject) {
+                    _this.handleWrappedError(reject);
+                    return _this.$q.reject(reject);
+                });
+            };
+        };
+        // must be careful with this - OK for changes on client but after server updates should use  reset
+        // because parameters may have appeared or disappeared etc and refesh just updates existing views. 
+        // So OK for view state changes but not eg for a parameter that disappears after saving
+        DomainObjectViewModel.prototype.refresh = function (routeData) {
+            var _this = this;
+            this.routeData = routeData;
+            var iMode = this.domainObject.extensions().interactionMode();
+            this.isInEdit = routeData.interactionMode !== NakedObjects.InteractionMode.View || iMode === "form" || iMode === "transient";
+            this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? routeData.props : {};
+            _.forEach(this.properties, function (p) { return p.refresh(_this.props[p.id]); });
+            _.forEach(this.collections, function (c) { return c.refresh(_this.routeData); });
+            this.unsaved = routeData.interactionMode === NakedObjects.InteractionMode.Transient;
+            this.title = this.unsaved ? "Unsaved " + this.domainObject.extensions().friendlyName() : this.domainObject.title();
+            this.title = this.title + dirtyMarker(this.contextService, this.domainObject.getOid());
+            if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
+                _.forEach(this.actions, function (a) { return _this.wrapAction(a); });
+            }
+            // leave message from previous refresh 
+            this.clearMessage();
+            return this;
+        };
         DomainObjectViewModel.prototype.reset = function (obj, routeData) {
             var _this = this;
             this.domainObject = obj;
@@ -660,23 +708,20 @@ var NakedObjects;
             });
             this.message = "";
             if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
-                _.forEach(this.actions, function (a) {
-                    var wrappedInvoke = a.executeInvoke;
-                    a.executeInvoke = function (pps, right) {
-                        _this.setProperties();
-                        var pairs = _.map(_this.editProperties(), function (p) { return [p.id, p.getValue()]; });
-                        var prps = _.fromPairs(pairs);
-                        var parmValueMap = _.mapValues(a.invokableActionRep.parameters(), function (p) { return ({ parm: p, value: prps[p.id()] }); });
-                        var allpps = _.map(parmValueMap, function (o) { return _this.viewModelFactory.parameterViewModel(o.parm, o.value, _this.onPaneId); });
-                        return wrappedInvoke(allpps, right).
-                            catch(function (reject) {
-                            _this.handleWrappedError(reject);
-                            return _this.$q.reject(reject);
-                        });
-                    };
-                });
+                _.forEach(this.actions, function (a) { return _this.wrapAction(a); });
             }
             return this;
+        };
+        DomainObjectViewModel.prototype.displayError = function () {
+            var _this = this;
+            return function (event, em) {
+                _this.routeData = _this.urlManager.getRouteData().pane()[_this.onPaneId];
+                _this.contextService.getObject(_this.onPaneId, _this.domainObject.getOid(), _this.routeData.interactionMode)
+                    .then(function (obj) {
+                    _this.reset(obj, _this.routeData);
+                    _this.viewModelFactory.handleErrorResponse(em, _this, _this.properties);
+                });
+            };
         };
         DomainObjectViewModel.prototype.disableActions = function () {
             return !this.actions || this.actions.length === 0;

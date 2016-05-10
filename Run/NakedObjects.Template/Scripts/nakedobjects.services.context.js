@@ -152,18 +152,13 @@ var NakedObjects;
                 return $q.when(obj);
             });
         }
-        context.getIsDirty = function (oid) {
-            if (!oid.isService) {
-                return dirtyCache.getDirty(oid) !== DirtyState.Clean;
-            }
-            return false;
+        context.getIsDirty = function (oid) { return !oid.isService && dirtyCache.getDirty(oid) !== DirtyState.Clean; };
+        context.mustReload = function (oid) {
+            var dirtyState = dirtyCache.getDirty(oid);
+            return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && NakedObjects.autoLoadDirty);
         };
-        context.getObjectForEdit = function (paneId, object) {
-            return editOrReloadObject(paneId, object, true);
-        };
-        context.reloadObject = function (paneId, object) {
-            return editOrReloadObject(paneId, object, false);
-        };
+        context.getObjectForEdit = function (paneId, object) { return editOrReloadObject(paneId, object, true); };
+        context.reloadObject = function (paneId, object) { return editOrReloadObject(paneId, object, false); };
         context.getService = function (paneId, serviceType) {
             if (isSameObject(currentObjects[paneId], serviceType)) {
                 return $q.when(currentObjects[paneId]);
@@ -553,7 +548,6 @@ var NakedObjects;
                         context.reloadObject(1, toReload).
                             then(function (updatedObject) {
                             onReload(updatedObject);
-                            urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
                         });
                     }
                     break;

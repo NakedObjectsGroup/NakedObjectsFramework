@@ -12,7 +12,7 @@ var NakedObjects;
     var Value = NakedObjects.Models.Value;
     var MenuRepresentation = NakedObjects.Models.MenuRepresentation;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    NakedObjects.app.service("urlManager", function ($routeParams, $location) {
+    NakedObjects.app.service("urlManager", function ($routeParams, $location, $window) {
         var helper = this;
         // keep in alphabetic order to help avoid name collisions 
         // all key map
@@ -366,6 +366,10 @@ var NakedObjects;
             newValues[("" + akm.page + paneId)] = "1";
             newValues[("" + akm.pageSize + paneId)] = NakedObjects.defaultPageSize.toString();
             newValues[("" + akm.selected + paneId)] = "0";
+            var newState = actionMember.extensions().renderEagerly() ?
+                NakedObjects.CollectionViewState[NakedObjects.CollectionViewState.Table] :
+                NakedObjects.CollectionViewState[NakedObjects.CollectionViewState.List];
+            newValues[("" + akm.collection + paneId)] = newState;
             executeTransition(newValues, paneId, Transition.ToList, function () { return true; });
         };
         helper.setProperty = function (propertyMember, paneId) {
@@ -581,6 +585,9 @@ var NakedObjects;
                 }
                 $location.path(newPath).search(search);
             }
+        };
+        helper.reload = function () {
+            $window.location.reload(true);
         };
         helper.isHome = function (paneId) {
             if (paneId === void 0) { paneId = 1; }

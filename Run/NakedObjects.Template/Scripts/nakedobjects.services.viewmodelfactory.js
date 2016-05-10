@@ -155,11 +155,14 @@ var NakedObjects;
             }
             if (fieldEntryType === EntryType.FreeForm && parmViewModel.type === "ref") {
                 parmViewModel.description = parmViewModel.description || NakedObjects.dropPrompt;
-                var val = previousValue && !previousValue.isNull() ? previousValue : parmRep.default();
-                if (!val.isNull()) {
-                    parmViewModel.reference = val.link().href();
-                    parmViewModel.choice = NakedObjects.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
-                }
+                parmViewModel.refresh = function (newValue) {
+                    var val = newValue && !newValue.isNull() ? newValue : parmRep.default();
+                    if (!val.isNull() && val.isReference()) {
+                        parmViewModel.reference = val.link().href();
+                        parmViewModel.choice = NakedObjects.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
+                    }
+                };
+                parmViewModel.refresh(previousValue);
             }
             if (fieldEntryType === EntryType.ConditionalChoices || fieldEntryType === EntryType.MultipleConditionalChoices) {
                 parmViewModel.conditionalChoices = function (args) {
@@ -189,33 +192,42 @@ var NakedObjects;
                         parmViewModel.choice = choiceToSet;
                     }
                 }
-                if (previousValue || parmViewModel.dflt) {
-                    var toSet = previousValue || parmRep.default();
-                    if (fieldEntryType === EntryType.MultipleChoices || fieldEntryType === EntryType.MultipleConditionalChoices || parmViewModel.isCollectionContributed) {
-                        setCurrentChoices(toSet);
+                parmViewModel.refresh = function (newValue) {
+                    if (newValue || parmViewModel.dflt) {
+                        var toSet = newValue || parmRep.default();
+                        if (fieldEntryType === EntryType.MultipleChoices ||
+                            fieldEntryType === EntryType.MultipleConditionalChoices ||
+                            parmViewModel.isCollectionContributed) {
+                            setCurrentChoices(toSet);
+                        }
+                        else {
+                            setCurrentChoice(toSet);
+                        }
                     }
-                    else {
-                        setCurrentChoice(toSet);
-                    }
-                }
+                };
+                parmViewModel.refresh(previousValue);
             }
             else {
-                var returnType = parmRep.extensions().returnType();
-                if (returnType === "boolean") {
-                    var valueToSet = (previousValue ? previousValue.toValueString() : null) || parmRep.default().scalar();
-                    var bValueToSet = NakedObjects.toTriStateBoolean(valueToSet);
-                    parmViewModel.value = bValueToSet;
-                    if (bValueToSet !== null) {
-                        // reset required indicator
-                        required = "";
+                var returnType_1 = parmRep.extensions().returnType();
+                parmViewModel.refresh = function (newValue) {
+                    if (returnType_1 === "boolean") {
+                        var valueToSet = (newValue ? newValue.toValueString() : null) ||
+                            parmRep.default().scalar();
+                        var bValueToSet = NakedObjects.toTriStateBoolean(valueToSet);
+                        parmViewModel.value = bValueToSet;
+                        if (bValueToSet !== null) {
+                            // reset required indicator
+                            required = "";
+                        }
                     }
-                }
-                else if (IsDateOrDateTime(parmRep)) {
-                    parmViewModel.value = toUtcDate(previousValue || new Value(parmViewModel.dflt));
-                }
-                else {
-                    parmViewModel.value = (previousValue ? previousValue.toString() : null) || parmViewModel.dflt || "";
-                }
+                    else if (IsDateOrDateTime(parmRep)) {
+                        parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
+                    }
+                    else {
+                        parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
+                    }
+                };
+                parmViewModel.refresh(previousValue);
             }
             var remoteMask = parmRep.extensions().mask();
             if (remoteMask && parmRep.isScalar()) {
@@ -228,6 +240,7 @@ var NakedObjects;
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel);
             parmViewModel.drop = _.partial(drop, parmViewModel);
             parmViewModel.description = required + parmViewModel.description;
+            parmViewModel.refresh = parmViewModel.refresh || (function (newValue) { });
             return parmViewModel;
         };
         viewModelFactory.actionViewModel = function (actionRep, vm, routeData) {
@@ -412,17 +425,19 @@ var NakedObjects;
             if (propertyRep.attachmentLink() != null) {
                 propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
             }
-            var value = previousValue || propertyRep.value();
-            var currentChoice = NakedObjects.ChoiceViewModel.create(value, id);
+            var setupChoice;
             if (propertyRep.entryType() === EntryType.Choices) {
                 var choices = propertyRep.choices();
                 propertyViewModel.choices = _.map(choices, function (v, n) { return NakedObjects.ChoiceViewModel.create(v, id, n); });
-                propertyViewModel.choice = _.find(propertyViewModel.choices, function (c) { return c.match(currentChoice); });
+                setupChoice = function (newValue) {
+                    var currentChoice = NakedObjects.ChoiceViewModel.create(newValue, id);
+                    propertyViewModel.choice = _.find(propertyViewModel.choices, function (c) { return c.match(currentChoice); });
+                };
             }
             else {
                 // use choice for draggable/droppable references
                 propertyViewModel.choices = [];
-                propertyViewModel.choice = currentChoice;
+                setupChoice = function (newValue) { return propertyViewModel.choice = NakedObjects.ChoiceViewModel.create(newValue, id); };
             }
             if (propertyRep.entryType() === EntryType.AutoComplete) {
                 propertyViewModel.prompt = function (searchTerm) {
@@ -440,36 +455,50 @@ var NakedObjects;
                 // fromPairs definition faulty
                 propertyViewModel.arguments = _.fromPairs(_.map(propertyRep.promptLink().arguments(), function (v, key) { return [key, new Value(v.value)]; }));
             }
+            function callIfChanged(newValue, doRefresh) {
+                var value = newValue || propertyRep.value();
+                if (propertyViewModel.currentValue == null || value.toValueString() !== propertyViewModel.currentValue.toValueString()) {
+                    doRefresh(value);
+                    propertyViewModel.currentValue = value;
+                }
+            }
             if (propertyRep.isScalar()) {
-                if (isDateOrDateTime(propertyRep)) {
-                    propertyViewModel.value = toUtcDate(value);
-                }
-                else {
-                    propertyViewModel.value = value.scalar();
-                }
                 propertyViewModel.reference = "";
                 propertyViewModel.type = "scalar";
                 var remoteMask = propertyRep.extensions().mask();
-                var localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-                propertyViewModel.localFilter = localFilter;
+                var localFilter_1 = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+                propertyViewModel.localFilter = localFilter_1;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
-                if (propertyRep.entryType() === EntryType.Choices) {
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                propertyViewModel.refresh = function (newValue) { return callIfChanged(newValue, function (value) {
+                    setupChoice(value);
+                    if (isDateOrDateTime(propertyRep)) {
+                        propertyViewModel.value = toUtcDate(value);
                     }
-                }
-                else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = NakedObjects.obscuredText;
-                }
-                else {
-                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-                }
+                    else {
+                        propertyViewModel.value = value.scalar();
+                    }
+                    if (propertyRep.entryType() === EntryType.Choices) {
+                        if (propertyViewModel.choice) {
+                            propertyViewModel.value = propertyViewModel.choice.name;
+                            propertyViewModel.formattedValue = propertyViewModel.choice.name;
+                        }
+                    }
+                    else if (propertyViewModel.password) {
+                        propertyViewModel.formattedValue = NakedObjects.obscuredText;
+                    }
+                    else {
+                        propertyViewModel.formattedValue = localFilter_1.filter(propertyViewModel.value);
+                    }
+                }); };
             }
             else {
                 // is reference
-                setupReference(propertyViewModel, value, propertyRep);
+                propertyViewModel.refresh = function (newValue) { return callIfChanged(newValue, function (value) {
+                    setupChoice(value);
+                    setupReference(propertyViewModel, value, propertyRep);
+                }); };
             }
+            propertyViewModel.refresh(previousValue);
             // only set color if has value 
             setColor(propertyViewModel);
             if (!previousValue) {
@@ -532,42 +561,47 @@ var NakedObjects;
             var itemLinks = collectionRep.value();
             var paneId = routeData.paneId;
             var size = collectionRep.size();
-            var state = routeData.collections[collectionRep.collectionId()];
-            state = size === 0 ? NakedObjects.CollectionViewState.Summary : state;
-            if (state == null) {
-                state = getDefaultTableState(collectionRep.extensions());
-            }
             collectionViewModel.collectionRep = collectionRep;
             collectionViewModel.onPaneId = paneId;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
-            collectionViewModel.size = getCollectionCount(size);
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
-            color.toColorNumberFromType(collectionRep.extensions().elementType()).then(function (c) {
-                collectionViewModel.color = "" + NakedObjects.linkColor + c;
-            });
-            var getDetails = itemLinks == null || state === NakedObjects.CollectionViewState.Table;
-            if (state === NakedObjects.CollectionViewState.Summary) {
-                collectionViewModel.items = [];
-            }
-            else if (getDetails) {
-                context.getCollectionDetails(collectionRep, state).then(function (details) {
-                    collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
-                    collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
-                });
-            }
-            else {
-                collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
-            }
-            switch (state) {
-                case NakedObjects.CollectionViewState.List:
-                    collectionViewModel.template = NakedObjects.collectionListTemplate;
-                    break;
-                case NakedObjects.CollectionViewState.Table:
-                    collectionViewModel.template = NakedObjects.collectionTableTemplate;
-                    break;
-                default:
-                    collectionViewModel.template = NakedObjects.collectionSummaryTemplate;
-            }
+            color.toColorNumberFromType(collectionRep.extensions().elementType()).then(function (c) { return collectionViewModel.color = "" + NakedObjects.linkColor + c; });
+            collectionViewModel.refresh = function (routeData) {
+                var state = size === 0 ? NakedObjects.CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
+                if (state == null) {
+                    state = getDefaultTableState(collectionRep.extensions());
+                }
+                if (state !== collectionViewModel.currentState) {
+                    collectionViewModel.size = getCollectionCount(size);
+                    var getDetails = itemLinks == null || state === NakedObjects.CollectionViewState.Table;
+                    if (state === NakedObjects.CollectionViewState.Summary) {
+                        collectionViewModel.items = [];
+                    }
+                    else if (getDetails) {
+                        context.getCollectionDetails(collectionRep, state)
+                            .then(function (details) {
+                            collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
+                            collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                        });
+                    }
+                    else {
+                        collectionViewModel.items = viewModelFactory
+                            .getItems(itemLinks, state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
+                    }
+                    switch (state) {
+                        case NakedObjects.CollectionViewState.List:
+                            collectionViewModel.template = NakedObjects.collectionListTemplate;
+                            break;
+                        case NakedObjects.CollectionViewState.Table:
+                            collectionViewModel.template = NakedObjects.collectionTableTemplate;
+                            break;
+                        default:
+                            collectionViewModel.template = NakedObjects.collectionSummaryTemplate;
+                    }
+                    collectionViewModel.currentState = state;
+                }
+            };
+            collectionViewModel.refresh(routeData);
             collectionViewModel.doSummary = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.Summary, paneId); };
             collectionViewModel.doList = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.List, paneId); };
             collectionViewModel.doTable = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.Table, paneId); };
@@ -610,6 +644,8 @@ var NakedObjects;
         };
         viewModelFactory.menuViewModel = function (menuRep, routeData) {
             var menuViewModel = new NakedObjects.MenuViewModel();
+            menuViewModel.id = menuRep.menuId();
+            menuViewModel.menuRep = menuRep;
             var actions = menuRep.actionMembers();
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action, menuViewModel, routeData); });

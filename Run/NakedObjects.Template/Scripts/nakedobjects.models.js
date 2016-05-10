@@ -209,6 +209,9 @@ var NakedObjects;
                 oid.isService = !oid.instanceId;
                 return oid;
             };
+            ObjectIdWrapper.prototype.isSame = function (other) {
+                return other && other.domainType === this.domainType && other.instanceId === this.instanceId;
+            };
             return ObjectIdWrapper;
         }());
         Models.ObjectIdWrapper = ObjectIdWrapper;

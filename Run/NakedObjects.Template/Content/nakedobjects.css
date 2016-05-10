@@ -9,6 +9,14 @@
         margin: 0px;
     }
 
+    pre {
+        white-space: pre-wrap;       /* CSS 3 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+
     textarea {
         color: black;
     }
@@ -188,6 +196,11 @@
         padding-left: 5px;
         padding-right: 5px;
         margin: 1px;
+    }
+
+    .reference img {
+        max-width: 245px;
+        max-height: 100px;
     }
 
     .input-control input:not([type='checkbox']), textarea  {
