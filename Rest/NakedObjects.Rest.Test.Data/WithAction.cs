@@ -19,13 +19,13 @@ namespace RestfulObjects.Test.Data {
         public IDomainObjectContainer Container { set; protected get; }
 
 
-        //public virtual MostSimpleViewModel ViewModel() {
+        //public virtual MostSimpleViewModel AAAViewModel() {
         //    var vm = Container.NewViewModel<MostSimpleViewModel>();
         //    vm.Id = 1;
         //    return vm;
         //}
 
-        //public virtual FormViewModel FormViewModel() {
+        //public virtual FormViewModel AAFormViewModel() {
         //    var vm = Container.NewViewModel<FormViewModel>();
         //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
         //    vm.Id = 1;
@@ -33,21 +33,21 @@ namespace RestfulObjects.Test.Data {
         //    return vm;
         //}
 
-        //public virtual SwitchableViewModel SwitchableViewModelView() {
+        //public virtual SwitchableViewModel AASwitchableViewModelView() {
         //    var vm = Container.NewViewModel<SwitchableViewModel>();
         //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
         //    vm.Id = 1;
         //    vm.MostSimple = ms;
-
+        //    vm.IsEdit = false;
         //    return vm;
         //}
 
-        //public virtual SwitchableViewModel SwitchableViewModelEdit() {
+        //public virtual SwitchableViewModel AASwitchableViewModelEdit() {
         //    var vm = Container.NewViewModel<SwitchableViewModel>();
         //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
         //    vm.Id = 1;
         //    vm.MostSimple = ms;
-
+        //    vm.IsEdit = true;
         //    return vm;
         //}
 
