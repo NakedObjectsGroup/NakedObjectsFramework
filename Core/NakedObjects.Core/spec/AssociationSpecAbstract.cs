@@ -82,6 +82,16 @@ namespace NakedObjects.Core.Spec {
             if (disabledConsent != null) {
                 return disabledConsent;
             }
+
+            var viewModelFacet = target.Spec.GetFacet<IViewModelFacet>();
+
+            if (viewModelFacet != null) {
+                // all fields on a non-editable view model are disabled
+                if (!viewModelFacet.IsEditView(target)) {
+                    return new Veto(Resources.NakedObjects.FieldDisabled);
+                }
+            }
+
             var immutableFacet = GetFacet<IImmutableFacet>();
             if (immutableFacet != null) {
                 WhenTo when = immutableFacet.Value;

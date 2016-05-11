@@ -3172,8 +3172,8 @@ let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
-          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
+                           ]))
+          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) ::makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
@@ -3300,15 +3300,15 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+                             ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
+                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(0))))
                                   
                                   TProperty
                                       ("ADateTimeValue", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
@@ -3316,17 +3316,17 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
                                       ("AStringValue", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberString "objects" "AStringValue" oid "A String Value" "A string value for testing" true 
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) ::makePropertyMemberString "objects" "AStringValue" oid "A String Value" "A string value for testing" true 
                                                 (TObjectVal("")) []))
                                   
                                   TProperty
                                       ("AUserDisabledValue", 
                                        
                                        TObjectJson
-                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) 
                                             :: makeObjectPropertyMember "AUserDisabledValue" oid "A User Disabled Value" (TObjectVal(0))))
-                                  TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" oid "A Value" (TObjectVal(100))))
-                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
+                                  TProperty("AValue", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "AValue" oid "A Value" (TObjectVal(100))))
+                                  TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model"))
@@ -3409,7 +3409,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
           TProperty(JsonPropertyNames.Value, val4)
           TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
+          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) 
           TProperty
               (JsonPropertyNames.Links, 
                
@@ -3419,9 +3419,7 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                       
                       
                       
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+                       ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -3436,11 +3434,11 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+                              ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
                                       ("AChoicesReference", 
-                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oid "A Choices Reference" "" roType false val1 []))
+                                       TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberShort "objects" "AChoicesReference" oid "A Choices Reference" "" roType false val1 []))
                                   
                                   TProperty
                                       ("ADisabledReference", 
@@ -3453,13 +3451,13 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                       ("ANullReference", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberShort "objects" "ANullReference" oid "A Null Reference" "" roType true (TObjectVal(null)) []))
-                                  TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val3 []))
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberShort "objects" "ANullReference" oid "A Null Reference" "" roType true (TObjectVal(null)) []))
+                                  TProperty("AReference", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val3 []))
                                   
                                   TProperty
                                       ("AnEagerReference", 
-                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oid "An Eager Reference" "" roType false val4 details))
-                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
+                                       TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberShort "objects" "AnEagerReference" oid "An Eager Reference" "" roType false val4 details))
+                                  TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model"))
@@ -3496,12 +3494,6 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
              :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "1--1--1--1")) RepresentationTypes.Object roType1)
     
-    let arguments = 
-        TProperty(JsonPropertyNames.Arguments, 
-                  TObjectJson([ TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                TProperty("AViewModelReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1--1--1--1--1"))
@@ -3509,16 +3501,15 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
                              TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+                           ]))
           TProperty(JsonPropertyNames.Members, 
-                    TObjectJson([ TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val1 []))
+                    TObjectJson([ TProperty("AReference", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val1 []))
                                   
                                   TProperty
-                                      ("AViewModelReference", 
-                                       
+                                      ("AViewModelReference",                                   
                                        TObjectJson
-                                           (makePropertyMemberShort "objects" "AViewModelReference" oid "A View Model Reference" "" roType1 false val2 []))
-                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) ::makePropertyMemberShort "objects" "AViewModelReference" oid "A View Model Reference" "" roType1 false val2 []))
+                                  TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model"))
@@ -3712,7 +3703,7 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
                     TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rOid) RepresentationTypes.Object oType) ]))
+                           ]))
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
                                       ("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" rOid "A Reference" "" roType false val1 []))

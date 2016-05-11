@@ -666,7 +666,7 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
       let order = if desc = "" then 0 else 2  
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
-      let disabled = mName.Contains("Disabled")        
+      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))      
       let autocomplete = mName.Contains("AutoComplete")    
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
 
@@ -696,7 +696,7 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
             TObjectJson(argP :: extP :: makeLinkPropWithMethodAndTypes "GET" autoRel (sprintf "%s/%s/properties/%s/prompt" oType oName mName) RepresentationTypes.Prompt "" "" true);
    
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
-      let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
+      let links = if opt && not disabled then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
       let links = if autocomplete || conditionalChoices then (Seq.append links [acLink]).ToList() else links.ToList()
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
@@ -726,7 +726,7 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
       let order = if desc = "" then 0 else 2 
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
-      let disabled = mName.Contains("Disabled")         
+      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))            
       let autocomplete = mName.Contains("AutoComplete")
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
@@ -817,7 +817,7 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && not conditionalChoices
-      let disabled = mName.Contains("Disabled")        
+      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel")))) 
       let autocomplete = mName.Contains("AutoComplete")
       let presHint = mName = "AValue"
 
@@ -869,16 +869,18 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
                     TProperty(JsonPropertyNames.Extensions, exts);
                     TProperty(JsonPropertyNames.Links, TArray(links))]
 
+       
       if choices then       
         TProperty(JsonPropertyNames.Choices, TArray([ TObjectVal(1); TObjectVal(2); TObjectVal(3) ])) :: props;
       else
         props;
 
 
+
 let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) fName desc opt (oValue : TObject) =
       let order = if desc = "" then 0 else 2 
       let choices = mName.Contains("Choices")
-      let disabled = mName.Contains("Disabled")        
+      let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))       
       let autocomplete = mName.Contains("AutoComplete")
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
@@ -905,7 +907,7 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
 let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 4
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))        
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
@@ -914,7 +916,7 @@ let makePropertyMemberDateTime oType (mName : string) (oName : string) fName des
                      ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
-      let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
+      let links = if opt && not disabled then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -936,7 +938,7 @@ let makePropertyMemberDateTime oType (mName : string) (oName : string) fName des
 let makePropertyMemberString oType (mName : string) (oName : string) fName desc opt (oValue : TObject) (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")    || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))       
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
@@ -949,7 +951,7 @@ let makePropertyMemberString oType (mName : string) (oName : string) fName desc 
       let links = [ TObjectJson( detailsLink)  ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
-      let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
+      let links = if opt && not disabled then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -969,7 +971,7 @@ let makePropertyMemberString oType (mName : string) (oName : string) fName desc 
 let makePropertyMemberWithType oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")   || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))        
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
@@ -997,7 +999,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       let order = if desc = "" then 0 else 3
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let choices = mName.Contains("Choices")
-      let disabled = mName.Contains("Disabled")        
+      let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))          
       let autocomplete = mName.Contains("AutoComplete")
       let range = mName.Contains("Range")
 
@@ -1042,7 +1044,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
 let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")    || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel")))) 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1079,7 +1081,7 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
 let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fName desc rType opt =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))         
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1110,7 +1112,7 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
 
 let makePropertyMemberSimple oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")   || (oName.Contains("ViewModel") && (not (oName.Contains("FormViewModel")))) 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1134,7 +1136,7 @@ let makePropertyMemberSimple oType (mName : string) (oName : string) fName desc 
 
 let makePropertyMemberSimpleNumber oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let order = if desc = "" then 0 else 3
-      let disabled = mName.Contains("Disabled")       
+      let disabled = mName.Contains("Disabled")   || (oName.Contains("ViewModel") && (not (oName.Contains("FormViewModel"))))        
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName

@@ -253,19 +253,14 @@ let GetValuePropertyViewModel(api : RestfulObjectsControllerBase) =
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
           TProperty(JsonPropertyNames.Value, TObjectVal(100))
           TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
+          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed"))
           TProperty
               (JsonPropertyNames.Links, 
                
                TArray
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                     
-                      
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+                    ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1122,18 +1117,14 @@ let GetReferencePropertyViewModel(api : RestfulObjectsControllerBase) =
         [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
           TProperty(JsonPropertyNames.Value, TObjectJson(val1))
           TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
+          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed"))
           TProperty
               (JsonPropertyNames.Links, 
                
                TArray
                    ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
                       TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                     
-                      TObjectJson
-                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+                    ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Reference"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))

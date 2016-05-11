@@ -397,10 +397,10 @@ let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObje
                       TProperty(JsonPropertyNames.Links, 
                                 TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
                                          TObjectJson(sb(roType)); TObjectJson(sp(roType))
-                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
+                                       ]))
                       
                       TProperty
-                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) ::makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
@@ -937,10 +937,10 @@ let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                       TProperty(JsonPropertyNames.Links, 
                                 TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
                                          TObjectJson(sb(roType)); TObjectJson(sp(roType))
-                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
+                                       ]))
                       
                       TProperty
-                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))
@@ -1197,17 +1197,13 @@ let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjec
                           (JsonPropertyNames.Links, 
                            
                            TArray
-                               ([ TObjectJson
-                                      (makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType "" true)
-                                  TObjectJson(sb(roType)); TObjectJson(sp(roType))
-                                  
-                                  TObjectJson
-                                      (args 
-                                       :: makeLinkPropWithMethodAndTypes "PUT" RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType "" 
-                                              true) ]))
+                               ([ TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType "" true)
+                                  TObjectJson(sb(roType))
+                                  TObjectJson(sp(roType))                                  
+                                ]))
                       
                       TProperty
-                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) ::  makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 
                                 TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
                                               TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple View Model"))

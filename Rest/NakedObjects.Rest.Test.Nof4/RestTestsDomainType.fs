@@ -546,12 +546,15 @@ type CNof4TestsDomainType() =
         member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
         
         [<Test>]
+        [<Ignore>]
         member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
         
         [<Test>]
+        [<Ignore>]
         member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
         
         [<Test>]
+        [<Ignore>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
         
         [<Test>]

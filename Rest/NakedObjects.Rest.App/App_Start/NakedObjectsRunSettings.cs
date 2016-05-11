@@ -64,6 +64,7 @@ namespace MvcTestApp {
                    typeof(TestEnum),
                    typeof(MostSimple[]),
                    typeof(FormViewModel),
+                   typeof(SwitchableViewModel),
                    typeof(SetWrapper<MostSimple>) };
             }
         }

@@ -18,6 +18,40 @@ namespace RestfulObjects.Test.Data {
     public abstract class WithAction {
         public IDomainObjectContainer Container { set; protected get; }
 
+
+        //public virtual MostSimpleViewModel ViewModel() {
+        //    var vm = Container.NewViewModel<MostSimpleViewModel>();
+        //    vm.Id = 1;
+        //    return vm;
+        //}
+
+        //public virtual FormViewModel FormViewModel() {
+        //    var vm = Container.NewViewModel<FormViewModel>();
+        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        //    vm.Id = 1;
+        //    vm.MostSimple = ms;
+        //    return vm;
+        //}
+
+        //public virtual SwitchableViewModel SwitchableViewModelView() {
+        //    var vm = Container.NewViewModel<SwitchableViewModel>();
+        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        //    vm.Id = 1;
+        //    vm.MostSimple = ms;
+
+        //    return vm;
+        //}
+
+        //public virtual SwitchableViewModel SwitchableViewModelEdit() {
+        //    var vm = Container.NewViewModel<SwitchableViewModel>();
+        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        //    vm.Id = 1;
+        //    vm.MostSimple = ms;
+
+        //    return vm;
+        //}
+
+
         [PresentationHint("class5 class6")]
         public virtual MostSimple AnAction() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
