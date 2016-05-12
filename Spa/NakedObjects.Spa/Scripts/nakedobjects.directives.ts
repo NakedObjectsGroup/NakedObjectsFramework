@@ -39,7 +39,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link(scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) {
+            link(scope: ISelectScope, element: ng.IAugmentedJQuery, attrs : ng.IAttributes, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
                 // only add datepicker if date field not supported 
@@ -94,7 +94,7 @@ module NakedObjects {
                         buttonText: "Select date"
                     };
 
-                    element.datepicker(optionsObj);
+                    (element as any).datepicker(optionsObj);
 
                 });
             }
@@ -114,7 +114,7 @@ module NakedObjects {
                 select: "&" // Bind the select function we refer to the right scope
             },
 
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
@@ -166,7 +166,7 @@ module NakedObjects {
                 };
 
                 element.keyup(clearHandler);
-                element.autocomplete(optionsObj);
+                (element as any).autocomplete(optionsObj);
                 render(viewModel.choice);
             }
         };
@@ -184,7 +184,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
@@ -327,8 +327,14 @@ module NakedObjects {
         };
     });
 
+    interface IGeminiRightclick extends ng.IAttributes {
+        geminiEnter: string;
+    }
+
     //The 'right-click' functionality is also triggered by shift-enter
-    app.directive("geminiRightclick", $parse => (scope : any, element : any, attrs : any) => {
+    app.directive("geminiRightclick", $parse => (scope: ng.IScope, element: any, attrs: any) => {
+       
+
         const fn = $parse(attrs.geminiRightclick);
         element.bind("contextmenu", (event : any) => {
             scope.$apply(() => {
@@ -347,7 +353,7 @@ module NakedObjects {
 
     const draggableVmKey = "dvmk";
 
-    app.directive("geminiDrag", ($compile) => (scope : any, element : any) => {
+    app.directive("geminiDrag", ($compile) => (scope: any, element : any) => {
 
         const cloneDraggable = () => {
             let cloned: JQuery;
@@ -393,7 +399,11 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiEnter", () => (scope : any, element : any, attrs : any) => {
+    interface IGeminiEnter extends ng.IAttributes {
+        geminiEnter: string;
+    }
+
+    app.directive("geminiEnter", () => (scope: ng.IScope, element: any, attrs: IGeminiEnter) => {
         element.bind("keydown keypress", (event : any) => {
             const enterKeyCode = 13;
             if (event.which === enterKeyCode && !event.shiftKey) {
@@ -403,7 +413,11 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiPlaceholder", $parse => (scope: any, element: any, attrs: any) => {
+    interface IGeminiPlaceholder extends ng.IAttributes {
+        geminiPlaceholder: string;
+    }
+
+    app.directive("geminiPlaceholder", $parse => (scope: ng.IScope, element: any, attrs: IGeminiPlaceholder) => {
         const fn = $parse(attrs.geminiPlaceholder);
         element.attr("placeholder", fn(scope));
     });
@@ -463,7 +477,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiDrop", () => (scope : any, element: any) => {
+    app.directive("geminiDrop", () => (scope: any, element: any) => {
 
         const propertyScope = () => scope.$parent.$parent.$parent;
         const parameterScope = () => scope.$parent.$parent;
@@ -537,7 +551,7 @@ module NakedObjects {
             restrict: "A",
             // Always use along with an ng-model
             require: "?ngModel",
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) {
                     return;
                 }
@@ -596,7 +610,11 @@ module NakedObjects {
         };
     });
 
-    app.directive("ciceroDown", () => (scope : any, element : any, attrs : any) => {
+    interface ICiceroDown extends ng.IAttributes {
+        ciceroDown: string;
+    }
+
+    app.directive("ciceroDown", () => (scope: any, element: any, attrs: ICiceroDown) => {
         element.bind("keydown keypress", (event: any) => {
             const enterKeyCode = 40;
             if (event.which === enterKeyCode) {
@@ -606,7 +624,11 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroUp", () => (scope : any, element : any, attrs : any) => {
+    interface ICiceroUp extends ng.IAttributes {
+        ciceroUp: string;
+    }
+
+    app.directive("ciceroUp", () => (scope: any, element: any, attrs: ICiceroUp) => {
         element.bind("keydown keypress", (event: any) => {
             const enterKeyCode = 38;
             if (event.which === enterKeyCode) {
@@ -616,7 +638,11 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroSpace", () => (scope : any, element: any, attrs: any) => {
+    interface ICiceroSpace extends  ng.IAttributes {
+        ciceroSpace : string;
+    }
+
+    app.directive("ciceroSpace", () => (scope: any, element: any, attrs: ICiceroSpace) => {
         element.bind("keydown keypress", (event : any) => {
             const tabKeyCode = 32;
             if (event.which === tabKeyCode) {
@@ -628,7 +654,7 @@ module NakedObjects {
 
     app.directive("geminiFieldvalidate", () => ({
         require: "ngModel",
-        link(scope : any, elm : any, attrs : any, ctrl : any) {
+        link(scope: any, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl : any) {
             ctrl.$validators.geminiFieldvalidate = (modelValue: any, viewValue: string) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
@@ -639,7 +665,7 @@ module NakedObjects {
 
     app.directive("geminiFieldmandatorycheck", () => ({
         require: "ngModel",
-        link(scope: any, elm: any, attrs: any, ctrl: any) {
+        link(scope: any, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
             ctrl.$validators.geminiFieldmandatorycheck = (modelValue: any, viewValue: string | ChoiceViewModel | string[] | ChoiceViewModel[]) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
@@ -665,7 +691,7 @@ module NakedObjects {
 
     app.directive("geminiBoolean", () => ({
         require: "?ngModel",
-        link(scope: any, el: any, attrs: any, ctrl: any) {
+        link(scope: any, el: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
 
             const parent = scope.$parent as IPropertyOrParameterScope;
             const viewModel = parent.parameter || parent.property;
