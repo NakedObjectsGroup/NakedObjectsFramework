@@ -198,9 +198,14 @@
         margin: 1px;
     }
 
-    .reference img {
+    .property .reference img {
         max-width: 245px;
         max-height: 100px;
+    }
+
+    .attachment .reference img {
+    max-width: 100%; 
+    height: auto;
     }
 
     .input-control input:not([type='checkbox']), textarea  {
