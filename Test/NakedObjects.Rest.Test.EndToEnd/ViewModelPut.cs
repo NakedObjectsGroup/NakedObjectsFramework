@@ -18,6 +18,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
+        [Ignore]
         [TestMethod]
         public void MostSimple() {
             //Note:  This is a slightly unusual situation, in that the act of putting a new
@@ -27,6 +28,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.VMMostSimple + key1, "MostSimpleViewModel", body.ToString(), Methods.Put);
         }
 
+        [Ignore]
         [TestMethod] 
         public void WithReference() {
             var simpleJ = new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1))));
