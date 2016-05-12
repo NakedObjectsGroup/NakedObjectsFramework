@@ -241,6 +241,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#description1", "Volume Discount 11 to 14");
             SaveObject();
         }
+
+        public virtual void EagerlyRenderTableViewFromAction()
+        {
+            GeminiUrl("home?m1=EmployeeRepository");
+            Click(GetObjectAction("List All Departments"));
+            WaitForView(Pane.Single, PaneType.List, "List All Departments");
+            WaitForCss("img.icon-list");
+            var header = WaitForCss("thead");
+            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            Assert.AreEqual(3, cols.Length);
+            Assert.AreEqual("", cols[1].Text);
+            Assert.AreEqual("Group Name", cols[2].Text);
+        }
     }
     public abstract class ListTests : ListTestsRoot
     {
@@ -262,6 +275,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ListDoesNotRefreshWithoutReload() { base.ListDoesNotRefreshWithoutReload(); }
         [TestMethod]
         public override void ReloadingListGetsUpdatedObject() { base.ReloadingListGetsUpdatedObject(); }
+        [TestMethod]
+        public override void EagerlyRenderTableViewFromAction() { base.EagerlyRenderTableViewFromAction(); }
     }
 
     #region browsers specific subclasses
@@ -358,6 +373,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //base.PagingTableView(); //TODO: Ignored due to failing on server
             base.ListDoesNotRefreshWithoutReload();
+            base.ReloadingListGetsUpdatedObject();
+            base.EagerlyRenderTableViewFromAction();
         }
     }
     [TestClass]

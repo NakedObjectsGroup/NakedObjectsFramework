@@ -62,6 +62,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
+        public virtual void CollectionEagerlyRendered()
+        {
+            GeminiUrl("object?i1=View&o1=___1.WorkOrder--35410");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Work Order Routings:\r\n1 Item"));
+            var cols = WaitForCss("th", 6).ToArray();
+            Assert.AreEqual("", cols[0].Text); //Title
+            Assert.AreEqual("Operation Sequence", cols[1].Text);
+            Assert.AreEqual("Planned Cost", cols[5].Text);
+            WaitForCss("tbody tr", 1);
+        }
         public virtual void NonNavigableReferenceProperty()
         {
             //Tests properties of types that have had the NonNavigable Facet added to them 
@@ -331,6 +341,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void Collections() { base.Collections(); }
+        [TestMethod]
+        public override void CollectionEagerlyRendered() { base.CollectionEagerlyRendered(); }
 
         [TestMethod]
         public override void DateAndCurrencyProperties() { base.DateAndCurrencyProperties(); }
@@ -465,6 +477,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.OpenActionsMenuNotAlreadyOpen();
             base.Properties();
             base.Collections();
+            base.CollectionEagerlyRendered();
             base.DateAndCurrencyProperties();
             base.TableViewHonouredOnCollection();
             base.ClickReferenceProperty();
