@@ -543,7 +543,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window: ng.IWindowService, $timeout : ng.ITimeoutService, urlManager : IUrlManager): ng.IDirective => {
+    app.directive("geminiViewattachment", (): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -555,18 +555,39 @@ module NakedObjects {
                     return;
                 }
 
-                function displayInline(mt: string) {
-                    return mt === "image/jpeg" ||
-                           mt === "image/gif"  ||
-                           mt === "application/octet-stream";
+                ngModel.$render = () => {
+                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+
+                    if (attachment) {
+                        const title = attachment.title;
+                        element.empty();
+                        attachment.downloadFile().then(blob => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                            reader.readAsDataURL(blob);
+                        });
+                    }
+                };
+            }
+        };
+    });
+
+    app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+                if (!ngModel) {
+                    return;
                 }
 
                 const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
-                    if (displayInline(attachment.mimeType)) {
-                        $timeout(() => urlManager.setAttachment(attachment.link, attachment.onPaneId));
-                    } else {
+                    if (!attachment.displayInline()) {
                         attachment.downloadFile()
                             .then(blob => {
                                 if (window.navigator.msSaveBlob) {
@@ -586,25 +607,23 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
-                        const url = attachment.href;
-                        const mt = attachment.mimeType;
+                       
                         const title = attachment.title;
-                        const link = `<a href='${url}'><span></span></a>`;
-                        element.append(link);
-
-                        const anchor = element.find("a");
-                        if (displayInline(mt)) {
-                            attachment.downloadFile()
-                                .then(blob => {
-                                    const reader = new FileReader();
-                                    reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
-                                    reader.readAsDataURL(blob);
-                                });
+                     
+                        element.empty();
+                       
+                        const anchor = element.find("div");
+                        if (attachment.displayInline()) {
+                            attachment.downloadFile().then(blob => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                reader.readAsDataURL(blob);
+                            });
                         } else {
                             anchor.html(title);
+                            attachment.doClick = clickHandler;
                         }
 
-                        anchor.on("click", clickHandler);
                     } else {
                         element.append("<div>Attachment not yet supported on transient</div>");
                     }

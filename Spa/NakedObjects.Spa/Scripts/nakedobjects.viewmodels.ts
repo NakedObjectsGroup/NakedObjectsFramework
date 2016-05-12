@@ -113,9 +113,9 @@ module NakedObjects {
         onPaneId: number;
 
         private parent: DomainObjectRepresentation;
-        private context : IContext;
+        private context: IContext;
 
-        static create(attachmentLink : Link, parent : DomainObjectRepresentation, context : IContext, paneId : number) {
+        static create(attachmentLink: Link, parent: DomainObjectRepresentation, context: IContext, paneId: number) {
             const attachmentViewModel = new AttachmentViewModel();
             attachmentViewModel.link = attachmentLink;
             attachmentViewModel.href = attachmentLink.href();
@@ -129,6 +129,13 @@ module NakedObjects {
 
         downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
         clearCachedFile = () => this.context.clearCachedFile(this.href);
+
+        displayInline = () =>
+            this.mimeType === "image/jpeg" ||
+            this.mimeType === "image/gif" ||
+            this.mimeType === "application/octet-stream";
+
+        doClick: (right?: boolean) => void;
     }
 
     export class ChoiceViewModel {

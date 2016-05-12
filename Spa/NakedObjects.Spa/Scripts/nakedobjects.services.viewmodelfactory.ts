@@ -145,7 +145,10 @@ module NakedObjects {
 
         viewModelFactory.attachmentViewModel = (propertyRep: PropertyMember, paneId: number) => {      
             const parent = propertyRep.parent as DomainObjectRepresentation;
-            return AttachmentViewModel.create(propertyRep.attachmentLink(), parent, context, paneId);        
+            const avm = AttachmentViewModel.create(propertyRep.attachmentLink(), parent, context, paneId);
+            avm.doClick = (right?: boolean) => urlManager.setAttachment(avm.link, clickHandler.pane(paneId, right));
+
+            return avm;
         };
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {

@@ -92,12 +92,12 @@ module NakedObjects {
     });
 
     app.controller("Pane2AttachmentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
-        pane1Dereg();
+        pane2Dereg();
 
         const routeData = urlManager.getRouteData();
-        handlers.handleAttachment($scope, routeData.pane1);
+        handlers.handleAttachment($scope, routeData.pane2);
 
-        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleAttachment($scope, urlManager.getRouteData().pane1)) as () => void;
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleAttachment($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
