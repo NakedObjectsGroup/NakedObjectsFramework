@@ -1,37 +1,35 @@
 ﻿<div class="summary">
     <div class='name'>{{collection.title}}:</div>
     <div class="details">{{collection.size}}</div>
- <img class="icon-summary clickable-area" ng-click="collection.doSummary()" src="images/summary.png" title="Close Collection"/>
- <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
+    <img class="icon-summary clickable-area" ng-click="collection.doSummary()" src="images/summary.png" title="Close Collection" />
+    <img class="icon-list clickable-area" ng-click="collection.doList()" src="images/list.png" title="View as List" />
 </div>
-    <table >
-        <thead>
-            <tr>
-                <th ng-repeat="heading in collection.header" scope="col">
-                    {{heading}}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-switch="item.target.hasTitle" ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
-                <td  ng-switch-when="true"  class="cell">
-                    {{item.target.title}}
-                </td> 
-                <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
-                    <div ng-switch-when="ref" class="clickable-area">
-                        {{property.formattedValue}}
+<table>
+    <thead>
+        <tr>
+            <th ng-repeat="heading in collection.header" scope="col">
+                {{heading}}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-switch="item.target.hasTitle" ng-repeat="item in collection.items" ng-class="item.color" class="clickable-area" gemini-enter="item.doClick()" ng-click="item.doClick()" gemini-rightclick="item.doClick(true)" gemini-drag tabindex="0">
+            <td ng-switch-when="true" class="cell">
+                {{item.target.title}}
+            </td>
+            <td class="cell" ng-repeat="property in item.target.properties" ng-switch="property.type">
+                <div ng-switch-when="ref" class="clickable-area">
+                    {{property.formattedValue}}
+                </div>
+                <div ng-switch-when="scalar" ng-switch="property.returnType">
+                    <div ng-switch-when="boolean" class="clickable-area">
+                        <input type="checkbox" ng-checked="property.value" disabled="disabled" />
                     </div>
-
-                    <div ng-switch-when="scalar" ng-switch="property.returnType">
-                        <div ng-switch-when="boolean" class="clickable-area">
-                            <input type="checkbox" ng-checked="property.value" disabled="disabled" />
-                        </div>
-                        <div ng-switch-default class="clickable-area">
-                            <div class="clickable-area">{{property.formattedValue}}</div>
-                        </div>
+                    <div ng-switch-default class="clickable-area">
+                        <div class="clickable-area">{{property.formattedValue}}</div>
                     </div>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

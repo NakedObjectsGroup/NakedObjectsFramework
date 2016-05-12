@@ -50,6 +50,7 @@ module NakedObjects {
     export const collectionTableTemplate = getSvrPath() + "Content/partials/collectionTable.html";
 
     export const recentTemplate = getSvrPath() + "Content/partials/recent.html";
+    export const attachmentTemplate = getSvrPath() + "Content/partials/attachment.html";
 
     //Cicero
     export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
@@ -63,6 +64,7 @@ module NakedObjects {
     export const listPath = "list";
     export const errorPath = "error";
     export const recentPath = "recent";
+    export const attachmentPath = "attachment";
 
     //Restful Objects constants
     export const roDomainType = "x-ro-domain-type";

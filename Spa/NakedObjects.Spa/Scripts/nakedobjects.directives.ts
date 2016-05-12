@@ -543,7 +543,7 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window: ng.IWindowService): ng.IDirective => {
+    app.directive("geminiAttachment", ($window: ng.IWindowService, $timeout : ng.ITimeoutService, urlManager : IUrlManager): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -557,23 +557,27 @@ module NakedObjects {
 
                 function displayInline(mt: string) {
                     return mt === "image/jpeg" ||
-                        mt === "image/gif" ||
-                        mt === "application/octet-stream";
+                           mt === "image/gif"  ||
+                           mt === "application/octet-stream";
                 }
 
                 const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
-                    attachment.downloadFile()
-                        .then(blob => {
-                            if (window.navigator.msSaveBlob) {
-                                // internet explorer 
-                                window.navigator.msSaveBlob(blob, attachment.title);
-                            } else {
-                                const burl = URL.createObjectURL(blob);
-                                $window.location.href = burl;
-                            }
-                        });
+                    if (displayInline(attachment.mimeType)) {
+                        $timeout(() => urlManager.setAttachment(attachment.link, attachment.onPaneId));
+                    } else {
+                        attachment.downloadFile()
+                            .then(blob => {
+                                if (window.navigator.msSaveBlob) {
+                                    // internet explorer 
+                                    window.navigator.msSaveBlob(blob, attachment.title);
+                                } else {
+                                    const burl = URL.createObjectURL(blob);
+                                    $window.location.href = burl;
+                                }
+                            });
+                    }
 
                     return false;
                 };

@@ -109,18 +109,26 @@ module NakedObjects {
         href: string;
         mimeType: string;
         title: string;
+        link: Link;
+        onPaneId: number;
 
-        static create(href: string, mimeType: string, title: string) {
+        private parent: DomainObjectRepresentation;
+        private context : IContext;
+
+        static create(attachmentLink : Link, parent : DomainObjectRepresentation, context : IContext, paneId : number) {
             const attachmentViewModel = new AttachmentViewModel();
-            attachmentViewModel.href = href;
-            attachmentViewModel.mimeType = mimeType;
-            attachmentViewModel.title = title || unknownFileTitle;
-
+            attachmentViewModel.link = attachmentLink;
+            attachmentViewModel.href = attachmentLink.href();
+            attachmentViewModel.mimeType = attachmentLink.type().asString;
+            attachmentViewModel.title = attachmentLink.title() || unknownFileTitle;
+            attachmentViewModel.parent = parent;
+            attachmentViewModel.context = context;
+            attachmentViewModel.onPaneId = paneId;
             return attachmentViewModel;
         }
 
-        downloadFile: () => ng.IPromise<Blob>;
-        clearCachedFile: () => void;
+        downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
+        clearCachedFile = () => this.context.clearCachedFile(this.href);
     }
 
     export class ChoiceViewModel {
@@ -1047,6 +1055,7 @@ module NakedObjects {
         recentTemplate: string;
         objectTemplate: string;
         collectionsTemplate: string;
+        attachmentTemplate: string;
 
         menus: MenusViewModel;
         object: DomainObjectViewModel;
@@ -1058,6 +1067,7 @@ module NakedObjects {
         collectionPlaceholder: CollectionPlaceholderViewModel;
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
+        attachment: AttachmentViewModel;
     }
 
     export class CiceroViewModel {

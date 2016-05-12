@@ -15,6 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
+    import Link = NakedObjects.Models.Link;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -27,6 +28,7 @@ module NakedObjects {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleListSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleAttachment(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
     }
 
     app.service("handlers",
@@ -457,5 +459,25 @@ module NakedObjects {
                     handleNewObjectSearch($scope, routeData);
                 }
             };
+
+            handlers.handleAttachment = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                context.clearWarnings();
+                context.clearMessages();
+
+                const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                $scope.attachmentTemplate = attachmentTemplate;
+
+                context.getObject(routeData.paneId, oid, routeData.interactionMode)
+                    .then((object: DomainObjectRepresentation) => {
+
+                        const attachmentId = routeData.attachmentId;
+                        const attachment = object.propertyMember(attachmentId);
+
+                        if (attachment && attachment.attachmentLink()) {
+                            const avm = viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
+                            $scope.attachment = avm;
+                        }
+                    });
+            }
         });
 }

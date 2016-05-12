@@ -61,6 +61,7 @@ module NakedObjects {
         getItems(links: Link[], tableView: boolean, routeData: PaneRouteData, collectionViewModel: CollectionViewModel | ListViewModel): ItemViewModel[];
         linkViewModel(linkRep: Link, paneId: number): LinkViewModel;
         recentItemsViewModel(paneId: number): RecentItemsViewModel;
+        attachmentViewModel(propertyRep: PropertyMember, paneId: number): AttachmentViewModel;
     }
 
     interface IViewModelFactoryInternal extends IViewModelFactory {
@@ -68,7 +69,7 @@ module NakedObjects {
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
         propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;
 
-        attachmentViewModel(propertyRep : PropertyMember) : AttachmentViewModel;
+        
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -142,16 +143,9 @@ module NakedObjects {
         const createChoiceViewModels = (id: string, searchTerm: string, choices: _.Dictionary<Value>) =>
             $q.when(_.map(choices, (v, k) => ChoiceViewModel.create(v, id, k, searchTerm)));
 
-        viewModelFactory.attachmentViewModel = (propertyRep : PropertyMember) => {
-            const href = propertyRep.attachmentLink().href();
-            const mimeType = propertyRep.attachmentLink().type().asString;
-            const title = propertyRep.attachmentLink().title();
+        viewModelFactory.attachmentViewModel = (propertyRep: PropertyMember, paneId: number) => {      
             const parent = propertyRep.parent as DomainObjectRepresentation;
-
-            const avm = AttachmentViewModel.create(href, mimeType, title);
-            avm.downloadFile = () => context.getFile(parent, href, mimeType);
-            avm.clearCachedFile = () => context.clearCachedFile(href);
-            return avm;
+            return AttachmentViewModel.create(propertyRep.attachmentLink(), parent, context, paneId);        
         };
 
         viewModelFactory.linkViewModel = (linkRep: Link, paneId: number) => {
@@ -574,7 +568,7 @@ module NakedObjects {
             propertyViewModel.description = propertyRep.extensions().description();
 
             if (propertyRep.attachmentLink() != null) {
-                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
+                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep, paneId);
             }
 
             let setupChoice: (newValue: Value) => void;
