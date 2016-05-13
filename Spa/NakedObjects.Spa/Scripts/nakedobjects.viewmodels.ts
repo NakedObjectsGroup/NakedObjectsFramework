@@ -247,6 +247,8 @@ module NakedObjects {
         reference: string;
         choice: ChoiceViewModel;
         multiChoices: ChoiceViewModel[];
+        file : Blob;
+
         returnType: string;
         title: string;
         format: formatType;
@@ -293,6 +295,10 @@ module NakedObjects {
         }
 
         getValue(): Value {
+
+            if (this.entryType === EntryType.File) {
+                return new Value(this.file);
+            }
 
             if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
 

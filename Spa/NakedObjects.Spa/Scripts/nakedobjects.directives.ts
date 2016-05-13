@@ -572,6 +572,28 @@ module NakedObjects {
         };
     });
 
+    app.directive("geminiFileupload",  () => {
+        return {
+            restrict: "A",
+            scope: true,
+            require: "?ngModel",
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+
+                if (!ngModel) {
+                    return;
+                }
+
+                element.bind("change", () => {
+                    var formData = new FormData();
+                    formData.append("file", (element[0] as any).files[0]);
+                    ngModel.$setViewValue((element[0] as any).files[0]);
+                });
+
+            }
+        };
+    });
+
+
     app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to

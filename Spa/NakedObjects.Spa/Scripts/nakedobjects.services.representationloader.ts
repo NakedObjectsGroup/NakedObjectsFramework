@@ -26,6 +26,7 @@ module NakedObjects {
         invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>) => ng.
         IPromise<ActionResultRepresentation>;
         getFile: (url: string, mt: string, ignoreCache: boolean) => ng.IPromise<Blob>;
+        uploadFile : (url: string, mt: string, file: Blob) => ng.IPromise<boolean>;
         clearCache: (url: string) => void;
         addToCache: (url: string, m: IResourceRepresentation) => void;
     }
@@ -188,14 +189,12 @@ module NakedObjects {
                 };
 
 
-            repLoader
-                .invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.
-                IPromise<ActionResultRepresentation> => {
-                    const invokeMap = action.getInvokeMap();
-                    _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
-                    _.each(parms, (v, k) => invokeMap.setParameter(k, v));
-                    return this.retrieve(invokeMap, ActionResultRepresentation);
-                };
+            repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.IPromise<ActionResultRepresentation> => {
+                const invokeMap = action.getInvokeMap();
+                _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
+                _.each(parms, (v, k) => invokeMap.setParameter(k, v));
+                return this.retrieve(invokeMap, ActionResultRepresentation);
+            };
 
             repLoader.clearCache = (url: string) => {
                 $cacheFactory.get("$http").remove(url);
@@ -226,6 +225,25 @@ module NakedObjects {
                     })
                     .catch((promiseCallback: ng.IHttpPromiseCallbackArg<RoInterfaces.IRepresentation>) => {
                         return handleError(promiseCallback);
+                    });
+            };
+
+            repLoader.uploadFile = (url: string, mt: string, file: Blob): ng.IPromise<boolean> => {
+
+
+                const config: ng.IRequestConfig = {
+                    method: "POST",
+                    url: url,
+                    data : file,
+                    headers: { "Content-Type": mt }
+                };
+
+                return $http(config)
+                    .then((promiseCallback) => {
+                        return $q.when(true);
+                    })
+                    .catch((promiseCallback) => {
+                        return $q.when(false);
                     });
             };
 

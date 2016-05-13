@@ -56,6 +56,10 @@
             <div ng-switch-when="scalar">
                 <div class="value input-control text" ng-switch="parameter.entryType">
 
+                    <!--"EntryType.File"-->
+                    <div ng-switch-when="6">
+                        <input id="{{parameter.paneArgId}}"  type="file"  class="{{parameter.status}}" ng-model="$parent.parameter.file"  placeholder="{{parameter.description}}" gemini-fileupload/>
+                    </div>
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">

@@ -27,9 +27,9 @@ module NakedObjects {
     import isDateOrDateTime = Models.isDateOrDateTime;
     import toDateString = Models.toDateString;
     import CollectionRepresentation = Models.CollectionRepresentation;
-    import ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
-    import IInvokableAction = NakedObjects.Models.IInvokableAction;
+    import ObjectIdWrapper = Models.ObjectIdWrapper;
+    import InvokableActionMember = Models.InvokableActionMember;
+    import IInvokableAction = Models.IInvokableAction;
 
     export abstract class Command {
 

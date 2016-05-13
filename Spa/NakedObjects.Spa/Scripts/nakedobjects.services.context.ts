@@ -98,6 +98,9 @@ module NakedObjects {
         getRecentlyViewed() : DomainObjectRepresentation[];
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
+
+        setFile: (object: DomainObjectRepresentation, url: string, mt: string, file : Blob) => angular.IPromise<boolean>;
+
         clearCachedFile : (url : string) => void;
     }
 
@@ -238,6 +241,12 @@ module NakedObjects {
             const isDirty = context.getIsDirty(object.getOid());
             return repLoader.getFile(url, mt, isDirty);
         }
+
+        context.setFile = (object: DomainObjectRepresentation, url: string, mt: string, file : Blob) => {
+            
+            return repLoader.uploadFile(url, mt, file);
+        }
+
 
         context.clearCachedFile = (url: string) => {
              repLoader.clearCache(url);
