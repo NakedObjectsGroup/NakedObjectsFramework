@@ -334,7 +334,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Home,
             Object,
             List,
-            Recent
+            Recent,
+            Attachment
         }
 
         protected enum ClickType
@@ -379,9 +380,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected virtual void WaitForView(Pane pane, PaneType type, string title = null)
         {
-            var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower() + " .header .title";
+            var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower() ;
             if (title != null)
             {
+                selector += " .header .title";
                 wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
             }
             else

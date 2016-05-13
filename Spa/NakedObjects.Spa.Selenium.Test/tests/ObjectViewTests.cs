@@ -183,13 +183,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(row);
             WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
         }
-        public virtual void AttachmentProperty()
-        {
-            GeminiUrl("object?o1=___1.Product--968");
-            wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
-            wait.Until(d => d.FindElements(By.CssSelector(".property  a > img")).Count == 1);
-            Assert.IsTrue(br.FindElement(By.CssSelector(".property  a > img")).GetAttribute("src").Length > 0);
-        }
+
         #region Actions
         public virtual void DialogAction()
         {
@@ -363,8 +357,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ClickOnLineItemWithCollectionAsTable() { base.ClickOnLineItemWithCollectionAsTable(); }
         [TestMethod]
-        public override void AttachmentProperty() { base.AttachmentProperty(); }
-        [TestMethod]
         public override void DialogAction() { base.DialogAction(); }
         [TestMethod]
         public override void DialogActionOk() { base.DialogActionOk(); }
@@ -485,7 +477,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NotCountedCollection();
             base.ClickOnLineItemWithCollectionAsList();
             base.ClickOnLineItemWithCollectionAsTable();
-            base.AttachmentProperty();
             base.DialogAction();
             base.DialogActionOk();
             base.ObjectAction();
