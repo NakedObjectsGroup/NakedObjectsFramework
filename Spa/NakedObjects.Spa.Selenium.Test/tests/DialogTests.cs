@@ -22,20 +22,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     public abstract class DialogTestsRoot : AWTest
     {
 
-        //This test is a hangover from when the button was named 'Get'
-        //for query-only actions, and 'Do' for others.  This has since
-        //been reverted to OK for both.
-        public virtual void OKButtonNaming()
-        {
-            Url(OrdersMenuUrl);
-            //Query only action
-            OpenActionDialog("Orders By Value");
-            Assert.AreEqual("OK", OKButton().GetAttribute("value"));
-            GeminiUrl("home?m1=SalesRepository");
-            //Other action
-            OpenActionDialog("Create New Sales Person");
-            Assert.AreEqual("OK", OKButton().GetAttribute("value"));
-        }
         public virtual void PasswordParam()
         {
             GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
@@ -57,6 +43,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Orders By Value");
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
+        }
+
+        public virtual void ClosedDialogClearsFields()
+        {
+            //To test: that when dialog is cancelled the fields
+            //have been cleared. 
+            GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22a%22&f1_lastName=%22b%22");
+            wait.Until(d=>d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value")== "a");
+            wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value")== "b");
+            CancelDialog();
+            OpenSubMenu("Individuals");
+            OpenActionDialog("Find Individual Customer By Name");
+            wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
+            wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
         }
         public virtual void ScalarChoicesParmKeepsValue()
         {
@@ -407,18 +407,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     public abstract class DialogTests : DialogTestsRoot
     {
-
-        //This test is a hangover from when the button was named 'Get'
-        //for query-only actions, and 'Do' for others.  This has since
-        //been reverted to OK for both.
-        [TestMethod]
-        public override void OKButtonNaming() { base.OKButtonNaming(); }
         [TestMethod]
         public override void PasswordParam() { base.PasswordParam(); }
         [TestMethod]
         public override void ChoicesParm() { base.ChoicesParm(); }
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
+        [TestMethod]
+        public override void ClosedDialogClearsFields() { base.ClosedDialogClearsFields(); }
         [TestMethod]
         public override void ScalarChoicesParmKeepsValue() { base.ScalarChoicesParmKeepsValue(); }
         [TestMethod]
@@ -557,10 +553,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public void MegaDialogTest()
         {
-            base.OKButtonNaming();
             base.PasswordParam();
             base.ChoicesParm();
             base.TestCancelDialog();
+            base.ClosedDialogClearsFields();
             base.ScalarChoicesParmKeepsValue();
             base.ScalarParmShowsDefaultValue();
             base.DateTimeParmKeepsValue();
