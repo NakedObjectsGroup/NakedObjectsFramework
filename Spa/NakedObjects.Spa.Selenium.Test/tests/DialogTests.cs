@@ -152,6 +152,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.List, "Find By Product Line And Class");
             AssertTopItemInListIs("Mountain-300 Black, 38");
         }
+        public virtual void ChoicesOptional()
+        {
+            //Test that a field with choices that is optional can be left blank
+            GeminiUrl("home?m1=ProductRepository&d1=FindByOptionalProductLinesAndClasses&f1_productLine=%5B%5D&f1_productClass=%5B%5D");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find By Optional Product Lines And Classes");
+        }
         public virtual void ChoicesChangeDefaults()
         {
             Url(ProductServiceUrl);
@@ -427,6 +434,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ChoicesDefaults() { base.ChoicesDefaults(); }
         [TestMethod]
+        public override void ChoicesOptional() { base.ChoicesOptional(); }
+        [TestMethod]
         public override void ChoicesChangeDefaults() { base.ChoicesChangeDefaults(); }
         [TestMethod]
         public override void ConditionalChoices() { base.ConditionalChoices(); }
@@ -458,10 +467,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
         [TestMethod]
         public override void ParameterDescriptionRenderedAsPlacholder() { base.ParameterDescriptionRenderedAsPlacholder(); }
-
         [TestMethod]
         public override void NullableBooleanParams() { base.NullableBooleanParams(); }
-
         [TestMethod]
         public override void WarningShownWithinDialogAndInFooter() { base.WarningShownWithinDialogAndInFooter(); }
     }
@@ -562,6 +569,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.MultipleRefChoicesChangeDefaults();
             base.ConditionalChoices();
             base.ChoicesDefaults();
+            base.ChoicesOptional();
             base.ChoicesChangeDefaults();
             base.ConditionalChoicesDefaults();
             base.ConditionalChoicesMultiple();
