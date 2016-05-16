@@ -144,6 +144,7 @@ module NakedObjects {
         value: string;
         search: string;
         isEnum: boolean;
+        isReference: boolean;
         wrapped: Value;
 
         static create(value: Value, id: string, name?: string, searchTerm?: string) {
@@ -155,6 +156,7 @@ module NakedObjects {
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
         }
 
@@ -293,6 +295,24 @@ module NakedObjects {
             this.choice = null;
             this.color = "";
         }
+
+        setColor(color: IColor) {
+
+            if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
+                const href = this.choice.value;
+                if (href) {
+                    color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
+                    return;
+                }
+            }
+            else if (this.entryType !== EntryType.AutoComplete && this.value) {
+                color.toColorNumberFromType(this.returnType).then((c: number) => this.color = `${linkColor}${c}`);
+                return;
+            }
+
+            this.color = "";
+        }
+
 
         getValue(): Value {
 

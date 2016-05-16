@@ -100,7 +100,7 @@ module NakedObjects {
         };
     });
 
-    app.directive("geminiAutocomplete", (): ng.IDirective => {
+    app.directive("geminiAutocomplete", (color: IColor): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -135,9 +135,11 @@ module NakedObjects {
                 const updateModel = (cvm: ChoiceViewModel) => {
 
                     scope.$apply(() => {
+                        viewModel.clear();                        
                         ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
-                        element.val(cvm.name);
+                        element.val(cvm.name);      
+                        viewModel.setColor(color);               
                     });
                 };
 

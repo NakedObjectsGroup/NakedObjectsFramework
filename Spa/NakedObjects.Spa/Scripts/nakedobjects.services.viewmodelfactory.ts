@@ -196,14 +196,6 @@ module NakedObjects {
             return recentItemViewModel;
         };
 
-        function setColor(vm: ValueViewModel) {
-            if (vm.value) {
-                color.toColorNumberFromType(vm.returnType).then((c: number) => vm.color = `${linkColor}${c}`);
-            } else {
-                vm.color = "";
-            }
-        }
-
         viewModelFactory.parameterViewModel = (parmRep: Parameter, previousValue: Value, paneId: number) => {
             const parmViewModel = new ParameterViewModel();
 
@@ -261,6 +253,7 @@ module NakedObjects {
                         parmViewModel.reference = val.link().href();
                         parmViewModel.choice = ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
                     }
+                    parmViewModel.setColor(color);
                 }
 
                 parmViewModel.refresh(previousValue);
@@ -311,6 +304,7 @@ module NakedObjects {
                             setCurrentChoice(toSet);
                         }
                     }
+                    parmViewModel.setColor(color);
                 }
 
                 parmViewModel.refresh(previousValue);
@@ -336,6 +330,7 @@ module NakedObjects {
                     } else {
                         parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
                     }
+                    parmViewModel.setColor(color);
                 }
 
                 parmViewModel.refresh(previousValue);
@@ -350,7 +345,7 @@ module NakedObjects {
                 parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
 
-            setColor(parmViewModel);
+            parmViewModel.setColor(color);
 
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel) as (modelValue: any, viewValue: string, mandatoryOnly: boolean) => boolean;
 
@@ -542,7 +537,7 @@ module NakedObjects {
             }
 
             // only set color if has value 
-            setColor(propertyViewModel);
+            propertyViewModel.setColor(color);
 
             return propertyViewModel;
         };
@@ -664,7 +659,7 @@ module NakedObjects {
             propertyViewModel.refresh(previousValue);
 
             // only set color if has value 
-            setColor(propertyViewModel);
+            propertyViewModel.setColor(color);
 
             if (!previousValue) {
                 propertyViewModel.originalValue = propertyViewModel.getValue();

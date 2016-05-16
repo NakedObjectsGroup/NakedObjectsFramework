@@ -29,7 +29,7 @@
                         <input type="hidden" value="{{property.reference}}" ng-model="property.reference" />
 
                         <!--"EntryType.AutoComplete"-->
-                        <input id="{{property.paneArgId}}" class="{{property.status}}" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck/>
+                        <input id="{{property.paneArgId}}" class="{{property.status}} value droppable" ng-class="property.color" placeholder="{{property.description}}" ng-switch-when="5" type="text" ng-model="$parent.property.choice" select="property.prompt(request)" gemini-autocomplete gemini-drop gemini-fieldmandatorycheck/>
 
                         <!--"EntryType.ConditionalChoices"-->
                         <select id="{{property.paneArgId}}" class="{{property.status}}" ng-switch-when="3" ng-model="$parent.property.choice" select="property.conditionalChoices(args)" gemini-conditionalchoices gemini-fieldmandatorycheck>
