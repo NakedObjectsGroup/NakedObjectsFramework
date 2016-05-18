@@ -19,7 +19,6 @@ using NakedObjects.Value;
 namespace NakedObjects.Facade.Impl {
     public class TypeFacade : ITypeFacade {
         private readonly INakedObjectsFramework framework;
-        private readonly ITypeSpec spec;
 
         public TypeFacade(ITypeSpec spec, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
             FacadeUtils.AssertNotNull(spec, "Spec is null");
@@ -27,11 +26,11 @@ namespace NakedObjects.Facade.Impl {
             FacadeUtils.AssertNotNull(framework, "framework is null");
 
             FrameworkFacade = frameworkFacade;
-            this.spec = spec;
+            WrappedValue = spec;
             this.framework = framework;
         }
 
-        public ITypeSpec WrappedValue => spec;
+        public ITypeSpec WrappedValue { get; }
 
         #region ITypeFacade Members
 
@@ -39,103 +38,103 @@ namespace NakedObjects.Facade.Impl {
             get {
                 var extData = new Dictionary<string, object>();
 
-                if (spec.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[IdConstants.PresentationHint] = spec.GetFacet<IPresentationHintFacet>().Value;
+                if (WrappedValue.ContainsFacet<IPresentationHintFacet>()) {
+                    extData[IdConstants.PresentationHint] = WrappedValue.GetFacet<IPresentationHintFacet>().Value;
                 }
 
                 return extData.Any() ? extData : null;
             }
         }
 
-        public bool IsParseable => spec.IsParseable;
+        public bool IsParseable => WrappedValue.IsParseable;
 
-        public bool IsQueryable => spec.IsQueryable;
+        public bool IsQueryable => WrappedValue.IsQueryable;
 
-        public bool IsService => spec is IServiceSpec;
+        public bool IsService => WrappedValue is IServiceSpec;
 
-        public bool IsVoid => spec.IsVoid;
+        public bool IsVoid => WrappedValue.IsVoid;
 
-        public bool IsASet => spec.IsASet;
+        public bool IsASet => WrappedValue.IsASet;
 
-        public bool IsAggregated => spec.IsAggregated;
+        public bool IsAggregated => WrappedValue.IsAggregated;
 
         public bool IsImage {
             get {
-                var imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
-                return spec.IsOfType(imageSpec);
+                var imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
+                return WrappedValue.IsOfType(imageSpec);
             }
         }
 
         public bool IsFileAttachment {
             get {
-                var fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
-                return spec.IsOfType(fileSpec);
+                var fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
+                return WrappedValue.IsOfType(fileSpec);
             }
         }
 
-        public bool IsFile => spec.IsFile(framework);
+        public bool IsFile => WrappedValue.IsFile(framework);
 
         public bool IsDateTime => FullName == "System.DateTime";
 
-        public string FullName => spec.FullName;
+        public string FullName => WrappedValue.FullName;
 
-        public string ShortName => spec.ShortName;
+        public string ShortName => WrappedValue.ShortName;
 
-        public bool IsCollection => spec.IsCollection && !spec.IsParseable;
+        public bool IsCollection => WrappedValue.IsCollection && !WrappedValue.IsParseable;
 
-        public bool IsObject => spec.IsObject;
+        public bool IsObject => WrappedValue.IsObject;
 
-        public string SingularName => spec.SingularName;
+        public string SingularName => WrappedValue.SingularName;
 
-        public string PluralName => spec.PluralName;
+        public string PluralName => WrappedValue.PluralName;
 
-        public string Description => spec.Description;
+        public string Description => WrappedValue.Description;
 
-        public bool IsEnum => spec.ContainsFacet<IEnumValueFacet>();
+        public bool IsEnum => WrappedValue.ContainsFacet<IEnumValueFacet>();
 
-        public bool IsBoolean => spec.ContainsFacet<IBooleanValueFacet>();
+        public bool IsBoolean => WrappedValue.ContainsFacet<IBooleanValueFacet>();
 
         public bool IsAlwaysImmutable {
             get {
-                IImmutableFacet facet = spec.GetFacet<IImmutableFacet>();
+                IImmutableFacet facet = WrappedValue.GetFacet<IImmutableFacet>();
                 return facet != null && facet.Value == WhenTo.Always;
             }
         }
 
         public bool IsImmutableOncePersisted {
             get {
-                IImmutableFacet facet = spec.GetFacet<IImmutableFacet>();
+                IImmutableFacet facet = WrappedValue.GetFacet<IImmutableFacet>();
                 return facet != null && facet.Value == WhenTo.OncePersisted;
             }
         }
 
-        public bool IsComplexType => spec.ContainsFacet<IComplexTypeFacet>();
+        public bool IsComplexType => WrappedValue.ContainsFacet<IComplexTypeFacet>();
 
         public IAssociationFacade[] Properties {
             get {
-                var objectSpec = spec as IObjectSpec;
+                var objectSpec = WrappedValue as IObjectSpec;
                 return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray();
             }
         }
 
-        public IMenuFacade Menu => new MenuFacade(spec.Menu, FrameworkFacade, framework);
+        public IMenuFacade Menu => new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
         public bool IsImmutable(IObjectFacade objectFacade) {
-            return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !objectFacade.IsTransient);
+            return WrappedValue.IsAlwaysImmutable() || (WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient);
         }
 
         public string GetIconName(IObjectFacade objectFacade) {
-            return spec.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
+            return WrappedValue.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
         }
 
         public IActionFacade[] GetActionLeafNodes() {
-            var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(spec);
+            var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
             return actionsAndUid.Select(a => new ActionFacade(a.Item1, FrameworkFacade, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade objectFacade) {
             if (IsCollection) {
-                var introspectableSpecification = spec.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
+                var introspectableSpecification = WrappedValue.GetFacet<ITypeOfFacet>().GetValueSpec(((ObjectFacade) objectFacade).WrappedNakedObject, framework.MetamodelManager.Metamodel);
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
@@ -143,15 +142,15 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public bool IsOfType(ITypeFacade otherSpec) {
-            return spec.IsOfType(((TypeFacade) otherSpec).spec);
+            return WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
         }
 
         public Type GetUnderlyingType() {
-            return TypeUtils.GetType(spec.FullName);
+            return TypeUtils.GetType(WrappedValue.FullName);
         }
 
         public IActionFacade[] GetCollectionContributedActions() {
-            var objectSpec = spec as IObjectSpec;
+            var objectSpec = WrappedValue as IObjectSpec;
             if (objectSpec != null) {
                 return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
@@ -159,7 +158,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IActionFacade[] GetFinderActions() {
-            var objectSpec = spec as IObjectSpec;
+            var objectSpec = WrappedValue as IObjectSpec;
             if (objectSpec != null) {
                 return objectSpec.GetFinderActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
@@ -174,14 +173,14 @@ namespace NakedObjects.Facade.Impl {
 
         public string PresentationHint {
             get {
-                var hintFacet = spec.GetFacet<IPresentationHintFacet>();
+                var hintFacet = WrappedValue.GetFacet<IPresentationHintFacet>();
                 return hintFacet == null ? "" : hintFacet.Value;
             }
         }
 
-        public bool IsStream => spec.ContainsFacet<IFromStreamFacet>();
+        public bool IsStream => WrappedValue.ContainsFacet<IFromStreamFacet>();
 
-        public string UntitledName => spec.UntitledName;
+        public string UntitledName => WrappedValue.UntitledName;
 
         #endregion
 
@@ -196,11 +195,11 @@ namespace NakedObjects.Facade.Impl {
         public bool Equals(TypeFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
             if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.spec, spec);
+            return Equals(other.WrappedValue, WrappedValue);
         }
 
         public override int GetHashCode() {
-            return (spec != null ? spec.GetHashCode() : 0);
+            return (WrappedValue != null ? WrappedValue.GetHashCode() : 0);
         }
     }
 }
