@@ -12,7 +12,7 @@ namespace NakedObjects.Facade {
         ITypeFacade ElementSpecification { get; }
 
         bool IsFile { get; }
-       
+
         bool IsEnum { get; }
 
         bool DoNotCount { get; }

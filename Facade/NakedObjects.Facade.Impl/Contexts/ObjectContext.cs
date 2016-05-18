@@ -20,10 +20,8 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public bool Mutated { get; set; }
 
-        public Tuple<string, string> Redirected
-        {
-            get
-            {
+        public Tuple<string, string> Redirected {
+            get {
                 var rdo = Target.Object as IRedirectedObject;
                 return rdo != null ? new Tuple<string, string>(rdo.ServerName, rdo.Oid) : null;
             }

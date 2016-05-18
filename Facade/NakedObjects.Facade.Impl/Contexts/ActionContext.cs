@@ -11,9 +11,9 @@ using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade.Impl.Contexts {
     public class ActionContext : Context {
+        private ParameterContext[] parameters;
 
         private PropertyContext[] properties;
-        private ParameterContext[] parameters;
 
         public IActionSpec Action { get; set; }
 
@@ -26,9 +26,8 @@ namespace NakedObjects.Facade.Impl.Contexts {
             set { parameters = value; }
         }
 
-        public PropertyContext[] VisibleProperties
-        {
-            get { return properties ?? new PropertyContext[] { }; }
+        public PropertyContext[] VisibleProperties {
+            get { return properties ?? new PropertyContext[] {}; }
             set { properties = value; }
         }
 

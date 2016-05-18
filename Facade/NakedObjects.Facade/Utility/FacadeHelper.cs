@@ -90,7 +90,7 @@ namespace NakedObjects.Facade.Utility.Restricted {
             string[] rawCollection = collectionValue.Cast<string>().ToArray();
 
             Type instanceType = collectionitemSpec.GetUnderlyingType();
-            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 return rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : s).ToArray();

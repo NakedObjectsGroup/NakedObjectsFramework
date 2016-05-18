@@ -14,12 +14,12 @@ namespace NakedObjects.Facade.Impl.Contexts {
     public class MenuContext {
         public IMenuImmutable[] List { get; set; }
         public IObjectSpec ElementType { get; set; }
-   
+
         public MenuContextFacade ToMenuContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             return new MenuContextFacade {
                 ElementType = new TypeFacade(ElementType, facade, framework),
                 List = List.Select(m => new MenuFacade(m, facade, framework)).Cast<IMenuFacade>().ToArray()
-        };
+            };
         }
     }
 }
