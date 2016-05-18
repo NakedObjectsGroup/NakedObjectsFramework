@@ -18,7 +18,6 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -261,7 +260,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 return null;
             }
             if (property.Specification.IsParseable || property.Specification.IsCollection) {
-                return RestUtils.ObjectToPredefinedType(valueNakedObject.GetDomainObject(), useDateOverDateTime);
+                return RestUtils.ObjectToPredefinedType(valueNakedObject.Object, useDateOverDateTime);
             }
 
             if (valueOnly) {

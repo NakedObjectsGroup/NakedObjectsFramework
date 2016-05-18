@@ -5,16 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
-using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]

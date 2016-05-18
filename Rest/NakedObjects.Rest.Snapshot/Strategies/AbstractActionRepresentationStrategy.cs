@@ -114,7 +114,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
             if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
                 ext = ext ?? new Dictionary<string, object>();
-                ext[IdConstants.MenuPath] = ActionContext.MenuPath;
+                ext[JsonPropertyNames.CustomMenuPath] = ActionContext.MenuPath;
             }
 
             if (ActionContext.Action.RenderEagerly) {

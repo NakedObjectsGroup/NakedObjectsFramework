@@ -8,7 +8,6 @@
 using System;
 using Common.Logging;
 using NakedObjects.Facade;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Model {
@@ -38,7 +37,7 @@ namespace NakedObjects.Rest.Model {
             if (oids != null) {
                 // todo this is clunky 
                 var oid = facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
-                return facade.GetObject(oid).Target.GetDomainObject();
+                return facade.GetObject(oid).Target?.Object;
             }
             string typeName = helper.GetTypeId(href);
             return facade.GetDomainType(typeName);

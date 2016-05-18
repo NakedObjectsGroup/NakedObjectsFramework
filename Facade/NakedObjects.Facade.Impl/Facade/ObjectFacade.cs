@@ -39,12 +39,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsTransient => WrappedNakedObject.ResolveState.IsTransient();
 
-        public void Resolve() {
-            if (WrappedNakedObject.ResolveState.IsResolvable()) {
-                WrappedNakedObject.ResolveState.Handle(Events.StartResolvingEvent);
-                WrappedNakedObject.ResolveState.Handle(Events.EndResolvingEvent);
-            }
-        }
+      
 
         public void SetIsNotQueryableState(bool state) {
             var memento = WrappedNakedObject.Oid as ICollectionMemento;
@@ -128,13 +123,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
 
-      
-
-       
-
         public string InvariantString => WrappedNakedObject.InvariantString();
-
-        public bool IsCollectionMemento => WrappedNakedObject.Oid is ICollectionMemento;
 
         public bool IsUserPersistable => WrappedNakedObject.Spec.Persistable == PersistableType.UserPersistable;
 

@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -34,7 +33,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public MapRepresentation Extensions { get; set; }
 
         private void SetScalars(ObjectContextFacade objectContext) {
-            Value = RestUtils.ObjectToPredefinedType(objectContext.Target.GetDomainObject());
+            Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
         }
 
         private void SetLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {

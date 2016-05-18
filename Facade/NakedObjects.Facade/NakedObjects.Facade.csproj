@@ -129,7 +129,6 @@
     <Compile Include="Interface\UserCredentials.cs" />
     <Compile Include="Interface\IOidStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\FacadeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

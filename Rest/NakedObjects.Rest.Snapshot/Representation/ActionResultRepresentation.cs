@@ -12,7 +12,6 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -83,13 +82,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
-                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject();
+                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object;
                     object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade.GetDomainObject()) as IEnumerable;
+                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
                         var proposedCollection = proposedEnumerable == null ? new object[]{} : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();

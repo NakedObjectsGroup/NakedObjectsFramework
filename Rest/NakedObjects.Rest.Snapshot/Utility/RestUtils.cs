@@ -15,10 +15,8 @@ using System.Net.Http;
 using System.Net.Mime;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Utility.Restricted;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
-using NakedObjects.Rest.Snapshot.Strategies;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public static class RestUtils {
@@ -158,7 +156,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static object GetChoiceValue(IOidStrategy oidStrategy, IObjectFacade item, Func<ChoiceRelType> relType, RestControlFlags flags) {
             string title = SafeGetTitle(item);
-            object value = ObjectToPredefinedType(item.GetDomainObject());
+            object value = ObjectToPredefinedType(item.Object);
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 

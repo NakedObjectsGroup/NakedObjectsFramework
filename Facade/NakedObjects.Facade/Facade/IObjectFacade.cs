@@ -17,7 +17,6 @@ namespace NakedObjects.Facade {
         IOidFacade Oid { get; }
         IVersionFacade Version { get; }
         string PresentationHint { get; }
-        bool IsCollectionMemento { get; }
         bool IsTransient { get; }
         bool IsDestroyed { get; }
         bool IsUserPersistable { get; }
@@ -32,7 +31,6 @@ namespace NakedObjects.Facade {
         IObjectFacade Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContextFacade GetAttachment();
-        void Resolve();
         void SetIsNotQueryableState(bool state);
     }
 }

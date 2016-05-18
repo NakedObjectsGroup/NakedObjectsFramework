@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -19,14 +18,6 @@ namespace NakedObjects.Facade.Impl.Utility {
     public static class FacadeUtils {
         public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) {
             return objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
-        }
-
-        public static IAssociationSpec WrappedSpec(this IAssociationFacade associationFacade) {
-            return associationFacade == null ? null : ((AssociationFacade) associationFacade).WrappedSpec;
-        }
-
-        public static IActionSpec WrappedSpec(this IActionFacade actionFacade) {
-            return actionFacade == null ? null : ((ActionFacade) actionFacade).WrappedSpec;
         }
 
         public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) {
@@ -105,23 +96,6 @@ namespace NakedObjects.Facade.Impl.Utility {
             return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
         }
 
-        public static string GetOverloadedUId(IActionSpec action, IActionSpec[] actions) {
-            Tuple<IActionSpec, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
-            return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
-        }
-
-        public static Tuple<IActionSpec, string> GetActionandUidFromSpec(ITypeSpec spec, string actionName, string typeName) {
-            IActionSpec[] actions = spec.GetActionLeafNodes();
-            IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? GetOverloadedAction(actionName, spec);
-
-            if (action == null) {
-                throw new TypeActionResourceNotFoundNOSException(actionName, typeName);
-            }
-
-            string uid = GetOverloadedUId(action, spec);
-            return new Tuple<IActionSpec, string>(action, uid);
-        }
-
         public static Tuple<IActionSpec, string>[] GetActionsandUidFromSpec(ITypeSpec spec) {
             IActionSpec[] actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<IActionSpec, string>(action, GetOverloadedUId(action, spec))).ToArray();
@@ -131,10 +105,6 @@ namespace NakedObjects.Facade.Impl.Utility {
             if (o == null) {
                 throw new NullReferenceException(msg);
             }
-        }
-
-        public static List<T> InList<T>(this T item) {
-            return item == null ? new List<T>() : new List<T> {item};
         }
     }
 }

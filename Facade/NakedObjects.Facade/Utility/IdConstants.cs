@@ -7,11 +7,6 @@
 
 namespace NakedObjects.Facade.Utility {
     public static class IdConstants {
-        // todo this couples to RO - bad - change extension data impl
-        public const string ServiceType = "x-ro-nof-serviceType";
-        public const string RenderInEditMode = "x-ro-nof-renderInEditMode";
-        public const string PresentationHint = "x-ro-nof-presentationHint";
-        public const string MenuPath = "x-ro-nof-menuPath";
 
         // viewdata keys 
         public const string NofMessages = "Nof-Messages";

@@ -26,8 +26,6 @@ namespace NakedObjects.Facade {
         bool IsObject { get; }
         string FullName { get; }
         string ShortName { get; }
-        // todo should remove this and move title stuff down
-        string UntitledName { get; }
         string SingularName { get; }
         string PluralName { get; }
         string Description { get; }
@@ -36,7 +34,6 @@ namespace NakedObjects.Facade {
         bool IsImage { get; }
         bool IsFileAttachment { get; }
         bool IsFile { get; }
-        IDictionary<string, object> ExtensionData { get; }
         bool IsBoolean { get; }
         bool IsEnum { get; }
         ITypeFacade GetElementType(IObjectFacade objectFacade);

@@ -6,13 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Util;
 using NakedObjects.Value;
 
@@ -33,18 +31,6 @@ namespace NakedObjects.Facade.Impl {
         public ITypeSpec WrappedValue { get; }
 
         #region ITypeFacade Members
-
-        public IDictionary<string, object> ExtensionData {
-            get {
-                var extData = new Dictionary<string, object>();
-
-                if (WrappedValue.ContainsFacet<IPresentationHintFacet>()) {
-                    extData[IdConstants.PresentationHint] = WrappedValue.GetFacet<IPresentationHintFacet>().Value;
-                }
-
-                return extData.Any() ? extData : null;
-            }
-        }
 
         public bool IsParseable => WrappedValue.IsParseable;
 
@@ -171,8 +157,6 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public bool IsStream => WrappedValue.ContainsFacet<IFromStreamFacet>();
-
-        public string UntitledName => WrappedValue.UntitledName;
 
         #endregion
 

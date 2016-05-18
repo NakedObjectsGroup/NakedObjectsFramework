@@ -14,7 +14,6 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
-using NakedObjects.Rest.Snapshot.Strategies;
 
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
