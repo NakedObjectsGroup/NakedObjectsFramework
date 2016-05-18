@@ -337,8 +337,7 @@ namespace NakedObjects.Facade.Impl {
 
         // endremove
 
-        private ObjectContext
-            RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments, IAssociationSpec parent = null) {
+        private ObjectContext  RefreshObjectInternal(INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments, IAssociationSpec parent = null) {
             var oc = new ObjectContext(nakedObject);
 
             if (nakedObject.Oid.IsTransient) {

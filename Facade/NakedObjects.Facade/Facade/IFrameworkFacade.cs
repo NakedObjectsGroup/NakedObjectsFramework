@@ -21,11 +21,11 @@ namespace NakedObjects.Facade {
         ListContextFacade GetServices();
         MenuContextFacade GetMainMenus();
         ObjectContextFacade GetObject(IObjectFacade objectFacade);
-        ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments);
+        //ObjectContextFacade RefreshObject(IObjectFacade objectFacade, ArgumentsContextFacade arguments);
         ObjectContextFacade GetObject(IOidTranslation objectId);
         ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
         PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
-        ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments);
+        //ListContextFacade GetPropertyCompletions(IOidTranslation objectId, string propertyName, ArgumentsContextFacade arguments);
         // for transients
         PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName);
         ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
@@ -36,29 +36,29 @@ namespace NakedObjects.Facade {
         ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
         PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
         PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
-        ActionResultContextFacade ExecuteListAction(IOidTranslation[] objectId, ITypeFacade elementSpec, string actionName, ArgumentsContextFacade arguments);
+        //ActionResultContextFacade ExecuteListAction(IOidTranslation[] objectId, ITypeFacade elementSpec, string actionName, ArgumentsContextFacade arguments);
         ActionResultContextFacade ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContextFacade arguments);
         ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments);
         ObjectContextFacade GetImage(string imageId);
-        ITypeFacade[] GetDomainTypes();
+        //ITypeFacade[] GetDomainTypes();
         ITypeFacade GetDomainType(string typeName);
-        PropertyTypeContextFacade GetPropertyType(string typeName, string propertyName);
-        ActionTypeContextFacade GetActionType(string typeName, string actionName);
-        ParameterTypeContextFacade GetActionParameterType(string typeName, string actionName, string parmName);
+        //PropertyTypeContextFacade GetPropertyType(string typeName, string propertyName);
+        //ActionTypeContextFacade GetActionType(string typeName, string actionName);
+        //ParameterTypeContextFacade GetActionParameterType(string typeName, string actionName, string parmName);
 
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
         ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
 
-        ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments);
+        //ObjectContextFacade PersistObject(IObjectFacade transient, ArgumentsContextFacade arguments);
 
-        UserCredentials Validate(string user, string password);
+        //UserCredentials Validate(string user, string password);
         // todo this to help the transition may be able to be removed after
 
-        IObjectFacade GetObject(ITypeFacade spec, object domainObject);
+        //IObjectFacade GetObject(ITypeFacade spec, object domainObject);
         IObjectFacade GetObject(object domainObject);
         // todo temp wrap - probably remove actionresult model ? 
-        object Wrap(object arm, IObjectFacade objectFacade);
+        //object Wrap(object arm, IObjectFacade objectFacade);
 
-        void Inject(object toInject);
+        //void Inject(object toInject);
     }
 }
