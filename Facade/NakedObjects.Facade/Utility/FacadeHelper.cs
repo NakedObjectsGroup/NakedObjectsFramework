@@ -97,7 +97,7 @@ namespace NakedObjects.Facade.Utility.Restricted {
             }
 
             // need to check if collection is actually a collection memento 
-            if (rawCollection.Count() == 1) {
+            if (rawCollection.Length == 1) {
                 var id = rawCollection.First();
                 var firstObj = SafeGetObjectFromId(facade, id);
 

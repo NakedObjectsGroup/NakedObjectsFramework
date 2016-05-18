@@ -13,13 +13,9 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public IAssociationSpec Property { get; set; }
         public bool Mutated { get; set; }
 
-        public override string Id {
-            get { return Property.Id; }
-        }
+        public override string Id => Property.Id;
 
-        public override ITypeSpec Specification {
-            get { return Property.ReturnSpec; }
-        }
+        public override ITypeSpec Specification => Property.ReturnSpec;
 
         public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new PropertyContextFacade {

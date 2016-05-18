@@ -166,6 +166,7 @@
     <Compile Include="Utility\DefaultTypeCodeMapper.cs" />
     <Compile Include="Utility\EntityOidStrategy.cs" />
     <Compile Include="Facade\FrameworkFacade.cs" />
+    <Compile Include="Utility\FacetUtils.cs" />
     <Compile Include="Utility\FrameworkHelper.cs" />
     <Compile Include="Utility\IdHelper.cs" />
     <Compile Include="Utility\MessageBrokerWrapper.cs" />

@@ -44,18 +44,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
-        public int MemberOrder {
-            get {
-                var facet = WrappedSpec.GetFacet<IMemberOrderFacet>();
-
-                int result;
-                if (facet != null && int.TryParse(facet.Sequence, out result)) {
-                    return result;
-                }
-
-                return 0;
-            }
-        }
+        public int MemberOrder => WrappedSpec.GetMemberOrder();
 
         public string Id => WrappedSpec.Id + overloadedUniqueId;
 
@@ -86,28 +75,13 @@ namespace NakedObjects.Facade.Impl {
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool RenderEagerly {
-            get {
-                IEagerlyFacet eagerlyFacet = WrappedSpec.GetFacet<IEagerlyFacet>();
-                return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
-            }
-        }
+        public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
 
-        public Tuple<bool, string[]> TableViewData {
-            get {
-                var facet = WrappedSpec.GetFacet<ITableViewFacet>();
-                return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
-            }
-        }
+        public Tuple<bool, string[]> TableViewData => WrappedSpec.GetTableViewData();
 
         public int PageSize => WrappedSpec.GetFacet<IPageSizeFacet>().Value;
 
-        public string PresentationHint {
-            get {
-                var hintFacet = WrappedSpec.GetFacet<IPresentationHintFacet>();
-                return hintFacet == null ? null : hintFacet.Value;
-            }
-        }
+        public string PresentationHint => WrappedSpec.GetPresentationHint();
 
         #endregion
 

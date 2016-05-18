@@ -9,17 +9,11 @@ namespace NakedObjects.Facade.Contexts {
     public class ParameterContextFacade : ContextFacade {
         public IActionParameterFacade Parameter { get; set; }
 
-        public override string Id {
-            get { return Parameter.Id; }
-        }
+        public override string Id => Parameter.Id;
 
-        public override ITypeFacade Specification {
-            get { return Parameter.Specification; }
-        }
+        public override ITypeFacade Specification => Parameter.Specification;
 
-        public override ITypeFacade ElementSpecification {
-            get { return Parameter.ElementType; }
-        }
+        public override ITypeFacade ElementSpecification => Parameter.ElementType;
 
         public IActionFacade Action { get; set; }
     }

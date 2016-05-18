@@ -10,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -135,18 +134,6 @@ namespace NakedObjects.Facade.Impl.Utility {
             return framework.RestoreObject(oid);
         }
 
-        private static ITypeSpec GetSpecificationFromObjectId(this INakedObjectsFramework framework, string encodedId, out string[] restOfArray) {
-            string[] asArray = encodedId.Split(';');
-            return framework.GetSpecificationFromObjectId(asArray, out restOfArray);
-        }
-
-        private static ITypeSpec GetSpecificationFromObjectId(this INakedObjectsFramework framework, string[] asArray, out string[] restOfArray) {
-            string typeName = TypeNameUtils.DecodeTypeName(HttpUtility.UrlDecode(asArray.First()));
-            ITypeSpec spec = framework.MetamodelManager.GetSpecification(typeName);
-            restOfArray = asArray.ToArray();
-            return spec;
-        }
-
         private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
             return memento.RecoverCollection();
         }
@@ -205,7 +192,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public static string GetActionId(IActionSpec action) {
-            return action == null ? string.Empty : string.Format("{0};{1}", action.OnSpec.FullName, action.Id);
+            return action == null ? string.Empty : $"{action.OnSpec.FullName};{action.Id}";
         }
 
         public static IActionSpec GetActionFromId(this INakedObjectsFramework framework, string actionId) {
@@ -222,12 +209,12 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public static bool IsImage(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof (Image));
+            ITypeSpec imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));
             return spec != null && spec.IsOfType(imageSpec);
         }
 
         private static bool IsFileAttachment(this ITypeSpec spec, INakedObjectsFramework framework) {
-            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof (FileAttachment));
+            ITypeSpec fileSpec = framework.MetamodelManager.GetSpecification(typeof(FileAttachment));
             return spec != null && spec.IsOfType(fileSpec);
         }
 
@@ -266,17 +253,17 @@ namespace NakedObjects.Facade.Impl.Utility {
             object[] objCollection;
 
             Type instanceType = TypeUtils.GetType(collectionitemSpec.FullName);
-            var typedCollection = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(instanceType));
+            var typedCollection = (IList) Activator.CreateInstance(typeof(List<>).MakeGenericType(instanceType));
 
             if (collectionitemSpec.IsParseable) {
                 objCollection = rawCollection.Select(s => string.IsNullOrEmpty(s) ? null : collectionitemSpec.GetFacet<IParseableFacet>().ParseTextEntry(s, framework.NakedObjectManager).Object).ToArray();
             }
             else {
                 // need to check if collection is actually a collection memento 
-                if (rawCollection.Count() == 1) {
+                if (rawCollection.Length == 1) {
                     INakedObjectAdapter firstObj = framework.GetNakedObjectFromId(rawCollection.First());
 
-                    if (firstObj != null && firstObj.Oid is ICollectionMemento) {
+                    if (firstObj?.Oid is ICollectionMemento) {
                         return firstObj;
                     }
                 }

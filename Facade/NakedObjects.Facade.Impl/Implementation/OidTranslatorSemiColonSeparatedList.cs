@@ -21,7 +21,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
         #region IOidTranslator Members
 
         public IOidTranslation GetOidTranslation(params string[] id) {
-            if (id.Count() != 1) {
+            if (id.Length != 1) {
                 throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t) + ": Parsing Id error");
             }
             if (string.IsNullOrEmpty(id.First())) {
@@ -47,19 +47,6 @@ namespace NakedObjects.Facade.Impl.Implementation {
         private string Encode(IEncodedToStrings encoder) {
             return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
         }
-
-        // todo is this best place for this
-        //private string GetObjectId(INakedObjectAdapter objectFacade) {
-        //    if (objectFacade.Spec.IsViewModel) {
-        //        // todo this always repopulates oid now - see core - look into optimizing
-        //        framework.LifecycleManager.PopulateViewModelKeys(objectFacade);
-        //    }
-        //    else if (objectFacade.Oid == null) {
-        //        return "";
-        //    }
-
-        //    return GetObjectId(objectFacade.Oid);
-        //}
 
         private string GetObjectId(IOidFacade oid) {
             return Encode(((IEncodedToStrings) oid.Value));

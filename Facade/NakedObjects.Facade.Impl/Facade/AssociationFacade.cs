@@ -48,34 +48,14 @@ namespace NakedObjects.Facade.Impl {
         public bool IsObject => WrappedSpec is IOneToOneAssociationSpec;
 
         public bool IsConcurrency => WrappedSpec.ContainsFacet<IConcurrencyCheckFacet>();
+
         public bool NotNavigable => WrappedSpec.ContainsFacet<INotNavigableFacet>();
 
-        public int? MaxLength {
-            get {
-                var facet = WrappedSpec.GetFacet<IMaxLengthFacet>();
-                return facet != null ? (int?) facet.Value : null;
-            }
-        }
+        public int? MaxLength => WrappedSpec.GetMaxLength();
 
-        public string Pattern {
-            get {
-                var facet = WrappedSpec.GetFacet<IRegExFacet>();
-                return facet != null ? facet.Pattern.ToString() : null;
-            }
-        }
+        public string Pattern => WrappedSpec.GetPattern();
 
-        public int MemberOrder {
-            get {
-                var facet = WrappedSpec.GetFacet<IMemberOrderFacet>();
-
-                int result;
-                if (facet != null && int.TryParse(facet.Sequence, out result)) {
-                    return result;
-                }
-
-                return 0;
-            }
-        }
+        public int MemberOrder => WrappedSpec.GetMemberOrder();
 
         public bool IsASet {
             get {
@@ -86,19 +66,9 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsInline => WrappedSpec.IsInline;
 
-        public string Mask {
-            get {
-                var facet = WrappedSpec.GetFacet<IMaskFacet>();
-                return facet != null ? facet.Value : null;
-            }
-        }
+        public string Mask => WrappedSpec.GetMask();
 
-        public int AutoCompleteMinLength {
-            get {
-                var facet = WrappedSpec.GetFacet<IAutoCompleteFacet>();
-                return facet != null ? facet.MinLength : 0;
-            }
-        }
+        public int AutoCompleteMinLength => WrappedSpec.GetAutoCompleteMinLength();
 
         public ITypeFacade Specification => new TypeFacade(WrappedSpec.ReturnSpec, FrameworkFacade, framework);
 
@@ -199,49 +169,22 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsEnum => WrappedSpec.ContainsFacet<IEnumFacet>();
 
-        public string PresentationHint {
-            get {
-                var hintFacet = WrappedSpec.GetFacet<IPresentationHintFacet>();
-                return hintFacet == null ? "" : hintFacet.Value;
-            }
-        }
-
         public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec && ((IOneToOneAssociationSpec) WrappedSpec).IsFindMenuEnabled;
 
-        public Tuple<Regex, string> RegEx {
-            get {
-                var regEx = WrappedSpec.GetFacet<IRegExFacet>();
-                return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
-            }
-        }
+        public Tuple<Regex, string> RegEx => WrappedSpec.GetRegEx();
 
-        public Tuple<IConvertible, IConvertible, bool> Range {
-            get {
-                var rangeFacet = WrappedSpec.GetFacet<IRangeFacet>();
-                return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
-            }
-        }
+        public Tuple<IConvertible, IConvertible, bool> Range => WrappedSpec.GetRange();
 
         public bool IsAjax => !WrappedSpec.ContainsFacet<IAjaxFacet>();
 
         public bool DoNotCount => WrappedSpec.ContainsFacet<INotCountedFacet>();
 
-        public int Width {
-            get {
-                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
-                return multiline == null ? 0 : multiline.Width;
-            }
-        }
+        public int Width => WrappedSpec.GetWidth();
 
-        // todo move common assoc/parameter code into helper or baseclass
+        public string PresentationHint => WrappedSpec.GetPresentationHint();
+
         public string GetMaskedValue(IObjectFacade objectFacade) {
-            var mask = WrappedSpec.GetFacet<IMaskFacet>();
-
-            if (objectFacade == null) {
-                return null;
-            }
-            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
-            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
+            return WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
         }
 
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
@@ -249,34 +192,13 @@ namespace NakedObjects.Facade.Impl {
             return WrappedSpec.GetDefaultType(no) == TypeOfDefaultValue.Explicit;
         }
 
-        public int TypicalLength {
-            get {
-                var typicalLength = WrappedSpec.GetFacet<ITypicalLengthFacet>();
-                return typicalLength == null ? 0 : typicalLength.Value;
-            }
-        }
+        public int TypicalLength => WrappedSpec.GetTypicalLength();
 
-        public int NumberOfLines {
-            get {
-                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
-                return multiline == null ? 1 : multiline.NumberOfLines;
-            }
-        }
+        public int NumberOfLines => WrappedSpec.GetNumberOfLines();
 
-        public Tuple<bool, string[]> TableViewData {
-            get {
-                var facet = WrappedSpec.GetFacet<ITableViewFacet>();
-                return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
-            }
-        }
+        public Tuple<bool, string[]> TableViewData => WrappedSpec.GetTableViewData();
 
-        // todo move common assoc/action code into helper or baseclass
-        public bool RenderEagerly {
-            get {
-                IEagerlyFacet eagerlyFacet = WrappedSpec.GetFacet<IEagerlyFacet>();
-                return eagerlyFacet != null && eagerlyFacet.What == EagerlyAttribute.Do.Rendering;
-            }
-        }
+        public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
 
         public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
 

@@ -17,21 +17,13 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         #region IMessageBrokerFacade Members
 
-        public string[] PeekMessages {
-            get { return messageBroker.PeekMessages; }
-        }
+        public string[] PeekMessages => messageBroker.PeekMessages;
 
-        public string[] PeekWarnings {
-            get { return messageBroker.PeekWarnings; }
-        }
+        public string[] PeekWarnings => messageBroker.PeekWarnings;
 
-        public string[] Messages {
-            get { return messageBroker.Messages; }
-        }
+        public string[] Messages => messageBroker.Messages;
 
-        public string[] Warnings {
-            get { return messageBroker.Warnings; }
-        }
+        public string[] Warnings => messageBroker.Warnings;
 
         public void AddWarning(string message) {
             messageBroker.AddWarning(message);

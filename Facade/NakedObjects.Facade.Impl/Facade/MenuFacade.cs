@@ -20,10 +20,10 @@ namespace NakedObjects.Facade.Impl {
 
         #region IMenuFacade Members
 
-        public object Wrapped { get; private set; }
-        public IList<IMenuItemFacade> MenuItems { get; private set; }
-        public string Name { get; private set; }
-        public string Id { get; private set; }
+        public object Wrapped { get; }
+        public IList<IMenuItemFacade> MenuItems { get; }
+        public string Name { get; }
+        public string Id { get; }
 
         #endregion
 

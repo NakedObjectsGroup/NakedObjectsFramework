@@ -20,7 +20,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (EntityOidStrategy));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidStrategy));
         private readonly INakedObjectsFramework framework;
 
         public EntityOidStrategy(INakedObjectsFramework framework) {
@@ -39,15 +39,6 @@ namespace NakedObjects.Facade.Impl.Utility {
         public IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId) {
             var adapter = GetAdapterByOidTranslation(objectId);
             return adapter == null ? null : ObjectFacade.Wrap(adapter, FrameworkFacade, framework);
-        }
-
-        private INakedObjectAdapter GetAdapterByOidTranslation(IOidTranslation objectId) {
-            if (objectId == null) {
-                return null;
-            }
-
-            var oid = objectId.GetOid(this);
-            return GetAdapterByOid(oid.Value as IOid);
         }
 
         public object GetServiceByServiceName(IOidTranslation serviceName) {
@@ -110,6 +101,15 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         #endregion
 
+        private INakedObjectAdapter GetAdapterByOidTranslation(IOidTranslation objectId) {
+            if (objectId == null) {
+                return null;
+            }
+
+            var oid = objectId.GetOid(this);
+            return GetAdapterByOid(oid.Value as IOid);
+        }
+
         private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
             return memento.RecoverCollection();
         }
@@ -154,35 +154,8 @@ namespace NakedObjects.Facade.Impl.Utility {
             return GetCode(TypeUtils.GetType(spec.FullName));
         }
 
-        private Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
-            string code = GetCode(nakedObject.Specification);
-            return new Tuple<string, string>(code, GetKeyValues(nakedObject));
-        }
-
-        private string KeyRepresentation(object obj) {
-            if (obj is DateTime) {
-                obj = ((DateTime) obj).Ticks;
-            }
-            return (string) Convert.ChangeType(obj, typeof (string)); // better ? 
-        }
-
-        private string GetKeyValues(IObjectFacade nakedObjectForKey) {
-            string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
-
-            if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
-            }
-            else {
-                PropertyInfo[] keyPropertyInfo = nakedObjectForKey.GetKeys();
-                keys = keyPropertyInfo.Select(pi => KeyRepresentation(pi.GetValue(nakedObjectForKey.Object, null))).ToArray();
-            }
-
-            return GetKeyCodeMapper().CodeFromKey(keys, nakedObjectForKey.Object.GetType());
-        }
-
         private static object CoerceType(Type type, string value) {
-            if (type == typeof (DateTime)) {
+            if (type == typeof(DateTime)) {
                 long ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
@@ -253,7 +226,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         private Type ValidateObjectId(IOidTranslation objectId) {
-            return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId + ": Type not found" ); });
+            return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId + ": Type not found"); });
         }
 
         private Type ValidateId(IOidTranslation objectId, Action onError) {

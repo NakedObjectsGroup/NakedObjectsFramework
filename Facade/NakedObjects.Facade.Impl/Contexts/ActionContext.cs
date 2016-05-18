@@ -17,13 +17,9 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public IActionSpec Action { get; set; }
 
-        public override string Id {
-            get { return Action.Id; }
-        }
+        public override string Id => Action.Id;
 
-        public override ITypeSpec Specification {
-            get { return Action.ReturnSpec; }
-        }
+        public override ITypeSpec Specification => Action.ReturnSpec;
 
         public ParameterContext[] VisibleParameters {
             get { return parameters ?? new ParameterContext[] {}; }

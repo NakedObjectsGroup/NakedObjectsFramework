@@ -12,8 +12,6 @@ namespace NakedObjects.Facade {
         public ObjectResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) {}
         public ObjectResourceNotFoundNOSException(string resourceId) : base(resourceId) {}
 
-        public override string Message {
-            get { return String.Format("No such domain object {0}", ResourceId); }
-        }
+        public override string Message => $"No such domain object {ResourceId}";
     }
 }

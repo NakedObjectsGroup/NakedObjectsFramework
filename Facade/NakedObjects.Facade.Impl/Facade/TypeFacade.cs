@@ -31,9 +31,7 @@ namespace NakedObjects.Facade.Impl {
             this.framework = framework;
         }
 
-        public ITypeSpec WrappedValue {
-            get { return spec; }
-        }
+        public ITypeSpec WrappedValue => spec;
 
         #region ITypeFacade Members
 
@@ -49,29 +47,17 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public bool IsParseable {
-            get { return spec.IsParseable; }
-        }
+        public bool IsParseable => spec.IsParseable;
 
-        public bool IsQueryable {
-            get { return spec.IsQueryable; }
-        }
+        public bool IsQueryable => spec.IsQueryable;
 
-        public bool IsService {
-            get { return spec is IServiceSpec; }
-        }
+        public bool IsService => spec is IServiceSpec;
 
-        public bool IsVoid {
-            get { return spec.IsVoid; }
-        }
+        public bool IsVoid => spec.IsVoid;
 
-        public bool IsASet {
-            get { return spec.IsASet; }
-        }
+        public bool IsASet => spec.IsASet;
 
-        public bool IsAggregated {
-            get { return spec.IsAggregated; }
-        }
+        public bool IsAggregated => spec.IsAggregated;
 
         public bool IsImage {
             get {
@@ -87,49 +73,27 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public bool IsFile {
-            get { return spec.IsFile(framework); }
-        }
+        public bool IsFile => spec.IsFile(framework);
 
-        public bool IsDateTime {
-            get { return FullName == "System.DateTime"; }
-        }
+        public bool IsDateTime => FullName == "System.DateTime";
 
-        public string FullName {
-            get { return spec.FullName; }
-        }
+        public string FullName => spec.FullName;
 
-        public string ShortName {
-            get { return spec.ShortName; }
-        }
+        public string ShortName => spec.ShortName;
 
-        public bool IsCollection {
-            get { return spec.IsCollection && !spec.IsParseable; }
-        }
+        public bool IsCollection => spec.IsCollection && !spec.IsParseable;
 
-        public bool IsObject {
-            get { return spec.IsObject; }
-        }
+        public bool IsObject => spec.IsObject;
 
-        public string SingularName {
-            get { return spec.SingularName; }
-        }
+        public string SingularName => spec.SingularName;
 
-        public string PluralName {
-            get { return spec.PluralName; }
-        }
+        public string PluralName => spec.PluralName;
 
-        public string Description {
-            get { return spec.Description; }
-        }
+        public string Description => spec.Description;
 
-        public bool IsEnum {
-            get { return spec.ContainsFacet<IEnumValueFacet>(); }
-        }
+        public bool IsEnum => spec.ContainsFacet<IEnumValueFacet>();
 
-        public bool IsBoolean {
-            get { return spec.ContainsFacet<IBooleanValueFacet>(); }
-        }
+        public bool IsBoolean => spec.ContainsFacet<IBooleanValueFacet>();
 
         public bool IsAlwaysImmutable {
             get {
@@ -145,9 +109,7 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public bool IsComplexType {
-            get { return spec.ContainsFacet<IComplexTypeFacet>(); }
-        }
+        public bool IsComplexType => spec.ContainsFacet<IComplexTypeFacet>();
 
         public IAssociationFacade[] Properties {
             get {
@@ -156,9 +118,7 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public IMenuFacade Menu {
-            get { return new MenuFacade(spec.Menu, FrameworkFacade, framework); }
-        }
+        public IMenuFacade Menu => new MenuFacade(spec.Menu, FrameworkFacade, framework);
 
         public bool IsImmutable(IObjectFacade objectFacade) {
             return spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && !objectFacade.IsTransient);
@@ -219,13 +179,9 @@ namespace NakedObjects.Facade.Impl {
             }
         }
 
-        public bool IsStream {
-            get { return spec.ContainsFacet<IFromStreamFacet>(); }
-        }
+        public bool IsStream => spec.ContainsFacet<IFromStreamFacet>();
 
-        public string UntitledName {
-            get { return spec.UntitledName; }
-        }
+        public string UntitledName => spec.UntitledName;
 
         #endregion
 

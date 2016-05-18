@@ -5,14 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedObjects.Facade {
     public class ActionResourceNotFoundNOSException : ResourceNotFoundNOSException {
         public ActionResourceNotFoundNOSException(string resourceId) : base(resourceId) {}
 
-        public override string Message {
-            get { return String.Format("No such action {0}", ResourceId); }
-        }
+        public override string Message => $"No such action {ResourceId}";
     }
 }

@@ -32,13 +32,9 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public ActionContext ActionContext { get; set; }
 
-        public override string Id {
-            get { return ActionContext.Action.Id; }
-        }
+        public override string Id => ActionContext.Action.Id;
 
-        public override ITypeSpec Specification {
-            get { return ActionContext.Action.ReturnSpec; }
-        }
+        public override ITypeSpec Specification => ActionContext.Action.ReturnSpec;
 
         public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionResultContextFacade {

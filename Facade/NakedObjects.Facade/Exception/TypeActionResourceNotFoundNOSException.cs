@@ -5,18 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedObjects.Facade {
     public class TypeActionResourceNotFoundNOSException : ResourceNotFoundNOSException {
         public TypeActionResourceNotFoundNOSException(string resourceId, string domainId) : base(resourceId) {
             DomainId = domainId;
         }
 
-        public string DomainId { get; private set; }
+        public string DomainId { get; }
 
-        public override string Message {
-            get { return String.Format("No such domain action {0} in domain type {1}", ResourceId, DomainId); }
-        }
+        public override string Message => $"No such domain action {ResourceId} in domain type {DomainId}";
     }
 }

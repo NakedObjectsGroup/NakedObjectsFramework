@@ -30,7 +30,7 @@ namespace NakedObjects.Facade.Impl {
             FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
             FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
 
-            this.WrappedSpec = nakedObjectActionParameter;
+            WrappedSpec = nakedObjectActionParameter;
             this.framework = framework;
             this.overloadedUniqueId = overloadedUniqueId;
             FrameworkFacade = frameworkFacade;
@@ -46,37 +46,17 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsMandatory => WrappedSpec.IsMandatory;
 
-        public int? MaxLength {
-            get {
-                var facet = WrappedSpec.GetFacet<IMaxLengthFacet>();
-                return facet != null ? (int?) facet.Value : null;
-            }
-        }
+        public int? MaxLength => WrappedSpec.GetMaxLength();
 
         public DataType? DataType => WrappedSpec.GetFacet<IDataTypeFacet>()?.DataType();
 
         public bool IsDateOnly => WrappedSpec.ContainsFacet<IDateOnlyFacet>();
 
-        public string Pattern {
-            get {
-                var facet = WrappedSpec.GetFacet<IRegExFacet>();
-                return facet != null ? facet.Pattern.ToString() : null;
-            }
-        }
+        public string Pattern => WrappedSpec.GetPattern();
 
-        public string Mask {
-            get {
-                var facet = WrappedSpec.GetFacet<IMaskFacet>();
-                return facet != null ? facet.Value : null;
-            }
-        }
+        public string Mask => WrappedSpec.GetMask();
 
-        public int AutoCompleteMinLength {
-            get {
-                var facet = WrappedSpec.GetFacet<IAutoCompleteFacet>();
-                return facet != null ? facet.MinLength : 0;
-            }
-        }
+        public int AutoCompleteMinLength => WrappedSpec.GetAutoCompleteMinLength();
 
         public int Number => WrappedSpec.Number;
 
@@ -118,13 +98,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public string GetMaskedValue(IObjectFacade objectFacade) {
-            var mask = WrappedSpec.GetFacet<IMaskFacet>();
-
-            if (objectFacade == null) {
-                return null;
-            }
-            var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
-            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, framework.NakedObjectManager) : no.TitleString();
+            return WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
         }
 
         public IConsentFacade IsValid(IObjectFacade target, object value) {
@@ -136,10 +110,10 @@ namespace NakedObjects.Facade.Impl {
                 consent = WrappedSpec.IsValid(t, v);
             }
             catch (InvalidEntryException) {
-                consent = new Veto("Invalid Entry"); // todo i18n
+                consent = new Veto(Resources.NakedObjects.InvalidEntry);
             }
             catch (Exception e) {
-                consent = new Veto(e.Message); // todo i18n
+                consent = new Veto(e.Message);
             }
 
             return new ConsentFacade(consent);
@@ -166,53 +140,23 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec && ((IOneToOneActionParameterSpec) WrappedSpec).IsFindMenuEnabled;
 
-        public Tuple<Regex, string> RegEx {
-            get {
-                var regEx = WrappedSpec.GetFacet<IRegExFacet>();
-                return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
-            }
-        }
+        public Tuple<Regex, string> RegEx => WrappedSpec.GetRegEx();
 
-        public Tuple<IConvertible, IConvertible, bool> Range {
-            get {
-                var rangeFacet = WrappedSpec.GetFacet<IRangeFacet>();
-                return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
-            }
-        }
+        public Tuple<IConvertible, IConvertible, bool> Range => WrappedSpec.GetRange();
 
         public bool IsAjax => !WrappedSpec.ContainsFacet<IAjaxFacet>();
 
         public bool IsPassword => WrappedSpec.ContainsFacet<IPasswordFacet>();
 
-        public int TypicalLength {
-            get {
-                var typicalLength = WrappedSpec.GetFacet<ITypicalLengthFacet>();
-                return typicalLength == null ? 0 : typicalLength.Value;
-            }
-        }
+        public int TypicalLength => WrappedSpec.GetTypicalLength();
 
         public bool IsNullable => WrappedSpec.ContainsFacet<INullableFacet>();
 
-        public int Width {
-            get {
-                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
-                return multiline == null ? 0 : multiline.Width;
-            }
-        }
+        public int Width => WrappedSpec.GetWidth();
 
-        public int NumberOfLines {
-            get {
-                var multiline = WrappedSpec.GetFacet<IMultiLineFacet>();
-                return multiline == null ? 1 : multiline.NumberOfLines;
-            }
-        }
+        public string PresentationHint => WrappedSpec.GetPresentationHint();
 
-        public string PresentationHint {
-            get {
-                var hintFacet = WrappedSpec.GetFacet<IPresentationHintFacet>();
-                return hintFacet == null ? null : hintFacet.Value;
-            }
-        }
+        public int NumberOfLines => WrappedSpec.GetNumberOfLines();
 
         #endregion
 

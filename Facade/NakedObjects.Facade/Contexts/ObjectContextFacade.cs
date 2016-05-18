@@ -17,13 +17,9 @@ namespace NakedObjects.Facade.Contexts {
             get { throw new NotImplementedException(); }
         }
 
-        public override ITypeFacade Specification {
-            get { return Target.Specification; }
-        }
+        public override ITypeFacade Specification => Target.Specification;
 
-        public override ITypeFacade ElementSpecification {
-            get { return Target.ElementSpecification; }
-        }
+        public override ITypeFacade ElementSpecification => Target.ElementSpecification;
 
         public PropertyContextFacade[] VisibleProperties { get; set; }
         public ActionContextFacade[] VisibleActions { get; set; }

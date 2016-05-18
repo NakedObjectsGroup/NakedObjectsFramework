@@ -12,8 +12,6 @@ namespace NakedObjects.Facade {
         public ServiceResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) {}
         public ServiceResourceNotFoundNOSException(string resourceId) : base(resourceId) {}
 
-        public override string Message {
-            get { return String.Format("No such service {0}", ResourceId); }
-        }
+        public override string Message => $"No such service {ResourceId}";
     }
 }

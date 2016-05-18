@@ -7,13 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Facade {
-    public interface IFieldFacade  {
+    public interface IFieldFacade {
         ITypeFacade Specification { get; }
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
@@ -35,14 +34,14 @@ namespace NakedObjects.Facade {
         bool IsDateOnly { get; }
 
         DataType? DataType { get; }
+        int AutoCompleteMinLength { get; }
+
+        bool IsFindMenuEnabled { get; }
 
         IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         Tuple<string, ITypeFacade>[] GetChoicesParameters();
         IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
-        int AutoCompleteMinLength { get; }
-
-        bool IsFindMenuEnabled { get; }
 
         string GetMaskedValue(IObjectFacade objectFacade);
         bool DefaultTypeIsExplicit(IObjectFacade objectFacade);

@@ -7,24 +7,15 @@
 
 namespace NakedObjects.Facade.Contexts {
     public class ChoiceContextFacade : ContextFacade {
-        private readonly string id;
-        private readonly ITypeFacade spec;
-
         public ChoiceContextFacade(string id, ITypeFacade spec) {
-            this.id = id;
-            this.spec = spec;
+            Id = id;
+            Specification = spec;
         }
 
-        public override string Id {
-            get { return id; }
-        }
+        public override string Id { get; }
 
-        public override ITypeFacade Specification {
-            get { return spec; }
-        }
+        public override ITypeFacade Specification { get; }
 
-        public override ITypeFacade ElementSpecification {
-            get { return null; }
-        }
+        public override ITypeFacade ElementSpecification => null;
     }
 }

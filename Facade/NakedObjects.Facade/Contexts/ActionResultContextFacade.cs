@@ -11,22 +11,12 @@ namespace NakedObjects.Facade.Contexts {
         public bool HasResult { get; set; }
         public ActionContextFacade ActionContext { get; set; }
 
-        public override IObjectFacade Target {
-            get { return ActionContext.Target; }
-        }
+        public override IObjectFacade Target => ActionContext.Target;
 
-        public override string Id {
-            get { return ActionContext.Action.Id; }
-        }
+        public override string Id => ActionContext.Action.Id;
 
-        public override ITypeFacade Specification {
-            get { return Result == null ? ActionContext.Specification : Result.Specification; }
-        }
+        public override ITypeFacade Specification => Result == null ? ActionContext.Specification : Result.Specification;
 
-        public override ITypeFacade ElementSpecification {
-            get { return Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification; }
-        }
-
-      
+        public override ITypeFacade ElementSpecification => Result == null ? ActionContext.ElementSpecification : Result.ElementSpecification;
     }
 }

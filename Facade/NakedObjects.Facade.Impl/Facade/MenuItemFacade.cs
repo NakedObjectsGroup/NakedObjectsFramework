@@ -17,9 +17,9 @@ namespace NakedObjects.Facade.Impl {
 
         #region IMenuItemFacade Members
 
-        public string Name { get; private set; }
-        public string Id { get; private set; }
-        public object Wrapped { get; private set; }
+        public string Name { get; }
+        public string Id { get; }
+        public object Wrapped { get; }
 
         #endregion
     }

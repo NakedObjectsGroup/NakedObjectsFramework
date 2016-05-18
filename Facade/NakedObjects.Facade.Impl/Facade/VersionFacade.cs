@@ -19,15 +19,11 @@ namespace NakedObjects.Facade.Impl {
             this.version = version;
         }
 
-        public DateTime? Time {
-            get { return version.Time; }
-        }
+        public DateTime? Time => version.Time;
 
         #region IVersionFacade Members
 
-        public string Digest {
-            get { return version.Digest; }
-        }
+        public string Digest => version.Digest;
 
         public bool IsDifferent(string digest) {
             return version.IsDifferent(digest);

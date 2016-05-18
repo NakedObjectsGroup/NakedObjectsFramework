@@ -42,7 +42,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             }
 
             if (e is InvalidEntryException || e is ArgumentException) {
-                return new BadRequestNOSException("Arguments invalid", e); // todo i18n
+                return new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e);
             }
 
             if (e is TargetParameterCountException) {

@@ -11,9 +11,7 @@ namespace NakedObjects.Facade {
     public class GeneralErrorNOSException : NakedObjectsFacadeException {
         public GeneralErrorNOSException(Exception e) : base(e.Message, e) {}
 
-        public override string Message {
-            get { return GetInnermostException(this).Message; }
-        }
+        public override string Message => GetInnermostException(this).Message;
 
         private static Exception GetInnermostException(Exception e) {
             if (e.InnerException == null) {

@@ -19,8 +19,6 @@ namespace NakedObjects.Facade {
 
         public IObjectFacade SourceNakedObject { get; set; }
 
-        public override string Message {
-            get { return "If-Match header required with last-known value of ETag for the resource in order to modify its state"; }
-        }
+        public override string Message => "If-Match header required with last-known value of ETag for the resource in order to modify its state";
     }
 }

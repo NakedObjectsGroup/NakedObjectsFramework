@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedObjects.Facade {
     public class TypeActionParameterResourceNotFoundNOSException : ResourceNotFoundNOSException {
         public TypeActionParameterResourceNotFoundNOSException(string resourceId, string domainId, string parmId) : base(resourceId) {
@@ -14,11 +12,9 @@ namespace NakedObjects.Facade {
             ParmId = parmId;
         }
 
-        public string DomainId { get; private set; }
+        public string DomainId { get; }
         public string ParmId { get; private set; }
 
-        public override string Message {
-            get { return String.Format("No such parameter name RId:{0} DId {1} ", ResourceId, DomainId); }
-        }
+        public override string Message => $"No such parameter name RId:{ResourceId} DId {DomainId} ";
     }
 }

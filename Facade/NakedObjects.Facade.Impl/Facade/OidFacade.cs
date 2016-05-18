@@ -20,9 +20,7 @@ namespace NakedObjects.Facade.Impl {
 
         #region IOidFacade Members
 
-        public object Value {
-            get { return oid; }
-        }
+        public object Value => oid;
 
         #endregion
 

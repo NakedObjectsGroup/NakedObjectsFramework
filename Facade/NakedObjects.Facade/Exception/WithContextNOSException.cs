@@ -35,6 +35,6 @@ namespace NakedObjects.Facade {
             private set { contexts = value; }
         }
 
-        public ContextFacade ContextFacade { get; private set; }
+        public ContextFacade ContextFacade { get; }
     }
 }

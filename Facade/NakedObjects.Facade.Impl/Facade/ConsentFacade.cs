@@ -20,21 +20,13 @@ namespace NakedObjects.Facade.Impl {
 
         #region IConsentFacade Members
 
-        public bool IsAllowed {
-            get { return consent.IsAllowed; }
-        }
+        public bool IsAllowed => consent.IsAllowed;
 
-        public bool IsVetoed {
-            get { return consent.IsVetoed; }
-        }
+        public bool IsVetoed => consent.IsVetoed;
 
-        public string Reason {
-            get { return consent.Reason; }
-        }
+        public string Reason => consent.Reason;
 
-        public Exception Exception {
-            get { return consent.Exception; }
-        }
+        public Exception Exception => consent.Exception;
 
         #endregion
 

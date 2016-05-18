@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Adapter;
@@ -27,10 +26,10 @@ namespace NakedObjects.Facade.Impl.Implementation {
         #region IOidTranslator Members
 
         public IOidTranslation GetOidTranslation(params string[] id) {
-            if (id.Count() == 2) {
+            if (id.Length == 2) {
                 return new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last());
             }
-            if (id.Count() == 1) {
+            if (id.Length == 1) {
                 return new OidTranslationSlashSeparatedTypeAndIds(id.First());
             }
 
@@ -62,7 +61,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
             if (obj is DateTime) {
                 obj = ((DateTime) obj).Ticks;
             }
-            return (string) Convert.ChangeType(obj, typeof (string)); // better ? 
+            return (string) Convert.ChangeType(obj, typeof(string)); // better ? 
         }
 
         protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
@@ -80,21 +79,6 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return GetKeyCodeMapper().CodeFromKey(keys, nakedObjectForKey.Object.GetType());
         }
 
-        private static object CoerceType(Type type, string value) {
-            if (type == typeof (DateTime)) {
-                long ticks = long.Parse(value);
-                return new DateTime(ticks);
-            }
-
-            return Convert.ChangeType(value, type);
-        }
-
-        private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
-            PropertyInfo[] keyProperties = framework.Persistor.GetKeys(type);
-            int index = 0;
-            return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
-        }
-
         private ITypeCodeMapper GetTypeCodeMapper() {
             return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultTypeCodeMapper();
@@ -103,10 +87,6 @@ namespace NakedObjects.Facade.Impl.Implementation {
         private IKeyCodeMapper GetKeyCodeMapper() {
             return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
                    ?? new DefaultKeyCodeMapper();
-        }
-
-        private string[] GetKeys(string instanceId, Type type) {
-            return GetKeyCodeMapper().KeyFromCode(instanceId, type);
         }
 
         private string GetCode(Type type) {

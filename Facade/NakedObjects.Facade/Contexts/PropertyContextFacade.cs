@@ -10,16 +10,10 @@ namespace NakedObjects.Facade.Contexts {
         public IAssociationFacade Property { get; set; }
         public bool Mutated { get; set; }
 
-        public override string Id {
-            get { return Property.Id; }
-        }
+        public override string Id => Property.Id;
 
-        public override ITypeFacade Specification {
-            get { return Property.Specification; }
-        }
+        public override ITypeFacade Specification => Property.Specification;
 
-        public override ITypeFacade ElementSpecification {
-            get { return Property.ElementSpecification; }
-        }
+        public override ITypeFacade ElementSpecification => Property.ElementSpecification;
     }
 }
