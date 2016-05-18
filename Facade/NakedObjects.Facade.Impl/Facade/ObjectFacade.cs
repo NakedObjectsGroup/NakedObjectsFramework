@@ -106,10 +106,7 @@ namespace NakedObjects.Facade.Impl {
             return context;
         }
 
-        public object[] GetSelected() {
-            var memento = WrappedNakedObject.Oid as ICollectionMemento;
-            return memento != null ? memento.SelectedObjects.ToArray() : new object[] {};
-        }
+       
 
         public PropertyInfo[] GetKeys() {
             if (WrappedNakedObject.Spec is IServiceSpec) {
@@ -125,40 +122,15 @@ namespace NakedObjects.Facade.Impl {
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool IsPaged {
-            get {
-                ICollectionMemento collectionMemento = WrappedNakedObject.Oid as ICollectionMemento;
-                return collectionMemento != null && collectionMemento.IsPaged;
-            }
-        }
-
         public bool IsViewModelEditView => IsViewModel && WrappedNakedObject.Spec.GetFacet<IViewModelFacet>().IsEditView(WrappedNakedObject);
 
         public bool IsViewModel => WrappedNakedObject.Spec.ContainsFacet<IViewModelFacet>();
 
         public bool IsDestroyed => WrappedNakedObject.ResolveState.IsDestroyed();
 
-        public IActionFacade MementoAction {
-            get {
-                var mementoOid = WrappedNakedObject.Oid as ICollectionMemento;
-                return mementoOid == null ? null : new ActionFacade(mementoOid.Action, FrameworkFacade, framework, "");
-            }
-        }
+      
 
-        public string EnumIntegralValue {
-            get {
-                var enumFacet = WrappedNakedObject.Spec.GetFacet<IEnumValueFacet>();
-
-                if (enumFacet != null) {
-                    return enumFacet.IntegralValue(WrappedNakedObject);
-                }
-
-                var value = WrappedNakedObject.Object == null ? "" : WrappedNakedObject.Object.ToString();
-
-                long result;
-                return long.TryParse(value, out result) ? result.ToString() : null;
-            }
-        }
+       
 
         public string InvariantString => WrappedNakedObject.InvariantString();
 

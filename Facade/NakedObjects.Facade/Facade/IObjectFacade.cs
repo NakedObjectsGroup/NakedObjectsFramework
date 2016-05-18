@@ -16,10 +16,7 @@ namespace NakedObjects.Facade {
         object Object { get; }
         IOidFacade Oid { get; }
         IVersionFacade Version { get; }
-        IActionFacade MementoAction { get; }
-        string EnumIntegralValue { get; }
         string PresentationHint { get; }
-        bool IsPaged { get; }
         bool IsCollectionMemento { get; }
         bool IsTransient { get; }
         bool IsDestroyed { get; }
@@ -35,7 +32,6 @@ namespace NakedObjects.Facade {
         IObjectFacade Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContextFacade GetAttachment();
-        object[] GetSelected();
         void Resolve();
         void SetIsNotQueryableState(bool state);
     }

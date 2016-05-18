@@ -46,6 +46,6 @@ namespace NakedObjects.Facade {
         bool IsOfType(ITypeFacade otherSpec);
         Type GetUnderlyingType();
         IActionFacade[] GetCollectionContributedActions();
-        IActionFacade[] GetFinderActions();
+       
     }
 }
