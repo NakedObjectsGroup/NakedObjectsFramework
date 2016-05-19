@@ -13,9 +13,7 @@ namespace NakedObjects.Facade.Contexts {
 
         public Tuple<string, string> Redirected { get; set; }
 
-        public override string Id {
-            get { throw new NotImplementedException(); }
-        }
+        public override string Id => Target.Oid.ToString();
 
         public override ITypeFacade Specification => Target.Specification;
 

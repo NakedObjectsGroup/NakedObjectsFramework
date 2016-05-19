@@ -66,8 +66,6 @@ namespace NakedObjects.Rest.App.Demo {
             container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IOidStrategy, EntityOidStrategy>(new HierarchicalLifetimeManager());
-            container.RegisterType<IIdHelper, IdHelper>(new HierarchicalLifetimeManager());
-
             container.RegisterType<IFrameworkFacade, FrameworkFacade>(new HierarchicalLifetimeManager());
 
             //Externals

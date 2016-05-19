@@ -39,7 +39,11 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public override int GetHashCode() {
-            return (oid != null ? oid.GetHashCode() : 0);
+            return oid != null ? oid.GetHashCode() : 0;
+        }
+
+        public override string ToString() {
+            return oid.ToString();
         }
     }
 }

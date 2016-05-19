@@ -27,9 +27,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
             }
         }
 
-        public override string Id {
-            get { throw new NotImplementedException(); }
-        }
+        public override string Id => Target.Oid.ToString();
 
         public override ITypeSpec Specification => Target.Spec;
 
