@@ -531,7 +531,7 @@ namespace NakedObjects.Rest {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
-                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), false);
             });
         }
 
@@ -541,7 +541,7 @@ namespace NakedObjects.Rest {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                     if (propertyContext.Property.IsCollection) {
-                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments));
+                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), false);
                     }
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
@@ -579,7 +579,7 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessArgument(argument);
                 PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, false), args.Item2.ValidateOnly);
             });
         }
 
@@ -589,7 +589,7 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument(arguments);
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, false), args.Item2.ValidateOnly);
             });
         }
 

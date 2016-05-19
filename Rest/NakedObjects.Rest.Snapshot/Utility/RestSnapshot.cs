@@ -109,7 +109,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value = false)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value)
             : this(oidStrategy, propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
             populator = () => {

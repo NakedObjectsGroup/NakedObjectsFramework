@@ -22,7 +22,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new PropertyContextFacade {
                 Property = new AssociationFacade(Property, facade, framework),
-                Completions = Completions.ToListContextFacade(facade, framework),
+                Completions = Completions?.ToListContextFacade(facade, framework),
                 Mutated = Mutated
             };
 

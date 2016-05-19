@@ -24,7 +24,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
             var pc = new ParameterContextFacade {
                 Parameter = new ActionParameterFacade(Parameter, facade, framework, OverloadedUniqueId ?? ""),
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
-                Completions = Completions.ToListContextFacade(facade, framework)
+                Completions = Completions?.ToListContextFacade(facade, framework)
             };
             return ToContextFacade(pc, facade, framework);
         }
