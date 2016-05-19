@@ -21,7 +21,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         public override int? GetSize() {
-            return propertyContext.Property.Count(propertyContext.Target);
+            return PropertyContext.Property.Count(PropertyContext.Target);
         }
     }
 }

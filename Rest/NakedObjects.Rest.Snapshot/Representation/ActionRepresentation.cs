@@ -39,7 +39,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public LinkRepresentation[] Links { get; set; }
 
         private void SetHeader(IObjectFacade target) {
-            caching = CacheType.Transactional;
+            Caching = CacheType.Transactional;
             SetEtag(target);
         }
 

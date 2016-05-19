@@ -18,28 +18,30 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public abstract class MemberRepresentationStrategy : AbstractStrategy {
         private readonly UriMtHelper objectUri;
-        protected readonly PropertyContextFacade propertyContext;
-        protected readonly HttpRequestMessage req;
         private readonly RelType self;
 
         protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            this.req = req;
-            this.propertyContext = propertyContext;
+            Req = req;
+            PropertyContext = propertyContext;
             objectUri = new UriMtHelper(oidStrategy, req, propertyContext);
             self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
         }
 
+        protected HttpRequestMessage Req { get; }
+
+        protected PropertyContextFacade PropertyContext { get; }
+
         public IObjectFacade GetTarget() {
-            return propertyContext.Target;
+            return PropertyContext.Target;
         }
 
         public string GetId() {
-            return propertyContext.Property.Id;
+            return PropertyContext.Property.Id;
         }
 
         protected UriMtHelper GetHelper() {
-            return new UriMtHelper(OidStrategy, req, propertyContext);
+            return new UriMtHelper(OidStrategy, Req, PropertyContext);
         }
 
         protected string GetAttachmentFileName(PropertyContextFacade context) {
@@ -48,7 +50,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         private LinkRepresentation CreateAttachmentLink() {
-            string title = GetAttachmentFileName(propertyContext);
+            string title = GetAttachmentFileName(PropertyContext);
             return LinkRepresentation.Create(OidStrategy, new AttachmentRelType(GetHelper()), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
@@ -67,14 +69,14 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 tempLinks.Add(CreateUpLink());
                 tempLinks.Add(CreateSelfLink());
             }
-            else if (!propertyContext.Target.IsTransient) {
-                if (propertyContext.Property.IsCollection && !propertyContext.Property.IsEager(propertyContext.Target)) {
+            else if (!PropertyContext.Target.IsTransient) {
+                if (PropertyContext.Property.IsCollection && !PropertyContext.Property.IsEager(PropertyContext.Target)) {
                     tempLinks.Add(CreateCollectionValueLink());
                 }
                 tempLinks.Add(CreateDetailsLink());
             }
 
-            if (!propertyContext.Target.IsTransient && RestUtils.IsAttachment(propertyContext.Specification)) {
+            if (!PropertyContext.Target.IsTransient && RestUtils.IsAttachment(PropertyContext.Specification)) {
                 tempLinks.Add(CreateAttachmentLink());
             }
 
@@ -84,8 +86,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         private LinkRepresentation CreateDetailsLink() {
             var opts = new List<OptionalProperty>();
 
-            if (propertyContext.Property.IsEager(propertyContext.Target)) {
-                opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(OidStrategy, req, propertyContext, Flags)));
+            if (PropertyContext.Property.IsEager(PropertyContext.Target)) {
+                opts.Add(new OptionalProperty(JsonPropertyNames.Value, MemberAbstractRepresentation.Create(OidStrategy, Req, PropertyContext, Flags)));
             }
 
             return LinkRepresentation.Create(OidStrategy, new MemberRelType(GetHelper()), Flags, opts.ToArray());

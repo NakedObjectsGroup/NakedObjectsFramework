@@ -49,7 +49,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader(IMenuFacade menu) {
-            caching = CacheType.NonExpiring;
+            Caching = CacheType.NonExpiring;
         }
 
         private void SetLinksAndMembers(HttpRequestMessage req, IMenuFacade menu) {

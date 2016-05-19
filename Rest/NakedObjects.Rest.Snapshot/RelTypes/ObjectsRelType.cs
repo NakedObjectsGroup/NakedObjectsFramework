@@ -14,7 +14,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public ObjectsRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetObjectsPersistUri();
+            return Helper.GetObjectsPersistUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

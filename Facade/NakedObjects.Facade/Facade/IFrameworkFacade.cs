@@ -23,13 +23,12 @@ namespace NakedObjects.Facade {
         ObjectContextFacade GetObject(IObjectFacade objectFacade);
         ObjectContextFacade GetObject(IOidTranslation objectId);
         ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
-        PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
-        PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName);
-        ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
-        ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
-        ListContextFacade GetServiceParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
+        PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);       
+        PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
         ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);
         ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
+        ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments);
+        ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
         PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
         PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
         ActionResultContextFacade ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContextFacade arguments);

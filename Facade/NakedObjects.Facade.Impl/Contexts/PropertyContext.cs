@@ -11,6 +11,8 @@ using NakedObjects.Facade.Contexts;
 namespace NakedObjects.Facade.Impl.Contexts {
     public class PropertyContext : Context {
         public IAssociationSpec Property { get; set; }
+        public ListContext Completions { get; set; }
+
         public bool Mutated { get; set; }
 
         public override string Id => Property.Id;
@@ -20,6 +22,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public PropertyContextFacade ToPropertyContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new PropertyContextFacade {
                 Property = new AssociationFacade(Property, facade, framework),
+                Completions = Completions.ToListContextFacade(facade, framework),
                 Mutated = Mutated
             };
 

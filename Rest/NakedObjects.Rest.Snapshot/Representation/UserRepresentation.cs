@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader() {
-            caching = CacheType.UserInfo;
+            Caching = CacheType.UserInfo;
         }
 
         private void SetLinks(HomePageRelType homePageRelType) {

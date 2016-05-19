@@ -19,12 +19,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public override Uri GetUri() {
-            return helper.GetWellKnownUri(endPoint);
+            return Helper.GetWellKnownUri(endPoint);
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
             MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.List);
-            helper.AddListRepresentationParameter(mediaType, flags);
+            Helper.AddListRepresentationParameter(mediaType, flags);
             return mediaType;
         }
     }

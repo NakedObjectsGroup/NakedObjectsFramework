@@ -13,16 +13,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class AttachmentRelType : RelType {
         public AttachmentRelType(UriMtHelper helper) : base(RelValues.Attachment, helper) {}
 
-        public override string Name {
-            get { return base.Name + (HasRelParameter ? helper.GetRelParameters() : ""); }
-        }
+        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
 
         public override Uri GetUri() {
-            return helper.GetDetailsUri();
+            return Helper.GetDetailsUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return helper.GetAttachmentMediaType();
+            return Helper.GetAttachmentMediaType();
         }
     }
 }

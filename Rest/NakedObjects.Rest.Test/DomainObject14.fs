@@ -99,7 +99,6 @@ let GetMostSimpleObjectConfiguredSelectable(api : RestfulObjectsControllerBase) 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = oType + "/" + ktc "1"
     let url = sprintf "http://localhost/objects/%s" oid
-    RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (url)
     let result = api.GetObject(oType, ktc "1", args)
@@ -171,7 +170,6 @@ let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = oType + "/" + ktc "1"
     let url = sprintf "http://localhost/objects/%s" oid
-    RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Simple
     let args = CreateReservedArgs ""
     api.Request <- jsonGetMsg (url)
     let result = api.GetObject(oType, ktc "1", args)
@@ -781,7 +779,6 @@ let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) 
     let msg = jsonGetMsg (url)
     msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.Object)))
     msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("x-ro-domain-type", "\"" + oType + "\""))
-    RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Simple
     let args = CreateReservedArgs ""
     api.Request <- msg
     let result = api.GetObject(oType, ktc "1", args)
@@ -822,7 +819,6 @@ let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControll
     let url = sprintf "http://localhost/objects/%s" oid
     let msg = jsonGetMsg (url)
     msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("x-ro-domain-type", "\"RestfulObjects.Test.Data.MostSimple\""))
-    RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Simple
     let args = CreateReservedArgs ""
     api.Request <- msg
     let result = api.GetObject(oType, ktc "1", args)

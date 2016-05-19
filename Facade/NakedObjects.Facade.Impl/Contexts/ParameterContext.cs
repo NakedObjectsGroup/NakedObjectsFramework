@@ -12,6 +12,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
     public class ParameterContext : Context {
         public IActionParameterSpec Parameter { get; set; }
         public IActionSpec Action { get; set; }
+        public ListContext Completions { get; set; }
 
         public override string Id => Parameter.Id;
 
@@ -22,7 +23,8 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public ParameterContextFacade ToParameterContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var pc = new ParameterContextFacade {
                 Parameter = new ActionParameterFacade(Parameter, facade, framework, OverloadedUniqueId ?? ""),
-                Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? "")
+                Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
+                Completions = Completions.ToListContextFacade(facade, framework)
             };
             return ToContextFacade(pc, facade, framework);
         }

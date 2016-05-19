@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public MapRepresentation OptionalCapabilities { get; set; }
 
         private void SetHeader() {
-            caching = CacheType.NonExpiring;
+            Caching = CacheType.NonExpiring;
         }
 
         private void SetScalars() {

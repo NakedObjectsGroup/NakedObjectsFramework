@@ -13,12 +13,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetInvokeUri();
+            return Helper.GetInvokeUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(helper.GetActionResultMediaType());
-            helper.AddActionResultRepresentationParameter(mediaType, flags);
+            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(Helper.GetActionResultMediaType());
+            Helper.AddActionResultRepresentationParameter(mediaType, flags);
             return mediaType;
         }
     }

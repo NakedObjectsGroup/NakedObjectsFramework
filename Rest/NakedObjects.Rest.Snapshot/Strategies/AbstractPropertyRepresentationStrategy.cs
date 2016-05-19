@@ -25,7 +25,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         protected IDictionary<string, object> CustomExtensions { get; set; }
 
         protected void AddPrompt(List<LinkRepresentation> links, Func<LinkRepresentation> createPrompt) {
-            if (propertyContext.Property.IsAutoCompleteEnabled || propertyContext.Property.GetChoicesParameters().Any()) {
+            if (PropertyContext.Property.IsAutoCompleteEnabled || PropertyContext.Property.GetChoicesParameters().Any()) {
                 links.Add(createPrompt());
             }
         }
@@ -33,16 +33,16 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         protected LinkRepresentation CreatePromptLink() {
             var opts = new List<OptionalProperty>();
 
-            if (propertyContext.Property.IsAutoCompleteEnabled) {
+            if (PropertyContext.Property.IsAutoCompleteEnabled) {
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))));
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength)));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, PropertyContext.Property.AutoCompleteMinLength)));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
             }
             else {
-                Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
-                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags)).ToArray();
+                Tuple<string, ITypeFacade>[] parms = PropertyContext.Property.GetChoicesParameters();
+                OptionalProperty[] args = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, Req, pnt, Flags)).ToArray();
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args));
                 opts.Add(arguments);
             }
@@ -53,23 +53,23 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         protected LinkRepresentation CreatePersistPromptLink() {
             var opts = new List<OptionalProperty>();
 
-            KeyValuePair<string, object>[] ids = propertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, req, p, propertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
+            KeyValuePair<string, object>[] ids = PropertyContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => GetPropertyValue(OidStrategy, Req, p, PropertyContext.Target, Flags, true, UseDateOverDateTime())).ToArray();
             OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
             var objectMembers = new OptionalProperty(JsonPropertyNames.PromptMembers, MapRepresentation.Create(props));
 
-            if (propertyContext.Property.IsAutoCompleteEnabled) {
+            if (PropertyContext.Property.IsAutoCompleteEnabled) {
                 var searchTerm = new OptionalProperty(JsonPropertyNames.XRoSearchTerm, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))));
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(objectMembers, searchTerm));
 
-                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, propertyContext.Property.AutoCompleteMinLength)));
+                var extensions = new OptionalProperty(JsonPropertyNames.Extensions, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.MinLength, PropertyContext.Property.AutoCompleteMinLength)));
 
                 opts.Add(arguments);
                 opts.Add(extensions);
             }
             else {
-                Tuple<string, ITypeFacade>[] parms = propertyContext.Property.GetChoicesParameters();
-                var conditionalArguments = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, req, pnt, Flags));
+                Tuple<string, ITypeFacade>[] parms = PropertyContext.Property.GetChoicesParameters();
+                var conditionalArguments = parms.Select(pnt => RestUtils.CreateArgumentProperty(OidStrategy, Req, pnt, Flags));
                 var args = new List<OptionalProperty> {objectMembers};
                 args.AddRange(conditionalArguments);
                 var arguments = new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray()));
@@ -80,10 +80,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         protected void AddMutatorLinks(List<LinkRepresentation> links) {
-            if (propertyContext.Property.IsUsable(propertyContext.Target).IsAllowed) {
+            if (PropertyContext.Property.IsUsable(PropertyContext.Target).IsAllowed) {
                 links.Add(CreateModifyLink());
 
-                if (!propertyContext.Property.IsMandatory) {
+                if (!PropertyContext.Property.IsMandatory) {
                     links.Add(CreateClearLink());
                 }
             }
@@ -102,58 +102,58 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (CustomExtensions == null) {
                 AddChoicesCustomExtension();
 
-                string mask = propertyContext.Property.Mask;
+                string mask = PropertyContext.Property.Mask;
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
                     CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomMask] = mask;
                 }
 
-                var multipleLines = propertyContext.Property.NumberOfLines;
+                var multipleLines = PropertyContext.Property.NumberOfLines;
 
                 if (multipleLines > 1) {
                     CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
-                if (propertyContext.Property.NotNavigable) {
+                if (PropertyContext.Property.NotNavigable) {
                     CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomNotNavigable] = true;
                 }
 
-                CustomExtensions = RestUtils.AddRangeExtension(propertyContext.Property, CustomExtensions);
+                CustomExtensions = RestUtils.AddRangeExtension(PropertyContext.Property, CustomExtensions);
             }
 
             return CustomExtensions;
         }
 
         public bool UseDateOverDateTime() {
-            return propertyContext.Property.IsDateOnly;
+            return PropertyContext.Property.IsDateOnly;
         }
 
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(
-                friendlyname: propertyContext.Property.Name,
-                description: propertyContext.Property.Description,
+                friendlyname: PropertyContext.Property.Name,
+                description: PropertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
                 hasParams: null,
-                optional: !propertyContext.Property.IsMandatory,
-                maxLength: propertyContext.Property.MaxLength,
-                pattern: propertyContext.Property.Pattern,
-                memberOrder: propertyContext.Property.MemberOrder,
-                dataType: propertyContext.Property.DataType,
-                presentationHint: propertyContext.Property.PresentationHint,
+                optional: !PropertyContext.Property.IsMandatory,
+                maxLength: PropertyContext.Property.MaxLength,
+                pattern: PropertyContext.Property.Pattern,
+                memberOrder: PropertyContext.Property.MemberOrder,
+                dataType: PropertyContext.Property.DataType,
+                presentationHint: PropertyContext.Property.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
-                returnType: propertyContext.Specification,
-                elementType: propertyContext.ElementSpecification,
+                returnType: PropertyContext.Specification,
+                elementType: PropertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: UseDateOverDateTime());
         }
 
         public bool GetHasChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any();
+            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !PropertyContext.Property.GetChoicesParameters().Any();
         }
 
         public abstract bool ShowChoices();
@@ -186,8 +186,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (AddChoices()) {
                 CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
 
-                Tuple<IObjectFacade, string>[] choices = propertyContext.Property.GetChoicesAndTitles(propertyContext.Target, null);
-                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, req, tuple.Item1, propertyContext.Property, Flags), tuple.Item2)).ToArray();
+                Tuple<IObjectFacade, string>[] choices = PropertyContext.Property.GetChoicesAndTitles(PropertyContext.Target, null);
+                Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, Req, tuple.Item1, PropertyContext.Property, Flags), tuple.Item2)).ToArray();
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                 MapRepresentation map = MapRepresentation.Create(op);

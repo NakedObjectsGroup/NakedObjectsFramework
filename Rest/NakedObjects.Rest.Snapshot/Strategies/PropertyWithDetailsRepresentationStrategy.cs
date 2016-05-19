@@ -32,19 +32,19 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public override LinkRepresentation[] GetLinks() {
             var links = new List<LinkRepresentation>(GetLinks(inline));
 
-            if (!propertyContext.Target.IsTransient) {
+            if (!PropertyContext.Target.IsTransient) {
                 AddMutatorLinks(links);
             }
 
-            AddPrompt(links, propertyContext.Target.IsTransient ? (Func<LinkRepresentation>) CreatePersistPromptLink : CreatePromptLink);
+            AddPrompt(links, PropertyContext.Target.IsTransient ? (Func<LinkRepresentation>) CreatePersistPromptLink : CreatePromptLink);
 
             return links.ToArray();
         }
 
         protected override bool AddChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (propertyContext.Property.Specification.IsParseable || (propertyContext.Property.Specification.IsCollection && propertyContext.Property.ElementSpecification.IsParseable)) &&
-                   !propertyContext.Property.GetChoicesParameters().Any();
+            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+                   (PropertyContext.Property.Specification.IsParseable || (PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable)) &&
+                   !PropertyContext.Property.GetChoicesParameters().Any();
         }
     }
 }

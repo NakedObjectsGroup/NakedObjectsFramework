@@ -17,8 +17,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             member = property;
         }
 
-        public override string Name {
-            get { return base.Name + helper.GetRelParametersFor(member); }
-        }
+        public override string Name => base.Name + Helper.GetRelParametersFor(member);
     }
 }

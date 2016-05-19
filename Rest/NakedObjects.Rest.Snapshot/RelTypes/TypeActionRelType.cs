@@ -20,16 +20,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             this.action = action;
         }
 
-        public override string Name {
-            get { return base.Name + helper.GetRelParametersFor(action); }
-        }
+        public override string Name => base.Name + Helper.GetRelParametersFor(action);
 
         public override Uri GetUri() {
-            return helper.GetTypeActionsUri(action);
+            return Helper.GetTypeActionsUri(action);
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(helper.GetTypeActionMediaType());
+            return UriMtHelper.GetJsonMediaType(Helper.GetTypeActionMediaType());
         }
     }
 }

@@ -25,9 +25,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class Representation : IRepresentation {
         private static readonly object ModuleBuilderLock = new Object();
-        protected CacheType caching;
-        protected string etag;
-        protected List<string> warnings = new List<string>();
+        protected CacheType Caching;
+        protected string Etag;
+        protected List<string> Warnings = new List<string>();
 
         public Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
             OidStrategy = oidStrategy;
@@ -48,15 +48,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public EntityTagHeaderValue GetEtag() {
-            return etag != null ? new EntityTagHeaderValue(string.Format("\"{0}\"", etag)) : null;
+            return Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
         }
 
         public CacheType GetCaching() {
-            return caching;
+            return Caching;
         }
 
         public string[] GetWarnings() {
-            var allWarnings = new List<string>(warnings);
+            var allWarnings = new List<string>(Warnings);
             PropertyInfo[] properties = GetType().GetProperties();
 
             IEnumerable<IRepresentation> repProperties = properties.Where(p => typeof (IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
@@ -123,7 +123,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             if (!target.Specification.IsService && !target.Specification.IsImmutable(target)) {
                 string digest = target.Version.Digest;
                 if (digest != null) {
-                    etag = digest;
+                    Etag = digest;
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 ILGenerator ilGenerator = ctor.GetILGenerator();
 
                 ilGenerator.Emit(OpCodes.Ldarg_0);
-                for (int i = 1; i <= parentCtorParms.Count(); i++) {
+                for (int i = 1; i <= parentCtorParms.Length; i++) {
                     ilGenerator.Emit(OpCodes.Ldarg, i);
                 }
                 ilGenerator.Emit(OpCodes.Call, parentCtor);

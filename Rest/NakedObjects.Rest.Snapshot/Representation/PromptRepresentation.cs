@@ -17,26 +17,26 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
-        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
-            SetChoices(listContext, propertyContext, req);
+            SetChoices(propertyContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, GetSelfHelper(oidStrategy, propertyContext, req));
-            SetLinks(req, listContext.ElementType, new ObjectRelType(RelValues.Up, GetParentHelper(oidStrategy, propertyContext, req)));
+            SetLinks(req, propertyContext.Completions.ElementType, new ObjectRelType(RelValues.Up, GetParentHelper(oidStrategy, propertyContext, req)));
             SetExtensions();
-            SetHeader(listContext.IsListOfServices);
+            SetHeader(propertyContext.Completions.IsListOfServices);
         }
 
-        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parmContext.Id);
-            SetChoices(listContext, parmContext, req);
+            SetChoices(parmContext, req);
             SelfRelType = new PromptRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, parmContext));
             var helper = new UriMtHelper(oidStrategy, req, parmContext.Target);
             ObjectRelType parentRelType = parmContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
-            SetLinks(req, listContext.ElementType, parentRelType);
+            SetLinks(req, parmContext.Completions.ElementType, parentRelType);
             SetExtensions();
-            SetHeader(listContext.IsListOfServices);
+            SetHeader(parmContext.Completions.IsListOfServices);
         }
 
         [DataMember(Name = JsonPropertyNames.Id)]
@@ -59,12 +59,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return new UriMtHelper(oidStrategy, req, propertyContext.Target);
         }
 
-        private void SetChoices(ListContextFacade listContext, PropertyContextFacade propertyContext, HttpRequestMessage req) {
-            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();
+        private void SetChoices(PropertyContextFacade propertyContext, HttpRequestMessage req) {
+            Choices = propertyContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();
         }
 
-        private void SetChoices(ListContextFacade listContext, ParameterContextFacade paramContext, HttpRequestMessage req) {
-            Choices = listContext.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, paramContext.Parameter, Flags)).ToArray();
+        private void SetChoices(ParameterContextFacade paramContext, HttpRequestMessage req) {
+            Choices = paramContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, paramContext.Parameter, Flags)).ToArray();
         }
 
         private void SetScalars(string id) {
@@ -85,15 +85,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader(bool isListOfServices) {
-            caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
+            Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new PromptRepresentation(oidStrategy, propertyContext, listContext, req, flags);
+        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(oidStrategy, propertyContext, req, flags);
         }
 
-        public static Representation Create(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
-            return new PromptRepresentation(oidStrategy, parmContext, listContext, req, flags);
+        public static Representation Create(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags) {
+            return new PromptRepresentation(oidStrategy, parmContext, req, flags);
         }
     }
 }

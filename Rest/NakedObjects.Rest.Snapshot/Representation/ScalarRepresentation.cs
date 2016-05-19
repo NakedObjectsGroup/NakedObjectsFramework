@@ -37,9 +37,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {
-            var tempLinks = new List<LinkRepresentation>();
-
-            Links = tempLinks.ToArray();
+            Links = new LinkRepresentation[] {};
         }
 
         private void SetExtensions() {

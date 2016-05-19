@@ -14,7 +14,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public HomePageRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetHomeUri();
+            return Helper.GetHomeUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

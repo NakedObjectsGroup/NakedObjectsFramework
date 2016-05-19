@@ -7,7 +7,6 @@
 
 using System.Linq;
 using NakedObjects;
-using NakedObjects.Core.Util.Enumer;
 
 namespace RestfulObjects.Test.Data {
     public class ContributorService {

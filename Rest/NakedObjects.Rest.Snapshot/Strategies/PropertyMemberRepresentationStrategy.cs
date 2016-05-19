@@ -27,9 +27,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         protected override bool AddChoices() {
-            return propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (propertyContext.Property.Specification.IsEnum ||
-                    propertyContext.Property.Specification.IsParseable);
+            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+                   (PropertyContext.Property.Specification.IsEnum ||
+                    PropertyContext.Property.Specification.IsParseable);
         }
     }
 }

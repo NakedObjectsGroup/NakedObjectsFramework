@@ -39,15 +39,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() {}
-        public static DomainModelType ConfiguredDomainModelType { get; set; }
         public static int ConfiguredPageSize { get; set; }
 
         public int Page { get; private set; }
         public int PageSize { get; private set; }
         public bool ValidateOnly { get; private set; }
-        public bool DomainType { get; private set; }
-        public bool SimpleDomainModel { get; private set; }
-        public bool FormalDomainModel { get; private set; }
         public bool FollowLinks { get; private set; }
         public bool SortBy { get; private set; }
         public bool BlobsClobs { get; private set; }
@@ -58,7 +54,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
-            if (value is string) { return Boolean.Parse((string) value); }
+            if (value is string) { return bool.Parse((string) value); }
             if (value is bool) { return (bool) value; }
             return false;
         }
@@ -68,26 +64,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             if (value is string) { return int.Parse((string) value); }
             if (value is int) { return (int) value; }
             return 0;
-        }
-
-        // domain mode logic if selectable 
-        // no flag simple = formal = true 
-        // "simple" simple = true, formal = false
-        // "formal" simple = false, formal = true
-        // any other value simple = formal = false
-
-        private static bool GetDomainModel(object value, DomainModelType model) {
-            switch (ConfiguredDomainModelType) {
-                case DomainModelType.Selectable: {
-                    var s = value as string;
-                    if (value == null) { return true; }
-                    return (s == model.ToString().ToLower());
-                }
-                case DomainModelType.None:
-                    return false;
-                default:
-                    return ConfiguredDomainModelType == model;
-            }
         }
 
         private static int DefaultPageSize(int pageSize) {
@@ -108,10 +84,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private static RestControlFlags GetFlags(Func<string, object> getValue) {
             var controlFlags = new RestControlFlags {
-                ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),
-                DomainType = GetBool(getValue(DomainTypeReserved)),
-                SimpleDomainModel = GetDomainModel(getValue(DomainModelReserved), DomainModelType.Simple),
-                FormalDomainModel = GetDomainModel(getValue(DomainModelReserved), DomainModelType.Formal),
+                ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),              
                 FollowLinks = GetBool(getValue(FollowLinksReserved)),
                 SortBy = GetBool(getValue(SortByReserved)),
                 BlobsClobs = false,
@@ -140,10 +113,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
 
             var controlFlags = new RestControlFlags {
-                ValidateOnly = validateOnly,
-                DomainType = false,
-                SimpleDomainModel = GetDomainModel(domainModel, DomainModelType.Simple),
-                FormalDomainModel = GetDomainModel(domainModel, DomainModelType.Formal),
+                ValidateOnly = validateOnly,            
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,

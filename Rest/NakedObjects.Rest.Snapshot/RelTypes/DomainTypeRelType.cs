@@ -15,7 +15,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public DomainTypeRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetDomainTypeUri();
+            return Helper.GetDomainTypeUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

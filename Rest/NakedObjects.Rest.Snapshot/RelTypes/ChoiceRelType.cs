@@ -23,8 +23,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             this.parameter = parameter;
         }
 
-        public override string Name {
-            get { return base.Name + (parameter == null ? helper.GetRelParametersFor(member) : helper.GetRelParametersFor(parameter)); }
-        }
+        public override string Name => base.Name + (parameter == null ? Helper.GetRelParametersFor(member) : Helper.GetRelParametersFor(parameter));
     }
 }

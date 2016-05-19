@@ -14,12 +14,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) {}
         public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
-        public override string Name {
-            get { return base.Name + (HasRelParameter ? helper.GetRelParameters() : ""); }
-        }
+        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
 
         public override Uri GetUri() {
-            return helper.GetCollectionValueUri();
+            return Helper.GetCollectionValueUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

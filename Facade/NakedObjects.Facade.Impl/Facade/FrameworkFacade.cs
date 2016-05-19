@@ -129,20 +129,8 @@ namespace NakedObjects.Facade.Impl {
             return MapErrors(() => GetProperty(GetObjectAsNakedObject(oid), propertyName).ToPropertyContextFacade(this, Framework));
         }
 
-        public PropertyContextFacade GetProperty(IObjectFacade transient, string propertyName) {
-            return MapErrors(() => GetProperty(transient.WrappedAdapter(), propertyName).ToPropertyContextFacade(this, Framework));
-        }
-
-        public ListContextFacade GetPropertyCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetPropertyCompletions(transient.WrappedAdapter(), propertyName, arguments).ToListContextFacade(this, Framework));
-        }
-
-        public ListContextFacade GetParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetParameterCompletions(GetObjectAsNakedObject(objectId), actionName, parmName, arguments).ToListContextFacade(this, Framework));
-        }
-
-        public ListContextFacade GetServiceParameterCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
-            return MapErrors(() => GetParameterCompletions(GetServiceAsNakedObject(objectId), actionName, parmName, arguments).ToListContextFacade(this, Framework));
+        public PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => GetPropertyWithCompletions(transient.WrappedAdapter(), propertyName, arguments).ToPropertyContextFacade(this, Framework));
         }
 
         public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) {
@@ -151,6 +139,14 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName) {
             return MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextFacade(this, Framework));
+        }
+
+        public ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => GetActionWithCompletions(actionName, GetObjectAsNakedObject(objectId), parmName, arguments).ToActionContextFacade(this, Framework));
+        }
+
+        public ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments) {
+            return MapErrors(() => GetActionWithCompletions(actionName, GetServiceAsNakedObject(serviceName), parmName, arguments).ToActionContextFacade(this, Framework));
         }
 
         public PropertyContextFacade PutProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument) {
@@ -264,14 +260,10 @@ namespace NakedObjects.Facade.Impl {
             };
         }
 
-        private ListContext GetPropertyCompletions(INakedObjectAdapter nakedObject, string propertyName, ArgumentsContextFacade arguments) {
+        private PropertyContext GetPropertyWithCompletions(INakedObjectAdapter nakedObject, string propertyName, ArgumentsContextFacade arguments) {
             var property = GetPropertyInternal(nakedObject, propertyName) as IOneToOneAssociationSpec;
-            return GetCompletions(new PropParmAdapter(property, this, Framework), nakedObject, arguments);
-        }
-
-        private ListContext GetParameterCompletions(INakedObjectAdapter nakedObject, string actionName, string parmName, ArgumentsContextFacade arguments) {
-            IActionParameterSpec parm = GetParameterInternal(actionName, parmName, nakedObject);
-            return GetCompletions(new PropParmAdapter(parm, this, Framework), nakedObject, arguments);
+            var completions = GetCompletions(new PropParmAdapter(property, this, Framework), nakedObject, arguments);
+            return new PropertyContext {Target = nakedObject, Property = property, Completions = completions};
         }
 
         private PropertyContext CanChangeProperty(INakedObjectAdapter nakedObject, string propertyName, object toPut = null) {
@@ -742,8 +734,12 @@ namespace NakedObjects.Facade.Impl {
         }
 
         private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
-            var actionAndUid = GetActionInternal(actionName, nakedObject);
+            Tuple<IActionSpec, string> actionAndUid = GetActionInternal(actionName, nakedObject);
 
+            return GetParameterInternal(actionAndUid, parmName);
+        }
+
+        private IActionParameterSpec GetParameterInternal(Tuple<IActionSpec, string> actionAndUid, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
@@ -764,6 +760,27 @@ namespace NakedObjects.Facade.Impl {
                 VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, nakedObject.Spec, actionAndUid.Item2),
                 OverloadedUniqueId = actionAndUid.Item2
             };
+        }
+
+        private ActionContext GetActionWithCompletions(string actionName, INakedObjectAdapter nakedObject, string parmName, ArgumentsContextFacade arguments) {
+            var actionAndUid = GetActionInternal(actionName, nakedObject);
+            var parm = GetParameterInternal(actionAndUid, parmName);
+            var completions = GetCompletions(new PropParmAdapter(parm, this, Framework), nakedObject, arguments);
+
+            var ac = new ActionContext {
+                Target = nakedObject,
+                Action = actionAndUid.Item1,
+                VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, nakedObject.Spec, actionAndUid.Item2),
+                OverloadedUniqueId = actionAndUid.Item2
+            };
+
+            var pc = ac.VisibleParameters.SingleOrDefault(p => p.Id == parmName);
+
+            if (pc != null) {
+                pc.Completions = completions;
+            }
+
+            return ac;
         }
 
         private ActionContext GetInvokeActionOnObject(IOidTranslation objectId, string actionName) {

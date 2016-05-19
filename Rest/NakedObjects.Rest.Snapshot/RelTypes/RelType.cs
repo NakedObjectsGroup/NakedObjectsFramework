@@ -18,10 +18,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             RelValues.Service, RelValues.Value, RelValues.Prompt, RelValues.CollectionValue, RelValues.Menu
         };
 
-        protected readonly UriMtHelper helper;
+        protected readonly UriMtHelper Helper;
 
         protected RelType(string name, UriMtHelper helper) {
-            this.helper = helper;
+            Helper = helper;
             Name = name;
             Method = RelMethod.Get;
             HasRelParameter = HasRelParameterSet.Contains(name);

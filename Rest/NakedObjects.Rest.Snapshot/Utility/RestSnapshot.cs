@@ -91,20 +91,20 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             logger.DebugFormat("RestSnapshot:propertyprompt");
             populator = () => {
-                Representation = PromptRepresentation.Create(oidStrategy, propertyContext, listContext, req, flags);
+                Representation = PromptRepresentation.Create(oidStrategy, propertyContext, req, flags);
                 SetHeaders();
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             logger.DebugFormat("RestSnapshot:parameterprompt");
             populator = () => {
-                Representation = PromptRepresentation.Create(oidStrategy, parmContext, listContext, req, flags);
+                Representation = PromptRepresentation.Create(oidStrategy, parmContext, req, flags);
                 SetHeaders();
             };
         }
@@ -226,7 +226,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
-            Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs != null && arcs.Result != null ? arcs.Result.Redirected : null);
+            Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs?.Result != null ? arcs.Result.Redirected : null);
 
             if (redirected != null) {
                 Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);

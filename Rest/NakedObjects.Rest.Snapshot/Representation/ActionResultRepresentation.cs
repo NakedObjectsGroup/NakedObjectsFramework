@@ -37,7 +37,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public string ResultType { get; set; }
 
         private void SetHeader(ActionResultContextFacade actionResult) {
-            caching = CacheType.Transactional;
+            Caching = CacheType.Transactional;
             if (actionResult.Specification.IsObject && actionResult.Result != null) {
                 SetEtag(actionResult.Result.Target);
             }

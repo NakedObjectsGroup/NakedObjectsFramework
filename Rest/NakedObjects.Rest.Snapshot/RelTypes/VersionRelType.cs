@@ -15,7 +15,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public VersionRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetWellKnownUri(SegmentValues.Version);
+            return Helper.GetWellKnownUri(SegmentValues.Version);
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

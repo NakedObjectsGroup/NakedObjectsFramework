@@ -51,11 +51,6 @@ namespace NakedObjects.Rest {
 
         public static bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
-        public static RestControlFlags.DomainModelType DomainModel {
-            get { return RestControlFlags.ConfiguredDomainModelType; }
-            set { RestControlFlags.ConfiguredDomainModelType = value; }
-        }
-
         // cache settings in seconds, 0 = no cache, "no, short, long")   
         public static Tuple<int, int, int> CacheSettings { get; set; }
 
@@ -468,13 +463,10 @@ namespace NakedObjects.Rest {
         public virtual HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                // TODO enhance frameworkFacade to return property with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = FrameworkFacade.GetObject(link);
-
-                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
-                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, args.Item1);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, args.Item2), false);
+                PropertyContextFacade propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, args.Item1);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, args.Item2), false);
             });
         }
 
@@ -483,36 +475,30 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPromptArguments(promptArguments);
                 Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
-                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(obj.Target, propertyName);
-                ListContextFacade completions = FrameworkFacade.GetPropertyCompletions(obj.Target, propertyName, promptArgs.Item1);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, completions, Request, promptArgs.Item2), false);
+                PropertyContextFacade propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, promptArgs.Item1);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, promptArgs.Item2), false);
             });
         }
 
         public virtual HttpResponseMessage GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-                // TODO enhance frameworkFacade to return parameter with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                ActionContextFacade action = FrameworkFacade.GetObjectAction(link, actionName);
+                ActionContextFacade action = FrameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, args.Item1);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                ListContextFacade completions = FrameworkFacade.GetParameterCompletions(link, actionName, parmName, args.Item1);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, args.Item2), false);
             });
         }
 
         public virtual HttpResponseMessage GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
-
-                // TODO enhance frameworkFacade to return parameter with completions 
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-                ActionContextFacade action = FrameworkFacade.GetServiceAction(link, actionName);
-                ListContextFacade completions = FrameworkFacade.GetServiceParameterCompletions(link, actionName, parmName, args.Item1);
+                ActionContextFacade action = FrameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, args.Item1);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, completions, Request, args.Item2), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, args.Item2), false);
             });
         }
 
@@ -621,7 +607,6 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
-                //CacheTransient(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
@@ -632,7 +617,6 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
@@ -644,7 +628,6 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
-                //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
@@ -656,9 +639,7 @@ namespace NakedObjects.Rest {
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 result.Warnings = FrameworkFacade.MessageBroker.Warnings;
                 result.Messages = FrameworkFacade.MessageBroker.Messages;
-
                 VerifyNoError(result);
-                //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
@@ -670,7 +651,6 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }
@@ -681,7 +661,6 @@ namespace NakedObjects.Rest {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
-                //CacheTransient(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
             });
         }

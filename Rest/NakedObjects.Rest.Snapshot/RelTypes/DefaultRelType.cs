@@ -26,8 +26,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             this.paramId = paramId;
         }
 
-        public override string Name {
-            get { return base.Name + (parameter == null ? helper.GetRelParametersFor(actionId, paramId) : helper.GetRelParametersFor(parameter)); }
-        }
+        public override string Name => base.Name + (parameter == null ? Helper.GetRelParametersFor(actionId, paramId) : Helper.GetRelParametersFor(parameter));
     }
 }

@@ -62,9 +62,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequestMessage req, ITypeFacade spec) {
-            var tempLinks = new List<LinkRepresentation>();
-
-            Links = tempLinks.ToArray();
+            Links = new LinkRepresentation[] {};
         }
 
         private void SetLinks(HttpRequestMessage req, ActionContextFacade actionContext) {
@@ -72,7 +70,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader(bool isListOfServices) {
-            caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
+            Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
         protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext = null) {

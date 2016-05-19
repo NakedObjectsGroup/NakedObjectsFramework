@@ -57,7 +57,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader(ObjectContextFacade objectContext) {
-            caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
+            Caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
             SetEtag(objectContext.Target);
         }
 

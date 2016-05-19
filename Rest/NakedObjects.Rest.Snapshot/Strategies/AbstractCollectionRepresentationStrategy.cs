@@ -24,8 +24,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(
-                friendlyname: propertyContext.Property.Name,
-                description: propertyContext.Property.Description,
+                friendlyname: PropertyContext.Property.Name,
+                description: PropertyContext.Property.Description,
                 pluralName: null,
                 domainType: null,
                 isService: null,
@@ -33,20 +33,20 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 optional: null,
                 maxLength: null,
                 pattern: null,
-                memberOrder: propertyContext.Property.MemberOrder,
-                dataType: propertyContext.Property.DataType,
-                presentationHint: propertyContext.Property.PresentationHint,
+                memberOrder: PropertyContext.Property.MemberOrder,
+                dataType: PropertyContext.Property.DataType,
+                presentationHint: PropertyContext.Property.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
                 returnType: Collection.Specification,
-                elementType: propertyContext.ElementSpecification,
+                elementType: PropertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);
         }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
-            var exts = GetTableViewCustomExtensions(propertyContext.Property.TableViewData);
+            var exts = GetTableViewCustomExtensions(PropertyContext.Property.TableViewData);
 
-            if (propertyContext.Property.RenderEagerly) {
+            if (PropertyContext.Property.RenderEagerly) {
                 exts = exts ?? new Dictionary<string, object>();
                 exts[JsonPropertyNames.CustomRenderEagerly] = true;
             }
@@ -56,13 +56,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public abstract LinkRepresentation[] GetValue();
 
         protected LinkRepresentation CreateValueLink(IObjectFacade no) {
-            return LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, no)), Flags,
+            return LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
        
         protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) {
-            return RestUtils.CreateTableRowValueLink(no, propertyContext, OidStrategy, req, Flags);
+            return RestUtils.CreateTableRowValueLink(no, PropertyContext, OidStrategy, Req, Flags);
         }
 
         public abstract int? GetSize();

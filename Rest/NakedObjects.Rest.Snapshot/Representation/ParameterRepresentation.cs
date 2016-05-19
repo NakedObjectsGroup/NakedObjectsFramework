@@ -84,7 +84,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
                 OptionalProperty[] op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
                 MapRepresentation map = MapRepresentation.Create(op);
-                custom = custom ?? new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomChoices] = map;
             }
 

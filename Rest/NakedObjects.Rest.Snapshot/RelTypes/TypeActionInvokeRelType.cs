@@ -14,7 +14,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public TypeActionInvokeRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
         public override Uri GetUri() {
-            return helper.GetTypeActionInvokeUri();
+            return Helper.GetTypeActionInvokeUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {

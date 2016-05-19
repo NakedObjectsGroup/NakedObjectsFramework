@@ -8,6 +8,7 @@
 namespace NakedObjects.Facade.Contexts {
     public class ParameterContextFacade : ContextFacade {
         public IActionParameterFacade Parameter { get; set; }
+        public ListContextFacade Completions { get; set; }
 
         public override string Id => Parameter.Id;
 

@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetHeader() {
-            caching = CacheType.NonExpiring;
+            Caching = CacheType.NonExpiring;
         }
 
         private void SetExtensions() {

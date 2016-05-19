@@ -120,7 +120,6 @@ type DNof4TestsDomainTypeConcurrency() =
         
         [<TearDown>]
         member x.TearDown() = 
-            RestfulObjectsControllerBase.DomainModel <- RestControlFlags.DomainModelType.Selectable
             
             RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         

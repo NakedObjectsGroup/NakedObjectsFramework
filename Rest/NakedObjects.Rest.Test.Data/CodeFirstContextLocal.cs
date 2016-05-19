@@ -140,7 +140,7 @@ namespace RestfulObjects.Test.Data {
             var wat1 = new WithAttachments { Id = 1 };
             context.WithAttachments.Add(wat1);
 
-            int added = context.SaveChanges();
+            context.SaveChanges();
 
             wc1.ACollection.Remove(ms3);
 

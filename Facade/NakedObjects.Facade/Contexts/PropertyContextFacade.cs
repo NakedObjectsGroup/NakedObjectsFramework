@@ -15,5 +15,7 @@ namespace NakedObjects.Facade.Contexts {
         public override ITypeFacade Specification => Property.Specification;
 
         public override ITypeFacade ElementSpecification => Property.ElementSpecification;
+
+        public ListContextFacade Completions { get; set; }
     }
 }

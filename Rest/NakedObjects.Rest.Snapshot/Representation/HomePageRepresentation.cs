@@ -34,7 +34,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public MapRepresentation Extensions { get; set; }
 
         private void SetHeader() {
-            caching = CacheType.NonExpiring;
+            Caching = CacheType.NonExpiring;
         }
 
         private void SetExtensions() {

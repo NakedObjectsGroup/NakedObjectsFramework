@@ -332,10 +332,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
-            var tempLinks = new List<LinkRepresentation>();
-
+           
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
-                new OptionalProperty(JsonPropertyNames.Links, tempLinks.ToArray())));
+                new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] {})));
         }
 
         public static string DefaultMimeType(this AttachmentContextFacade attachment) {
@@ -389,10 +388,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 customExtensions[JsonPropertyNames.CustomRange] = map;
             }
             return customExtensions;
-        }
-
-        private static bool IsColumn(IAssociationFacade property, string[] columns) {
-            return columns == null || columns.Contains(property.Id);
         }
 
         private static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,

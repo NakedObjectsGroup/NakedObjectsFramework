@@ -14,12 +14,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public PromptRelType(UriMtHelper helper) : base(RelValues.Prompt, helper) {}
         public PromptRelType(string name, UriMtHelper helper) : base(name, helper) {}
 
-        public override string Name {
-            get { return base.Name + (HasRelParameter ? helper.GetRelParameters() : ""); }
-        }
+        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
 
         public override Uri GetUri() {
-            return helper.GetPromptUri();
+            return Helper.GetPromptUri();
         }
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
