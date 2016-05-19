@@ -74,8 +74,6 @@ namespace NakedObjects.Facade.Impl {
             return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
         }
 
-        // todo move into adapterutils
-
         public IObjectFacade Page(int page, int size) {
             return new ObjectFacade(Page(WrappedNakedObject, page, size), FrameworkFacade, framework);
         }

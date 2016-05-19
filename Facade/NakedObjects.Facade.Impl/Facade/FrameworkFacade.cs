@@ -477,7 +477,6 @@ namespace NakedObjects.Facade.Impl {
             if (actionContext.Action.IsContributedMethod && !actionContext.Action.OnSpec.Equals(actionContext.Target.Spec)) {
                 IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
-                // todo investigate this rawparms should either contain or not contain  target
                 if (parm != null) {
                     rawParms[parm.Id] = actionContext.Target.Object;
                 }
@@ -589,7 +588,6 @@ namespace NakedObjects.Facade.Impl {
             return actionResultContext.ToActionResultContextFacade(this, Framework);
         }
 
-        // TODO either move this into framework or (better?) add a VetoCause enum to Veto and use  
         private static IConsent IsCurrentlyMutable(INakedObjectAdapter target) {
             bool isPersistent = target.ResolveState.IsPersistent();
 
@@ -712,29 +710,35 @@ namespace NakedObjects.Facade.Impl {
             }
 
             IActionSpec[] actions = nakedObject.Spec.GetActionLeafNodes().Where(p => p.IsVisible(nakedObject)).ToArray();
-            IActionSpec action = actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
-
-            // todo tidy this 
-            if (action == null) {
-                var typeOfFacet = nakedObject.Spec.GetFacet<ITypeOfFacet>();
-
-                if (typeOfFacet != null) {
-                    var metamodel = Framework.MetamodelManager.Metamodel;
-                    var elementSpecImmut = typeOfFacet.GetValueSpec(nakedObject, metamodel);
-                    var elementSpec = Framework.MetamodelManager.GetSpecification(elementSpecImmut);
-
-                    if (elementSpec != null) {
-                        actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
-                        action = actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
-                    }
-                }
-            }
+            IActionSpec action =
+                GetAction(actionName, nakedObject, actions) ??
+                GetActionFromElementSpec(actionName, nakedObject);
 
             if (action == null) {
                 throw new ActionResourceNotFoundNOSException(actionName);
             }
 
             return new Tuple<IActionSpec, string>(action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
+        }
+
+        private IActionSpec GetActionFromElementSpec(string actionName, INakedObjectAdapter nakedObject) {
+            var typeOfFacet = nakedObject.Spec.GetFacet<ITypeOfFacet>();
+            IActionSpec action = null;
+            if (typeOfFacet != null) {
+                var metamodel = Framework.MetamodelManager.Metamodel;
+                var elementSpecImmut = typeOfFacet.GetValueSpec(nakedObject, metamodel);
+                var elementSpec = Framework.MetamodelManager.GetSpecification(elementSpecImmut);
+
+                if (elementSpec != null) {
+                    var actions = elementSpec.GetCollectionContributedActions().Where(p => p.IsVisible(nakedObject)).ToArray();
+                    action = GetAction(actionName, nakedObject, actions);
+                }
+            }
+            return action;
+        }
+
+        private static IActionSpec GetAction(string actionName, INakedObjectAdapter nakedObject, IActionSpec[] actions) {
+            return actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
         }
 
         private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
