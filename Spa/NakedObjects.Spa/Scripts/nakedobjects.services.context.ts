@@ -120,7 +120,7 @@ module NakedObjects {
         Clean
     }
 
-    class DirtyCache {
+    class DirtyList {
         private dirtyObjects: _.Dictionary<DirtyState> = {};
 
         setDirty(oid: ObjectIdWrapper, alwaysReload: boolean = false) {
@@ -234,7 +234,7 @@ module NakedObjects {
         let currentUser: UserRepresentation = null;
 
         const recentcache = new RecentCache();
-        const dirtyCache = new DirtyCache();
+        const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
@@ -257,7 +257,7 @@ module NakedObjects {
             const type = oid.domainType;
             const id = oid.instanceId;
 
-            const dirtyState = dirtyCache.getDirty(oid);
+            const dirtyState = dirtyList.getDirty(oid);
             const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload)  && autoLoadDirty);
 
             if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
@@ -278,7 +278,7 @@ module NakedObjects {
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
                     if (forceReload) {
-                        dirtyCache.clearDirty(oid);
+                        dirtyList.clearDirty(oid);
                     }
                     addRecentlyViewed(obj);
                     return $q.when(obj);
@@ -293,15 +293,15 @@ module NakedObjects {
                 then(obj => {
                     currentObjects[paneId] = obj;
                     const oid = obj.getOid();
-                    dirtyCache.clearDirty(oid);
+                    dirtyList.clearDirty(oid);
                     return $q.when(obj);
                 });
         }
 
-        context.getIsDirty = (oid: ObjectIdWrapper) => !oid.isService && dirtyCache.getDirty(oid) !== DirtyState.Clean;
+        context.getIsDirty = (oid: ObjectIdWrapper) => !oid.isService && dirtyList.getDirty(oid) !== DirtyState.Clean;
 
         context.mustReload = (oid: ObjectIdWrapper) => {
-            const dirtyState = dirtyCache.getDirty(oid);
+            const dirtyState = dirtyList.getDirty(oid);
             return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && autoLoadDirty);
         };
 
@@ -339,7 +339,7 @@ module NakedObjects {
             }
             const parent = collectionMember.parent;
             const oid = parent.getOid();
-            const isDirty = dirtyCache.getDirty(oid) !== DirtyState.Clean;
+            const isDirty = dirtyList.getDirty(oid) !== DirtyState.Clean;
         
             return repLoader.populate(details, isDirty);
         };
@@ -664,7 +664,7 @@ module NakedObjects {
 
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
-                    return () => dirtyCache.setDirty(parent.getOid());
+                    return () => dirtyList.setDirty(parent.getOid());
                 } else if (parent instanceof ListRepresentation && parms) {
 
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
@@ -680,7 +680,7 @@ module NakedObjects {
                             .map(v => v.link())
                             .value();
 
-                        return () => _.forEach(links, l => dirtyCache.setDirty(l.getOid()));
+                        return () => _.forEach(links, l => dirtyList.setDirty(l.getOid()));
                     }
                 }
             }
@@ -702,7 +702,7 @@ module NakedObjects {
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(updatedObject.getOid(), true);
+            dirtyList.setDirty(updatedObject.getOid(), true);
 
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);
@@ -855,7 +855,7 @@ module NakedObjects {
 
             transientCache.clear();
             recentcache.clear();
-            dirtyCache.clear();
+            dirtyList.clear();
 
             _.forEach(currentMenuList, (k, v) => delete currentMenuList[v]);
             _.forEach(currentLists, (k, v) => delete currentLists[v]);
