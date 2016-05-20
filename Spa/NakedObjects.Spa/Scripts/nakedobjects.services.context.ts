@@ -158,7 +158,7 @@ module NakedObjects {
     class TransientCache {
         private transientCache: DomainObjectRepresentation[][] = [, [], []]; // per pane 
 
-        private depth = 4;
+        private depth = transientCacheDepth;
 
         add(paneId: number, obj: DomainObjectRepresentation) {
             let paneObjects = this.transientCache[paneId];
@@ -189,7 +189,7 @@ module NakedObjects {
     class RecentCache {
         private recentCache: DomainObjectRepresentation[] = [];
 
-        private depth = 20;
+        private depth = recentCacheDepth;
 
         add(obj: DomainObjectRepresentation) {
 

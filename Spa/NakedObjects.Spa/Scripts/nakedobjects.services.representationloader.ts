@@ -40,6 +40,9 @@ module NakedObjects {
             const repLoader = this as IRepLoader;
             let loadingCount = 0;
 
+            // use our own LRU cache 
+            const cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
+
             function addIfMatchHeader(config: ng.IRequestConfig, digest: string) {
                 if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
                     config.headers = { "If-Match": digest };
@@ -104,7 +107,7 @@ module NakedObjects {
 
                 if (ignoreCache) {
                     // clear cache of existing values
-                    $cacheFactory.get("$http").remove(config.url);
+                    cache.remove(config.url);
                 }
 
                 return $http(config)
@@ -131,7 +134,7 @@ module NakedObjects {
                         withCredentials: true,
                         url: model.getUrl(),
                         method: model.method,
-                        cache: useCache,
+                        cache: useCache ? cache : false,
                         data: model.getBody()
                     };
 
@@ -197,18 +200,18 @@ module NakedObjects {
             };
 
             repLoader.clearCache = (url: string) => {
-                $cacheFactory.get("$http").remove(url);
+                cache.remove(url);
             };
 
             repLoader.addToCache = (url: string, m: IResourceRepresentation) => {                
-                $cacheFactory.get("$http").put(url, m);
+                cache.put(url, m);
             };
 
             repLoader.getFile = (url: string, mt: string, ignoreCache: boolean): ng.IPromise<Blob> => {
 
                 if (ignoreCache) {
                     // clear cache of existing values
-                    $cacheFactory.get("$http").remove(url);
+                    cache.remove(url);
                 }
 
                 const config: ng.IRequestConfig = {
@@ -216,7 +219,7 @@ module NakedObjects {
                     url: url,
                     responseType: "blob",
                     headers: { "Accept": mt },
-                    cache: true
+                    cache: cache
                 };
 
                 return $http(config)
@@ -249,7 +252,7 @@ module NakedObjects {
 
 
             function logoff() {
-                $cacheFactory.get("$http").removeAll();
+                cache.removeAll();
             }
 
             $rootScope.$on(geminiLogoffEvent, () => logoff());

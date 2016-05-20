@@ -38,4 +38,11 @@ module NakedObjects {
 
     export const autoLoadDirty = true;
     export const showDirtyFlag = false || !autoLoadDirty;
+
+    // caching constants do not change unless you know what you're doing 
+
+    export const httpCacheDepth = 1000;
+    export const transientCacheDepth = 4;
+    export const recentCacheDepth = 20;
+
 }
