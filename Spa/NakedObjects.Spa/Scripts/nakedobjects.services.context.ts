@@ -242,16 +242,10 @@ module NakedObjects {
             return repLoader.getFile(url, mt, isDirty);
         }
 
-        context.setFile = (object: DomainObjectRepresentation, url: string, mt: string, file : Blob) => {
-            
-            return repLoader.uploadFile(url, mt, file);
-        }
+        context.setFile = (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => repLoader.uploadFile(url, mt, file);
 
-
-        context.clearCachedFile = (url: string) => {
-             repLoader.clearCache(url);
-        }
-
+        context.clearCachedFile = (url: string) => repLoader.clearCache(url);
+    
         // exposed for test mocking
         context.getDomainObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
             const type = oid.domainType;
