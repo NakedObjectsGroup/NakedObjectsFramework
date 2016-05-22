@@ -1,7 +1,9 @@
 NakedObjectsFramework
 =====================
 
-The Master branch of this repository contains source for version 8 of the Naked Objects Framework (NOF8), which is currently at Beta stage. Note that both NOF7 and NOF8 can be used without cloning the repository, because either may be installed as NuGet packages from the public NuGet gallery - indeed that is the recommended approach.
+The Master branch of this repository contains source for version 8 of the Naked Objects Framework (NOF8). Though this is currently at Beta stage, it is very usable, and, if you are new to Naked Objects we recommend starting with NOF8 rather than the older, stable, NOF7.
+
+Note that both NOF7 and NOF8 can be used as packages from the NuGet public gallery.  There is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers.  (If you really want to know how to do it, see the section 'How to build the framework from source code' in the Developer Manual.)
 
 NOF8
 ====
