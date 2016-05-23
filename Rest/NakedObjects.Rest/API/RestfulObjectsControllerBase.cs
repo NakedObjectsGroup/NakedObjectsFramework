@@ -473,7 +473,7 @@ namespace NakedObjects.Rest {
         public virtual HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName, PromptArgumentMap promptArguments) {
             return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPromptArguments(promptArguments);
-                Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false);
+                Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
                 PropertyContextFacade propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, promptArgs.Item1);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, promptArgs.Item2), false);
@@ -505,7 +505,7 @@ namespace NakedObjects.Rest {
         public virtual HttpResponseMessage PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, true);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, true, false);
                 ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
@@ -603,7 +603,7 @@ namespace NakedObjects.Rest {
 
         public virtual HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false,  true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2), args.Item2.ValidateOnly);
@@ -613,7 +613,7 @@ namespace NakedObjects.Rest {
         public virtual HttpResponseMessage PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
@@ -623,7 +623,7 @@ namespace NakedObjects.Rest {
         public virtual HttpResponseMessage PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
+                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, args.Item2), args.Item2.ValidateOnly);
@@ -942,16 +942,7 @@ namespace NakedObjects.Rest {
             }, tuple.Item2);
         }
 
-        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, string domainType, string instanceId, bool ignoreConcurrency = false) {
-            if (!ignoreConcurrency && domainType != null) {
-                ObjectContextFacade contextFacade = FrameworkFacade.GetObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId));
-                ignoreConcurrency = contextFacade.Specification.IsService || contextFacade.Specification.IsImmutable(contextFacade.Target);
-            }
-
-            return ProcessArgumentMap(arguments, errorIfNone, ignoreConcurrency);
-        }
-
-        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency = false) {
+        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency) {
             Tuple<IDictionary<string, object>, RestControlFlags> valuesAndFlags = ExtractValuesAndFlags(arguments, errorIfNone);
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
