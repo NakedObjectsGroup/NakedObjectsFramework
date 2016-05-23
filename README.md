@@ -24,6 +24,10 @@ NOF8 source code is held in the master branch of this repository.
 NOF7
 ====
 
+NOF7 is the current stable release.  However, since it will soon be superseded by NOF8, we recommend that newcomers to Naked Objects start working with the NOF8 beta release from the outset.
+
+The NOF7 client is built upon the ASP.NET MVC 5 framework.  (This will be replaced by an entirely new client architecture in NOF8, but with no changes required to your domain model code).
+
 NOF7 packages are available on the NuGet public gallery as stable releases.
 
 NOF7 source code is available on the 7.0 branch of this repository.
