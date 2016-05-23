@@ -44,6 +44,10 @@ namespace NakedObjects.Facade.Impl.Utility {
             return action.ReturnSpec.IsQueryable || action.ContainsFacet<IQueryOnlyFacet>();
         }
 
+        public static bool IsIdempotent(this IActionSpec action) {
+            return action.ContainsFacet<IIdempotentFacet>();
+        }
+
         public static bool IsViewModelEditView(this INakedObjectAdapter target) {
             return target.Spec.ContainsFacet<IViewModelFacet>() && target.Spec.GetFacet<IViewModelFacet>().IsEditView(target);
         }

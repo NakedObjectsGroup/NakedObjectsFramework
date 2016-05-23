@@ -10,5 +10,6 @@ namespace NakedObjects.Facade.Contexts {
         public object Value { get; set; }
         public bool ValidateOnly { get; set; }
         public string Digest { get; set; }
+        
     }
 }

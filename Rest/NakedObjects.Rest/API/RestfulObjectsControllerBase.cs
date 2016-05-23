@@ -603,7 +603,6 @@ namespace NakedObjects.Rest {
 
         public virtual HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                VerifyActionType(domainType, instanceId, actionName, "GET");
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId, true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
@@ -623,7 +622,6 @@ namespace NakedObjects.Rest {
 
         public virtual HttpResponseMessage PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                VerifyActionType(domainType, instanceId, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, domainType, instanceId);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
@@ -634,7 +632,6 @@ namespace NakedObjects.Rest {
 
         public virtual HttpResponseMessage GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                VerifyActionType(serviceName, actionName, "GET");
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 result.Warnings = FrameworkFacade.MessageBroker.Warnings;
@@ -646,7 +643,6 @@ namespace NakedObjects.Rest {
 
         public virtual HttpResponseMessage PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                VerifyActionType(serviceName, actionName, "PUT");
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
@@ -779,24 +775,14 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private void VerifyActionType(ActionContextFacade context, string method) {
-            if (method.ToUpper() == "PUT" && !(context.Action.IsQueryOnly || context.Action.IsIdempotent)) {
-                throw new NotAllowedNOSException("action is not idempotent"); // i18n 
+        private MethodType GetExpectedMethodType(HttpMethod method) {
+            if (method == HttpMethod.Get) {
+                return MethodType.QueryOnly;
             }
-
-            if (method.ToUpper() == "GET" && !context.Action.IsQueryOnly) {
-                throw new NotAllowedNOSException("action is not side-effect free"); // i18n 
+            if (method == HttpMethod.Put) {
+                return MethodType.Idempotent;
             }
-        }
-
-        private void VerifyActionType(string sName, string actionName, string method) {
-            ActionContextFacade context = FrameworkFacade.GetServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(sName), actionName);
-            VerifyActionType(context, method);
-        }
-
-        private void VerifyActionType(string domainType, string instanceId, string actionName, string method) {
-            ActionContextFacade context = FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName);
-            VerifyActionType(context, method);
+            return MethodType.NonIdempotent;
         }
 
         private HttpResponseMessage InitAndHandleErrors(Func<RestSnapshot> f) {
@@ -973,7 +959,8 @@ namespace NakedObjects.Rest {
                 ValidateOnly = valuesAndFlags.Item2.ValidateOnly,
                 SearchTerm = arguments.SearchTerm,
                 Page = arguments.Page,
-                PageSize = arguments.PageSize
+                PageSize = arguments.PageSize,
+                ExpectedActionType = GetExpectedMethodType(Request.Method)
             }, valuesAndFlags.Item2);
         }
 

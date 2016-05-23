@@ -540,7 +540,21 @@ namespace NakedObjects.Facade.Impl {
             return true;
         }
 
+        private void VerifyActionType(IActionSpec action, MethodType methodType) {
+            if (methodType == MethodType.Idempotent && !(action.IsQueryOnly() || action.IsIdempotent())) {
+                throw new NotAllowedNOSException("action is not idempotent"); // i18n 
+            }
+
+            if (methodType == MethodType.QueryOnly && !action.IsQueryOnly()) {
+                throw new NotAllowedNOSException("action is not side-effect free"); // i18n 
+            }
+        }
+
         private ActionResultContextFacade ExecuteAction(ActionContext actionContext, ArgumentsContextFacade arguments) {
+            // validate action type 
+
+            VerifyActionType(actionContext.Action, arguments.ExpectedActionType);
+
             if (!actionContext.Action.IsQueryOnly()) {
                 ValidateConcurrency(actionContext.Target, arguments.Digest);
             }

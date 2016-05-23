@@ -3420,7 +3420,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
     let args = CreateArgMap parms
-    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = api.PostInvoke (oType, ktc "1--1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)
@@ -3524,7 +3524,7 @@ let VerifyPostInvokeActionMissingParmOnForm (api : RestfulObjectsControllerBase)
     let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
     let args = CreateArgMap parms
     //let args = CreateArgMap(new JObject())
-    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
+    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
     let result = api.PostInvoke (oType, ktc "1--1", pid, args)
     let jsonResult = readSnapshotToJson result
     let parsedResult = JObject.Parse(jsonResult)

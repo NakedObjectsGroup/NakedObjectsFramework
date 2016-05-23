@@ -13,8 +13,8 @@ namespace NakedObjects.Facade.Contexts {
         public bool ValidateOnly { get; set; }
         public string Digest { get; set; }
         public string SearchTerm { get; set; }
-
         public int Page { get; set; }
         public int PageSize { get; set; }
+        public MethodType ExpectedActionType { get; set; }
     }
 }
