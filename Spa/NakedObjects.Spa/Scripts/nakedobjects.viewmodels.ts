@@ -534,7 +534,7 @@ module NakedObjects {
         refresh(routeData: PaneRouteData) {
 
             this.routeData = routeData;
-            if (!this.state || this.state !== routeData.state) {
+            if (this.state !== routeData.state) {
                 this.state = routeData.state;
                 if (this.state === CollectionViewState.Table) {
                     this.recreate(this.page, this.pageSize).then(list => this.updateItems(list.value()));
@@ -618,10 +618,9 @@ module NakedObjects {
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            //clear state so we always refresh items
-            this.state = null;
-
-            this.refresh(routeData);
+            
+            this.state = routeData.state;
+            this.updateItems(list.value());
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
