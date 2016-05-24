@@ -644,6 +644,10 @@ module NakedObjects {
 
             invokeMap.setUrlParameter(roInlinePropertyDetails, false);
 
+            if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
+                invokeMap.setUrlParameter(roInlineCollectionItems, true);
+            }
+
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
