@@ -16,11 +16,19 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
         protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) {
-            Collection = propertyContext.Property.GetValue(propertyContext.Target);
+            : base(oidStrategy, req, propertyContext, flags) {           
         }
 
-        protected IObjectFacade Collection { get; }
+        private IObjectFacade collection;
+
+        protected IObjectFacade Collection {
+            get {
+                if (collection == null) {
+                    collection = PropertyContext.Property.GetValue(PropertyContext.Target);
+                }
+                return collection;
+            }
+        }
 
         protected override MapRepresentation GetExtensionsForSimple() {
             return RestUtils.GetExtensions(
@@ -37,7 +45,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 dataType: PropertyContext.Property.DataType,
                 presentationHint: PropertyContext.Property.PresentationHint,
                 customExtensions: GetCustomPropertyExtensions(),
-                returnType: Collection.Specification,
+                returnType: PropertyContext.Specification,
                 elementType: PropertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);

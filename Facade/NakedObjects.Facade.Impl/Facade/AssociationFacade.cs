@@ -139,11 +139,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public int Count(IObjectFacade target) {
-            if (IsCollection) {
-                INakedObjectAdapter result = WrappedSpec.GetNakedObject(((ObjectFacade) target).WrappedNakedObject);
-                return result.GetCollectionFacetFromSpec().AsQueryable(result).Count();
-            }
-            return 0;
+            return IsCollection ? framework.Persistor.CountField(((ObjectFacade) target).WrappedNakedObject, Id) : 0;
         }
 
         public string GetTitle(IObjectFacade objectFacade) {

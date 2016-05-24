@@ -787,6 +787,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
         }
 
+        // invoked reflectively; do not remove !
         public int Count<T>(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field, INakedObjectManager manager) where T : class {
             if (!nakedObjectAdapter.ResolveState.IsTransient() && !field.ContainsFacet<INotPersistedFacet>()) {
                 using (var dbContext = new DbContext(GetContext(nakedObjectAdapter).WrappedObjectContext, false)) {

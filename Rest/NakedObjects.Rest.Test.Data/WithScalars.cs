@@ -21,7 +21,7 @@ namespace RestfulObjects.Test.Data {
     public class WithScalars {
         private char c;
         private ICollection<MostSimple> list = new List<MostSimple>();
-        private ICollection<MostSimple> set = new HashSet<MostSimple>();
+        private ISet<MostSimple> set = new HashSet<MostSimple>();
 
         public WithScalars() {
             SByte = 10;
@@ -85,9 +85,8 @@ namespace RestfulObjects.Test.Data {
         }
 
 
-
         [NotMapped]
-        public virtual ICollection<MostSimple> Set {
+        public virtual ISet<MostSimple> Set {
             get { return set; }
             set { set = value; }
         }
