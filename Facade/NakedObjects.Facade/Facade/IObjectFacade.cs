@@ -27,7 +27,10 @@ namespace NakedObjects.Facade {
         bool IsViewModel { get; }
         IEnumerable<IObjectFacade> ToEnumerable();
         PropertyInfo[] GetKeys();
-        IObjectFacade Page(int page, int size);
+
+        // forceEnumerable will cause the returned object collection to be 
+        // no longer a queryable. 
+        IObjectFacade Page(int page, int size, bool forceEnumerable);
         IObjectFacade Select(object[] selection, bool forceEnumerable);
         int Count();
         AttachmentContextFacade GetAttachment();

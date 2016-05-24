@@ -31,7 +31,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public MapRepresentation Members { get; set; }
 
         private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags) {
-            return objectContext.Target.Page(flags.Page, flags.PageSize);
+            return objectContext.Target.Page(flags.Page, flags.PageSize, true);
         }
 
         // custom extension for pagination 

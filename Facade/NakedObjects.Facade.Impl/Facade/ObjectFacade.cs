@@ -74,8 +74,8 @@ namespace NakedObjects.Facade.Impl {
             return WrappedNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => new ObjectFacade(no, FrameworkFacade, framework));
         }
 
-        public IObjectFacade Page(int page, int size) {
-            return new ObjectFacade(Page(WrappedNakedObject, page, size), FrameworkFacade, framework);
+        public IObjectFacade Page(int page, int size, bool forceEnumerable) {
+            return new ObjectFacade(Page(WrappedNakedObject, page, size, forceEnumerable), FrameworkFacade, framework);
         }
 
         public IObjectFacade Select(object[] selection, bool forceEnumerable) {
@@ -145,10 +145,10 @@ namespace NakedObjects.Facade.Impl {
             return collectionMemento != null && collectionMemento.IsNotQueryable;
         }
 
-        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size) {
-            var forceEnumerable = IsNotQueryable(objectRepresentingCollection);
+        private INakedObjectAdapter Page(INakedObjectAdapter objectRepresentingCollection, int page, int size, bool forceEnumerable) {
+            var toEnumerable = IsNotQueryable(objectRepresentingCollection) || forceEnumerable;
 
-            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, forceEnumerable);
+            var newNakedObject = objectRepresentingCollection.GetCollectionFacetFromSpec().Page(page, size, objectRepresentingCollection, framework.NakedObjectManager, toEnumerable);
 
             object[] objects = newNakedObject.GetAsEnumerable(framework.NakedObjectManager).Select(no => no.Object).ToArray();
 
