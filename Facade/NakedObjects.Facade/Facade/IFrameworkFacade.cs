@@ -38,5 +38,7 @@ namespace NakedObjects.Facade {
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
         ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
         IObjectFacade GetObject(object domainObject);
+        // Do not remove; used in custom code
+        void Inject(object toInject);
     }
 }

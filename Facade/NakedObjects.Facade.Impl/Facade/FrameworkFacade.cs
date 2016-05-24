@@ -46,6 +46,10 @@ namespace NakedObjects.Facade.Impl {
 
         #region IFrameworkFacade Members
 
+        public void Inject(object toInject) {
+            Framework.DomainObjectInjector.InjectInto(toInject);
+        }
+
         public ObjectContextFacade GetImage(string imageId) {
             return null;
         }
