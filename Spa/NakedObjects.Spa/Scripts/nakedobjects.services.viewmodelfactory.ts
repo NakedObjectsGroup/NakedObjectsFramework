@@ -199,7 +199,7 @@ module NakedObjects {
 
             parmViewModel.parameterRep = parmRep;
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
-            parmViewModel.dflt = parmRep.default().toValueString();
+            parmViewModel.dflt = parmRep.default().toString();
             parmViewModel.optional = parmRep.extensions().optional();
             let required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
