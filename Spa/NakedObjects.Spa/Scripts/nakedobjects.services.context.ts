@@ -753,27 +753,33 @@ module NakedObjects {
         };
 
 
-        const subTypeCache: _.Dictionary<_.Dictionary<boolean>> = {};
+        const subTypeCache: _.Dictionary<_.Dictionary<ng.IPromise<boolean>>> = {};
 
         context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
 
             if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
-                return $q.when(subTypeCache[toCheckType][againstType]);
+                return subTypeCache[toCheckType][againstType];
             }
 
             const isSubTypeOf = new DomainTypeActionInvokeRepresentation(againstType, toCheckType);
 
-            return repLoader.populate(isSubTypeOf, true).
+            const promise = repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {
                     const is = updatedObject.value();
-                    const entry: _.Dictionary<boolean> = {};
-                    entry[againstType] = is;
-                    subTypeCache[toCheckType] = entry;
+                    //const entry: _.Dictionary<boolean> = {};
+                    //entry[againstType] = is;
+                    //subTypeCache[toCheckType] = entry;
                     return is;
                 }).
                 catch((reject: ErrorWrapper) => {
                     return false;
                 });
+
+            const entry: _.Dictionary<ng.IPromise<boolean>> = {};
+            entry[againstType] = promise;
+            subTypeCache[toCheckType] = entry;
+
+            return promise;
         };
 
         function handleHttpServerError(reject: ErrorWrapper) {
