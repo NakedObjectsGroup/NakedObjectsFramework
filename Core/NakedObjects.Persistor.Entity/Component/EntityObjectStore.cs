@@ -1173,12 +1173,13 @@ namespace NakedObjects.Persistor.Entity.Component {
             public void PostSave(EntityObjectStore store) {
                 try {
                     updatingNakedObjects.ForEach(no => no.Updated());
-                    updatingNakedObjects.ForEach(x => x.UpdateVersion(session, Manager));
+                    updatingNakedObjects.ForEach(no => no.UpdateVersion(session, Manager));
                     coUpdating.ForEach(no => no.Updated());
                     // Take a copy of PersistedNakedObjects and clear original so new ones can be added 
                     INakedObjectAdapter[] currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                     PersistedNakedObjects.Clear();
                     currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
+                    currentPersistedNakedObjectsAdapter.ForEach(no => no.UpdateVersion(session, Manager));
                 }
                 finally {
                     updatingNakedObjects.Clear();
