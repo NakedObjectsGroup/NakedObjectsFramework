@@ -2135,7 +2135,7 @@ module NakedObjects.Models {
 
         members(): _.Dictionary<PropertyMember> {
             const members = (this.wrapped as ICustomLink).members ;
-            return _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember);
+            return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember) : null;
         }
 
         private lazyExtensions: Extensions;

@@ -531,13 +531,23 @@ module NakedObjects {
             this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
         }
 
+        hasTableData = () => {
+            const val = this.listRep.value();
+            return (val && val.length > 0) && !!val[0].members();
+        }
+
+
         refresh(routeData: PaneRouteData) {
 
             this.routeData = routeData;
             if (this.state !== routeData.state) {
                 this.state = routeData.state;
-                if (this.state === CollectionViewState.Table) {
-                    this.recreate(this.page, this.pageSize).then(list => this.updateItems(list.value()));
+                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize)
+                        .then(list => {
+                            this.listRep = list;
+                            this.updateItems(list.value());
+                        });
                 } else {
                     this.updateItems(this.listRep.value());
                 }

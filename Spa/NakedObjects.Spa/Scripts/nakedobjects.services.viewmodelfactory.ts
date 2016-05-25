@@ -67,9 +67,7 @@ module NakedObjects {
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
-        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;
-
-        
+        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;     
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
