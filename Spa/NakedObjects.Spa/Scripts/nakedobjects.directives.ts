@@ -640,7 +640,11 @@ module NakedObjects {
                         if (attachment.displayInline()) {
                             attachment.downloadFile().then(blob => {
                                 const reader = new FileReader();
-                                reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                reader.onloadend = () => {
+                                    if (reader.result) {
+                                        element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                    }
+                                }
                                 reader.readAsDataURL(blob);
                             });
                         } else {
