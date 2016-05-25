@@ -760,7 +760,7 @@ module NakedObjects {
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
-        refresh: (routeData: PaneRouteData) => void;
+        refresh: (routeData: PaneRouteData, resetting : boolean) => void;
     }
 
     export class ServicesViewModel {
@@ -859,7 +859,7 @@ module NakedObjects {
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
 
             _.forEach(this.properties, p => p.refresh(this.props[p.id]));
-            _.forEach(this.collections, c => c.refresh(this.routeData));
+            _.forEach(this.collections, c => c.refresh(this.routeData, false));
 
             this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 

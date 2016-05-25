@@ -970,7 +970,7 @@ module NakedObjects {
                             const openCollIds = openCollectionIds(this.routeData());
                             const coll = obj.collectionMember(openCollIds[0]);
                             //Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                            this.context.getCollectionDetails(coll, CollectionViewState.List).then((coll: CollectionRepresentation) => {
+                            this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((coll: CollectionRepresentation) => {
                                 this.attemptGotoLinkNumber(itemNo, coll.value());
                                 return;
                         });
@@ -1422,7 +1422,7 @@ module NakedObjects {
             if (coll.value()) {
                 this.renderItems(coll, startNo, endNo);
             } else {
-                this.context.getCollectionDetails(coll, CollectionViewState.List).then((details: CollectionRepresentation) => {
+                this.context.getCollectionDetails(coll, CollectionViewState.List, false).then((details: CollectionRepresentation) => {
                     this.renderItems(details, startNo, endNo);
                 });
             }

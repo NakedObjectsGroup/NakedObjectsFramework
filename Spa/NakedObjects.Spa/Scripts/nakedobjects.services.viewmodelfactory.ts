@@ -751,7 +751,7 @@ module NakedObjects {
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then((c: number) => collectionViewModel.color = `${linkColor}${c}`);
 
-            collectionViewModel.refresh = (routeData: PaneRouteData) => {
+            collectionViewModel.refresh = (routeData: PaneRouteData, resetting : boolean) => {
 
                 let state = size === 0 ? CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
 
@@ -759,7 +759,7 @@ module NakedObjects {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
 
-                if (state !== collectionViewModel.currentState) {
+                if (resetting || state !== collectionViewModel.currentState) {
 
                     collectionViewModel.size = getCollectionCount(size);
 
@@ -768,8 +768,7 @@ module NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state)
-                            .then((details: CollectionRepresentation) => {
+                        context.getCollectionDetails(collectionRep, state, resetting).then((details: CollectionRepresentation) => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
                                                                                       state === CollectionViewState.Table,
                                                                                       routeData,
@@ -777,8 +776,7 @@ module NakedObjects {
                                 collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                             });
                     } else {
-                        collectionViewModel.items = viewModelFactory
-                            .getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);
                     }
 
                     switch (state) {
@@ -795,7 +793,7 @@ module NakedObjects {
                 }
             }
 
-            collectionViewModel.refresh(routeData);
+            collectionViewModel.refresh(routeData, true);
 
             collectionViewModel.doSummary = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.Summary, paneId);
             collectionViewModel.doList = () => urlManager.setCollectionMemberState(collectionRep.collectionId(), CollectionViewState.List, paneId);

@@ -48,7 +48,7 @@ module NakedObjects {
         getListFromObject: (paneId: number, routeData : PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
-        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState) => ng.IPromise<CollectionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState, ignoreCache : boolean) => ng.IPromise<CollectionRepresentation>;
 
         getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<InvokableActionMember | ActionRepresentation >;
 
@@ -325,7 +325,7 @@ module NakedObjects {
             return repLoader.populate(details, true);
         };
 
-        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState): ng.IPromise<CollectionRepresentation> => {
+        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache : boolean): ng.IPromise<CollectionRepresentation> => {
             const details = collectionMember.getDetails();
 
             if (state === CollectionViewState.Table) {
@@ -335,7 +335,7 @@ module NakedObjects {
             const oid = parent.getOid();
             const isDirty = dirtyList.getDirty(oid) !== DirtyState.Clean;
         
-            return repLoader.populate(details, isDirty);
+            return repLoader.populate(details, isDirty || ignoreCache);
         };
 
         context.getInvokableAction = (action: ActionMember | ActionRepresentation | IInvokableAction): ng.IPromise<IInvokableAction> => {

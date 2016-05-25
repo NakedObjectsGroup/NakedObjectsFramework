@@ -101,8 +101,7 @@ module NakedObjects {
             }
 
 
-            function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.
-            IPromise<IHateoasModel> {
+            function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
                 $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
                 if (ignoreCache) {
@@ -124,22 +123,21 @@ module NakedObjects {
                     });
             }
 
-            repLoader
-                .populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
+            repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
 
-                    const response = model;
-                    const useCache = !ignoreCache;
+                const response = model;
+                const useCache = !ignoreCache;
 
-                    const config = {
-                        withCredentials: true,
-                        url: model.getUrl(),
-                        method: model.method,
-                        cache: useCache ? cache : false,
-                        data: model.getBody()
-                    };
-
-                    return httpPopulate(config, ignoreCache, response);
+                const config = {
+                    withCredentials: true,
+                    url: model.getUrl(),
+                    method: model.method,
+                    cache: useCache ? cache : false,
+                    data: model.getBody()
                 };
+
+                return httpPopulate(config, ignoreCache, response);
+            };
 
             function setConfigFromMap(map: IHateoasModel, digest?: string) {
                 const config = {
@@ -168,28 +166,27 @@ module NakedObjects {
                 return httpValidate(config);
             };
 
-            repLoader
-                .retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
+            repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
 
-                    const response = link.getTarget();
-                    let urlParms = "";
+                const response = link.getTarget();
+                let urlParms = "";
 
-                    if (parms) {
-                        const urlParmString = _.reduce(parms,
-                            (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
-                            "");
-                        urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
-                    }
+                if (parms) {
+                    const urlParmString = _.reduce(parms,
+                        (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
+                        "");
+                    urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
+                }
 
-                    const config = {
-                        withCredentials: true,
-                        url: link.href() + urlParms,
-                        method: link.method(),
-                        cache: false
-                    };
-
-                    return httpPopulate(config, true, response);
+                const config = {
+                    withCredentials: true,
+                    url: link.href() + urlParms,
+                    method: link.method(),
+                    cache: false
                 };
+
+                return httpPopulate(config, true, response);
+            };
 
 
             repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.IPromise<ActionResultRepresentation> => {
