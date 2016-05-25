@@ -532,10 +532,9 @@ module NakedObjects {
         }
 
         hasTableData = () => {
-            const val = this.listRep.value();
-            return (val && val.length > 0) && !!val[0].members();
+            const valueLinks = this.listRep.value();
+            return valueLinks && _.some(valueLinks, (i: Link) => i.members());
         }
-
 
         refresh(routeData: PaneRouteData) {
 
