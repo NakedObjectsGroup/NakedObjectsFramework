@@ -1058,7 +1058,7 @@ module NakedObjects {
             return !this.actions || this.actions.length === 0;
         }
 
-        canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
+        canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
     export class ToolBarViewModel {
