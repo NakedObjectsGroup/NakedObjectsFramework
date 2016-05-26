@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,10 +17,12 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ParseableFacetUsingParser<T>));
+
         private readonly IValueSemanticsProvider<T> parser;
 
         public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof (IParseableFacet), holder) {
+            : base(typeof(IParseableFacet), holder) {
             this.parser = parser;
         }
 
@@ -27,7 +30,7 @@ namespace NakedObjects.Meta.Facet {
 
         public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
-                throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
+                throw new ArgumentException(Log.LogAndReturn(Resources.NakedObjects.MissingEntryError));
             }
             object parsed = parser.ParseTextEntry(entry);
             return manager.CreateAdapter(parsed, null, null);

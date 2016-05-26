@@ -26,13 +26,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public FileAttachmentValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthDefault, Immutable, EqualByContent, null, spec) {}
 
-        public static Type Type {
-            get { return typeof (IFileAttachmentValueFacet); }
-        }
+        public static Type Type => typeof (IFileAttachmentValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (FileAttachment); }
-        }
+        public static Type AdaptedType => typeof (FileAttachment);
 
         #region IFromStream Members
 
@@ -65,7 +61,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             Stream stream = fileAttachment.GetResourceAsStream();
          
             if (stream.Length > int.MaxValue) {
-                throw new ModelException(string.Format("Attachment is too large size: {0} max: {1} name: {2}", stream.Length, int.MaxValue, fileAttachment.Name));
+                throw new ModelException($"Attachment is too large size: {stream.Length} max: {int.MaxValue} name: {fileAttachment.Name}");
             }
 
             int len = Convert.ToInt32(stream.Length);

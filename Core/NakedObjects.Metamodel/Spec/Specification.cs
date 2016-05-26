@@ -35,13 +35,9 @@ namespace NakedObjects.Meta.Spec {
 
         #region ISpecificationBuilder Members
 
-        public virtual Type[] FacetTypes {
-            get { return facetsByClass.Keys.ToArray(); }
-        }
+        public virtual Type[] FacetTypes => facetsByClass.Keys.ToArray();
 
-        public virtual IIdentifier Identifier {
-            get { return null; }
-        }
+        public virtual IIdentifier Identifier => null;
 
         public bool ContainsFacet(Type facetType) {
             return GetFacet(facetType) != null;

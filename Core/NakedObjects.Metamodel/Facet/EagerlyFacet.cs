@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
             What = what;
         }
 
-        public static Type Type {
-            get { return typeof (IEagerlyFacet); }
-        }
+        public static Type Type => typeof (IEagerlyFacet);
 
         #region IEagerlyFacet Members
 

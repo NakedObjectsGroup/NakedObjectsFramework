@@ -168,7 +168,7 @@ namespace NakedObjects.Persistor.Entity.Util {
                 // expected (but ugly)
                 if (EntityObjectStore.RequireExplicitAssociationOfTypes) {
                     string msg = $"{type} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller";
-                    throw new InitialisationException(msg);
+                    throw new InitialisationException(Log.LogAndReturn(msg));
                 }
             }
             return false;

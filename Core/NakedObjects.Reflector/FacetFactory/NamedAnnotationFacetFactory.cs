@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
@@ -69,7 +70,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (nameAttribute != null) {
                 return new NamedFacetAnnotation(nameAttribute.DisplayName, holder);
             }
-            throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
+            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
         }
 
         private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) {
@@ -84,7 +85,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (nameAttribute != null) {
                 return Create(nameAttribute, holder);
             }
-            throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
+            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
         }
 
         private INamedFacet Create(NamedAttribute attribute, ISpecification holder) {

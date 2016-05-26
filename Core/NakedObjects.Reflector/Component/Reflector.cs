@@ -18,25 +18,19 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public sealed class Reflector : IReflector {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Reflector));
         private readonly IClassStrategy classStrategy;
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
-        private readonly IFacetFactorySet facetFactorySet;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
-
-        static Reflector() {
-            Log = LogManager.GetLogger(typeof(Reflector));
-        }
 
         public Reflector(IClassStrategy classStrategy,
                          IMetamodelBuilder metamodel,
@@ -54,40 +48,25 @@ namespace NakedObjects.Reflect.Component {
             this.config = config;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
-            facetFactorySet = new FacetFactorySet(facetFactories);
+            FacetFactorySet = new FacetFactorySet(facetFactories);
         }
 
         // exposed for testing
-        public IFacetDecoratorSet FacetDecoratorSet {
-            get { return facetDecoratorSet; }
-        }
+        public IFacetDecoratorSet FacetDecoratorSet => facetDecoratorSet;
 
         #region IReflector Members
 
-        public bool ConcurrencyChecking
-        {
-            get { return config.ConcurrencyChecking; }
-        }
+        public bool ConcurrencyChecking => config.ConcurrencyChecking;
 
-        public bool IgnoreCase {
-            get { return config.IgnoreCase; }
-        }
+        public bool IgnoreCase => config.IgnoreCase;
 
-        public IClassStrategy ClassStrategy {
-            get { return classStrategy; }
-        }
+        public IClassStrategy ClassStrategy => classStrategy;
 
-        public IFacetFactorySet FacetFactorySet {
-            get { return facetFactorySet; }
-        }
+        public IFacetFactorySet FacetFactorySet { get; }
 
-        public IMetamodel Metamodel {
-            get { return metamodel; }
-        }
+        public IMetamodel Metamodel => metamodel;
 
-        public ITypeSpecBuilder[] AllObjectSpecImmutables {
-            get { return metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray(); }
-        }
+        public ITypeSpecBuilder[] AllObjectSpecImmutables => metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
             foreach (PropertyInfo property in properties) {
@@ -107,7 +86,7 @@ namespace NakedObjects.Reflect.Component {
             try {
                 return (T)spec;
             } catch (Exception) {
-                throw new ReflectionException($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}");
+                throw new ReflectionException(Log.LogAndReturn($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}"));
             }
         }
 
@@ -174,13 +153,13 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private void InstallMainMenus() {
-            if (config.MainMenus != null) {
-                var menus = config.MainMenus(menuFactory);
-                //Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
-                if (menus == null) return;  //Allows developer to deliberately not specify any menus
-                if (!menus.Any()) { 
+            var menus = config.MainMenus?.Invoke(menuFactory);
+            // Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
+            // Allows developer to deliberately not specify any menus
+            if (menus != null) {
+                if (!menus.Any()) {
                     //Catches accidental non-specification of menus
-                    throw new ReflectionException("No MainMenus specified.");
+                    throw new ReflectionException(Log.LogAndReturn("No MainMenus specified."));
                 }
                 foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
                     metamodel.AddMainMenu(menu);
@@ -237,13 +216,13 @@ namespace NakedObjects.Reflect.Component {
             Type actualType = classStrategy.GetType(type);
 
             if (actualType == null) {
-                throw new ReflectionException("Attempting to introspect a non-introspectable type " + type.FullName + " ");
+                throw new ReflectionException(Log.LogAndReturn($"Attempting to introspect a non-introspectable type {type.FullName} "));
             }
 
             ITypeSpecBuilder specification = CreateSpecification(actualType);
 
             if (specification == null) {
-                throw new ReflectionException("unrecognised type " + actualType.FullName);
+                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {actualType.FullName}"));
             }
 
             // We need the specification available in cache even though not yet fully introspected 

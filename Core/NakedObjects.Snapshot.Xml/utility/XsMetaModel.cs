@@ -10,9 +10,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using Common.Logging;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class XsMetaModel {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(XsMetaModel));
+
         #region xmlns 
 
         // Namespace prefix for W3OrgXmlnsUri.
@@ -32,7 +36,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static XElement CreateXsSchemaElement(XDocument xsdDoc) {
             if (xsdDoc.Root != null) {
-                throw new ArgumentException("XSD document already has content");
+                throw new ArgumentException(Log.LogAndReturn("XSD document already has content"));
             }
             XElement xsSchemaElement = CreateXsElement(xsdDoc, "schema");
 

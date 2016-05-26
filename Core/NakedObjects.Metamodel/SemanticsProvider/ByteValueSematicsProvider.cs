@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ByteValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IByteValueFacet); }
-        }
+        public static Type Type => typeof (IByteValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (byte); }
-        }
+        public static Type AdaptedType => typeof (byte);
 
         #region IByteValueFacet Members
 

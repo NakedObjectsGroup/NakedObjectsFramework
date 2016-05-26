@@ -19,9 +19,7 @@ namespace NakedObjects.Meta.Facet {
             this.value = value;
         }
 
-        public override bool CanAlwaysReplace {
-            get { return false; }
-        }
+        public override bool CanAlwaysReplace => false;
 
         public override object GetDefault(INakedObjectAdapter inObjectAdapter) {
             return value;

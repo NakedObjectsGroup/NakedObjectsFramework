@@ -119,7 +119,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         [Obsolete("Use Code First")]
         public EntityContextConfigurator UsingEdmxContext(string name) {
-            throw new NotImplementedException("edmx configuration of EF no longer supported - use code first");
+            throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
         }
 
         // for testing
@@ -129,7 +129,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         [Obsolete("No longer used")]
         public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
-            throw new NotImplementedException("edmx configuration of EF no longer supported - use code first");
+            throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
         }
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
@@ -150,7 +150,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
-                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext""");
+                throw new InitialisationException(Log.LogAndReturn(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext"""));
             }
         }
 

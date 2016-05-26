@@ -21,19 +21,13 @@ namespace NakedObjects.Meta.Facet {
             this.spec = spec;
         }
 
-        public static Type Type {
-            get { return typeof (IElementTypeFacet); }
-        }
+        public static Type Type => typeof (IElementTypeFacet);
 
         #region IElementTypeFacet Members
 
-        public Type Value {
-            get { return type; }
-        }
+        public Type Value => type;
 
-        public IObjectSpecImmutable ValueSpec {
-            get { return spec; }
-        }
+        public IObjectSpecImmutable ValueSpec => spec;
 
         #endregion
     }

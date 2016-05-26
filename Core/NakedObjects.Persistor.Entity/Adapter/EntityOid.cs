@@ -8,6 +8,7 @@
 using System;
 using System.Data.Entity.Core;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -17,6 +18,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Adapter {
     public sealed  class EntityOid : IEncodedToStrings, IEntityOid {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOid));
+
         private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
@@ -68,17 +71,11 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             CacheState();
         }
 
-        public ITypeSpec Spec {
-            get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
-        }
+        public ITypeSpec Spec => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName));
 
-        public IOid Previous {
-            get { return previous; }
-        }
+        public IOid Previous => previous;
 
-        public bool HasPrevious {
-            get { return previous != null; }
-        }
+        public bool HasPrevious => previous != null;
 
         public bool IsTransient { get; private set; }
 
@@ -106,14 +103,14 @@ namespace NakedObjects.Persistor.Entity.Adapter {
 
             object keys = Key.Aggregate((s, t) => s + ":" + t);
 
-            cachedToString = string.Format("{0}EOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+            cachedToString = $"{(IsTransient ? "T" : "")}EOID#{keys}{(previous == null ? "" : "+")}";
         }
 
         private void ThrowErrorIfNotTransient(object[] newKey = null) {
             if (!IsTransient) {
                 string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
-                string error = string.Format("Attempting to make persistent an already persisted object. Type {0}  Existing Key: {1} {2}", TypeName, ToString(), newKeyString);
-                throw new NotPersistableException(error);
+                string error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
+                throw new NotPersistableException(Log.LogAndReturn(error));
             }
         }
 

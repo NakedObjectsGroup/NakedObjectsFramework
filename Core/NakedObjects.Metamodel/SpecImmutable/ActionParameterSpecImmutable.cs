@@ -27,21 +27,13 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region IActionParameterSpecImmutable Members
 
-        public IObjectSpecImmutable Specification {
-            get { return specification; }
-        }
+        public IObjectSpecImmutable Specification => specification;
 
-        public override IIdentifier Identifier {
-            get { return identifier; }
-        }
+        public override IIdentifier Identifier => identifier;
 
-        public bool IsChoicesEnabled {
-            get { return !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>()); }
-        }
+        public bool IsChoicesEnabled => !IsMultipleChoicesEnabled && (Specification.IsBoundedSet() || ContainsFacet<IActionChoicesFacet>() || ContainsFacet<IEnumFacet>());
 
-        public bool IsMultipleChoicesEnabled {
-            get { return ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple; }
-        }
+        public bool IsMultipleChoicesEnabled => ContainsFacet<IActionChoicesFacet>() && GetFacet<IActionChoicesFacet>().IsMultiple;
 
         #endregion
 

@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         protected PropertyValidateFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IPropertyValidateFacet); }
-        }
+        public static Type Type => typeof (IPropertyValidateFacet);
 
         #region IPropertyValidateFacet Members
 

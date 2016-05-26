@@ -13,8 +13,8 @@ module NakedObjects {
     // custom configuration for a particular implementation 
 
     // path to Restful Objects server 
-    //const appPath = "http://nakedobjectsrodemo.azurewebsites.net";
-    const appPath = "http://localhost:57840";
+    const appPath = "http://nakedobjectsrodemo.azurewebsites.net";
+    //const appPath = "http://localhost:57840";
 
     export function getAppPath() {
         if (appPath.charAt(appPath.length - 1) === "/") {

@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected NamedFacetAbstract(string valueString, ISpecification holder)
             : base(Type, holder, valueString) {}
 
-        public static Type Type {
-            get { return typeof (INamedFacet); }
-        }
+        public static Type Type => typeof (INamedFacet);
 
         #region INamedFacet Members
 

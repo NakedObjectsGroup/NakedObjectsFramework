@@ -29,21 +29,13 @@ namespace NakedObjects.Meta.Facet {
             failureMessage = message;
         }
 
-        private RegexOptions PatternFlags {
-            get { return !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None; }
-        }
+        private RegexOptions PatternFlags => !IsCaseSensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
 
-        public string ValidationPattern {
-            get { return validationPattern; }
-        }
+        public string ValidationPattern => validationPattern;
 
-        public string FormatPattern {
-            get { return formatPattern; }
-        }
+        public string FormatPattern => formatPattern;
 
-        public bool IsCaseSensitive {
-            get { return isCaseSensitive; }
-        }
+        public bool IsCaseSensitive => isCaseSensitive;
 
         #region IRegExFacet Members
 
@@ -63,9 +55,7 @@ namespace NakedObjects.Meta.Facet {
             return !Pattern.IsMatch(text);
         }
 
-        public string FailureMessage {
-            get { return failureMessage; }
-        }
+        public string FailureMessage => failureMessage;
 
         public string Invalidates(IInteractionContext ic) {
             INakedObjectAdapter proposedArgument = ic.ProposedArgument;

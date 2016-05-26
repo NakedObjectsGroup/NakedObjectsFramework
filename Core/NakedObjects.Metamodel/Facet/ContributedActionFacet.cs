@@ -8,18 +8,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionFacet));
+
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> collectionContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
         private readonly List<Tuple<IObjectSpecImmutable, string, string>> objectContributees = new List<Tuple<IObjectSpecImmutable, string, string>>();
 
         public ContributedActionFacet(ISpecification holder)
-            : base(typeof (IContributedActionFacet), holder) {}
+            : base(typeof(IContributedActionFacet), holder) {}
 
         #region IContributedActionFacet Members
 
@@ -52,10 +56,9 @@ namespace NakedObjects.Meta.Facet {
 
         private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {
             if (!IsContributedTo(spec)) {
-                throw new Exception("Action is not contributed to " + spec.Type);
+                throw new Exception(Log.LogAndReturn($"Action is not contributed to {spec.Type}"));
             }
-            Tuple<IObjectSpecImmutable, string, string> tuple = objectContributees.First(t => spec.IsOfType(t.Item1));
-            return tuple;
+            return objectContributees.First(t => spec.IsOfType(t.Item1));
         }
     }
 }

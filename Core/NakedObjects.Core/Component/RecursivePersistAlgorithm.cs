@@ -44,18 +44,16 @@ namespace NakedObjects.Core.Component {
             }
             else {
                 if (nakedObjectAdapter.ResolveState.IsPersistent()) {
-                    throw new NotPersistableException("can't make object persistent as it is already persistent: " + nakedObjectAdapter);
+                    throw new NotPersistableException(Log.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
                 }
                 if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                    throw new NotPersistableException("can't make object persistent as it is not persistable: " + nakedObjectAdapter);
+                    throw new NotPersistableException(Log.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
                 }
                 Persist(nakedObjectAdapter);
             }
         }
 
-        public string Name {
-            get { return "Simple Bottom Up Persistence Walker"; }
-        }
+        public string Name => "Simple Bottom Up Persistence Walker";
 
         #endregion
 
@@ -75,7 +73,7 @@ namespace NakedObjects.Core.Component {
                         if (field is IOneToManyAssociationSpec) {
                             INakedObjectAdapter collection = field.GetNakedObject(nakedObjectAdapter);
                             if (collection == null) {
-                                throw new NotPersistableException("Collection " + field.Name + " does not exist in " + nakedObjectAdapter.Spec.FullName);
+                                throw new NotPersistableException(Log.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
                             }
                             MakePersistent(collection);
                         }

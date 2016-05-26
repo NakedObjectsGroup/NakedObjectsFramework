@@ -154,7 +154,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes = method.GetParameters().Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
-                propertyFacets.Add(new PropertyChoicesFacetx(method, parameterNamesAndTypes, property));
+                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes, property));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }

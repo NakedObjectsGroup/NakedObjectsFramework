@@ -23,13 +23,9 @@ namespace NakedObjects.Meta.Facet {
             this.encoderDecoder = encoderDecoder;
         }
 
-        public static string EncodedNull {
-            get { return "NULL"; }
-        }
+        public static string EncodedNull => "NULL";
 
-        public bool IsValid {
-            get { return encoderDecoder != null; }
-        }
+        public bool IsValid => encoderDecoder != null;
 
         #region IEncodeableFacet Members
 

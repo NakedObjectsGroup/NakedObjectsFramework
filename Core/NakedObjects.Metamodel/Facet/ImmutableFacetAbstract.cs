@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         protected ImmutableFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 
-        public static Type Type {
-            get { return typeof (IImmutableFacet); }
-        }
+        public static Type Type => typeof (IImmutableFacet);
 
         #region IImmutableFacet Members
 

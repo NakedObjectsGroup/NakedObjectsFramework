@@ -16,9 +16,7 @@ namespace NakedObjects.Meta.Facet {
         protected ActionDefaultsFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IActionDefaultsFacet); }
-        }
+        public static Type Type => typeof (IActionDefaultsFacet);
 
         #region IActionDefaultsFacet Members
 

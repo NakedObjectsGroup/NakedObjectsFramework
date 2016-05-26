@@ -21,9 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ISingleIntValueFacet Members
 
-        public virtual int Value {
-            get { return valueInt; }
-        }
+        public virtual int Value => valueInt;
 
         #endregion
     }

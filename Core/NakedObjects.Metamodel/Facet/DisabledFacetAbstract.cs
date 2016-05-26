@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         protected DisabledFacetAbstract(WhenTo when, ISpecification holder)
             : base(Type, holder, when) {}
 
-        public static Type Type {
-            get { return typeof (IDisabledFacet); }
-        }
+        public static Type Type => typeof (IDisabledFacet);
 
         #region IDisabledFacet Members
 

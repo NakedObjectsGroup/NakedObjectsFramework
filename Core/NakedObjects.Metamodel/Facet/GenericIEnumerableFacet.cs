@@ -43,9 +43,7 @@ namespace NakedObjects.Meta.Facet {
         public GenericIEnumerableFacet(ISpecification holder)
             : base(holder, false) {}
 
-        public override bool IsQueryable {
-            get { return false; }
-        }
+        public override bool IsQueryable => false;
 
         private static IEnumerable<T> AsGenericIEnumerable<T>(INakedObjectAdapter collection) {
             var objectType = collection.Object.GetType();

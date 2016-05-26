@@ -98,7 +98,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private bool RollBackOnError { get; set; }
         // set is internally visible for testing
         internal static int MaximumCommitCycles { get; set; }
-        private Func<bool> IsInitializedCheck { get; set; }
+        private Func<bool> IsInitializedCheck { get; }
         internal static bool RequireExplicitAssociationOfTypes { get; private set; }
 
         #region for testing only
@@ -204,7 +204,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
             }
             catch (Exception e) {
-                Log.ErrorFormat("Unexpected exception while applying changes {0}", e.Message);
+                Log.Error($"Unexpected exception while applying changes {e.Message}");
                 RollBackContext();
                 throw;
             }
@@ -240,13 +240,10 @@ namespace NakedObjects.Persistor.Entity.Component {
                 adapter.UpdateVersion(session, nakedObjectManager);
                 return adapter;
             }
-            throw new NakedObjectSystemException("Unexpected oid type: " + oid.GetType());
+            throw new NakedObjectSystemException(Log.LogAndReturn($"Unexpected oid type: {oid.GetType()}"));
         }
 
-        public bool IsInitialized {
-            get { return IsInitializedCheck(); }
-            set { }
-        }
+        public bool IsInitialized => IsInitializedCheck();
 
         public string Name => "Entity Object Store";
 
@@ -319,7 +316,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return Array.CreateInstance(type.GetElementType(), 0);
             }
             if (type.IsAbstract) {
-                throw new ModelException(string.Format(Resources.NakedObjects.CannotCreateAbstract, type));
+                throw new ModelException(Log.LogAndReturn(string.Format(Resources.NakedObjects.CannotCreateAbstract, type)));
             }
             object domainObject = Activator.CreateInstance(type);
             injector.InjectInto(domainObject);
@@ -365,7 +362,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return contexts.Count == 1 ? contexts.Values.Single() : FindContext(type);
             }
             catch (Exception e) {
-                throw new NakedObjectDomainException(string.Format(Resources.NakedObjects.EntityContextError, type.FullName), e);
+                throw new NakedObjectDomainException(Log.LogAndReturn(string.Format(Resources.NakedObjects.EntityContextError, type.FullName)), e);
             }
         }
 
@@ -375,7 +372,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private static Type GetTypeToUse(object domainObject) {
             if (domainObject == null) {
-                throw new NakedObjectSystemException("Could not find Entity Framework context for null object");
+                throw new NakedObjectSystemException(Log.LogAndReturn("Could not find Entity Framework context for null object"));
             }
             Type objectType = domainObject.GetType();
             if (CollectionUtils.IsGenericEnumerableOfRefType(objectType)) {
@@ -491,11 +488,12 @@ namespace NakedObjects.Persistor.Entity.Component {
                 throw new DataUpdateException(newMessage, exception);
             }
             // should never get here - just rethrow 
+            Log.Error($"Unexpected exception {exception}");
             throw exception;
         }
 
         private static void SaveChanges(LocalContext context) {
-            int saved = context.WrappedObjectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
+            context.WrappedObjectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
         }
 
         private void Save() {
@@ -527,7 +525,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return new LocalContext(codeOnlyConfig, session, this);
             }
             catch (Exception e) {
-                throw new InitialisationException(Resources.NakedObjects.StartPersistorErrorCodeFirst, e);
+                throw new InitialisationException(Log.LogAndReturn(Resources.NakedObjects.StartPersistorErrorCodeFirst), e);
             }
         }
 
@@ -628,12 +626,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private static void InjectParentIntoChild(object parent, object child) {
-            PropertyInfo property = child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
-                                                                                         p.PropertyType.IsInstanceOfType(parent) &&
-                                                                                         p.GetCustomAttribute<RootAttribute>() != null);
-            if (property != null) {
-                property.SetValue(child, parent, null);
-            }
+            PropertyInfo property = child.GetType().GetProperties().
+                SingleOrDefault(p => p.CanWrite &&
+                                     p.PropertyType.IsInstanceOfType(parent) &&
+                                     p.GetCustomAttribute<RootAttribute>() != null);
+            property?.SetValue(child, parent, null);
         }
 
         private static void CheckProxies(object objectToCheck) {
@@ -718,7 +715,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                     string state = adapter.ValidToPersist();
                     if (state != null) {
-                        throw new PersistFailedException(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state));
+                        throw new PersistFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
                     }
                 }
             }
@@ -754,7 +751,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 string typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).
                     Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
 
-                throw new NakedObjectDomainException(string.Format(Resources.NakedObjects.EntityCommitError, typeNames));
+                throw new NakedObjectDomainException(Log.LogAndReturn(string.Format(Resources.NakedObjects.EntityCommitError, typeNames)));
             }
             PreSave();
             Save();
@@ -805,7 +802,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
                 }
                 catch (Exception e) {
-                    Log.WarnFormat("Error in EntityCreateObjectCommand.Execute: {0}", e.Message);
+                    Log.Warn($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
                     throw;
                 }
             }

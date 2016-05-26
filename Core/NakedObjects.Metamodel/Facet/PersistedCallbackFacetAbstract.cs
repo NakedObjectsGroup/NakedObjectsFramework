@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected PersistedCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IPersistedCallbackFacet); }
-        }
+        public static Type Type => typeof (IPersistedCallbackFacet);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

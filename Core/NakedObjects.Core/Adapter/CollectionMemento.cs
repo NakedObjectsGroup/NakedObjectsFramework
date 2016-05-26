@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -30,6 +31,7 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CollectionMemento));
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
@@ -105,16 +107,16 @@ namespace NakedObjects.Core.Adapter {
                         parameters.Add(nakedObjectManager.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
-                        throw new ArgumentException(string.Format("Unexpected parameter type value: {0}", parmType));
+                        throw new ArgumentException(Log.LogAndReturn($"Unexpected parameter type value: {parmType}"));
                 }
             }
 
             Parameters = parameters.ToArray();
         }
 
-        public INakedObjectAdapter Target { get; private set; }
-        public IActionSpec Action { get; private set; }
-        public INakedObjectAdapter[] Parameters { get; private set; }
+        public INakedObjectAdapter Target { get; }
+        public IActionSpec Action { get; }
+        public INakedObjectAdapter[] Parameters { get; }
 
         public bool IsPaged { get; set; }
         public bool IsNotQueryable { get; set; }
@@ -171,25 +173,17 @@ namespace NakedObjects.Core.Adapter {
 
         #region IOid Members
 
-        public IOid Previous {
-            get { return null; }
-        }
+        public IOid Previous => null;
 
-        public bool IsTransient {
-            get { return true; }
-        }
+        public bool IsTransient => true;
 
-        public bool HasPrevious {
-            get { return false; }
-        }
+        public bool HasPrevious => false;
 
         public void CopyFrom(IOid oid) {
             // do nothing
         }
 
-        public ITypeSpec Spec {
-            get { return Target.Spec; }
-        }
+        public ITypeSpec Spec => Target.Spec;
 
         #endregion
 

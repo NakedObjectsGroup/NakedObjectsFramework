@@ -47,26 +47,15 @@ namespace NakedObjects.Meta.Adapter {
 
         #region IIdentifier Members
 
-        public virtual string ClassName {
-            get { return className; }
-        }
+        public virtual string ClassName => className;
 
-        public virtual string MemberName {
-            get { return name; }
-        }
+        public virtual string MemberName => name;
 
-        public virtual string[] MemberParameterTypeNames {
-            get { return parameterTypes; }
-        }
+        public virtual string[] MemberParameterTypeNames => parameterTypes;
 
-        public virtual string[] MemberParameterNames {
-            get { return parameterNames; }
-        }
+        public virtual string[] MemberParameterNames => parameterNames;
 
-        public virtual bool IsField {
-            get { return isField; }
-        }
-
+        public virtual bool IsField => isField;
 
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);

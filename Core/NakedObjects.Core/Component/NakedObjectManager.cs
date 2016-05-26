@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull("must have a domain object", obj);
             INakedObjectAdapter nakedObjectAdapter = identityMap.GetAdapterFor(obj);
             if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
-                throw new AdapterException("Mapped adapter is for different domain object: " + obj + "; " + nakedObjectAdapter);
+                throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
             }
             return nakedObjectAdapter;
         }

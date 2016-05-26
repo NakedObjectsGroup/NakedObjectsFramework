@@ -24,9 +24,7 @@ namespace NakedObjects.Meta.Facet {
         public GenericIQueryableFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
 
-        public override bool IsQueryable {
-            get { return true; }
-        }
+        public override bool IsQueryable => true;
 
         private static IQueryable<T> AsGenericIQueryable<T>(INakedObjectAdapter collection) {
             var queryable = (IQueryable<T>) collection.Object;

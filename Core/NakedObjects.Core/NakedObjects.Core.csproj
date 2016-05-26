@@ -214,6 +214,7 @@
     <Compile Include="Util\DelegateUtils.cs" />
     <Compile Include="Util\FeatureSpecUtils.cs" />
     <Compile Include="Exception\InvokeException.cs" />
+    <Compile Include="Util\LogUtils.cs" />
     <Compile Include="Util\ServiceUtils.cs" />
     <Compile Include="Spec\SpecFactory.cs" />
     <Compile Include="Spec\ActionSpec.cs" />

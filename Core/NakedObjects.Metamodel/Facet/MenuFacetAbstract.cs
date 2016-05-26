@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Facet {
             Menu = null;
         }
 
-        protected ITypeSpecImmutable Spec {
-            get { return (ITypeSpecImmutable) Specification; }
-        }
+        protected ITypeSpecImmutable Spec => (ITypeSpecImmutable) Specification;
 
         protected MenuImpl Menu { get; set; }
 

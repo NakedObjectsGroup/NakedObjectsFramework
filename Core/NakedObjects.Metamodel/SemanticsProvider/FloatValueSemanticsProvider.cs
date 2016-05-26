@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public FloatValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IFloatingPointValueFacet); }
-        }
+        public static Type Type => typeof (IFloatingPointValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (float); }
-        }
+        public static Type AdaptedType => typeof (float);
 
         #region IFloatingPointValueFacet Members
 

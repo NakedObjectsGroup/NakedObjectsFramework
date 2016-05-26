@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
         public MaxLengthFacetZero(ISpecification holder)
             : base(NoLimit, holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         /// <summary>
         ///     No limit to maximum length

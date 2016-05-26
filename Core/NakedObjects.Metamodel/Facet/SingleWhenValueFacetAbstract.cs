@@ -21,9 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ISingleWhenValueFacet Members
 
-        public virtual WhenTo Value {
-            get { return when; }
-        }
+        public virtual WhenTo Value => when;
 
         #endregion
 

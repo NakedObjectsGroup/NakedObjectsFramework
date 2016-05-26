@@ -23,8 +23,6 @@ namespace NakedObjects.Meta {
             this.maximumLength = maximumLength;
         }
 
-        public virtual int MaximumLength {
-            get { return maximumLength; }
-        }
+        public virtual int MaximumLength => maximumLength;
     }
 }

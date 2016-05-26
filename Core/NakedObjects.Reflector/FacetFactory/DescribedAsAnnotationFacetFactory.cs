@@ -8,16 +8,20 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DescribedAsAnnotationFacetFactory));
+
         public DescribedAsAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) {}
 
@@ -57,7 +61,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (descriptionAttribute != null) {
                 return Create(descriptionAttribute, holder);
             }
-            throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
+            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
         }
 
         private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) {

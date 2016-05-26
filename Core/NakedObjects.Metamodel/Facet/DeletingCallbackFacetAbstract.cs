@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected DeletingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IDeletingCallbackFacet); }
-        }
+        public static Type Type => typeof (IDeletingCallbackFacet);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ULongValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IUnsignedLongValueFacet); }
-        }
+        public static Type Type => typeof (IUnsignedLongValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (ulong); }
-        }
+        public static Type AdaptedType => typeof (ulong);
 
         #region IUnsignedLongValueFacet Members
 

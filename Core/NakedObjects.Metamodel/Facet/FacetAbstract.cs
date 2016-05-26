@@ -53,13 +53,9 @@ namespace NakedObjects.Meta.Facet {
         /// <para>
         ///     No-op implementations should override and return <c>true</c>.
         /// </para>
-        public virtual bool IsNoOp {
-            get { return false; }
-        }
+        public virtual bool IsNoOp => false;
 
-        public Type FacetType {
-            get { return facetType; }
-        }
+        public Type FacetType => facetType;
 
         /// <summary>
         ///     Default implementation of this method that returns <c>true</c>, ie
@@ -69,9 +65,7 @@ namespace NakedObjects.Meta.Facet {
         ///     Implementations that don't wish to replace non-<see cref="IsNoOp" /> implementations
         ///     should override and return <c>false</c>.
         /// </para>
-        public virtual bool CanAlwaysReplace {
-            get { return true; }
-        }
+        public virtual bool CanAlwaysReplace => true;
 
         #endregion
 

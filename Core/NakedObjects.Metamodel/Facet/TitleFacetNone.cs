@@ -16,9 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public TitleFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
             return null;

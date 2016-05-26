@@ -26,19 +26,13 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region IMemberSpecImmutable Members
 
-        public override IIdentifier Identifier {
-            get { return identifier; }
-        }
+        public override IIdentifier Identifier => identifier;
 
         public abstract IObjectSpecImmutable ReturnSpec { get; }
 
-        public string Name {
-            get { return GetFacet<INamedFacet>().NaturalName; }
-        }
+        public string Name => GetFacet<INamedFacet>().NaturalName;
 
-        public string Description {
-            get { return GetFacet<IDescribedAsFacet>().Value; }
-        }
+        public string Description => GetFacet<IDescribedAsFacet>().Value;
 
         #endregion
 

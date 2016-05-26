@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Component {
@@ -33,18 +34,16 @@ namespace NakedObjects.Meta.Component {
             try {
                 var spec = GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
                 if (spec == null && !allowNull) {
-                    Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, "unexpected null");
-                    throw new NakedObjectSystemException($"failed to find spec for {(type == null ? "null" : type.FullName)}");
+                    throw new NakedObjectSystemException(Log.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
                 }
                 return spec;
             }
             catch (NakedObjectSystemException e) {
-                Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, e);
+                Log.Error($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
                 throw;
             }
             catch (Exception e) {
-                Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, e);
-                throw new NakedObjectSystemException($"failed to find spec for {(type == null ? "null" : type.FullName)}");
+                throw new NakedObjectSystemException(Log.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
             }
         }
 

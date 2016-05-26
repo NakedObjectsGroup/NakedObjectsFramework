@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ColorValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IColorValueFacet); }
-        }
+        public static Type Type => typeof (IColorValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (Color); }
-        }
+        public static Type AdaptedType => typeof (Color);
 
         #region IColorValueFacet Members
 

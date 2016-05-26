@@ -10,22 +10,23 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Meta.Menu {
     [Serializable]
     public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
-        private readonly IMetamodel metamodel;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MenuImpl));
 
         public MenuImpl(IMetamodel metamodel, Type type, bool addAllActions, string name) {
-            this.metamodel = metamodel;
+            Metamodel = metamodel;
             Type = type;
             Name = name ?? ObjectSpec.GetFacet<INamedFacet>().NaturalName;
             Id = type.Name;
@@ -34,6 +35,10 @@ namespace NakedObjects.Meta.Menu {
                 AddContributedActions();
             }
         }
+
+        private ITypeSpecImmutable ObjectSpec => Metamodel.GetSpecification(Type);
+
+        private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.ObjectActions.ToList();
 
         #region IMenu Members
 
@@ -52,20 +57,20 @@ namespace NakedObjects.Meta.Menu {
         public IMenu AddAction(string actionName) {
             IActionSpecImmutable actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
             if (actionSpec == null) {
-                throw new ReflectionException("No such action: " + actionName + " on " + Type);
+                throw new ReflectionException(Log.LogAndReturn($"No such action: {actionName} on {Type}"));
             }
             AddMenuItem(new MenuAction(actionSpec));
             return this;
         }
 
         public IMenu CreateSubMenu(string subMenuName) {
-            return CreateMenuImmutableAsSubMenu(subMenuName, null);
+            return CreateMenuImmutableAsSubMenu(subMenuName);
         }
 
         public IMenu GetSubMenu(string menuName) {
             MenuImpl menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
-                throw new Exception("No sub-menu named " + menuName);
+                throw new Exception(Log.LogAndReturn($"No sub-menu named {menuName}"));
             }
             return menu;
         }
@@ -77,41 +82,8 @@ namespace NakedObjects.Meta.Menu {
 
         public IMenu AddContributedActions() {
             var spec = ObjectSpec as IObjectSpecImmutable;
-            if (spec != null) {
-                spec.ContributedActions.ForEach(ca => AddContributedAction(ca, spec));
-            }
+            spec?.ContributedActions.ForEach(ca => AddContributedAction(ca, spec));
             return this;
-        }
-
-        #endregion
-
-        #region other properties
-
-        private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
-
-        /// <summary>
-        /// Will only be set if this menu is a sub-menu of another.
-        /// </summary>
-        public IMenu SuperMenu { get; private set; }
-
-        /// <summary>
-        /// The name of the menu -  will typically be rendered on the UI
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Id is optional.  It is only included to facilitate backwards compatibility with
-        /// existing auto-generated menus.
-        /// </summary>
-        public string Id { get; set; }
-
-        //Includes both actions and sub-menus
-        public IList<IMenuItemImmutable> MenuItems {
-            get { return items; }
-        }
-
-        protected IMetamodel Metamodel {
-            get { return metamodel; }
         }
 
         #endregion
@@ -119,8 +91,9 @@ namespace NakedObjects.Meta.Menu {
         private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {
             var subMenu = new MenuImpl(Metamodel, Type, false, subMenuName);
             if (id == null) {
-                subMenu.Id += "-" + subMenuName + ":";
-            } else {
+                subMenu.Id += $"-{subMenuName}:";
+            }
+            else {
                 subMenu.Id = id;
             }
             subMenu.SuperMenu = this;
@@ -128,22 +101,9 @@ namespace NakedObjects.Meta.Menu {
             return subMenu;
         }
 
-        private ITypeSpecImmutable ObjectSpec {
-            get {
-                return Metamodel.GetSpecification(Type);
-            }
-        }
-
-        private IList<IActionSpecImmutable> ActionsForObject {
-            get {
-                return ObjectSpec.ObjectActions.ToList();
-            }
-        }
-
         private bool HasAction(IActionSpecImmutable action) {
             bool nativeAction = MenuItems.OfType<MenuAction>().Any(mi => mi.Action == action);
-            if (nativeAction) return true;
-            return MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
+            return nativeAction || MenuItems.OfType<MenuImpl>().Any(m => m.HasAction(action));
         }
 
         private MenuImpl GetSubMenuIfExists(string menuName) {
@@ -170,12 +130,40 @@ namespace NakedObjects.Meta.Menu {
             if (subMenuName != null) {
                 string id = facet.IdWhenContributedTo(spec);
                 MenuImpl subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);
-                subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> { ca }, subMenu);
-            } else {
+                subMenu.AddOrderableElementsToMenu(new List<IActionSpecImmutable> {ca}, subMenu);
+            }
+            else {
                 //i.e. no sub-menu
                 AddMenuItem(new MenuAction(ca));
             }
         }
+
+        #region other properties
+
+        private ImmutableList<IMenuItemImmutable> items = ImmutableList<IMenuItemImmutable>.Empty;
+
+        /// <summary>
+        /// Will only be set if this menu is a sub-menu of another.
+        /// </summary>
+        public IMenu SuperMenu { get; private set; }
+
+        /// <summary>
+        /// The name of the menu -  will typically be rendered on the UI
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Id is optional.  It is only included to facilitate backwards compatibility with
+        /// existing auto-generated menus.
+        /// </summary>
+        public string Id { get; set; }
+
+        //Includes both actions and sub-menus
+        public IList<IMenuItemImmutable> MenuItems => items;
+
+        protected IMetamodel Metamodel { get; }
+
+        #endregion
 
         #region ISerializable
 
@@ -187,7 +175,7 @@ namespace NakedObjects.Meta.Menu {
             SuperMenu = info.GetValue<IMenu>("SuperMenu");
             Name = info.GetValue<string>("Name");
             Id = info.GetValue<string>("Id");
-            metamodel = info.GetValue<IMetamodel>("Metamodel");
+            Metamodel = info.GetValue<IMetamodel>("Metamodel");
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
@@ -195,7 +183,7 @@ namespace NakedObjects.Meta.Menu {
             info.AddValue<IMenu>("SuperMenu", SuperMenu);
             info.AddValue<string>("Name", Name);
             info.AddValue<string>("Id", Id);
-            info.AddValue<IMetamodel>("metamodel", metamodel);
+            info.AddValue<IMetamodel>("metamodel", Metamodel);
         }
 
         public void OnDeserialization(object sender) {

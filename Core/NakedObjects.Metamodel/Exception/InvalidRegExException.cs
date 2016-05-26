@@ -27,16 +27,10 @@ namespace NakedObjects.Meta {
             this.caseSensitive = caseSensitive;
         }
 
-        public virtual string FormatPattern {
-            get { return format; }
-        }
+        public virtual string FormatPattern => format;
 
-        public virtual string ValidationPattern {
-            get { return validation; }
-        }
+        public virtual string ValidationPattern => validation;
 
-        public virtual bool IsCaseSensitive {
-            get { return caseSensitive; }
-        }
+        public virtual bool IsCaseSensitive => caseSensitive;
     }
 }

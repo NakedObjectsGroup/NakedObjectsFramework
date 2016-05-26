@@ -19,9 +19,7 @@ namespace NakedObjects.Meta.Facet {
         protected ActionInvocationFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IActionInvocationFacet); }
-        }
+        public static Type Type => typeof (IActionInvocationFacet);
 
         #region IActionInvocationFacet Members
 

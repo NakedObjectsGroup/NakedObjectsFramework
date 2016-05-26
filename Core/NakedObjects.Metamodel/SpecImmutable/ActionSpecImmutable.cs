@@ -29,21 +29,13 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region IActionSpecImmutable Members
 
-        public override IObjectSpecImmutable ReturnSpec {
-            get { return GetFacet<IActionInvocationFacet>().ReturnType; }
-        }
+        public override IObjectSpecImmutable ReturnSpec => GetFacet<IActionInvocationFacet>().ReturnType;
 
-        public ITypeSpecImmutable OwnerSpec {
-            get { return ownerSpec; }
-        }
+        public ITypeSpecImmutable OwnerSpec => ownerSpec;
 
-        public IActionParameterSpecImmutable[] Parameters {
-            get { return parameters; }
-        }
+        public IActionParameterSpecImmutable[] Parameters => parameters;
 
-        public override IObjectSpecImmutable ElementSpec {
-            get { return GetFacet<IActionInvocationFacet>().ElementType; }
-        }
+        public override IObjectSpecImmutable ElementSpec => GetFacet<IActionInvocationFacet>().ElementType;
 
         public bool IsFinderMethod {
             get {
@@ -57,12 +49,8 @@ namespace NakedObjects.Meta.SpecImmutable {
             return IsFinderMethod && (ReturnSpec.IsOfType(spec) || (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)));
         }
 
-        public bool IsContributedMethod {
-            get {
-                return OwnerSpec is IServiceSpecImmutable && parameters.Any() &&
-                       ContainsFacet(typeof (IContributedActionFacet));
-            }
-        }
+        public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && parameters.Any() &&
+                                           ContainsFacet(typeof (IContributedActionFacet));
 
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
             return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));

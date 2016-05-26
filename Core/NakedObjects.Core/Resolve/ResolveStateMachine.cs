@@ -10,14 +10,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Util;
 
 [assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
 namespace NakedObjects.Core.Resolve {
     public sealed class ResolveStateMachine : IResolveStateMachine {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ResolveStateMachine));
+
         #region Delegates
 
         public delegate IResolveState EventHandler(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s);
@@ -32,8 +36,8 @@ namespace NakedObjects.Core.Resolve {
             Session = session;
         }
 
-        private ISession Session { get; set; }
-        private INakedObjectAdapter Owner { get; set; }
+        private ISession Session { get; }
+        private INakedObjectAdapter Owner { get; }
         public bool FullTrace { get; set; }
 
         #region IResolveStateMachine Members
@@ -48,9 +52,7 @@ namespace NakedObjects.Core.Resolve {
 
         public void AddHistoryNote(string note) {
             HistoryEvent lastEvent = history.LastOrDefault();
-            if (lastEvent != null) {
-                lastEvent.AddNote(note);
-            }
+            lastEvent?.AddNote(note);
         }
 
         #endregion
@@ -172,13 +174,9 @@ namespace NakedObjects.Core.Resolve {
         public sealed class AggregatedState : ResolveState, IResolveState {
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Aggregated"; }
-            }
+            public override string Name => "Aggregated";
 
-            public override string Code {
-                get { return "A"; }
-            }
+            public override string Code => "A";
 
             #endregion
         }
@@ -194,13 +192,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Destroyed"; }
-            }
+            public override string Name => "Destroyed";
 
-            public override string Code {
-                get { return "D"; }
-            }
+            public override string Code => "D";
 
             #endregion
 
@@ -220,13 +214,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Ghost"; }
-            }
+            public override string Name => "Ghost";
 
-            public override string Code {
-                get { return "PG"; }
-            }
+            public override string Code => "PG";
 
             #endregion
 
@@ -255,13 +245,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "New"; }
-            }
+            public override string Name => "New";
 
-            public override string Code {
-                get { return "N"; }
-            }
+            public override string Code => "N";
 
             #endregion
 
@@ -287,13 +273,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Part Resolved"; }
-            }
+            public override string Name => "Part Resolved";
 
-            public override string Code {
-                get { return "Pr"; }
-            }
+            public override string Code => "Pr";
 
             #endregion
 
@@ -313,18 +295,14 @@ namespace NakedObjects.Core.Resolve {
         #region Nested type: ResolveState
 
         public abstract class ResolveState {
-            private readonly IDictionary<IResolveEvent, EventHandler> eventMap;
-
             protected ResolveState() {
-                eventMap = new Dictionary<IResolveEvent, EventHandler>();
+                EventMap = new Dictionary<IResolveEvent, EventHandler>();
             }
 
             public abstract string Name { get; }
             public abstract string Code { get; }
 
-            protected IDictionary<IResolveEvent, EventHandler> EventMap {
-                get { return eventMap; }
-            }
+            protected IDictionary<IResolveEvent, EventHandler> EventMap { get; }
 
             protected virtual void Loading(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s) {
                 no.Loading();
@@ -337,14 +315,14 @@ namespace NakedObjects.Core.Resolve {
             }
 
             public override string ToString() {
-                return string.Format("ResolveState [name={0},code={1}]", Name, Code);
+                return $"ResolveState [name={Name},code={Code}]";
             }
 
             public IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s) {
                 if (EventMap.ContainsKey(rEvent)) {
                     return EventMap[rEvent](owner, rsm, s);
                 }
-                throw new ResolveException(string.Format("Unknown event {0} in state {1}", rEvent, this));
+                throw new ResolveException(Log.LogAndReturn($"Unknown event {rEvent} in state {this}"));
             }
         }
 
@@ -359,13 +337,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Resolved"; }
-            }
+            public override string Name => "Resolved";
 
-            public override string Code {
-                get { return "PR"; }
-            }
+            public override string Code => "PR";
 
             #endregion
 
@@ -390,13 +364,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Resolving Part"; }
-            }
+            public override string Name => "Resolving Part";
 
-            public override string Code {
-                get { return "P~r"; }
-            }
+            public override string Code => "P~r";
 
             #endregion
 
@@ -419,13 +389,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Resolving"; }
-            }
+            public override string Name => "Resolving";
 
-            public override string Code {
-                get { return "P~R"; }
-            }
+            public override string Code => "P~R";
 
             #endregion
 
@@ -451,13 +417,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Serializing Resolved"; } // not sure this is right for compatibility with old code 
-            }
+            public override string Name => "Serializing Resolved";
 
-            public override string Code {
-                get { return "SG"; }
-            }
+            public override string Code => "SG";
 
             #endregion
 
@@ -477,13 +439,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Serializing Part Resolved"; }
-            }
+            public override string Name => "Serializing Part Resolved";
 
-            public override string Code {
-                get { return "Sr"; }
-            }
+            public override string Code => "Sr";
 
             #endregion
 
@@ -503,13 +461,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Serializing Resolved"; }
-            }
+            public override string Name => "Serializing Resolved";
 
-            public override string Code {
-                get { return "SR"; }
-            }
+            public override string Code => "SR";
 
             #endregion
 
@@ -529,13 +483,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Serializing Transient"; }
-            }
+            public override string Name => "Serializing Transient";
 
-            public override string Code {
-                get { return "ST"; }
-            }
+            public override string Code => "ST";
 
             #endregion
 
@@ -557,13 +507,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Transient"; }
-            }
+            public override string Name => "Transient";
 
-            public override string Code {
-                get { return "T"; }
-            }
+            public override string Code => "T";
 
             #endregion
 
@@ -586,13 +532,9 @@ namespace NakedObjects.Core.Resolve {
 
             #region IResolveState Members
 
-            public override string Name {
-                get { return "Updating"; }
-            }
+            public override string Name => "Updating";
 
-            public override string Code {
-                get { return "PU"; }
-            }
+            public override string Code => "PU";
 
             #endregion
 
@@ -625,11 +567,11 @@ namespace NakedObjects.Core.Resolve {
                 }
             }
 
-            private IList<string> Notes { get; set; }
-            private IResolveState StartState { get; set; }
-            private IResolveState EndState { get; set; }
-            private IResolveEvent Event { get; set; }
-            private DateTime TimeStamp { get; set; }
+            private IList<string> Notes { get; }
+            private IResolveState StartState { get; }
+            private IResolveState EndState { get; }
+            private IResolveEvent Event { get; }
+            private DateTime TimeStamp { get; }
 
             public void AddNote(string note) {
                 Notes.Add(note);
@@ -637,7 +579,7 @@ namespace NakedObjects.Core.Resolve {
 
             public override string ToString() {
                 string notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
-                return string.Format("Transition from: {0} to: {1} by: {2} at: {3} with: {4}", StartState, EndState, Event, TimeStamp, notes);
+                return $"Transition from: {StartState} to: {EndState} by: {Event} at: {TimeStamp} with: {notes}";
             }
         }
 

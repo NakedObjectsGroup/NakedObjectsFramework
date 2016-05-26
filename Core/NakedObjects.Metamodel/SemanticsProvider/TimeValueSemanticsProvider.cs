@@ -25,16 +25,12 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public TimeValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (ITimeValueFacet); }
-        }
+        public static Type Type => typeof (ITimeValueFacet);
 
         // inject for testing 
         public static DateTime? TestDateTime { get; set; }
 
-        public static Type AdaptedType {
-            get { return typeof (TimeSpan); }
-        }
+        public static Type AdaptedType => typeof (TimeSpan);
 
         #region ITimeValueFacet Members
 

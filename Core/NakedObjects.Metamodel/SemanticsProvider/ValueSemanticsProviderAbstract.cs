@@ -42,9 +42,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             this.specImmutable = specImmutable;
         }
 
-        public IObjectSpecImmutable SpecImmutable {
-            get { return specImmutable; }
-        }
+        public IObjectSpecImmutable SpecImmutable => specImmutable;
 
         /// <summary>
         ///     We don't replace any (non- no-op) facets.
@@ -52,27 +50,17 @@ namespace NakedObjects.Meta.SemanticsProvider {
         /// <para>
         ///     For example, if there is already a <see cref="IPropertyDefaultFacet" /> then we shouldn't replace it.
         /// </para>
-        public override bool CanAlwaysReplace {
-            get { return false; }
-        }
+        public override bool CanAlwaysReplace => false;
 
         #region IValueSemanticsProvider<T> Members
 
-        public T DefaultValue {
-            get { return defaultValue; }
-        }
+        public T DefaultValue => defaultValue;
 
-        public int TypicalLength {
-            get { return typicalLength; }
-        }
+        public int TypicalLength => typicalLength;
 
-        public bool IsEqualByContent {
-            get { return equalByContent; }
-        }
+        public bool IsEqualByContent => equalByContent;
 
-        public bool IsImmutable {
-            get { return immutable; }
-        }
+        public bool IsImmutable => immutable;
 
         public string ToEncodedString(T obj) {
             return DoEncode(obj);
@@ -157,7 +145,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             while (remaining > 0) {
                 int read = stream.Read(data, offset, remaining);
                 if (read <= 0) {
-                    throw new EndOfStreamException(String.Format("End of stream reached with {0} bytes left to read", remaining));
+                    throw new EndOfStreamException($"End of stream reached with {remaining} bytes left to read");
                 }
                 remaining -= read;
                 offset += read;

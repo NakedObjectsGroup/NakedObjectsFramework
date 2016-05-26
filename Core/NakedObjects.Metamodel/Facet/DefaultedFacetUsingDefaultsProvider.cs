@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDefaultedFacet Members
 
-        public object Default {
-            get { return defaultsProvider.DefaultValue; }
-        }
+        public object Default => defaultsProvider.DefaultValue;
 
         #endregion
 

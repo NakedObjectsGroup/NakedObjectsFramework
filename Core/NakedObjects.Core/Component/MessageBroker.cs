@@ -7,27 +7,26 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class MessageBroker : IMessageBroker {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MessageBroker));
+
         private readonly List<string> messages = new List<string>();
         private readonly List<string> warnings = new List<string>();
 
         #region IMessageBroker Members
 
-        public string[] PeekMessages {
-            get { return messages.ToArray(); }
-        }
+        public string[] PeekMessages => messages.ToArray();
 
-        public string[] PeekWarnings {
-            get { return warnings.ToArray(); }
-        }
+        public string[] PeekWarnings => warnings.ToArray();
 
         public string[] Messages {
             get {
                 string[] messageArray = messages.ToArray();
-                //ClearMessages();
                 return messageArray;
             }
         }
@@ -35,17 +34,16 @@ namespace NakedObjects.Core.Component {
         public string[] Warnings {
             get {
                 string[] warningArray = warnings.ToArray();
-                //ClearWarnings();
                 return warningArray;
             }
         }
 
         public void EnsureEmpty() {
             if (warnings.Count > 0) {
-                throw new InvalidStateException("Message broker still has warnings: " + warnings.Aggregate((s, t) => s + t + "; "));
+                throw new InvalidStateException(Log.LogAndReturn("Message broker still has warnings: " + warnings.Aggregate((s, t) => s + t + "; ")));
             }
             if (messages.Count > 0) {
-                throw new InvalidStateException("Message broker still has messages: " + messages.Aggregate((s, t) => s + t + "; "));
+                throw new InvalidStateException(Log.LogAndReturn("Message broker still has messages: " + messages.Aggregate((s, t) => s + t + "; ")));
             }
         }
 

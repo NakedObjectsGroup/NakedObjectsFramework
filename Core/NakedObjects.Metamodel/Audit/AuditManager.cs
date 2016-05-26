@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Principal;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,8 +21,9 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Audit {
     [Serializable]
     public sealed class AuditManager : IFacetDecorator, IAuditManager {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AuditManager));
+
         private readonly Type defaultAuditor;
-        private readonly Type[] forFacetTypes = {typeof (IActionInvocationFacet), typeof (IUpdatedCallbackFacet), typeof (IPersistedCallbackFacet)};
         private readonly ImmutableDictionary<string, Type> namespaceAuditors;
 
         public AuditManager(IAuditConfiguration config) {
@@ -61,30 +63,28 @@ namespace NakedObjects.Meta.Audit {
         #region IFacetDecorator Members
 
         public IFacet Decorate(IFacet facet, ISpecification holder) {
-            if (facet.FacetType == typeof (IActionInvocationFacet)) {
+            if (facet.FacetType == typeof(IActionInvocationFacet)) {
                 return new AuditActionInvocationFacet((IActionInvocationFacet) facet, this);
             }
 
-            if (facet.FacetType == typeof (IUpdatedCallbackFacet)) {
+            if (facet.FacetType == typeof(IUpdatedCallbackFacet)) {
                 return new AuditUpdatedFacet((IUpdatedCallbackFacet) facet, this);
             }
 
-            if (facet.FacetType == typeof (IPersistedCallbackFacet)) {
+            if (facet.FacetType == typeof(IPersistedCallbackFacet)) {
                 return new AuditPersistedFacet((IPersistedCallbackFacet) facet, this);
             }
 
             return facet;
         }
 
-        public Type[] ForFacetTypes {
-            get { return forFacetTypes; }
-        }
+        public Type[] ForFacetTypes { get; } = {typeof(IActionInvocationFacet), typeof(IUpdatedCallbackFacet), typeof(IPersistedCallbackFacet)};
 
         #endregion
 
         private void ValidateType(Type toValidate) {
-            if (!typeof (IAuditor).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(toValidate.FullName + " is not an IAuditor");
+            if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
+                throw new InitialisationException(Log.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
             }
         }
 
@@ -105,7 +105,7 @@ namespace NakedObjects.Meta.Audit {
 
             // already ordered OrderByDescending(x => x.Key.Length).
             Type auditor = namespaceAuditors.
-                Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).          
+                Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).
                 Select(x => x.Value).
                 FirstOrDefault();
 

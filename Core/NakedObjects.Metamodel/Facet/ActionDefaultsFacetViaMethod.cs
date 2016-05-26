@@ -25,12 +25,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         // for testing only 
-        internal Func<object, object[], object> MethodDelegate {
-            get {
-                return methodDelegate;
-            }
-        }
-
+        internal Func<object, object[], object> MethodDelegate => methodDelegate;
 
         #region IImperativeFacet Members
 

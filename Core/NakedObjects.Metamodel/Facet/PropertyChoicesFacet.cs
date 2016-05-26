@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -20,17 +21,18 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
-    public sealed class PropertyChoicesFacetx : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
-        private readonly MethodInfo method;
-        private readonly string[] parameterNames;
-        private readonly Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes;
-        private readonly Func<object, object[], object> methodDelegate;
+    public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(PropertyChoicesFacet));
 
-        public PropertyChoicesFacetx(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
-            : base(typeof (IPropertyChoicesFacet), holder) {
+        private readonly MethodInfo method;
+        private readonly Func<object, object[], object> methodDelegate;
+        private readonly string[] parameterNames;
+
+        public PropertyChoicesFacet(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
+            : base(typeof(IPropertyChoicesFacet), holder) {
             method = optionsMethod;
 
-            this.parameterNamesAndTypes = parameterNamesAndTypes;
+            ParameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
@@ -49,7 +51,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyChoicesFacet Members
 
-        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes => parameterNamesAndTypes;
+        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
 
         public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
@@ -59,11 +61,10 @@ namespace NakedObjects.Meta.Facet {
                 if (enumerable != null) {
                     return enumerable.Cast<object>().ToArray();
                 }
-                throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
+                throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IEnumerable from choices method: {method.Name}"));
             }
             catch (ArgumentException ae) {
-                string msg = $"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types";
-                throw new InvokeException(msg, ae);
+                throw new InvokeException(Log.LogAndReturn($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types"), ae);
             }
         }
 

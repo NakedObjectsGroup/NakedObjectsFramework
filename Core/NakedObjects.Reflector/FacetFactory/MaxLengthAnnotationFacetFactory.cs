@@ -8,16 +8,20 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MaxLengthAnnotationFacetFactory));
+
         public MaxLengthAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
 
@@ -60,7 +64,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return Create(maxLengthAttribute, holder);
             }
 
-            throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
+            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
         }
 
         private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) {

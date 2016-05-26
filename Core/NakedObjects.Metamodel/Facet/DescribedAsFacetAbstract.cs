@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         protected DescribedAsFacetAbstract(string valueString, ISpecification holder)
             : base(Type, holder, valueString) {}
 
-        public static Type Type {
-            get { return typeof (IDescribedAsFacet); }
-        }
+        public static Type Type => typeof (IDescribedAsFacet);
     }
 }

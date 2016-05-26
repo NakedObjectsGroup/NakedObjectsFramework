@@ -26,13 +26,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ImageValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, null, spec) {}
 
-        private static Type Type {
-            get { return typeof (IImageValueFacet); }
-        }
+        private static Type Type => typeof (IImageValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (Image); }
-        }
+        public static Type AdaptedType => typeof (Image);
 
         #region IFromStream Members
 
@@ -65,7 +61,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
             Stream stream = image.GetResourceAsStream();
 
             if (stream.Length > int.MaxValue) {
-                throw new ModelException(string.Format("Image is too large size: {0} max: {1} name: {2}", stream.Length, int.MaxValue, image.Name));
+                throw new ModelException($"Image is too large size: {stream.Length} max: {int.MaxValue} name: {image.Name}");
             }
 
             int len = Convert.ToInt32(stream.Length);

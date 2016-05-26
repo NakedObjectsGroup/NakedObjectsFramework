@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         public TypeIsSealedFacet(ISpecification holder, bool flag)
             : base(Type, holder, flag) {}
 
-        public static Type Type {
-            get { return typeof (ITypeIsSealedFacet); }
-        }
+        public static Type Type => typeof (ITypeIsSealedFacet);
     }
 }

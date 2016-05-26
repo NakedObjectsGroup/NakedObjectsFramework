@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected OnUpdatingErrorCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IOnUpdatingErrorCallbackFacet); }
-        }
+        public static Type Type => typeof (IOnUpdatingErrorCallbackFacet);
     }
 }
 

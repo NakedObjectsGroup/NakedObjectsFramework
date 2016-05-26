@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         public PropertyValidateFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         /// <summary>
         ///     Returns <c>null</c>, ie property is valid.

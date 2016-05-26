@@ -21,24 +21,18 @@ namespace NakedObjects.Meta.Facet {
             this.width = width;
         }
 
-        public static Type Type {
-            get { return typeof (IMultiLineFacet); }
-        }
+        public static Type Type => typeof (IMultiLineFacet);
 
         #region IMultiLineFacet Members
 
-        public virtual int NumberOfLines {
-            get { return numberOfLines; }
-        }
+        public virtual int NumberOfLines => numberOfLines;
 
-        public virtual int Width {
-            get { return width; }
-        }
+        public virtual int Width => width;
 
         #endregion
 
         protected override string ToStringValues() {
-            return string.Format("lines={0}, width={1}", numberOfLines, width);
+            return $"lines={numberOfLines}, width={width}";
         }
     }
 }

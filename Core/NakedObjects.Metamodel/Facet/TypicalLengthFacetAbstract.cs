@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected TypicalLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}
 
-        public static Type Type {
-            get { return typeof (ITypicalLengthFacet); }
-        }
+        public static Type Type => typeof (ITypicalLengthFacet);
 
         protected override string ToStringValues() {
             int val = Value;

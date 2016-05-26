@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         public AjaxFacet(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IAjaxFacet); }
-        }
+        public static Type Type => typeof (IAjaxFacet);
     }
 }

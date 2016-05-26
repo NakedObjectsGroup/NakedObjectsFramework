@@ -25,9 +25,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public abstract IObjectSpecImmutable OwnerSpec { get; }
 
-        public override IObjectSpecImmutable ReturnSpec {
-            get { return returnSpec; }
-        }
+        public override IObjectSpecImmutable ReturnSpec => returnSpec;
 
         #endregion
 

@@ -25,9 +25,7 @@ namespace NakedObjects.Meta.Facet {
             return (IList) collection.Object;
         }
 
-        public override bool IsQueryable {
-            get { return false; }
-        }
+        public override bool IsQueryable => false;
 
         public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) {
             return AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));

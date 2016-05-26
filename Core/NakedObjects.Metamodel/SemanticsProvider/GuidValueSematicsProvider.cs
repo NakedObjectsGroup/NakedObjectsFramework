@@ -24,13 +24,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public GuidValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IGuidValueFacet); }
-        }
+        public static Type Type => typeof (IGuidValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (Guid); }
-        }
+        public static Type AdaptedType => typeof (Guid);
 
         #region IGuidValueFacet Members
 

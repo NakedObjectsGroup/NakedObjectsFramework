@@ -21,9 +21,7 @@ namespace NakedObjects.Meta.Facet {
             NaturalName = NameUtils.NaturalName(ShortName);
         }
 
-        public override bool CanAlwaysReplace {
-            get { return false; }
-        }
+        public override bool CanAlwaysReplace => false;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

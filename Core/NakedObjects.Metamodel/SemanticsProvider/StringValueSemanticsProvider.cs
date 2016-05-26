@@ -24,13 +24,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public StringValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IStringValueFacet); }
-        }
+        public static Type Type => typeof (IStringValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (string); }
-        }
+        public static Type AdaptedType => typeof (string);
 
         #region IStringValueFacet Members
 

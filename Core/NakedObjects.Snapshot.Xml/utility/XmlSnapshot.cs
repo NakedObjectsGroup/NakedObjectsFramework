@@ -49,22 +49,21 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 rootPlace = AppendXml(rootObjectAdapter);
             }
             catch (ArgumentException e) {
-                Log.Error("unable to build snapshot", e);
-                throw new NakedObjectSystemException(e);
+                throw new NakedObjectSystemException(Log.LogAndReturn("Unable to build snapshot"), e);
             }
         }
 
-        public XDocument XmlDocument { get; private set; }
+        public XDocument XmlDocument { get; }
         //  The root element of GetXmlDocument(). Returns <code>null</code>
         //  until the snapshot has actually been built.
 
         public XElement XmlElement { get; private set; }
-        public XDocument XsdDocument { get; private set; }
+        public XDocument XsdDocument { get; }
         //  The root element of GetXsdDocument(). Returns <code>null</code>
         //  until the snapshot has actually been built.
 
-        public XElement XsdElement { get; private set; }
-        public XmlSchema Schema { get; private set; }
+        public XElement XsdElement { get; }
+        public XmlSchema Schema { get; }
 
         #region IXmlSnapshot Members
 
@@ -119,14 +118,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         #endregion
 
         // Start a snapshot at the root object, using own namespace manager.
-
-        private static string AndLog(string label, INakedObjectAdapter nakedObjectAdapter) {
-            return ", " + DoLog(label, nakedObjectAdapter);
-        }
-
-        private static string AndLog(string label, Object nakedObject) {
-            return ", " + DoLog(label, nakedObject);
-        }
 
         // Creates an XElement representing this object, and appends it as the root
         // element of the Document.
@@ -184,7 +175,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             var parentXsElement = parentElement.Annotation<XElement>();
 
             if (parentElement.Document != XmlDocument) {
-                throw new ArgumentException("parent XML XElement must have snapshot's XML document as its owner");
+                throw new ArgumentException(Log.LogAndReturn("parent XML XElement must have snapshot's XML document as its owner"));
             }
 
             Place childPlace = ObjectToElement(childObjectAdapter);
@@ -256,7 +247,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             // (the corresponding XSD element will later be attached to xmlElement
             // as its userData)
             XElement[] xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
-            int fieldCount = xmlFieldElements.Count();
+            int fieldCount = xmlFieldElements.Length;
             if (fieldCount != 1) {
                 return false;
             }
@@ -306,10 +297,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             }
 
             return false; // fall through, shouldn't get here but just in case.
-        }
-
-        private static string DoLog(string label, INakedObjectAdapter nakedObjectAdapter) {
-            return DoLog(label, (nakedObjectAdapter == null ? "(null)" : nakedObjectAdapter.TitleString() + "[" + OidOrHashCode(nakedObjectAdapter) + "]"));
         }
 
         private static string DoLog(string label, object obj) {
@@ -411,9 +398,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
                     IObjectSpec fieldNos = field.ReturnSpec;
                     // skip fields of type XmlValue
-                    if (fieldNos != null &&
-                        fieldNos.FullName != null &&
-                        fieldNos.FullName.EndsWith("XmlValue")) {
+                    if (fieldNos?.FullName != null && fieldNos.FullName.EndsWith("XmlValue")) {
                         continue;
                     }
 

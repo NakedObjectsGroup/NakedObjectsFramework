@@ -16,9 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public DisableForSessionFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         public override string DisabledReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             return null;

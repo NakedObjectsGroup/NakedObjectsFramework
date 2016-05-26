@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         protected PageSizeFacetAbstract(int pageSize, ISpecification holder)
             : base(Type, holder, pageSize) {}
 
-        public static Type Type {
-            get { return typeof (IPageSizeFacet); }
-        }
+        public static Type Type => typeof (IPageSizeFacet);
     }
 }

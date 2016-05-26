@@ -57,17 +57,13 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public ITypeSpecImmutable Superclass { get; private set; }
 
-        public override IIdentifier Identifier {
-            get { return identifier; }
-        }
+        public override IIdentifier Identifier => identifier;
 
         public Type Type { get; private set; }
         public string FullName { get; private set; }
         public string ShortName { get; private set; }
 
-        public IMenuImmutable ObjectMenu {
-            get { return GetFacet<IMenuFacet>().GetMenu(); }
-        }
+        public IMenuImmutable ObjectMenu => GetFacet<IMenuFacet>().GetMenu();
 
         public IList<IActionSpecImmutable> ObjectActions { get; private set; }
         public IList<IActionSpecImmutable> ContributedActions { get; private set; }
@@ -76,9 +72,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public IList<IAssociationSpecImmutable> Fields { get; private set; }
         public IList<ITypeSpecImmutable> Interfaces { get; private set; }
 
-        public IList<ITypeSpecImmutable> Subclasses {
-            get { return subclasses; }
-        }
+        public IList<ITypeSpecImmutable> Subclasses => subclasses;
 
         public override IFacet GetFacet(Type facetType) {
             IFacet facet = base.GetFacet(facetType);
@@ -111,9 +105,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             return noopFacet;
         }
 
-        public virtual bool IsCollection {
-            get { return ContainsFacet(typeof (ICollectionFacet)); }
-        }
+        public virtual bool IsCollection => ContainsFacet(typeof (ICollectionFacet));
 
         public bool IsQueryable {
             get {
@@ -122,13 +114,9 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
-        public virtual bool IsParseable {
-            get { return ContainsFacet(typeof (IParseableFacet)); }
-        }
+        public virtual bool IsParseable => ContainsFacet(typeof (IParseableFacet));
 
-        public virtual bool IsObject {
-            get { return !IsCollection; }
-        }
+        public virtual bool IsObject => !IsCollection;
 
         private static bool IsAssignableToGenericType(Type givenType, Type genericType) {
             var interfaceTypes = givenType.GetInterfaces();
@@ -205,7 +193,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         }
 
         public override string ToString() {
-            return string.Format("{0} for {1}", GetType().Name, Type.Name);
+            return $"{GetType().Name} for {Type.Name}";
         }
 
         #region ISerializable

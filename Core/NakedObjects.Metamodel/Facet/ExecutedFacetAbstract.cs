@@ -19,9 +19,7 @@ namespace NakedObjects.Meta.Facet {
             executedWhere = where;
         }
 
-        public static Type Type {
-            get { return typeof (IExecutedFacet); }
-        }
+        public static Type Type => typeof (IExecutedFacet);
 
         #region IExecutedFacet Members
 

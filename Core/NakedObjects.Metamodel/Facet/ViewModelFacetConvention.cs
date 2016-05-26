@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         public ViewModelFacetConvention(ISpecification holder)
             : base(Type, holder) {}
 
-        private static Type Type {
-            get { return typeof (IViewModelFacet); }
-        }
+        private static Type Type => typeof (IViewModelFacet);
 
         public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
             return nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();

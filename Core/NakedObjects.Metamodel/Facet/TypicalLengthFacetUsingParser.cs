@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region ITypicalLengthFacet Members
 
-        public int Value {
-            get { return parser.TypicalLength; }
-        }
+        public int Value => parser.TypicalLength;
 
         #endregion
 

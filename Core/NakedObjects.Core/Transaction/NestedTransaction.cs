@@ -12,13 +12,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {
     public sealed class NestedTransaction : ITransaction {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof (NestedTransaction));
         private readonly IObjectStore objectStore;
         private bool complete;
-
-        static NestedTransaction() {
-            Log = LogManager.GetLogger(typeof (NestedTransaction));
-        }
 
         public NestedTransaction(IObjectStore objectStore) {
             this.objectStore = objectStore;
@@ -28,14 +24,14 @@ namespace NakedObjects.Core.Transaction {
 
         public void Abort() {
             if (complete) {
-                throw new TransactionException("Transaction already complete; cannot abort");
+                throw new TransactionException(Log.LogAndReturn("Transaction already complete; cannot abort"));
             }
             complete = true;
         }
 
         public void Commit() {
             if (complete) {
-                throw new TransactionException("Transaction already complete; cannot commit");
+                throw new TransactionException(Log.LogAndReturn("Transaction already complete; cannot commit"));
             }
             objectStore.EndTransaction();
             complete = true;

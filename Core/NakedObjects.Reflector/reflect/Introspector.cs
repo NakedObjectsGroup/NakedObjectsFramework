@@ -68,7 +68,7 @@ namespace NakedObjects.Reflect {
         public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec) {
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
-                throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
+                throw new ReflectionException(Log.LogAndReturn(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect)));
             }
 
             IntrospectedType = typeToIntrospect;
@@ -175,7 +175,7 @@ namespace NakedObjects.Reflect {
                 Type propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification(propertyType);
                 if (propertySpec is IServiceSpecImmutable) {
-                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}." + " If the property is intended to be an injected service it should have a protected get.");
+                    throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
                 }
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
 

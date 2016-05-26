@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         protected ActionChoicesFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IActionChoicesFacet); }
-        }
+        public static Type Type => typeof (IActionChoicesFacet);
 
         #region IActionChoicesFacet Members
 

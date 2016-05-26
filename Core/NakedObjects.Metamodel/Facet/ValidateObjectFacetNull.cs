@@ -16,9 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public ValidateObjectFacetNull(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IValidateObjectFacet); }
-        }
+        public static Type Type => typeof (IValidateObjectFacet);
 
         #region IValidateObjectFacet Members
 

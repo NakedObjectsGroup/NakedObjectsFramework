@@ -21,9 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMemberOrderFacet Members
 
-        public string Sequence {
-            get { return sequence; }
-        }
+        public string Sequence => sequence;
 
         #endregion
     }

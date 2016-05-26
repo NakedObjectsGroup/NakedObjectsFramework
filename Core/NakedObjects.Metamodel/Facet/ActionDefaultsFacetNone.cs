@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         public ActionDefaultsFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
             return new Tuple<object, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);

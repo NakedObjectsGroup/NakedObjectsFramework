@@ -75,17 +75,12 @@ namespace NakedObjects.Core.Component {
             else if (transactionLevel < 0) {
                 transactionLevel = 0;
                 if (!userAborted) {
-                    Log.ErrorFormat("End transaction with level {0}", transactionLevel);
-                    throw new TransactionException("No transaction running to end");
+                    throw new TransactionException(Log.LogAndReturn("No transaction running to end"));
                 }
             }
         }
 
-        public int TransactionLevel {
-            get {
-                return transactionLevel;
-            }
-        }
+        public int TransactionLevel => transactionLevel;
 
         #endregion
     }

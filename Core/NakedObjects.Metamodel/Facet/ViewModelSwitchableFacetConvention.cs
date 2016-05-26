@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,11 +17,11 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ViewModelSwitchableFacetConvention));
+
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) {}
 
-        private static Type Type {
-            get { return typeof (IViewModelFacet); }
-        }
+        private static Type Type => typeof(IViewModelFacet);
 
         public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
             return nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
@@ -37,7 +38,7 @@ namespace NakedObjects.Meta.Facet {
                 return target.IsEditView();
             }
 
-            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null ? "Null domain object" : "Wrong type of domain object: " + nakedObjectAdapter.Object.GetType().FullName);
+            throw new NakedObjectSystemException(Log.LogAndReturn(nakedObjectAdapter.Object == null ? "Null domain object" : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}"));
         }
     }
 }

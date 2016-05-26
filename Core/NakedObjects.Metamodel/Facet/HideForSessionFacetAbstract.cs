@@ -27,9 +27,7 @@ namespace NakedObjects.Meta.Facet {
         protected HideForSessionFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IHideForSessionFacet); }
-        }
+        public static Type Type => typeof (IHideForSessionFacet);
 
         #region IHideForSessionFacet Members
 

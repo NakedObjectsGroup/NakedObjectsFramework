@@ -27,15 +27,11 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        public override IObjectSpecImmutable ElementSpec {
-            get { return null; }
-        }
+        public override IObjectSpecImmutable ElementSpec => null;
 
         #region IOneToOneAssociationSpecImmutable Members
 
-        public override IObjectSpecImmutable OwnerSpec {
-            get { return ownerSpec; }
-        }
+        public override IObjectSpecImmutable OwnerSpec => ownerSpec;
 
         #endregion
 

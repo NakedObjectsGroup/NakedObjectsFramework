@@ -19,9 +19,7 @@ namespace NakedObjects.Meta.Facet {
         protected MaxLengthFacetAbstract(int intValue, ISpecification holder)
             : base(Type, holder, intValue) {}
 
-        public static Type Type {
-            get { return typeof (IMaxLengthFacet); }
-        }
+        public static Type Type => typeof (IMaxLengthFacet);
 
         #region IMaxLengthFacet Members
 

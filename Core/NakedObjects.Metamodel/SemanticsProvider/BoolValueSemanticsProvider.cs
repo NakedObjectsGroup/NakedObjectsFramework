@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public BooleanValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        private static Type Type {
-            get { return typeof (IBooleanValueFacet); }
-        }
+        private static Type Type => typeof (IBooleanValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (bool); }
-        }
+        public static Type AdaptedType => typeof (bool);
 
         #region IBooleanValueFacet Members
 

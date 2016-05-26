@@ -51,7 +51,7 @@ namespace NakedObjects.Core.Component {
 
             if (unloadedObjects.ContainsKey(obj)) {
                 string msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
-                throw new TransientReferenceException(msg);
+                throw new TransientReferenceException(Log.LogAndReturn(msg));
             }
 
             if (nakedObjectAdapter.Spec.IsObject) {

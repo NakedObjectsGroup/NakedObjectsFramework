@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         public DescribedAsFacetNone(ISpecification holder)
             : base("", holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

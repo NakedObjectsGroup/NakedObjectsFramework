@@ -8,17 +8,21 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(RegExAnnotationFacetFactory));
+
         public RegExAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
 
@@ -64,7 +68,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (exAttribute != null) {
                 return Create(exAttribute, holder);
             }
-            throw new ArgumentException("Unexpected attribute type: " + attribute.GetType());
+            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
         }
 
         private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) {

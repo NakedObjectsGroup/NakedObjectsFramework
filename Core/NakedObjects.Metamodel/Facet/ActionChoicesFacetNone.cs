@@ -17,17 +17,11 @@ namespace NakedObjects.Meta.Facet {
         public ActionChoicesFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
-        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
-            get { return new Tuple<string, IObjectSpecImmutable>[] {}; }
-        }
+        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes => new Tuple<string, IObjectSpecImmutable>[] {};
 
-        public override bool IsMultiple {
-            get { return false; }
-        }
+        public override bool IsMultiple => false;
 
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             return new object[0];

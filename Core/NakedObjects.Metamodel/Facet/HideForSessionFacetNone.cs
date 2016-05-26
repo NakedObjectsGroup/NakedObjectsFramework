@@ -16,9 +16,7 @@ namespace NakedObjects.Meta.Facet {
         public HideForSessionFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         /// <summary>
         ///     Always returns <c>null</c>

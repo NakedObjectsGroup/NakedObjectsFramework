@@ -68,7 +68,7 @@ namespace NakedObjects.Core.Component {
         /// </summary>
         public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
-                throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
+                throw new TransientReferenceException(Log.LogAndReturn(Resources.NakedObjects.NoTransientInline));
             }
             object obj = CreateObject(spec);
             INakedObjectAdapter adapter = nakedObjectManager.CreateInstanceAdapter(obj);
@@ -87,7 +87,7 @@ namespace NakedObjects.Core.Component {
             INakedObjectAdapter adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
                 if (!adapter.Spec.Equals(spec)) {
-                    throw new AdapterException(string.Format("Mapped adapter is for a different type of object: {0}; {1}", spec.FullName, adapter));
+                    throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for a different type of object: {spec.FullName}; {adapter}"));
                 }
                 return adapter;
             }
@@ -118,14 +118,14 @@ namespace NakedObjects.Core.Component {
         /// </para>
         public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (IsPersistent(nakedObjectAdapter)) {
-                throw new NotPersistableException("Object already persistent: " + nakedObjectAdapter);
+                throw new NotPersistableException(Log.LogAndReturn($"Object already persistent: {nakedObjectAdapter}"));
             }
             if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                throw new NotPersistableException("Object must be kept transient: " + nakedObjectAdapter);
+                throw new NotPersistableException(Log.LogAndReturn($"Object must be kept transient: {nakedObjectAdapter}"));
             }
             ITypeSpec spec = nakedObjectAdapter.Spec;
             if (spec is IServiceSpec) {
-                throw new NotPersistableException("Cannot persist services: " + nakedObjectAdapter);
+                throw new NotPersistableException(Log.LogAndReturn($"Cannot persist services: {nakedObjectAdapter}"));
             }
 
             persistAlgorithm.MakePersistent(nakedObjectAdapter);
@@ -135,7 +135,7 @@ namespace NakedObjects.Core.Component {
             var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
 
             if (vmoid == null) {
-                throw new UnknownTypeException(string.Format("Expect ViewModelOid got {0}", nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString()));
+                throw new UnknownTypeException(Log.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
             }
 
             // todo fix - temp hack

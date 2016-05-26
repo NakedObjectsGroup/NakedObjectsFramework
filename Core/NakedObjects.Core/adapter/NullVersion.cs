@@ -6,10 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NullVersion : IVersion, IEncodedToStrings {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(NullVersion));
+
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
@@ -55,7 +59,7 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         public IVersion Next(string user, DateTime time) {
-            throw new UnexpectedCallException();
+            throw new UnexpectedCallException(Log.LogAndReturn("Unexpected call of 'Next'"));
         }
 
         public override bool Equals(object other) {

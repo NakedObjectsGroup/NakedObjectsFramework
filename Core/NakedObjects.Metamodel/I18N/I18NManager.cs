@@ -48,9 +48,7 @@ namespace NakedObjects.Meta.I18N {
             return facet;
         }
 
-        public virtual Type[] ForFacetTypes {
-            get { return new[] {typeof (INamedFacet), typeof (IDescribedAsFacet)}; }
-        }
+        public virtual Type[] ForFacetTypes => new[] {typeof (INamedFacet), typeof (IDescribedAsFacet)};
 
         #endregion
 

@@ -120,7 +120,7 @@ namespace NakedObjects.Core.Util {
                 }
                 catch (DomainException e) {
                     // wrap this for compatibility with calls via invoke
-                    throw new NakedObjectDomainException(e.Message, e);
+                    throw new NakedObjectDomainException(Log.LogAndReturn(e.Message), e);
                 }
             };
         }

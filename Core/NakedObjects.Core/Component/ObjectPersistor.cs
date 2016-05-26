@@ -144,7 +144,7 @@ namespace NakedObjects.Core.Component {
                 else {
                     ITypeSpec spec = nakedObjectAdapter.Spec;
                     if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent())) {
-                        throw new NotPersistableException("cannot change immutable object");
+                        throw new NotPersistableException(Log.LogAndReturn("cannot change immutable object"));
                     }
                     nakedObjectAdapter.Updating();
                     objectStore.ExecuteSaveObjectCommand(nakedObjectAdapter);

@@ -26,9 +26,7 @@ namespace NakedObjects.Meta.Facet {
             ValidateMethods = validateMethods;
         }
 
-        public static Type Type {
-            get { return typeof (IValidateObjectFacet); }
-        }
+        public static Type Type => typeof (IValidateObjectFacet);
 
         private IEnumerable<NakedObjectValidationMethod> ValidateMethods { get; set; }
 
@@ -90,9 +88,7 @@ namespace NakedObjects.Meta.Facet {
                 methodDelegate = DelegateUtils.CreateDelegate(method);
             }
 
-            public string Name {
-                get { return method.Name; }
-            }
+            public string Name => method.Name;
 
             public string[] ParameterNames {
                 get { return method.GetParameters().Select(p => p.Name.ToLower()).ToArray(); }

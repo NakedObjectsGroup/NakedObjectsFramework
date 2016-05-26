@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         protected LoadingCallbackFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (ILoadingCallbackFacet); }
-        }
+        public static Type Type => typeof (ILoadingCallbackFacet);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

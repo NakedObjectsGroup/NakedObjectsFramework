@@ -14,8 +14,6 @@ namespace NakedObjects.Meta.Facet {
     public sealed class IsASetFacet : MarkerFacetAbstract, IIsASetFacet {
         public IsASetFacet(ISpecification holder) : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IIsASetFacet); }
-        }
+        public static Type Type => typeof (IIsASetFacet);
     }
 }

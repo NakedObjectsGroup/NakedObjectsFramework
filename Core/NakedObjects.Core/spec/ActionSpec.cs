@@ -210,12 +210,12 @@ namespace NakedObjects.Core.Spec {
                     return serviceAdapter;
                 }
             }
-            throw new FindObjectException("failed to find service for action " + Name);
+            throw new FindObjectException(Log.LogAndReturn($"failed to find service for action {Name}"));
         }
 
         private IActionParameterSpec GetParameter(int position) {
             if (position >= Parameters.Length) {
-                throw new ArgumentException("GetParameter(int): only " + Parameters.Length + " parameters, position=" + position);
+                throw new ArgumentException(Log.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
             }
             return Parameters[position];
         }

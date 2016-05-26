@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         public TypeIsVoidFacet(ISpecification holder, bool flag)
             : base(Type, holder, flag) {}
 
-        public static Type Type {
-            get { return typeof (ITypeIsVoidFacet); }
-        }
+        public static Type Type => typeof (ITypeIsVoidFacet);
     }
 }

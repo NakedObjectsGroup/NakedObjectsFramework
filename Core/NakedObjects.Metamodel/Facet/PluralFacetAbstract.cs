@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         protected PluralFacetAbstract(string stringValue, ISpecification holder)
             : base(Type, holder, stringValue) {}
 
-        public static Type Type {
-            get { return typeof (IPluralFacet); }
-        }
+        public static Type Type => typeof (IPluralFacet);
     }
 }

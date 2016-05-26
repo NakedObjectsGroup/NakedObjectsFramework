@@ -11,8 +11,10 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Value;
 using Image = NakedObjects.Value.Image;
@@ -20,6 +22,8 @@ using Image = NakedObjects.Value.Image;
 namespace NakedObjects.Core.Configuration {
     [Serializable]
     public class ReflectorConfiguration : IReflectorConfiguration {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ReflectorConfiguration));
+
         private readonly Type[] defaultSystemTypes = {
             typeof (bool),
             typeof (byte),
@@ -102,13 +106,13 @@ namespace NakedObjects.Core.Configuration {
 
         #region IReflectorConfiguration Members
 
-        public Type[] TypesToIntrospect { get; private set; }
-        public bool IgnoreCase { get; private set; }
+        public Type[] TypesToIntrospect { get; }
+        public bool IgnoreCase { get; }
         public bool ConcurrencyChecking { get; }
-        public Type[] Services { get; private set; }
-        public Func<IMenuFactory, IMenu[]> MainMenus { get; private set; }
-        public string[] ModelNamespaces { get; private set; }
-        public List<Type> SupportedSystemTypes { get; private set; }
+        public Type[] Services { get; }
+        public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        public string[] ModelNamespaces { get; }
+        public List<Type> SupportedSystemTypes { get; }
 
         #endregion
 
@@ -129,7 +133,7 @@ namespace NakedObjects.Core.Configuration {
             }
 
             if (configError) {
-                throw new InitialisationException(msg);
+                throw new InitialisationException(Log.LogAndReturn(msg));
             }
         }
     }

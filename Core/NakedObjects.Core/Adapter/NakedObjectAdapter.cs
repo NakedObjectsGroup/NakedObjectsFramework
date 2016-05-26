@@ -21,7 +21,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
-        private static readonly ILog Log;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectAdapter));
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
@@ -32,16 +32,12 @@ namespace NakedObjects.Core.Adapter {
         private ITypeSpec spec;
         private IVersion version;
 
-        static NakedObjectAdapter() {
-            Log = LogManager.GetLogger(typeof (NakedObjectAdapter));
-        }
-
         public NakedObjectAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
 
             if (poco is INakedObjectAdapter) {
-                throw new AdapterException("Adapter can't be used to adapt an adapter: " + poco);
+                throw new AdapterException(Log.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
             this.metamodel = metamodel;
             this.session = session;
@@ -55,19 +51,13 @@ namespace NakedObjects.Core.Adapter {
             version = new NullVersion();
         }
 
-        private string DefaultTitle {
-            get { return defaultTitle; }
-        }
+        private string DefaultTitle => defaultTitle;
 
         #region INakedObjectAdapter Members
 
-        private ITypeOfFacet TypeOfFacet {
-            get { return Spec.GetFacet<ITypeOfFacet>(); }
-        }
+        private ITypeOfFacet TypeOfFacet => Spec.GetFacet<ITypeOfFacet>();
 
-        public object Object {
-            get { return poco; }
-        }
+        public object Object => poco;
 
         /// <summary>
         ///     Returns the name of the icon to use to represent this object
@@ -88,9 +78,7 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public IVersion Version {
-            get { return version; }
-        }
+        public IVersion Version => version;
 
         public IVersion OptimisticLock {
             set {
@@ -114,8 +102,7 @@ namespace NakedObjects.Core.Adapter {
                 return Spec.GetTitle(this) ?? DefaultTitle;
             }
             catch (Exception e) {
-                Log.Error("Exception on ToString", e);
-                throw new TitleException("Exception on ToString POCO: " + (poco == null ? "unknown" : poco.GetType().FullName), e);
+                throw new TitleException(Log.LogAndReturn("Exception on ToString POCO: " + (poco == null ? "unknown" : poco.GetType().FullName)), e);
             }
         }
 

@@ -8,14 +8,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
+
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
@@ -38,7 +42,7 @@ namespace NakedObjects.Core.Spec {
                 return Properties.First(f => f.Id.Equals(id));
             }
             catch (InvalidOperationException) {
-                throw new ReflectionException($"No field called '{id}' in '{SingularName}'");
+                throw new ReflectionException(Log.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
             }
         }
 

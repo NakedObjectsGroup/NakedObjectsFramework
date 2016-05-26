@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -23,6 +24,8 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(StringDecoderHelper));
+
         private readonly IMetamodelManager metamodel;
         private readonly string[] strings;
         private int index;
@@ -33,9 +36,7 @@ namespace NakedObjects.Core.Adapter {
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;
         }
 
-        public bool HasNext {
-            get { return index + 1 < strings.Length; }
-        }
+        public bool HasNext => index + 1 < strings.Length;
 
         public short GetNextShort() {
             CheckCurrentIndex();
@@ -112,7 +113,7 @@ namespace NakedObjects.Core.Adapter {
 
             Type objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(string.Format("Cannot find type for name: {0}", type));
+                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
             if (objectType == typeof (string)) {
                 return value;
@@ -124,11 +125,11 @@ namespace NakedObjects.Core.Adapter {
 
             MethodInfo parseMethod = objectType.GetMethod("Parse", new[] {typeof (string)});
             if (parseMethod == null) {
-                throw new Exception(string.Format("Cannot find Parse method on type: {0}", objectType));
+                throw new Exception(Log.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
             object result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
-                throw new Exception(string.Format("Failed to Parse value: {0} on type: {1}", value, objectType));
+                throw new Exception(Log.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
             return result;
         }
@@ -154,7 +155,7 @@ namespace NakedObjects.Core.Adapter {
 
             Type objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(string.Format("Cannot find type for name: {0}", type));
+                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
@@ -175,17 +176,17 @@ namespace NakedObjects.Core.Adapter {
 
             Type objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(string.Format("Cannot find type for name: {0}", type));
+                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
             if (!typeof (IEncodedToStrings).IsAssignableFrom(objectType)) {
-                throw new Exception(string.Format("Type: {0} needs to be: {1} ", objectType, typeof (IEncodedToStrings)));
+                throw new Exception(Log.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
             }
             return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, encodedData);
         }
 
         private void CheckCurrentIndex() {
             if (index >= strings.Length) {
-                throw new IndexOutOfRangeException(string.Format("String decode fail index: {0} length: {1}", index, strings.Length));
+                throw new IndexOutOfRangeException(Log.LogAndReturn($"String decode fail index: {index} length: {strings.Length}"));
             }
         }
     }

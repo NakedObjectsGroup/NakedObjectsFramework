@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public DoubleValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        private static Type Type {
-            get { return typeof (IDoubleFloatingPointValueFacet); }
-        }
+        private static Type Type => typeof (IDoubleFloatingPointValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (double); }
-        }
+        public static Type AdaptedType => typeof (double);
 
         #region IDoubleFloatingPointValueFacet Members
 

@@ -21,7 +21,7 @@ namespace NakedObjects.Architecture.Component {
         ///     Determine if the object store has been initialized with its set of start up objects. If this flag returns
         ///     <c>false</c> the framework will run the fixtures to initialise the object store.
         /// </summary>
-        bool IsInitialized { get; set; }
+        bool IsInitialized { get; }
 
         /// <summary>
         ///     The name of this object store (for logging/debugging purposes)

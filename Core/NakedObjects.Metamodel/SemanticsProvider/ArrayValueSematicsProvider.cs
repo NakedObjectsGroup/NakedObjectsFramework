@@ -29,13 +29,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ArrayValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IArrayValueFacet<T>); }
-        }
+        public static Type Type => typeof (IArrayValueFacet<T>);
 
-        public static Type AdaptedType {
-            get { return typeof (T[]); }
-        }
+        public static Type AdaptedType => typeof (T[]);
 
         #region IArrayValueFacet<T> Members
 
@@ -48,7 +44,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IFromStream Members
 
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
-            Trace.Assert(typeof (T) == typeof (byte), string.Format("Cannot parse an array of {0} from stream", typeof (T)));
+            Trace.Assert(typeof (T) == typeof (byte), $"Cannot parse an array of {typeof(T)} from stream");
 
             var ba = new byte[stream.Length];
             stream.Position = 0;
@@ -122,7 +118,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         public override string ToString() {
-            return string.Format("ArrayAdapter<{0}>", typeof (T));
+            return $"ArrayAdapter<{typeof(T)}>";
         }
     }
 }

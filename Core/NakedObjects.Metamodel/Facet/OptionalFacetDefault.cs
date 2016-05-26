@@ -27,12 +27,8 @@ namespace NakedObjects.Meta.Facet {
         public OptionalFacetDefault(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsMandatory {
-            get { return false; }
-        }
+        public override bool IsMandatory => false;
 
-        public override bool CanAlwaysReplace {
-            get { return false; }
-        }
+        public override bool CanAlwaysReplace => false;
     }
 }

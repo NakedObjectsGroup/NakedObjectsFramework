@@ -7,12 +7,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class SpecFactory {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(SpecFactory));
+
         private INakedObjectsFramework framework;
 
         public void Initialize(INakedObjectsFramework newFramework) {
@@ -33,7 +36,7 @@ namespace NakedObjects.Core.Spec {
             if (specification.IsCollection) {
                 return new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
             }
-            throw new UnknownTypeException(specification);
+            throw new UnknownTypeException(Log.LogAndReturn($"{specification}"));
         }
 
         public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
@@ -46,7 +49,7 @@ namespace NakedObjects.Core.Spec {
             if (oneToManyAssociationSpecImmutable != null) {
                 return new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
             }
-            throw new ReflectionException("Unknown spec type: " + specImmutable);
+            throw new ReflectionException(Log.LogAndReturn($"Unknown spec type: {specImmutable}"));
         }
 
         public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) {
@@ -74,7 +77,7 @@ namespace NakedObjects.Core.Spec {
                 return CreateServiceSpec(ssi);
             }
 
-            throw new InitialisationException(string.Format("Unexpected Spec Type {0}", specImmutable.Type));
+            throw new InitialisationException(Log.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"));
         }
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {

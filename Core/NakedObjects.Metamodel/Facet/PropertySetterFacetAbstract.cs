@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
         protected PropertySetterFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IPropertySetterFacet); }
-        }
+        public static Type Type => typeof (IPropertySetterFacet);
 
         #region IPropertySetterFacet Members
 

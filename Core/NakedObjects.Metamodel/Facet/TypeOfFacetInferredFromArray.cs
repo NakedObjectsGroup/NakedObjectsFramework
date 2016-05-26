@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         public TypeOfFacetInferredFromArray(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (ITypeOfFacet); }
-        }
+        public static Type Type => typeof (ITypeOfFacet);
 
         #region ITypeOfFacet Members
 

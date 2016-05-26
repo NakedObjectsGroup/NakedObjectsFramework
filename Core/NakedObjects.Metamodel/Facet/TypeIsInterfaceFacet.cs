@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         public TypeIsInterfaceFacet(ISpecification holder, bool flag)
             : base(Type, holder, flag) {}
 
-        public static Type Type {
-            get { return typeof (ITypeIsInterfaceFacet); }
-        }
+        public static Type Type => typeof (ITypeIsInterfaceFacet);
     }
 }

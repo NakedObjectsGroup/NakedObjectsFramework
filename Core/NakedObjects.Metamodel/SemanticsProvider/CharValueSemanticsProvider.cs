@@ -26,13 +26,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public CharValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (ICharValueFacet); }
-        }
+        public static Type Type => typeof (ICharValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (char); }
-        }
+        public static Type AdaptedType => typeof (char);
 
         #region ICharValueFacet Members
 

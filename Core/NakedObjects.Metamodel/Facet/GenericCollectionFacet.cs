@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Facet {
         public GenericCollectionFacet(ISpecification holder, bool isASet)
             : base(holder, isASet) {}
 
-        public override bool IsQueryable {
-            get { return false; }
-        }
+        public override bool IsQueryable => false;
 
         private static ICollection<T> AsGenericCollection<T>(INakedObjectAdapter collection) {
             return (ICollection<T>) collection.Object;

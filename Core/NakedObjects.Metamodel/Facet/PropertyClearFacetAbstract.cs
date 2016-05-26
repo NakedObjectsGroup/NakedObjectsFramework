@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
         protected PropertyClearFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IPropertyClearFacet); }
-        }
+        public static Type Type => typeof (IPropertyClearFacet);
 
         #region IPropertyClearFacet Members
 

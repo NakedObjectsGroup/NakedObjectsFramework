@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public ShortValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IShortValueFacet); }
-        }
+        public static Type Type => typeof (IShortValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (short); }
-        }
+        public static Type AdaptedType => typeof (short);
 
         #region IShortValueFacet Members
 

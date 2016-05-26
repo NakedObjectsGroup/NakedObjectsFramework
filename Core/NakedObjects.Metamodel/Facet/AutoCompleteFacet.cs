@@ -6,21 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Core.Util.Query;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AutoCompleteFacet));
         private readonly MethodInfo method;
         private readonly Func<object, object[], object> methodDelegate;
 
@@ -35,19 +36,17 @@ namespace NakedObjects.Meta.Facet {
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
-        public static Type Type {
-            get { return typeof (IAutoCompleteFacet); }
-        }
+        public static Type Type => typeof(IAutoCompleteFacet);
 
-        public int PageSize { get; private set; }
+        public int PageSize { get; }
 
         #region IAutoCompleteFacet Members
 
-        public int MinLength { get; private set; }
+        public int MinLength { get; }
 
         public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm) {
             try {
-                object autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] { autoCompleteParm });
+                object autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
 
                 //returning an IQueryable
                 var queryable = autoComplete as IQueryable;
@@ -57,17 +56,16 @@ namespace NakedObjects.Meta.Facet {
                 //returning an IEnumerable (of string only)
                 var strings = autoComplete as IEnumerable<string>;
                 if (strings != null) {
-                    return strings.ToArray();
+                    return strings.Cast<object>().ToArray();
                 }
                 //return type is a single object
                 if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
-                    return new[] { autoComplete };
+                    return new[] {autoComplete};
                 }
-                throw new NakedObjectDomainException("Must return IQueryable or a single object from autoComplete method: " + method.Name);
+                throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IQueryable or a single object from autoComplete method: {method.Name}"));
             }
             catch (ArgumentException ae) {
-                string msg = $"autoComplete exception: {method.Name} has mismatched parameter type - must be string";
-                throw new InvokeException(msg, ae);
+                throw new InvokeException(Log.LogAndReturn($"autoComplete exception: {method.Name} has mismatched parameter type - must be string"), ae);
             }
         }
 

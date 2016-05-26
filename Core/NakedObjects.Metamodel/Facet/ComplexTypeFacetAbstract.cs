@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         protected ComplexTypeFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IComplexTypeFacet); }
-        }
+        public static Type Type => typeof (IComplexTypeFacet);
     }
 }

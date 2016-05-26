@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
         protected MandatoryFacetAbstract(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IMandatoryFacet); }
-        }
+        public static Type Type => typeof (IMandatoryFacet);
 
         #region IMandatoryFacet Members
 
@@ -31,9 +29,7 @@ namespace NakedObjects.Meta.Facet {
             return new InvalidMandatoryException(ic, Invalidates(ic));
         }
 
-        public virtual bool IsOptional {
-            get { return !IsMandatory; }
-        }
+        public virtual bool IsOptional => !IsMandatory;
 
         public abstract bool IsMandatory { get; }
 

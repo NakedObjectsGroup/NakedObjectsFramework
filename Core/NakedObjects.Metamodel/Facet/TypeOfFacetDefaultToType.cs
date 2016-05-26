@@ -24,9 +24,7 @@ namespace NakedObjects.Meta.Facet {
             this.spec = spec;
         }
 
-        public static Type Type {
-            get { return typeof (ITypeOfFacet); }
-        }
+        public static Type Type => typeof (ITypeOfFacet);
 
         #region ITypeOfFacet Members
 

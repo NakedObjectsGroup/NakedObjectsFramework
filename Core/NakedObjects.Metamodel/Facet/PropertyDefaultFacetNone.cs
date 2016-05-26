@@ -15,9 +15,7 @@ namespace NakedObjects.Meta.Facet {
         public PropertyDefaultFacetNone(ISpecification holder)
             : base(holder) {}
 
-        public override bool IsNoOp {
-            get { return true; }
-        }
+        public override bool IsNoOp => true;
 
         /// <summary>
         ///     Provides a default of <c>null</c>

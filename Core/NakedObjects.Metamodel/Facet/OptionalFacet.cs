@@ -23,9 +23,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Always returns <c>false</c>, indicating that the facet holder is in fact optional.
         /// </summary>
-        public override bool IsMandatory {
-            get { return false; }
-        }
+        public override bool IsMandatory => false;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

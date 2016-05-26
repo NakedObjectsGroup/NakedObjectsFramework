@@ -14,8 +14,6 @@ namespace NakedObjects.Meta.Facet {
     public sealed class DateOnlyFacet : MarkerFacetAbstract, IDateOnlyFacet {
         public DateOnlyFacet(ISpecification holder) : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IDateOnlyFacet); }
-        }
+        public static Type Type => typeof (IDateOnlyFacet);
     }
 }

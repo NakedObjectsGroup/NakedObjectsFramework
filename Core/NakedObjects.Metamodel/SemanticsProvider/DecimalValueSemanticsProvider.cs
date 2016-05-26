@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public DecimalValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualByContent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IDecimalValueFacet); }
-        }
+        public static Type Type => typeof (IDecimalValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (decimal); }
-        }
+        public static Type AdaptedType => typeof (decimal);
 
         #region IDecimalValueFacet Members
 

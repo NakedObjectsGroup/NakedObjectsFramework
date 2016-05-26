@@ -27,25 +27,15 @@ namespace NakedObjects.Meta.Audit {
             identifier = underlyingFacet.Specification.Identifier;
         }
 
-        public override bool IsQueryOnly {
-            get { return underlyingFacet.IsQueryOnly; }
-        }
+        public override bool IsQueryOnly => underlyingFacet.IsQueryOnly;
 
-        public override MethodInfo ActionMethod {
-            get { return underlyingFacet.ActionMethod; }
-        }
+        public override MethodInfo ActionMethod => underlyingFacet.ActionMethod;
 
-        public override IObjectSpecImmutable ReturnType {
-            get { return underlyingFacet.ReturnType; }
-        }
+        public override IObjectSpecImmutable ReturnType => underlyingFacet.ReturnType;
 
-        public override IObjectSpecImmutable ElementType {
-            get { return underlyingFacet.ElementType; }
-        }
+        public override IObjectSpecImmutable ElementType => underlyingFacet.ElementType;
 
-        public override ITypeSpecImmutable OnType {
-            get { return underlyingFacet.OnType; }
-        }
+        public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);

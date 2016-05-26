@@ -5,11 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Resolve;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Resolve {
     public static class StateHelperUtils {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(StateHelperUtils));
+
         public static bool IsGhost(this IResolveStateMachine stateMachine) {
             return stateMachine.CurrentState is ResolveStateMachine.GhostState;
         }
@@ -97,7 +101,7 @@ namespace NakedObjects.Core.Resolve {
 
         public static void CheckCanAssociate(this IResolveStateMachine stateMachine, INakedObjectAdapter associate) {
             if (stateMachine.IsPersistent() && associate != null && associate.ResolveState.IsTransient()) {
-                throw new TransientReferenceException(string.Format(Resources.NakedObjects.TransientErrorMessage, associate.TitleString()));
+                throw new TransientReferenceException(Log.LogAndReturn(string.Format(Resources.NakedObjects.TransientErrorMessage, associate.TitleString())));
             }
         }
     }

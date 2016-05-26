@@ -15,8 +15,6 @@ namespace NakedObjects.Meta.Facet {
         public ConcurrencyCheckFacet(ISpecification holder)
             : base(Type, holder) {}
 
-        public static Type Type {
-            get { return typeof (IConcurrencyCheckFacet); }
-        }
+        public static Type Type => typeof (IConcurrencyCheckFacet);
     }
 }

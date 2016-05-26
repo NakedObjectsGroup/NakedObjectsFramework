@@ -23,13 +23,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public EnumValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, default(T), spec) {}
 
-        public static Type Type {
-            get { return typeof (IEnumValueFacet); }
-        }
+        public static Type Type => typeof (IEnumValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (T); }
-        }
+        public static Type AdaptedType => typeof (T);
 
         #region IEnumValueFacet Members
 

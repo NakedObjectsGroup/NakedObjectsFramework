@@ -25,13 +25,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         public IntValueSemanticsProvider(IObjectSpecImmutable spec, ISpecification holder)
             : base(Type, holder, AdaptedType, TypicalLengthConst, Immutable, EqualBycontent, DefaultValueConst, spec) {}
 
-        public static Type Type {
-            get { return typeof (IIntegerValueFacet); }
-        }
+        public static Type Type => typeof (IIntegerValueFacet);
 
-        public static Type AdaptedType {
-            get { return typeof (int); }
-        }
+        public static Type AdaptedType => typeof (int);
 
         #region IIntegerValueFacet Members
 
