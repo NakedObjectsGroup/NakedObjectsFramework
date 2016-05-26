@@ -404,6 +404,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
             wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
         }
+        //To test a previous bug, where reference was beign rendered as a Url, not its title
+        public virtual void DefaultReferenceParamRendersCorrectly()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
+            OpenActionDialog("Create Letter");
+            wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).Text.StartsWith("Zeiter Weg 9922"));
+        }
     }
     public abstract class DialogTests : DialogTestsRoot
     {
@@ -467,6 +474,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void NullableBooleanParams() { base.NullableBooleanParams(); }
         [TestMethod]
         public override void WarningShownWithinDialogAndInFooter() { base.WarningShownWithinDialogAndInFooter(); }
+        [TestMethod]
+        public override void DefaultReferenceParamRendersCorrectly() { base.DefaultReferenceParamRendersCorrectly(); }
     }
 
     #region browsers specific subclasses
@@ -580,6 +589,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ParameterDescriptionRenderedAsPlacholder();
             base.NullableBooleanParams();
             base.WarningShownWithinDialogAndInFooter();
+            base.DefaultReferenceParamRendersCorrectly();
         }
     }
 
