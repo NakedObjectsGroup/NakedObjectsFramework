@@ -23,7 +23,7 @@ module NakedObjects {
     export const noPatternMatch = "Invalid entry";
     export const closeActions = "Close actions";
     export const noActions = "No actions available";
-    export const openActions = "Open actions";
+    export const openActions = "Open actions (Alt-a)";
     export const mandatoryFieldsPrefix = "Missing mandatory fields: ";
     export const invalidFieldsPrefix = "Invalid fields: ";
     export const unknownFileTitle = "UnknownFile";

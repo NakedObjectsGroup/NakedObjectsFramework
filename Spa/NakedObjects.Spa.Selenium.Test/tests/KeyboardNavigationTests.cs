@@ -23,6 +23,16 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             Assert.AreEqual("Home (Alt-h)", element.GetAttribute("title"));
         }
 
+        public virtual void SelectObjectActionsWithAccessKey()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person--15748");
+            WaitForView(Pane.Single, PaneType.Object);
+            var element = br.SwitchTo().ActiveElement();
+            element.SendKeys(Keys.Alt + "a");
+            element = br.SwitchTo().ActiveElement();
+            Assert.AreEqual("Open actions (Alt-a)", element.GetAttribute("title"));
+        }
+
         public virtual void EnterEquivalentToLeftClick()
         {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
@@ -49,6 +59,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
         [TestMethod, Ignore] //Doesn't work with Firefox
         public override void SelectFooterIconsWithAccessKeys() { base.SelectFooterIconsWithAccessKeys(); }
+
+        [TestMethod, Ignore] //Doesn't work with Firefox
+        public override void SelectObjectActionsWithAccessKey() { base.SelectObjectActionsWithAccessKey(); }
 
         [TestMethod]
         public override void EnterEquivalentToLeftClick() { base.EnterEquivalentToLeftClick(); }
@@ -134,8 +147,9 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod]
         public void MegaKeyboardTest()
         {
-            base.EnterEquivalentToLeftClick();
             //base.SelectFooterIconsWithAccessKeys();
+            //base.SelectObjectActionsWithAccessKey();
+            base.EnterEquivalentToLeftClick();
             base.ShiftEnterEquivalentToRightClick();
         }
     }
