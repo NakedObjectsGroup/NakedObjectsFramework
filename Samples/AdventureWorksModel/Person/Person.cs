@@ -317,6 +317,17 @@ namespace AdventureWorksModel {
             email.Status = EmailStatus.New;
             return email;
         }
+
+        public void CreateLetter(Address toAddress)
+        {
+
+        }
+
+
+        public Address Default0CreateLetter()
+        {
+            return this.Addresses.First().Address;
+        }
         #endregion
     }
 
