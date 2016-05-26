@@ -322,6 +322,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         }
 
+        //Test for a specific earlier bug
+        public virtual void AddingObjectToCollectionUpdatesTableView()
+        {
+            GeminiUrl("object?i1=View&o1=___1.SalesPerson--290&c1_TerritoryHistory=Table&as1=open");
+            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count > 0);
+            var rowCount = br.FindElements(By.CssSelector("tbody tr")).Count;
+            OpenActionDialog("Change Sales Territory");
+            SelectDropDownOnField("#newterritory1", "France");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count == rowCount + 1);
+        }
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
     {
@@ -380,6 +391,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void Colours() { base.Colours(); }
         [TestMethod]
         public override void ZeroIntValues() { base.ZeroIntValues(); }
+        [TestMethod]
+        public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
+
     }
     #region browsers specific subclasses
 
@@ -407,7 +421,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -489,6 +503,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NonNavigableReferenceProperty();
             base.Colours();
             base.ZeroIntValues();
+            base.AddingObjectToCollectionUpdatesTableView();
         }
     }
     [TestClass]
