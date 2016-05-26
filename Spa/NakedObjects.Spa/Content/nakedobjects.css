@@ -54,7 +54,7 @@ html, #main, body, .background, .single, .split {
     float: left;
 }
 /*Main roots*/
-.home, .object, .list, .error {
+.home, .object, .list, .recent, .error {
     padding-left: 20px;
     height: 100%;
     overflow-y: auto;
