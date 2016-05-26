@@ -496,7 +496,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private static void SaveChanges(LocalContext context) {
             int saved = context.WrappedObjectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
-            Log.InfoFormat("Saved {0} changes", saved);
         }
 
         private void Save() {
@@ -611,7 +610,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
             catch (Exception e) {
                 // ignore all 
-                Log.InfoFormat("Ignoring exception {0}", e.Message);
+                Log.WarnFormat("Ignoring exception {0}", e.Message);
             }
 
             return false;

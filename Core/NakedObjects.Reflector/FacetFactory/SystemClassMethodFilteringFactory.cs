@@ -28,7 +28,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
 
             if (classStrategy.IsSystemClass(method.DeclaringType)) {
-                Log.InfoFormat("Skipping actions in {0} (system class according to ClassStrategy)", typeName);
                 return true;
             }
 

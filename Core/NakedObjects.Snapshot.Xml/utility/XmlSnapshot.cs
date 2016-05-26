@@ -249,7 +249,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
-                Log.Info("includeField(Pl, Vec, Str): could not locate field, skipping");
                 return false;
             }
 
@@ -259,7 +258,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             XElement[] xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
             int fieldCount = xmlFieldElements.Count();
             if (fieldCount != 1) {
-                Log.Info("includeField(Pl, Vec, Str): could not locate " + DoLog("field", field.Id) + AndLog("xmlFieldElements.size", "" + fieldCount));
                 return false;
             }
             XElement xmlFieldElement = xmlFieldElements.First();
@@ -498,7 +496,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     xsdFieldElement = Schema.CreateXsElementForNofCollection(xsElement, xmlCollectionElement, oneToManyAssociation.ReturnSpec.FullName);
                 }
                 else {
-                    Log.Info("objectToElement(NO): " + DoLog("field", fieldName) + " is unknown type; ignored");
                     continue;
                 }
 

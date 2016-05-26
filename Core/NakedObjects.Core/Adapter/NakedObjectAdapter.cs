@@ -165,18 +165,13 @@ namespace NakedObjects.Core.Adapter {
             return validateFacet == null ? null : validateFacet.Validate(this);
         }
 
-        public void SetATransientOid(IOid newOid) {
-            if (Oid != null) {
-                Log.InfoFormat("Overwriting oid {0} with {1}", Oid, newOid);
-            }
-
+        public void SetATransientOid(IOid newOid) {       
             Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
             Oid = newOid;
         }
 
         public void CheckLock(IVersion otherVersion) {
             if (version != null && version.IsDifferent(otherVersion)) {
-                Log.Info("concurrency conflict on " + this + " (" + otherVersion + ")");
                 throw new ConcurrencyException(this);
             }
         }

@@ -51,7 +51,6 @@ namespace NakedObjects.Core.Component {
                 nakedObjectAdapter.Spec is IServiceSpec) {
                 return;
             }
-            Log.Info("persist " + nakedObjectAdapter);
             persistor.AddPersistedObject(nakedObjectAdapter);
         }
 
@@ -59,7 +58,6 @@ namespace NakedObjects.Core.Component {
             if (collection.ResolveState.IsPersistent() || collection.Spec.Persistable == PersistableType.Transient) {
                 return;
             }
-            Log.Info("persist " + collection);
             if (collection.ResolveState.IsTransient()) {
                 collection.ResolveState.Handle(Events.StartResolvingEvent);
                 collection.ResolveState.Handle(Events.EndResolvingEvent);

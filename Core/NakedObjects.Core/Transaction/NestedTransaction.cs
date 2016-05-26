@@ -27,7 +27,6 @@ namespace NakedObjects.Core.Transaction {
         #region ITransaction Members
 
         public void Abort() {
-            Log.InfoFormat("abort transaction {0}", this);
             if (complete) {
                 throw new TransactionException("Transaction already complete; cannot abort");
             }
@@ -35,7 +34,6 @@ namespace NakedObjects.Core.Transaction {
         }
 
         public void Commit() {
-            Log.Info("commit transaction " + this);
             if (complete) {
                 throw new TransactionException("Transaction already complete; cannot commit");
             }
@@ -44,7 +42,6 @@ namespace NakedObjects.Core.Transaction {
         }
 
         public bool Flush() {
-            Log.Info("flush transaction " + this);
             return false;
         }
 

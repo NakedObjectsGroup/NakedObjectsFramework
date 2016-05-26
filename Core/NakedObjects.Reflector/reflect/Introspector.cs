@@ -52,31 +52,20 @@ namespace NakedObjects.Reflect {
         /// <summary>
         ///     As per <see cref="MemberInfo.Name" />
         /// </summary>
-        public string ClassName {
-            get { return IntrospectedType.Name; }
-        }
+        public string ClassName => IntrospectedType.Name;
 
-        public string FullName {
-            get { return IntrospectedType.GetProxiedTypeFullName(); }
-        }
+        public string FullName => IntrospectedType.GetProxiedTypeFullName();
 
-        public string ShortName {
-            get { return TypeNameUtils.GetShortName(IntrospectedType.Name); }
-        }
+        public string ShortName => TypeNameUtils.GetShortName(IntrospectedType.Name);
 
-        public IList<IAssociationSpecImmutable> Fields {
-            get { return orderedFields.ToImmutableList(); }
-        }
+        public IList<IAssociationSpecImmutable> Fields => orderedFields.ToImmutableList();
 
-        public IList<IActionSpecImmutable> ObjectActions {
-            get { return orderedObjectActions.ToImmutableList(); }
-        }
+        public IList<IActionSpecImmutable> ObjectActions => orderedObjectActions.ToImmutableList();
 
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
 
         public void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec) {
-            Log.InfoFormat("introspecting {0}: class-level details", typeToIntrospect.FullName);
 
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
                 throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
@@ -117,14 +106,11 @@ namespace NakedObjects.Reflect {
         }
 
         public void IntrospectPropertiesAndCollections(ITypeSpecImmutable spec) {
-            Log.InfoFormat("introspecting {0}: properties and collections", ClassName);
             var objectSpec = spec as IObjectSpecImmutable;
             orderedFields = objectSpec != null ? CreateSortedListOfMembers(FindAndCreateFieldSpecs(objectSpec)) : new List<IAssociationSpecImmutable>();
         }
 
         public void IntrospectActions(ITypeSpecImmutable spec) {
-            Log.InfoFormat("introspecting {0}: actions", ClassName);
-
             // find the actions ...
             IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(spec);
             orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
@@ -184,17 +170,12 @@ namespace NakedObjects.Reflect {
 
             foreach (PropertyInfo property in foundProperties) {
               
-
                 // create a reference property spec
                 var identifier = new IdentifierImpl(FullName, property.Name);
                 Type propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification(propertyType);
                 if (propertySpec is IServiceSpecImmutable) {
-                    throw new ReflectionException(string.Format(
-                        "Type {0} is a service and cannot be used in public property {1} on type {2}."+ 
-                    " If the property is intended to be an injected service it should have a protected get.",
-                    propertyType.Name, property.Name, property.DeclaringType.Name
-                    ));
+                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}." + " If the property is intended to be an injected service it should have a protected get.");
                 }
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
 

@@ -20,25 +20,25 @@ namespace NakedObjects.Core.Util {
         public static Func<object, object[], object> CreateDelegate(MethodInfo method) {
             if (method.IsSecurityTransparent) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.InfoFormat("Not creating delegate for IsSecurityTransparent method {0}.{1}", method.DeclaringType, method);
+                Log.WarnFormat("Not creating delegate for IsSecurityTransparent method {0}.{1}", method.DeclaringType, method);
                 return null;
             }
 
             if (method.ContainsGenericParameters) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.InfoFormat("Not creating delegate for ContainsGenericParameters method {0}.{1}", method.DeclaringType, method);
+                Log.WarnFormat("Not creating delegate for ContainsGenericParameters method {0}.{1}", method.DeclaringType, method);
                 return null;
             }
 
             if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.InfoFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
+                Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
                 return null;
             }
 
-            if (method.GetParameters().Count() > 6) {
+            if (method.GetParameters().Length > 6) {
                 // only support 6 parameters via delegates - return null and default to reflection
-                Log.InfoFormat("Not creating delegate for method {0}.{1} as has too many parameters", method.DeclaringType, method);
+                Log.WarnFormat("Not creating delegate for method {0}.{1} as has too many parameters", method.DeclaringType, method);
                 return null;
             }
 

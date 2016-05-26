@@ -34,7 +34,6 @@ namespace NakedObjects.Core.Component {
 
         public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Spec.IsCollection) {
-                Log.Info("Persist " + nakedObjectAdapter);
 
                 nakedObjectAdapter.GetAsEnumerable(manager).ForEach(Persist);
 
@@ -64,7 +63,6 @@ namespace NakedObjects.Core.Component {
             if (nakedObjectAdapter.ResolveState.IsAggregated() || (nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient)) {
                 IAssociationSpec[] fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
                 if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
-                    Log.Info("make persistent " + nakedObjectAdapter);
                     nakedObjectAdapter.Persisting();
                     if (!nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                         manager.MadePersistent(nakedObjectAdapter);

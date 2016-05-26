@@ -185,11 +185,9 @@ namespace NakedObjects.Xat {
 
             // now, install the fixture itself
             try {
-                Log.Info("installing fixture: " + fixture);
                 transactionManager.StartTransaction();
                 InstallFixture(fixture);
                 transactionManager.EndTransaction();
-                Log.Info("fixture installed");
             }
             catch (Exception e) {
                 Log.Error("installing fixture " + fixture.GetType().FullName + " failed (" + e.Message + "); aborting fixture ", e);
@@ -309,16 +307,11 @@ namespace NakedObjects.Xat {
         }
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
-            Log.Info("test initialize " + tc.Name);
             tc.servicesCache = new Dictionary<string, ITestService>();
-
             tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
         }
 
-        protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
-            Log.Info("test cleanup " + tc.Name);
-            Log.Info("cleanup " + tc.Name);
-
+        protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {           
             tc.servicesCache.Clear();
             tc.servicesCache = null;
             tc.testObjectFactory = null;

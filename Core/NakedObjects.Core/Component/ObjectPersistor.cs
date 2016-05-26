@@ -82,10 +82,8 @@ namespace NakedObjects.Core.Component {
             if (!reference.ResolveState.IsPersistent()) {
                 return;
             }
-            if (Log.IsInfoEnabled) {
-                // don't log object - its ToString() may use the unresolved field or unresolved collection
-                Log.Info("resolve field " + nakedObjectAdapter.Spec.ShortName + "." + field.Id + ": " + reference.Spec.ShortName + " " + reference.ResolveState.CurrentState.Code + " " + reference.Oid);
-            }
+           
+            // don't log object - its ToString() may use the unresolved field or unresolved collection              
             objectStore.ResolveField(nakedObjectAdapter, field);
         }
 
@@ -130,10 +128,9 @@ namespace NakedObjects.Core.Component {
                 if (nakedObjectAdapter.Oid is AggregateOid) {
                     return;
                 }
-                if (Log.IsInfoEnabled) {
-                    // don't log object - it's ToString() may use the unresolved field, or unresolved collection
-                    Log.Info("resolve immediately: " + nakedObjectAdapter.Spec.ShortName + " " + nakedObjectAdapter.ResolveState.CurrentState.Code + " " + nakedObjectAdapter.Oid);
-                }
+               
+                // don't log object - it's ToString() may use the unresolved field, or unresolved collection
+                    
                 objectStore.ResolveImmediately(nakedObjectAdapter);
             }
         }

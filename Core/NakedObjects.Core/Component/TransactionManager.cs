@@ -27,7 +27,6 @@ namespace NakedObjects.Core.Component {
         private ITransaction Transaction {
             get {
                 if (transaction == null) {
-                    Log.Info("Creating new transaction");
                     return new NestedTransaction(objectStore);
                 }
                 return transaction;

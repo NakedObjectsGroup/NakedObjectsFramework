@@ -121,7 +121,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
                 if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
-                    Log.InfoFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                    Log.WarnFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
                     return false;
                 }
             }
