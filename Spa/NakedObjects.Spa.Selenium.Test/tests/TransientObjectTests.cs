@@ -162,6 +162,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#orderqty1", "1");
             SaveObject();
         }
+
+        //Test for a previous bug  -  where Etag error was resulting
+        public virtual void CanInvokeActionOnASavedTransient()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Customer--11784&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
+            Click(SaveButton());
+            OpenObjectActions();
+            OpenActionDialog("Add New Sales Reason");
+            SelectDropDownOnField("#reason1", 1);
+            Click(OKButton());
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
+        }
     }
 
     public abstract class TransientObjectTests : TransientObjectTestsRoot
@@ -190,6 +204,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ConditionalChoicesOnTransient() { base.ConditionalChoicesOnTransient(); }
         [TestMethod]
         public override void TransientWithHiddenNonOptionalFields() { base.TransientWithHiddenNonOptionalFields(); }
+        [TestMethod]
+        public override void CanInvokeActionOnASavedTransient() { base.CanInvokeActionOnASavedTransient(); }
     }
     #region browsers specific subclasses
 
@@ -217,7 +233,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+   //[TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
@@ -288,6 +304,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.RequestForExpiredTransient();
             base.ConditionalChoicesOnTransient();
             base.TransientWithHiddenNonOptionalFields();
+            base.CanInvokeActionOnASavedTransient();
         }
     }
     [TestClass]
