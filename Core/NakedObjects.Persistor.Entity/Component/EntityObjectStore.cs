@@ -574,6 +574,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     }
                 }
             }
+            nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
             Log.DebugFormat("Added {0}", nakedObjectAdapter);
         }
 
@@ -1179,7 +1180,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                     INakedObjectAdapter[] currentPersistedNakedObjectsAdapter = PersistedNakedObjects.ToArray();
                     PersistedNakedObjects.Clear();
                     currentPersistedNakedObjectsAdapter.ForEach(no => no.Persisted());
-                    currentPersistedNakedObjectsAdapter.ForEach(no => no.UpdateVersion(session, Manager));
                 }
                 finally {
                     updatingNakedObjects.Clear();
