@@ -30,14 +30,12 @@ namespace NakedObjects.Meta.Facet {
         ///     <see cref="IValidatingInteractionAdvisor" />, <see cref="IHidingInteractionAdvisor" /> or
         ///     <see cref="IDisablingInteractionAdvisor" />
         /// </summary>
-        protected internal virtual string SpecificationId {
-            get { return Specification.Identifier.ToIdentityString(IdentifierDepth.Class); }
-        }
+        protected internal virtual string SpecificationId => Specification.Identifier.ToIdentityString(IdentifierDepth.Class);
 
         #region IDeserializationCallback Members
 
         public virtual void OnDeserialization(object sender) {
-            Log.DebugFormat("OnDeserialization {0}", GetType());
+            // hook if we need a log
         }
 
         #endregion

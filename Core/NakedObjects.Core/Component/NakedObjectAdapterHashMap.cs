@@ -24,9 +24,6 @@ namespace NakedObjects.Core.Component {
 
         public void Add(object obj, INakedObjectAdapter adapter) {
             domainObjects[obj] = adapter;
-
-            // log at end so that if ToString needs adapters they're in maps. 
-            Log.DebugFormat("Add instance of {0} as {1}", obj.GetType().FullName, adapter);
         }
 
         public bool ContainsObject(object obj) {
@@ -45,20 +42,14 @@ namespace NakedObjects.Core.Component {
         }
 
         public void Reset() {
-            Log.Debug("Reset");
-
             domainObjects.Clear();
         }
 
         public void Shutdown() {
-            Log.Debug("Shutdown");
-
             domainObjects.Clear();
         }
 
         public void Remove(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("Remove {0}", nakedObjectAdapter);
-
             domainObjects.Remove(nakedObjectAdapter.Object);
         }
 

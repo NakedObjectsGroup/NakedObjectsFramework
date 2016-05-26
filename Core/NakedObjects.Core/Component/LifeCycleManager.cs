@@ -53,14 +53,11 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.objectPersistor = objectPersistor;
             this.nakedObjectManager = nakedObjectManager;
-
-            Log.DebugFormat("Creating {0}", this);
         }
 
         #region ILifecycleManager Members
 
         public INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec) {
-            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", spec);
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
@@ -70,7 +67,6 @@ namespace NakedObjects.Core.Component {
         ///     Factory (for transient instance)
         /// </summary>
         public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
-            Log.DebugFormat("CreateInstance of: {0}", spec);
             if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                 throw new TransientReferenceException(Resources.NakedObjects.NoTransientInline);
             }
@@ -81,7 +77,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter CreateViewModel(IObjectSpec spec) {
-            Log.DebugFormat("CreateViewModel of: {0}", spec);
             object viewModel = CreateObject(spec);
             INakedObjectAdapter adapter = nakedObjectManager.CreateViewModelAdapter(spec, viewModel);
             InitializeNewObject(adapter);
@@ -89,7 +84,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter RecreateInstance(IOid oid, ITypeSpec spec) {
-            Log.DebugFormat("RecreateInstance oid: {0} hint: {1}", oid, spec);
             INakedObjectAdapter adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
                 if (!adapter.Spec.Equals(spec)) {
@@ -97,7 +91,6 @@ namespace NakedObjects.Core.Component {
                 }
                 return adapter;
             }
-            Log.DebugFormat("Recreating instance for {0}", spec);
             object obj = CreateObject(spec);
             return nakedObjectManager.AdapterForExistingObject(obj, oid);
         }
@@ -124,7 +117,6 @@ namespace NakedObjects.Core.Component {
         ///     already persistent, should be made persistent by recursively calling this method.
         /// </para>
         public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("MakePersistent nakedObjectAdapter: {0}", nakedObjectAdapter);
             if (IsPersistent(nakedObjectAdapter)) {
                 throw new NotPersistableException("Object already persistent: " + nakedObjectAdapter);
             }
@@ -159,9 +151,7 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private object CreateObject(ITypeSpec spec) {
-            Log.DebugFormat("CreateObject: " + spec);
             Type type = TypeUtils.GetType(spec.FullName);
-
             return spec.IsViewModel || spec is IServiceSpec || spec.ContainsFacet<INotPersistedFacet>() ? CreateNotPersistedObject(type, spec is IServiceSpec) : objectPersistor.CreateObject(spec);
         }
 
@@ -193,13 +183,11 @@ namespace NakedObjects.Core.Component {
         }
 
         private object InitDomainObject(object obj) {
-            Log.DebugFormat("InjectInto: {0}", obj);
             injector.InjectInto(obj);
             return obj;
         }
 
         private void InitInlineObject(object root, object inlineObject) {
-            Log.DebugFormat("InjectIntoInline root: {0} inlineObject: {1}", root, inlineObject);
             injector.InjectIntoInline(root, inlineObject);
         }
 
@@ -238,7 +226,6 @@ namespace NakedObjects.Core.Component {
         }
 
         private static bool IsPersistent(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("IsPersistent nakedObjectAdapter: {0}", nakedObjectAdapter);
             return nakedObjectAdapter.ResolveState.IsPersistent();
         }
     }

@@ -43,23 +43,18 @@ namespace NakedObjects.Core.Component {
         #region IObjectPersistor Members
 
         public IQueryable<T> Instances<T>() where T : class {
-            Log.DebugFormat("Instances<T> of: {0}", typeof (T));
             return GetInstances<T>();
         }
 
         public IQueryable Instances(Type type) {
-            Log.DebugFormat("Instances of: {0}", type);
             return GetInstances(type);
         }
 
         public IQueryable Instances(IObjectSpec spec) {
-            Log.DebugFormat("Instances of: {0}", spec);
             return GetInstances(spec);
         }
 
         public INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec) {
-            Log.DebugFormat("LoadObject oid: {0} specification: {1}", oid, spec);
-
             Assert.AssertNotNull("needs an OID", oid);
             Assert.AssertNotNull("needs a specification", spec);
 
@@ -73,12 +68,10 @@ namespace NakedObjects.Core.Component {
         }
 
         public void Reload(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("Reload nakedObjectAdapter: {0}", nakedObjectAdapter);
             objectStore.Reload(nakedObjectAdapter);
         }
 
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) {
-            Log.DebugFormat("ResolveField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
             if (field.ReturnSpec.HasNoIdentity) {
                 return;
             }
@@ -99,14 +92,11 @@ namespace NakedObjects.Core.Component {
         public void LoadField(INakedObjectAdapter nakedObjectAdapter, string field) {
             var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
-
-            Log.DebugFormat("LoadField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
             IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
             ResolveField(nakedObjectAdapter, associationSpec);
         }
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, string field) {
-            Log.DebugFormat("CountField nakedObjectAdapter: {0} field: {1}", nakedObjectAdapter, field);
 
             var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
@@ -122,22 +112,18 @@ namespace NakedObjects.Core.Component {
         }
 
         public PropertyInfo[] GetKeys(Type type) {
-            Log.Debug("GetKeys of: " + type);
             return objectStore.GetKeys(type);
         }
 
         public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
-            Log.Debug("FindByKeys");
             return objectStore.FindByKeys(type, keys);
         }
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("Refresh nakedObjectAdapter: {0}", nakedObjectAdapter);
             objectStore.Refresh(nakedObjectAdapter);
         }
 
         public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("ResolveImmediately nakedObjectAdapter: {0}", nakedObjectAdapter);
             if (nakedObjectAdapter.ResolveState.IsResolvable()) {
                 Assert.AssertFalse("only resolve object that is not yet resolved", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsResolved());
                 Assert.AssertTrue("only resolve object that is persistent", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsPersistent());
@@ -153,7 +139,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel) {
-            Log.DebugFormat("ObjectChanged nakedObjectAdapter: {0}", nakedObjectAdapter);
             if (nakedObjectAdapter.ResolveState.RespondToChangesInPersistentObjects()) {
                 if (nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
                     nakedObjectAdapter.Updating();
@@ -175,7 +160,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public void DestroyObject(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("DestroyObject nakedObjectAdapter: {0}", nakedObjectAdapter);
 
             nakedObjectAdapter.Deleting();
             objectStore.ExecuteDestroyObjectCommand(nakedObjectAdapter);
@@ -184,7 +168,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public object CreateObject(ITypeSpec spec) {
-            Log.DebugFormat("CreateObject: " + spec);
 
             Type type = TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
@@ -216,22 +199,19 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private IQueryable<T> GetInstances<T>() where T : class {
-            Log.Debug("GetInstances<T> of: " + typeof (T));
             return objectStore.GetInstances<T>();
         }
 
         private IQueryable GetInstances(Type type) {
-            Log.Debug("GetInstances of: " + type);
             return objectStore.GetInstances(type);
         }
 
         private IQueryable GetInstances(IObjectSpec spec) {
-            Log.Debug("GetInstances<T> of: " + spec);
             return objectStore.GetInstances(spec);
         }
 
         private static IEnumerable<ITypeSpec> GetLeafNodes(ITypeSpec spec) {
-            if ((spec.IsInterface || spec.IsAbstract)) {
+            if (spec.IsInterface || spec.IsAbstract) {
                 return spec.Subclasses.SelectMany(GetLeafNodes);
             }
             return new[] {spec};

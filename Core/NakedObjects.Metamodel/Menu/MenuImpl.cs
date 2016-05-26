@@ -26,7 +26,7 @@ namespace NakedObjects.Meta.Menu {
 
         public MenuImpl(IMetamodel metamodel, Type type, bool addAllActions, string name) {
             this.metamodel = metamodel;
-            this.Type = type;
+            Type = type;
             Name = name ?? ObjectSpec.GetFacet<INamedFacet>().NaturalName;
             Id = type.Name;
             if (addAllActions) {

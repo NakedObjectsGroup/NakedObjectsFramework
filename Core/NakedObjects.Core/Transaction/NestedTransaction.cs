@@ -22,7 +22,6 @@ namespace NakedObjects.Core.Transaction {
 
         public NestedTransaction(IObjectStore objectStore) {
             this.objectStore = objectStore;
-            Log.DebugFormat("New transaction {0}", this);
         }
 
         #region ITransaction Members

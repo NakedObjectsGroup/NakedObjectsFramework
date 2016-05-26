@@ -150,12 +150,10 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void AbortTransaction() {
-            Log.Debug("AbortTransaction");
             RollBackContext();
         }
 
         public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("CreateCreateObjectCommand : {0}", nakedObjectAdapter);
             try {
                 ExecuteCommand(new EntityCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
             }
@@ -168,7 +166,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void ExecuteDestroyObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("CreateDestroyObjectCommand : {0}", nakedObjectAdapter);
             try {
                 ExecuteCommand(new EntityDestroyObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
             }
@@ -181,7 +178,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("CreateSaveObjectCommand : {0}", nakedObjectAdapter);
             try {
                 ExecuteCommand(new EntitySaveObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter)));
             }
@@ -194,8 +190,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void EndTransaction() {
-            Log.Debug("EndTransaction");
-
             try {
                 using (TransactionScope transaction = CreateTransactionScope()) {
                     RecurseUntilAllChangesApplied(1);
@@ -220,18 +214,15 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void Execute(IPersistenceCommand[] commands) {
-            Log.DebugFormat("Execute {0} commands", commands.Length);
             ExecuteCommands(commands);
         }
 
         public IQueryable GetInstances(IObjectSpec spec) {
-            Log.DebugFormat("GetInstances for: {0}", spec);
             Type type = TypeUtils.GetType(spec.FullName);
             return GetContext(type).GetObjectSet(type);
         }
 
         public INakedObjectAdapter GetObject(IOid oid, IObjectSpec hint) {
-            Log.DebugFormat("GetObject oid: {0} hint: {1}", oid, hint);
 
             var aggregateOid = oid as IAggregateOid;
             if (aggregateOid != null) {
@@ -257,12 +248,9 @@ namespace NakedObjects.Persistor.Entity.Component {
             set { }
         }
 
-        public string Name {
-            get { return "Entity Object Store"; }
-        }
+        public string Name => "Entity Object Store";
 
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) {
-            Log.DebugFormat("ResolveField nakedobject: {0} field: {1}", nakedObjectAdapter, field);
             field.GetNakedObject(nakedObjectAdapter);
         }
 
@@ -279,7 +267,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
-            Log.DebugFormat("ResolveImmediately nakedobject: {0}", nakedObjectAdapter);
             // eagerly load object        
             nakedObjectAdapter.ResolveState.Handle(Events.StartResolvingEvent);
             // only if not proxied
@@ -316,22 +303,18 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void StartTransaction() {
-            Log.Debug("StartTransaction");
             // do nothing 
         }
 
         public IQueryable<T> GetInstances<T>() where T : class {
-            Log.Debug("GetInstances<T> of: " + typeof (T));
             return GetContext(typeof (T)).GetQueryableOfDerivedType<T>();
         }
 
         public IQueryable GetInstances(Type type) {
-            Log.Debug("GetInstances of: " + type);
             return GetContext(type).GetQueryableOfDerivedType(type);
         }
 
         public object CreateInstance(Type type) {
-            Log.Debug("CreateInstance of: " + type);
             if (type.IsArray) {
                 return Array.CreateInstance(type.GetElementType(), 0);
             }
@@ -352,22 +335,18 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void Reload(INakedObjectAdapter nakedObjectAdapter) {
-            Log.Debug("Reload nakedobject: " + nakedObjectAdapter);
             Refresh(nakedObjectAdapter);
         }
 
         public T CreateInstance<T>(ILifecycleManager lifecycleManager) where T : class {
-            Log.Debug("CreateInstance<T> of: " + typeof (T));
             return (T) CreateInstance(typeof (T));
         }
 
         public PropertyInfo[] GetKeys(Type type) {
-            Log.Debug("GetKeys of: " + type);
             return GetContext(type.GetProxiedType()).GetIdMembers(type.GetProxiedType());
         }
 
         public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
-            Log.Debug("Refresh nakedobject: " + nakedObjectAdapter);
             if (nakedObjectAdapter.Spec.GetFacet<IComplexTypeFacet>() == null) {
                 nakedObjectAdapter.Updating();
                 GetContext(nakedObjectAdapter.Object.GetType()).WrappedObjectContext.Refresh(RefreshMode.StoreWins, nakedObjectAdapter.Object);
@@ -466,9 +445,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private static void StartResolving(INakedObjectAdapter nakedObjectAdapter, LocalContext context) {
-            IResolveEvent resolveEvent = (!nakedObjectAdapter.ResolveState.IsTransient() &&
-                                          !context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled) ? Events.StartPartResolvingEvent :
-                Events.StartResolvingEvent;
+            IResolveEvent resolveEvent = !nakedObjectAdapter.ResolveState.IsTransient() &&
+                                         !context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled ? Events.StartPartResolvingEvent : Events.StartResolvingEvent;
             nakedObjectAdapter.ResolveState.Handle(resolveEvent);
         }
 
@@ -575,7 +553,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
             }
             nakedObjectAdapter.UpdateVersion(session, nakedObjectManager);
-            Log.DebugFormat("Added {0}", nakedObjectAdapter);
         }
 
         private void MarkAsLoaded(INakedObjectAdapter nakedObjectAdapter) {
@@ -764,7 +741,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public void SetupContexts() {
-            Log.Debug("SetupContexts");
             contexts = contexts.ToDictionary(kvp => kvp.Key, PrepareContextForNewTransaction);
             contexts.Values.ForEach(c => c.Manager = nakedObjectManager);
         }
@@ -824,7 +800,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             public void Execute() {
                 try {
-                    Log.DebugFormat("Creating: {0}", nakedObjectAdapter);
                     context.CurrentSaveRootObjectAdapter = nakedObjectAdapter;
                     objectToProxyScratchPad.Clear();
                     ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
@@ -983,7 +958,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             #region IDestroyObjectCommand Members
 
             public void Execute() {
-                Log.DebugFormat("Destroying: {0}", nakedObjectAdapter);
                 context.WrappedObjectContext.DeleteObject(nakedObjectAdapter.Object);
                 context.DeletedNakedObjects.Add(nakedObjectAdapter);
             }
@@ -1015,8 +989,6 @@ namespace NakedObjects.Persistor.Entity.Component {
             #region ISaveObjectCommand Members
 
             public void Execute() {
-                // Log.DebugFormat("EntitySaveObjectCommand: pre refresh version in object {0}", nakedObjectAdapter.GetVersion());
-                Log.DebugFormat("Saving: {0}", nakedObjectAdapter);
                 context.CurrentUpdateRootObjectAdapter = nakedObjectAdapter;
             }
 
@@ -1038,11 +1010,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         public class LocalContext : IDisposable {
             private readonly List<object> added = new List<object>();
             private readonly IDictionary<Type, Type> baseTypeMap = new Dictionary<Type, Type>();
-            private readonly ISet<INakedObjectAdapter> deletedNakedObjects = new HashSet<INakedObjectAdapter>();
-            private readonly ISet<INakedObjectAdapter> loadedNakedObjects = new HashSet<INakedObjectAdapter>();
             private readonly ISet<Type> notPersistedTypes = new HashSet<Type>();
             private readonly ISet<Type> ownedTypes = new HashSet<Type>();
-            private readonly ISet<INakedObjectAdapter> persistedNakedObjects = new HashSet<INakedObjectAdapter>();
             private readonly ISession session;
             private readonly EntityObjectStore parent;
             private readonly IDictionary<Type, StructuralType> typeToStructuralType = new Dictionary<Type, StructuralType>();
@@ -1061,24 +1030,17 @@ namespace NakedObjects.Persistor.Entity.Component {
                 : this(config.PreCachedTypes(), config.NotPersistedTypes(), session, parent) {
                 WrappedObjectContext = ((IObjectContextAdapter) config.DbContext()).ObjectContext;
                 Name = WrappedObjectContext.DefaultContainerName;
-                Log.DebugFormat("Context {0} Wrapped", Name);
             }
 
             public INakedObjectManager Manager { protected get; set; }
             public ObjectContext WrappedObjectContext { get; private set; }
-            public string Name { get; private set; }
+            public string Name { get; }
 
-            public ISet<INakedObjectAdapter> LoadedNakedObjects {
-                get { return loadedNakedObjects; }
-            }
+            public ISet<INakedObjectAdapter> LoadedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
 
-            public ISet<INakedObjectAdapter> PersistedNakedObjects {
-                get { return persistedNakedObjects; }
-            }
+            public ISet<INakedObjectAdapter> PersistedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
 
-            public ISet<INakedObjectAdapter> DeletedNakedObjects {
-                get { return deletedNakedObjects; }
-            }
+            public ISet<INakedObjectAdapter> DeletedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
 
             public bool IsInitialized { get; set; }
             public MergeOption DefaultMergeOption { get; set; }
@@ -1118,7 +1080,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return false;
                 }
                 if (ownedTypes.Contains(type)) {
-                    Log.DebugFormat("Context {0} found in owned cache type {1}", Name, type.FullName);
                     return true;
                 }
                 return IsOwnedOrBaseTypeIsOwned(type.BaseType);
@@ -1129,7 +1090,6 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return false;
                 }
                 if (this.ContextKnowsType(type)) {
-                    Log.DebugFormat("Context {0} adding to owned cache type {1}", Name, type.FullName);
                     ownedTypes.Add(type);
                     return true;
                 }

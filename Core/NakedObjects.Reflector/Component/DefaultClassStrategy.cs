@@ -49,11 +49,9 @@ namespace NakedObjects.Reflect.Component {
         public Type FilterNullableAndProxies(Type type) {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>)) {
                 // use type inside nullable wrapper
-                Log.DebugFormat("Using wrapped type instead of {0}", type);
                 return type.GetGenericArguments()[0];
             }
             if (TypeUtils.IsProxy(type)) {
-                Log.DebugFormat("Using proxied type instead of {0}", type);
                 return type.BaseType;
             }
             return type;

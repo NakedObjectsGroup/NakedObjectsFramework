@@ -32,25 +32,18 @@ namespace NakedObjects.Reflect {
         private PropertyInfo[] properties;
 
         public Introspector(IReflector reflector) {
-            Log.DebugFormat("Creating DotNetIntrospector");
             this.reflector = reflector;
         }
 
-        private IClassStrategy ClassStrategy {
-            get { return reflector.ClassStrategy; }
-        }
+        private IClassStrategy ClassStrategy => reflector.ClassStrategy;
 
-        private IFacetFactorySet FacetFactorySet {
-            get { return reflector.FacetFactorySet; }
-        }
+        private IFacetFactorySet FacetFactorySet => reflector.FacetFactorySet;
 
         private Type[] InterfacesTypes {
             get { return IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
         }
 
-        private Type SuperclassType {
-            get { return IntrospectedType.BaseType; }
-        }
+        private Type SuperclassType => IntrospectedType.BaseType;
 
         #region IIntrospector Members
 
@@ -120,10 +113,7 @@ namespace NakedObjects.Reflect {
         #endregion
 
         private void AddAsSubclass(ITypeSpecImmutable spec) {
-            if (Superclass != null) {
-                Log.DebugFormat("Superclass {0}", Superclass.FullName);
-                Superclass.AddSubclass(spec);
-            }
+            Superclass?.AddSubclass(spec);
         }
 
         public void IntrospectPropertiesAndCollections(ITypeSpecImmutable spec) {
@@ -152,7 +142,6 @@ namespace NakedObjects.Reflect {
         }
 
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
-            Log.DebugFormat("Looking for fields for {0}", IntrospectedType);
 
             // now create fieldSpecs for value properties, for collections and for reference properties        
             IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
@@ -170,7 +159,6 @@ namespace NakedObjects.Reflect {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in collectionProperties) {
-                Log.DebugFormat("Identified one-many association method {0}", property);
 
                 IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
 
@@ -195,8 +183,7 @@ namespace NakedObjects.Reflect {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (PropertyInfo property in foundProperties) {
-                Log.DebugFormat("Identified 1-1 association method {0}", property);
-                Log.DebugFormat("One-to-One association {0} -> {1}", property.Name, property);
+              
 
                 // create a reference property spec
                 var identifier = new IdentifierImpl(FullName, property.Name);
@@ -220,8 +207,6 @@ namespace NakedObjects.Reflect {
         }
 
         private IActionSpecImmutable[] FindActionMethods(ITypeSpecImmutable spec) {
-            Log.Debug("Looking for action methods");
-
             var actionSpecs = new List<IActionSpecImmutable>();
             var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
             methods = methods.Except(actions).ToArray();

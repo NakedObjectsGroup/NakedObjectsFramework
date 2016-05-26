@@ -46,7 +46,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Log.DebugFormat("Looking for validate methods for {0}", type);
 
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
             MethodInfo[] methods = FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof (string));

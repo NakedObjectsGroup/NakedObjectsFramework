@@ -53,15 +53,12 @@ namespace NakedObjects.Persistor.Entity.Util {
 
             // For complex types this will only work if the parent is queried first 
             if (context.WrappedObjectContext.IsTypeInOSpace(type)) {
-                Log.DebugFormat("Context {0} found type {1} in OSpace", context.Name, type.FullName);
                 return true;
             }
 
             if (context.CanCreateObjectSet(type)) {
-                Log.DebugFormat("Context {0} found object set for type  {1}", context.Name, type.FullName);
                 return true;
             }
-            Log.DebugFormat("Context {0} failed to get object set for type  {1}", context.Name, type.FullName);
             return false;
         }
 
@@ -167,11 +164,10 @@ namespace NakedObjects.Persistor.Entity.Util {
                 mi.Invoke(context.WrappedObjectContext, null);
                 return true;
             }
-            catch (Exception e) {
+            catch (Exception) {
                 // expected (but ugly)
-                Log.DebugFormat("Context {0} did not recognise type {1} and threw {2}", context.Name, type.FullName, e.Message);
                 if (EntityObjectStore.RequireExplicitAssociationOfTypes) {
-                    string msg = string.Format("{0} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller", type);
+                    string msg = $"{type} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller";
                     throw new InitialisationException(msg);
                 }
             }

@@ -22,9 +22,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             this.metamodel = metamodel;
         }
 
-        public string Name {
-            get { return "Entity Oids"; }
-        }
+        public string Name => "Entity Oids";
 
         #region IOidGenerator Members
 
@@ -32,16 +30,11 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public void ConvertTransientToPersistentOid(IOid oid) {
             var entityOid = oid as IEntityOid;
-            if (entityOid != null) {
-                entityOid.MakePersistent();
-            }
-            Log.DebugFormat("Converted transient OID to persistent {0}", oid);
+            entityOid?.MakePersistent();
         }
 
         public IOid CreateTransientOid(object obj) {
-            var oid = new EntityOid(metamodel, obj.GetType(), new object[] {++transientId}, true);
-            Log.DebugFormat("Created OID {0} for instance of {1}", oid, obj.GetType().FullName);
-            return oid;
+            return new EntityOid(metamodel, obj.GetType(), new object[] { ++transientId }, true);
         }
 
         public IOid RestoreOid(string[] encodedData) {

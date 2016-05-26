@@ -45,12 +45,10 @@ namespace NakedObjects.Core.Component {
         #region INakedObjectManager Members
 
         public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) {
-            Log.DebugFormat("RemoveAdapter nakedObjectAdapter: {0}", objectAdapterToDispose);
             identityMap.Unloaded(objectAdapterToDispose);
         }
 
         public INakedObjectAdapter GetAdapterFor(object obj) {
-            Log.DebugFormat("GetAdapterFor: {0}", obj);
             Assert.AssertNotNull("must have a domain object", obj);
             INakedObjectAdapter nakedObjectAdapter = identityMap.GetAdapterFor(obj);
             if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
@@ -60,13 +58,11 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            Log.DebugFormat("GetAdapterFor oid: {0}", oid);
             Assert.AssertNotNull("must have an OID", oid);
             return identityMap.GetAdapterFor(oid);
         }
 
         public INakedObjectAdapter CreateAdapter(object domainObject, IOid oid, IVersion version) {
-            Log.DebugFormat("AdapterFor domainObject: {0} oid: {1} version: {2}", domainObject, oid, version);
             if (domainObject == null) {
                 return null;
             }
@@ -84,7 +80,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public void ReplacePoco(INakedObjectAdapter nakedObjectAdapter, object newDomainObject) {
-            Log.DebugFormat("ReplacePoco nakedObjectAdapter: {0} newDomainOject: {1}", nakedObjectAdapter, newDomainObject);
             RemoveAdapter(nakedObjectAdapter);
             identityMap.Replaced(nakedObjectAdapter.Object);
             nakedObjectAdapter.ReplacePoco(newDomainObject);
@@ -155,7 +150,6 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private IOid GetOidForService(string name, string typeName) {
-            Log.DebugFormat("GetOidForService name: {0}", name);
             return oidGenerator.CreateOid(typeName, new object[] {0});
         }
 
@@ -215,10 +209,7 @@ namespace NakedObjects.Core.Component {
             object versionObject = adapter.GetVersion(this);
             if (versionObject != null) {
                 adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
-                Log.DebugFormat("CreateAdapterForViewModel: Updating Version {0} on {1}", adapter.Version, adapter);
             }
-
-            Log.DebugFormat("Creating adapter (ViewModel) {0}", adapter);
             identityMap.AddAdapter(adapter);
             return adapter;
         }
@@ -226,7 +217,6 @@ namespace NakedObjects.Core.Component {
         private INakedObjectAdapter CreateAdapterForNewObject(object domainObject) {
             IOid transientOid = oidGenerator.CreateTransientOid(domainObject);
             INakedObjectAdapter adapter = NewAdapterForKnownObject(domainObject, transientOid);
-            Log.DebugFormat("Creating adapter (transient) {0}", adapter);
             identityMap.AddAdapter(adapter);
             return adapter;
         }

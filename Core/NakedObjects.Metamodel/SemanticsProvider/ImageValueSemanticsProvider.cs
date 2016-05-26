@@ -78,7 +78,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
         protected override Image DoRestore(string data) {
             int offset = data.IndexOf(' ');
             string mime = data.Substring(0, offset);
-            Log.Debug("decode " + data.Length + " bytes of image data, type " + mime);
             byte[] buffer = Convert.FromBase64String(data.Substring(offset));
             var stream = new MemoryStream(buffer);
             return new Image(stream);

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using NakedObjects.Core.Util;
 using System;
 using System.Text;
 
@@ -25,10 +24,7 @@ namespace NakedObjects.Core.Container {
             PropertyInfo property = inlineObject.GetType().GetProperties().SingleOrDefault(p => p.GetCustomAttribute<RootAttribute>() != null &&
                                                                                                 p.PropertyType.IsInstanceOfType(root) &&
                                                                                                 p.CanWrite);
-            if (property != null) {
-                property.SetValue(inlineObject, root, null);
-                Log.DebugFormat("Injected root {0} into instance of {1}", root, inlineObject.GetType().FullName);
-            }
+            property?.SetValue(inlineObject, root, null);
         }
 
         public static void InjectServices(object target, object[] services) {
@@ -43,7 +39,6 @@ namespace NakedObjects.Core.Container {
                         Array arr = Array.CreateInstance(elementType, count);
                         matches.CopyTo(arr, 0);
                         prop.SetValue(target, arr, null);
-                        Log.DebugFormat("Injected array of {0} services matching {1} into instance of {2}", count, elementType, target.GetType().FullName);
                     }
                 } else {
                     var matches = ServicesMatchingType(services, prop.PropertyType);
@@ -52,7 +47,6 @@ namespace NakedObjects.Core.Container {
                         if (count == 1) {
                             var service = matches[0];
                             prop.SetValue(target, service, null);
-                            Log.DebugFormat("Injected service {0} into instance of {1}", service, target.GetType().FullName);
                             continue;
                         }
                         var msg = new StringBuilder();
@@ -77,7 +71,6 @@ namespace NakedObjects.Core.Container {
                                                                                                p.CanWrite);
             foreach (PropertyInfo pi in properties) {
                 pi.SetValue(target, container, null);
-                Log.DebugFormat("Injected container {0} into instance of {1}", container, target.GetType().FullName);
             }
         }
     }

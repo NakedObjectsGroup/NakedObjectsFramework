@@ -168,7 +168,6 @@ namespace NakedObjects.Xat {
             SetValue(property, fixture, fixtureServices);
 
             var installMethod = GetInstallMethod(fixture);
-            Log.Debug("Invoking install method");
             try {
                 installMethod.Invoke(fixture, new object[0]);
             }

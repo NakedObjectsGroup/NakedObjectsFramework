@@ -114,7 +114,6 @@ namespace NakedObjects.Core.Spec {
         }
 
         public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
-            Log.DebugFormat("Execute action {0}.{1}", nakedObjectAdapter, Id);
             INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
             INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
             var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager);

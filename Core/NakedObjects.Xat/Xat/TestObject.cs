@@ -35,7 +35,6 @@ namespace NakedObjects.Xat {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.transactionManager = transactionManager;
-            Log.DebugFormat("Created test object for {0}", nakedObjectAdapter);
             NakedObject = nakedObjectAdapter;
         }
 

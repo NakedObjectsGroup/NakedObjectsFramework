@@ -103,7 +103,6 @@ namespace NakedObjects.Meta.Facet {
 
             INakedObjectAdapter adaptedResult = nakedObjectManager.CreateAdapter(result, null, null);
 
-            Log.DebugFormat("Action result {0}", adaptedResult);
             return adaptedResult;
         }
 
