@@ -41,36 +41,22 @@ namespace NakedObjects.Meta.Facet {
                 actionDelegate = DelegateUtils.CreateDelegate(actionMethod);
             }
             catch (Exception e) {
-                Log.WarnFormat("Failed to get Delegate for {0}:{1} reason {2}", onType, method, e.Message);
+                Log.ErrorFormat("Failed to get Delegate for {0}:{1} reason {2}", onType, method, e.Message);
             }
         }
 
         // for testing only 
-        internal Func<object, object[], object> ActionDelegate {
-            get {
-                return actionDelegate;
-            }
-        }
+        internal Func<object, object[], object> ActionDelegate => actionDelegate;
 
-        public override MethodInfo ActionMethod {
-            get { return actionMethod; }
-        }
+        public override MethodInfo ActionMethod => actionMethod;
 
-         public override IObjectSpecImmutable ReturnType {
-            get { return returnType; }
-        }
+        public override IObjectSpecImmutable ReturnType => returnType;
 
-        public override ITypeSpecImmutable OnType {
-            get { return onType; }
-        }
+        public override ITypeSpecImmutable OnType => onType;
 
-        public override IObjectSpecImmutable ElementType {
-            get { return elementType; }
-        }
+        public override IObjectSpecImmutable ElementType => elementType;
 
-        public override bool IsQueryOnly {
-            get { return isQueryOnly; }
-        }
+        public override bool IsQueryOnly => isQueryOnly;
 
         #region IImperativeFacet Members
 

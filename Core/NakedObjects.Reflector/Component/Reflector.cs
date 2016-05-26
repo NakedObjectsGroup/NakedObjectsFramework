@@ -107,10 +107,7 @@ namespace NakedObjects.Reflect.Component {
             try {
                 return (T)spec;
             } catch (Exception) {
-                throw new ReflectionException(string.Format(
-                    "Specification for type {0} is {1}: cannot be cast to {2}",
-                    type.Name, spec.GetType().Name, typeof(T).Name
-                    ));
+                throw new ReflectionException($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}");
             }
         }
 
@@ -181,7 +178,8 @@ namespace NakedObjects.Reflect.Component {
                 var menus = config.MainMenus(menuFactory);
                 //Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
                 if (menus == null) return;  //Allows developer to deliberately not specify any menus
-                if (menus.Count() == 0) { //Catches accidental non-specification of menus
+                if (!menus.Any()) { 
+                    //Catches accidental non-specification of menus
                     throw new ReflectionException("No MainMenus specified.");
                 }
                 foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {

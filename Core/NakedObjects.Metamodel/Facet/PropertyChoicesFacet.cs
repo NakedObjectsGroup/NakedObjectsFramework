@@ -49,9 +49,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyChoicesFacet Members
 
-        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes {
-            get { return parameterNamesAndTypes; }
-        }
+        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes => parameterNamesAndTypes;
 
         public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
@@ -64,7 +62,7 @@ namespace NakedObjects.Meta.Facet {
                 throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + method.Name);
             }
             catch (ArgumentException ae) {
-                string msg = string.Format("Choices exception: {0} has mismatched (ie type of parameter does not match type of property) parameter types", method.Name);
+                string msg = $"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types";
                 throw new InvokeException(msg, ae);
             }
         }

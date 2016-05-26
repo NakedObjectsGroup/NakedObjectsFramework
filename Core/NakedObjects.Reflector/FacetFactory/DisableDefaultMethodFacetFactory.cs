@@ -31,9 +31,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public DisableDefaultMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             try {
@@ -45,7 +43,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
             catch (Exception e) {
-                Log.Warn("Unexpected exception", e);
+                Log.Error("Unexpected exception", e);
             }
         }
     }

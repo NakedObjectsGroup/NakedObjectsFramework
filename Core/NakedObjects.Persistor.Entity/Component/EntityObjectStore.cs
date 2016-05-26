@@ -773,6 +773,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     }
                     catch (ArgumentException) {
                         // not an EF recognised collection 
+                        Log.Warn($"Attempting to 'Count' a non-EF collection: {field.Id}");
                     }
                 }
             }

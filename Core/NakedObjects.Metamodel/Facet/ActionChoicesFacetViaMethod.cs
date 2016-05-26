@@ -69,7 +69,7 @@ namespace NakedObjects.Meta.Facet {
                 throw new NakedObjectDomainException("Must return IEnumerable from choices method: " + choicesMethod.Name);
             }
             catch (ArgumentException ae) {
-                string msg = string.Format("Choices exception: {0} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", choicesMethod.Name);
+                string msg = $"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types";
                 throw new InvokeException(msg, ae);
             }
         }

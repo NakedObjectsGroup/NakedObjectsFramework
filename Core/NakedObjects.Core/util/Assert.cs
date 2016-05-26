@@ -20,7 +20,7 @@ namespace NakedObjects.Core.Util {
         }
 
         private static string ExpectedMsg(string message, object expected, object actual) {
-            return string.Format("{0}: expected {1}; but was {2}", message, expected, actual);
+            return $"{message}: expected {expected}; but was {actual}";
         }
 
         public static void AssertEquals(object expected, object actual) {
@@ -94,7 +94,7 @@ namespace NakedObjects.Core.Util {
 
         public static void AssertTrue(string message, object target, bool flag) {
             if (!flag) {
-                var msg = SafeMsg(() => string.Format("{0} :  {1}", message, target));
+                var msg = SafeMsg(() => $"{message} :  {target}");
                 Trace.Assert(flag, msg);
             }
         }

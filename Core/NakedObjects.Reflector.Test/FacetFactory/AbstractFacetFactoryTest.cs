@@ -9,13 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractFacetFactoryTest));
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
         private Mock<IMetamodelManager> mockMetadata;
@@ -56,12 +59,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return type.GetMethod(methodName, parameterTypes);
             }
             catch (AmbiguousMatchException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
         }
@@ -71,12 +77,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return type.GetMethod(methodName);
             }
             catch (AmbiguousMatchException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
+                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
         }
@@ -86,12 +95,15 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return type.GetProperty(propertyName);
             }
             catch (AmbiguousMatchException) {
+                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
+                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
+                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
         }

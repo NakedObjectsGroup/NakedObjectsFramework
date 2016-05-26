@@ -24,9 +24,7 @@ namespace NakedObjects.Meta.Facet {
             this.property = property;
         }
 
-        public static Type Type {
-            get { return typeof (ICollectionResetFacet); }
-        }
+        public static Type Type => typeof (ICollectionResetFacet);
 
         #region ICollectionResetFacet Members
 
@@ -37,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
                 property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
             }
             catch (Exception e) {
-                throw new ReflectionException(string.Format("Failed to get/set property {0} in {1}", property.Name, inObjectAdapter.Spec.FullName), e);
+                throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
             }
         }
 

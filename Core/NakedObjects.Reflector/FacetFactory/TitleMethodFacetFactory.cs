@@ -86,7 +86,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 FacetUtils.AddFacet(titleFacet);
             }
             catch (Exception e) {
-                Log.Warn("Unexpected Exception", e);
+                Log.Error("Unexpected Exception", e);
             }
         }
     }

@@ -45,7 +45,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
             catch (Exception e) {
-                Log.Warn("Unexpected exception", e);
+                Log.Error("Unexpected exception", e);
             }
         }
     }

@@ -27,25 +27,24 @@ namespace NakedObjects.Meta.Component {
 
         #region IMetamodelBuilder Members
 
-        public ITypeSpecImmutable[] AllSpecifications {
-            get { return cache.AllSpecifications(); }
-        }
+        public ITypeSpecImmutable[] AllSpecifications => cache.AllSpecifications();
 
         public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
             try {
                 var spec = GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
                 if (spec == null && !allowNull) {
                     Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, "unexpected null");
-                    throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type == null ? "null" : type.FullName));
+                    throw new NakedObjectSystemException($"failed to find spec for {(type == null ? "null" : type.FullName)}");
                 }
                 return spec;
             }
-            catch (NakedObjectSystemException) {
+            catch (NakedObjectSystemException e) {
+                Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, e);
                 throw;
             }
             catch (Exception e) {
                 Log.ErrorFormat("Failed to Load Specification for: {0} error: {1}", type == null ? "null" : type.FullName, e);
-                throw new NakedObjectSystemException(string.Format("failed to find spec for {0}", type == null ? "null" : type.FullName));
+                throw new NakedObjectSystemException($"failed to find spec for {(type == null ? "null" : type.FullName)}");
             }
         }
 
@@ -62,16 +61,13 @@ namespace NakedObjects.Meta.Component {
             cache.Cache(menu);
         }
 
-        public IMenuImmutable[] MainMenus {
-            get { return cache.MainMenus(); }
-        }
+        public IMenuImmutable[] MainMenus => cache.MainMenus();
 
         #endregion
 
         private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
             string key = classStrategy.GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
-
             return cache.GetSpecification(key);
         }
     }

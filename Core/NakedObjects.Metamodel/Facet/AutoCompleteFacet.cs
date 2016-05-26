@@ -61,12 +61,12 @@ namespace NakedObjects.Meta.Facet {
                 }
                 //return type is a single object
                 if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
-                    return new object[] { autoComplete };
+                    return new[] { autoComplete };
                 }
                 throw new NakedObjectDomainException("Must return IQueryable or a single object from autoComplete method: " + method.Name);
             }
             catch (ArgumentException ae) {
-                string msg = string.Format("autoComplete exception: {0} has mismatched parameter type - must be string", method.Name);
+                string msg = $"autoComplete exception: {method.Name} has mismatched parameter type - must be string";
                 throw new InvokeException(msg, ae);
             }
         }

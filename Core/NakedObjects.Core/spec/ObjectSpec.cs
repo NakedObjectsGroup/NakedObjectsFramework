@@ -25,9 +25,7 @@ namespace NakedObjects.Core.Spec {
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
             base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) {}
 
-        private IActionSpec[] ContributedActions {
-            get { return contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions)); }
-        }
+        private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));
 
         #region IObjectSpec Members
 
@@ -40,7 +38,7 @@ namespace NakedObjects.Core.Spec {
                 return Properties.First(f => f.Id.Equals(id));
             }
             catch (InvalidOperationException) {
-                throw new ReflectionException(string.Format("No field called '{0}' in '{1}'", id, SingularName));
+                throw new ReflectionException($"No field called '{id}' in '{SingularName}'");
             }
         }
 
