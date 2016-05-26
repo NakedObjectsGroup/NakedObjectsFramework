@@ -794,8 +794,7 @@ namespace NakedObjects.Rest {
                 ss = f();
                 success = true;
             }
-            catch (HttpResponseException e) {
-                Logger.DebugFormat("HttpResponseException being passed up {0}", e.Message);
+            catch (HttpResponseException) {
                 throw;
             }
             catch (NakedObjectsFacadeException e) {
@@ -822,8 +821,7 @@ namespace NakedObjects.Rest {
             try {
                 return ConfigureMsg(ss.Populate());
             }
-            catch (HttpResponseException e) {
-                Logger.DebugFormat("HttpResponseException being passed up {0}", e.Message);
+            catch (HttpResponseException) {
                 throw;
             }
             catch (NakedObjectsFacadeException e) {
@@ -836,12 +834,10 @@ namespace NakedObjects.Rest {
         }
 
         private HttpResponseMessage ErrorMsg(Exception e) {
-            Logger.InfoFormat("ErrorMsg - NakedObjectsFacadeException Msg: {0}", e.Message);
             return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
         }
 
         private HttpResponseMessage ConfigureMsg(RestSnapshot snapshot) {
-            Logger.DebugFormat("ConfigureMsg for {0}", snapshot.GetType());
             return snapshot.ConfigureMsg(new JsonNetFormatter(null), CacheSettings);
         }
 

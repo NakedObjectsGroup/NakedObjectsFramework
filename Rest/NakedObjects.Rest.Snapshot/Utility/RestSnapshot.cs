@@ -43,7 +43,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private RestSnapshot(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req, bool validateAsJson)
             : this(oidStrategy, req, validateAsJson) {
-            logger.DebugFormat("RestSnapshot:{0}", context.GetType().FullName);
             CheckForRedirection(oidStrategy, context, req);
         }
 
@@ -75,7 +74,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:ServicesList");
             populator = () => {
                 Representation = ListRepresentation.Create(oidStrategy, listContext, req, flags);
                 SetHeaders();
@@ -84,7 +82,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:MenuList");
             populator = () => {
                 Representation = ListRepresentation.Create(oidStrategy, menus, req, flags);
                 SetHeaders();
@@ -93,7 +90,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:propertyprompt");
             populator = () => {
                 Representation = PromptRepresentation.Create(oidStrategy, propertyContext, req, flags);
                 SetHeaders();
@@ -102,7 +98,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:parameterprompt");
             populator = () => {
                 Representation = PromptRepresentation.Create(oidStrategy, parmContext, req, flags);
                 SetHeaders();
@@ -134,7 +129,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:Home");
 
             populator = () => {
                 Representation = HomePageRepresentation.Create(oidStrategy, req, flags);
@@ -144,7 +138,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:Version");
 
             populator = () => {
                 Representation = VersionRepresentation.Create(oidStrategy, req, capabilities, flags);
@@ -154,7 +147,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:User");
 
             populator = () => {
                 Representation = UserRepresentation.Create(oidStrategy, req, user, flags);
@@ -164,7 +156,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequestMessage req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:{0}", typeActionInvokeContext.GetType().FullName);
 
             populator = () => {
                 Representation = TypeActionInvokeRepresentation.Create(oidStrategy, req, typeActionInvokeContext, flags);
@@ -174,7 +165,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequestMessage req)
             : this(oidStrategy, req, true) {
-            logger.DebugFormat("RestSnapshot:Exception");
 
             populator = () => {
                 MapToHttpError(exception);
@@ -247,8 +237,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 populator();
                 return this;
             }
-            catch (HttpResponseException e) {
-                logger.DebugFormat("HttpResponse exception being passed up {0}", e.Message);
+            catch (HttpResponseException) {
                 throw;
             }
             catch (Exception e) {

@@ -46,8 +46,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             if (!string.IsNullOrEmpty(applicationPath)) {
                 prefix = new Uri(prefix, applicationPath);
             }
-
-            DebugLogRequest(req);
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menuFacade) : this(oidStrategy, req) {
@@ -156,31 +154,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private string CachedType { get; }
 
-        private static void DebugLogRequest(HttpRequestMessage req) {
-            Logger.DebugFormat("AbsolutePath {0}", req.RequestUri.AbsolutePath);
-            Logger.DebugFormat("AbsoluteUri {0}", req.RequestUri.AbsoluteUri);
-            Logger.DebugFormat("Authority {0}", req.RequestUri.Authority);
-            Logger.DebugFormat("DnsSafeHost {0}", req.RequestUri.DnsSafeHost);
-            Logger.DebugFormat("Fragment {0}", req.RequestUri.Fragment);
-            Logger.DebugFormat("Host {0}", req.RequestUri.Host);
-
-            Logger.DebugFormat("HostNameType {0}", req.RequestUri.HostNameType);
-            Logger.DebugFormat("IsAbsoluteUri {0}", req.RequestUri.IsAbsoluteUri);
-
-            Logger.DebugFormat("IsDefaultPort {0}", req.RequestUri.IsDefaultPort);
-            Logger.DebugFormat("IsFile {0}", req.RequestUri.IsFile);
-            Logger.DebugFormat("IsLoopback {0}", req.RequestUri.IsLoopback);
-            Logger.DebugFormat("IsUnc {0}", req.RequestUri.IsUnc);
-            Logger.DebugFormat("LocalPath {0}", req.RequestUri.LocalPath);
-            Logger.DebugFormat("OriginalString {0}", req.RequestUri.OriginalString);
-
-            Logger.DebugFormat("PathAndQuery {0}", req.RequestUri.PathAndQuery);
-            Logger.DebugFormat("Port {0}", req.RequestUri.Port);
-            Logger.DebugFormat("Query {0}", req.RequestUri.Query);
-            Logger.DebugFormat("Scheme {0}", req.RequestUri.Scheme);
-            Logger.DebugFormat("UserEscaped {0}", req.RequestUri.UserEscaped);
-            Logger.DebugFormat("UserInfo {0}", req.RequestUri.UserInfo);
-        }
 
         public string[] GetObjectId(string value) {
             var uri = new Uri(value);

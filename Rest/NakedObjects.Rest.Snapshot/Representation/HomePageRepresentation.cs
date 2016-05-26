@@ -20,7 +20,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
             : base(oidStrategy, flags) {
-            Log.DebugFormat("HomePageRepresentation");
             SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
             SetExtensions();
