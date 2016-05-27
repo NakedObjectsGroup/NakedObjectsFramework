@@ -104,6 +104,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("* Drop here", target.Text);
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+            //Test that color has changed
+            WaitForCss(selector + ".object-color5");
         }
         public virtual void PasteAnImplementationOfAnInterface()
         {
@@ -116,6 +118,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var target = WaitForCss(selector);
             Assert.AreEqual("* Drop here", target.Text);
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+        }
+        public virtual void PasteIntoAutoCompleteField()
+        {
+            GeminiUrl("home/object?m1=CustomerRepository&i2=View&o2=___1.Customer--29929&d1=FindCustomer&f1_customer=null");
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Many Bikes Store, AW00029929", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            string selector = "#pane1 .parameter .value";
+            var target = WaitForCss(selector);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
         }
         public virtual void DroppableReferenceFieldWithoutAutoComplete()
         {
@@ -194,6 +207,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void PasteIntoDialog() { base.PasteIntoDialog(); }
         [TestMethod]
+        public override void PasteIntoAutoCompleteField() { base.PasteIntoAutoCompleteField(); }
+        [TestMethod]
         public override void PasteAnImplementationOfAnInterface() { base.PasteAnImplementationOfAnInterface(); }
         [TestMethod]
         public override void DroppableReferenceFieldWithoutAutoComplete() { base.DroppableReferenceFieldWithoutAutoComplete(); }
@@ -203,6 +218,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
         [TestMethod, Ignore] //Can't test as the drop doesn't update UI in tests
         public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() { base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed(); }
+
+
     }
 
     #region browsers specific subclasses
@@ -295,6 +312,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
             base.PasteIntoDialog();
             base.PasteAnImplementationOfAnInterface();
+            base.PasteIntoAutoCompleteField();
             base.DroppableReferenceFieldWithoutAutoComplete();
             base.CannotPasteWrongTypeIntoReferenceField();
             base.CanClearADroppableReferenceField();
