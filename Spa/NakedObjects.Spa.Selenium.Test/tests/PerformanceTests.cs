@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Diagnostics;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -18,6 +19,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void RetrieveRandomEmployees()
         {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             GeminiUrl("home?m1=EmployeeRepository");
             for (int i = 0; i < 100; i++)
             {
@@ -26,6 +29,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 ClickBackButton();
                 WaitForView(Pane.Single, PaneType.Home);
             }
+            stopWatch.Stop();
+            var time = stopWatch.ElapsedMilliseconds;
+            Assert.IsTrue(time <100000, string.Format("Elapsed time was {0} milliseconds",time));
         }
 
     }
