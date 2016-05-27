@@ -255,6 +255,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
 
+        public virtual void ClearingAutoCompleteTextClearsUnderlyingReference()
+        {
+            Url(ProductServiceUrl);
+            OpenActionDialog("Find Product");
+            Assert.AreEqual("Adjustable Race", WaitForCss(".value input[type='text']").GetAttribute("value"));
+            ClearFieldThenType("#product1", "");
+            OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Product; ");
+        }
+
 
         public virtual void AutoCompleteParmShowSingleItem()
         {
@@ -440,6 +449,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void AutoCompleteParmDefault() { base.AutoCompleteParmDefault(); }
         [TestMethod]
+        public override void ClearingAutoCompleteTextClearsUnderlyingReference()
+        {
+            base.ClearingAutoCompleteTextClearsUnderlyingReference();
+        }
+        [TestMethod]
         public override void AutoCompleteParmShowSingleItem() { base.AutoCompleteParmShowSingleItem(); }
         [TestMethod]
         public override void AutoCompleteScalarField() { base.AutoCompleteScalarField(); }
@@ -566,6 +580,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ConditionalChoicesMultiple();
             base.AutoCompleteParm();
             base.AutoCompleteParmDefault();
+            base.ClearingAutoCompleteTextClearsUnderlyingReference();
             base.AutoCompleteParmShowSingleItem();
             base.AutoCompleteScalarField();
             base.MandatoryParameterEnforced();
