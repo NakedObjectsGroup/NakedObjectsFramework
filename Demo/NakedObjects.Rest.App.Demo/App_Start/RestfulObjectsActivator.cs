@@ -6,11 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Web.Routing;
+using log4net.Config;
 using NakedObjects.Rest.App.Demo;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof (RestfulObjectsActivator), "PreStart")]
 [assembly: PostApplicationStartMethod(typeof (RestfulObjectsActivator), "PostStart")]
+[assembly: XmlConfigurator]
 
 namespace NakedObjects.Rest.App.Demo {
     public static class RestfulObjectsActivator {

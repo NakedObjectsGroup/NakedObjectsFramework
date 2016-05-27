@@ -8,6 +8,7 @@
 using System;
 using System.Security.Principal;
 using System.Web;
+using Common.Logging;
 using Microsoft.Practices.Unity;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
@@ -25,6 +26,8 @@ namespace MvcTestApp {
     public class UnityConfig {
         #region Unity Container
 
+        private static readonly ILog Logger = LogManager.GetLogger<UnityConfig>();
+
         private static readonly Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() => {
             var container = new UnityContainer();
             RegisterTypes(container);
@@ -35,10 +38,17 @@ namespace MvcTestApp {
         /// Gets the configured Unity container.
         /// </summary>
         public static IUnityContainer GetConfiguredContainer() {
-            return container.Value;
+            try {
+                return container.Value;
+            }
+            catch (Exception e) {
+                Logger.Error($"Error on Unity GetConfiguredContainer : {e.Message}");
+                throw;
+            }
         }
 
         #endregion
+
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
@@ -48,22 +58,30 @@ namespace MvcTestApp {
             // container.LoadConfiguration();
             //Standard configuration
 
-            StandardUnityConfig.RegisterStandardFacetFactories(container);
-            StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-            StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
+            try {
 
-            // config 
-            container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
+                StandardUnityConfig.RegisterStandardFacetFactories(container);
+                StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
+                StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
-            // frameworkFacade
-            container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
+                // config 
+                container.RegisterInstance<IReflectorConfiguration>(NakedObjectsRunSettings.ReflectorConfig(), (new ContainerControlledLifetimeManager()));
+                container.RegisterInstance<IEntityObjectStoreConfiguration>(NakedObjectsRunSettings.EntityObjectStoreConfig(), new ContainerControlledLifetimeManager());
 
-            container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
-            container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
+                // frameworkFacade
+                container.RegisterType<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>(new PerResolveLifetimeManager());
 
-            //Externals
-            container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+                container.RegisterType<IOidStrategy, EntityOidStrategy>(new PerResolveLifetimeManager());
+                container.RegisterType<IFrameworkFacade, FrameworkFacade>(new PerResolveLifetimeManager());
+
+                //Externals
+                container.RegisterType<IPrincipal>(new InjectionFactory(c => HttpContext.Current.User));
+            }
+            catch (Exception e) {
+                Logger.Error($"Error on Unity RegisterTypes : {e.Message}");
+                throw;
+            }
+
         }
     }
 }
