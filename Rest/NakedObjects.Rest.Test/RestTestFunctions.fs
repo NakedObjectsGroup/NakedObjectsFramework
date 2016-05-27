@@ -902,11 +902,39 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
-
-
 let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 4
+      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))        
+      let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
+      let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
+      let clearRel = RelValues.Clear + makeParm RelParamValues.Property mName
+
+      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
+                     ]
+
+      let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
+      let links = if opt && not disabled then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
+
+      [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
+        TProperty(JsonPropertyNames.Id, TObjectVal(mName));
+        TProperty(JsonPropertyNames.Value, oValue);
+        TProperty(JsonPropertyNames.HasChoices, TObjectVal(false));
+      
+        TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                                                             TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                                                             TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"));
+                                                             TProperty(JsonPropertyNames.MaxLength, TObjectVal(0));
+                                                             TProperty(JsonPropertyNames.Format, TObjectVal(format));
+                                                             TProperty(JsonPropertyNames.Pattern, TObjectVal(""));
+                                                             TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                                                             TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"));
+                                                             TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
+        TProperty(JsonPropertyNames.Links, TArray(links))]
+
+let makePropertyMemberTimeSpan oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
+      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+      let order = if desc = "" then 0 else 5
       let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel"))))        
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName

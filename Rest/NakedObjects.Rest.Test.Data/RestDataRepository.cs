@@ -55,6 +55,7 @@ namespace RestfulObjects.Test.Data {
             withValue.AStringValue = "one hundred four";
             withValue.AHiddenValue = 105;
             withValue.ADateTimeValue = new DateTime(2012, 2, 10);
+            withValue.ATimeSpanValue = new TimeSpan(1, 2, 3, 4, 5);
 
             return withValue;
         }

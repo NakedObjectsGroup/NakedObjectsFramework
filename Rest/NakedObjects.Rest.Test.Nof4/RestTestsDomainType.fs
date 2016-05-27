@@ -418,6 +418,10 @@ type CNof4TestsDomainType() =
         [<Test>]
         member x.PutWithValueObjectMalformedDateTimeArgs() = 
             DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.api
+
+        [<Test>]
+        member x.PutWithValueObjectMalformedTimeArgs() = 
+            DomainObject14.PutWithValueObjectMalformedTimeArgs x.api
         
         [<Test>]
         member x.PutWithValueObjectMalformedArgsValidateOnly() = 
