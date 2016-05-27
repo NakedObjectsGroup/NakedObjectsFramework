@@ -462,6 +462,7 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -487,6 +488,14 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -634,6 +643,7 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -660,6 +670,14 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -715,6 +733,7 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -740,6 +759,14 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -869,7 +896,8 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
     let oid = oType + "/" + ktc "1"
     let url = sprintf "http://localhost/objects/%s" oid
     let props = 
-        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))),
+                    new JProperty("ATimeSpanValue", new JObject(new JProperty(JsonPropertyNames.Value, "04:05:06"))),  
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     let args = CreateArgMap props
     api.Request <- jsonPutMsg url (props.ToString())
@@ -885,6 +913,7 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -909,6 +938,14 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("04:05:06")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -981,6 +1018,7 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -1005,6 +1043,14 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -3269,7 +3315,8 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
 let GetWithValueViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
     let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-    let key = ktc ("1--100--200--4--0----" + ticks + "--8--0")
+    let tsTicks = (new TimeSpan(1,2,3,4,5)).Ticks.ToString()
+    let key = ktc ("1--100--200--4--0----" + ticks + "--" + tsTicks + "--8--0")
     let oid = oType + "/" + key
     let url = sprintf "http://localhost/objects/%s" oid
     let args = CreateReservedArgs ""
@@ -3285,6 +3332,7 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -3306,6 +3354,14 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
                                        TObjectJson
                                            (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
                                                 (TObjectVal("2012-02-10")) "date"))
+
+                                  TProperty
+                                      ("ATimeSpanValue", 
+                                       
+                                       TObjectJson
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field disabled as object cannot be changed")) :: makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+
                                   TProperty("ADisabledValue", TObjectJson(disabledValue))
                                   
                                   TProperty
@@ -3748,6 +3804,7 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
@@ -3871,6 +3928,30 @@ let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) 
     let expected = 
         [ TProperty("ADateTimeValue", 
                     TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as date"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
+    compareObject expected parsedResult
+
+let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
+    let error = "cannot format value cannot parse as time as TimeSpan"
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = oType + "/" + ktc "1"
+    let url = sprintf "http://localhost/objects/%s" oid
+    let props = 
+        new JObject(new JProperty("ATimeSpanValue", new JObject(new JProperty(JsonPropertyNames.Value, "cannot parse as time"))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
+    let args = CreateArgMap props
+    api.Request <- jsonPutMsg url (props.ToString())
+    let result = api.PutObject(oType, ktc "1", args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty("ATimeSpanValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as time"))
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
           TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)

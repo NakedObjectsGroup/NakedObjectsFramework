@@ -410,6 +410,10 @@ type ANof4Tests() =
             DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.api
         
         [<Test>]
+        member x.PutWithValueObjectMalformedTimeArgs() = 
+            DomainObject14.PutWithValueObjectMalformedTimeArgs x.api
+
+        [<Test>]
         member x.PutWithValueObjectMalformedArgsValidateOnly() = 
             DomainObject14.PutWithValueObjectMalformedArgsValidateOnly x.api
         

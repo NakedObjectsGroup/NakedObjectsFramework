@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Security;
 
@@ -14,6 +15,7 @@ namespace RestfulObjects.Test.Data {
     [PresentationHint("class1 class2")]
     public class WithValue {
         private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
+        private TimeSpan aTimeSpanValue = new TimeSpan(1, 2, 3, 4, 5);
 
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
@@ -44,6 +46,18 @@ namespace RestfulObjects.Test.Data {
             get { return aDateTimeValue; }
             set { aDateTimeValue = value; }
         }
+
+        [Optionally]
+        [DescribedAs("A timespan value for testing")]
+        [Mask("d")]
+        [NotMapped]
+        [MemberOrder(Sequence = "5")]
+        public virtual TimeSpan ATimeSpanValue
+        {
+            get { return aTimeSpanValue; }
+            set { aTimeSpanValue = value; }
+        }
+
 
         [AuthorizeProperty(ViewUsers = "viewUser")]
         public virtual int AUserHiddenValue { get; set; }

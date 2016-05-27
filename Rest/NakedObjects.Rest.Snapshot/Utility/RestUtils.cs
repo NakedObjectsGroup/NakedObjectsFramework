@@ -187,7 +187,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return SimpleTypeMap[underlyingType];
             }
 
-            if (typeof(DateTime).IsAssignableFrom(toMapType)) {
+            if (typeof(DateTime).IsAssignableFrom(toMapType) || typeof(TimeSpan).IsAssignableFrom(toMapType)) {
                 return PredefinedJsonType.String;
             }
 
@@ -227,6 +227,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 return useDateOverDateTime ? PredefinedFormatType.Date : PredefinedFormatType.Date_time;
             }
 
+            if (typeof(TimeSpan).IsAssignableFrom(toMapType)) {
+                return  PredefinedFormatType.Time;
+            }
+
             return null;
         }
 
@@ -253,6 +257,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return date.Date.ToString("yyyy-MM-dd");
         }
 
+        public static string ToTimeFormatString(TimeSpan time) {
+            return time.ToString(@"hh\:mm\:ss");
+        }
+
+
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
             PredefinedFormatType? predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), useDateOverDateTime);
             if (predefinedFormatType == PredefinedFormatType.Date_time) {
@@ -266,6 +275,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
             if (predefinedFormatType == PredefinedFormatType.Date) {
                 return ToDateFormatString((DateTime) toMap);
+            }
+
+            if (predefinedFormatType == PredefinedFormatType.Time) {
+                return ToTimeFormatString((TimeSpan)toMap);
             }
 
             return predefinedFormatType == PredefinedFormatType.String ? toMap.ToString() : toMap;

@@ -13,6 +13,7 @@ using NakedObjects.Security;
 namespace RestfulObjects.Test.Data {
     public class WithValueViewModel : IViewModel {
         private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
+        private TimeSpan aTimeSpanValue = new TimeSpan(1, 2, 3, 4, 5);
 
         [Key, Title, ConcurrencyCheck]
         public virtual int Id { get; set; }
@@ -44,6 +45,16 @@ namespace RestfulObjects.Test.Data {
             set { aDateTimeValue = value; }
         }
 
+        [Optionally]
+        [DescribedAs("A timespan value for testing")]
+        [Mask("d")]
+        [MemberOrder(Sequence = "5")]
+        public virtual TimeSpan ATimeSpanValue
+        {
+            get { return aTimeSpanValue; }
+            set { aTimeSpanValue = value; }
+        }
+
         [AuthorizeProperty(ViewUsers = "viewUser")]
         public virtual int AUserHiddenValue { get; set; }
 
@@ -62,6 +73,7 @@ namespace RestfulObjects.Test.Data {
                 AChoicesValue.ToString(),
                 AStringValue,
                 ADateTimeValue.Ticks.ToString(),
+                ATimeSpanValue.Ticks.ToString(),
                 AUserHiddenValue.ToString(),
                 AUserDisabledValue.ToString()
             };
@@ -76,8 +88,9 @@ namespace RestfulObjects.Test.Data {
             AChoicesValue = int.Parse(instanceId[4]);
             AStringValue = instanceId[5];
             ADateTimeValue = new DateTime(long.Parse(instanceId[6]));
-            AUserHiddenValue = int.Parse(instanceId[7]);
-            AUserDisabledValue = int.Parse(instanceId[8]);
+            ATimeSpanValue = new TimeSpan(long.Parse(instanceId[7]));
+            AUserHiddenValue = int.Parse(instanceId[8]);
+            AUserDisabledValue = int.Parse(instanceId[9]);
         }
 
         #endregion
