@@ -28,14 +28,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "password").Count() == 3);
         }
-        public virtual void ChoicesParm()
+        public virtual void ScalarChoicesParm()
         {
             Url(OrdersMenuUrl);
             OpenActionDialog("Orders By Value");
-            SelectDropDownOnField("#ordering1", "Ascending");
+            SelectDropDownOnField("#ordering1", "Descending");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Orders By Value");
-            AssertTopItemInListIs("SO51782");
+            AssertTopItemInListIs("SO51131");
         }
         public virtual void TestCancelDialog()
         {
@@ -57,16 +57,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Find Individual Customer By Name");
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
-        }
-        public virtual void ScalarChoicesParmKeepsValue()
-        {
-            Url(OrdersMenuUrl);
-            GetObjectActions(OrderServiceActions);
-            OpenActionDialog("Orders By Value");
-            SelectDropDownOnField("#ordering1", "Ascending");
-            Click(OKButton());
-            WaitForView(Pane.Single, PaneType.List, "Orders By Value");
-            AssertTopItemInListIs("SO51782");
         }
         public virtual void ScalarParmShowsDefaultValue()
         {
@@ -417,13 +407,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void PasswordParam() { base.PasswordParam(); }
         [TestMethod]
-        public override void ChoicesParm() { base.ChoicesParm(); }
+        public override void ScalarChoicesParm() { base.ScalarChoicesParm(); }
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
         [TestMethod]
         public override void ClosedDialogClearsFields() { base.ClosedDialogClearsFields(); }
-        [TestMethod]
-        public override void ScalarChoicesParmKeepsValue() { base.ScalarChoicesParmKeepsValue(); }
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
         [TestMethod]
@@ -563,10 +551,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaDialogTest()
         {
             base.PasswordParam();
-            base.ChoicesParm();
+            base.ScalarChoicesParm();
             base.TestCancelDialog();
             base.ClosedDialogClearsFields();
-            base.ScalarChoicesParmKeepsValue();
             base.ScalarParmShowsDefaultValue();
             base.DateTimeParmKeepsValue();
             base.RefChoicesParmKeepsValue();

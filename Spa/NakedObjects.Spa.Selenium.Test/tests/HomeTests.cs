@@ -131,10 +131,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         public virtual void ZeroParamReturnsEmptyCollection()
         {
-            Url(OrdersMenuUrl);
-            WaitForCss(".actions .action", OrderServiceActions);
-            Click(GetObjectAction("Orders In Process"));
-            WaitForView(Pane.Single, PaneType.List, "Orders In Process");
+            Url(CustomersMenuUrl);
+            OpenSubMenu("Individuals");
+            Click(GetObjectAction("Find Individual Customer By Name"));
+            ClearFieldThenType("#lastname1", "zzz");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find Individual Customer By Name");
             var rows = br.FindElements(By.CssSelector("td"));
             Assert.AreEqual(0, rows.Count);
         }
