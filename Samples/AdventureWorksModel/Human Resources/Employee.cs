@@ -13,8 +13,10 @@ using NakedObjects;
 using System.ComponentModel;
 
 namespace AdventureWorksModel {
+
+    public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
     [IconName("person.png")]
-    public class Employee : IBusinessEntity {
+    public class Employee : IEmployee {
         #region Injected Services
         public EmployeeRepository EmployeeRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }
@@ -208,6 +210,11 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        public void SpecifyManager(IEmployee manager)
+        {
+            this.ManagerID = manager.BusinessEntityID;
+        }
         #endregion
     }
 }

@@ -105,6 +105,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
+        public virtual void PasteAnImplementationOfAnInterface()
+        {
+            GeminiUrl("object/object?i1=View&o1=___1.Employee--88&i2=View&o2=___1.Employee--203&as1=open&d1=SpecifyManager&f1_manager=null");
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("Ken Myer", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            string selector = "#pane1 .parameter .value";
+            var target = WaitForCss(selector);
+            Assert.AreEqual("* Drop here", target.Text);
+            PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+        }
         public virtual void DroppableReferenceFieldWithoutAutoComplete()
         {
             GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
@@ -181,6 +193,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() { base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu(); }
         [TestMethod]
         public override void PasteIntoDialog() { base.PasteIntoDialog(); }
+        [TestMethod]
+        public override void PasteAnImplementationOfAnInterface() { base.PasteAnImplementationOfAnInterface(); }
         [TestMethod]
         public override void DroppableReferenceFieldWithoutAutoComplete() { base.DroppableReferenceFieldWithoutAutoComplete(); }
         [TestMethod]
@@ -280,6 +294,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PasteIntoReferenceField();
             base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
             base.PasteIntoDialog();
+            base.PasteAnImplementationOfAnInterface();
             base.DroppableReferenceFieldWithoutAutoComplete();
             base.CannotPasteWrongTypeIntoReferenceField();
             base.CanClearADroppableReferenceField();
