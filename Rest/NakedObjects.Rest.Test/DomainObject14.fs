@@ -3936,7 +3936,7 @@ let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) 
     compareObject expected parsedResult
 
 let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
-    let error = "cannot format value cannot parse as time as DateTime"
+    let error = "cannot format value cannot parse as time as TimeSpan"
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = oType + "/" + ktc "1"
     let url = sprintf "http://localhost/objects/%s" oid
