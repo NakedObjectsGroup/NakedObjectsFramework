@@ -187,10 +187,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var target = WaitForCss(selector);
             Assert.AreEqual("", target.Text);
 
-            PasteIntoReferenceField("#pane1 .parameter .value.droppable");
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
             Click(FullIcon());
             WaitUntilGone(br => br.FindElement(By.CssSelector("#pane2")));
-            var input = WaitForCss("input#contactDetails1");
+            var input = WaitForCss("#contactdetails1.droppable");
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
         }
     }
@@ -216,10 +216,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CannotPasteWrongTypeIntoReferenceField() { base.CannotPasteWrongTypeIntoReferenceField(); }
         [TestMethod]
         public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
-        [TestMethod, Ignore] //Can't test as the drop doesn't update UI in tests
+        [TestMethod] //Can't test as the drop doesn't update UI in tests
         public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() { base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed(); }
-
-
     }
 
     #region browsers specific subclasses
@@ -316,7 +314,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.DroppableReferenceFieldWithoutAutoComplete();
             base.CannotPasteWrongTypeIntoReferenceField();
             base.CanClearADroppableReferenceField();
-            //base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
+            base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
         }
     }
     [TestClass]
