@@ -166,6 +166,23 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             return wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
         }
+        protected IWebElement WaitForTextEquals(string cssSelector, string text)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == text);
+            return WaitForCss(cssSelector);
+        }
+        protected IWebElement WaitForTextEquals(string cssSelector, int index, string text)
+        {
+            wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector))[index].Text == text);
+            return WaitForCss(cssSelector);
+        }
+        protected IWebElement WaitForTextStarting(string cssSelector, string startOftext)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.StartsWith(startOftext));
+            return WaitForCss(cssSelector);
+        }
+
+
 
         /// <summary>
         /// Waits until there are AT LEAST the specified count of matches & returns ALL matches

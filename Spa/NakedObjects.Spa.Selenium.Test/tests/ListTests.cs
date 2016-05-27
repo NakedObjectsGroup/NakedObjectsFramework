@@ -42,6 +42,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Category", cols[2].Text);
             Assert.AreEqual("Discount Pct", cols[3].Text);
         }
+        public virtual void TableViewCanIncludeCollectionSummaries()
+        {
+            GeminiUrl("list?m1=OrderRepository&a1=OrdersWithMostLines&pg1=1&ps1=20&s1=0&c1=Table");
+            Reload();
+            var header = WaitForCss("thead");
+            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            Assert.AreEqual(4, cols.Length);
+            Assert.AreEqual("Select", cols[0].Text);
+            Assert.AreEqual("", cols[1].Text);
+            Assert.AreEqual("Order Date", cols[2].Text);
+            Assert.AreEqual("Details", cols[3].Text);
+            wait.Until(dr => dr.FindElements(By.CssSelector("tr"))[0].FindElements(By.CssSelector("td"))[3].Text == "72 Items");
+        }
+
+        protected IWebElement WaitForText(string cssSelector, string text)
+        {
+            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == text);
+            return WaitForCss(cssSelector);
+        }
         public virtual void SwitchToTableViewAndBackToList()
         {
             Url(SpecialOffersMenuUrl);
@@ -261,6 +280,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ActionReturnsListView() { base.ActionReturnsListView(); }
         [TestMethod]
         public override void TableViewAttributeHonoured() { base.TableViewAttributeHonoured(); }
+        [TestMethod, Ignore]
+        public override void TableViewCanIncludeCollectionSummaries() { base.TableViewCanIncludeCollectionSummaries(); }
         [TestMethod]
         public override void SwitchToTableViewAndBackToList() { base.SwitchToTableViewAndBackToList(); }
         [TestMethod]
@@ -363,14 +384,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaListTest()
         {
             base.ActionReturnsListView();
+            base.TableViewAttributeHonoured();
+            //base.TableViewCanIncludeCollectionSummaries();
             base.SwitchToTableViewAndBackToList();
-
             base.NavigateToItemFromListView();
-
             base.NavigateToItemFromTableView();
-
             base.Paging();
-
             //base.PagingTableView(); //TODO: Ignored due to failing on server
             base.ListDoesNotRefreshWithoutReload();
             base.ReloadingListGetsUpdatedObject();

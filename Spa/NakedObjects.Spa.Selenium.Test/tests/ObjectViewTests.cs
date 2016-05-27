@@ -333,6 +333,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count == rowCount + 1);
         }
+
+        public virtual void TimeSpanProperty()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Shift--965");
+            WaitForTextEquals(".property", 2, "07:00"); //TODO value not correct
+        }
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
     {
@@ -393,6 +399,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ZeroIntValues() { base.ZeroIntValues(); }
         [TestMethod]
         public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
+        [TestMethod, Ignore]
+        public virtual void TimeSpanProperty() { base.TimeSpanProperty(); }
+
 
     }
     #region browsers specific subclasses
@@ -504,6 +513,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Colours();
             base.ZeroIntValues();
             base.AddingObjectToCollectionUpdatesTableView();
+            //base.TimeSpanProperty();
         }
     }
     [TestClass]

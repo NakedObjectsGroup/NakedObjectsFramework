@@ -82,6 +82,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var details = WaitForCss(".summary .details");
             Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
         }
+        public virtual void TimeSpanParm()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
+            OpenActionDialog("Change Times");
+            ClearFieldThenType("#starttime1", "07:30");
+            ClearFieldThenType("#endtime1", "15:30");
+            Click(OKButton());
+            WaitForTextEquals(".property", 2, "07:30");
+            WaitForTextEquals(".property", 3, "15:30");
+        }
         public virtual void RefChoicesParmKeepsValue()
         {
             Url(ProductServiceUrl);
@@ -227,7 +237,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertTopItemInListIs("Mountain-100 Black, 38");
         }
         #region Auto Complete
-
         public virtual void AutoCompleteParm()
         {
             Url(SalesServiceUrl);
@@ -241,8 +250,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
-
-
         public virtual void AutoCompleteParmDefault()
         {
             Url(ProductServiceUrl);
@@ -254,7 +261,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
         }
-
         public virtual void ClearingAutoCompleteTextClearsUnderlyingReference()
         {
             Url(ProductServiceUrl);
@@ -263,8 +269,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#product1", "");
             OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Product; ");
         }
-
-
         public virtual void AutoCompleteParmShowSingleItem()
         {
             Url(ProductServiceUrl);
@@ -276,7 +280,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
         }
-
         public virtual void AutoCompleteScalarField()
         {
             GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
@@ -286,7 +289,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         #endregion
         #region Parameter validation
-
         public virtual void MandatoryParameterEnforced()
         {
             GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
@@ -298,8 +300,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
         }
-
-
         public virtual void ValidateSingleValueParameter()
         {
             GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
@@ -316,8 +316,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "No Discount");
         }
-
-
         public virtual void ValidateSingleRefParamFromChoices()
         {
             GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open&d1=AddNewSalesReason");
@@ -329,8 +327,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var validation = WaitForCss(".parameter .validation");
             Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
         }
-
-
         public virtual void CoValidationOfMultipleParameters()
         {
             GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
@@ -343,7 +339,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".parameters .co-validation")).Text ==
                 "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
-
         #endregion
         public virtual void ParameterDescriptionRenderedAsPlacholder()
         {
@@ -351,7 +346,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var name = WaitForCss("input#name1");
             Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
         }
-
         public virtual void NullableBooleanParams()
         {
             GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
@@ -393,7 +387,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(current);
             Assert.AreEqual("true", current.GetAttribute("checked"));
         }
-
         public virtual void WarningShownWithinDialogAndInFooter()
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
@@ -424,6 +417,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
         [TestMethod]
         public override void DateTimeParmKeepsValue() { base.DateTimeParmKeepsValue(); }
+        [TestMethod, Ignore]
+        public override void TimeSpanParm() { base.TimeSpanParm(); }
         [TestMethod]
         public override void RefChoicesParmKeepsValue() { base.RefChoicesParmKeepsValue(); }
         [TestMethod]
@@ -569,6 +564,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ClosedDialogClearsFields();
             base.ScalarParmShowsDefaultValue();
             base.DateTimeParmKeepsValue();
+            base.TimeSpanParm();
             base.RefChoicesParmKeepsValue();
             base.MultipleRefChoicesDefaults();
             base.MultipleRefChoicesChangeDefaults();
