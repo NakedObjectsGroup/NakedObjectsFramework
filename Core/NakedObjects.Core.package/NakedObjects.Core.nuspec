@@ -16,6 +16,7 @@
     <dependencies>
       <dependency id="NakedObjects.ProgrammingModel" version="[7.0.3, 8)" />
       <dependency id="Common.Logging" version="[3.3.1, 4.0)" />
+      <dependency id="Common.Logging.Log4Net1215" version="[3.3.1, 4.0)" />
       <dependency id="EntityFramework" version="[6.1.3, 7.0)" />
       <dependency id="System.Collections.Immutable" version="[1.1.37, 2.0)" />
       <dependency id="Unity" version="[3.5.1404, 4.0)" />
