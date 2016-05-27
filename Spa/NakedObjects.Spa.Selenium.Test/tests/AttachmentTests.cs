@@ -22,7 +22,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr =>dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
         }
 
-
+        public virtual void EmptyImageProperty()
+        {
+            GeminiUrl("object?i1=View&o1=___1.Person--13742");
+            wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:");
+        }
 
         public virtual void ClickOnImage()
         {
@@ -32,8 +36,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
 
         }
-
-
         public virtual void RightClickOnImage()
         {
             GeminiUrl("object?o1=___1.Product--780");
@@ -44,13 +46,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
 
         }
-
     }
 
     public abstract class AttachmentTests : AttachmentTestsRoot
     {
         [TestMethod]
         public override void ImageAsProperty() { base.ImageAsProperty(); }
+        [TestMethod]
+        public override void EmptyImageProperty() { base.EmptyImageProperty(); }
         [TestMethod]
         public override void ClickOnImage() { base.ClickOnImage(); }
         [TestMethod]
@@ -143,6 +146,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaAttachmentTest()
         {
             base.ImageAsProperty();
+            base.EmptyImageProperty();
             base.ClickOnImage();
             base.RightClickOnImage();
         }

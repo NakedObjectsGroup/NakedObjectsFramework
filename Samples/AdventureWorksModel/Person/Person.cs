@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using NakedObjects;
 using System.Collections.Generic;
+using NakedObjects.Value;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
 
@@ -214,6 +216,10 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+        //To test a null image
+        [NotMapped]
+        public virtual Image Photo { get { return null; } }
 
         #region Row Guid and Modified Date
 
