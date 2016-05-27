@@ -7,11 +7,13 @@
 
 using System.Web;
 using System.Web.Http;
+using log4net.Config;
 using MvcTestApp;
 
 namespace NakedObjects.Rest.App {
     public class WebApiApplication : HttpApplication {
         protected void Application_Start() {
+            XmlConfigurator.Configure();
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
 
