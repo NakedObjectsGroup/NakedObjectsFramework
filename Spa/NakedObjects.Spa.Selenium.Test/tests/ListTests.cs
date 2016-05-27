@@ -55,12 +55,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual("Details", cols[3].Text);
             wait.Until(dr => dr.FindElements(By.CssSelector("tr"))[0].FindElements(By.CssSelector("td"))[3].Text == "72 Items");
         }
-
-        protected IWebElement WaitForText(string cssSelector, string text)
-        {
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text == text);
-            return WaitForCss(cssSelector);
-        }
         public virtual void SwitchToTableViewAndBackToList()
         {
             Url(SpecialOffersMenuUrl);

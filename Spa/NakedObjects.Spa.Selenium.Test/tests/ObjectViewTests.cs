@@ -400,7 +400,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
         [TestMethod, Ignore]
-        public virtual void TimeSpanProperty() { base.TimeSpanProperty(); }
+        public override void TimeSpanProperty() { base.TimeSpanProperty(); }
 
 
     }
