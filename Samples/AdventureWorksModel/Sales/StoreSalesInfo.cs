@@ -6,8 +6,21 @@ namespace AdventureWorksModel
     public class StoreSalesInfo : IViewModelSwitchable
     {
         #region Injected Services
+        public IDomainObjectContainer Container { set; protected get; }
         public CustomerRepository CustomerRepository { set; protected get; }
         #endregion
+
+
+        public override string ToString()
+        {
+            var t = Container.NewTitleBuilder();
+            if (this.EditMode)
+            {
+                t.Append("Editing - ");
+            }
+            t.Append("Sales Info for: ").Append(StoreName);
+            return t.ToString();
+        }
 
         [MemberOrder(1), Disabled]
         public virtual string AccountNumber { get; set; }
@@ -20,6 +33,7 @@ namespace AdventureWorksModel
 
         [MemberOrder(4)]
         public virtual SalesPerson SalesPerson { get; set; }
+
 
         public string[] DeriveKeys()
         {

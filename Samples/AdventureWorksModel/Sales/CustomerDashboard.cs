@@ -40,6 +40,9 @@ namespace AdventureWorksModel {
             }
         }
 
+        //Empty field, not - to test that fields are not editable in a VM
+        public virtual string Comments { get; set; }
+
         public override string ToString() {
             var t = Container.NewTitleBuilder();
             t.Append(Name).Append(" - Dashboard");

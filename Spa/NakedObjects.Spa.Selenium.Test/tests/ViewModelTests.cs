@@ -13,15 +13,21 @@ using OpenQA.Selenium;
 namespace NakedObjects.Web.UnitTests.Selenium
 {
 
-    public abstract class EditableVMTestsRoot : AWTest
+    public abstract class ViewModelTestsRoot : AWTest
     {
+        public virtual void CreateVM()
+        {
+            GeminiUrl("object?i1=View&o1=___1.CustomerDashboard--20071&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Sean Campbell - Dashboard");
+            //TODO: test for no Edit button?
+        }
         public virtual void CreateEditableVM()
         {
             GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
             Click(GetObjectAction("Create Email"));
             WaitForView(Pane.Single, PaneType.Object, "New email");
             wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
- 
+
             ClearFieldThenType("#to1", "Stef");
             ClearFieldThenType("#from1", "Richard");
             ClearFieldThenType("#subject1", "Test");
@@ -35,17 +41,32 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var title = WaitForCss(".title");
             Assert.AreEqual("Sent email", title.Text);
         }
-    }
 
-    public abstract class EditableVMObjectTests : EditableVMTestsRoot
+        public virtual void CreateSwitchableVM()
+        {
+            GeminiUrl("object?i1=View&o1=___1.StoreSalesInfo--AW00000293--False&as1=open");
+            WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
+            Click(GetObjectAction("Edit")); //Note: not same as the generic (object) Edit button
+            WaitForView(Pane.Single, PaneType.Object, "Editing - Sales Info for: Fashionable Bikes and Accessories");
+            SelectDropDownOnField("#salesterritory1", "Central");
+            Click(SaveButton());  //TODO: check if this works
+            WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
+            WaitForTextEquals(".property", 2, "Central");
+        }
+    }
+    public abstract class ViewModelsTests : ViewModelTestsRoot
     {
         [TestMethod]
+        public override void CreateVM() { base.CreateVM(); }
+        [TestMethod]
         public override void CreateEditableVM() { base.CreateEditableVM(); }
+        [TestMethod, Ignore]
+        public override void CreateSwitchableVM() { base.CreateSwitchableVM(); }
     }
     #region browsers specific subclasses
 
     //[TestClass, Ignore]
-    public class EditableVMTestsIe : EditableVMObjectTests
+    public class ViewModelTestsIe : ViewModelsTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -69,7 +90,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     //[TestClass]
-    public class EditableVMTestsFirefox : EditableVMObjectTests
+    public class ViewModelFirefox : ViewModelsTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -97,7 +118,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     //[TestClass, Ignore]
-    public class EditableVMTestsChrome : EditableVMObjectTests
+    public class ViewModelTestsChrome : ViewModelsTests
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -122,16 +143,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #endregion
 
     #region Mega tests
-    public abstract class MegaEditableVMTestsRoot : EditableVMTestsRoot
+    public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot
     {
         [TestMethod]
-        public void MegaEditableVMTest()
+        public void MegaViewModelTest()
         {
+            base.CreateVM();
             base.CreateEditableVM();
+            //base.CreateSwitchableVM();
         }
     }
     [TestClass]
-    public class MegaEditableVMTestsFirefox : MegaEditableVMTestsRoot
+    public class MegaViewModelTestsFirefox : MegaViewModelTestsRoot
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
