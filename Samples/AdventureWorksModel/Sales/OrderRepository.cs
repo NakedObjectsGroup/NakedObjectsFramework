@@ -91,6 +91,11 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+        [TableView(true,  "OrderDate", "Details")]
+        public IQueryable<SalesOrderHeader> OrdersWithMostLines()
+        {
+            return Instances<SalesOrderHeader>().OrderByDescending(obj => obj.Details.Count);
+        }
 
 
     }

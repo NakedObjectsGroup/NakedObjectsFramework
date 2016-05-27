@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
     [Bounded]
@@ -60,6 +61,24 @@ namespace AdventureWorksModel {
             set { times = value; }
         }
 
+        [MemberOrder(3), NotMapped]
+        public virtual TimeSpan StartTime
+        {
+            get { return Times.StartTime; }
+        }
+
+        [MemberOrder(4), NotMapped]
+        public virtual TimeSpan EndTime
+        {
+            get { return Times.EndTime; }
+        }
+
         #endregion
+
+        public void ChangeTimes(TimeSpan startTime, TimeSpan endTime)
+        {
+            this.Times.StartTime = startTime;
+            this.Times.EndTime = endTime;
+        }
     }
 }

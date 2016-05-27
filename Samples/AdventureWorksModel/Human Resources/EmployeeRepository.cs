@@ -143,5 +143,10 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+        public IQueryable<Shift> Shifts()
+        {
+            return Container.Instances<Shift>();
+        }
+
     }
 }
