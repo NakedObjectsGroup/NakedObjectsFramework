@@ -23,3 +23,4 @@ RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
 /Tiny App/packages
 /Tiny App/.vs/config/applicationhost.config
 Spa/NakedObjects.Spa/Content/content.zip
+Rest/NakedObjects.Rest.App/log.txt
