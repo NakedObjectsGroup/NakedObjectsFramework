@@ -228,7 +228,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         #region Auto Complete
 
-
         public virtual void AutoCompleteParm()
         {
             Url(SalesServiceUrl);
@@ -238,7 +237,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#sp1", "Valdez");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
             Click(WaitForCss(".ui-menu-item"));
-
+            WaitForCss("#sp1.link-color6");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
         }
