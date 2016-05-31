@@ -67,7 +67,7 @@ module NakedObjects {
     interface IViewModelFactoryInternal extends IViewModelFactory {
         itemViewModel(linkRep: Link, paneId: number, selected: boolean): ItemViewModel;
         recentItemViewModel(obj: DomainObjectRepresentation, linkRep: Link, paneId: number, selected: boolean): RecentItemViewModel;
-        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): PropertyViewModel;     
+        propertyTableViewModel(propertyRep: PropertyMember, id: string, paneId: number): TableRowColumnViewModel;     
     }
 
     app.service("viewModelFactory", function($q: ng.IQService,
@@ -484,60 +484,58 @@ module NakedObjects {
             }
         }
 
-        viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember, id: string,  paneId: number) => {
-            const propertyViewModel = new PropertyViewModel();
+        viewModelFactory.propertyTableViewModel = (propertyRep: PropertyMember | CollectionMember, id: string,  paneId: number) => {
+            const tableRowColumnViewModel = new TableRowColumnViewModel();     
 
-            propertyViewModel.onPaneId = paneId;
-            propertyViewModel.propertyRep = propertyRep;
-            propertyViewModel.entryType = propertyRep.entryType();
-            propertyViewModel.id = id;
-            propertyViewModel.argId = `${id.toLowerCase()}`;
-            propertyViewModel.paneArgId = `${propertyViewModel.argId}${paneId}`;
-           
-            propertyViewModel.title = propertyRep.extensions().friendlyName();         
-            propertyViewModel.format = propertyRep.extensions().format();
-            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
-            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
-      
-            const value = propertyRep.value();
-            
-            if (propertyRep.isScalar()) {
-                if (isDateOrDateTime(propertyRep)) {
-                    propertyViewModel.value = toUtcDate(value);
-                } else {
-                    propertyViewModel.value = value.scalar();
-                }
-                propertyViewModel.type = "scalar";
+            tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();         
 
-                const remoteMask = propertyRep.extensions().mask();
-                const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+            if (propertyRep instanceof CollectionMember) {
+                const size = propertyRep.size();
 
-                if (propertyRep.entryType() === EntryType.Choices) {
-                    const currentChoice = ChoiceViewModel.create(value, id);
-                
-                    const choices = propertyRep.choices();
-                    propertyViewModel.choices = _.map(choices, (v, n) => ChoiceViewModel.create(v, id, n));
-                    propertyViewModel.choice = _.find(propertyViewModel.choices, (c: ChoiceViewModel) => c.match(currentChoice));
-                   
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
-                    }
-                } else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = obscuredText;
-                } else {
-                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
-                }
-            } else {
-                // is reference   
-                propertyViewModel.type = "ref";
-                propertyViewModel.formattedValue = value.isNull() ? "" : value.toString();
+                tableRowColumnViewModel.formattedValue = getCollectionCount(size);
+                tableRowColumnViewModel.value = "";
+                tableRowColumnViewModel.type = "scalar";
+                tableRowColumnViewModel.returnType = "string";
             }
 
-            // only set color if has value 
-            propertyViewModel.setColor(color);
+            if (propertyRep instanceof PropertyMember) {
+                const isPassword = propertyRep.extensions().dataType() === "password";
+                const value = propertyRep.value();
+                tableRowColumnViewModel.returnType = propertyRep.extensions().returnType();
 
-            return propertyViewModel;
+                if (propertyRep.isScalar()) {
+                    if (isDateOrDateTime(propertyRep)) {
+                        tableRowColumnViewModel.value = toUtcDate(value);
+                    } else {
+                        tableRowColumnViewModel.value = value.scalar();
+                    }
+                    tableRowColumnViewModel.type = "scalar";
+
+                    const remoteMask = propertyRep.extensions().mask();
+                    const localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+
+                    if (propertyRep.entryType() === EntryType.Choices) {
+                        const currentChoice = ChoiceViewModel.create(value, id);
+                        const choices = _.map(propertyRep.choices(), (v, n) => ChoiceViewModel.create(v, id, n));
+                        const choice = _.find(choices, (c: ChoiceViewModel) => c.match(currentChoice));
+
+                        if (choice) {
+                            tableRowColumnViewModel.value = choice.name;
+                            tableRowColumnViewModel.formattedValue = choice.name;
+                        }
+                    } else if (isPassword) {
+                        tableRowColumnViewModel.formattedValue = obscuredText;
+                    } else {
+                        tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
+                    }
+                } else {
+                    // is reference   
+                    tableRowColumnViewModel.type = "ref";
+                    tableRowColumnViewModel.formattedValue = value.isNull() ? "" : value.toString();
+                }
+            }
+
+            return tableRowColumnViewModel;
         };
 
         viewModelFactory.propertyViewModel = (propertyRep: PropertyMember, id: string, previousValue: Value, paneId: number, parentValues: () => _.Dictionary<Value>) => {
