@@ -26,7 +26,7 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
-
+    import toTimeString = Models.toTimeString;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -347,6 +347,11 @@ module NakedObjects {
                 }
 
                 if (this.value instanceof Date) {
+
+                    if (this.format === "time") {
+                        // time format
+                        return new Value(toTimeString(this.value as Date));
+                    }
 
                     if (this.format === "date") {
                         // truncate time;

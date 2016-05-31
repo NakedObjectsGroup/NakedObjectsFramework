@@ -25,3 +25,4 @@ RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
 Spa/NakedObjects.Spa/Content/content.zip
 Rest/NakedObjects.Rest.App/log.txt
 Demo/NakedObjects.Rest.App.Demo/nakedobjects_log.txt
+Rest/NakedObjects.Rest.App/nakedobjects_log.txt

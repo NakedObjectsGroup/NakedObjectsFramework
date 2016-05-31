@@ -4,7 +4,7 @@ obj
 bower_components
 Scripts/typings
 Scripts/*.js.map
-Scripts/*.js
+
 Scripts/*.d.ts
 Tests/specs/*.map
 Tests/specs/*.js
