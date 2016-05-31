@@ -28,6 +28,20 @@ module NakedObjects.Models {
         return `${year}-${month}-${day}`;
     }
 
+    export function toTimeString(dt: Date) {
+
+        let hours = dt.getHours().toString();
+        let minutes = dt.getMinutes().toString();
+        let seconds = dt.getSeconds().toString();
+
+        hours = hours.length === 1 ? `0${hours}` : hours;
+        minutes = minutes.length === 1 ? `0${minutes}` : minutes;
+        seconds = seconds.length === 1 ? `0${seconds}` : seconds;
+
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
     export function getUtcDate(rawDate: string) {
         if (!rawDate || rawDate.length === 0) {
             return null;
@@ -52,6 +66,19 @@ module NakedObjects.Models {
         return null;
     }
 
+    export function getTime(rawTime: string) {
+        if (!rawTime || rawTime.length === 0) {
+            return null;
+        }
+
+        const hours = parseInt(rawTime.substring(0, 2));
+        const mins = parseInt(rawTime.substring(3, 5));
+        const secs = parseInt(rawTime.substring(6, 8));
+
+        return new Date(1970, 0, 1, hours, mins, secs);
+    }
+
+
     export function isDateOrDateTime(rep: IHasExtensions) {
         const returnType = rep.extensions().returnType();
         const format = rep.extensions().format();
@@ -59,11 +86,25 @@ module NakedObjects.Models {
         return (returnType === "string" && ((format === "date-time") || (format === "date")));
     }
 
+    export function isTime(rep: IHasExtensions) {
+        const returnType = rep.extensions().returnType();
+        const format = rep.extensions().format();
+
+        return returnType === "string" && format === "time";
+    }
+
     export function toUtcDate(value: Value) {
         const rawValue = value ? value.toString() : "";
         const dateValue = getUtcDate(rawValue);
         return dateValue ? dateValue : null;
     }
+
+    export function toTime(value: Value) {
+        const rawValue = value ? value.toString() : "";
+        const dateValue = getTime(rawValue);
+        return dateValue ? dateValue : null;
+    }
+
 
     export function compress(toCompress: string) {
         if (toCompress) {
