@@ -32,12 +32,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void TableViewAttributeHonoured()
         {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
             GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1=0&c1=Table");
             Reload();
-            var header = WaitForCss("thead");
-            var cols = header.FindElements(By.CssSelector("th")).ToArray();
+            var cols = WaitForCss("th", 4).ToArray();           
             Assert.AreEqual(4, cols.Length);
-            Assert.AreEqual("Select", cols[0].Text);
+            Assert.AreEqual("All", cols[0].Text);
             Assert.AreEqual("Description", cols[1].Text);
             Assert.AreEqual("Category", cols[2].Text);
             Assert.AreEqual("Discount Pct", cols[3].Text);
