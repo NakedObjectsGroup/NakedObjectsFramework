@@ -5,7 +5,9 @@
 /// <reference path="nakedobjects.app.ts" />
 var NakedObjects;
 (function (NakedObjects) {
+    var CollectionMember = NakedObjects.Models.CollectionMember;
     var Value = NakedObjects.Models.Value;
+    var PropertyMember = NakedObjects.Models.PropertyMember;
     var ErrorCategory = NakedObjects.Models.ErrorCategory;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
     var EntryType = NakedObjects.Models.EntryType;
@@ -22,7 +24,7 @@ var NakedObjects;
     var dirtyMarker = NakedObjects.Models.dirtyMarker;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     var InvokableActionMember = NakedObjects.Models.InvokableActionMember;
-    NakedObjects.app.service("viewModelFactory", function ($q, $timeout, $location, $filter, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, clickHandler, commandFactory, $rootScope, $route, $window) {
+    NakedObjects.app.service("viewModelFactory", function ($q, $timeout, $location, $filter, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, clickHandler, commandFactory, $rootScope, $route, $http) {
         var _this = this;
         var viewModelFactory = this;
         viewModelFactory.errorViewModel = function (error) {
@@ -61,14 +63,10 @@ var NakedObjects;
         var createChoiceViewModels = function (id, searchTerm, choices) {
             return $q.when(_.map(choices, function (v, k) { return NakedObjects.ChoiceViewModel.create(v, id, k, searchTerm); }));
         };
-        viewModelFactory.attachmentViewModel = function (propertyRep) {
-            var href = propertyRep.attachmentLink().href();
-            var mimeType = propertyRep.attachmentLink().type().asString;
-            var title = propertyRep.attachmentLink().title();
+        viewModelFactory.attachmentViewModel = function (propertyRep, paneId) {
             var parent = propertyRep.parent;
-            var avm = NakedObjects.AttachmentViewModel.create(href, mimeType, title);
-            avm.downloadFile = function () { return context.getFile(parent, href, mimeType); };
-            avm.clearCachedFile = function () { return context.clearCachedFile(href); };
+            var avm = NakedObjects.AttachmentViewModel.create(propertyRep.attachmentLink(), parent, context, paneId);
+            avm.doClick = function (right) { return urlManager.setAttachment(avm.link, clickHandler.pane(paneId, right)); };
             return avm;
         };
         viewModelFactory.linkViewModel = function (linkRep, paneId) {
@@ -108,23 +106,15 @@ var NakedObjects;
             recentItemViewModel.friendlyName = obj.extensions().friendlyName();
             return recentItemViewModel;
         };
-        function setColor(vm) {
-            if (vm.value) {
-                color.toColorNumberFromType(vm.returnType).then(function (c) { return vm.color = "" + NakedObjects.linkColor + c; });
-            }
-            else {
-                vm.color = "";
-            }
-        }
         viewModelFactory.parameterViewModel = function (parmRep, previousValue, paneId) {
             var parmViewModel = new NakedObjects.ParameterViewModel();
             parmViewModel.parameterRep = parmRep;
             parmViewModel.type = parmRep.isScalar() ? "scalar" : "ref";
-            parmViewModel.dflt = parmRep.default().toValueString();
+            parmViewModel.dflt = parmRep.default().toString();
             parmViewModel.optional = parmRep.extensions().optional();
             var required = parmViewModel.optional ? "" : "* ";
             parmViewModel.description = parmRep.extensions().description();
-            parmViewModel.message = "";
+            parmViewModel.setMessage("");
             parmViewModel.id = parmRep.id();
             parmViewModel.argId = "" + parmViewModel.id.toLowerCase();
             parmViewModel.paneArgId = "" + parmViewModel.argId + paneId;
@@ -161,6 +151,7 @@ var NakedObjects;
                         parmViewModel.reference = val.link().href();
                         parmViewModel.choice = NakedObjects.ChoiceViewModel.create(val, parmViewModel.id, val.link() ? val.link().title() : null);
                     }
+                    parmViewModel.setColor(color);
                 };
                 parmViewModel.refresh(previousValue);
             }
@@ -204,6 +195,7 @@ var NakedObjects;
                             setCurrentChoice(toSet);
                         }
                     }
+                    parmViewModel.setColor(color);
                 };
                 parmViewModel.refresh(previousValue);
             }
@@ -226,6 +218,7 @@ var NakedObjects;
                     else {
                         parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
                     }
+                    parmViewModel.setColor(color);
                 };
                 parmViewModel.refresh(previousValue);
             }
@@ -236,7 +229,7 @@ var NakedObjects;
                 // formatting also happens in in directive - at least for dates - value is now date in that case
                 parmViewModel.formattedValue = parmViewModel.value ? localFilter.filter(parmViewModel.value.toString()) : "";
             }
-            setColor(parmViewModel);
+            parmViewModel.setColor(color);
             parmViewModel.validate = _.partial(validate, parmRep, parmViewModel);
             parmViewModel.drop = _.partial(drop, parmViewModel);
             parmViewModel.description = required + parmViewModel.description;
@@ -282,7 +275,7 @@ var NakedObjects;
                         catch(function (reject) {
                         var parent = actionRep.parent;
                         var reset = function (updatedObject) { return _this.reset(updatedObject, urlManager.getRouteData().pane()[_this.onPaneId]); };
-                        var display = function (em) { return vm.message = em.invalidReason() || em.warningMessage; };
+                        var display = function (em) { return vm.setMessage(em.invalidReason() || em.warningMessage); };
                         context.handleWrappedError(reject, parent, reset, display);
                     });
                 };
@@ -303,7 +296,7 @@ var NakedObjects;
                             valueViewModel.description = valueViewModel.description.indexOf(r) === 0 ? valueViewModel.description : r + " " + valueViewModel.description;
                         }
                         else {
-                            valueViewModel.message = reason;
+                            valueViewModel.setMessage(reason);
                             fieldValidationErrors = true;
                         }
                     }
@@ -316,7 +309,7 @@ var NakedObjects;
                 msg = msg + " See field validation message(s). ";
             if (!msg)
                 msg = err.warningMessage;
-            messageViewModel.message = msg;
+            messageViewModel.setMessage(msg);
         };
         function drop(vm, newValue) {
             context.isSubTypeOf(newValue.draggableType, vm.returnType).
@@ -330,7 +323,7 @@ var NakedObjects;
         function validate(rep, vm, modelValue, viewValue, mandatoryOnly) {
             var message = mandatoryOnly ? NakedObjects.Models.validateMandatory(rep, viewValue) : NakedObjects.Models.validate(rep, modelValue, viewValue, vm.localFilter);
             if (message !== NakedObjects.mandatory) {
-                vm.message = message;
+                vm.setMessage(message);
             }
             vm.clientValid = !message;
             return vm.clientValid;
@@ -355,53 +348,52 @@ var NakedObjects;
             }
         }
         viewModelFactory.propertyTableViewModel = function (propertyRep, id, paneId) {
-            var propertyViewModel = new NakedObjects.PropertyViewModel();
-            propertyViewModel.onPaneId = paneId;
-            propertyViewModel.propertyRep = propertyRep;
-            propertyViewModel.entryType = propertyRep.entryType();
-            propertyViewModel.id = id;
-            propertyViewModel.argId = "" + id.toLowerCase();
-            propertyViewModel.paneArgId = "" + propertyViewModel.argId + paneId;
-            propertyViewModel.title = propertyRep.extensions().friendlyName();
-            propertyViewModel.format = propertyRep.extensions().format();
-            propertyViewModel.multipleLines = propertyRep.extensions().multipleLines() || 1;
-            propertyViewModel.password = propertyRep.extensions().dataType() === "password";
-            var value = propertyRep.value();
-            if (propertyRep.isScalar()) {
-                if (isDateOrDateTime(propertyRep)) {
-                    propertyViewModel.value = toUtcDate(value);
-                }
-                else {
-                    propertyViewModel.value = value.scalar();
-                }
-                propertyViewModel.type = "scalar";
-                var remoteMask = propertyRep.extensions().mask();
-                var localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
-                if (propertyRep.entryType() === EntryType.Choices) {
-                    var currentChoice_1 = NakedObjects.ChoiceViewModel.create(value, id);
-                    var choices = propertyRep.choices();
-                    propertyViewModel.choices = _.map(choices, function (v, n) { return NakedObjects.ChoiceViewModel.create(v, id, n); });
-                    propertyViewModel.choice = _.find(propertyViewModel.choices, function (c) { return c.match(currentChoice_1); });
-                    if (propertyViewModel.choice) {
-                        propertyViewModel.value = propertyViewModel.choice.name;
-                        propertyViewModel.formattedValue = propertyViewModel.choice.name;
+            var tableRowColumnViewModel = new NakedObjects.TableRowColumnViewModel();
+            tableRowColumnViewModel.title = propertyRep.extensions().friendlyName();
+            if (propertyRep instanceof CollectionMember) {
+                var size = propertyRep.size();
+                tableRowColumnViewModel.formattedValue = getCollectionCount(size);
+                tableRowColumnViewModel.value = "";
+                tableRowColumnViewModel.type = "scalar";
+                tableRowColumnViewModel.returnType = "string";
+            }
+            if (propertyRep instanceof PropertyMember) {
+                var isPassword = propertyRep.extensions().dataType() === "password";
+                var value = propertyRep.value();
+                tableRowColumnViewModel.returnType = propertyRep.extensions().returnType();
+                if (propertyRep.isScalar()) {
+                    if (isDateOrDateTime(propertyRep)) {
+                        tableRowColumnViewModel.value = toUtcDate(value);
+                    }
+                    else {
+                        tableRowColumnViewModel.value = value.scalar();
+                    }
+                    tableRowColumnViewModel.type = "scalar";
+                    var remoteMask = propertyRep.extensions().mask();
+                    var localFilter = mask.toLocalFilter(remoteMask, propertyRep.extensions().format());
+                    if (propertyRep.entryType() === EntryType.Choices) {
+                        var currentChoice_1 = NakedObjects.ChoiceViewModel.create(value, id);
+                        var choices = _.map(propertyRep.choices(), function (v, n) { return NakedObjects.ChoiceViewModel.create(v, id, n); });
+                        var choice = _.find(choices, function (c) { return c.match(currentChoice_1); });
+                        if (choice) {
+                            tableRowColumnViewModel.value = choice.name;
+                            tableRowColumnViewModel.formattedValue = choice.name;
+                        }
+                    }
+                    else if (isPassword) {
+                        tableRowColumnViewModel.formattedValue = NakedObjects.obscuredText;
+                    }
+                    else {
+                        tableRowColumnViewModel.formattedValue = localFilter.filter(tableRowColumnViewModel.value);
                     }
                 }
-                else if (propertyViewModel.password) {
-                    propertyViewModel.formattedValue = NakedObjects.obscuredText;
-                }
                 else {
-                    propertyViewModel.formattedValue = localFilter.filter(propertyViewModel.value);
+                    // is reference   
+                    tableRowColumnViewModel.type = "ref";
+                    tableRowColumnViewModel.formattedValue = value.isNull() ? "" : value.toString();
                 }
             }
-            else {
-                // is reference   
-                propertyViewModel.type = "ref";
-                propertyViewModel.formattedValue = value.isNull() ? "" : value.toString();
-            }
-            // only set color if has value 
-            setColor(propertyViewModel);
-            return propertyViewModel;
+            return tableRowColumnViewModel;
         };
         viewModelFactory.propertyViewModel = function (propertyRep, id, previousValue, paneId, parentValues) {
             var propertyViewModel = new NakedObjects.PropertyViewModel();
@@ -423,7 +415,7 @@ var NakedObjects;
             var required = propertyViewModel.optional ? "" : "* ";
             propertyViewModel.description = propertyRep.extensions().description();
             if (propertyRep.attachmentLink() != null) {
-                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep);
+                propertyViewModel.attachment = viewModelFactory.attachmentViewModel(propertyRep, paneId);
             }
             var setupChoice;
             if (propertyRep.entryType() === EntryType.Choices) {
@@ -500,7 +492,7 @@ var NakedObjects;
             }
             propertyViewModel.refresh(previousValue);
             // only set color if has value 
-            setColor(propertyViewModel);
+            propertyViewModel.setColor(color);
             if (!previousValue) {
                 propertyViewModel.originalValue = propertyViewModel.getValue();
             }
@@ -566,27 +558,25 @@ var NakedObjects;
             collectionViewModel.title = collectionRep.extensions().friendlyName();
             collectionViewModel.pluralName = collectionRep.extensions().pluralName();
             color.toColorNumberFromType(collectionRep.extensions().elementType()).then(function (c) { return collectionViewModel.color = "" + NakedObjects.linkColor + c; });
-            collectionViewModel.refresh = function (routeData) {
+            collectionViewModel.refresh = function (routeData, resetting) {
                 var state = size === 0 ? NakedObjects.CollectionViewState.Summary : routeData.collections[collectionRep.collectionId()];
                 if (state == null) {
                     state = getDefaultTableState(collectionRep.extensions());
                 }
-                if (state !== collectionViewModel.currentState) {
+                if (resetting || state !== collectionViewModel.currentState) {
                     collectionViewModel.size = getCollectionCount(size);
                     var getDetails = itemLinks == null || state === NakedObjects.CollectionViewState.Table;
                     if (state === NakedObjects.CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     }
                     else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state)
-                            .then(function (details) {
+                        context.getCollectionDetails(collectionRep, state, resetting).then(function (details) {
                             collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
                             collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
                         });
                     }
                     else {
-                        collectionViewModel.items = viewModelFactory
-                            .getItems(itemLinks, state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
+                        collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
                     }
                     switch (state) {
                         case NakedObjects.CollectionViewState.List:
@@ -601,7 +591,7 @@ var NakedObjects;
                     collectionViewModel.currentState = state;
                 }
             };
-            collectionViewModel.refresh(routeData);
+            collectionViewModel.refresh(routeData, true);
             collectionViewModel.doSummary = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.Summary, paneId); };
             collectionViewModel.doList = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.List, paneId); };
             collectionViewModel.doTable = function () { return urlManager.setCollectionMemberState(collectionRep.collectionId(), NakedObjects.CollectionViewState.Table, paneId); };
@@ -686,7 +676,7 @@ var NakedObjects;
                     navigation.forward();
                 };
                 tvm_1.swapPanes = function () {
-                    $rootScope.$broadcast("pane-swap");
+                    $rootScope.$broadcast(NakedObjects.geminiPaneSwapEvent);
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
@@ -703,27 +693,27 @@ var NakedObjects;
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
                 tvm_1.logOff = function () {
-                    $location.path("/");
-                    $timeout(function () { return $window.location.reload(); });
+                    var config = {
+                        withCredentials: true,
+                        url: NakedObjects.logoffUrl,
+                        method: "POST",
+                        cache: false
+                    };
+                    $http(config).finally(function () {
+                        $rootScope.$broadcast(NakedObjects.geminiLogoffEvent);
+                        $timeout(function () { return window.location.href = NakedObjects.postLogoffUrl; });
+                    });
                 };
                 tvm_1.template = NakedObjects.appBarTemplate;
                 tvm_1.footerTemplate = NakedObjects.footerTemplate;
-                $rootScope.$on("ajax-change", function (event, count) {
-                    return tvm_1.loading = count > 0 ? "Loading..." : "";
+                $rootScope.$on(NakedObjects.geminiAjaxChangeEvent, function (event, count) {
+                    return tvm_1.loading = count > 0 ? NakedObjects.loadingMessage : "";
                 });
-                $rootScope.$on("nof-warning", function (event, warnings) {
+                $rootScope.$on(NakedObjects.geminiWarningEvent, function (event, warnings) {
                     return tvm_1.warnings = warnings;
                 });
-                $rootScope.$on("nof-message", function (event, messages) {
+                $rootScope.$on(NakedObjects.geminiMessageEvent, function (event, messages) {
                     return tvm_1.messages = messages;
-                });
-                $rootScope.$on("back", function () {
-                    focusManager.focusOverrideOff();
-                    navigation.back();
-                });
-                $rootScope.$on("forward", function () {
-                    focusManager.focusOverrideOff();
-                    navigation.forward();
                 });
                 context.getUser().then(function (user) { return tvm_1.userName = user.userName(); });
                 cachedToolBarViewModel = tvm_1;
@@ -884,6 +874,10 @@ var NakedObjects;
             }
             return cvm;
         };
+        function logoff() {
+            cvm = null;
+        }
+        $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
     });
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
     function openCollectionIds(routeData) {
@@ -969,4 +963,3 @@ var NakedObjects;
         return output;
     }
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.viewmodelfactory.js.map

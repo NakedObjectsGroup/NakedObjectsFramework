@@ -103,4 +103,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.mask.js.map

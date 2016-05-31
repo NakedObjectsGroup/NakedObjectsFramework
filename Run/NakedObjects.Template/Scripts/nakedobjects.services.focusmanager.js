@@ -17,7 +17,6 @@ var NakedObjects;
         FocusTarget[FocusTarget["CheckBox"] = 9] = "CheckBox";
     })(NakedObjects.FocusTarget || (NakedObjects.FocusTarget = {}));
     var FocusTarget = NakedObjects.FocusTarget;
-    NakedObjects.geminiFocusEvent = "geminiFocuson";
     NakedObjects.app.service("focusManager", function ($timeout, $rootScope) {
         var helper = this;
         var currentTarget;
@@ -55,4 +54,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.focusmanager.js.map

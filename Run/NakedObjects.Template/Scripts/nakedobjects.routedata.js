@@ -39,7 +39,7 @@ var NakedObjects;
     var PaneRouteData = (function () {
         function PaneRouteData(paneId) {
             this.paneId = paneId;
-            // probabaly turn this off in live 
+            // probably turn this off in live 
             this.doValidation = true;
             this.isNull = {
                 condition: function (val) { return !val; },
@@ -100,4 +100,3 @@ var NakedObjects;
     }());
     NakedObjects.PaneRouteData = PaneRouteData;
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.routedata.js.map

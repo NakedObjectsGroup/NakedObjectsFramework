@@ -112,7 +112,7 @@ var NakedObjects;
                             description = "A software error occurred";
                             break;
                         case ClientErrorCode.ConnectionProblem:
-                            description = "The client failed to connect to the server";
+                            description = "The client failed to connect to the server.";
                             break;
                     }
                     this.description = description;
@@ -377,6 +377,9 @@ var NakedObjects;
                     this.wrapped = raw;
                 }
             }
+            Value.prototype.isBlob = function () {
+                return this.wrapped instanceof Blob;
+            };
             Value.prototype.isScalar = function () {
                 return !this.isReference() && !this.isList();
             };
@@ -388,6 +391,9 @@ var NakedObjects;
             };
             Value.prototype.isNull = function () {
                 return this.wrapped == null;
+            };
+            Value.prototype.blob = function () {
+                return this.isBlob() ? this.wrapped : null;
             };
             Value.prototype.link = function () {
                 return this.isReference() ? this.wrapped : null;
@@ -455,6 +461,9 @@ var NakedObjects;
                 }
                 else if (this.isList()) {
                     target.value = _.map(this.list(), function (v) { return v.isReference() ? { "href": v.link().href() } : v.scalar(); });
+                }
+                else if (this.isBlob()) {
+                    target.value = this.blob();
                 }
                 else {
                     target.value = this.scalar();
@@ -782,6 +791,9 @@ var NakedObjects;
                         return EntryType.MultipleChoices;
                     }
                     return EntryType.Choices;
+                }
+                if (this.extensions().format() === "blob") {
+                    return EntryType.File;
                 }
                 return EntryType.FreeForm;
             };
@@ -1791,7 +1803,7 @@ var NakedObjects;
             Link.prototype.members = function () {
                 var _this = this;
                 var members = this.wrapped.members;
-                return _.mapValues(members, function (m, id) { return Member.wrapMember(m, _this, id); });
+                return members ? _.mapValues(members, function (m, id) { return Member.wrapMember(m, _this, id); }) : null;
             };
             Link.prototype.extensions = function () {
                 this.lazyExtensions = this.lazyExtensions || new Extensions(this.wrapped.extensions);
@@ -1828,8 +1840,8 @@ var NakedObjects;
             EntryType[EntryType["ConditionalChoices"] = 3] = "ConditionalChoices";
             EntryType[EntryType["MultipleConditionalChoices"] = 4] = "MultipleConditionalChoices";
             EntryType[EntryType["AutoComplete"] = 5] = "AutoComplete";
+            EntryType[EntryType["File"] = 6] = "File";
         })(Models.EntryType || (Models.EntryType = {}));
         var EntryType = Models.EntryType;
     })(Models = NakedObjects.Models || (NakedObjects.Models = {}));
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.models.js.map

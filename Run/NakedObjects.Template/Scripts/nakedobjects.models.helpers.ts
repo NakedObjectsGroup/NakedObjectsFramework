@@ -92,9 +92,15 @@ module NakedObjects.Models {
     }
 
     export function idFromUrl(href: string) {
-        const urlRegex = /(objects|services)\/(.*)\/(.*)/;
+        const urlRegex = /(objects|services)\/(.*?)\/([^\/]*)/;
         const results = (urlRegex).exec(href);
         return (results && results.length > 3) ? results[3] : "";
+    }
+
+    export function propertyIdFromUrl(href: string) {
+        const urlRegex = /(objects)\/(.*)\/(.*)\/(properties)\/(.*)/;
+        const results = (urlRegex).exec(href);
+        return (results && results.length > 5) ? results[5] : "";
     }
 
     export function friendlyTypeName(fullName: string) {

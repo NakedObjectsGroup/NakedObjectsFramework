@@ -12,7 +12,7 @@
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">
-                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}}" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-autocomplete gemini-fieldmandatorycheck />
+                        <input id="{{parameter.paneArgId}}" class="{{parameter.status}} value droppable" ng-class="parameter.color" placeholder="{{parameter.description}}" type="text" ng-model="$parent.parameter.choice" select="parameter.prompt(request)" gemini-drop gemini-autocomplete gemini-fieldmandatorycheck />
                     </div>
 
                     <!--"EntryType.MultipleConditionalChoices"-->
@@ -56,6 +56,10 @@
             <div ng-switch-when="scalar">
                 <div class="value input-control text" ng-switch="parameter.entryType">
 
+                    <!--"EntryType.File"-->
+                    <div ng-switch-when="6">
+                        <input id="{{parameter.paneArgId}}"  type="file"  class="{{parameter.status}}" ng-model="$parent.parameter.file"  placeholder="{{parameter.description}}" gemini-fileupload/>
+                    </div>
 
                     <!--"EntryType.AutoComplete"-->
                     <div ng-switch-when="5">

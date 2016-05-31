@@ -109,18 +109,33 @@ module NakedObjects {
         href: string;
         mimeType: string;
         title: string;
+        link: Link;
+        onPaneId: number;
 
-        static create(href: string, mimeType: string, title: string) {
+        private parent: DomainObjectRepresentation;
+        private context: IContext;
+
+        static create(attachmentLink: Link, parent: DomainObjectRepresentation, context: IContext, paneId: number) {
             const attachmentViewModel = new AttachmentViewModel();
-            attachmentViewModel.href = href;
-            attachmentViewModel.mimeType = mimeType;
-            attachmentViewModel.title = title || unknownFileTitle;
-
+            attachmentViewModel.link = attachmentLink;
+            attachmentViewModel.href = attachmentLink.href();
+            attachmentViewModel.mimeType = attachmentLink.type().asString;
+            attachmentViewModel.title = attachmentLink.title() || unknownFileTitle;
+            attachmentViewModel.parent = parent;
+            attachmentViewModel.context = context;
+            attachmentViewModel.onPaneId = paneId;
             return attachmentViewModel;
         }
 
-        downloadFile: () => ng.IPromise<Blob>;
-        clearCachedFile: () => void;
+        downloadFile = () => this.context.getFile(this.parent, this.href, this.mimeType);
+        clearCachedFile = () => this.context.clearCachedFile(this.href);
+
+        displayInline = () =>
+            this.mimeType === "image/jpeg" ||
+            this.mimeType === "image/gif" ||
+            this.mimeType === "application/octet-stream";
+
+        doClick: (right?: boolean) => void;
     }
 
     export class ChoiceViewModel {
@@ -129,6 +144,7 @@ module NakedObjects {
         value: string;
         search: string;
         isEnum: boolean;
+        isReference: boolean;
         wrapped: Value;
 
         static create(value: Value, id: string, name?: string, searchTerm?: string) {
@@ -140,6 +156,7 @@ module NakedObjects {
             choiceViewModel.search = searchTerm || choiceViewModel.name;
 
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
         }
 
@@ -195,10 +212,18 @@ module NakedObjects {
         message: string = "";
         clearMessage() {
             if (this.message === this.previousMessage) {
-                this.message = this.previousMessage = "";
+                this.resetMessage();
             } else {
                 this.previousMessage = this.message;
             }
+        }
+
+        resetMessage() {
+            this.message = this.previousMessage = "";
+        }
+
+        setMessage(msg: string) {
+            this.message = msg;
         }
     }
 
@@ -224,6 +249,8 @@ module NakedObjects {
         reference: string;
         choice: ChoiceViewModel;
         multiChoices: ChoiceViewModel[];
+        file : Blob;
+
         returnType: string;
         title: string;
         format: formatType;
@@ -269,7 +296,29 @@ module NakedObjects {
             this.color = "";
         }
 
+        setColor(color: IColor) {
+
+            if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
+                const href = this.choice.value;
+                if (href) {
+                    color.toColorNumberFromHref(href).then((c: number) => this.color = `${linkColor}${c}`);
+                    return;
+                }
+            }
+            else if (this.entryType !== EntryType.AutoComplete && this.value) {
+                color.toColorNumberFromType(this.returnType).then((c: number) => this.color = `${linkColor}${c}`);
+                return;
+            }
+
+            this.color = "";
+        }
+
+
         getValue(): Value {
+
+            if (this.entryType === EntryType.File) {
+                return new Value(this.file);
+            }
 
             if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
 
@@ -361,7 +410,7 @@ module NakedObjects {
 
             this.title = this.actionMember().extensions().friendlyName();
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
-            this.message = "";
+            this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
             return this;
         }
@@ -395,7 +444,7 @@ module NakedObjects {
             this.executeInvoke(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
-                        this.message = actionResult.warningsOrMessages() || noResultMessage;
+                        this.setMessage(actionResult.warningsOrMessages() || noResultMessage);
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
@@ -416,8 +465,7 @@ module NakedObjects {
                                                     () => {
                                                         // this should just be called if concurrency
                                                         this.doClose();
-                                                        this.$rootScope.$broadcast("nof-display-error",
-                                                                new ErrorMap({}, 0, concurrencyError));
+                                                        this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
                                                     },
                                                     display);
                 });
@@ -433,7 +481,7 @@ module NakedObjects {
         }
 
         clearMessages = () => {
-            this.message = "";
+            this.resetMessage();
             _.each(this.actionViewModel.parameters, parm => parm.clearMessage());
         };
 
@@ -483,13 +531,22 @@ module NakedObjects {
             this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
         }
 
+        hasTableData = () => {
+            const valueLinks = this.listRep.value();
+            return valueLinks && _.some(valueLinks, (i: Link) => i.members());
+        }
+
         refresh(routeData: PaneRouteData) {
 
             this.routeData = routeData;
-            if (!this.state || this.state !== routeData.state) {
+            if (this.state !== routeData.state) {
                 this.state = routeData.state;
-                if (this.state === CollectionViewState.Table) {
-                    this.recreate(this.page, this.pageSize).then(list => this.updateItems(list.value()));
+                if (this.state === CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize)
+                        .then(list => {
+                            this.listRep = list;
+                            this.updateItems(list.value());
+                        });
                 } else {
                     this.updateItems(this.listRep.value());
                 }
@@ -544,9 +601,9 @@ module NakedObjects {
                     } :
                     (right?: boolean) => {
                         actionViewModel.executeInvoke([], right).
-                            then(result => this.message = result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "").
+                            then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
-                                const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                                const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                                 this.contextService.handleWrappedError(reject, null, () => { }, display);
                             });
                     });
@@ -570,10 +627,9 @@ module NakedObjects {
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            //clear state so we always refresh items
-            this.state = null;
-
-            this.refresh(routeData);
+            
+            this.state = routeData.state;
+            this.updateItems(list.value());
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
@@ -605,7 +661,7 @@ module NakedObjects {
                     this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => {
-                    const display = (em: ErrorMap) => this.message = em.invalidReason() || em.warningMessage;
+                    const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                     this.contextService.handleWrappedError(reject, null, () => { }, display);
                 });
         };
@@ -704,7 +760,7 @@ module NakedObjects {
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
-        refresh: (routeData: PaneRouteData) => void;
+        refresh: (routeData: PaneRouteData, resetting : boolean) => void;
     }
 
     export class ServicesViewModel {
@@ -752,10 +808,18 @@ module NakedObjects {
         menuRep: Models.MenuRepresentation;
     }
 
+    export class TableRowColumnViewModel {
+        type: "ref" | "scalar";
+        returnType: string;
+        value: scalarValueType | Date;
+        formattedValue: string;
+        title : string;
+    }
+
     export class TableRowViewModel {
         title: string;
         hasTitle: boolean;
-        properties: PropertyViewModel[];
+        properties: TableRowColumnViewModel[];
     }
 
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
@@ -803,7 +867,7 @@ module NakedObjects {
             this.props = routeData.interactionMode !== InteractionMode.View ? routeData.props : {};
 
             _.forEach(this.properties, p => p.refresh(this.props[p.id]));
-            _.forEach(this.collections, c => c.refresh(this.routeData));
+            _.forEach(this.collections, c => c.refresh(this.routeData, false));
 
             this.unsaved = routeData.interactionMode === InteractionMode.Transient;
 
@@ -867,7 +931,7 @@ module NakedObjects {
                 this.color = `${objectColor}${c}`;
             });
 
-            this.message = "";
+            this.resetMessage();
 
             if (routeData.interactionMode === InteractionMode.Form) {
                 _.forEach(this.actions, a => this.wrapAction(a));
@@ -964,7 +1028,7 @@ module NakedObjects {
 
             return this.validateHandler()(this.domainObject, propMap).
                 then(() => {
-                    this.message = "";
+                    this.resetMessage();
                     return true;
                 }).
                 catch((reject: ErrorWrapper) => {
@@ -1002,7 +1066,7 @@ module NakedObjects {
             return !this.actions || this.actions.length === 0;
         }
 
-        canDropOn = (targetType: string) => this.contextService.isSubTypeOf(targetType, this.domainType);
+        canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
     export class ToolBarViewModel {
@@ -1040,6 +1104,7 @@ module NakedObjects {
         recentTemplate: string;
         objectTemplate: string;
         collectionsTemplate: string;
+        attachmentTemplate: string;
 
         menus: MenusViewModel;
         object: DomainObjectViewModel;
@@ -1051,6 +1116,7 @@ module NakedObjects {
         collectionPlaceholder: CollectionPlaceholderViewModel;
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
+        attachment: AttachmentViewModel;
     }
 
     export class CiceroViewModel {

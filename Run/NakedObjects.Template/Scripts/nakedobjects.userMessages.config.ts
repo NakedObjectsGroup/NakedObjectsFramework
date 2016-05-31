@@ -23,7 +23,7 @@ module NakedObjects {
     export const noPatternMatch = "Invalid entry";
     export const closeActions = "Close actions";
     export const noActions = "No actions available";
-    export const openActions = "Open actions";
+    export const openActions = "Open actions (Alt-a)";
     export const mandatoryFieldsPrefix = "Missing mandatory fields: ";
     export const invalidFieldsPrefix = "Invalid fields: ";
     export const unknownFileTitle = "UnknownFile";
@@ -33,6 +33,7 @@ module NakedObjects {
     export const dropPrompt = "Drop here";
     export const autoCompletePrompt = "(auto-complete)";
     export const concurrencyError = "Object has been updated by another user\n. Object has been reloaded.";
+    export const loadingMessage = "Loading...";
 
 
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;

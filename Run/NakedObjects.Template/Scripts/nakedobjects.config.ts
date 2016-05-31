@@ -22,8 +22,10 @@ module NakedObjects {
         return appPath;
     }
 
+    export const logoffUrl = appPath + "/Account/Logoff";
+    export const postLogoffUrl =  "/#/gemini/home";
 
-    export const defaultPageSize = 20; // can be overriden by server 
+    export const defaultPageSize = 20; // can be overridden by server 
     export const listCacheSize = 5;
 
     export const shortCutMarker = "___";
@@ -36,4 +38,11 @@ module NakedObjects {
 
     export const autoLoadDirty = true;
     export const showDirtyFlag = false || !autoLoadDirty;
+
+    // caching constants: do not change unless you know what you're doing 
+
+    export const httpCacheDepth = 50;
+    export const transientCacheDepth = 4;
+    export const recentCacheDepth = 20;
+
 }

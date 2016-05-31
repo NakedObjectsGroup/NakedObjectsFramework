@@ -36,4 +36,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.navigation.simple.js.map

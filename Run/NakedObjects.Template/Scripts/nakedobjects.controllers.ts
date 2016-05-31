@@ -8,7 +8,7 @@
 module NakedObjects {
 
     let pane1Dereg = () => {};
-    let pane2Dereg = () => { };
+    let pane2Dereg = () => {};
 
     app.controller("Pane1HomeController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
         pane1Dereg();
@@ -80,6 +80,24 @@ module NakedObjects {
         handlers.handleRecent($scope, routeData.pane2);
 
         pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleRecent($scope, urlManager.getRouteData().pane2)) as () => void;
+    });
+
+    app.controller("Pane1AttachmentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+
+        const routeData = urlManager.getRouteData();
+        handlers.handleAttachment($scope, routeData.pane1);
+
+        pane1Dereg = $scope.$on("$routeUpdate", () => handlers.handleAttachment($scope, urlManager.getRouteData().pane1)) as () => void;
+    });
+
+    app.controller("Pane2AttachmentController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane2Dereg();
+
+        const routeData = urlManager.getRouteData();
+        handlers.handleAttachment($scope, routeData.pane2);
+
+        pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleAttachment($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {

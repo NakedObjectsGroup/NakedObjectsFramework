@@ -49,7 +49,7 @@ module NakedObjects {
     export class PaneRouteData {
         constructor(public paneId: number) {}
 
-        // probabaly turn this off in live 
+        // probably turn this off in live 
         private doValidation = true;
 
         objectId: string;
@@ -68,6 +68,8 @@ module NakedObjects {
         selectedItems: boolean[];
         interactionMode: InteractionMode;
         errorCategory: ErrorCategory;
+        attachmentId : string;
+    
 
         private validatingUrl: string;
 

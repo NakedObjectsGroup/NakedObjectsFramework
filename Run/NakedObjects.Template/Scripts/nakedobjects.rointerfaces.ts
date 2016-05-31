@@ -72,7 +72,7 @@
     export type valueType = scalarValueType | ILink;
 
     export interface IValue {
-        value: valueType | valueType[];
+        value: valueType | valueType[] | Blob;
         invalidReason?: string;
     }
 

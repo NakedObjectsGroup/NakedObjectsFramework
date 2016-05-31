@@ -8,22 +8,32 @@ var NakedObjects;
         var singleObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/singleObject.html";
         var singleListTemplate = NakedObjects.getSvrPath() + "Content/partials/singleList.html";
         var singleRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/singleRecent.html";
+        var singleAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/singleAttachment.html";
         var splitHomeHomeTemplate = NakedObjects.getSvrPath() + "Content/partials/splitHomeHome.html";
         var splitHomeObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/splitHomeObject.html";
         var splitHomeListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitHomeList.html";
         var splitHomeRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitHomeRecent.html";
+        var splitHomeAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitHomeAttachment.html";
         var splitObjectHomeTemplate = NakedObjects.getSvrPath() + "Content/partials/splitObjectHome.html";
         var splitObjectObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/splitObjectObject.html";
         var splitObjectListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitObjectList.html";
         var splitObjectRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitObjectRecent.html";
+        var splitObjectAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitObjectAttachment.html";
         var splitListHomeTemplate = NakedObjects.getSvrPath() + "Content/partials/splitListHome.html";
         var splitListObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/splitListObject.html";
         var splitListListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitListList.html";
         var splitListRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitListRecent.html";
+        var splitListAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitListAttachment.html";
         var splitRecentHomeTemplate = NakedObjects.getSvrPath() + "Content/partials/splitRecentHome.html";
         var splitRecentObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/splitRecentObject.html";
         var splitRecentListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitRecentList.html";
         var splitRecentRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitRecentRecent.html";
+        var splitRecentAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitRecentAttachment.html";
+        var splitAttachmentHomeTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentHome.html";
+        var splitAttachmentObjectTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentObject.html";
+        var splitAttachmentListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentList.html";
+        var splitAttachmentRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentRecent.html";
+        var splitAttachmentAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentAttachment.html";
         var singleErrorTemplate = NakedObjects.getSvrPath() + "Content/partials/singleError.html";
         $routeProvider.
             //Gemini2 Urls below:
@@ -47,6 +57,11 @@ var NakedObjects;
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: singleAttachmentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.homePath, {
             templateUrl: splitHomeHomeTemplate,
             controller: "BackgroundController",
@@ -64,6 +79,11 @@ var NakedObjects;
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.recentPath, {
             templateUrl: splitHomeRecentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.homePath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: splitHomeAttachmentTemplate,
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
@@ -87,6 +107,11 @@ var NakedObjects;
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.objectPath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: splitObjectAttachmentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.homePath, {
             templateUrl: splitListHomeTemplate,
             controller: "BackgroundController",
@@ -107,6 +132,11 @@ var NakedObjects;
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.listPath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: splitListAttachmentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.homePath, {
             templateUrl: splitRecentHomeTemplate,
             controller: "BackgroundController",
@@ -124,6 +154,36 @@ var NakedObjects;
         }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.recentPath, {
             templateUrl: splitRecentRecentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.recentPath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: splitRecentAttachmentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath + "/" + NakedObjects.homePath, {
+            templateUrl: splitAttachmentHomeTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath + "/" + NakedObjects.objectPath, {
+            templateUrl: splitAttachmentObjectTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath + "/" + NakedObjects.listPath, {
+            templateUrl: splitAttachmentListTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath + "/" + NakedObjects.recentPath, {
+            templateUrl: splitAttachmentRecentTemplate,
+            controller: "BackgroundController",
+            reloadOnSearch: false
+        }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.attachmentPath + "/" + NakedObjects.attachmentPath, {
+            templateUrl: splitAttachmentAttachmentTemplate,
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
@@ -156,4 +216,3 @@ var NakedObjects;
         $cacheFactory("recentlyViewed");
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.app.js.map

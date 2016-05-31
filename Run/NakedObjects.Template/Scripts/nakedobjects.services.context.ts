@@ -48,7 +48,7 @@ module NakedObjects {
         getListFromObject: (paneId: number, routeData : PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
-        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState) => ng.IPromise<CollectionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState, ignoreCache : boolean) => ng.IPromise<CollectionRepresentation>;
 
         getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<InvokableActionMember | ActionRepresentation >;
 
@@ -98,6 +98,9 @@ module NakedObjects {
         getRecentlyViewed() : DomainObjectRepresentation[];
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
+
+        setFile: (object: DomainObjectRepresentation, url: string, mt: string, file : Blob) => angular.IPromise<boolean>;
+
         clearCachedFile : (url : string) => void;
     }
 
@@ -117,7 +120,7 @@ module NakedObjects {
         Clean
     }
 
-    class DirtyCache {
+    class DirtyList {
         private dirtyObjects: _.Dictionary<DirtyState> = {};
 
         setDirty(oid: ObjectIdWrapper, alwaysReload: boolean = false) {
@@ -138,6 +141,10 @@ module NakedObjects {
             const key = oid.getKey();
             this.dirtyObjects = _.omit(this.dirtyObjects, key) as _.Dictionary<DirtyState>;
         }
+
+        clear() {
+            this.dirtyObjects = {};
+        }
     }
 
     function isSameObject(object: DomainObjectRepresentation, type: string, id?: string) {
@@ -151,7 +158,7 @@ module NakedObjects {
     class TransientCache {
         private transientCache: DomainObjectRepresentation[][] = [, [], []]; // per pane 
 
-        private depth = 4;
+        private depth = transientCacheDepth;
 
         add(paneId: number, obj: DomainObjectRepresentation) {
             let paneObjects = this.transientCache[paneId];
@@ -172,12 +179,17 @@ module NakedObjects {
             paneObjects = _.remove(paneObjects, o => isSameObject(o, type, id));
             this.transientCache[paneId] = paneObjects;
         }
+
+        clear() {
+            this.transientCache = [, [], []];
+        }
+
     }
 
     class RecentCache {
         private recentCache: DomainObjectRepresentation[] = [];
 
-        private depth = 20;
+        private depth = recentCacheDepth;
 
         add(obj: DomainObjectRepresentation) {
 
@@ -195,6 +207,10 @@ module NakedObjects {
 
         items(): DomainObjectRepresentation[] {
             return this.recentCache;
+        }
+
+        clear() {
+            this.recentCache = [];
         }
     }
 
@@ -218,7 +234,7 @@ module NakedObjects {
         let currentUser: UserRepresentation = null;
 
         const recentcache = new RecentCache();
-        const dirtyCache = new DirtyCache();
+        const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
@@ -226,16 +242,16 @@ module NakedObjects {
             return repLoader.getFile(url, mt, isDirty);
         }
 
-        context.clearCachedFile = (url: string) => {
-             repLoader.clearCache(url);
-        }
+        context.setFile = (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => repLoader.uploadFile(url, mt, file);
 
+        context.clearCachedFile = (url: string) => repLoader.clearCache(url);
+    
         // exposed for test mocking
         context.getDomainObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
             const type = oid.domainType;
             const id = oid.instanceId;
 
-            const dirtyState = dirtyCache.getDirty(oid);
+            const dirtyState = dirtyList.getDirty(oid);
             const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload)  && autoLoadDirty);
 
             if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
@@ -256,7 +272,7 @@ module NakedObjects {
                 then((obj: DomainObjectRepresentation) => {
                     currentObjects[paneId] = obj;
                     if (forceReload) {
-                        dirtyCache.clearDirty(oid);
+                        dirtyList.clearDirty(oid);
                     }
                     addRecentlyViewed(obj);
                     return $q.when(obj);
@@ -271,15 +287,15 @@ module NakedObjects {
                 then(obj => {
                     currentObjects[paneId] = obj;
                     const oid = obj.getOid();
-                    dirtyCache.clearDirty(oid);
+                    dirtyList.clearDirty(oid);
                     return $q.when(obj);
                 });
         }
 
-        context.getIsDirty = (oid: ObjectIdWrapper) => !oid.isService && dirtyCache.getDirty(oid) !== DirtyState.Clean;
+        context.getIsDirty = (oid: ObjectIdWrapper) => !oid.isService && dirtyList.getDirty(oid) !== DirtyState.Clean;
 
         context.mustReload = (oid: ObjectIdWrapper) => {
-            const dirtyState = dirtyCache.getDirty(oid);
+            const dirtyState = dirtyList.getDirty(oid);
             return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && autoLoadDirty);
         };
 
@@ -309,7 +325,7 @@ module NakedObjects {
             return repLoader.populate(details, true);
         };
 
-        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState): ng.IPromise<CollectionRepresentation> => {
+        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache : boolean): ng.IPromise<CollectionRepresentation> => {
             const details = collectionMember.getDetails();
 
             if (state === CollectionViewState.Table) {
@@ -317,9 +333,9 @@ module NakedObjects {
             }
             const parent = collectionMember.parent;
             const oid = parent.getOid();
-            const isDirty = dirtyCache.getDirty(oid) !== DirtyState.Clean;
+            const isDirty = dirtyList.getDirty(oid) !== DirtyState.Clean;
         
-            return repLoader.populate(details, isDirty);
+            return repLoader.populate(details, isDirty || ignoreCache);
         };
 
         context.getInvokableAction = (action: ActionMember | ActionRepresentation | IInvokableAction): ng.IPromise<IInvokableAction> => {
@@ -349,11 +365,11 @@ module NakedObjects {
         };
 
         context.clearMessages = () => {
-            $rootScope.$broadcast("nof-message", []);
+            $rootScope.$broadcast(geminiMessageEvent, []);
         };
 
         context.clearWarnings = () => {
-            $rootScope.$broadcast("nof-warning", []);
+            $rootScope.$broadcast(geminiWarningEvent, []);
         };
 
 
@@ -565,8 +581,8 @@ module NakedObjects {
             const warnings = result.extensions().warnings() || [];
             const messages = result.extensions().messages() || [];
 
-            $rootScope.$broadcast("nof-warning", warnings);
-            $rootScope.$broadcast("nof-message", messages);
+            $rootScope.$broadcast(geminiWarningEvent, warnings);
+            $rootScope.$broadcast(geminiMessageEvent, messages);
 
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
@@ -628,6 +644,10 @@ module NakedObjects {
 
             invokeMap.setUrlParameter(roInlinePropertyDetails, false);
 
+            if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
+                invokeMap.setUrlParameter(roInlineCollectionItems, true);
+            }
+
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then((result: ActionResultRepresentation) => {
                     setDirty();
@@ -642,7 +662,7 @@ module NakedObjects {
 
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
-                    return () => dirtyCache.setDirty(parent.getOid());
+                    return () => dirtyList.setDirty(parent.getOid());
                 } else if (parent instanceof ListRepresentation && parms) {
 
                     const ccaParm = _.find(action.parameters(), p => p.isCollectionContributed());
@@ -658,7 +678,7 @@ module NakedObjects {
                             .map(v => v.link())
                             .value();
 
-                        return () => _.forEach(links, l => dirtyCache.setDirty(l.getOid()));
+                        return () => _.forEach(links, l => dirtyList.setDirty(l.getOid()));
                     }
                 }
             }
@@ -680,7 +700,7 @@ module NakedObjects {
 
         function setNewObject(updatedObject: DomainObjectRepresentation, paneId: number, viewSavedObject: Boolean) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(updatedObject.getOid(), true);
+            dirtyList.setDirty(updatedObject.getOid(), true);
 
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);
@@ -733,27 +753,33 @@ module NakedObjects {
         };
 
 
-        const subTypeCache: _.Dictionary<_.Dictionary<boolean>> = {};
+        const subTypeCache: _.Dictionary<_.Dictionary<ng.IPromise<boolean>>> = {};
 
         context.isSubTypeOf = (toCheckType: string, againstType: string): ng.IPromise<boolean> => {
 
             if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
-                return $q.when(subTypeCache[toCheckType][againstType]);
+                return subTypeCache[toCheckType][againstType];
             }
 
             const isSubTypeOf = new DomainTypeActionInvokeRepresentation(againstType, toCheckType);
 
-            return repLoader.populate(isSubTypeOf, true).
+            const promise = repLoader.populate(isSubTypeOf, true).
                 then((updatedObject: DomainTypeActionInvokeRepresentation) => {
                     const is = updatedObject.value();
-                    const entry: _.Dictionary<boolean> = {};
-                    entry[againstType] = is;
-                    subTypeCache[toCheckType] = entry;
+                    //const entry: _.Dictionary<boolean> = {};
+                    //entry[againstType] = is;
+                    //subTypeCache[toCheckType] = entry;
                     return is;
                 }).
                 catch((reject: ErrorWrapper) => {
                     return false;
                 });
+
+            const entry: _.Dictionary<ng.IPromise<boolean>> = {};
+            entry[againstType] = promise;
+            subTypeCache[toCheckType] = entry;
+
+            return promise;
         };
 
         function handleHttpServerError(reject: ErrorWrapper) {
@@ -820,7 +846,28 @@ module NakedObjects {
             recentcache.add(obj);
         }
 
-        context.getRecentlyViewed = () =>  recentcache.items();      
+        context.getRecentlyViewed = () => recentcache.items();      
+
+        function logoff() {
+            for (let pane = 1; pane <= 2; pane++) {
+                delete currentObjects[pane];
+            }
+            currentServices = null;
+            currentMenus = null;
+            currentVersion = null;
+            currentUser = null;
+
+            transientCache.clear();
+            recentcache.clear();
+            dirtyList.clear();
+
+            _.forEach(currentMenuList, (k, v) => delete currentMenuList[v]);
+            _.forEach(currentLists, (k, v) => delete currentLists[v]);
+
+        }
+
+        $rootScope.$on(geminiLogoffEvent, () => logoff());
+
     });
 
 }

@@ -21,27 +21,30 @@ var NakedObjects;
         DirtyState[DirtyState["DirtyMayReload"] = 1] = "DirtyMayReload";
         DirtyState[DirtyState["Clean"] = 2] = "Clean";
     })(DirtyState || (DirtyState = {}));
-    var DirtyCache = (function () {
-        function DirtyCache() {
+    var DirtyList = (function () {
+        function DirtyList() {
             this.dirtyObjects = {};
         }
-        DirtyCache.prototype.setDirty = function (oid, alwaysReload) {
+        DirtyList.prototype.setDirty = function (oid, alwaysReload) {
             if (alwaysReload === void 0) { alwaysReload = false; }
             this.setDirtyInternal(oid, alwaysReload ? DirtyState.DirtyMustReload : DirtyState.DirtyMayReload);
         };
-        DirtyCache.prototype.setDirtyInternal = function (oid, dirtyState) {
+        DirtyList.prototype.setDirtyInternal = function (oid, dirtyState) {
             var key = oid.getKey();
             this.dirtyObjects[key] = dirtyState;
         };
-        DirtyCache.prototype.getDirty = function (oid) {
+        DirtyList.prototype.getDirty = function (oid) {
             var key = oid.getKey();
             return this.dirtyObjects[key] || DirtyState.Clean;
         };
-        DirtyCache.prototype.clearDirty = function (oid) {
+        DirtyList.prototype.clearDirty = function (oid) {
             var key = oid.getKey();
             this.dirtyObjects = _.omit(this.dirtyObjects, key);
         };
-        return DirtyCache;
+        DirtyList.prototype.clear = function () {
+            this.dirtyObjects = {};
+        };
+        return DirtyList;
     }());
     function isSameObject(object, type, id) {
         if (object) {
@@ -53,7 +56,7 @@ var NakedObjects;
     var TransientCache = (function () {
         function TransientCache() {
             this.transientCache = [, [], []]; // per pane 
-            this.depth = 4;
+            this.depth = NakedObjects.transientCacheDepth;
         }
         TransientCache.prototype.add = function (paneId, obj) {
             var paneObjects = this.transientCache[paneId];
@@ -72,12 +75,15 @@ var NakedObjects;
             paneObjects = _.remove(paneObjects, function (o) { return isSameObject(o, type, id); });
             this.transientCache[paneId] = paneObjects;
         };
+        TransientCache.prototype.clear = function () {
+            this.transientCache = [, [], []];
+        };
         return TransientCache;
     }());
     var RecentCache = (function () {
         function RecentCache() {
             this.recentCache = [];
-            this.depth = 20;
+            this.depth = NakedObjects.recentCacheDepth;
         }
         RecentCache.prototype.add = function (obj) {
             // find any matching entries and remove them - should only be one
@@ -92,6 +98,9 @@ var NakedObjects;
         RecentCache.prototype.items = function () {
             return this.recentCache;
         };
+        RecentCache.prototype.clear = function () {
+            this.recentCache = [];
+        };
         return RecentCache;
     }());
     NakedObjects.app.service("context", function ($q, repLoader, urlManager, focusManager, $cacheFactory, $rootScope) {
@@ -105,20 +114,19 @@ var NakedObjects;
         var currentVersion = null;
         var currentUser = null;
         var recentcache = new RecentCache();
-        var dirtyCache = new DirtyCache();
+        var dirtyList = new DirtyList();
         var currentLists = {};
         context.getFile = function (object, url, mt) {
             var isDirty = context.getIsDirty(object.getOid());
             return repLoader.getFile(url, mt, isDirty);
         };
-        context.clearCachedFile = function (url) {
-            repLoader.clearCache(url);
-        };
+        context.setFile = function (object, url, mt, file) { return repLoader.uploadFile(url, mt, file); };
+        context.clearCachedFile = function (url) { return repLoader.clearCache(url); };
         // exposed for test mocking
         context.getDomainObject = function (paneId, oid, interactionMode) {
             var type = oid.domainType;
             var id = oid.instanceId;
-            var dirtyState = dirtyCache.getDirty(oid);
+            var dirtyState = dirtyList.getDirty(oid);
             var forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && NakedObjects.autoLoadDirty);
             if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
@@ -135,7 +143,7 @@ var NakedObjects;
                 then(function (obj) {
                 currentObjects[paneId] = obj;
                 if (forceReload) {
-                    dirtyCache.clearDirty(oid);
+                    dirtyList.clearDirty(oid);
                 }
                 addRecentlyViewed(obj);
                 return $q.when(obj);
@@ -148,13 +156,13 @@ var NakedObjects;
                 then(function (obj) {
                 currentObjects[paneId] = obj;
                 var oid = obj.getOid();
-                dirtyCache.clearDirty(oid);
+                dirtyList.clearDirty(oid);
                 return $q.when(obj);
             });
         }
-        context.getIsDirty = function (oid) { return !oid.isService && dirtyCache.getDirty(oid) !== DirtyState.Clean; };
+        context.getIsDirty = function (oid) { return !oid.isService && dirtyList.getDirty(oid) !== DirtyState.Clean; };
         context.mustReload = function (oid) {
-            var dirtyState = dirtyCache.getDirty(oid);
+            var dirtyState = dirtyList.getDirty(oid);
             return (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && NakedObjects.autoLoadDirty);
         };
         context.getObjectForEdit = function (paneId, object) { return editOrReloadObject(paneId, object, true); };
@@ -177,15 +185,15 @@ var NakedObjects;
             var details = actionMember.getDetails();
             return repLoader.populate(details, true);
         };
-        context.getCollectionDetails = function (collectionMember, state) {
+        context.getCollectionDetails = function (collectionMember, state, ignoreCache) {
             var details = collectionMember.getDetails();
             if (state === NakedObjects.CollectionViewState.Table) {
                 details.setUrlParameter(NakedObjects.roInlineCollectionItems, true);
             }
             var parent = collectionMember.parent;
             var oid = parent.getOid();
-            var isDirty = dirtyCache.getDirty(oid) !== DirtyState.Clean;
-            return repLoader.populate(details, isDirty);
+            var isDirty = dirtyList.getDirty(oid) !== DirtyState.Clean;
+            return repLoader.populate(details, isDirty || ignoreCache);
         };
         context.getInvokableAction = function (action) {
             if (action.invokeLink()) {
@@ -208,10 +216,10 @@ var NakedObjects;
             });
         };
         context.clearMessages = function () {
-            $rootScope.$broadcast("nof-message", []);
+            $rootScope.$broadcast(NakedObjects.geminiMessageEvent, []);
         };
         context.clearWarnings = function () {
-            $rootScope.$broadcast("nof-warning", []);
+            $rootScope.$broadcast(NakedObjects.geminiWarningEvent, []);
         };
         context.getHome = function () {
             // for moment don't bother caching only called on startup and for whatever resaon cache doesn't work. 
@@ -384,8 +392,8 @@ var NakedObjects;
         context.setResult = function (action, result, paneId, page, pageSize) {
             var warnings = result.extensions().warnings() || [];
             var messages = result.extensions().messages() || [];
-            $rootScope.$broadcast("nof-warning", warnings);
-            $rootScope.$broadcast("nof-message", messages);
+            $rootScope.$broadcast(NakedObjects.geminiWarningEvent, warnings);
+            $rootScope.$broadcast(NakedObjects.geminiMessageEvent, messages);
             if (!result.result().isNull()) {
                 if (result.resultType() === "object") {
                     var resultObject = result.result().object();
@@ -433,6 +441,9 @@ var NakedObjects;
         function invokeActionInternal(invokeMap, action, paneId, setDirty) {
             focusManager.setCurrentPane(paneId);
             invokeMap.setUrlParameter(NakedObjects.roInlinePropertyDetails, false);
+            if (action.extensions().returnType() === "list" && action.extensions().renderEagerly()) {
+                invokeMap.setUrlParameter(NakedObjects.roInlineCollectionItems, true);
+            }
             return repLoader.retrieve(invokeMap, ActionResultRepresentation, action.parent.etagDigest).
                 then(function (result) {
                 setDirty();
@@ -445,7 +456,7 @@ var NakedObjects;
             var actionIsNotQueryOnly = action.invokeLink().method() !== "GET";
             if (actionIsNotQueryOnly) {
                 if (parent instanceof DomainObjectRepresentation) {
-                    return function () { return dirtyCache.setDirty(parent.getOid()); };
+                    return function () { return dirtyList.setDirty(parent.getOid()); };
                 }
                 else if (parent instanceof ListRepresentation && parms) {
                     var ccaParm = _.find(action.parameters(), function (p) { return p.isCollectionContributed(); });
@@ -458,7 +469,7 @@ var NakedObjects;
                             .filter(function (v) { return v.isReference(); })
                             .map(function (v) { return v.link(); })
                             .value();
-                        return function () { return _.forEach(links_1, function (l) { return dirtyCache.setDirty(l.getOid()); }); };
+                        return function () { return _.forEach(links_1, function (l) { return dirtyList.setDirty(l.getOid()); }); };
                     }
                 }
             }
@@ -475,7 +486,7 @@ var NakedObjects;
         };
         function setNewObject(updatedObject, paneId, viewSavedObject) {
             context.setObject(paneId, updatedObject);
-            dirtyCache.setDirty(updatedObject.getOid(), true);
+            dirtyList.setDirty(updatedObject.getOid(), true);
             if (viewSavedObject) {
                 urlManager.setObject(updatedObject, paneId);
             }
@@ -520,20 +531,24 @@ var NakedObjects;
         var subTypeCache = {};
         context.isSubTypeOf = function (toCheckType, againstType) {
             if (subTypeCache[toCheckType] && typeof subTypeCache[toCheckType][againstType] !== "undefined") {
-                return $q.when(subTypeCache[toCheckType][againstType]);
+                return subTypeCache[toCheckType][againstType];
             }
             var isSubTypeOf = new DomainTypeActionInvokeRepresentation(againstType, toCheckType);
-            return repLoader.populate(isSubTypeOf, true).
+            var promise = repLoader.populate(isSubTypeOf, true).
                 then(function (updatedObject) {
                 var is = updatedObject.value();
-                var entry = {};
-                entry[againstType] = is;
-                subTypeCache[toCheckType] = entry;
+                //const entry: _.Dictionary<boolean> = {};
+                //entry[againstType] = is;
+                //subTypeCache[toCheckType] = entry;
                 return is;
             }).
                 catch(function (reject) {
                 return false;
             });
+            var entry = {};
+            entry[againstType] = promise;
+            subTypeCache[toCheckType] = entry;
+            return promise;
         };
         function handleHttpServerError(reject) {
             urlManager.setError(ErrorCategory.HttpServerError);
@@ -586,6 +601,20 @@ var NakedObjects;
             recentcache.add(obj);
         }
         context.getRecentlyViewed = function () { return recentcache.items(); };
+        function logoff() {
+            for (var pane = 1; pane <= 2; pane++) {
+                delete currentObjects[pane];
+            }
+            currentServices = null;
+            currentMenus = null;
+            currentVersion = null;
+            currentUser = null;
+            transientCache.clear();
+            recentcache.clear();
+            dirtyList.clear();
+            _.forEach(currentMenuList, function (k, v) { return delete currentMenuList[v]; });
+            _.forEach(currentLists, function (k, v) { return delete currentLists[v]; });
+        }
+        $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.context.js.map

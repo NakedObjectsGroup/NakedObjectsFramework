@@ -14,8 +14,8 @@ module NakedObjects {
     import MenuRepresentation = Models.MenuRepresentation;
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
-    import IInvokableAction = Models.IInvokableAction;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
+    import Link = NakedObjects.Models.Link;
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -28,6 +28,7 @@ module NakedObjects {
         handleList($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleListSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
+        handleAttachment(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
     }
 
     app.service("handlers",
@@ -65,6 +66,7 @@ module NakedObjects {
                 new MenusViewModel(viewModelFactory)
             ];
 
+        
             function setVersionError(error: string) {
                 context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
                 urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
@@ -179,6 +181,25 @@ module NakedObjects {
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
 
+
+            function logoff() {
+                for (let pane = 1; pane <= 2; pane++) {
+                    deRegDialog[pane].deReg();
+                    deRegObject[pane].deReg();
+
+                    deRegDialog[pane] = new DeReg();
+                    deRegObject[pane] = new DeReg();
+
+                    perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                    perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);              
+                }
+            }
+
+            $rootScope.$on(geminiLogoffEvent, () => logoff());
+
+
             handlers.handleHomeSearch = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
 
                 context.clearWarnings();
@@ -232,17 +253,9 @@ module NakedObjects {
                     context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
             }
 
-            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
-                // only update templates if changed 
-                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+            function handleListActionsAndDialog($scope: INakedObjectsScope, routeData: PaneRouteData) {
+                
                 const newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
-                const listViewModel = $scope.collection;
-
-                if ($scope.listTemplate !== newListTemplate) {
-                    $scope.listTemplate = newListTemplate;
-                    listViewModel.refresh(routeData);
-                }
-
                 if ($scope.actionsTemplate !== newActionsTemplate) {
                     $scope.actionsTemplate = newActionsTemplate;
                 }
@@ -254,9 +267,24 @@ module NakedObjects {
                 const newDialogId = routeData.dialogId;
 
                 if (currentDialogId !== newDialogId) {
+                    const listViewModel = $scope.collection;
                     const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === newDialogId);
                     setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
                 }
+            }
+
+
+            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
+                // only update templates if changed 
+                const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
+                const listViewModel = $scope.collection;
+
+                if ($scope.listTemplate !== newListTemplate) {
+                    $scope.listTemplate = newListTemplate;
+                    listViewModel.refresh(routeData);
+                }
+
+                handleListActionsAndDialog($scope, routeData);
             }
 
 
@@ -279,11 +307,12 @@ module NakedObjects {
 
                 if (cachedList) {
                     const listViewModel = perPaneListViews[routeData.paneId];
+                    $scope.listTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                     listViewModel.reset(cachedList, routeData);
                     $scope.collection = listViewModel;
                     getActionExtensions(routeData).then((ext: Extensions) => $scope.title = ext.friendlyName());
 
-                    handleListSearchChanged($scope, routeData);
+                    handleListActionsAndDialog($scope, routeData);
                 } else {
                     $scope.listTemplate = listPlaceholderTemplate;
                     $scope.collectionPlaceholder = viewModelFactory.listPlaceholderViewModel(routeData);
@@ -392,8 +421,8 @@ module NakedObjects {
 
                         deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties) as () => void);
                         deRegObject[routeData.paneId].add($scope.$watch(() => $location.search(), ovm.setProperties, true) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties) as () => void);
-                        deRegObject[routeData.paneId].add($scope.$on("nof-display-error", ovm.displayError()) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiPaneSwapEvent, ovm.setProperties) as () => void);
+                        deRegObject[routeData.paneId].add($scope.$on(geminiDisplayErrorEvent, ovm.displayError()) as () => void);
 
                     }).catch((reject: ErrorWrapper) => {
 
@@ -430,5 +459,25 @@ module NakedObjects {
                     handleNewObjectSearch($scope, routeData);
                 }
             };
+
+            handlers.handleAttachment = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                context.clearWarnings();
+                context.clearMessages();
+
+                const oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+                $scope.attachmentTemplate = attachmentTemplate;
+
+                context.getObject(routeData.paneId, oid, routeData.interactionMode)
+                    .then((object: DomainObjectRepresentation) => {
+
+                        const attachmentId = routeData.attachmentId;
+                        const attachment = object.propertyMember(attachmentId);
+
+                        if (attachment && attachment.attachmentLink()) {
+                            const avm = viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
+                            $scope.attachment = avm;
+                        }
+                    });
+            }
         });
 }

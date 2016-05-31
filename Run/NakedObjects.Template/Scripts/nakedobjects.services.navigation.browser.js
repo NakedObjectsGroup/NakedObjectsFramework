@@ -10,4 +10,3 @@ var NakedObjects;
         nav.push = function () { };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.navigation.browser.js.map

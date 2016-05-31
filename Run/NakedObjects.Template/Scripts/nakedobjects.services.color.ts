@@ -38,13 +38,7 @@ module NakedObjects {
             }
 
             const entry = subtypeCache[index];
-
-            return context.isSubTypeOf(subtype, entry.type).then((b: boolean) => {
-                if (b) {
-                    return $q.when(entry.color);
-                }
-                return isSubtypeOf(subtype, index + 1, count);
-            });
+            return context.isSubTypeOf(subtype, entry.type).then(b => b ? $q.when(entry.color) : isSubtypeOf(subtype, index + 1, count));
         }
 
         function cacheAndReturn(type: string, color: number) {

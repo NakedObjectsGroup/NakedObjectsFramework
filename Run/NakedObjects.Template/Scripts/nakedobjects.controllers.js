@@ -56,6 +56,18 @@ var NakedObjects;
         handlers.handleRecent($scope, routeData.pane2);
         pane2Dereg = $scope.$on("$routeUpdate", function () { return handlers.handleRecent($scope, urlManager.getRouteData().pane2); });
     });
+    NakedObjects.app.controller("Pane1AttachmentController", function ($scope, handlers, urlManager) {
+        pane1Dereg();
+        var routeData = urlManager.getRouteData();
+        handlers.handleAttachment($scope, routeData.pane1);
+        pane1Dereg = $scope.$on("$routeUpdate", function () { return handlers.handleAttachment($scope, urlManager.getRouteData().pane1); });
+    });
+    NakedObjects.app.controller("Pane2AttachmentController", function ($scope, handlers, urlManager) {
+        pane2Dereg();
+        var routeData = urlManager.getRouteData();
+        handlers.handleAttachment($scope, routeData.pane2);
+        pane2Dereg = $scope.$on("$routeUpdate", function () { return handlers.handleAttachment($scope, urlManager.getRouteData().pane2); });
+    });
     NakedObjects.app.controller("BackgroundController", function ($scope, handlers) {
         handlers.handleBackground($scope);
     });
@@ -102,4 +114,3 @@ var NakedObjects;
         cvm.chainedCommands == null;
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.controllers.js.map

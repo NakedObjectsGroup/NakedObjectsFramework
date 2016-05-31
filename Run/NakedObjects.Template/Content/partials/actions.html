@@ -1,8 +1,8 @@
 ﻿<div ng-repeat="menu in (menu.actionsMap || object.actionsMap || collection.actionsMap)">
     <div ng-hide="!menu.name" ng-init="navCollapsed = !!menu.name" ng-click="navCollapsed = !navCollapsed" class="submenu clickable-area" ng-switch="navCollapsed">
         {{menu.name}}
-        <div ng-switch-when="true" class="icon-expand" />
-        <div ng-switch-when="false" class="icon-collapse" />
+        <div ng-switch-when="true" class="icon-expand"></div>
+        <div ng-switch-when="false" class="icon-collapse"></div>
     </div>
     <div class="" ng-class="{collapsed : navCollapsed, open : !navCollapsed, rootMenu : !menu.name }">
         <div ng-repeat="action in menu.actions">

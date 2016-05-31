@@ -117,4 +117,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.cicerocommandfactory.js.map

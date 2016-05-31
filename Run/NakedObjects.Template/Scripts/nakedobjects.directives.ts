@@ -39,7 +39,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link(scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) {
+            link(scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
 
                 if (!ngModel) return;
                 // only add datepicker if date field not supported 
@@ -47,7 +47,6 @@ module NakedObjects {
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
-
 
                 // adding parser at the front that converts to a format angluar parsers understand
                 ngModel.$parsers.reverse();
@@ -74,7 +73,7 @@ module NakedObjects {
                 // also for dynamic ids - need to wrap link in timeout. 
                 $timeout(() => {
 
-                    const updateModel = (dateTxt : any) => {
+                    const updateModel = (dateTxt: any) => {
                         scope.$apply(() => {
                             // Call the internal AngularJS helper to
                             // update the two way binding
@@ -83,7 +82,7 @@ module NakedObjects {
                         });
                     };
 
-                    const onSelect = (dateTxt : any) => updateModel(dateTxt);
+                    const onSelect = (dateTxt: any) => updateModel(dateTxt);
 
                     const optionsObj = {
                         dateFormat: "d M yy", // datepicker format
@@ -94,14 +93,14 @@ module NakedObjects {
                         buttonText: "Select date"
                     };
 
-                    element.datepicker(optionsObj);
+                    (element as any).datepicker(optionsObj);
 
                 });
             }
         };
     });
 
-    app.directive("geminiAutocomplete", (): ng.IDirective => {
+    app.directive("geminiAutocomplete", (color: IColor): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -114,7 +113,7 @@ module NakedObjects {
                 select: "&" // Bind the select function we refer to the right scope
             },
 
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const optionsObj: { autoFocus?: boolean; minLength?: number; source?: Function; select?: Function; focus?: Function } = {};
@@ -136,20 +135,22 @@ module NakedObjects {
                 const updateModel = (cvm: ChoiceViewModel) => {
 
                     scope.$apply(() => {
+                        viewModel.clear();                        
                         ngModel.$parsers.push(() => cvm);
                         ngModel.$setViewValue(cvm.name);
-                        element.val(cvm.name);
+                        element.val(cvm.name);      
+                        viewModel.setColor(color);               
                     });
                 };
 
-                optionsObj.source = (request : any, response : any) => {
+                optionsObj.source = (request: any, response: any) => {
                     scope.$apply(() =>
                         scope.select({ request: request.term }).
-                        then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
-                        catch(() => response([])));
+                            then((cvms: ChoiceViewModel[]) => response(_.map(cvms, cvm => ({ "label": cvm.name, "value": cvm })))).
+                            catch(() => response([])));
                 };
 
-                optionsObj.select = (event : any, ui : any) => {
+                optionsObj.select = (event: any, ui: any) => {
                     updateModel(ui.item.value);
                     return false;
                 };
@@ -158,7 +159,7 @@ module NakedObjects {
                 optionsObj.autoFocus = true;
                 optionsObj.minLength = viewModel.minLength;
 
-                const clearHandler = function() {
+                const clearHandler = function () {
                     const value = $(this).val();
                     if (value.length === 0) {
                         updateModel(ChoiceViewModel.create(new Value(""), ""));
@@ -166,7 +167,7 @@ module NakedObjects {
                 };
 
                 element.keyup(clearHandler);
-                element.autocomplete(optionsObj);
+                (element as any).autocomplete(optionsObj);
                 render(viewModel.choice);
             }
         };
@@ -184,7 +185,7 @@ module NakedObjects {
             scope: {
                 select: "&" // Bind the select function we refer to the right scope
             },
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) return;
 
                 const parent = scope.$parent as IPropertyOrParameterScope;
@@ -235,9 +236,9 @@ module NakedObjects {
                         if (cvms.length === currentOptions.length && _.every(cvms, (c, i) => c.equals(currentOptions[i]))) {
                             return;
                         }
-                      
+
                         element.find("option").remove();
-                        
+
                         if (viewModel.optional) {
                             const emptyOpt = $("<option></option>");
                             element.append(emptyOpt);
@@ -260,7 +261,7 @@ module NakedObjects {
                         } else if (viewModel.choice) {
                             $(element).val(viewModel.choice.value);
                         }
-                        else  {
+                        else {
                             $(element).val("");
                         }
 
@@ -306,7 +307,7 @@ module NakedObjects {
                     $(element).on("change", optionChanged);
                 }
 
-                ngModel.$render = () => {}; // do on the next event loop,
+                ngModel.$render = () => { }; // do on the next event loop,
 
                 setTimeout(() => {
                     setListeners();
@@ -320,23 +321,29 @@ module NakedObjects {
                         element.append(emptyOpt);
                         $(element).val("");
                     }
-                   
+
                     populateDropdown();
                 }, 1);
             }
         };
     });
 
+    interface IGeminiRightclick extends ng.IAttributes {
+        geminiRightclick: string;
+    }
+
     //The 'right-click' functionality is also triggered by shift-enter
-    app.directive("geminiRightclick", $parse => (scope : any, element : any, attrs : any) => {
+    app.directive("geminiRightclick", $parse => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: IGeminiRightclick) => {
+
+
         const fn = $parse(attrs.geminiRightclick);
-        element.bind("contextmenu", (event : any) => {
+        element.bind("contextmenu", (event: JQueryEventObject) => {
             scope.$apply(() => {
                 event.preventDefault();
                 fn(scope, { $event: event });
             });
         });
-        element.bind("keydown keypress", (event : any) => {
+        element.bind("keydown keypress", (event: JQueryEventObject) => {
             const enterKeyCode = 13;
             if (event.keyCode === enterKeyCode && event.shiftKey) {
                 scope.$apply(() => scope.$eval(attrs.geminiRightclick));
@@ -347,7 +354,7 @@ module NakedObjects {
 
     const draggableVmKey = "dvmk";
 
-    app.directive("geminiDrag", ($compile) => (scope : any, element : any) => {
+    app.directive("geminiDrag", ($compile) => (scope: any, element: any) => {
 
         const cloneDraggable = () => {
             let cloned: JQuery;
@@ -369,7 +376,7 @@ module NakedObjects {
             zIndex: 9999
         });
 
-        element.on("dragstart", (event : any, ui : any) => {
+        element.on("dragstart", (event: any, ui: any) => {
             const draggableVm = scope.property || scope.item || scope.$parent.object;
 
             // make sure dragged element is correct color (object will not be set yet)
@@ -380,7 +387,7 @@ module NakedObjects {
             element.data(draggableVmKey, draggableVm);
         });
 
-        element.on("keydown keypress", (event : any) => {
+        element.on("keydown keypress", (event: any) => {
             const cKeyCode = 67;
             if (event.keyCode === cKeyCode && event.ctrlKey) {
                 const draggableVm = scope.property || scope.item || scope.$parent.object;
@@ -393,8 +400,12 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiEnter", () => (scope : any, element : any, attrs : any) => {
-        element.bind("keydown keypress", (event : any) => {
+    interface IGeminiEnter extends ng.IAttributes {
+        geminiEnter: string;
+    }
+
+    app.directive("geminiEnter", () => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: IGeminiEnter) => {
+        element.bind("keydown keypress", (event: JQueryEventObject) => {
             const enterKeyCode = 13;
             if (event.which === enterKeyCode && !event.shiftKey) {
                 scope.$apply(() => scope.$eval(attrs.geminiEnter));
@@ -403,49 +414,53 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiPlaceholder", $parse => (scope: any, element: any, attrs: any) => {
+    interface IGeminiPlaceholder extends ng.IAttributes {
+        geminiPlaceholder: string;
+    }
+
+    app.directive("geminiPlaceholder", $parse => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: IGeminiPlaceholder) => {
         const fn = $parse(attrs.geminiPlaceholder);
         element.attr("placeholder", fn(scope));
     });
 
-    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope : any, elem : any) => {
-        scope.$on(geminiFocusEvent, (e : any, target: FocusTarget, index: number, paneId: number, count: number) => {
+    app.directive("geminiFocuson", ($timeout: ng.ITimeoutService, focusManager: IFocusManager) => (scope: ng.IScope, elem: ng.IAugmentedJQuery) => {
+        scope.$on(geminiFocusEvent, (e: any, target: FocusTarget, index: number, paneId: number, count: number) => {
 
             $timeout(() => {
 
                 let focusElements: JQuery;
 
                 switch (target) {
-                case FocusTarget.Menu:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`);
-                    break;
-                case FocusTarget.SubAction:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`);
-                    break;
-                case FocusTarget.Action:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.action, div.single div.action`);
-                    break;
-                case FocusTarget.ObjectTitle:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`);
-                    break;
-                case FocusTarget.Dialog:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input[type!='hidden'], div.single div.parameters div.parameter :input[type!='hidden']`);
-                    break;
-                case FocusTarget.ListItem:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`);
-                    break;
-                case FocusTarget.Property:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`);
-                    break;
-                case FocusTarget.TableItem:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.collection tbody tr, div.single div.collection tbody tr`);
-                    break;
-                case FocusTarget.Input:
-                    focusElements = $(elem).find("input");
-                    break;
-                case FocusTarget.CheckBox:
-                    focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
-                    break;
+                    case FocusTarget.Menu:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.home div.menu, div.single div.home div.menu`);
+                        break;
+                    case FocusTarget.SubAction:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.actions div.action, div.single div.actions div.action`);
+                        break;
+                    case FocusTarget.Action:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.action, div.single div.action`);
+                        break;
+                    case FocusTarget.ObjectTitle:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.object div.title, div.single div.object div.title`);
+                        break;
+                    case FocusTarget.Dialog:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.parameters div.parameter :input[type!='hidden'], div.single div.parameters div.parameter :input[type!='hidden']`);
+                        break;
+                    case FocusTarget.ListItem:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.collection td.reference, div.single div.collection td.reference`);
+                        break;
+                    case FocusTarget.Property:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.properties div.property :input[type!='hidden'], div.single div.properties div.property :input[type!='hidden']`);
+                        break;
+                    case FocusTarget.TableItem:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.collection tbody tr, div.single div.collection tbody tr`);
+                        break;
+                    case FocusTarget.Input:
+                        focusElements = $(elem).find("input");
+                        break;
+                    case FocusTarget.CheckBox:
+                        focusElements = $(elem).find(`#pane${paneId}.split div.collection td.checkbox input, div.single div.collection td.checkbox input`);
+                        break;
 
                 }
 
@@ -463,12 +478,12 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiDrop", () => (scope : any, element: any) => {
+    app.directive("geminiDrop", () => (scope: any, element: any) => {
 
         const propertyScope = () => scope.$parent.$parent.$parent;
         const parameterScope = () => scope.$parent.$parent;
 
-        const accept = (draggable : any) => {
+        const accept = (draggable: any) => {
             const droppableVm: ValueViewModel = propertyScope().property || parameterScope().parameter;
             const draggableVm: IDraggableViewModel = draggable.data(draggableVmKey);
 
@@ -492,18 +507,18 @@ module NakedObjects {
             accept: accept
         });
 
-        element.on("drop", (event : any, ui : any) => {
+        element.on("drop", (event: any, ui: any) => {
 
             if (element.hasClass("candrop")) {
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
-                const draggableVm = <IDraggableViewModel> ui.draggable.data(draggableVmKey);
+                const draggableVm = <IDraggableViewModel>ui.draggable.data(draggableVmKey);
 
                 droppableScope.$apply(() => {
                     droppableVm.drop(draggableVm);
                     $(element).change();
-                });         
+                });
             }
         });
 
@@ -530,37 +545,84 @@ module NakedObjects {
         });
     });
 
-    app.directive("geminiAttachment", ($window: ng.IWindowService): ng.IDirective => {
+    app.directive("geminiViewattachment", (): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
             restrict: "A",
             // Always use along with an ng-model
             require: "?ngModel",
-            link: (scope: ISelectScope, element : any, attrs : any, ngModel: ng.INgModelController) => {
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
                 if (!ngModel) {
                     return;
                 }
 
-                function displayInline(mt: string) {
-                    return mt === "image/jpeg" ||
-                           mt === "image/gif" ||
-                           mt === "application/octet-stream";
+                ngModel.$render = () => {
+                    const attachment: AttachmentViewModel = ngModel.$modelValue;
+
+                    if (attachment) {
+                        const title = attachment.title;
+                        element.empty();
+                        attachment.downloadFile().then(blob => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => element.html(`<img src='${reader.result}' alt='${title}' />`);
+                            reader.readAsDataURL(blob);
+                        });
+                    }
+                };
+            }
+        };
+    });
+
+    app.directive("geminiFileupload",  () => {
+        return {
+            restrict: "A",
+            scope: true,
+            require: "?ngModel",
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+
+                if (!ngModel) {
+                    return;
+                }
+
+                element.bind("change", () => {
+                    var formData = new FormData();
+                    formData.append("file", (element[0] as any).files[0]);
+                    ngModel.$setViewValue((element[0] as any).files[0]);
+                });
+
+            }
+        };
+    });
+
+
+    app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) => {
+                if (!ngModel) {
+                    return;
                 }
 
                 const clickHandler = () => {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
-                    attachment.downloadFile()
-                        .then(blob => {
-                            if (window.navigator.msSaveBlob) {
-                                // internet explorer 
-                                window.navigator.msSaveBlob(blob, attachment.title);
-                            } else {
-                                const burl = URL.createObjectURL(blob);
-                                $window.location.href = burl;
-                            }
-                        });
+                    if (!attachment.displayInline()) {
+                        attachment.downloadFile()
+                            .then(blob => {
+                                if (window.navigator.msSaveBlob) {
+                                    // internet explorer 
+                                    window.navigator.msSaveBlob(blob, attachment.title);
+                                } else {
+                                    const burl = URL.createObjectURL(blob);
+                                    $window.location.href = burl;
+                                }
+                            });
+                    }
 
                     return false;
                 };
@@ -569,25 +631,27 @@ module NakedObjects {
                     const attachment: AttachmentViewModel = ngModel.$modelValue;
 
                     if (attachment) {
-                        const url = attachment.href;
-                        const mt = attachment.mimeType;
+                       
                         const title = attachment.title;
-                        const link = `<a href='${url}'><span></span></a>`;
-                        element.append(link);
-
-                        const anchor = element.find("a");
-                        if (displayInline(mt)) {
-                            attachment.downloadFile()
-                                .then(blob => {
-                                    const reader = new FileReader();
-                                    reader.onloadend = () => anchor.html(`<img src='${reader.result}' alt='${title}' />`);
-                                    reader.readAsDataURL(blob);
-                                });
+                     
+                        element.empty();
+                       
+                        const anchor = element.find("div");
+                        if (attachment.displayInline()) {
+                            attachment.downloadFile().then(blob => {
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    if (reader.result) {
+                                        element.html(`<img src='${reader.result}' alt='${title}' />`);
+                                    }
+                                }
+                                reader.readAsDataURL(blob);
+                            });
                         } else {
                             anchor.html(title);
+                            attachment.doClick = clickHandler;
                         }
 
-                        anchor.on("click", clickHandler);
                     } else {
                         element.append("<div>Attachment not yet supported on transient</div>");
                     }
@@ -596,8 +660,12 @@ module NakedObjects {
         };
     });
 
-    app.directive("ciceroDown", () => (scope : any, element : any, attrs : any) => {
-        element.bind("keydown keypress", (event: any) => {
+    interface ICiceroDown extends ng.IAttributes {
+        ciceroDown: string;
+    }
+
+    app.directive("ciceroDown", () => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ICiceroDown) => {
+        element.bind("keydown keypress", (event: JQueryEventObject) => {
             const enterKeyCode = 40;
             if (event.which === enterKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroDown));
@@ -606,8 +674,12 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroUp", () => (scope : any, element : any, attrs : any) => {
-        element.bind("keydown keypress", (event: any) => {
+    interface ICiceroUp extends ng.IAttributes {
+        ciceroUp: string;
+    }
+
+    app.directive("ciceroUp", () => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ICiceroUp) => {
+        element.bind("keydown keypress", (event: JQueryEventObject) => {
             const enterKeyCode = 38;
             if (event.which === enterKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroUp));
@@ -616,8 +688,12 @@ module NakedObjects {
         });
     });
 
-    app.directive("ciceroSpace", () => (scope : any, element: any, attrs: any) => {
-        element.bind("keydown keypress", (event : any) => {
+    interface ICiceroSpace extends ng.IAttributes {
+        ciceroSpace: string;
+    }
+
+    app.directive("ciceroSpace", () => (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ICiceroSpace) => {
+        element.bind("keydown keypress", (event: JQueryEventObject) => {
             const tabKeyCode = 32;
             if (event.which === tabKeyCode) {
                 scope.$apply(() => scope.$eval(attrs.ciceroSpace));
@@ -628,7 +704,7 @@ module NakedObjects {
 
     app.directive("geminiFieldvalidate", () => ({
         require: "ngModel",
-        link(scope : any, elm : any, attrs : any, ctrl : any) {
+        link(scope: ng.IScope, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
             ctrl.$validators.geminiFieldvalidate = (modelValue: any, viewValue: string) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
@@ -639,7 +715,7 @@ module NakedObjects {
 
     app.directive("geminiFieldmandatorycheck", () => ({
         require: "ngModel",
-        link(scope: any, elm: any, attrs: any, ctrl: any) {
+        link(scope: ng.IScope, elm: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
             ctrl.$validators.geminiFieldmandatorycheck = (modelValue: any, viewValue: string | ChoiceViewModel | string[] | ChoiceViewModel[]) => {
                 const parent = scope.$parent as IPropertyOrParameterScope;
                 const viewModel = parent.parameter || parent.property;
@@ -665,7 +741,7 @@ module NakedObjects {
 
     app.directive("geminiBoolean", () => ({
         require: "?ngModel",
-        link(scope: any, el: any, attrs: any, ctrl: any) {
+        link(scope: ng.IScope, el: ng.IAugmentedJQuery, attrs: ng.IAttributes, ctrl: any) {
 
             const parent = scope.$parent as IPropertyOrParameterScope;
             const viewModel = parent.parameter || parent.property;
@@ -696,15 +772,16 @@ module NakedObjects {
 
             const triStateClick = () => {
                 let d: boolean;
-                switch (el.data("checked")) {
-                case false:
-                    d = true;
-                    break;
-                case true:
-                    d = null;
-                    break;
-                default: // null
-                    d = false;
+                const checkedBool : boolean = el.data("checked") as any;
+                switch (checkedBool) {
+                    case false:
+                        d = true;
+                        break;
+                    case true:
+                        d = null;
+                        break;
+                    default: // null
+                        d = false;
                 }
                 ctrl.$setViewValue(d);
                 scope.$apply(ctrl.$render);
@@ -712,7 +789,8 @@ module NakedObjects {
 
             const twoStateClick = () => {
                 let d: boolean;
-                switch (el.data("checked")) {
+                const checkedBool: boolean = el.data("checked") as any;
+                switch (checkedBool) {
                     case true:
                         d = false;
                         break;
