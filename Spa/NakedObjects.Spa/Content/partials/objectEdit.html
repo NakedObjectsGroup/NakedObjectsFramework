@@ -92,7 +92,7 @@
                                     <input id="{{property.paneArgId}}" type="date" class="value {{property.status}}" placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-datepicker gemini-fieldvalidate/>
                                 </div>
                                 <div ng-switch-when="time">
-                                    <input id="{{property.paneArgId}}" type="time" class="value {{property.status}}" placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-fieldvalidate />
+                                    <input id="{{property.paneArgId}}" type="time" class="value {{property.status}}" placeholder="{{property.description}}" ng-model="$parent.property.value" gemini-timepicker gemini-fieldvalidate />
                                 </div>
                                 <div ng-switch-when="blob" class="reference clickable-area" ng-model="$parent.property.attachment" gemini-attachment></div>
                                 <div ng-switch-default ng-switch="property.multipleLines">
