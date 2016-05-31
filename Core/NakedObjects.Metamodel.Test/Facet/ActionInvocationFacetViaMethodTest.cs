@@ -56,27 +56,27 @@ namespace NakedObjects.Meta.Test.Facet {
 
         [TestMethod]
         public void TestDelegateCreation() {
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action0")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action1")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action2")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action3")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action4")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action5")));
-            DelegateActionTest((typeof (TestDelegateClass).GetMethod("Action6")));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action0"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action1"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action2"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action3"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action4"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action5"));
+            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action6"));
 
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func0")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func1")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func2")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func3")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func4")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func5")));
-            DelegateFuncTest((typeof (TestDelegateClass).GetMethod("Func6")));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func0"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func1"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func2"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func3"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func4"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func5"));
+            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func6"));
         }
 
         [TestMethod]
         public void TestDelegateNonCreation() {
-            InvokeActionTest((typeof (TestDelegateClass).GetMethod("Action7")));
-            InvokeFuncTest((typeof (TestDelegateClass).GetMethod("Func7")));
+            InvokeActionTest(typeof (TestDelegateClass).GetMethod("Action7"));
+            InvokeFuncTest(typeof (TestDelegateClass).GetMethod("Func7"));
         }
 
         #region Nested type: TestDelegateClass

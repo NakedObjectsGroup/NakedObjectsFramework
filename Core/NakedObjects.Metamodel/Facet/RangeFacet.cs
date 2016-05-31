@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.Facet {
             if (nakedObjectAdapter == null) {
                 return 0; //Date fields can contain nulls
             }
-            var origVal = ((IConvertible) nakedObjectAdapter.Object);
+            var origVal = (IConvertible) nakedObjectAdapter.Object;
             if (IsSIntegral(origVal)) {
                 return Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null));
             }
@@ -138,8 +138,8 @@ namespace NakedObjects.Meta.Facet {
         }
 
         protected int DateCompare(DateTime date, double min, double max) {
-            DateTime earliest = (DateTime.Today).AddDays(min);
-            DateTime latest = (DateTime.Today).AddDays(max);
+            DateTime earliest = DateTime.Today.AddDays(min);
+            DateTime latest = DateTime.Today.AddDays(max);
             if (date < earliest) return -1;
             if (date > latest) return +1;
             return 0;

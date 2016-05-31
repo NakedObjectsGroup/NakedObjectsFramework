@@ -60,15 +60,15 @@ namespace NakedObjects.Meta.Adapter {
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);
             switch (depth) {
-                case (IdentifierDepth.Class):
+                case IdentifierDepth.Class:
                     return ToClassIdentityString();
-                case (IdentifierDepth.ClassName):
+                case IdentifierDepth.ClassName:
                     return ToClassAndNameIdentityString();
-                case (IdentifierDepth.ClassNameParams):
+                case IdentifierDepth.ClassNameParams:
                     return ToFullIdentityString();
-                case (IdentifierDepth.Name):
+                case IdentifierDepth.Name:
                     return ToNameIdentityString();
-                case (IdentifierDepth.Parms):
+                case IdentifierDepth.Parms:
                     return ToParmsIdentityString();
             }
             return null;
@@ -166,8 +166,8 @@ namespace NakedObjects.Meta.Adapter {
             int indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
             int indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
             int indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
-            string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - (0));
-            if (indexOfHash == -1 || indexOfHash == (asString.Length - 1)) {
+            string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - 0);
+            if (indexOfHash == -1 || indexOfHash == asString.Length - 1) {
                 return new IdentifierImpl(className);
             }
             string name;
@@ -175,8 +175,8 @@ namespace NakedObjects.Meta.Adapter {
                 name = asString.Substring(indexOfHash + 1);
                 return new IdentifierImpl(className, name);
             }
-            name = asString.Substring(indexOfHash + 1, (indexOfOpenBracket) - (indexOfHash + 1));
-            string allParms = asString.Substring(indexOfOpenBracket + 1, (indexOfCloseBracket) - (indexOfOpenBracket + 1)).Trim();
+            name = asString.Substring(indexOfHash + 1, indexOfOpenBracket - (indexOfHash + 1));
+            string allParms = asString.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - (indexOfOpenBracket + 1)).Trim();
             string[] parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] {};
             return new IdentifierImpl(className, name, parms);
         }
@@ -188,7 +188,7 @@ namespace NakedObjects.Meta.Adapter {
                 return true;
             }
             var other = obj as IdentifierImpl;
-            return other != null && (string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes));
+            return other != null && string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes);
         }
 
         public override string ToString() {

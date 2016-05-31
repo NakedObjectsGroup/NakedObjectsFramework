@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Util {
                 var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
                 text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, manager);
             }
-            return text ?? (nakedObjectAdapter.TitleString());
+            return text ?? nakedObjectAdapter.TitleString();
         }
     }
 }

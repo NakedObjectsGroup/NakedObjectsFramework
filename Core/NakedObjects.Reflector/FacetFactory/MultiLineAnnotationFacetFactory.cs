@@ -52,7 +52,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) {
-            return (attribute != null) ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
+            return attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
         }
     }
 }

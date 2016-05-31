@@ -71,7 +71,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var facet = GetFacet<IContributedActionFacet>();
-            return facet != null && (contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec));
+            return facet != null && contributeeSpec.IsOfType(parmSpec) && facet.IsContributedTo(contributeeSpec);
         }
 
         #region ISerializable

@@ -418,7 +418,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         // XML
                         NofMetaModel.SetAttributesForValue(xmlValueElement, valueNos.ShortName);
 
-                        bool notEmpty = (value.TitleString().Length > 0);
+                        bool notEmpty = value.TitleString().Length > 0;
                         if (notEmpty) {
                             string valueStr = value.TitleString();
                             xmlValueElement.Add(new XText(valueStr));

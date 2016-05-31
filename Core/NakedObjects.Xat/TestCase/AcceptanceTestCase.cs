@@ -82,7 +82,7 @@ namespace NakedObjects.Xat {
         /// </summary>
         protected virtual Type[] Services {
             get {
-                return (new List<Type>()).Union(MenuServices.Select(s => s.GetType()))
+                return new List<Type>().Union(MenuServices.Select(s => s.GetType()))
                     .Union(ContributedActions.Select(s => s.GetType()))
                     .Union(SystemServices.Select(s => s.GetType())).ToArray();
             }
@@ -291,7 +291,7 @@ namespace NakedObjects.Xat {
         }
 
         private IPrincipal CreatePrincipal(string name, string[] roles) {
-            return (testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles));
+            return testPrincipal = new GenericPrincipal(new GenericIdentity(name), roles);
         }
 
         protected virtual void SetUser(string username, params string[] roles) {
@@ -324,7 +324,7 @@ namespace NakedObjects.Xat {
             StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
 
             container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, new ContainerControlledLifetimeManager());
 
             ReflectorConfiguration.NoValidate = true;
 
@@ -334,7 +334,7 @@ namespace NakedObjects.Xat {
                 Namespaces ?? new string[] {},
                 MainMenus);
 
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
             container.RegisterType<ISession, TestSession>(new PerResolveLifetimeManager());
         }
 

@@ -149,7 +149,7 @@ namespace NakedObjects.Core.Util {
 
         public void AppendTruncated(string name, string stringValue, int maxLength) {
             if (stringValue.Length > maxLength) {
-                Append(name, stringValue.Substring(0, (maxLength) - (0)));
+                Append(name, stringValue.Substring(0, maxLength - 0));
                 Append("...");
             }
             else {

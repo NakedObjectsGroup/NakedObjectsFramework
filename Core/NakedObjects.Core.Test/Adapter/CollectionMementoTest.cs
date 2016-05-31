@@ -128,13 +128,13 @@ namespace NakedObjects.Core.Test.Adapter {
             // replace INakedObjectStore types
             var c = new EntityObjectStoreConfiguration();
             c.UsingCodeFirstContext(() => new TestContext("TestContext"));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(c, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IEntityObjectStoreConfiguration>(c, new ContainerControlledLifetimeManager());
 
             var types = new[] {typeof (TestDomainObject[]), typeof (List<TestDomainObject>), typeof (ObjectQuery<TestDomainObject>), typeof (List<Int32>)};
             var ms = new[] {typeof (SimpleRepository<TestDomainObject>)};
             var ns = new[] {typeof (TestDomainObject).Namespace};
             var rc = new ReflectorConfiguration(types, ms, ns);
-            container.RegisterInstance<IReflectorConfiguration>(rc, (new ContainerControlledLifetimeManager()));
+            container.RegisterInstance<IReflectorConfiguration>(rc, new ContainerControlledLifetimeManager());
         }
 
         [TestFixtureSetUp]

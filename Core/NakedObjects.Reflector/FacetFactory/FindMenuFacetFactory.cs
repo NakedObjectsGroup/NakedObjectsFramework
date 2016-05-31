@@ -51,7 +51,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
             ParameterInfo parameter = method.GetParameters()[paramNum];
             Type pType = parameter.ParameterType;
-            if ((pType.IsPrimitive || pType == typeof (string) || TypeUtils.IsEnum(pType))) {
+            if (pType.IsPrimitive || pType == typeof (string) || TypeUtils.IsEnum(pType)) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
                     Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
                 }

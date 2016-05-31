@@ -617,7 +617,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static string ConcatenateMessages(Exception e) {
             bool isConcurrency = e is OptimisticConcurrencyException;
             int nestLimit = 3;
-            var msg = new StringBuilder(string.Format((isConcurrency ? Resources.NakedObjects.ConcurrencyErrorMessage : Resources.NakedObjects.UpdateErrorMessage), e.Message));
+            var msg = new StringBuilder(string.Format(isConcurrency ? Resources.NakedObjects.ConcurrencyErrorMessage : Resources.NakedObjects.UpdateErrorMessage, e.Message));
             while (e.InnerException != null && nestLimit-- > 0) {
                 msg.AppendLine().AppendLine(isConcurrency ? Resources.NakedObjects.ConcurrencyException : Resources.NakedObjects.DataUpdateException).Append(e.InnerException.Message);
                 e = e.InnerException;

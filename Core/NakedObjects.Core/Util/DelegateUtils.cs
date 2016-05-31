@@ -100,7 +100,7 @@ namespace NakedObjects.Core.Util {
         private static MethodInfo MakeDelegateHelper(Type targetType, MethodInfo method) {
             var helperName = method.ReturnType == typeof (void) ? "ActionHelper" : "FuncHelper";
 
-            helperName += method.GetParameters().Count();
+            helperName += method.GetParameters().Length;
 
             // First fetch the generic form
             MethodInfo genericHelper = typeof (DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);

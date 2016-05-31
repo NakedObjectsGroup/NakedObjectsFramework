@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Authorization {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
-            if ((typeof (INamespaceAuthorizer)).IsAssignableFrom(authType)) {
+            if (typeof (INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsVisible(session.Principal, target.Object, identifier.MemberName);
             }
@@ -49,7 +49,7 @@ namespace NakedObjects.Meta.Authorization {
             object authorizer = GetAuthorizer(target, lifecycleManager);
             Type authType = authorizer.GetType();
 
-            if ((typeof(INamespaceAuthorizer)).IsAssignableFrom(authType)) {
+            if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
                 return nameAuth.IsEditable(session.Principal, target.Object, identifier.MemberName);
             }

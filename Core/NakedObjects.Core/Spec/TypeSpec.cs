@@ -347,7 +347,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override int GetHashCode() {
-            return (InnerSpec != null ? InnerSpec.GetHashCode() : 0);
+            return InnerSpec != null ? InnerSpec.GetHashCode() : 0;
         }
     }
 }

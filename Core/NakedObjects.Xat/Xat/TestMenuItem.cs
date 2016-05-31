@@ -49,7 +49,7 @@ namespace NakedObjects.Xat {
 
         public ITestMenu AsSubMenu() {
             AssertIsSubMenu();
-            var menu = (item as IMenuImmutable);
+            var menu = item as IMenuImmutable;
             return factory.CreateTestMenuForObject(menu, owningObject);
         }
 

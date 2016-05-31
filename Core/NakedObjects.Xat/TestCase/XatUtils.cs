@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Xat {
     public static class XatUtils {
         private static ITestNaked AsTestNaked(this object parameter, INakedObjectManager manager) {
-            return (parameter is ITestNaked) ? (ITestNaked) parameter : new TestParameterObject(manager, parameter);
+            return parameter is ITestNaked ? (ITestNaked) parameter : new TestParameterObject(manager, parameter);
         }
 
         public static ITestNaked[] AsTestNakedArray(this object parameter, INakedObjectManager manager) {
