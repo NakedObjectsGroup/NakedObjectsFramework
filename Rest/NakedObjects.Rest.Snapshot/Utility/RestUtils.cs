@@ -411,7 +411,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                                  RestControlFlags flags) {
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
 
-            columns = columns ?? no.Specification.Properties.Where(p => !p.IsCollection).Select(p => p.Id).ToArray();
+            columns = columns ?? no.Specification.Properties.Select(p => p.Id).ToArray();
 
             var properties = columns.Select( c => no.Specification.Properties.SingleOrDefault(p => p.Id == c)).Where(p => p != null && p.IsVisible(no)).Select(p => new PropertyContextFacade { Property = p, Target = no });
 
