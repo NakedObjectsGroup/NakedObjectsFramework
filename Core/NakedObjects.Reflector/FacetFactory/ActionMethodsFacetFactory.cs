@@ -42,9 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public ActionMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ActionsAndActionParameters) {}
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         private bool IsQueryOnly(MethodInfo method) {
             return (method.GetCustomAttribute<IdempotentAttribute>() == null) &&
@@ -121,7 +119,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
             foreach (ParameterInfo parameterInfo in method.GetParameters()) {
                 if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
-                    Log.WarnFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                    // log if not a System or NOF type 
+                    if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                        Log.WarnFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                    }
                     return false;
                 }
             }
@@ -253,16 +254,13 @@ namespace NakedObjects.Reflect.FacetFactory {
                 if (paramType.IsClass || paramType.IsInterface) {
 
                     //returning an IQueryable ...
-                    MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName, i,
-                        typeof(IQueryable<>).MakeGenericType(paramType));
-
                     //.. or returning a single object
-                    if (method == null ) {
-                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
-                    }
+                    MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                                        FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
 
+                   
                     //... or returning an enumerable of string
-                    if (method == null && (TypeUtils.IsString(paramType))) {                      
+                    if (method == null && TypeUtils.IsString(paramType)) {                      
                         method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
                     }
 
