@@ -65,7 +65,8 @@ namespace RestfulObjects.Test.EndToEnd {
         public void WithValue()
         {
             var ticks = new DateTime(2012, 1,1).Ticks;
-            Object(Urls.VMWithValue + "1--2--3--4--5--foo--"+ticks+"--6--7", "WithValue");
+            var tsticks = new TimeSpan(1,2,3,4,5).Ticks;
+            Object(Urls.VMWithValue + $"1--2--3--4--5--foo--{ticks}--{tsticks}--6--7", "WithValue");
         }
 
         [TestMethod]
