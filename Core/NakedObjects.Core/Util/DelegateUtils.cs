@@ -39,7 +39,10 @@ namespace NakedObjects.Core.Util {
 
             if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
+                // don't log system or NOF types
+                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                    Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
+                }
                 return null;
             }
 
