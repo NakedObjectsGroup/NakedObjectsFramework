@@ -808,10 +808,18 @@ module NakedObjects {
         menuRep: Models.MenuRepresentation;
     }
 
+    export class TableRowColumnViewModel {
+        type: "ref" | "scalar";
+        returnType: string;
+        value: scalarValueType | Date;
+        formattedValue: string;
+        title : string;
+    }
+
     export class TableRowViewModel {
         title: string;
         hasTitle: boolean;
-        properties: PropertyViewModel[];
+        properties: TableRowColumnViewModel[];
     }
 
     export class DomainObjectViewModel extends MessageViewModel implements IDraggableViewModel {
