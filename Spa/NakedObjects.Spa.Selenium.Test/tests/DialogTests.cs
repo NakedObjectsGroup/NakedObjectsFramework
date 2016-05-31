@@ -44,7 +44,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
-
         public virtual void ClosedDialogClearsFields()
         {
             //To test: that when dialog is cancelled the fields
@@ -86,11 +85,14 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
             OpenActionDialog("Change Times");
-            ClearFieldThenType("#starttime1", "07:30");
-            ClearFieldThenType("#endtime1", "15:30");
+            var rand = new Random();
+            var start = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
+            ClearFieldThenType("#starttime1", start);
+            var end = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
+            ClearFieldThenType("#endtime1", end);
             Click(OKButton());
-            WaitForTextEquals(".property", 2, "Start Time:\r\n07:30:00");
-            WaitForTextEquals(".property", 3, "End Time:\r\n15:30:00");
+            WaitForTextEquals(".property", 2, "Start Time:\r\n"+start+":00");
+            WaitForTextEquals(".property", 3, "End Time:\r\n"+end + ":00");
         }
         public virtual void RefChoicesParmKeepsValue()
         {
@@ -417,7 +419,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
         [TestMethod]
         public override void DateTimeParmKeepsValue() { base.DateTimeParmKeepsValue(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void TimeSpanParm() { base.TimeSpanParm(); }
         [TestMethod]
         public override void RefChoicesParmKeepsValue() { base.RefChoicesParmKeepsValue(); }
@@ -499,7 +501,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

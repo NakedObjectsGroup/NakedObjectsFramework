@@ -60,7 +60,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CreateVM() { base.CreateVM(); }
         [TestMethod]
         public override void CreateEditableVM() { base.CreateEditableVM(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void CreateSwitchableVM() { base.CreateSwitchableVM(); }
     }
     #region browsers specific subclasses
