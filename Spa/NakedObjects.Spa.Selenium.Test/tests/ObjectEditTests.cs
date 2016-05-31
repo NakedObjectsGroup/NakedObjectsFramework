@@ -145,7 +145,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             SelectDropDownOnField("#productline1", "S");
 
-            ClearFieldThenType("#daystomanufacture1", Keys.Backspace + "1");
+            ClearFieldThenType("#daystomanufacture1", "1");
             SaveObject();
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
