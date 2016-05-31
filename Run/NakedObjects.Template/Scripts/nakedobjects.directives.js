@@ -69,6 +69,51 @@ var NakedObjects;
             }
         };
     });
+    NakedObjects.app.directive("geminiTimepicker", function (mask, $timeout) {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            // to make sure dynamic ids on element get picked up
+            transclude: true,
+            // This method needs to be defined and passed in from the
+            // passed in to the directive from the view controller
+            scope: {
+                select: "&" // Bind the select function we refer to the right scope
+            },
+            link: function (scope, element, attrs, ngModel) {
+                if (!ngModel)
+                    return;
+                // only add datepicker if time field not supported 
+                if (element.prop("type") === "time")
+                    return;
+                var parent = scope.$parent;
+                var viewModel = parent.parameter || parent.property;
+                // also for dynamic ids - need to wrap link in timeout. 
+                $timeout(function () {
+                    var updateModel = function () {
+                        scope.$apply(function () {
+                            // Call the internal AngularJS helper to
+                            // update the two way binding
+                            ngModel.$setViewValue(element.val());
+                        });
+                        return true;
+                    };
+                    var optionsObj = {
+                        timeFormat: "H:i",
+                        showOn: null
+                    };
+                    element.timepicker(optionsObj);
+                    element.on("changeTime", updateModel);
+                    var button = $("<img class='ui-datepicker-trigger' src='images/calendar.png' alt='Select time' title='Select time'>");
+                    button.on("click", function () { return element.timepicker("show"); });
+                    element.after(button);
+                });
+            }
+        };
+    });
     NakedObjects.app.directive("geminiAutocomplete", function (color) {
         return {
             // Enforce the angularJS default of restricting the directive to
@@ -652,3 +697,4 @@ var NakedObjects;
         }
     }); });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.directives.js.map

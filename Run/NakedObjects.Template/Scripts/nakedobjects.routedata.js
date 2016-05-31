@@ -100,3 +100,4 @@ var NakedObjects;
     }());
     NakedObjects.PaneRouteData = PaneRouteData;
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.routedata.js.map

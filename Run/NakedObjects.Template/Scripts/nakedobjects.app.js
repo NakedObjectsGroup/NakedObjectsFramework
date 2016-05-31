@@ -216,3 +216,4 @@ var NakedObjects;
         $cacheFactory("recentlyViewed");
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.app.js.map

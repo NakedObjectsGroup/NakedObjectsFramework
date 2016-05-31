@@ -77,3 +77,4 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.color.js.map

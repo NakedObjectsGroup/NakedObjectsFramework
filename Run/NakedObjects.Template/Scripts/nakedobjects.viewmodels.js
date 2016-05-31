@@ -17,6 +17,7 @@ var NakedObjects;
     var HttpStatusCode = NakedObjects.Models.HttpStatusCode;
     var DateString = NakedObjects.Models.toDateString;
     var dirtyMarker = NakedObjects.Models.dirtyMarker;
+    var toTimeString = NakedObjects.Models.toTimeString;
     function tooltip(onWhat, fields) {
         if (onWhat.clientValid()) {
             return "";
@@ -240,6 +241,10 @@ var NakedObjects;
                     return new Value("");
                 }
                 if (this.value instanceof Date) {
+                    if (this.format === "time") {
+                        // time format
+                        return new Value(toTimeString(this.value));
+                    }
                     if (this.format === "date") {
                         // truncate time;
                         return new Value(DateString(this.value));
@@ -825,3 +830,4 @@ var NakedObjects;
     }());
     NakedObjects.CiceroViewModel = CiceroViewModel;
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.viewmodels.js.map

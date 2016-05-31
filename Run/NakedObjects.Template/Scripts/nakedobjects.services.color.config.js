@@ -11,3 +11,4 @@ var NakedObjects;
         color.setDefault(0);
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.color.config.js.map

@@ -27,7 +27,6 @@ module NakedObjects {
     import IField = Models.IField;
     import IHasActions = Models.IHasActions;
     import TypePlusTitle = Models.typePlusTitle;
-    import IsDateOrDateTime = Models.isDateOrDateTime;
     import toUtcDate = Models.toUtcDate;
     import isDateOrDateTime = Models.isDateOrDateTime;
     import PlusTitle = Models.typePlusTitle;
@@ -41,6 +40,8 @@ module NakedObjects {
     import dirtyMarker = Models.dirtyMarker;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
+    import isTime = Models.isTime;
+    import toTime = Models.toTime;
 
     export interface IViewModelFactory {
         toolBarViewModel(): ToolBarViewModel;
@@ -323,8 +324,10 @@ module NakedObjects {
                             required = "";
                         }
 
-                    } else if (IsDateOrDateTime(parmRep)) {
+                    } else if (isDateOrDateTime(parmRep)) {
                         parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
+                    } else if (isTime(parmRep)) {
+                        parmViewModel.value = toTime(newValue || new Value(parmViewModel.dflt));
                     } else {
                         parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
                     }
@@ -627,6 +630,8 @@ module NakedObjects {
                     setupChoice(value);
                     if (isDateOrDateTime(propertyRep)) {
                         propertyViewModel.value = toUtcDate(value);
+                    } else if (isTime(propertyRep)) {
+                        propertyViewModel.value = toTime(value);
                     } else {
                         propertyViewModel.value = value.scalar();
                     }

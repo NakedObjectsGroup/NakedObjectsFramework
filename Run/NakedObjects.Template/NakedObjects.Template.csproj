@@ -304,6 +304,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
     <Content Include="Scripts\lodash.core.js" />
     <Content Include="Scripts\lodash.core.min.js" />
     <Content Include="Scripts\lodash.js" />
@@ -340,6 +341,7 @@
     <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js" />
     <Content Include="Scripts\nakedobjects.userMessages.config.js" />
     <Content Include="Scripts\nakedobjects.viewmodels.js" />
+    <Content Include="Scripts\nakedobjects.models.js.map" />
     <Content Include="Scripts\nakedobjects.viewmodels.js.map" />
     <Content Include="Scripts\nakedobjects.userMessages.config.js.map" />
     <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js.map" />
@@ -357,7 +359,6 @@
     <Content Include="Scripts\nakedobjects.routedata.js.map" />
     <Content Include="Scripts\nakedobjects.rointerfaces.js.map" />
     <Content Include="Scripts\nakedobjects.rointerfaces.custom.js.map" />
-    <Content Include="Scripts\nakedobjects.models.js.map" />
     <Content Include="Scripts\nakedobjects.models.helpers.js.map" />
     <Content Include="Scripts\nakedobjects.exceptionhandler.js.map" />
     <Content Include="Scripts\nakedobjects.directives.js.map" />
@@ -379,6 +380,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Content\themes\base\jquery.timepicker.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

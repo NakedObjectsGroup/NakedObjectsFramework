@@ -219,11 +219,13 @@ html, #main, body, .background, .single, .split {
     width: 245px;
 }
 /* date fields*/
-.input-control input.hasDatepicker {
+.input-control input.hasDatepicker,
+.input-control input.ui-timepicker-input  {
     width: 217px;
 }
 
-.parameter .input-control input.hasDatepicker {
+.parameter .input-control input.hasDatepicker,
+.parameter .input-control input.ui-timepicker-input {
     width: 207px;
     float: left;
 }

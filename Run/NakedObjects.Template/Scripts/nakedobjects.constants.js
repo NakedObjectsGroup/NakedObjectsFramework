@@ -220,3 +220,4 @@ var NakedObjects;
     NakedObjects.whereHelp = "Display a reminder of the current context.\n" +
         "The same can also be achieved by hitting the Return key on the empty input field.";
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.constants.js.map

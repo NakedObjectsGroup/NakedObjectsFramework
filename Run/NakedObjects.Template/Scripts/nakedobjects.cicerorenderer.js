@@ -104,3 +104,4 @@ var NakedObjects;
 //cvm.renderObject = _.partial(ciceroRenderer.renderObject, cvm) as (routeData: PaneRouteData) => void;
 //cvm.renderList = _.partial(ciceroRenderer.renderList, cvm) as (routeData: PaneRouteData) => void;
 //cvm.renderError = _.partial(ciceroRenderer.renderError, cvm); 
+//# sourceMappingURL=nakedobjects.cicerorenderer.js.map

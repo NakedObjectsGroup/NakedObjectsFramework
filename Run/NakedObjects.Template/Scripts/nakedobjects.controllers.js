@@ -114,3 +114,4 @@ var NakedObjects;
         cvm.chainedCommands == null;
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.controllers.js.map

@@ -112,7 +112,7 @@ var NakedObjects;
                             description = "A software error occurred";
                             break;
                         case ClientErrorCode.ConnectionProblem:
-                            description = "The client failed to connect to the server.";
+                            description = "The client failed to connect to the server";
                             break;
                     }
                     this.description = description;
@@ -1845,3 +1845,4 @@ var NakedObjects;
         var EntryType = Models.EntryType;
     })(Models = NakedObjects.Models || (NakedObjects.Models = {}));
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.models.js.map

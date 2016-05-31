@@ -618,3 +618,4 @@ var NakedObjects;
         $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.context.js.map

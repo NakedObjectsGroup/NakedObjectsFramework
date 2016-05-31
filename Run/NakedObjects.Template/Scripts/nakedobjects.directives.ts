@@ -7,6 +7,7 @@
 module NakedObjects {
     import Value = Models.Value;
     import toDateString = Models.toDateString;
+    import toTimeString = Models.toTimeString;
     import EntryType = Models.EntryType;
 
     interface ISelectObj {
@@ -99,6 +100,62 @@ module NakedObjects {
             }
         };
     });
+
+    app.directive("geminiTimepicker", (mask: IMask, $timeout: ng.ITimeoutService): ng.IDirective => {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+
+            // to make sure dynamic ids on element get picked up
+            transclude: true,
+            // This method needs to be defined and passed in from the
+            // passed in to the directive from the view controller
+            scope: {
+                select: "&" // Bind the select function we refer to the right scope
+            },
+            link(scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, ngModel: ng.INgModelController) {
+
+                if (!ngModel) return;
+                // only add datepicker if time field not supported 
+                if (element.prop("type") === "time") return;
+
+                const parent = scope.$parent as IPropertyOrParameterScope;
+                const viewModel = parent.parameter || parent.property;
+
+                // also for dynamic ids - need to wrap link in timeout. 
+                $timeout(() => {
+
+                    const updateModel = () => {
+                        scope.$apply(() => {
+                            // Call the internal AngularJS helper to
+                            // update the two way binding
+
+                            ngModel.$setViewValue(element.val());
+                        });
+                        return true;
+                    };
+             
+                    const optionsObj = {
+                        timeFormat: "H:i", // timepicker format
+                        showOn : null as any        
+                    };
+
+                    (element as any).timepicker(optionsObj);
+                    element.on("changeTime", updateModel);
+                   
+                    const button = $("<img class='ui-datepicker-trigger' src='images/calendar.png' alt='Select time' title='Select time'>");
+
+                    button.on("click", () => (element as any).timepicker("show"));
+            
+                    element.after(button);
+                });
+            }
+        };
+    });
+
 
     app.directive("geminiAutocomplete", (color: IColor): ng.IDirective => {
         return {

@@ -54,3 +54,4 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.focusmanager.js.map

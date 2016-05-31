@@ -13,7 +13,6 @@ var NakedObjects;
     var EntryType = NakedObjects.Models.EntryType;
     var ClientErrorCode = NakedObjects.Models.ClientErrorCode;
     var TypePlusTitle = NakedObjects.Models.typePlusTitle;
-    var IsDateOrDateTime = NakedObjects.Models.isDateOrDateTime;
     var toUtcDate = NakedObjects.Models.toUtcDate;
     var isDateOrDateTime = NakedObjects.Models.isDateOrDateTime;
     var PlusTitle = NakedObjects.Models.typePlusTitle;
@@ -24,6 +23,8 @@ var NakedObjects;
     var dirtyMarker = NakedObjects.Models.dirtyMarker;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
     var InvokableActionMember = NakedObjects.Models.InvokableActionMember;
+    var isTime = NakedObjects.Models.isTime;
+    var toTime = NakedObjects.Models.toTime;
     NakedObjects.app.service("viewModelFactory", function ($q, $timeout, $location, $filter, $cacheFactory, repLoader, color, context, mask, urlManager, focusManager, navigation, clickHandler, commandFactory, $rootScope, $route, $http) {
         var _this = this;
         var viewModelFactory = this;
@@ -212,8 +213,11 @@ var NakedObjects;
                             required = "";
                         }
                     }
-                    else if (IsDateOrDateTime(parmRep)) {
+                    else if (isDateOrDateTime(parmRep)) {
                         parmViewModel.value = toUtcDate(newValue || new Value(parmViewModel.dflt));
+                    }
+                    else if (isTime(parmRep)) {
+                        parmViewModel.value = toTime(newValue || new Value(parmViewModel.dflt));
                     }
                     else {
                         parmViewModel.value = (newValue ? newValue.toString() : null) || parmViewModel.dflt || "";
@@ -465,6 +469,9 @@ var NakedObjects;
                     setupChoice(value);
                     if (isDateOrDateTime(propertyRep)) {
                         propertyViewModel.value = toUtcDate(value);
+                    }
+                    else if (isTime(propertyRep)) {
+                        propertyViewModel.value = toTime(value);
                     }
                     else {
                         propertyViewModel.value = value.scalar();
@@ -963,3 +970,4 @@ var NakedObjects;
         return output;
     }
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.viewmodelfactory.js.map

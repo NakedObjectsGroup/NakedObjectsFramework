@@ -1497,3 +1497,4 @@ var NakedObjects;
     }(Command));
     NakedObjects.Where = Where;
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.cicerocommands.js.map

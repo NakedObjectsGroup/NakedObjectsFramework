@@ -60,11 +60,11 @@ var NakedObjects;
                 case ("string"):
                     return new LocalStringFilter();
                 case ("date-time"):
-                    return new LocalDateFilter("d MMM yyyy hh:mm:ss");
+                    return new LocalDateFilter("d MMM yyyy HH:mm:ss");
                 case ("date"):
                     return new LocalDateFilter("d MMM yyyy", "+0000");
                 case ("time"):
-                    return new LocalDateFilter("hh:mm:ss", "+0000");
+                    return new LocalDateFilter("HH:mm", "+0000");
                 case ("utc-millisec"):
                     return new LocalNumberFilter();
                 case ("big-integer"):
@@ -103,3 +103,4 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.services.mask.js.map

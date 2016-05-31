@@ -36,3 +36,4 @@ var NakedObjects;
     NakedObjects.transientCacheDepth = 4;
     NakedObjects.recentCacheDepth = 20;
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.config.js.map

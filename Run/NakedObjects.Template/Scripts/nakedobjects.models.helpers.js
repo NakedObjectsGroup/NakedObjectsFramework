@@ -25,6 +25,16 @@ var NakedObjects;
             return year + "-" + month + "-" + day;
         }
         Models.toDateString = toDateString;
+        function toTimeString(dt) {
+            var hours = dt.getHours().toString();
+            var minutes = dt.getMinutes().toString();
+            var seconds = dt.getSeconds().toString();
+            hours = hours.length === 1 ? "0" + hours : hours;
+            minutes = minutes.length === 1 ? "0" + minutes : minutes;
+            seconds = seconds.length === 1 ? "0" + seconds : seconds;
+            return hours + ":" + minutes + ":" + seconds;
+        }
+        Models.toTimeString = toTimeString;
         function getUtcDate(rawDate) {
             if (!rawDate || rawDate.length === 0) {
                 return null;
@@ -44,18 +54,40 @@ var NakedObjects;
             return null;
         }
         Models.getUtcDate = getUtcDate;
+        function getTime(rawTime) {
+            if (!rawTime || rawTime.length === 0) {
+                return null;
+            }
+            var hours = parseInt(rawTime.substring(0, 2));
+            var mins = parseInt(rawTime.substring(3, 5));
+            var secs = parseInt(rawTime.substring(6, 8));
+            return new Date(1970, 0, 1, hours, mins, secs);
+        }
+        Models.getTime = getTime;
         function isDateOrDateTime(rep) {
             var returnType = rep.extensions().returnType();
             var format = rep.extensions().format();
             return (returnType === "string" && ((format === "date-time") || (format === "date")));
         }
         Models.isDateOrDateTime = isDateOrDateTime;
+        function isTime(rep) {
+            var returnType = rep.extensions().returnType();
+            var format = rep.extensions().format();
+            return returnType === "string" && format === "time";
+        }
+        Models.isTime = isTime;
         function toUtcDate(value) {
             var rawValue = value ? value.toString() : "";
             var dateValue = getUtcDate(rawValue);
             return dateValue ? dateValue : null;
         }
         Models.toUtcDate = toUtcDate;
+        function toTime(value) {
+            var rawValue = value ? value.toString() : "";
+            var dateValue = getTime(rawValue);
+            return dateValue ? dateValue : null;
+        }
+        Models.toTime = toTime;
         function compress(toCompress) {
             if (toCompress) {
                 _.forEach(NakedObjects.urlShortCuts, function (sc, i) { return toCompress = toCompress.replace(sc, "" + NakedObjects.shortCutMarker + i); });
@@ -226,3 +258,4 @@ var NakedObjects;
         Models.validate = validate;
     })(Models = NakedObjects.Models || (NakedObjects.Models = {}));
 })(NakedObjects || (NakedObjects = {}));
+//# sourceMappingURL=nakedobjects.models.helpers.js.map

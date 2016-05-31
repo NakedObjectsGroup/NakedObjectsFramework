@@ -147,7 +147,7 @@ module NakedObjects.Models {
                         description = "A software error occurred";
                         break;
                     case ClientErrorCode.ConnectionProblem:
-                        description = "The client failed to connect to the server.";
+                        description = "The client failed to connect to the server";
                         break;
                 }
 
