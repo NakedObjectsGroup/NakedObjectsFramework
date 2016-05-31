@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
+using NakedObjects.Util;
 
 namespace NakedObjects.Core.Util {
     public class DelegateUtils {
@@ -20,19 +21,28 @@ namespace NakedObjects.Core.Util {
         public static Func<object, object[], object> CreateDelegate(MethodInfo method) {
             if (method.IsSecurityTransparent) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.WarnFormat("Not creating delegate for IsSecurityTransparent method {0}.{1}", method.DeclaringType, method);
+                // don't log system or NOF types
+                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                    Log.WarnFormat("Not creating delegate for IsSecurityTransparent method {0}.{1}", method.DeclaringType, method);
+                }
                 return null;
             }
 
             if (method.ContainsGenericParameters) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.WarnFormat("Not creating delegate for ContainsGenericParameters method {0}.{1}", method.DeclaringType, method);
+                // don't log system or NOF types
+                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                    Log.WarnFormat("Not creating delegate for ContainsGenericParameters method {0}.{1}", method.DeclaringType, method);
+                }
                 return null;
             }
 
             if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
                 // don't seem to be able to bind delegates to these just return null
-                Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
+                // don't log system or NOF types
+                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                    Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
+                }
                 return null;
             }
 
