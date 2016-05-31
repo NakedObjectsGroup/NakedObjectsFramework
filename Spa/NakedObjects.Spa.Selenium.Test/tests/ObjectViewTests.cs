@@ -131,15 +131,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
         public virtual void OpenCollectionAsList()
         {
-            GeminiUrl("object?o1=___1.Store--350&as1=open");
+            GeminiUrl("object?i1=View&o1=___1.Employee--5");
             WaitForCss(".collection", 2);
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
-
             WaitForCss("table");
-
             // cancel table view 
-            Click(WaitForCss(".icon-summary"));
+            Click(WaitForCssNo(".icon-summary",0));
             WaitUntilGone(d => d.FindElement(By.CssSelector(".table")));           
         }
         public virtual void NotCountedCollection()
@@ -325,13 +323,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         //Test for a specific earlier bug
         public virtual void AddingObjectToCollectionUpdatesTableView()
         {
-            GeminiUrl("object?i1=View&o1=___1.SalesPerson--290&c1_TerritoryHistory=Table&as1=open");
-            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count > 0);
-            var rowCount = br.FindElements(By.CssSelector("tbody tr")).Count;
-            OpenActionDialog("Change Sales Territory");
-            SelectDropDownOnField("#newterritory1", "France");
+            GeminiUrl("object?i1=View&o1=___1.WorkOrder--10321&as1=open&d1=AddNewRouting");
+            var details = WaitForCss(".summary .details").Text;
+            Assert.IsTrue(details.Contains("Item"));
+            var rowCount = Int32.Parse(details.Split(' ')[0]);
+            WaitForCss("tbody tr", rowCount);
+            Assert.AreEqual(rowCount, br.FindElements(By.CssSelector("tbody tr")).Count);
+            SelectDropDownOnField("#loc1", "Tool Crib");
             Click(OKButton());
-            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count == rowCount + 1);
+            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count >= rowCount + 1);
+            Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody tr")).Count);
         }
 
         public virtual void TimeSpanProperty()
@@ -512,7 +513,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NonNavigableReferenceProperty();
             base.Colours();
             base.ZeroIntValues();
-            base.AddingObjectToCollectionUpdatesTableView();
+            //base.AddingObjectToCollectionUpdatesTableView();
             //base.TimeSpanProperty();
         }
     }

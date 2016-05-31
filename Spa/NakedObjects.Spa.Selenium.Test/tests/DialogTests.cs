@@ -89,8 +89,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#starttime1", "07:30");
             ClearFieldThenType("#endtime1", "15:30");
             Click(OKButton());
-            WaitForTextEquals(".property", 2, "07:30");
-            WaitForTextEquals(".property", 3, "15:30");
+            WaitForTextEquals(".property", 2, "Start Time:\r\n07:30:00");
+            WaitForTextEquals(".property", 3, "End Time:\r\n15:30:00");
         }
         public virtual void RefChoicesParmKeepsValue()
         {
