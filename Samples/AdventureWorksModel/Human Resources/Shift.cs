@@ -80,5 +80,10 @@ namespace AdventureWorksModel {
             this.Times.StartTime = startTime;
             this.Times.EndTime = endTime;
         }
+
+        public TimeSpan Default0ChangeTimes() {
+            return new TimeSpan(0, 9, 0, 0);
+        }
+
     }
 }
