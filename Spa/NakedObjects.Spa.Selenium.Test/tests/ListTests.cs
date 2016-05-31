@@ -50,11 +50,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var header = WaitForCss("thead");
             var cols = header.FindElements(By.CssSelector("th")).ToArray();
             Assert.AreEqual(4, cols.Length);
-            Assert.AreEqual("Select", cols[0].Text);
+            Assert.AreEqual("All", cols[0].Text);
             Assert.AreEqual("", cols[1].Text);
             Assert.AreEqual("Order Date", cols[2].Text);
             Assert.AreEqual("Details", cols[3].Text);
-            wait.Until(dr => dr.FindElements(By.CssSelector("tr"))[0].FindElements(By.CssSelector("td"))[3].Text == "72 Items");
+            WaitForTextEquals("tbody tr:nth-child(1) td:nth-child(4)", "72 Items");
         }
         public virtual void SwitchToTableViewAndBackToList()
         {
@@ -275,7 +275,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ActionReturnsListView() { base.ActionReturnsListView(); }
         [TestMethod]
         public override void TableViewAttributeHonoured() { base.TableViewAttributeHonoured(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void TableViewCanIncludeCollectionSummaries() { base.TableViewCanIncludeCollectionSummaries(); }
         [TestMethod]
         public override void SwitchToTableViewAndBackToList() { base.SwitchToTableViewAndBackToList(); }
@@ -380,7 +380,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.ActionReturnsListView();
             base.TableViewAttributeHonoured();
-            //base.TableViewCanIncludeCollectionSummaries();
+            base.TableViewCanIncludeCollectionSummaries();
             base.SwitchToTableViewAndBackToList();
             base.NavigateToItemFromListView();
             base.NavigateToItemFromTableView();
