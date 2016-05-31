@@ -29,6 +29,8 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="..\..\Spa\NakedObjects.Spa\Content\themes\base\jquery.timepicker.css" target="Content\themes\base" />
+    <file src="..\..\Spa\NakedObjects.Spa\Scripts\jquery.timepicker.js" target="Content\Scripts" />
     <file src="..\..\Spa\NakedObjects.Spa\Content\partials\*.*" target="Content\Content\partials" />
     <file src="..\..\Spa\NakedObjects.Spa\Content\nakedobjects.css" target="Content\Content" />
     <file src="..\..\Spa\NakedObjects.Spa\fonts\*.*" target="Content\fonts" />
