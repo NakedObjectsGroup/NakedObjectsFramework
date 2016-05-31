@@ -12,7 +12,7 @@ NOF8, currently at Beta stage, introduces a radically different user interface b
 
 The best way to try NOF8 is to run the NakedObjects.Template application, which may be downloaded as a .zip file from: https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Run/NakedObjects.Template.zip?raw=true 
 
-(If the unzipped application does not run first time, please see the developer manual for further hints).
+(If the unzipped application does not run first time, please see the developer manual for further hints. In particular, look for any server start-up errors in the log file: nakedobjects_log.txt. And also check the connection string in web.config).
 
 The developer manual for NOF 8 is available here: .
 https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/DeveloperManual.docx?raw=true
