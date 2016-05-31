@@ -26,6 +26,7 @@ module NakedObjects {
         invoke: (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>) => ng.
         IPromise<ActionResultRepresentation>;
         getFile: (url: string, mt: string, ignoreCache: boolean) => ng.IPromise<Blob>;
+        uploadFile : (url: string, mt: string, file: Blob) => ng.IPromise<boolean>;
         clearCache: (url: string) => void;
         addToCache: (url: string, m: IResourceRepresentation) => void;
     }
@@ -38,6 +39,9 @@ module NakedObjects {
 
             const repLoader = this as IRepLoader;
             let loadingCount = 0;
+
+            // use our own LRU cache 
+            const cache = $cacheFactory("nof-cache", { capacity: httpCacheDepth });
 
             function addIfMatchHeader(config: ng.IRequestConfig, digest: string) {
                 if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
@@ -58,8 +62,7 @@ module NakedObjects {
                 } else if (promiseCallback.status === -1) {
                     // failed to connect
                     category = ErrorCategory.ClientError;
-                    error = `Failed to connect to server: ${
-                        promiseCallback.config ? promiseCallback.config.url : "unknown"}`;
+                    error = `Failed to connect to server: ${promiseCallback.config ? promiseCallback.config.url : "unknown"}`;
                 } else {
                     category = ErrorCategory.HttpClientError;
                     const message = promiseCallback.headers("warning") || "Unknown client HTTP error";
@@ -83,7 +86,7 @@ module NakedObjects {
 
 
             function httpValidate(config: ng.IRequestConfig): ng.IPromise<boolean> {
-                $rootScope.$broadcast("ajax-change", ++loadingCount);
+                $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
                 return $http(config)
                     .then(() => {
@@ -93,18 +96,17 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     })
                     .finally(() => {
-                        $rootScope.$broadcast("ajax-change", --loadingCount);
+                        $rootScope.$broadcast(geminiAjaxChangeEvent, --loadingCount);
                     });
             }
 
 
-            function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.
-            IPromise<IHateoasModel> {
-                $rootScope.$broadcast("ajax-change", ++loadingCount);
+            function httpPopulate(config: ng.IRequestConfig, ignoreCache: boolean, response: IHateoasModel): ng.IPromise<IHateoasModel> {
+                $rootScope.$broadcast(geminiAjaxChangeEvent, ++loadingCount);
 
                 if (ignoreCache) {
                     // clear cache of existing values
-                    $cacheFactory.get("$http").remove(config.url);
+                    cache.remove(config.url);
                 }
 
                 return $http(config)
@@ -117,26 +119,25 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     })
                     .finally(() => {
-                        $rootScope.$broadcast("ajax-change", --loadingCount);
+                        $rootScope.$broadcast(geminiAjaxChangeEvent, --loadingCount);
                     });
             }
 
-            repLoader
-                .populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
+            repLoader.populate = <T extends IHateoasModel>(model: IHateoasModel, ignoreCache?: boolean): ng.IPromise<T> => {
 
-                    const response = model;
-                    const useCache = !ignoreCache;
+                const response = model;
+                const useCache = !ignoreCache;
 
-                    const config = {
-                        withCredentials: true,
-                        url: model.getUrl(),
-                        method: model.method,
-                        cache: useCache,
-                        data: model.getBody()
-                    };
-
-                    return httpPopulate(config, ignoreCache, response);
+                const config = {
+                    withCredentials: true,
+                    url: model.getUrl(),
+                    method: model.method,
+                    cache: useCache ? cache : false,
+                    data: model.getBody()
                 };
+
+                return httpPopulate(config, ignoreCache, response);
+            };
 
             function setConfigFromMap(map: IHateoasModel, digest?: string) {
                 const config = {
@@ -165,52 +166,49 @@ module NakedObjects {
                 return httpValidate(config);
             };
 
-            repLoader
-                .retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
+            repLoader.retrieveFromLink = <T extends IHateoasModel>(link: Link, parms?: _.Dictionary<Object>): ng.IPromise<T> => {
 
-                    const response = link.getTarget();
-                    let urlParms = "";
+                const response = link.getTarget();
+                let urlParms = "";
 
-                    if (parms) {
-                        const urlParmString = _.reduce(parms,
-                            (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
-                            "");
-                        urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
-                    }
+                if (parms) {
+                    const urlParmString = _.reduce(parms,
+                        (result, n, key) => (result === "" ? "" : result + "&") + key + "=" + n,
+                        "");
+                    urlParms = urlParmString !== "" ? `?${urlParmString}` : "";
+                }
 
-                    const config = {
-                        withCredentials: true,
-                        url: link.href() + urlParms,
-                        method: link.method(),
-                        cache: false
-                    };
-
-                    return httpPopulate(config, true, response);
+                const config = {
+                    withCredentials: true,
+                    url: link.href() + urlParms,
+                    method: link.method(),
+                    cache: false
                 };
 
+                return httpPopulate(config, true, response);
+            };
 
-            repLoader
-                .invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.
-                IPromise<ActionResultRepresentation> => {
-                    const invokeMap = action.getInvokeMap();
-                    _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
-                    _.each(parms, (v, k) => invokeMap.setParameter(k, v));
-                    return this.retrieve(invokeMap, ActionResultRepresentation);
-                };
+
+            repLoader.invoke = (action: IInvokableAction, parms: _.Dictionary<Value>, urlParms: _.Dictionary<Object>): ng.IPromise<ActionResultRepresentation> => {
+                const invokeMap = action.getInvokeMap();
+                _.each(urlParms, (v, k) => invokeMap.setUrlParameter(k, v));
+                _.each(parms, (v, k) => invokeMap.setParameter(k, v));
+                return this.retrieve(invokeMap, ActionResultRepresentation);
+            };
 
             repLoader.clearCache = (url: string) => {
-                $cacheFactory.get("$http").remove(url);
+                cache.remove(url);
             };
 
             repLoader.addToCache = (url: string, m: IResourceRepresentation) => {                
-                $cacheFactory.get("$http").put(url, m);
+                cache.put(url, m);
             };
 
             repLoader.getFile = (url: string, mt: string, ignoreCache: boolean): ng.IPromise<Blob> => {
 
                 if (ignoreCache) {
                     // clear cache of existing values
-                    $cacheFactory.get("$http").remove(url);
+                    cache.remove(url);
                 }
 
                 const config: ng.IRequestConfig = {
@@ -218,7 +216,7 @@ module NakedObjects {
                     url: url,
                     responseType: "blob",
                     headers: { "Accept": mt },
-                    cache: true
+                    cache: cache
                 };
 
                 return $http(config)
@@ -229,6 +227,32 @@ module NakedObjects {
                         return handleError(promiseCallback);
                     });
             };
+
+            repLoader.uploadFile = (url: string, mt: string, file: Blob): ng.IPromise<boolean> => {
+
+
+                const config: ng.IRequestConfig = {
+                    method: "POST",
+                    url: url,
+                    data : file,
+                    headers: { "Content-Type": mt }
+                };
+
+                return $http(config)
+                    .then((promiseCallback) => {
+                        return $q.when(true);
+                    })
+                    .catch((promiseCallback) => {
+                        return $q.when(false);
+                    });
+            };
+
+
+            function logoff() {
+                cache.removeAll();
+            }
+
+            $rootScope.$on(geminiLogoffEvent, () => logoff());
         });
 
 }

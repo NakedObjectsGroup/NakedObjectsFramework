@@ -76,12 +76,24 @@ var NakedObjects;
     NakedObjects.createActionMenuMap = createActionMenuMap;
     var AttachmentViewModel = (function () {
         function AttachmentViewModel() {
+            var _this = this;
+            this.downloadFile = function () { return _this.context.getFile(_this.parent, _this.href, _this.mimeType); };
+            this.clearCachedFile = function () { return _this.context.clearCachedFile(_this.href); };
+            this.displayInline = function () {
+                return _this.mimeType === "image/jpeg" ||
+                    _this.mimeType === "image/gif" ||
+                    _this.mimeType === "application/octet-stream";
+            };
         }
-        AttachmentViewModel.create = function (href, mimeType, title) {
+        AttachmentViewModel.create = function (attachmentLink, parent, context, paneId) {
             var attachmentViewModel = new AttachmentViewModel();
-            attachmentViewModel.href = href;
-            attachmentViewModel.mimeType = mimeType;
-            attachmentViewModel.title = title || NakedObjects.unknownFileTitle;
+            attachmentViewModel.link = attachmentLink;
+            attachmentViewModel.href = attachmentLink.href();
+            attachmentViewModel.mimeType = attachmentLink.type().asString;
+            attachmentViewModel.title = attachmentLink.title() || NakedObjects.unknownFileTitle;
+            attachmentViewModel.parent = parent;
+            attachmentViewModel.context = context;
+            attachmentViewModel.onPaneId = paneId;
             return attachmentViewModel;
         };
         return AttachmentViewModel;
@@ -98,6 +110,7 @@ var NakedObjects;
             choiceViewModel.value = value.isReference() ? value.link().href() : value.toValueString();
             choiceViewModel.search = searchTerm || choiceViewModel.name;
             choiceViewModel.isEnum = !value.isReference() && (choiceViewModel.name !== choiceViewModel.value);
+            choiceViewModel.isReference = value.isReference();
             return choiceViewModel;
         };
         ChoiceViewModel.prototype.equals = function (other) {
@@ -148,11 +161,17 @@ var NakedObjects;
         }
         MessageViewModel.prototype.clearMessage = function () {
             if (this.message === this.previousMessage) {
-                this.message = this.previousMessage = "";
+                this.resetMessage();
             }
             else {
                 this.previousMessage = this.message;
             }
+        };
+        MessageViewModel.prototype.resetMessage = function () {
+            this.message = this.previousMessage = "";
+        };
+        MessageViewModel.prototype.setMessage = function (msg) {
+            this.message = msg;
         };
         return MessageViewModel;
     }());
@@ -181,7 +200,25 @@ var NakedObjects;
             this.choice = null;
             this.color = "";
         };
+        ValueViewModel.prototype.setColor = function (color) {
+            var _this = this;
+            if (this.entryType === EntryType.AutoComplete && this.choice && this.type === "ref") {
+                var href = this.choice.value;
+                if (href) {
+                    color.toColorNumberFromHref(href).then(function (c) { return _this.color = "" + NakedObjects.linkColor + c; });
+                    return;
+                }
+            }
+            else if (this.entryType !== EntryType.AutoComplete && this.value) {
+                color.toColorNumberFromType(this.returnType).then(function (c) { return _this.color = "" + NakedObjects.linkColor + c; });
+                return;
+            }
+            this.color = "";
+        };
         ValueViewModel.prototype.getValue = function () {
+            if (this.entryType === EntryType.File) {
+                return new Value(this.file);
+            }
             if (this.entryType !== EntryType.FreeForm || this.isCollectionContributed) {
                 if (this.entryType === EntryType.MultipleChoices || this.entryType === EntryType.MultipleConditionalChoices || this.isCollectionContributed) {
                     var selections = this.multiChoices || [];
@@ -259,7 +296,7 @@ var NakedObjects;
                 return _this.executeInvoke(right).
                     then(function (actionResult) {
                     if (actionResult.shouldExpectResult()) {
-                        _this.message = actionResult.warningsOrMessages() || NakedObjects.noResultMessage;
+                        _this.setMessage(actionResult.warningsOrMessages() || NakedObjects.noResultMessage);
                     }
                     else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
@@ -278,7 +315,7 @@ var NakedObjects;
                     _this.context.handleWrappedError(reject, parent, function () {
                         // this should just be called if concurrency
                         _this.doClose();
-                        _this.$rootScope.$broadcast("nof-display-error", new ErrorMap({}, 0, NakedObjects.concurrencyError));
+                        _this.$rootScope.$broadcast(NakedObjects.geminiDisplayErrorEvent, new ErrorMap({}, 0, NakedObjects.concurrencyError));
                     }, display);
                 });
             };
@@ -291,7 +328,7 @@ var NakedObjects;
                 _this.urlManager.cancelDialog(_this.onPaneId);
             };
             this.clearMessages = function () {
-                _this.message = "";
+                _this.resetMessage();
                 _.each(_this.actionViewModel.parameters, function (parm) { return parm.clearMessage(); });
             };
         }
@@ -304,7 +341,7 @@ var NakedObjects;
             this.parameters = _.map(parameters, function (p) { return _this.viewModelFactory.parameterViewModel(p, fields[p.id()], _this.onPaneId); });
             this.title = this.actionMember().extensions().friendlyName();
             this.isQueryOnly = actionViewModel.invokableActionRep.invokeLink().method() === "GET";
-            this.message = "";
+            this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
             return this;
         };
@@ -337,6 +374,10 @@ var NakedObjects;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
             this.$q = $q;
+            this.hasTableData = function () {
+                var valueLinks = _this.listRep.value();
+                return valueLinks && _.some(valueLinks, function (i) { return i.members(); });
+            };
             this.toggleActionMenu = function () {
                 _this.focusManager.focusOverrideOff();
                 _this.urlManager.toggleObjectMenu(_this.onPaneId);
@@ -356,7 +397,7 @@ var NakedObjects;
                     _this.urlManager.setListPaging(newPage, newPageSize, _this.routeData.state, _this.onPaneId);
                 }).
                     catch(function (reject) {
-                    var display = function (em) { return _this.message = em.invalidReason() || em.warningMessage; };
+                    var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
                     _this.contextService.handleWrappedError(reject, null, function () { }, display);
                 });
             };
@@ -403,10 +444,14 @@ var NakedObjects;
         ListViewModel.prototype.refresh = function (routeData) {
             var _this = this;
             this.routeData = routeData;
-            if (!this.state || this.state !== routeData.state) {
+            if (this.state !== routeData.state) {
                 this.state = routeData.state;
-                if (this.state === NakedObjects.CollectionViewState.Table) {
-                    this.recreate(this.page, this.pageSize).then(function (list) { return _this.updateItems(list.value()); });
+                if (this.state === NakedObjects.CollectionViewState.Table && !this.hasTableData()) {
+                    this.recreate(this.page, this.pageSize)
+                        .then(function (list) {
+                        _this.listRep = list;
+                        _this.updateItems(list.value());
+                    });
                 }
                 else {
                     this.updateItems(this.listRep.value());
@@ -453,9 +498,9 @@ var NakedObjects;
                 } :
                 function (right) {
                     actionViewModel.executeInvoke([], right).
-                        then(function (result) { return _this.message = result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""; }).
+                        then(function (result) { return _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""); }).
                         catch(function (reject) {
-                        var display = function (em) { return _this.message = em.invalidReason() || em.warningMessage; };
+                        var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
                         _this.contextService.handleWrappedError(reject, null, function () { }, display);
                     });
                 }; });
@@ -474,9 +519,8 @@ var NakedObjects;
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            //clear state so we always refresh items
-            this.state = null;
-            this.refresh(routeData);
+            this.state = routeData.state;
+            this.updateItems(list.value());
             var actions = this.listRep.actionMembers();
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
             this.actionsMap = createActionMenuMap(this.actions);
@@ -538,6 +582,12 @@ var NakedObjects;
         return MenuViewModel;
     }(MessageViewModel));
     NakedObjects.MenuViewModel = MenuViewModel;
+    var TableRowColumnViewModel = (function () {
+        function TableRowColumnViewModel() {
+        }
+        return TableRowColumnViewModel;
+    }());
+    NakedObjects.TableRowColumnViewModel = TableRowColumnViewModel;
     var TableRowViewModel = (function () {
         function TableRowViewModel() {
         }
@@ -602,7 +652,7 @@ var NakedObjects;
                 var propMap = _this.propertyMap();
                 return _this.validateHandler()(_this.domainObject, propMap).
                     then(function () {
-                    _this.message = "";
+                    _this.resetMessage();
                     return true;
                 }).
                     catch(function (reject) {
@@ -631,7 +681,7 @@ var NakedObjects;
             this.hideEdit = function () { return _this.domainObject.extensions().interactionMode() === "form" ||
                 _this.domainObject.extensions().interactionMode() === "transient" ||
                 _.every(_this.properties, function (p) { return !p.isEditable; }); };
-            this.canDropOn = function (targetType) { return _this.contextService.isSubTypeOf(targetType, _this.domainType); };
+            this.canDropOn = function (targetType) { return _this.contextService.isSubTypeOf(_this.domainType, targetType); };
         }
         DomainObjectViewModel.prototype.wrapAction = function (a) {
             var _this = this;
@@ -659,7 +709,7 @@ var NakedObjects;
             this.isInEdit = routeData.interactionMode !== NakedObjects.InteractionMode.View || iMode === "form" || iMode === "transient";
             this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? routeData.props : {};
             _.forEach(this.properties, function (p) { return p.refresh(_this.props[p.id]); });
-            _.forEach(this.collections, function (c) { return c.refresh(_this.routeData); });
+            _.forEach(this.collections, function (c) { return c.refresh(_this.routeData, false); });
             this.unsaved = routeData.interactionMode === NakedObjects.InteractionMode.Transient;
             this.title = this.unsaved ? "Unsaved " + this.domainObject.extensions().friendlyName() : this.domainObject.title();
             this.title = this.title + dirtyMarker(this.contextService, this.domainObject.getOid());
@@ -706,7 +756,7 @@ var NakedObjects;
             this.colorService.toColorNumberFromType(this.domainObject.domainType()).then(function (c) {
                 _this.color = "" + NakedObjects.objectColor + c;
             });
-            this.message = "";
+            this.resetMessage();
             if (routeData.interactionMode === NakedObjects.InteractionMode.Form) {
                 _.forEach(this.actions, function (a) { return _this.wrapAction(a); });
             }
@@ -775,4 +825,3 @@ var NakedObjects;
     }());
     NakedObjects.CiceroViewModel = CiceroViewModel;
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.viewmodels.js.map

@@ -19,7 +19,9 @@ var NakedObjects;
         return appPath;
     }
     NakedObjects.getAppPath = getAppPath;
-    NakedObjects.defaultPageSize = 20; // can be overriden by server 
+    NakedObjects.logoffUrl = appPath + "/Account/Logoff";
+    NakedObjects.postLogoffUrl = "/#/gemini/home";
+    NakedObjects.defaultPageSize = 20; // can be overridden by server 
     NakedObjects.listCacheSize = 5;
     NakedObjects.shortCutMarker = "___";
     //Add in any other long strings that commonly appear in your Urls, to replace them with the shortCutMarker plus number index.
@@ -29,5 +31,8 @@ var NakedObjects;
     NakedObjects.linkColor = "link-color";
     NakedObjects.autoLoadDirty = true;
     NakedObjects.showDirtyFlag = false || !NakedObjects.autoLoadDirty;
+    // caching constants: do not change unless you know what you're doing 
+    NakedObjects.httpCacheDepth = 50;
+    NakedObjects.transientCacheDepth = 4;
+    NakedObjects.recentCacheDepth = 20;
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.config.js.map

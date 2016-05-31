@@ -14,6 +14,8 @@ var NakedObjects;
         var _this = this;
         var repLoader = this;
         var loadingCount = 0;
+        // use our own LRU cache 
+        var cache = $cacheFactory("nof-cache", { capacity: NakedObjects.httpCacheDepth });
         function addIfMatchHeader(config, digest) {
             if (digest && (config.method === "POST" || config.method === "PUT" || config.method === "DELETE")) {
                 config.headers = { "If-Match": digest };
@@ -51,7 +53,7 @@ var NakedObjects;
             return $q.reject(rr);
         }
         function httpValidate(config) {
-            $rootScope.$broadcast("ajax-change", ++loadingCount);
+            $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, ++loadingCount);
             return $http(config)
                 .then(function () {
                 return $q.when(true);
@@ -60,14 +62,14 @@ var NakedObjects;
                 return handleError(promiseCallback);
             })
                 .finally(function () {
-                $rootScope.$broadcast("ajax-change", --loadingCount);
+                $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, --loadingCount);
             });
         }
         function httpPopulate(config, ignoreCache, response) {
-            $rootScope.$broadcast("ajax-change", ++loadingCount);
+            $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, ++loadingCount);
             if (ignoreCache) {
                 // clear cache of existing values
-                $cacheFactory.get("$http").remove(config.url);
+                cache.remove(config.url);
             }
             return $http(config)
                 .then(function (promiseCallback) {
@@ -79,18 +81,17 @@ var NakedObjects;
                 return handleError(promiseCallback);
             })
                 .finally(function () {
-                $rootScope.$broadcast("ajax-change", --loadingCount);
+                $rootScope.$broadcast(NakedObjects.geminiAjaxChangeEvent, --loadingCount);
             });
         }
-        repLoader
-            .populate = function (model, ignoreCache) {
+        repLoader.populate = function (model, ignoreCache) {
             var response = model;
             var useCache = !ignoreCache;
             var config = {
                 withCredentials: true,
                 url: model.getUrl(),
                 method: model.method,
-                cache: useCache,
+                cache: useCache ? cache : false,
                 data: model.getBody()
             };
             return httpPopulate(config, ignoreCache, response);
@@ -115,8 +116,7 @@ var NakedObjects;
             var config = setConfigFromMap(map, digest);
             return httpValidate(config);
         };
-        repLoader
-            .retrieveFromLink = function (link, parms) {
+        repLoader.retrieveFromLink = function (link, parms) {
             var response = link.getTarget();
             var urlParms = "";
             if (parms) {
@@ -131,30 +131,29 @@ var NakedObjects;
             };
             return httpPopulate(config, true, response);
         };
-        repLoader
-            .invoke = function (action, parms, urlParms) {
+        repLoader.invoke = function (action, parms, urlParms) {
             var invokeMap = action.getInvokeMap();
             _.each(urlParms, function (v, k) { return invokeMap.setUrlParameter(k, v); });
             _.each(parms, function (v, k) { return invokeMap.setParameter(k, v); });
             return _this.retrieve(invokeMap, ActionResultRepresentation);
         };
         repLoader.clearCache = function (url) {
-            $cacheFactory.get("$http").remove(url);
+            cache.remove(url);
         };
         repLoader.addToCache = function (url, m) {
-            $cacheFactory.get("$http").put(url, m);
+            cache.put(url, m);
         };
         repLoader.getFile = function (url, mt, ignoreCache) {
             if (ignoreCache) {
                 // clear cache of existing values
-                $cacheFactory.get("$http").remove(url);
+                cache.remove(url);
             }
             var config = {
                 method: "GET",
                 url: url,
                 responseType: "blob",
                 headers: { "Accept": mt },
-                cache: true
+                cache: cache
             };
             return $http(config)
                 .then(function (promiseCallback) {
@@ -164,6 +163,24 @@ var NakedObjects;
                 return handleError(promiseCallback);
             });
         };
+        repLoader.uploadFile = function (url, mt, file) {
+            var config = {
+                method: "POST",
+                url: url,
+                data: file,
+                headers: { "Content-Type": mt }
+            };
+            return $http(config)
+                .then(function (promiseCallback) {
+                return $q.when(true);
+            })
+                .catch(function (promiseCallback) {
+                return $q.when(false);
+            });
+        };
+        function logoff() {
+            cache.removeAll();
+        }
+        $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.representationloader.js.map

@@ -12,6 +12,7 @@ var NakedObjects;
     var Value = NakedObjects.Models.Value;
     var MenuRepresentation = NakedObjects.Models.MenuRepresentation;
     var ObjectIdWrapper = NakedObjects.Models.ObjectIdWrapper;
+    var propertyIdFromUrl = NakedObjects.Models.propertyIdFromUrl;
     NakedObjects.app.service("urlManager", function ($routeParams, $location, $window) {
         var helper = this;
         // keep in alphabetic order to help avoid name collisions 
@@ -19,6 +20,7 @@ var NakedObjects;
         var akm = {
             action: "a",
             actions: "as",
+            attachment: "at",
             collection: "c",
             dialog: "d",
             errorCat: "et",
@@ -125,6 +127,7 @@ var NakedObjects;
             paneRouteData.page = parseInt(getId(akm.page + paneId, $routeParams));
             paneRouteData.pageSize = parseInt(getId(akm.pageSize + paneId, $routeParams));
             paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
+            paneRouteData.attachmentId = getId(akm.attachment + paneId, $routeParams);
             paneRouteData.validate($location.url());
         }
         function singlePane() {
@@ -202,6 +205,9 @@ var NakedObjects;
             var oid = ObjectIdWrapper.fromHref(href);
             return oid.getKey();
         }
+        function getPidFromHref(href) {
+            return propertyIdFromUrl(href);
+        }
         function setValue(paneId, search, p, pv, valueType) {
             setId("" + valueType + paneId + "_" + p.id(), pv.toJsonString(), search);
         }
@@ -228,6 +234,7 @@ var NakedObjects;
             Transition[Transition["Page"] = 9] = "Page";
             Transition[Transition["ToTransient"] = 10] = "ToTransient";
             Transition[Transition["ToRecent"] = 11] = "ToRecent";
+            Transition[Transition["ToAttachment"] = 12] = "ToAttachment";
         })(Transition || (Transition = {}));
         function getId(key, search) {
             return Decompress(search[key]);
@@ -287,6 +294,10 @@ var NakedObjects;
                     break;
                 case (Transition.ToRecent):
                     replace = setupPaneNumberAndTypes(paneId, NakedObjects.recentPath);
+                    search = clearPane(search, paneId);
+                    break;
+                case (Transition.ToAttachment):
+                    replace = setupPaneNumberAndTypes(paneId, NakedObjects.attachmentPath);
                     search = clearPane(search, paneId);
                     break;
                 default:
@@ -387,6 +398,16 @@ var NakedObjects;
             var key = "" + akm.object + paneId;
             var newValues = _.zipObject([key], [oid]);
             executeTransition(newValues, paneId, Transition.ToObjectView, function () { return true; });
+        };
+        helper.setAttachment = function (attachmentlink, paneId) {
+            if (paneId === void 0) { paneId = 1; }
+            var href = attachmentlink.href();
+            var okey = "" + akm.object + paneId;
+            var akey = "" + akm.attachment + paneId;
+            var oid = getOidFromHref(href);
+            var pid = getPidFromHref(href);
+            var newValues = _.zipObject([okey, akey], [oid, pid]);
+            executeTransition(newValues, paneId, Transition.ToAttachment, function () { return true; });
         };
         helper.toggleObjectMenu = function (paneId) {
             if (paneId === void 0) { paneId = 1; }
@@ -597,4 +618,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.urlmanager.js.map

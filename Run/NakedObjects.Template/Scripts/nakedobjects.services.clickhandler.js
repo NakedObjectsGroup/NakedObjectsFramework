@@ -17,4 +17,3 @@ var NakedObjects;
         clickHandler.pane = sameOtherClickHandler;
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.clickhandler.js.map

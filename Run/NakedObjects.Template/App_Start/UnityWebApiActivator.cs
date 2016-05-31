@@ -5,12 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Common.Logging;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.WebApi;
 using NakedObjects.Template;
 using NakedObjects.Architecture.Component;
 using WebActivatorEx;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof (UnityWebApiActivator), "Start")]
 [assembly: ApplicationShutdownMethod(typeof (UnityWebApiActivator), "Shutdown")]
@@ -18,13 +20,24 @@ using WebActivatorEx;
 namespace NakedObjects.Template {
     /// <summary>Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET</summary>
     public static class UnityWebApiActivator {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(UnityWebApiActivator));
+
         /// <summary>Integrates Unity when the application starts.</summary>
-        public static void Start() {
-            // Use UnityHierarchicalDependencyResolver if you want to use a new child container for each IHttpController resolution.
-            // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
-            var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
-            GlobalConfiguration.Configuration.DependencyResolver = resolver;
-            UnityConfig.GetConfiguredContainer().Resolve<IReflector>().Reflect();
+        public static void Start()
+        {
+            try
+            {
+                // Use UnityHierarchicalDependencyResolver if you want to use a new child container for each IHttpController resolution.
+                // var resolver = new UnityHierarchicalDependencyResolver(UnityConfig.GetConfiguredContainer());
+                var resolver = new UnityDependencyResolver(UnityConfig.GetConfiguredContainer());
+                GlobalConfiguration.Configuration.DependencyResolver = resolver;
+                UnityConfig.GetConfiguredContainer().Resolve<IReflector>().Reflect();
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Error on UnityWebApiActivator:Start : {e.Message}");
+                throw;
+            }
         }
 
         /// <summary>Disposes the Unity container when the application is shut down.</summary>

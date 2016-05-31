@@ -19,12 +19,7 @@ var NakedObjects;
                 return $q.reject();
             }
             var entry = subtypeCache[index];
-            return context.isSubTypeOf(subtype, entry.type).then(function (b) {
-                if (b) {
-                    return $q.when(entry.color);
-                }
-                return isSubtypeOf(subtype, index + 1, count);
-            });
+            return context.isSubTypeOf(subtype, entry.type).then(function (b) { return b ? $q.when(entry.color) : isSubtypeOf(subtype, index + 1, count); });
         }
         function cacheAndReturn(type, color) {
             colorCache[type] = color;
@@ -82,4 +77,3 @@ var NakedObjects;
         };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.color.js.map

@@ -20,7 +20,7 @@ var NakedObjects;
     NakedObjects.noPatternMatch = "Invalid entry";
     NakedObjects.closeActions = "Close actions";
     NakedObjects.noActions = "No actions available";
-    NakedObjects.openActions = "Open actions";
+    NakedObjects.openActions = "Open actions (Alt-a)";
     NakedObjects.mandatoryFieldsPrefix = "Missing mandatory fields: ";
     NakedObjects.invalidFieldsPrefix = "Invalid fields: ";
     NakedObjects.unknownFileTitle = "UnknownFile";
@@ -30,7 +30,7 @@ var NakedObjects;
     NakedObjects.dropPrompt = "Drop here";
     NakedObjects.autoCompletePrompt = "(auto-complete)";
     NakedObjects.concurrencyError = "Object has been updated by another user\n. Object has been reloaded.";
+    NakedObjects.loadingMessage = "Loading...";
     NakedObjects.outOfRange = function (val, min, max, filter) { return ("Value is outside the range " + (filter.filter(min) || "unlimited") + " to " + (filter.filter(max) || "unlimited")); };
     NakedObjects.pageMessage = function (p, tp, c, tc) { return ("Page " + p + " of " + tp + "; viewing " + c + " of " + tc + " items"); };
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.userMessages.config.js.map

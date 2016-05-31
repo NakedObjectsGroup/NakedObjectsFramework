@@ -12,4 +12,3 @@ var NakedObjects;
         mask.setDateMaskMapping("D", "date", "d MMM yyyy hh:mm:ss");
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.mask.config.js.map

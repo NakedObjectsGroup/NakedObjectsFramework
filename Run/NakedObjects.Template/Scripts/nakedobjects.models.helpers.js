@@ -83,11 +83,17 @@ var NakedObjects;
         }
         Models.typeFromUrl = typeFromUrl;
         function idFromUrl(href) {
-            var urlRegex = /(objects|services)\/(.*)\/(.*)/;
+            var urlRegex = /(objects|services)\/(.*?)\/([^\/]*)/;
             var results = (urlRegex).exec(href);
             return (results && results.length > 3) ? results[3] : "";
         }
         Models.idFromUrl = idFromUrl;
+        function propertyIdFromUrl(href) {
+            var urlRegex = /(objects)\/(.*)\/(.*)\/(properties)\/(.*)/;
+            var results = (urlRegex).exec(href);
+            return (results && results.length > 5) ? results[5] : "";
+        }
+        Models.propertyIdFromUrl = propertyIdFromUrl;
         function friendlyTypeName(fullName) {
             var shortName = _.last(fullName.split("."));
             var result = shortName.replace(/([A-Z])/g, " $1").trim();
@@ -220,4 +226,3 @@ var NakedObjects;
         Models.validate = validate;
     })(Models = NakedObjects.Models || (NakedObjects.Models = {}));
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.models.helpers.js.map

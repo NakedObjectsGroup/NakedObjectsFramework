@@ -69,7 +69,7 @@ var NakedObjects;
             }
         };
     });
-    NakedObjects.app.directive("geminiAutocomplete", function () {
+    NakedObjects.app.directive("geminiAutocomplete", function (color) {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -99,9 +99,11 @@ var NakedObjects;
                 ngModel.$render = render;
                 var updateModel = function (cvm) {
                     scope.$apply(function () {
+                        viewModel.clear();
                         ngModel.$parsers.push(function () { return cvm; });
                         ngModel.$setViewValue(cvm.name);
                         element.val(cvm.name);
+                        viewModel.setColor(color);
                     });
                 };
                 optionsObj.source = function (request, response) {
@@ -431,7 +433,7 @@ var NakedObjects;
             }
         });
     }; });
-    NakedObjects.app.directive("geminiAttachment", function ($window) {
+    NakedObjects.app.directive("geminiViewattachment", function () {
         return {
             // Enforce the angularJS default of restricting the directive to
             // attributes only
@@ -442,47 +444,87 @@ var NakedObjects;
                 if (!ngModel) {
                     return;
                 }
-                function displayInline(mt) {
-                    return mt === "image/jpeg" ||
-                        mt === "image/gif" ||
-                        mt === "application/octet-stream";
+                ngModel.$render = function () {
+                    var attachment = ngModel.$modelValue;
+                    if (attachment) {
+                        var title_1 = attachment.title;
+                        element.empty();
+                        attachment.downloadFile().then(function (blob) {
+                            var reader = new FileReader();
+                            reader.onloadend = function () { return element.html("<img src='" + reader.result + "' alt='" + title_1 + "' />"); };
+                            reader.readAsDataURL(blob);
+                        });
+                    }
+                };
+            }
+        };
+    });
+    NakedObjects.app.directive("geminiFileupload", function () {
+        return {
+            restrict: "A",
+            scope: true,
+            require: "?ngModel",
+            link: function (scope, element, attrs, ngModel) {
+                if (!ngModel) {
+                    return;
+                }
+                element.bind("change", function () {
+                    var formData = new FormData();
+                    formData.append("file", element[0].files[0]);
+                    ngModel.$setViewValue(element[0].files[0]);
+                });
+            }
+        };
+    });
+    NakedObjects.app.directive("geminiAttachment", function ($compile, $window) {
+        return {
+            // Enforce the angularJS default of restricting the directive to
+            // attributes only
+            restrict: "A",
+            // Always use along with an ng-model
+            require: "?ngModel",
+            link: function (scope, element, attrs, ngModel) {
+                if (!ngModel) {
+                    return;
                 }
                 var clickHandler = function () {
                     var attachment = ngModel.$modelValue;
-                    attachment.downloadFile()
-                        .then(function (blob) {
-                        if (window.navigator.msSaveBlob) {
-                            // internet explorer 
-                            window.navigator.msSaveBlob(blob, attachment.title);
-                        }
-                        else {
-                            var burl = URL.createObjectURL(blob);
-                            $window.location.href = burl;
-                        }
-                    });
+                    if (!attachment.displayInline()) {
+                        attachment.downloadFile()
+                            .then(function (blob) {
+                            if (window.navigator.msSaveBlob) {
+                                // internet explorer 
+                                window.navigator.msSaveBlob(blob, attachment.title);
+                            }
+                            else {
+                                var burl = URL.createObjectURL(blob);
+                                $window.location.href = burl;
+                            }
+                        });
+                    }
                     return false;
                 };
                 ngModel.$render = function () {
                     var attachment = ngModel.$modelValue;
                     if (attachment) {
-                        var url = attachment.href;
-                        var mt = attachment.mimeType;
-                        var title_1 = attachment.title;
-                        var link = "<a href='" + url + "'><span></span></a>";
-                        element.append(link);
-                        var anchor_1 = element.find("a");
-                        if (displayInline(mt)) {
-                            attachment.downloadFile()
-                                .then(function (blob) {
+                        var title_2 = attachment.title;
+                        element.empty();
+                        var anchor = element.find("div");
+                        if (attachment.displayInline()) {
+                            attachment.downloadFile().then(function (blob) {
                                 var reader = new FileReader();
-                                reader.onloadend = function () { return anchor_1.html("<img src='" + reader.result + "' alt='" + title_1 + "' />"); };
+                                reader.onloadend = function () {
+                                    if (reader.result) {
+                                        element.html("<img src='" + reader.result + "' alt='" + title_2 + "' />");
+                                    }
+                                };
                                 reader.readAsDataURL(blob);
                             });
                         }
                         else {
-                            anchor_1.html(title_1);
+                            anchor.html(title_2);
+                            attachment.doClick = clickHandler;
                         }
-                        anchor_1.on("click", clickHandler);
                     }
                     else {
                         element.append("<div>Attachment not yet supported on transient</div>");
@@ -579,7 +621,8 @@ var NakedObjects;
             };
             var triStateClick = function () {
                 var d;
-                switch (el.data("checked")) {
+                var checkedBool = el.data("checked");
+                switch (checkedBool) {
                     case false:
                         d = true;
                         break;
@@ -594,7 +637,8 @@ var NakedObjects;
             };
             var twoStateClick = function () {
                 var d;
-                switch (el.data("checked")) {
+                var checkedBool = el.data("checked");
+                switch (checkedBool) {
                     case true:
                         d = false;
                         break;
@@ -608,4 +652,3 @@ var NakedObjects;
         }
     }); });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.directives.js.map

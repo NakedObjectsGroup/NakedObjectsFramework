@@ -17,4 +17,3 @@ var NakedObjects;
         }
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.exceptionhandler.js.map

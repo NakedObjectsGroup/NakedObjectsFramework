@@ -114,6 +114,19 @@ var NakedObjects;
             $scope.dialog = null;
             focusManager.focusOn(focusTarget, 0, routeData.paneId);
         }
+        function logoff() {
+            for (var pane = 1; pane <= 2; pane++) {
+                deRegDialog[pane].deReg();
+                deRegObject[pane].deReg();
+                deRegDialog[pane] = new DeReg();
+                deRegObject[pane] = new DeReg();
+                perPaneListViews[pane] = new NakedObjects.ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                perPaneObjectViews[pane] = new NakedObjects.DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
+                perPaneDialogViews[pane] = new NakedObjects.DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                perPaneMenusViews[pane] = new NakedObjects.MenusViewModel(viewModelFactory);
+            }
+        }
+        $rootScope.$on(NakedObjects.geminiLogoffEvent, function () { return logoff(); });
         handlers.handleHomeSearch = function ($scope, routeData) {
             context.clearWarnings();
             context.clearMessages();
@@ -158,15 +171,8 @@ var NakedObjects;
                 context.getActionExtensionsFromObject(routeData.paneId, ObjectIdWrapper.fromObjectId(routeData.objectId), routeData.actionId) :
                 context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
         }
-        function handleListSearchChanged($scope, routeData) {
-            // only update templates if changed 
-            var newListTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
+        function handleListActionsAndDialog($scope, routeData) {
             var newActionsTemplate = routeData.actionsOpen ? NakedObjects.actionsTemplate : NakedObjects.nullTemplate;
-            var listViewModel = $scope.collection;
-            if ($scope.listTemplate !== newListTemplate) {
-                $scope.listTemplate = newListTemplate;
-                listViewModel.refresh(routeData);
-            }
             if ($scope.actionsTemplate !== newActionsTemplate) {
                 $scope.actionsTemplate = newActionsTemplate;
             }
@@ -175,9 +181,20 @@ var NakedObjects;
             var currentDialogId = currentDialog ? currentDialog.id : null;
             var newDialogId = routeData.dialogId;
             if (currentDialogId !== newDialogId) {
+                var listViewModel = $scope.collection;
                 var actionViewModel = _.find(listViewModel.actions, function (a) { return a.actionRep.actionId() === newDialogId; });
                 setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
             }
+        }
+        function handleListSearchChanged($scope, routeData) {
+            // only update templates if changed 
+            var newListTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
+            var listViewModel = $scope.collection;
+            if ($scope.listTemplate !== newListTemplate) {
+                $scope.listTemplate = newListTemplate;
+                listViewModel.refresh(routeData);
+            }
+            handleListActionsAndDialog($scope, routeData);
         }
         handlers.handleListSearch = function ($scope, routeData) {
             var listKey = urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
@@ -193,10 +210,11 @@ var NakedObjects;
             var cachedList = context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
             if (cachedList) {
                 var listViewModel = perPaneListViews[routeData.paneId];
+                $scope.listTemplate = routeData.state === NakedObjects.CollectionViewState.List ? NakedObjects.listTemplate : NakedObjects.listAsTableTemplate;
                 listViewModel.reset(cachedList, routeData);
                 $scope.collection = listViewModel;
                 getActionExtensions(routeData).then(function (ext) { return $scope.title = ext.friendlyName(); });
-                handleListSearchChanged($scope, routeData);
+                handleListActionsAndDialog($scope, routeData);
             }
             else {
                 $scope.listTemplate = NakedObjects.listPlaceholderTemplate;
@@ -290,8 +308,8 @@ var NakedObjects;
                 handleNewObjectSearch($scope, routeData);
                 deRegObject[routeData.paneId].add($scope.$on("$locationChangeStart", ovm.setProperties));
                 deRegObject[routeData.paneId].add($scope.$watch(function () { return $location.search(); }, ovm.setProperties, true));
-                deRegObject[routeData.paneId].add($scope.$on("pane-swap", ovm.setProperties));
-                deRegObject[routeData.paneId].add($scope.$on("nof-display-error", ovm.displayError()));
+                deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiPaneSwapEvent, ovm.setProperties));
+                deRegObject[routeData.paneId].add($scope.$on(NakedObjects.geminiDisplayErrorEvent, ovm.displayError()));
             }).catch(function (reject) {
                 var handler = function (cc) {
                     if (cc === ClientErrorCode.ExpiredTransient) {
@@ -322,6 +340,20 @@ var NakedObjects;
                 handleNewObjectSearch($scope, routeData);
             }
         };
+        handlers.handleAttachment = function ($scope, routeData) {
+            context.clearWarnings();
+            context.clearMessages();
+            var oid = ObjectIdWrapper.fromObjectId(routeData.objectId);
+            $scope.attachmentTemplate = NakedObjects.attachmentTemplate;
+            context.getObject(routeData.paneId, oid, routeData.interactionMode)
+                .then(function (object) {
+                var attachmentId = routeData.attachmentId;
+                var attachment = object.propertyMember(attachmentId);
+                if (attachment && attachment.attachmentLink()) {
+                    var avm = viewModelFactory.attachmentViewModel(attachment, routeData.paneId);
+                    $scope.attachment = avm;
+                }
+            });
+        };
     });
 })(NakedObjects || (NakedObjects = {}));
-//# sourceMappingURL=nakedobjects.services.handlers.js.map

@@ -147,7 +147,7 @@ module NakedObjects.Models {
                         description = "A software error occurred";
                         break;
                     case ClientErrorCode.ConnectionProblem:
-                        description = "The client failed to connect to the server";
+                        description = "The client failed to connect to the server.";
                         break;
                 }
 
@@ -460,9 +460,9 @@ module NakedObjects.Models {
     export class Value {
 
         // note this is different from constructor parm as we wrap ILink
-        private wrapped: Link | Array<Link | valueType> | scalarValueType;
+        private wrapped: Link | Array<Link | valueType> | scalarValueType | Blob;
 
-        constructor(raw: Link | Array<Link | valueType> | valueType) {
+        constructor(raw: Link | Array<Link | valueType> | valueType | Blob) {
             // can only be Link, number, boolean, string or null    
 
             if (raw instanceof Array) {
@@ -474,6 +474,10 @@ module NakedObjects.Models {
             } else {
                 this.wrapped = raw;
             }
+        }
+
+        isBlob(): boolean {
+            return this.wrapped instanceof Blob;
         }
 
         isScalar(): boolean {
@@ -490,6 +494,10 @@ module NakedObjects.Models {
 
         isNull(): boolean {
             return this.wrapped == null;
+        }
+
+        blob(): Blob {
+            return this.isBlob() ? <Blob>this.wrapped : null;
         }
 
         link(): Link {
@@ -568,7 +576,11 @@ module NakedObjects.Models {
                 target.value = { "href": this.link().href() };
             } else if (this.isList()) {
                 target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());
-            } else {
+            }
+            else if (this.isBlob()){
+                target.value = this.blob();
+            }
+            else {
                 target.value = this.scalar();
             }
         }
@@ -936,6 +948,10 @@ module NakedObjects.Models {
                     return EntryType.MultipleChoices;
                 }
                 return EntryType.Choices;
+            }
+
+            if (this.extensions().format() === "blob") {
+                return EntryType.File;
             }
 
             return EntryType.FreeForm;
@@ -2119,7 +2135,7 @@ module NakedObjects.Models {
 
         members(): _.Dictionary<PropertyMember> {
             const members = (this.wrapped as ICustomLink).members ;
-            return _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember);
+            return members ? _.mapValues(members, (m, id) => Member.wrapMember(m, this, id) as PropertyMember) : null;
         }
 
         private lazyExtensions: Extensions;
@@ -2184,5 +2200,5 @@ module NakedObjects.Models {
         value(): Link[];
     }
 
-    export enum EntryType {FreeForm, Choices, MultipleChoices, ConditionalChoices, MultipleConditionalChoices, AutoComplete}
+    export enum EntryType {FreeForm, Choices, MultipleChoices, ConditionalChoices, MultipleConditionalChoices, AutoComplete, File}
 }

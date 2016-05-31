@@ -19,6 +19,7 @@ module NakedObjects {
     import MenuRepresentation = Models.MenuRepresentation;
     import IAction = Models.IInvokableAction;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
+    import propertyIdFromUrl = Models.propertyIdFromUrl;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -37,6 +38,9 @@ module NakedObjects {
         setList(action: IAction, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
+
+        setAttachment(attachmentLink: Link, paneId?: number): void;
+
         toggleObjectMenu(paneId?: number): void;
 
         setInteractionMode(newMode: InteractionMode, paneId?: number): void;
@@ -78,6 +82,7 @@ module NakedObjects {
         const akm = {
             action: "a",
             actions: "as",
+            attachment: "at",
             collection: "c",
             dialog: "d",
             errorCat: "et",
@@ -91,6 +96,7 @@ module NakedObjects {
             prop: "pp",
             selected: "s"
         };
+
         const capturedPanes = [] as { paneType: string; search: Object }[];
 
         let currentPaneId = 1;
@@ -217,6 +223,8 @@ module NakedObjects {
 
             paneRouteData.selectedItems = arrayFromMask(getId(akm.selected + paneId, $routeParams));
 
+            paneRouteData.attachmentId = getId(akm.attachment + paneId, $routeParams);
+
             paneRouteData.validate($location.url());
         }
 
@@ -313,6 +321,10 @@ module NakedObjects {
             return oid.getKey();
         }
 
+        function getPidFromHref(href: string) {
+            return propertyIdFromUrl(href);
+        }
+
         function setValue(paneId: number, search: any, p: { id: () => string }, pv: Value, valueType: string) {
             setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(), search);
         }
@@ -342,7 +354,8 @@ module NakedObjects {
             LeaveEdit,
             Page,
             ToTransient,
-            ToRecent
+            ToRecent,
+            ToAttachment
         }
 
         function getId(key: string, search: any) {
@@ -411,6 +424,10 @@ module NakedObjects {
                 break;
             case (Transition.ToRecent):
                 replace = setupPaneNumberAndTypes(paneId, recentPath);
+                search = clearPane(search, paneId);
+                break;
+            case (Transition.ToAttachment):
+                replace = setupPaneNumberAndTypes(paneId, attachmentPath);
                 search = clearPane(search, paneId);
                 break;
             default:
@@ -525,6 +542,19 @@ module NakedObjects {
             const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
+
+        helper.setAttachment = (attachmentlink: Link, paneId = 1) => {
+            const href = attachmentlink.href();
+            const okey = `${akm.object}${paneId}`;
+            const akey = `${akm.attachment}${paneId}`;
+            const oid = getOidFromHref(href);
+            const pid = getPidFromHref(href);
+
+
+            const newValues = _.zipObject([okey, akey], [oid, pid]) as _.Dictionary<string>;
+            executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
+        };
+
         helper.toggleObjectMenu = (paneId = 1) => {
             const key = akm.actions + paneId;
             const actionsId = getSearch()[key] ? null : "open";
