@@ -50,7 +50,7 @@ namespace AdventureWorksModel
             SalesTerritory = cus.SalesTerritory;
             StoreName = cus.Store.Name;
             SalesPerson = cus.Store.SalesPerson;
-            var edit = bool.Parse(keys[1]);
+            EditMode = bool.Parse(keys[1]);
         }
 
         public bool IsEditView()
