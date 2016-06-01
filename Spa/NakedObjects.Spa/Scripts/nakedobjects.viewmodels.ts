@@ -1116,6 +1116,10 @@ module NakedObjects {
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
+    export class ApplicationPropertiesViewModel {
+        userName : string;
+    }
+
     export class ToolBarViewModel {
         loading: string;
         template: string;
@@ -1166,6 +1170,7 @@ module NakedObjects {
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
         attachment: AttachmentViewModel;
+        applicationProperties: ApplicationPropertiesViewModel;
     }
 
     export class CiceroViewModel {

@@ -486,8 +486,13 @@ module NakedObjects {
                 context.clearMessages();
            
                 $scope.applicationPropertiesTemplate = applicationPropertiesTemplate;
+                
+                const apvm = new ApplicationPropertiesViewModel();
+                $scope.applicationProperties = apvm;
 
-               
+                context.getUser().then(u => apvm.userName = u.userName() || "Unknown" );
+
+
             }
 
 
