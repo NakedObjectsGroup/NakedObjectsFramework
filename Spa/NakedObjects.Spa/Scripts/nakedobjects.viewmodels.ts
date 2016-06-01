@@ -64,15 +64,6 @@ module NakedObjects {
         return onWhat.disableActions() ? noActions : openActions;
     }
 
-    export function createActionSubmenuMap(avms: ActionViewModel[], menu: { name: string, actions: ActionViewModel[] }) {
-        // if not root menu aggregate all actions with same name
-        if (menu.name) {
-            const actions = _.filter(avms, a => a.menuPath === menu.name);
-            menu.actions = actions;
-        }
-        return menu;
-    }
-
     export function toTriStateBoolean(valueToSet: string | boolean | number) {
 
         // looks stupid but note type checking
@@ -85,24 +76,67 @@ module NakedObjects {
         return null;
     }
 
-    export function createActionMenuMap(avms: ActionViewModel[]) {
+    function getMenuForLevel(menupath: string, level: number) {
+        let menu = "";
 
-        // first create a menu for each action 
-        let menus = _
-            .chain(avms)
-            .map(a => ({ name: a.menuPath, actions: [a] }))
-            .value();
+        if (menupath && menupath.length > 0) {
+            const menus = menupath.split("-");
 
-        // remove non unique submenus 
-        menus = _.uniqWith(menus, (a: { name: string }, b: { name: string }) => {
+            if (menus.length > level) {
+                menu = menus[level];
+            }
+        }
+
+        return menu || "";
+    }
+
+    function removeDuplicateMenus(menus: MenuItemViewModel[]) {
+        return _.uniqWith(menus, (a: MenuItemViewModel, b: MenuItemViewModel) => {
             if (a.name && b.name) {
                 return a.name === b.name;
             }
             return false;
         });
+    }
+
+    export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
+        // if not root menu aggregate all actions with same name
+        if (menu.name) {
+            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && 
+                                               !getMenuForLevel(a.menuPath, level + 1));
+            menu.actions = actions;
+
+            //then collate submenus 
+
+            const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
+                                                       getMenuForLevel(a.menuPath, level + 1));
+            let menus = _
+                .chain(submenuActions)
+                .map(a => ({ name: getMenuForLevel(a.menuPath, level + 1), actions: null, menuItems: null }))
+                .value();
+
+            menus = removeDuplicateMenus(menus);
+
+            menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
+        }
+        return menu;
+    }
+
+  
+    export function createMenuItems(avms: ActionViewModel[]) {
+
+        // first create a top level menu for each action 
+        // note at top level we leave 'un-menued' actions
+        let menus = _
+            .chain(avms)
+            .map(a => ({ name: getMenuForLevel(a.menuPath, 0), actions: [a], menuItems : null }))
+            .value();
+
+        // remove non unique submenus 
+        menus = removeDuplicateMenus(menus);
 
         // update submenus with all actions under same submenu
-        return _.map(menus, m => createActionSubmenuMap(avms, m));
+        return _.map(menus, m => createSubmenuItems(avms, m, 0));
     }
 
     export class AttachmentViewModel {
@@ -181,6 +215,8 @@ module NakedObjects {
         description: string;
         isConcurrencyError: boolean;
     }
+
+
 
     export class LinkViewModel implements IDraggableViewModel {
         title: string;
@@ -392,6 +428,12 @@ module NakedObjects {
         stopWatchingParms: () => void;
 
         makeInvokable: (details: IInvokableAction) => void;
+    }
+
+    export class MenuItemViewModel {
+        name: string;
+        actions: ActionViewModel[];
+        menuItems: MenuItemViewModel[];
     }
 
     export class DialogViewModel extends MessageViewModel {
@@ -638,7 +680,7 @@ module NakedObjects {
 
             const actions = this.listRep.actionMembers();
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
-            this.actionsMap = createActionMenuMap(this.actions);
+            this.menuItems = createMenuItems(this.actions);
 
             _.forEach(this.actions, a => this.decorate(a));
                
@@ -731,7 +773,7 @@ module NakedObjects {
         actionsTooltip = () => actionsTooltip(this, !!this.routeData.actionsOpen);
 
         actions: ActionViewModel[];
-        actionsMap: { name: string; actions: ActionViewModel[] }[];
+        menuItems: MenuItemViewModel[];
 
         actionMember = (id: string) => {
             const actionViewModel = _.find(this.actions, a => a.actionRep.actionId() === id);
@@ -761,7 +803,7 @@ module NakedObjects {
         template: string;
 
         actions: ActionViewModel[];
-        actionsMap: { name: string; actions: ActionViewModel[] }[];
+        menuItems: MenuItemViewModel[];
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
@@ -800,7 +842,7 @@ module NakedObjects {
         title: string;
         serviceId: string;
         actions: ActionViewModel[];
-        actionsMap: { name: string; actions: ActionViewModel[] }[];
+        menuItems: MenuItemViewModel[];
         color: string;
     }
 
@@ -808,7 +850,7 @@ module NakedObjects {
         id: string;
         title: string;
         actions: ActionViewModel[];
-        actionsMap: { name: string; actions: ActionViewModel[] }[];
+        menuItems: MenuItemViewModel[];
         color: string;
         menuRep: Models.MenuRepresentation;
     }
@@ -901,7 +943,7 @@ module NakedObjects {
             const actions = _.values(this.domainObject.actionMembers()) as ActionMember[];
             this.actions = _.map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
 
-            this.actionsMap = createActionMenuMap(this.actions);
+            this.menuItems = createMenuItems(this.actions);
 
             this.properties = _.map(this.domainObject.propertyMembers(), (property, id) => this.viewModelFactory.propertyViewModel(property, id, this.props[id], this.onPaneId, this.propertyMap));
             this.collections = _.map(this.domainObject.collectionMembers(), collection => this.viewModelFactory.collectionViewModel(collection, this.routeData));
@@ -972,7 +1014,7 @@ module NakedObjects {
         choice: ChoiceViewModel;
         color: string;
         actions: ActionViewModel[];
-        actionsMap: { name: string; actions: ActionViewModel[] }[];
+        menuItems: MenuItemViewModel[];
         properties: PropertyViewModel[];
         collections: CollectionViewModel[];
         unsaved: boolean;
@@ -1074,6 +1116,10 @@ module NakedObjects {
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
+    export class ApplicationPropertiesViewModel {
+        userName : string;
+    }
+
     export class ToolBarViewModel {
         loading: string;
         template: string;
@@ -1087,6 +1133,7 @@ module NakedObjects {
         recent: (right?: boolean) => void;
         cicero: () => void;
         userName: string;
+        applicationProperties: () => void;
 
         warnings: string[];
         messages: string[];
@@ -1110,6 +1157,7 @@ module NakedObjects {
         objectTemplate: string;
         collectionsTemplate: string;
         attachmentTemplate: string;
+        applicationPropertiesTemplate : string;
 
         menus: MenusViewModel;
         object: DomainObjectViewModel;
@@ -1122,6 +1170,7 @@ module NakedObjects {
         toolBar: ToolBarViewModel;
         cicero: CiceroViewModel;
         attachment: AttachmentViewModel;
+        applicationProperties: ApplicationPropertiesViewModel;
     }
 
     export class CiceroViewModel {

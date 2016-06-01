@@ -1,14 +1,17 @@
-﻿<div ng-repeat="menu in (menu.actionsMap || object.actionsMap || collection.actionsMap)">
+﻿<div ng-repeat="menu in (menu.menuItems || object.menuItems || collection.menuItems)">
     <div ng-hide="!menu.name" ng-init="navCollapsed = !!menu.name" ng-click="navCollapsed = !navCollapsed" class="submenu clickable-area" ng-switch="navCollapsed">
         {{menu.name}}
         <div ng-switch-when="true" class="icon-expand"></div>
         <div ng-switch-when="false" class="icon-collapse"></div>
     </div>
     <div class="" ng-class="{collapsed : navCollapsed, open : !navCollapsed, rootMenu : !menu.name }">
-        <div ng-repeat="action in menu.actions">
+        <div  ng-show="menu.actions"  ng-repeat="action in menu.actions">
             <div class="action clickable-area" title="{{action.description}}" tabindex="0" ng-click="action.doInvoke()" gemini-enter="action.doInvoke()" gemini-rightclick="action.doInvoke(true)" ng-disabled="action.disabled()">
                 {{action.title}}
             </div>
+        </div>
+        <div ng-show="menu.menuItems" ng-include="actionsTemplate">
+            
         </div>
     </div>
 </div>

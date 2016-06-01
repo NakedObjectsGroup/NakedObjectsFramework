@@ -134,7 +134,7 @@ module NakedObjects {
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = ChoiceViewModel.create(value, "");
 
-            linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(targetType, linkViewModel.domainType);
+            linkViewModel.canDropOn = (targetType: string) => context.isSubTypeOf(linkViewModel.domainType, targetType);
 
             linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
@@ -842,7 +842,7 @@ module NakedObjects {
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, serviceViewModel, routeData));
-            serviceViewModel.actionsMap = createActionMenuMap(serviceViewModel.actions);
+            serviceViewModel.menuItems = createMenuItems(serviceViewModel.actions);
 
             color.toColorNumberFromType(serviceRep.serviceId()).then((c: number) => {
                 serviceViewModel.color = `${objectColor}${c}`;
@@ -861,7 +861,7 @@ module NakedObjects {
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, action => viewModelFactory.actionViewModel(action, menuViewModel, routeData));
 
-            menuViewModel.actionsMap = createActionMenuMap(menuViewModel.actions);
+            menuViewModel.menuItems = createMenuItems(menuViewModel.actions);
 
 
             return menuViewModel;
@@ -937,6 +937,11 @@ module NakedObjects {
                         $timeout(() => window.location.href = postLogoffUrl);
                     });
                 };
+
+                tvm.applicationProperties = () => {
+                    urlManager.applicationProperties();
+                };
+
 
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;

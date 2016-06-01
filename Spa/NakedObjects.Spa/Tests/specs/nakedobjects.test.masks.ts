@@ -55,7 +55,7 @@ module NakedObjects.Test.Masks {
                 let ts3: string;
 
                 beforeEach(() => {
-                    maskService.setDateMaskMapping("test", "date-time", "d MMM yyyy hh:mm:ss");
+                    maskService.setDateMaskMapping("test", "date-time", "d MMM yyyy HH:mm:ss");
 
                     const f = maskService.toLocalFilter("test", "date-time");
 
@@ -88,9 +88,9 @@ module NakedObjects.Test.Masks {
                 it("masks null", () => testDefaultMask(null, "time", null));         
 
                 // these tests are UTC => UTC
-                it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "time", "04:27:10"));
-                it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "time", "01:13:55"));
-                it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "time", "11:45:08"));
+                it("masks arbitaryDate1", () => testDefaultMask(arbitaryDate1, "time", "16:27"));
+                it("masks arbitaryDate2", () => testDefaultMask(arbitaryDate2, "time", "01:13"));
+                it("masks arbitaryDate3", () => testDefaultMask(arbitaryDate3, "time", "23:45"));
             });
 
             describe("custom date-time", () => {

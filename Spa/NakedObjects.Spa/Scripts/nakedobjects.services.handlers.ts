@@ -29,6 +29,7 @@ module NakedObjects {
         handleListSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleAttachment(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
+        handleApplicationProperties(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
     }
 
     app.service("handlers",
@@ -479,5 +480,21 @@ module NakedObjects {
                         }
                     });
             }
+
+            handlers.handleApplicationProperties = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                context.clearWarnings();
+                context.clearMessages();
+           
+                $scope.applicationPropertiesTemplate = applicationPropertiesTemplate;
+                
+                const apvm = new ApplicationPropertiesViewModel();
+                $scope.applicationProperties = apvm;
+
+                context.getUser().then(u => apvm.userName = u.userName() || "Unknown" );
+
+
+            }
+
+
         });
 }

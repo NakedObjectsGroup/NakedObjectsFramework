@@ -52,6 +52,7 @@ module NakedObjects {
     export const recentTemplate = getSvrPath() + "Content/partials/recent.html";
     export const attachmentTemplate = getSvrPath() + "Content/partials/attachment.html";
     export const ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
+    export const applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
 
     // routing constants 
 
@@ -63,6 +64,7 @@ module NakedObjects {
     export const errorPath = "error";
     export const recentPath = "recent";
     export const attachmentPath = "attachment";
+    export const applicationPropertiesPath = "appplicationProperties";
 
     //Restful Objects constants
     export const roDomainType = "x-ro-domain-type";
