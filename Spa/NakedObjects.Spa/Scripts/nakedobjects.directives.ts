@@ -156,7 +156,6 @@ module NakedObjects {
         };
     });
 
-
     app.directive("geminiAutocomplete", (color: IColor): ng.IDirective => {
         return {
             // Enforce the angularJS default of restricting the directive to
@@ -583,13 +582,15 @@ module NakedObjects {
             const vKeyCode = 86;
             const deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
-                event.preventDefault();
+             
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
 
                 if (draggableVm) {
+                    // only consume event if we are actually dropping on a field
+                    event.preventDefault();
                     droppableScope.$apply(() => droppableVm.drop(draggableVm));
                 }
             }
