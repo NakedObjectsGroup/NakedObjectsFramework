@@ -90,6 +90,15 @@ module NakedObjects {
         return menu || "";
     }
 
+    function removeDuplicateMenus(menus: MenuItemViewModel[]) {
+        return _.uniqWith(menus, (a: MenuItemViewModel, b: MenuItemViewModel) => {
+            if (a.name && b.name) {
+                return a.name === b.name;
+            }
+            return false;
+        });
+    }
+
     export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
@@ -106,13 +115,7 @@ module NakedObjects {
                 .map(a => ({ name: getMenuForLevel(a.menuPath, level + 1), actions: null, menuItems: null }))
                 .value();
 
-            // remove non unique submenus 
-            menus = _.uniqWith(menus, (a: { name: string }, b: { name: string }) => {
-                if (a.name && b.name) {
-                    return a.name === b.name;
-                }
-                return false;
-            });
+            menus = removeDuplicateMenus(menus);
 
             menu.menuItems = _.map(menus, m => createSubmenuItems(submenuActions, m, level + 1));
         }
@@ -123,18 +126,14 @@ module NakedObjects {
     export function createMenuItems(avms: ActionViewModel[]) {
 
         // first create a top level menu for each action 
+        // note at top level we leave 'un-menued' actions
         let menus = _
             .chain(avms)
             .map(a => ({ name: getMenuForLevel(a.menuPath, 0), actions: [a], menuItems : null }))
             .value();
 
         // remove non unique submenus 
-        menus = _.uniqWith(menus, (a: { name: string }, b: { name: string }) => {
-            if (a.name && b.name) {
-                return a.name === b.name;
-            }
-            return false;
-        });
+        menus = removeDuplicateMenus(menus);
 
         // update submenus with all actions under same submenu
         return _.map(menus, m => createSubmenuItems(avms, m, 0));
