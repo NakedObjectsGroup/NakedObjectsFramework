@@ -101,7 +101,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CopyToClipboard(title);
             string selector = "#pane1 .parameter .value";
             var target = WaitForCss(selector);
-            Assert.AreEqual("* Drop here", target.Text);
+            Assert.AreEqual("* (drop here)", target.Text);
 
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
             //Test that color has changed
@@ -116,7 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CopyToClipboard(title);
             string selector = "#pane1 .parameter .value";
             var target = WaitForCss(selector);
-            Assert.AreEqual("* Drop here", target.Text);
+            Assert.AreEqual("* (drop here)", target.Text);
             PasteIntoReferenceField("#pane1 .parameter .value.droppable");
         }
         public virtual void PasteIntoAutoCompleteField()
@@ -173,7 +173,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var field = WaitForCss(fieldCss);
             Assert.AreEqual("Ben Miller", field.Text);
             field.SendKeys(Keys.Delete);
-            wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).Text == "* Drop here");
+            wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).Text == "* (drop here)");
         }
         public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed()
         {

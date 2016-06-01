@@ -244,7 +244,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Url(SalesServiceUrl);
             WaitForView(Pane.Single, PaneType.Home, "Home");
             OpenActionDialog("List Accounts For Sales Person");
-            wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete)");
+            wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
             ClearFieldThenType("#sp1", "Valdez");
             wait.Until(d => d.FindElements(By.CssSelector(".ui-menu-item")).Count > 0);
             Click(WaitForCss(".ui-menu-item"));
