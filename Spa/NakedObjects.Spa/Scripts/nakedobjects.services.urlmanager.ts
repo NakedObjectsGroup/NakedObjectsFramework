@@ -71,6 +71,7 @@ module NakedObjects {
         cicero(): void;
 
         reload(): void;
+        applicationProperties(): void;
     }
 
     app.service("urlManager", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window : ng.IWindowService) {
@@ -742,6 +743,9 @@ module NakedObjects {
             capturedPanes[paneId] = null;
         };
 
+
+
+
         function swapSearchIds(search: any) {
             return _.mapKeys(search,
             (v : any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === "1" ? "2" : "1"}${p3}`));
@@ -758,10 +762,16 @@ module NakedObjects {
 
             $location.path(newPath).search(search);
         };
+
         helper.cicero = () => {
             const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
             $location.path(newPath);
         };
+
+        helper.applicationProperties = () => {
+            $location.path(`/${geminiPath}/${applicationPropertiesPath}`);
+        };
+
         helper.currentpane = () => currentPaneId;
 
         helper.singlePane = (paneId = 1) => {

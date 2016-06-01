@@ -938,6 +938,11 @@ module NakedObjects {
                     });
                 };
 
+                tvm.applicationProperties = () => {
+                    urlManager.applicationProperties();
+                };
+
+
                 tvm.template = appBarTemplate;
                 tvm.footerTemplate = footerTemplate;
 

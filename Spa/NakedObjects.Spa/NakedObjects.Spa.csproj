@@ -23,6 +23,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Content\partials\attachment.html" />
+    <Content Include="Content\partials\applicationProperties.html" />
+    <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\collectionList.html" />
     <Content Include="Content\partials\collectionTable.html" />

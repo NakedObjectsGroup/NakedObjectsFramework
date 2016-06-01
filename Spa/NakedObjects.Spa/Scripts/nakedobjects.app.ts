@@ -43,6 +43,8 @@ module NakedObjects {
         const splitAttachmentRecentTemplate = getSvrPath() + "Content/partials/splitAttachmentRecent.html";
         const splitAttachmentAttachmentTemplate = getSvrPath() + "Content/partials/splitAttachmentAttachment.html";
 
+        const singleApplicationPropertiesTemplate = getSvrPath() + "Content/partials/singleApplicationProperties.html";
+
         const singleErrorTemplate = getSvrPath() + "Content/partials/singleError.html";
 
         $routeProvider.
@@ -198,9 +200,10 @@ module NakedObjects {
                 controller: "BackgroundController",
                 reloadOnSearch: false
             }).
-
-
-
+            when(`/${geminiPath}/${applicationPropertiesPath}`, {
+                templateUrl: singleApplicationPropertiesTemplate,
+                controller: "BackgroundController"
+            }).
             when(`/${geminiPath}/${errorPath}`, {
                 templateUrl: singleErrorTemplate,
                 controller: "ErrorController"

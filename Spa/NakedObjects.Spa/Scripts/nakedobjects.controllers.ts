@@ -100,6 +100,15 @@ module NakedObjects {
         pane2Dereg = $scope.$on("$routeUpdate", () => handlers.handleAttachment($scope, urlManager.getRouteData().pane2)) as () => void;
     });
 
+    app.controller("ApplicationPropertiesController", ($scope: INakedObjectsScope, handlers: IHandlers, urlManager: IUrlManager) => {
+        pane1Dereg();
+        pane2Dereg();
+
+        const routeData = urlManager.getRouteData();
+        handlers.handleApplicationProperties($scope, routeData.pane1);
+    });
+
+
     app.controller("BackgroundController", ($scope: INakedObjectsScope, handlers: IHandlers) => {
         handlers.handleBackground($scope);
     });

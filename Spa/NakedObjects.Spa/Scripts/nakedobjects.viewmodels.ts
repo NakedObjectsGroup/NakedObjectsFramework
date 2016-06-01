@@ -1130,6 +1130,7 @@ module NakedObjects {
         recent: (right?: boolean) => void;
         cicero: () => void;
         userName: string;
+        applicationProperties: () => void;
 
         warnings: string[];
         messages: string[];
@@ -1153,6 +1154,7 @@ module NakedObjects {
         objectTemplate: string;
         collectionsTemplate: string;
         attachmentTemplate: string;
+        applicationPropertiesTemplate : string;
 
         menus: MenusViewModel;
         object: DomainObjectViewModel;
