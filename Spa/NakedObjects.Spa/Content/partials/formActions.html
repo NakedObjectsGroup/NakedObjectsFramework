@@ -1,4 +1,4 @@
-﻿<div  ng-repeat="menu in (menu.actionsMap || object.actionsMap || collection.actionsMap)">
+﻿<div  ng-repeat="menu in (menu.menuItems || object.menuItems || collection.menuItems)">
     <!--<button ng-hide="!menu.name" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" class="submenu">{{menu.name}}</button>-->
     <!--<div class="" ng-class="navCollapsed ? 'collapsed' : 'open'">-->
         <div ng-repeat="action in menu.actions" >
