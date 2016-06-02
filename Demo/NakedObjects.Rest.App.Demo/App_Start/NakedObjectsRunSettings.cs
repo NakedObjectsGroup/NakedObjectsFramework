@@ -88,12 +88,14 @@ namespace NakedObjects.Rest.App.Demo {
         public static IMenu[] MainMenus(IMenuFactory factory) {
             var customerMenu = factory.NewMenu<CustomerRepository>(false);
             CustomerRepository.Menu(customerMenu);
+            var salesMenu = factory.NewMenu<SalesRepository>(false);
+            SalesRepository.Menu(salesMenu);
             return new[] {
                     customerMenu,
                     factory.NewMenu<OrderRepository>(true),
                     factory.NewMenu<ProductRepository>(true),
                     factory.NewMenu<EmployeeRepository>(true),
-                    factory.NewMenu<SalesRepository>(true),
+                    salesMenu,
                     factory.NewMenu<SpecialOfferRepository>(true),
                     factory.NewMenu<PersonRepository>(true),
                     factory.NewMenu<VendorRepository>(true),

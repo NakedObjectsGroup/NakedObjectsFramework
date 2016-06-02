@@ -27,18 +27,18 @@ namespace AdventureWorksModel {
         #endregion
 
         public static void Menu(IMenu menu) {
-            menu.AddAction("FindCustomerByAccountNumber");
+            menu.AddAction(nameof(FindCustomerByAccountNumber));
             menu.CreateSubMenu("Stores")
-                .AddAction("FindStoreByName")
-                .AddAction("CreateNewStoreCustomer")
-                .AddAction("RandomStore");
+                .AddAction(nameof(FindStoreByName))
+                .AddAction(nameof(CreateNewStoreCustomer))
+                .AddAction(nameof(RandomStore));
             menu.CreateSubMenu("Individuals")
-                .AddAction("FindIndividualCustomerByName")
-                .AddAction("CreateNewIndividualCustomer")
-                .AddAction("RandomIndividual");
-            menu.AddAction("CustomerDashboard");
-            menu.AddAction("ThrowDomainException");
-            menu.AddAction("FindCustomer");
+                .AddAction(nameof(FindIndividualCustomerByName))
+                .AddAction(nameof(CreateNewIndividualCustomer))
+                .AddAction(nameof(RandomIndividual));
+            menu.AddAction(nameof(CustomerDashboard));
+            menu.AddAction(nameof(ThrowDomainException));
+            menu.AddAction(nameof(FindCustomer));
             menu.AddRemainingNativeActions();
         }
 

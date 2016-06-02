@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
     [DisplayName("Sales")]
@@ -64,9 +65,26 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public void TestAction(SalesReason reason)
-        {
+        #region Sub-menu hierarchy for testing only
 
+        public static void Menu(IMenu menu)
+        {
+            menu.AddAction(nameof(CreateNewSalesPerson));
+            menu.AddAction(nameof(FindSalesPersonByName));
+            menu.AddAction(nameof(ListAccountsForSalesPerson));
+            menu.AddAction(nameof(RandomSalesPerson));
+            menu.CreateSubMenu("Sub Menu")
+                .AddAction(nameof(Action1))
+                .CreateSubMenu("Level 2 sub menu")
+                .AddAction(nameof(Action2))
+                .CreateSubMenu("Level 3 sub menu")
+                .AddRemainingNativeActions();
         }
+        public void Action1() { }
+        public void Action2() { }
+        public void Action3() { }
+        public void Action4() { }
+        #endregion
+
     }
 }

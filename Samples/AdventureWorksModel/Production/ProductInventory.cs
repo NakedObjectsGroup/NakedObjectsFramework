@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
+using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
     [IconName("cartons.png")]
@@ -76,6 +77,25 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        #endregion
+
+
+        #region Sub-menu hierarchy for testing only
+
+        public static void Menu(IMenu menu)
+        {
+            menu.CreateSubMenu("Sub Menu")
+                .AddAction(nameof(Action1))
+                .CreateSubMenu("Level 2 sub menu")
+                .AddAction(nameof(Action2))
+                .CreateSubMenu("Level 3 sub menu")
+                .AddRemainingNativeActions();
+        }
+        public void Action1() { }
+        public void Action2() { } 
+        public void Action3() { }
+
+        public void Action4() { }
         #endregion
     }
 }
