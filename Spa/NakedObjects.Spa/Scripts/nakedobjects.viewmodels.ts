@@ -286,7 +286,7 @@ module NakedObjects {
         reference: string;
         choice: ChoiceViewModel;
         multiChoices: ChoiceViewModel[];
-        file : Blob;
+        file : Link;
 
         returnType: string;
         title: string;

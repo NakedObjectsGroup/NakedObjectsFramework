@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
-using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,6 +23,7 @@ using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Facade.Facade;
 using NakedObjects.Facade.Impl.Contexts;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
@@ -625,8 +625,8 @@ namespace NakedObjects.Facade.Impl {
 
             var fromStreamFacet = specification.GetFacet<IFromStreamFacet>();
             if (fromStreamFacet != null) {
-                var httpPostedFileBase = (HttpPostedFileBase) rawValue;
-                return fromStreamFacet.ParseFromStream(httpPostedFileBase.InputStream, httpPostedFileBase.ContentType, httpPostedFileBase.FileName, Framework.NakedObjectManager);
+                var attachmentFacade = (IAttachmentFacade) rawValue;
+                return fromStreamFacet.ParseFromStream(attachmentFacade.InputStream, attachmentFacade.ContentType, attachmentFacade.FileName, Framework.NakedObjectManager);
             }
 
             if (specification.IsParseable) {
