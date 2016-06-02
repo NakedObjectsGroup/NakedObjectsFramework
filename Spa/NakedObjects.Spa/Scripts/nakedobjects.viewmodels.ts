@@ -26,7 +26,9 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
-    import toTimeString = Models.toTimeString;
+    import toTimeString = Models.toTimeString;  
+    import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
+    import IUserRepresentation = RoInterfaces.IUserRepresentation;
 
     export interface IDraggableViewModel {
         canDropOn: (targetType: string) => ng.IPromise<boolean>;
@@ -1116,8 +1118,11 @@ module NakedObjects {
         canDropOn = (targetType: string) => this.contextService.isSubTypeOf(this.domainType, targetType);
     }
 
+
     export class ApplicationPropertiesViewModel {
-        userName : string;
+        version: IVersionRepresentation;
+        user: IUserRepresentation;
+        serverUrl: string;
     }
 
     export class ToolBarViewModel {

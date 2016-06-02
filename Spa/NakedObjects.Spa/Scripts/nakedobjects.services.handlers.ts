@@ -490,8 +490,10 @@ module NakedObjects {
                 const apvm = new ApplicationPropertiesViewModel();
                 $scope.applicationProperties = apvm;
 
-                context.getUser().then(u => apvm.userName = u.userName() || "Unknown" );
+                context.getUser().then(u => apvm.user = u.wrapped() );
+                context.getVersion().then(v => apvm.version = v.wrapped());
 
+                apvm.serverUrl = getAppPath();
 
             }
 
