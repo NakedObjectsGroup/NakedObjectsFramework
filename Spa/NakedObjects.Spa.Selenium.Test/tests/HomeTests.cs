@@ -89,12 +89,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
             AssertActionNotDisplayed("Action2");
             OpenSubMenu("Level 2 sub menu");
             GetObjectAction("Action2");
+            AssertActionNotDisplayed("Action3");
+            AssertActionNotDisplayed("Action4");
+            OpenSubMenu("Level 3 sub menu");
+            GetObjectAction("Action3");
+            GetObjectAction("Action4");
+            CloseSubMenu("Level 3 sub menu");
+            GetObjectAction("Action1");
+            GetObjectAction("Action2");
+            AssertActionNotDisplayed("Action3");
+            AssertActionNotDisplayed("Action4");
             CloseSubMenu("Level 2 sub menu");
             GetObjectAction("Action1");
             AssertActionNotDisplayed("Action2");
+            AssertActionNotDisplayed("Action3");
+            AssertActionNotDisplayed("Action4");
             CloseSubMenu("Sub Menu");
             AssertActionNotDisplayed("Action1");
             AssertActionNotDisplayed("Action2");
+            AssertActionNotDisplayed("Action3");
+            AssertActionNotDisplayed("Action4");
         }
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {
