@@ -5,9 +5,9 @@
 /// <reference path="typings/moment/moment.d.ts"/>
 
 module NakedObjects {
+    import Link = Models.Link;
     import Value = Models.Value;
     import toDateString = Models.toDateString;
-    import toTimeString = Models.toTimeString;
     import EntryType = Models.EntryType;
 
     interface ISelectObj {
@@ -632,7 +632,7 @@ module NakedObjects {
         };
     });
 
-    app.directive("geminiFileupload",  () => {
+    app.directive("geminiFileupload", () => {
         return {
             restrict: "A",
             scope: true,
@@ -644,11 +644,25 @@ module NakedObjects {
                 }
 
                 element.bind("change", () => {
-                    var formData = new FormData();
-                    formData.append("file", (element[0] as any).files[0]);
-                    ngModel.$setViewValue((element[0] as any).files[0]);
-                });
+                    const file = (element[0] as any).files[0] as File;
 
+                    const fileReader = new FileReader();
+                    fileReader.onloadend = () => {
+
+                        const href = fileReader.result;
+                        const type = file.type;
+                        const title = file.name;
+
+                        const iLink = { href: href, type: type, title: title } as RoInterfaces.ILink;
+                        const link = new Link(iLink);
+
+                        ngModel.$setViewValue(link);
+
+                    };
+
+                    fileReader.readAsDataURL(file);
+
+                });
             }
         };
     });

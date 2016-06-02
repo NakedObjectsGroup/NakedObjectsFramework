@@ -61,6 +61,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API\RestfulObjectsControllerBase.cs" />
+    <Compile Include="Model\PostedFileAdapter.cs" />
+    <Compile Include="Model\FileValue.cs" />
+    <Compile Include="Model\JsonFileAdapter.cs" />
     <Compile Include="Model\PromptArgumentMap.cs" />
     <Compile Include="Model\ArgumentMap.cs" />
     <Compile Include="Model\ArgumentMapBinder.cs" />

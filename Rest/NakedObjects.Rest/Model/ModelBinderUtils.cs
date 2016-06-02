@@ -77,7 +77,15 @@ namespace NakedObjects.Rest.Model {
 
         private static IValue ToIValue(string name, JToken value) {
             JValue href = value.HasValues ? value[JsonPropertyNames.Href] as JValue : null;
-            return href == null ? (IValue) new ScalarValue(((JValue) value).Value) : new ReferenceValue(href.Value, name);
+            JValue type = value.HasValues ? value[JsonPropertyNames.Type] as JValue : null;
+            if (href == null) {
+                return new ScalarValue(((JValue) value).Value);
+            }
+            if (type == null) {
+                 return new ReferenceValue(href.Value, name);
+            }
+            string fileName = value.HasValues ? (value[JsonPropertyNames.Title] as JValue)?.Value as string : "";
+            return new FileValue((string) href.Value, (string) type.Value, fileName);
         }
 
         private static string GetSearchTerm(JObject jObject) {
