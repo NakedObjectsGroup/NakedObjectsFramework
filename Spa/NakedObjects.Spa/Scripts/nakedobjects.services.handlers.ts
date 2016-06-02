@@ -15,7 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
-    import Link = NakedObjects.Models.Link;
+ 
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
