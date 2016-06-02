@@ -676,6 +676,10 @@ th, td {
     content: "\e036";
 }
 
+.icon-properties:before {
+    content: "\e048";
+}
+
 .icon-logoff:before {
     content: "\e03b";
 }
