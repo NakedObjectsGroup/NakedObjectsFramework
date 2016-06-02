@@ -1120,9 +1120,10 @@ module NakedObjects {
 
 
     export class ApplicationPropertiesViewModel {
-        version: IVersionRepresentation;
+        serverVersion: IVersionRepresentation;
         user: IUserRepresentation;
         serverUrl: string;
+        clientVersion: string;
     }
 
     export class ToolBarViewModel {
