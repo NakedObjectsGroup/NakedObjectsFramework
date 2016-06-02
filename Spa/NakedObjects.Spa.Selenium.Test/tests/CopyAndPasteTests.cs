@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -193,6 +194,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var input = WaitForCss("#contactdetails1.droppable");
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
         }
+        public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
+        {
+            GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
+            WaitForView(Pane.Single, PaneType.Home);
+            var home = WaitForCss(".title");
+            Actions action = new Actions(br);
+            action.DoubleClick(home); //Should put "Home"into browser clipboard
+            action.Perform();
+            home.SendKeys(Keys.Control + "c");
+            string selector = "input.value";
+            var target = WaitForCss(selector);
+            Assert.AreEqual("", target.GetAttribute("value"));
+            target.Click();
+            target.SendKeys(Keys.Control + "v");
+            Assert.AreEqual("Home", target.GetAttribute("value"));
+        }
     }
     public abstract class CopyAndPasteTests : CopyAndPasteTestsRoot
     {
@@ -218,6 +235,11 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
         [TestMethod] //Can't test as the drop doesn't update UI in tests
         public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() { base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed(); }
+        [TestMethod]
+        public override void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
+        {
+            base.IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour();
+        }
     }
 
     #region browsers specific subclasses
@@ -315,6 +337,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CannotPasteWrongTypeIntoReferenceField();
             base.CanClearADroppableReferenceField();
             base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
+            base.IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour();
         }
     }
     [TestClass]
