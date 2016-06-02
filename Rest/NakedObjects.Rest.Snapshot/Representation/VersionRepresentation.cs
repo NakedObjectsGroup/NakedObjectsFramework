@@ -47,7 +47,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetScalars() {
             SpecVersion = "1.1";
-            ImplVersion = "1.5.0";
+            ImplVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
         }
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {

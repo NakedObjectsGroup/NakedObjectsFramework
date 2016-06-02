@@ -1123,7 +1123,7 @@ module NakedObjects {
         serverVersion: IVersionRepresentation;
         user: IUserRepresentation;
         serverUrl: string;
-        clientVersion: string;
+        clientVersion: string = "8.0.0-Beta7"; //TODO: derive automatically from package version
     }
 
     export class ToolBarViewModel {
