@@ -352,7 +352,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Object,
             List,
             Recent,
-            Attachment
+            Attachment,
+            Properties
         }
 
         protected enum ClickType
@@ -505,6 +506,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         protected void ClickRecentButton()
         {
             Click(br.FindElement(By.CssSelector(".icon-recent")));
+        }
+        protected void ClickPropertiesButton()
+        {
+            Click(br.FindElement(By.CssSelector(".icon-properties")));
         }
         #endregion
 

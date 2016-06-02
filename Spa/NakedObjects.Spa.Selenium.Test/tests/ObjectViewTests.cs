@@ -506,6 +506,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.ActionsAlreadyOpen();
             base.OpenActionsMenuNotAlreadyOpen();
+            base.OpenAndCloseSubMenusTo2Levels();
             base.Properties();
             base.Collections();
             base.CollectionEagerlyRendered();

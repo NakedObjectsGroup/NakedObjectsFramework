@@ -76,7 +76,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Click(WaitForCss(".icon-speech"));
             WaitForOutput("Product: Touring-1000 Blue, 54\r\nAction dialog: Best Special Offer\r\nQuantity: empty");
         }
-
         public virtual void WarningsAndInfo()
         {
             GeminiUrl("home?m1=WorkOrderRepository");
@@ -91,7 +90,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilElementDoesNotExist(".footer .warnings");
             WaitUntilElementDoesNotExist(".footer .messages");
         }
-
         public virtual void RecentObjects()
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
@@ -123,7 +121,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
              el = WaitForCssNo("tr td:nth-child(1)", 3);
             Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
         }
-        
+        public virtual void ApplicationProperties()
+        {
+            GeminiUrl("home");
+            WaitForView(Pane.Single, PaneType.Home);
+            ClickPropertiesButton();
+            WaitForView(Pane.Single, PaneType.Properties, "Application Properties");
+        }
     }
     public abstract class FooterTests : FooterTestsRoot
     {
@@ -142,6 +146,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void RecentObjects() { base.RecentObjects(); }
+        [TestMethod]
+        public override void ApplicationProperties() { base.ApplicationProperties(); }
     }
 
     #region browsers specific subclasses 
@@ -233,6 +239,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.Cicero();
             base.WarningsAndInfo();
             base.RecentObjects();
+            base.ApplicationProperties();
         }
     }
 
