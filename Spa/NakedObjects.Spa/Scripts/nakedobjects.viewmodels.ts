@@ -104,7 +104,7 @@ module NakedObjects {
     export function createSubmenuItems(avms: ActionViewModel[], menu: MenuItemViewModel, level: number) {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
-            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name && 
+            const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
                                                !getMenuForLevel(a.menuPath, level + 1));
             menu.actions = actions;
 
@@ -114,7 +114,7 @@ module NakedObjects {
                                                        getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
-                .map(a => ({ name: getMenuForLevel(a.menuPath, level + 1), actions: null, menuItems: null }))
+                .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
                 .value();
 
             menus = removeDuplicateMenus(menus);
@@ -123,7 +123,6 @@ module NakedObjects {
         }
         return menu;
     }
-
   
     export function createMenuItems(avms: ActionViewModel[]) {
 
@@ -131,7 +130,7 @@ module NakedObjects {
         // note at top level we leave 'un-menued' actions
         let menus = _
             .chain(avms)
-            .map(a => ({ name: getMenuForLevel(a.menuPath, 0), actions: [a], menuItems : null }))
+            .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null))
             .value();
 
         // remove non unique submenus 
@@ -433,9 +432,11 @@ module NakedObjects {
     }
 
     export class MenuItemViewModel {
-        name: string;
-        actions: ActionViewModel[];
-        menuItems: MenuItemViewModel[];
+
+        constructor(public name: string,
+                    public actions: ActionViewModel[],
+                    public menuItems: MenuItemViewModel[]) { }
+
     }
 
     export class DialogViewModel extends MessageViewModel {
