@@ -87,15 +87,10 @@ namespace AdventureWorksModel {
             menu.CreateSubMenu("Sub Menu")
                 .AddAction(nameof(Action1))
                 .CreateSubMenu("Level 2 sub menu")
-                .AddAction(nameof(Action2))
-                .CreateSubMenu("Level 3 sub menu")
-                .AddRemainingNativeActions();
+                .AddAction(nameof(Action2));
         }
         public void Action1() { }
         public void Action2() { } 
-        public void Action3() { }
-
-        public void Action4() { }
         #endregion
     }
 }

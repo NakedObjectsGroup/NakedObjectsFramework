@@ -64,7 +64,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //AssertHasFocus(actions[0]);
         }
 
-
         public virtual void OpenAndCloseSubMenus()
         {
             GoToMenuFromHomePage("Customers");
@@ -82,8 +81,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Find Individual Customer By Name");
             AssertActionNotDisplayed("Random Store");
 
-            // to check this behaviour has changed submenu remain open when dialog opened
-            //AssertActionNotDisplayed("Random Individual");
+            //Now for sub-sub-menus
+            GoToMenuFromHomePage("Sales");
+            AssertActionNotDisplayed("Action1");
+            OpenSubMenu("Sub Menu");
+            GetObjectAction("Action1");
+            AssertActionNotDisplayed("Action2");
+            OpenSubMenu("Level 2 sub menu");
+            GetObjectAction("Action2");
+            CloseSubMenu("Level 2 sub menu");
+            GetObjectAction("Action1");
+            AssertActionNotDisplayed("Action2");
+            CloseSubMenu("Sub Menu");
+            AssertActionNotDisplayed("Action1");
+            AssertActionNotDisplayed("Action2");
         }
         public virtual void SelectSuccessiveDialogActionsThenCancel()
         {

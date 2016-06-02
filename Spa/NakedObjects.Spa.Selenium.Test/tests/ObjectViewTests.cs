@@ -39,6 +39,22 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenSubMenu("Orders");
             GetObjectActions(7);
         }
+        public virtual void OpenAndCloseSubMenusTo2Levels()
+        {
+            GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
+            AssertActionNotDisplayed("Action1");
+            OpenSubMenu("Sub Menu");
+            GetObjectAction("Action1");
+            AssertActionNotDisplayed("Action2");
+            OpenSubMenu("Level 2 sub menu");
+            GetObjectAction("Action2");
+            CloseSubMenu("Level 2 sub menu");
+            GetObjectAction("Action1");
+            AssertActionNotDisplayed("Action2");
+            CloseSubMenu("Sub Menu");
+            AssertActionNotDisplayed("Action1");
+            AssertActionNotDisplayed("Action2");
+        }
         public virtual void Properties()
         {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
@@ -347,18 +363,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ActionsAlreadyOpen() { base.ActionsAlreadyOpen(); }
         [TestMethod]
         public override void OpenActionsMenuNotAlreadyOpen() { base.OpenActionsMenuNotAlreadyOpen(); }
-
+        [TestMethod]
+        public override void OpenAndCloseSubMenusTo2Levels() { base.OpenAndCloseSubMenusTo2Levels(); }
         [TestMethod]
         public override void Properties() { base.Properties(); }
-
         [TestMethod]
         public override void Collections() { base.Collections(); }
         [TestMethod]
         public override void CollectionEagerlyRendered() { base.CollectionEagerlyRendered(); }
-
         [TestMethod]
         public override void DateAndCurrencyProperties() { base.DateAndCurrencyProperties(); }
-        
+       
         [TestMethod]
         public override void TableViewHonouredOnCollection() { base.TableViewHonouredOnCollection(); }
 
