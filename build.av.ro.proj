@@ -12,6 +12,7 @@
   <Import Project="$(CommunityTargets)"/>
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
+  <UsingTask TaskName="XmlRead" AssemblyFile="$(CommunityTasks)" />
 
   <PropertyGroup Condition="'$(Configuration)'==''">
     <Configuration>Debug</Configuration>
@@ -43,12 +44,13 @@
       <CFGFiles Include="$(RoPath)\NakedObjects.Rest.Test.Nof4\App.config"/>
     </ItemGroup>
 
-    <FileUpdate Files="@(CFGFiles)"
-								RegEx= '\.\\SQLEXPRESS'
-								ReplacementText ='(local)\SQL2012SP1'
-                WarnOnNoUpdate='True'/>
+    <XmlRead
+      XPath="/package/metadata/version"
+      XmlFileName="$(ROPath)\$(ROMVC).package\$(ROMVC).nuspec">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
     
-    
+    <WriteLinesToFile File="version.txt" Lines="$(Version)" Overwrite="true" />
     
   </Target>
 
