@@ -57,13 +57,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public string[] GetWarnings() {
             var allWarnings = new List<string>(Warnings);
+
             PropertyInfo[] properties = GetType().GetProperties();
 
-            IEnumerable<IRepresentation> repProperties = properties.Where(p => typeof (IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-            IEnumerable<IRepresentation> repProperties1 = properties.Where(p => typeof (IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+            IEnumerable<IRepresentation> repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation)p.GetValue(this, null));
+            IEnumerable<IRepresentation> repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[])p.GetValue(this, null));
 
-            allWarnings.AddRange(repProperties.SelectMany(p => p.GetWarnings()));
-            allWarnings.AddRange(repProperties1.SelectMany(p => p.GetWarnings()));
+            allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+            allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
 
             return allWarnings.ToArray();
         }

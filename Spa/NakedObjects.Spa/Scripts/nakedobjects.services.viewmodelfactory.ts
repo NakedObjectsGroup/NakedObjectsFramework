@@ -771,12 +771,18 @@ module NakedObjects {
                     if (state === CollectionViewState.Summary) {
                         collectionViewModel.items = [];
                     } else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).then((details: CollectionRepresentation) => {
+                        // TODO - there was a missing catch here make sure all top level promises have a catch !
+
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then((details: CollectionRepresentation) => {
                                 collectionViewModel.items = viewModelFactory.getItems(details.value(),
-                                                                                      state === CollectionViewState.Table,
-                                                                                      routeData,
-                                                                                      collectionViewModel);
+                                    state === CollectionViewState.Table,
+                                    routeData,
+                                    collectionViewModel);
                                 collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                            })
+                            .catch((reject: ErrorWrapper) => {
+                                context.handleWrappedError(reject, null, () => { }, () => { });
                             });
                     } else {
                         collectionViewModel.items = viewModelFactory.getItems(itemLinks, state === CollectionViewState.Table, routeData, collectionViewModel);

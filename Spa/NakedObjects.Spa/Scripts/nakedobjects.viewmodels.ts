@@ -704,11 +704,9 @@ module NakedObjects {
         private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
             this.recreate(newPage, newPageSize).
                 then((list: ListRepresentation) => {
-                    this.routeData.state = newState || this.routeData.state;
-                    this.routeData.page = newPage;
-                    this.routeData.pageSize = newPageSize;
+                    this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
+                    this.routeData = this.urlManager.getRouteData().pane()[this.onPaneId];
                     this.reset(list, this.routeData);
-                    this.urlManager.setListPaging(newPage, newPageSize, this.routeData.state, this.onPaneId);
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
