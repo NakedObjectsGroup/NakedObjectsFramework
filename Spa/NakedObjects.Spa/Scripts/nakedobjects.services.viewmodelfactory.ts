@@ -823,7 +823,12 @@ module NakedObjects {
                     context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
 
 
-            collectionPlaceholderViewModel.reload = () => recreate().then(() => $route.reload());
+            collectionPlaceholderViewModel.reload = () =>
+                recreate().
+                    then(() => $route.reload()).
+                    catch((reject: ErrorWrapper) => {
+                        context.handleWrappedError(reject, null, () => { }, () => { });
+                    });
 
             return collectionPlaceholderViewModel;
         };

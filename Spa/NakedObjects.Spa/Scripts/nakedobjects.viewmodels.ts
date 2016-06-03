@@ -560,7 +560,7 @@ module NakedObjects {
     export class ListViewModel extends MessageViewModel {
 
         constructor(private colorService: IColor,
-            private contextService: IContext,
+            private context: IContext,
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
@@ -592,10 +592,13 @@ module NakedObjects {
             if (this.state !== routeData.state) {
                 this.state = routeData.state;
                 if (this.state === CollectionViewState.Table && !this.hasTableData()) {
-                    this.recreate(this.page, this.pageSize)
-                        .then(list => {
+                    this.recreate(this.page, this.pageSize).
+                        then(list => {
                             this.listRep = list;
                             this.updateItems(list.value());
+                        }).
+                        catch((reject: ErrorWrapper) => {
+                            this.context.handleWrappedError(reject, null, () => { }, () => { });
                         });
                 } else {
                     this.updateItems(this.listRep.value());
@@ -633,13 +636,13 @@ module NakedObjects {
                     return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
                 }
 
-                return this.contextService.getActionDetails(actionViewModel.actionRep as ActionMember)
+                return this.context.getActionDetails(actionViewModel.actionRep as ActionMember)
                     .then((details: ActionRepresentation) => wrappedInvoke(getParms(details), right));
             }
         }
 
         collectionContributedInvokeDecorator(actionViewModel: ActionViewModel) {
-            const showDialog = () => this.contextService.getInvokableAction(actionViewModel.actionRep as ActionMember).
+            const showDialog = () => this.context.getInvokableAction(actionViewModel.actionRep as ActionMember).
                 then((ia: IInvokableAction) => _.keys(ia.parameters()).length > 1);
 
             actionViewModel.doInvoke = () => { };
@@ -654,7 +657,7 @@ module NakedObjects {
                             then(result => this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || noResultMessage : "")).
                             catch((reject: ErrorWrapper) => {
                                 const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                                this.contextService.handleWrappedError(reject, null, () => { }, display);
+                                this.context.handleWrappedError(reject, null, () => { }, display);
                             });
                     });
         }
@@ -697,8 +700,8 @@ module NakedObjects {
 
         private recreate = (page: number, pageSize: number) => {
             return this.routeData.objectId ?
-                this.contextService.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
-                this.contextService.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
+                this.context.getListFromObject(this.routeData.paneId, this.routeData, page, pageSize) :
+                this.context.getListFromMenu(this.routeData.paneId, this.routeData, page, pageSize);
         };
 
         private pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
@@ -710,7 +713,7 @@ module NakedObjects {
                 }).
                 catch((reject: ErrorWrapper) => {
                     const display = (em: ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
-                    this.contextService.handleWrappedError(reject, null, () => { }, display);
+                    this.context.handleWrappedError(reject, null, () => { }, display);
                 });
         };
 
@@ -754,7 +757,7 @@ module NakedObjects {
         doTable = () => this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
 
         reload = () => {
-            this.contextService.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
+            this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
             this.setPage(this.page, this.state);
         };
 
