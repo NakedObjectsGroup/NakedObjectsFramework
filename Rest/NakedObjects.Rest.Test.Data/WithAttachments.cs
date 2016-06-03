@@ -34,9 +34,5 @@ namespace RestfulObjects.Test.Data {
             get { return new Image(attachment, "animage.gif"); }
         }
 
-        public virtual void PutAttachment(FileAttachment fa) {
-            attachment = fa.GetResourceAsByteArray();
-        }
-
     }
 }
