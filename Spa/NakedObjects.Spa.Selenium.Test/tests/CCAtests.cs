@@ -192,6 +192,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count >30);
+            //Check that no visible users are unhappy to start with!
+            wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
@@ -199,12 +201,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Thread.Sleep(1000); //Because there is no visible change to wait for
             Reload();
             //Wait for no checkboxes selected
-            wait.Until(dr => dr.FindElements(By.CssSelector("td.checkbox")).Count() == 5);
-            wait.Until(dr => dr.FindElements(By.CssSelector("td.checkbox")).Count(cb => cb.Selected) == 0);
             wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) ==3);
-            SelectCheckBox("#item1-1");
-            SelectCheckBox("#item1-2");
-            SelectCheckBox("#item1-3");
+            //Confirm three checkboxes still selected:
+            WaitForSelectedCheckboxes(3);
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();

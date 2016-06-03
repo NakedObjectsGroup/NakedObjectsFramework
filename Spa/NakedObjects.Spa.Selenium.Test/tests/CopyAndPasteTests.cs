@@ -73,6 +73,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             title.Click();
             CopyToClipboard(title);
             PasteIntoReferenceField("#pane1 .property:nth-child(4) .value.droppable");
+            Click(HomeIcon());
+            WaitForView(Pane.Left, PaneType.Home);
         }
         public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu()
         {
@@ -82,6 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Tete Mensa-Annan", title.Text);
             title.Click();
+            Thread.Sleep(100);
             CopyToClipboard(title);
             PasteIntoInputField("input#salesperson1");
             //Now check that Auto-complete is working
@@ -204,7 +207,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Actions action = new Actions(br);
             action.DoubleClick(home); //Should put "Home"into browser clipboard
             action.Perform();
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             home.SendKeys(Keys.Control + "c");
             string selector = "input.value";
             var target = WaitForCss(selector);
