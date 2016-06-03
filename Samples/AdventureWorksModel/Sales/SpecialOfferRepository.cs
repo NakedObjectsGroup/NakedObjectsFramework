@@ -19,7 +19,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(1)]
-        [TableView(false, "Description", "Category", "DiscountPct")]
+        [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")] //To test that non-match does not break the rest
         public IQueryable<SpecialOffer> CurrentSpecialOffers() {
             return from obj in Instances<SpecialOffer>()
                 where obj.StartDate <= DateTime.Now &&

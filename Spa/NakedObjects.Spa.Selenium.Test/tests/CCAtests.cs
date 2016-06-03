@@ -274,6 +274,44 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
         }
 
+        public virtual void SelectionRetainedWhenNavigatingAwayAndBack()
+        {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1=152&c1=List");
+            Reload();
+            WaitForSelectedCheckboxes(3);
+            Click(HomeIcon());
+            WaitForView(Pane.Single, PaneType.Home);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.List);
+            WaitForSelectedCheckboxes(3);
+        }
+
+        public virtual void SelectionClearedWhenPageChanged()
+        {
+            GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1=152&c1=List");
+            Reload();
+            WaitForTextStarting(".details", "Page 1 of ");
+            WaitForSelectedCheckboxes(3);
+            var row = WaitForCss(".reference"); //first one
+            RightClick(row);
+            WaitForView(Pane.Right, PaneType.Object);
+            WaitForSelectedCheckboxes(3);
+            Click(GetButton("Next", Pane.Left));
+            WaitForTextStarting(".details", "Page 2 of ");
+            WaitForSelectedCheckboxes(0);
+            //Using back button retrieves original selection
+            ClickBackButton();
+            WaitForTextStarting(".details", "Page 1 of ");
+            WaitForSelectedCheckboxes(3);
+            //But going Next then Previous loses it
+            Click(GetButton("Next", Pane.Left));
+            WaitForTextStarting(".details", "Page 2 of ");
+            WaitForSelectedCheckboxes(0);
+            Click(GetButton("Previous", Pane.Left));
+            WaitForTextStarting(".details", "Page 1 of ");
+            WaitForSelectedCheckboxes(0);
+        }
+
         #region Helpers
         private void CheckIndividualItem(int itemNo, string label, string value, bool equal = true)
         {
@@ -325,6 +363,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void IfNoCCAs() { base.IfNoCCAs(); }
         [TestMethod]
         public override void NoAllIfNoResults() { base.NoAllIfNoResults(); }
+        [TestMethod]
+        public override void SelectionRetainedWhenNavigatingAwayAndBack()
+        {
+            base.SelectionRetainedWhenNavigatingAwayAndBack();
+        }
+        [TestMethod]
+        public override void SelectionClearedWhenPageChanged()
+        {
+            base.SelectionClearedWhenPageChanged();
+        }
     }
 
     #region browsers specific subclasses
@@ -420,6 +468,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.SelectAllTableView();
             base.IfNoCCAs();
             base.NoAllIfNoResults();
+            base.SelectionRetainedWhenNavigatingAwayAndBack();
+            base.SelectionClearedWhenPageChanged();
         }
     }
 

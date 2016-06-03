@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -193,6 +194,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitUntilGone(br => br.FindElement(By.CssSelector("#pane2")));
             var input = WaitForCss("#contactdetails1.droppable");
             Assert.AreEqual("Arthur Kapoor", input.GetAttribute("value"));
+            CancelDialog();
         }
         public virtual void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
         {
@@ -202,6 +204,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Actions action = new Actions(br);
             action.DoubleClick(home); //Should put "Home"into browser clipboard
             action.Perform();
+            Thread.Sleep(100);
             home.SendKeys(Keys.Control + "c");
             string selector = "input.value";
             var target = WaitForCss(selector);

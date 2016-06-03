@@ -44,14 +44,24 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
-        public virtual void ClosedDialogClearsFields()
+        public virtual void FieldsRetainedWhenTheyShouldbe()
         {
-            //To test: that when dialog is cancelled the fields
-            //have been cleared. 
-            GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22a%22&f1_lastName=%22b%22");
-            wait.Until(d=>d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value")== "a");
-            wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value")== "b");
-            CancelDialog();
+            GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
+            ClearFieldThenType("#firstname1", "arthur");
+            ClearFieldThenType("#lastname1", "brent");
+            //1. Navigating away and back retains values
+            ClickRecentButton();
+            WaitForView(Pane.Single, PaneType.Recent);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
+            wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
+            wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
+            
+            //2. Navigating away without cancelling then opening dialog again should not retain values
+            ClickRecentButton();
+            WaitForView(Pane.Single, PaneType.Recent);
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
             OpenSubMenu("Individuals");
             OpenActionDialog("Find Individual Customer By Name");
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
@@ -91,8 +101,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
             ClearFieldThenType("#endtime1", end);
             Click(OKButton());
-            WaitForTextEquals(".property", 2, "Start Time:\r\n"+start+":00");
-            WaitForTextEquals(".property", 3, "End Time:\r\n"+end + ":00");
+            WaitForTextEquals(".property", 2, "Start Time:\r\n"+start);
+            WaitForTextEquals(".property", 3, "End Time:\r\n"+end);
         }
         public virtual void RefChoicesParmKeepsValue()
         {
@@ -414,7 +424,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
         [TestMethod]
-        public override void ClosedDialogClearsFields() { base.ClosedDialogClearsFields(); }
+        public override void FieldsRetainedWhenTheyShouldbe() { base.FieldsRetainedWhenTheyShouldbe(); }
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
         [TestMethod]
@@ -501,7 +511,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+   // [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
@@ -563,7 +573,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PasswordParam();
             base.ScalarChoicesParm();
             base.TestCancelDialog();
-            base.ClosedDialogClearsFields();
+            base.FieldsRetainedWhenTheyShouldbe();
             base.ScalarParmShowsDefaultValue();
             base.DateTimeParmKeepsValue();
             base.TimeSpanParm();
