@@ -84,7 +84,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var title = WaitForCss("#pane2 .header .title");
             Assert.AreEqual("Tete Mensa-Annan", title.Text);
             title.Click();
-            Thread.Sleep(100);
+            Thread.Sleep(500);
             CopyToClipboard(title);
             PasteIntoInputField("input#salesperson1");
             //Now check that Auto-complete is working
