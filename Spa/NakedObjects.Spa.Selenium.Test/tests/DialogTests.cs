@@ -91,8 +91,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var end = new TimeSpan(rand.Next(23), rand.Next(59), 0).ToString(@"hh\:mm");
             ClearFieldThenType("#endtime1", end);
             Click(OKButton());
-            WaitForTextEquals(".property", 2, "Start Time:\r\n"+start+":00");
-            WaitForTextEquals(".property", 3, "End Time:\r\n"+end + ":00");
+            WaitForTextEquals(".property", 2, "Start Time:\r\n"+start);
+            WaitForTextEquals(".property", 3, "End Time:\r\n"+end);
         }
         public virtual void RefChoicesParmKeepsValue()
         {

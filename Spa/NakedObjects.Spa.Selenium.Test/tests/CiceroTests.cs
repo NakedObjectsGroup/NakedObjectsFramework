@@ -69,8 +69,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Customers menu\r\nAction dialog: Random Individual");
 
             //object with no actions
-            CiceroUrl("object?o1=___1.ProductInventory--442--6");
-            WaitForOutput("Product Inventory: 524 in Miscellaneous Storage - G");
+            CiceroUrl("object?i1=View&o1=___1.BusinessEntityAddress--19891--28992--2");
+            WaitForOutputContaining("Reiherweg 7450");
             EnterCommand("ac");
             WaitForOutput("No actions available");
 
