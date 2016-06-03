@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -47,7 +49,19 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetScalars() {
             SpecVersion = "1.1";
-            ImplVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
+            //ImplVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
+            var assembly = Assembly.GetExecutingAssembly();
+            const string resourceName = "NakedObjects.Rest.Snapshot.version.txt";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName)) {
+                if (stream != null) {
+                    using (StreamReader reader = new StreamReader(stream)) {
+                        ImplVersion = reader.ReadToEnd();
+                    }
+                }
+            }
+
+            ImplVersion = string.IsNullOrWhiteSpace(ImplVersion) ? "Failed to read version" : ImplVersion;
         }
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {
