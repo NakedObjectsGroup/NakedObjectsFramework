@@ -88,7 +88,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
 
-            if (flags.InlineCollectionItems || (inline && !InlineDetails(propertyContext, flags))) {
+            if (inline && !InlineDetails(propertyContext, flags)) {
                 return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
 

@@ -18,16 +18,18 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class CollectionRepresentation : MemberAbstractRepresentation {
         protected CollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy)
-            : base(oidStrategy, strategy) {
-            Value = strategy.GetValue();
+            : base(oidStrategy, strategy) {   
             Extensions = strategy.GetExtensions();
-        }
-
-        [DataMember(Name = JsonPropertyNames.Value)]
-        public LinkRepresentation[] Value { get; set; }
+        } 
 
         public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, oidStrategy, req, propertyContext, flags);
+
+            var value = collectionRepresentationStrategy.GetValue();
+
+            if (value != null) {
+                optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
+            }
 
             if (optionals.Count == 0) {
                 return new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
