@@ -632,6 +632,7 @@ module NakedObjects {
         };
     });
 
+    // this is a very simple implementation unlikely to work with large files, no chunking etc   
     app.directive("geminiFileupload", () => {
         return {
             restrict: "A",
@@ -648,25 +649,20 @@ module NakedObjects {
 
                     const fileReader = new FileReader();
                     fileReader.onloadend = () => {
-
-                        const href = fileReader.result;
-                        const type = file.type;
-                        const title = file.name;
-
-                        const iLink = { href: href, type: type, title: title } as RoInterfaces.ILink;
-                        const link = new Link(iLink);
+                        const link = new Link({
+                            href: fileReader.result,
+                            type: file.type,
+                            title: file.name
+                        } as RoInterfaces.ILink);
 
                         ngModel.$setViewValue(link);
-
                     };
 
                     fileReader.readAsDataURL(file);
-
                 });
             }
         };
     });
-
 
     app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
         return {
