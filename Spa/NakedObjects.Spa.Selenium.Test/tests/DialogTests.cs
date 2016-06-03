@@ -56,7 +56,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
-            //2. Navigating away then opening dialog again should not retain values
+            
+            //2. Navigating away without cancelling then opening dialog again should not retain values
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
             ClickBackButton();
@@ -510,7 +511,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+   // [TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
