@@ -532,65 +532,78 @@ module NakedObjects {
             closeOrCancelDialog(paneId, Transition.CancelDialog);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation,  paneId = 1) => {
-            const oid = resultObject.id();
-            const key = `${akm.object}${paneId}`;
-            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+        helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
+
+            changeUrl(() => {
+                const oid = resultObject.id();
+                const key = `${akm.object}${paneId}`;
+                const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+            }, paneId);
         };
 
         helper.setList = (actionMember: IAction, paneId = 1) => {
-            const newValues = {} as _.Dictionary<string>;
-            const parent = actionMember.parent;
 
-            if (parent instanceof DomainObjectRepresentation) {
-                newValues[`${akm.object}${paneId}`] = parent.id();
-            }
+            changeUrl(() => {
 
-            if (parent instanceof MenuRepresentation) {
-                newValues[`${akm.menu}${paneId}`] = parent.menuId();
-            }
+                const newValues = {} as _.Dictionary<string>;
+                const parent = actionMember.parent;
 
-            newValues[`${akm.action}${paneId}`] = actionMember.actionId();
-            newValues[`${akm.page}${paneId}`] = "1";
-            newValues[`${akm.pageSize}${paneId}`] = defaultPageSize.toString();
-            newValues[`${akm.selected}${paneId}`] = "0";
+                if (parent instanceof DomainObjectRepresentation) {
+                    newValues[`${akm.object}${paneId}`] = parent.id();
+                }
 
-            const newState = actionMember.extensions().renderEagerly() ?
-                CollectionViewState[CollectionViewState.Table] :
-                CollectionViewState[CollectionViewState.List];
+                if (parent instanceof MenuRepresentation) {
+                    newValues[`${akm.menu}${paneId}`] = parent.menuId();
+                }
 
-            newValues[`${akm.collection}${paneId}`] = newState;
+                newValues[`${akm.action}${paneId}`] = actionMember.actionId();
+                newValues[`${akm.page}${paneId}`] = "1";
+                newValues[`${akm.pageSize}${paneId}`] = defaultPageSize.toString();
+                newValues[`${akm.selected}${paneId}`] = "0";
 
-            executeTransition(newValues, paneId, Transition.ToList, () => true);
+                const newState = actionMember.extensions().renderEagerly()
+                    ? CollectionViewState[CollectionViewState.Table]
+                    : CollectionViewState[CollectionViewState.List];
+
+                newValues[`${akm.collection}${paneId}`] = newState;
+
+                executeTransition(newValues, paneId, Transition.ToList, () => true);
+            }, paneId);
         };
 
         helper.setProperty = (propertyMember: PropertyMember, paneId = 1) => {
-            const href = propertyMember.value().link().href();
-            const oid = getOidFromHref(href);
-            const key = `${akm.object}${paneId}`;
-            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+
+            changeUrl(() => {
+                const href = propertyMember.value().link().href();
+                const oid = getOidFromHref(href);
+                const key = `${akm.object}${paneId}`;
+                const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+            }, paneId);
         };
 
         helper.setItem = (link: Link, paneId = 1) => {
-            const href = link.href();
-            const oid = getOidFromHref(href);
-            const key = `${akm.object}${paneId}`;
-            const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+            changeUrl(() => {
+                const href = link.href();
+                const oid = getOidFromHref(href);
+                const key = `${akm.object}${paneId}`;
+                const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+            }, paneId);
         };
 
         helper.setAttachment = (attachmentlink: Link, paneId = 1) => {
-            const href = attachmentlink.href();
-            const okey = `${akm.object}${paneId}`;
-            const akey = `${akm.attachment}${paneId}`;
-            const oid = getOidFromHref(href);
-            const pid = getPidFromHref(href);
+            changeUrl(() => {
+                const href = attachmentlink.href();
+                const okey = `${akm.object}${paneId}`;
+                const akey = `${akm.attachment}${paneId}`;
+                const oid = getOidFromHref(href);
+                const pid = getPidFromHref(href);
 
-
-            const newValues = _.zipObject([okey, akey], [oid, pid]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
+                const newValues = _.zipObject([okey, akey], [oid, pid]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
+            }, paneId);
         };
 
         helper.toggleObjectMenu = (paneId = 1) => {
