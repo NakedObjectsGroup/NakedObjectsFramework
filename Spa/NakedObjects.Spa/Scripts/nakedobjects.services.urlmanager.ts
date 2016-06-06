@@ -34,8 +34,8 @@ module NakedObjects {
 
         cancelDialog(paneId?: number): void;
 
-        setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
-        setList(action: IAction, postProcess : () => void ,    paneId?: number): void;
+        setObject(resultObject: DomainObjectRepresentation, postProcess: () => void, paneId?: number): void;
+        setList(action: IAction, postProcess: () => void, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
 
@@ -240,6 +240,10 @@ module NakedObjects {
         }
 
         function singlePane() {
+
+
+
+
             return $location.path().split("/").length <= 3;
         }
 
@@ -474,8 +478,8 @@ module NakedObjects {
         helper.changeUrl = (changer: () => void, toClear = 0) => {
             // first save any parms then run function to do work in another event loop 
 
-            leaveDialogHandler[1]();
-            leaveDialogHandler[2]();
+            //leaveDialogHandler[1]();
+            //leaveDialogHandler[2]();
 
             if (toClear === 1 || toClear === 3) {
                 helper.clearLeaveDialogHandler(1);
@@ -527,17 +531,18 @@ module NakedObjects {
             closeOrCancelDialog(paneId, Transition.CancelDialog);
         };
 
-        helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
+        helper.setObject = (resultObject: DomainObjectRepresentation, postProcess: () => void, paneId = 1) => {
 
             helper.changeUrl(() => {
                 const oid = resultObject.id();
                 const key = `${akm.object}${paneId}`;
                 const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
                 executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
+                postProcess();
             }, paneId);
         };
 
-        helper.setList = (actionMember: IAction, postProcess : () => void , paneId = 1) => {
+        helper.setList = (actionMember: IAction, postProcess: () => void, paneId = 1) => {
 
             helper.changeUrl(() => {
 
@@ -830,33 +835,36 @@ module NakedObjects {
         helper.currentpane = () => currentPaneId;
 
         helper.singlePane = (paneId = 1) => {
+
             currentPaneId = 1;
 
             if (!singlePane()) {
 
-                const paneToKeepId = paneId;
-                const paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
+                helper.changeUrl(() => {
+                    const paneToKeepId = paneId;
+                    const paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
 
-                const path = $location.path();
-                const segments = path.split("/");
-                const mode = segments[1];
-                const paneToKeep = segments[paneToKeepId + 1];
-                const newPath = `/${mode}/${paneToKeep}`;
+                    const path = $location.path();
+                    const segments = path.split("/");
+                    const mode = segments[1];
+                    const paneToKeep = segments[paneToKeepId + 1];
+                    const newPath = `/${mode}/${paneToKeep}`;
 
-                let search = getSearch();
+                    let search = getSearch();
 
-                if (paneToKeepId === 1) {
-                    // just remove second pane
-                    search = clearPane(search, paneToRemoveId);
-                }
+                    if (paneToKeepId === 1) {
+                        // just remove second pane
+                        search = clearPane(search, paneToRemoveId);
+                    }
 
-                if (paneToKeepId === 2) {
-                    // swap pane 2 to pane 1 then remove 2
-                    search = swapSearchIds(search);
-                    search = clearPane(search, 2);
-                }
+                    if (paneToKeepId === 2) {
+                        // swap pane 2 to pane 1 then remove 2
+                        search = swapSearchIds(search);
+                        search = clearPane(search, 2);
+                    }
 
-                $location.path(newPath).search(search);
+                    $location.path(newPath).search(search);
+                });
             }
         };
 

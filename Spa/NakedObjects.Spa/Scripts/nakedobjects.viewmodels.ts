@@ -491,7 +491,7 @@ module NakedObjects {
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
-            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+           // _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
