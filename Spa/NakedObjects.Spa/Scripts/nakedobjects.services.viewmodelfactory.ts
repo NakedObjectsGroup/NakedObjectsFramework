@@ -910,13 +910,11 @@ module NakedObjects {
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
-                    urlManager.urlChanging();
-                    navigation.back();
+                    urlManager.changeUrl(() => navigation.back());                
                 };
                 tvm.goForward = () => {
                     focusManager.focusOverrideOff();
-                    urlManager.urlChanging();
-                    navigation.forward();
+                    urlManager.changeUrl(() => navigation.forward());           
                 };
                 tvm.swapPanes = () => {
                     $rootScope.$broadcast(geminiPaneSwapEvent);
