@@ -75,6 +75,8 @@ module NakedObjects {
 
         setLeaveDialogHandler(paneId: number, handler: () => void): void;
         clearLeaveDialogHandler(paneId: number): void;
+
+        urlChanging() : void;
     }
 
     app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService,
@@ -486,6 +488,11 @@ module NakedObjects {
             $timeout(changer);
         }
 
+        helper.urlChanging = () => {
+            // this will just trigger a save of any parms
+            changeUrl(() => {});
+        };
+
         helper.setHome = (paneId = 1) => {
             changeUrl(() => executeTransition({}, paneId, Transition.ToHome, () => true), paneId);
         };
@@ -785,19 +792,26 @@ module NakedObjects {
 
 
         helper.swapPanes = () => {
-            const path = $location.path();
-            const segments = path.split("/");
-            const [, mode, oldPane1, oldPane2 = homePath] = segments;
-            const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
-            const search = swapSearchIds(getSearch());
-            currentPaneId = currentPaneId === 1 ? 2 : 1;
 
-            $location.path(newPath).search(search);
+            changeUrl(() => {
+
+                const path = $location.path();
+                const segments = path.split("/");
+                const [, mode, oldPane1, oldPane2 = homePath] = segments;
+                const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
+                const search = swapSearchIds(getSearch());
+                currentPaneId = currentPaneId === 1 ? 2 : 1;
+
+                $location.path(newPath).search(search);
+            });
         };
 
         helper.cicero = () => {
-            const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
-            $location.path(newPath);
+
+            changeUrl(() => {
+                const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
+                $location.path(newPath);
+            });
         };
 
         helper.applicationProperties = () => {

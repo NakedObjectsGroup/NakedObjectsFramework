@@ -220,6 +220,9 @@ module NakedObjects {
                         // dialog changed set new dialog only 
                         setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData, FocusTarget.SubAction);
                     }
+                    else if (newDialogId && $scope.dialog) {
+                        $scope.dialog.refresh(routeData);
+                    }
                 } else {
                     $scope.actionsTemplate = null;
                     $scope.menu = null;
@@ -385,6 +388,8 @@ module NakedObjects {
 
                 if (currentDialogId !== newDialogId) {
                     setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
+                } else if (newDialogId && $scope.dialog ) {
+                    $scope.dialog.refresh(routeData);
                 } else {
                     focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 }

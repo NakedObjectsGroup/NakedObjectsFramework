@@ -465,6 +465,11 @@ module NakedObjects {
             return this;
         }
 
+        refresh(routeData: PaneRouteData) {
+            const fields = routeData.dialogFields;
+            _.forEach(this.parameters, p => p.refresh(fields[p.id]));
+        }
+
         private actionMember = () => this.actionViewModel.actionRep;
         title: string;
         message: string;
