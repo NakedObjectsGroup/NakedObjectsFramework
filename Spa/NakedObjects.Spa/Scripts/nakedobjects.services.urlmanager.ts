@@ -76,7 +76,7 @@ module NakedObjects {
         setLeaveDialogHandler(paneId: number, handler: () => void): void;
         clearLeaveDialogHandler(paneId: number): void;
 
-        urlChanging() : void;
+        changeUrl(changer: () => void , toClear? : number): void;
     }
 
     app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService,
@@ -471,7 +471,7 @@ module NakedObjects {
         }
 
         // toclear 0 = none, 1,2, that pane, 3 both 
-        function changeUrl(changer: () => void, toClear = 0) {
+        helper.changeUrl = (changer: () => void, toClear = 0) => {
             // first save any parms then run function to do work in another event loop 
 
             leaveDialogHandler[1]();
@@ -488,21 +488,16 @@ module NakedObjects {
             $timeout(changer);
         }
 
-        helper.urlChanging = () => {
-            // this will just trigger a save of any parms
-            changeUrl(() => {});
-        };
-
         helper.setHome = (paneId = 1) => {
-            changeUrl(() => executeTransition({}, paneId, Transition.ToHome, () => true), paneId);
+            helper.changeUrl(() => executeTransition({}, paneId, Transition.ToHome, () => true), paneId);
         };
 
         helper.setRecent = (paneId = 1) => {
-            changeUrl(() => executeTransition({}, paneId, Transition.ToRecent, () => true), paneId);
+            helper.changeUrl(() => executeTransition({}, paneId, Transition.ToRecent, () => true), paneId);
         };
 
         helper.setMenu = (menuId: string, paneId = 1) => {
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const key = `${akm.menu}${paneId}`;
                 const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
                 executeTransition(newValues, paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
@@ -510,7 +505,7 @@ module NakedObjects {
         };
 
         helper.setDialog = (dialogId: string, paneId = 1) => {
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const key = `${akm.dialog}${paneId}`;
                 const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
                 executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
@@ -534,7 +529,7 @@ module NakedObjects {
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
 
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const oid = resultObject.id();
                 const key = `${akm.object}${paneId}`;
                 const newValues = _.zipObject([key], [oid]) as _.Dictionary<string>;
@@ -544,7 +539,7 @@ module NakedObjects {
 
         helper.setList = (actionMember: IAction, paneId = 1) => {
 
-            changeUrl(() => {
+            helper.changeUrl(() => {
 
                 const newValues = {} as _.Dictionary<string>;
                 const parent = actionMember.parent;
@@ -574,7 +569,7 @@ module NakedObjects {
 
         helper.setProperty = (propertyMember: PropertyMember, paneId = 1) => {
 
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const href = propertyMember.value().link().href();
                 const oid = getOidFromHref(href);
                 const key = `${akm.object}${paneId}`;
@@ -584,7 +579,7 @@ module NakedObjects {
         };
 
         helper.setItem = (link: Link, paneId = 1) => {
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const href = link.href();
                 const oid = getOidFromHref(href);
                 const key = `${akm.object}${paneId}`;
@@ -594,7 +589,7 @@ module NakedObjects {
         };
 
         helper.setAttachment = (attachmentlink: Link, paneId = 1) => {
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const href = attachmentlink.href();
                 const okey = `${akm.object}${paneId}`;
                 const akey = `${akm.attachment}${paneId}`;
@@ -806,7 +801,7 @@ module NakedObjects {
 
         helper.swapPanes = () => {
 
-            changeUrl(() => {
+            helper.changeUrl(() => {
 
                 const path = $location.path();
                 const segments = path.split("/");
@@ -821,7 +816,7 @@ module NakedObjects {
 
         helper.cicero = () => {
 
-            changeUrl(() => {
+            helper.changeUrl(() => {
                 const newPath = `/${ciceroPath}/${$location.path().split("/")[2]}`;
                 $location.path(newPath);
             });

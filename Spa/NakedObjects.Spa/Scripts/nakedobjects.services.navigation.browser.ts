@@ -12,7 +12,8 @@ module NakedObjects {
 
     app.service("navigation", function() {
         const nav = <INavigation>this;
-        nav.back = () => parent.history.back(1);
+        nav.back = () =>
+            parent.history.back(1);
         nav.forward = () => parent.history.forward(1);
         nav.push = () => {};
     });
