@@ -219,7 +219,8 @@ module NakedObjects {
         urlManager: IUrlManager,
         focusManager: IFocusManager,
         $cacheFactory: ng.ICacheFactoryService,
-        $rootScope: ng.IRootScopeService) {
+        $rootScope: ng.IRootScopeService,
+        $timeout : ng.ITimeoutService) {
         const context = <IContextInternal>this;
 
         // cached values
@@ -630,10 +631,12 @@ module NakedObjects {
 
                     const resultList = result.result().list();
 
-                    urlManager.setList(action, paneId);
+                    const postProcess = () => {
+                        const index = urlManager.getListCacheIndex(paneId, page, pageSize);
+                        cacheList(resultList, index);
+                    }
 
-                    const index = urlManager.getListCacheIndex(paneId, page, pageSize);
-                    cacheList(resultList, index);
+                    urlManager.setList(action, postProcess, paneId);
                 }
             }
         };

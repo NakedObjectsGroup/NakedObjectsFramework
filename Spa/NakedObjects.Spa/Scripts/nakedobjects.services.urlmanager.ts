@@ -35,7 +35,7 @@ module NakedObjects {
         cancelDialog(paneId?: number): void;
 
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
-        setList(action: IAction, paneId?: number): void;
+        setList(action: IAction, postProcess : () => void ,    paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
 
@@ -537,7 +537,7 @@ module NakedObjects {
             }, paneId);
         };
 
-        helper.setList = (actionMember: IAction, paneId = 1) => {
+        helper.setList = (actionMember: IAction, postProcess : () => void , paneId = 1) => {
 
             helper.changeUrl(() => {
 
@@ -564,6 +564,7 @@ module NakedObjects {
                 newValues[`${akm.collection}${paneId}`] = newState;
 
                 executeTransition(newValues, paneId, Transition.ToList, () => true);
+                postProcess();
             }, paneId);
         };
 
