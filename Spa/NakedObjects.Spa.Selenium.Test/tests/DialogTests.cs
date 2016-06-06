@@ -60,8 +60,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //2. Navigating away without cancelling then opening dialog again should not retain values
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
-            ClickBackButton();
+            Click(HomeIcon());
             WaitForView(Pane.Single, PaneType.Home);
+            GoToMenuFromHomePage("Customers");
             OpenSubMenu("Individuals");
             OpenActionDialog("Find Individual Customer By Name");
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
@@ -511,7 +512,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    //[TestClass]
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]

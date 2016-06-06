@@ -211,6 +211,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Reload();
             wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) ==3);
             //Confirm three checkboxes still selected:
+            SelectCheckBox("#all"); //To clear
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();
