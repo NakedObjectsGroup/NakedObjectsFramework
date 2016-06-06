@@ -357,7 +357,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   //[TestClass]
+   [TestClass]
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -423,7 +423,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.LocalValidationOfRange();
             base.ObjectEditChangeEnum();
             base.ObjectEditChangeDateTime();
-            base.ObjectEditChangeChoices();
+            //base.ObjectEditChangeChoices();
             base.CanSetAndClearAnOptionalDropDown();
             base.ObjectEditChangeConditionalChoices(); //TODO: pending bug fix
             base.ObjectEditPicksUpLatestServerVersion();
