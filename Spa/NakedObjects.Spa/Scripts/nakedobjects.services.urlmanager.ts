@@ -72,9 +72,15 @@ module NakedObjects {
 
         reload(): void;
         applicationProperties(): void;
+
+        setLeaveDialogHandler(paneId: number, handler: () => void): void;
+        clearLeaveDialogHandler(paneId: number): void;
     }
 
-    app.service("urlManager", function($routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService, $window : ng.IWindowService) {
+    app.service("urlManager", function ($routeParams: ng.route.IRouteParamsService,
+                                        $location: ng.ILocationService,
+                                        $window: ng.IWindowService,
+                                        $timeout : ng.ITimeoutService) {
         const helper = <IUrlManager>this;
 
         // keep in alphabetic order to help avoid name collisions 
@@ -101,6 +107,8 @@ module NakedObjects {
         const capturedPanes = [] as { paneType: string; search: Object }[];
 
         let currentPaneId = 1;
+
+        const leaveDialogHandler: (() => void)[] = [, () => {}, () => {}];
 
         function createSubMask(arr : boolean[]) {
             let nMask = 0;
@@ -460,24 +468,46 @@ module NakedObjects {
             }
         }
 
+        // toclear 0 = none, 1,2, that pane, 3 both 
+        function changeUrl(changer: () => void, toClear = 0) {
+            // first save any parms then run function to do work in another event loop 
+
+            leaveDialogHandler[1]();
+            leaveDialogHandler[2]();
+
+            if (toClear === 1 || toClear === 3) {
+                helper.clearLeaveDialogHandler(1);
+            }
+
+            if (toClear === 2 || toClear === 3) {
+                helper.clearLeaveDialogHandler(2);
+            }
+
+            $timeout(changer);
+        }
+
         helper.setHome = (paneId = 1) => {
-            executeTransition({}, paneId, Transition.ToHome, () => true);
+            changeUrl(() => executeTransition({}, paneId, Transition.ToHome, () => true), paneId);
         };
 
         helper.setRecent = (paneId = 1) => {
-            executeTransition({}, paneId, Transition.ToRecent, () => true);
+            changeUrl(() => executeTransition({}, paneId, Transition.ToRecent, () => true), paneId);
         };
 
         helper.setMenu = (menuId: string, paneId = 1) => {
-            const key = `${akm.menu}${paneId}`;
-            const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
+            changeUrl(() => {
+                const key = `${akm.menu}${paneId}`;
+                const newValues = _.zipObject([key], [menuId]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToMenu, search => getId(key, search) !== menuId);
+            }, paneId);
         };
 
         helper.setDialog = (dialogId: string, paneId = 1) => {
-            const key = `${akm.dialog}${paneId}`;
-            const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
-            executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
+            changeUrl(() => {
+                const key = `${akm.dialog}${paneId}`;
+                const newValues = _.zipObject([key], [dialogId]) as _.Dictionary<string>;
+                executeTransition(newValues, paneId, Transition.ToDialog, search => getId(key, search) !== dialogId);
+            }, paneId);
         };
 
         function closeOrCancelDialog(paneId: number, transition: Transition) {
@@ -640,6 +670,7 @@ module NakedObjects {
             const newValues = _.zipObject([key], [currentSelectedAsString]) as _.Dictionary<string>;
             executeTransition(newValues, paneId, Transition.Null, () => true);
         };
+
         helper.setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId = 1) => {
             const pageValues = {} as _.Dictionary<string>;
 
@@ -683,6 +714,7 @@ module NakedObjects {
         helper.pushUrlState = (paneId = 1) => {
             capturedPanes[paneId] = helper.getUrlState(paneId);
         };
+
         helper.getUrlState = (paneId = 1) => {
             currentPaneId = paneId;
 
@@ -694,6 +726,7 @@ module NakedObjects {
 
             return { paneType: paneType, search: paneSearch };
         };
+
         helper.getListCacheIndex = (paneId: number, newPage: number, newPageSize: number, format?: CollectionViewState) => {
             const search = getSearch();
 
@@ -715,6 +748,7 @@ module NakedObjects {
 
             return _.reduce(ss, (r, n) => r + keySeparator + n, "");
         };
+
         helper.popUrlState = (paneId = 1) => {
             currentPaneId = paneId;
 
@@ -742,8 +776,6 @@ module NakedObjects {
             currentPaneId = paneId;
             capturedPanes[paneId] = null;
         };
-
-
 
 
         function swapSearchIds(search: any) {
@@ -813,6 +845,14 @@ module NakedObjects {
             const path = $location.path();
             const segments = path.split("/");
             return segments[paneId + 1] === homePath; // e.g. segments 0=~/1=cicero/2=home/3=home
+        };
+
+        helper.setLeaveDialogHandler = (onPaneId : number,  handler: () => void) => {
+            leaveDialogHandler[onPaneId] = handler;
+        };
+
+        helper.clearLeaveDialogHandler = (onPaneId: number) => {
+            leaveDialogHandler[onPaneId] = () => {};
         };
     });
 }

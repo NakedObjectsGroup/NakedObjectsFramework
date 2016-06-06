@@ -108,12 +108,9 @@ module NakedObjects {
                 dialogViewModel.reset(actionViewModel, routeData);
                 $scope.dialog = dialogViewModel;
 
-                deRegDialog[routeData.paneId].add($scope
-                    .$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
-                deRegDialog[routeData.paneId].add($scope
-                    .$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
+                urlManager.setLeaveDialogHandler(routeData.paneId, dialogViewModel.setParms);
 
-                dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
+                dialogViewModel.deregister = () => urlManager.clearLeaveDialogHandler(routeData.paneId);
             }
 
             let versionValidated = false;
