@@ -478,8 +478,8 @@ module NakedObjects {
         helper.changeUrl = (changer: () => void, toClear = 0) => {
             // first save any parms then run function to do work in another event loop 
 
-            //leaveDialogHandler[1]();
-            //leaveDialogHandler[2]();
+            leaveDialogHandler[1]();
+            leaveDialogHandler[2]();
 
             if (toClear === 1 || toClear === 3) {
                 helper.clearLeaveDialogHandler(1);
