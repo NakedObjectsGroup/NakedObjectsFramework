@@ -177,6 +177,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             var fieldCss = ".property:nth-child(4) .value.droppable";
             var field = WaitForCss(fieldCss);
             Assert.AreEqual("Ben Miller", field.Text);
+            Thread.Sleep(100);
             field.SendKeys(Keys.Delete);
             wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).Text == "* (drop here)");
         }
