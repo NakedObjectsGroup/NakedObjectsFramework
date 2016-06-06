@@ -44,7 +44,8 @@ module NakedObjects {
             color: IColor,
             navigation: INavigation,
             urlManager: IUrlManager,
-            focusManager: IFocusManager) {
+            focusManager: IFocusManager,
+            $timeout : ng.ITimeoutService) {
             const handlers = <IHandlers>this;
 
             const perPaneListViews = [,
@@ -58,8 +59,8 @@ module NakedObjects {
             ];
 
             const perPaneDialogViews = [,
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout)
             ];
 
             const perPaneMenusViews = [,
@@ -190,7 +191,7 @@ module NakedObjects {
 
                     perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                     perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout);
                     perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);              
                 }
             }

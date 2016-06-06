@@ -445,7 +445,8 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
-            private $rootScope: ng.IRootScopeService) {
+            private $rootScope: ng.IRootScopeService,
+            private $timeout : ng.ITimeoutService) {
             super();
         }
 
@@ -503,11 +504,13 @@ module NakedObjects {
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
-                        this.doCancel();
+                        // needs to be in $timeout to avoid previous async url change
+                        this.$timeout(() => this.doCancel());
                     }
                     else if (!right) {
                         // going to new page close dialog (and do not replace url)
-                        this.doClose();
+                         // needs to be in $timeout to avoid previous async url change
+                        this.$timeout(() => this.doClose());
                     }
                     // else leave open if opening on other pane and dialog has result
 
