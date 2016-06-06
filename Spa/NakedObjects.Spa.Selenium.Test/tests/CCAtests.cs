@@ -192,25 +192,32 @@ namespace NakedObjects.Web.UnitTests.Selenium
             GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1=0&as1=open&c1=Table");
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count >30);
-            //Check that no visible users are unhappy to start with!
+            //Wait for no checkboxes selected
+            SelectCheckBox("#all"); //To clear
+            Click(GetObjectAction("Clear Comments"));
+            Thread.Sleep(1000);
+            Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
+
+            SelectCheckBox("#all", true); //To clear
+            WaitForSelectedCheckboxes(0);
+
+            //Now add comments
             SelectCheckBox("#item1-1");
             SelectCheckBox("#item1-2");
             SelectCheckBox("#item1-3");
             Click(GetObjectAction("Comment As Users Unhappy"));
             Thread.Sleep(1000); //Because there is no visible change to wait for
             Reload();
-            //Wait for no checkboxes selected
             wait.Until( dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) ==3);
             //Confirm three checkboxes still selected:
-            WaitForSelectedCheckboxes(3);
             Click(GetObjectAction("Clear Comments"));
             Thread.Sleep(1000);
             Reload();
             wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
         }
 
-        public virtual void SelectAll()
+        public virtual void TestSelectAll()
         {
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
@@ -353,7 +360,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ZeroParamAction() { base.ZeroParamAction(); }
 
         [TestMethod]
-        public override void SelectAll() { base.SelectAll(); }
+        public override void TestSelectAll() { base.TestSelectAll(); }
 
         [TestMethod]
         public override void SelectAllTableView() { base.SelectAllTableView(); }
@@ -463,7 +470,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.TableViewWithParmDialogAlreadyOpen();
             base.TableViewWithParmDialogNotOpen();
             base.DateParam();
-            base.SelectAll();
+            base.TestSelectAll();
             base.SelectAllTableView();
             base.IfNoCCAs();
             base.NoAllIfNoResults();
