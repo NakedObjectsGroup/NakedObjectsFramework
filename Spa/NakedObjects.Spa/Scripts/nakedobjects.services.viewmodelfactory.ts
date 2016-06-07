@@ -936,17 +936,23 @@ module NakedObjects {
                 };
 
                 tvm.logOff = () => {
-                    const config = {
-                        withCredentials: true,
-                        url: logoffUrl,
-                        method: "POST",
-                        cache: false
-                    };
+                    context.getUser()
+                        .then(u => {
+                            if (window.confirm(logOffMessage(u.userName() || "Unknown"))) {
+                                const config = {
+                                    withCredentials: true,
+                                    url: logoffUrl,
+                                    method: "POST",
+                                    cache: false
+                                };
 
-                    $http(config).finally(() => {
-                        $rootScope.$broadcast(geminiLogoffEvent);
-                        $timeout(() => window.location.href = postLogoffUrl);
-                    });
+                                $http(config)
+                                    .finally(() => {
+                                        $rootScope.$broadcast(geminiLogoffEvent);
+                                        $timeout(() => window.location.href = postLogoffUrl);
+                                    });
+                            }
+                        });
                 };
 
                 tvm.applicationProperties = () => {

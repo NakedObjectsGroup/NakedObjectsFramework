@@ -39,4 +39,6 @@ module NakedObjects {
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 
     export const pageMessage = (p : number, tp : number, c : number, tc : number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
+
+    export const logOffMessage = (u: string) => `Plesae confirm logoff of user: ${u}`;
 }
