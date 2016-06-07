@@ -51,7 +51,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SelectDropDownOnField("#salesterritory1", "Central");
             Click(SaveButton());  //TODO: check if this works
             WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
-            WaitForTextEquals(".property", 2, "Central");
+            WaitForTextEquals(".property", 2, "Sales Territory:\r\nCentral");
         }
     }
     public abstract class ViewModelsTests : ViewModelTestsRoot
@@ -147,7 +147,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             base.CreateVM();
             base.CreateEditableVM();
-            //base.CreateSwitchableVM();
+            base.CreateSwitchableVM();
         }
     }
     [TestClass]

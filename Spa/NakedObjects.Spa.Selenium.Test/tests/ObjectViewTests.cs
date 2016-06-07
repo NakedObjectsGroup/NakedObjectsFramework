@@ -70,12 +70,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"));
         }
         public virtual void Collections() { 
-            //Test collection count
             GeminiUrl("object?i1=View&o1=___1.Product--821");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection")).Count == 3);
-            ReadOnlyCollection<IWebElement> collections = br.FindElements(By.CssSelector(".collection"));
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text == "Product Inventory:\r\n2 Items");
-            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Product Reviews:\r\nEmpty");
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
+            wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text.StartsWith("Product Reviews:\r\nEmpty"));
             wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
         }
         public virtual void CollectionEagerlyRendered()
@@ -336,25 +333,24 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         }
 
-        //Test for a specific earlier bug
         public virtual void AddingObjectToCollectionUpdatesTableView()
         {
-            GeminiUrl("object?i1=View&o1=___1.WorkOrder--10321&as1=open&d1=AddNewRouting");
-            var details = WaitForCss(".summary .details").Text;
+            GeminiUrl("object?i1=View&o1=___1.SalesPerson--276&as1=open&c1_QuotaHistory=Table&d1=ChangeSalesQuota");
+            var details = WaitForCssNo(".summary .details",0).Text;
             Assert.IsTrue(details.Contains("Item"));
             var rowCount = Int32.Parse(details.Split(' ')[0]);
             WaitForCss("tbody tr", rowCount);
-            Assert.AreEqual(rowCount, br.FindElements(By.CssSelector("tbody tr")).Count);
-            SelectDropDownOnField("#loc1", "Tool Crib");
+            Assert.AreEqual(rowCount, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
+            ClearFieldThenType("#newquota1", "345");
             Click(OKButton());
-            wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr")).Count >= rowCount + 1);
-            Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody tr")).Count);
+            wait.Until(dr => dr.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count >= rowCount + 1);
+            Assert.AreEqual(rowCount +1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
         }
 
         public virtual void TimeSpanProperty()
         {
-            GeminiUrl("object?i1=View&o1=___1.Shift--965");
-            WaitForTextEquals(".property", 2, "07:00"); //TODO value not correct
+            GeminiUrl("object?i1=View&o1=___1.Shift--2");
+            WaitForTextEquals(".property", 2, "Start Time:\r\n15:00"); //TODO value not correct
         }
     }
     public abstract class ObjectViewTests : ObjectViewTestsRoot
@@ -415,7 +411,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ZeroIntValues() { base.ZeroIntValues(); }
         [TestMethod]
         public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
-        [TestMethod] //Unreliable on server
+        [TestMethod]
         public override void TimeSpanProperty() { base.TimeSpanProperty(); }
 
 
@@ -527,8 +523,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NonNavigableReferenceProperty();
             base.Colours();
             base.ZeroIntValues();
-            //base.AddingObjectToCollectionUpdatesTableView();
-            //base.TimeSpanProperty();
+            base.AddingObjectToCollectionUpdatesTableView();
+            base.TimeSpanProperty();
         }
     }
     [TestClass]

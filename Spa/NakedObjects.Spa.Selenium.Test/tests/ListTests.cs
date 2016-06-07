@@ -8,6 +8,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Linq;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -96,6 +97,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
             var iconTable = WaitForCss(".icon-table");
             Click(iconTable);
+            Thread.Sleep(500);
             wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
             var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1)"));
             Click(row);
