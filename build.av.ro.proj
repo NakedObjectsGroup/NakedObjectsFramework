@@ -45,7 +45,7 @@
     </ItemGroup>
 
     <XmlRead
-      XPath="/package/metadata/version"
+      XPath="/*[1]/*[1]/*[2]/text()"
       XmlFileName="$(ROPath)\$(ROMVC).package\$(ROMVC).nuspec">
       <Output TaskParameter="Value" PropertyName="Version" />
     </XmlRead>

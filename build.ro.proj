@@ -17,6 +17,7 @@
   <UsingTask TaskName="Zip" AssemblyFile="$(CommunityTasks)"/>
   <UsingTask TaskName="NUnit" AssemblyFile="$(CommunityTasks)" />
   <UsingTask TaskName="FileUpdate" AssemblyFile="$(CommunityTasks)" />
+  <UsingTask TaskName="XmlRead" AssemblyFile="$(CommunityTasks)" />
 
   <Choose>
     <When Condition="Exists('C:\Program Files (x86)')">
@@ -83,6 +84,15 @@
     <MakeDir Directories="$(PackageSourcePath)"/>
     <MakeDir Directories="$(BuiltPackagesPath)"/>
     <MakeDir Directories="$(ReleasePath)"/>
+
+    <XmlRead
+     XPath="/*[1]/*[1]/*[2]/text()"
+     XmlFileName="$(ROPath)\$(ROMVC).package\$(ROMVC).nuspec">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+
+    <WriteLinesToFile File="version.txt" Lines="$(Version)" Overwrite="true" />
+
   </Target>
 
   <ItemGroup>
