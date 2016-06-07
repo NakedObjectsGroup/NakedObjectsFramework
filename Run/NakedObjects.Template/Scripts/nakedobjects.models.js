@@ -386,6 +386,9 @@ var NakedObjects;
             Value.prototype.isReference = function () {
                 return this.wrapped instanceof Link;
             };
+            Value.prototype.isFileReference = function () {
+                return this.wrapped instanceof Link && this.link().href().indexOf("data") === 0;
+            };
             Value.prototype.isList = function () {
                 return this.wrapped instanceof Array;
             };
@@ -456,7 +459,10 @@ var NakedObjects;
                 return JSON.stringify(raw);
             };
             Value.prototype.setValue = function (target) {
-                if (this.isReference()) {
+                if (this.isFileReference()) {
+                    target.value = this.link().wrapped;
+                }
+                else if (this.isReference()) {
                     target.value = { "href": this.link().href() };
                 }
                 else if (this.isList()) {

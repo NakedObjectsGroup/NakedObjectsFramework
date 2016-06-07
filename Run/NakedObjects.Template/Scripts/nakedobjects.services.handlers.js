@@ -355,6 +355,17 @@ var NakedObjects;
                 }
             });
         };
+        handlers.handleApplicationProperties = function ($scope, routeData) {
+            context.clearWarnings();
+            context.clearMessages();
+            $scope.applicationPropertiesTemplate = NakedObjects.applicationPropertiesTemplate;
+            var apvm = new NakedObjects.ApplicationPropertiesViewModel();
+            $scope.applicationProperties = apvm;
+            context.getUser().then(function (u) { return apvm.user = u.wrapped(); });
+            context.getVersion().then(function (v) { return apvm.serverVersion = v.wrapped(); });
+            apvm.serverUrl = NakedObjects.getAppPath();
+            apvm.clientVersion = NakedObjects["version"] || "Failed to write version";
+        };
     });
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.services.handlers.js.map

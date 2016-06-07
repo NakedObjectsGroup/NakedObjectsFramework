@@ -488,6 +488,10 @@ module NakedObjects.Models {
             return this.wrapped instanceof Link;
         }
 
+        isFileReference(): boolean {
+            return this.wrapped instanceof Link && this.link().href().indexOf("data") === 0;
+        }
+
         isList(): boolean {
             return this.wrapped instanceof Array;
         }
@@ -572,7 +576,10 @@ module NakedObjects.Models {
         }
 
         setValue(target: IValue) {
-            if (this.isReference()) {
+            if (this.isFileReference()) {
+                target.value = this.link().wrapped;
+            }
+            else if (this.isReference()) {
                 target.value = { "href": this.link().href() };
             } else if (this.isList()) {
                 target.value = _.map(this.list(), (v) => v.isReference() ? { "href": v.link().href() } : v.scalar());

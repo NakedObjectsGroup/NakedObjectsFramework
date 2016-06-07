@@ -38,15 +38,6 @@ var NakedObjects;
         }
         return onWhat.disableActions() ? NakedObjects.noActions : NakedObjects.openActions;
     }
-    function createActionSubmenuMap(avms, menu) {
-        // if not root menu aggregate all actions with same name
-        if (menu.name) {
-            var actions = _.filter(avms, function (a) { return a.menuPath === menu.name; });
-            menu.actions = actions;
-        }
-        return menu;
-    }
-    NakedObjects.createActionSubmenuMap = createActionSubmenuMap;
     function toTriStateBoolean(valueToSet) {
         // looks stupid but note type checking
         if (valueToSet === true || valueToSet === "true") {
@@ -58,23 +49,56 @@ var NakedObjects;
         return null;
     }
     NakedObjects.toTriStateBoolean = toTriStateBoolean;
-    function createActionMenuMap(avms) {
-        // first create a menu for each action 
-        var menus = _
-            .chain(avms)
-            .map(function (a) { return ({ name: a.menuPath, actions: [a] }); })
-            .value();
-        // remove non unique submenus 
-        menus = _.uniqWith(menus, function (a, b) {
+    function getMenuForLevel(menupath, level) {
+        var menu = "";
+        if (menupath && menupath.length > 0) {
+            var menus = menupath.split("-");
+            if (menus.length > level) {
+                menu = menus[level];
+            }
+        }
+        return menu || "";
+    }
+    function removeDuplicateMenus(menus) {
+        return _.uniqWith(menus, function (a, b) {
             if (a.name && b.name) {
                 return a.name === b.name;
             }
             return false;
         });
-        // update submenus with all actions under same submenu
-        return _.map(menus, function (m) { return createActionSubmenuMap(avms, m); });
     }
-    NakedObjects.createActionMenuMap = createActionMenuMap;
+    function createSubmenuItems(avms, menu, level) {
+        // if not root menu aggregate all actions with same name
+        if (menu.name) {
+            var actions = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name &&
+                !getMenuForLevel(a.menuPath, level + 1); });
+            menu.actions = actions;
+            //then collate submenus 
+            var submenuActions_1 = _.filter(avms, function (a) { return getMenuForLevel(a.menuPath, level) === menu.name &&
+                getMenuForLevel(a.menuPath, level + 1); });
+            var menus = _
+                .chain(submenuActions_1)
+                .map(function (a) { return new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null); })
+                .value();
+            menus = removeDuplicateMenus(menus);
+            menu.menuItems = _.map(menus, function (m) { return createSubmenuItems(submenuActions_1, m, level + 1); });
+        }
+        return menu;
+    }
+    NakedObjects.createSubmenuItems = createSubmenuItems;
+    function createMenuItems(avms) {
+        // first create a top level menu for each action 
+        // note at top level we leave 'un-menued' actions
+        var menus = _
+            .chain(avms)
+            .map(function (a) { return new MenuItemViewModel(getMenuForLevel(a.menuPath, 0), [a], null); })
+            .value();
+        // remove non unique submenus 
+        menus = removeDuplicateMenus(menus);
+        // update submenus with all actions under same submenu
+        return _.map(menus, function (m) { return createSubmenuItems(avms, m, 0); });
+    }
+    NakedObjects.createMenuItems = createMenuItems;
     var AttachmentViewModel = (function () {
         function AttachmentViewModel() {
             var _this = this;
@@ -275,6 +299,15 @@ var NakedObjects;
         return ActionViewModel;
     }());
     NakedObjects.ActionViewModel = ActionViewModel;
+    var MenuItemViewModel = (function () {
+        function MenuItemViewModel(name, actions, menuItems) {
+            this.name = name;
+            this.actions = actions;
+            this.menuItems = menuItems;
+        }
+        return MenuItemViewModel;
+    }());
+    NakedObjects.MenuItemViewModel = MenuItemViewModel;
     var DialogViewModel = (function (_super) {
         __extends(DialogViewModel, _super);
         function DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope) {
@@ -370,11 +403,11 @@ var NakedObjects;
     NakedObjects.CollectionPlaceholderViewModel = CollectionPlaceholderViewModel;
     var ListViewModel = (function (_super) {
         __extends(ListViewModel, _super);
-        function ListViewModel(colorService, contextService, viewModelFactory, urlManager, focusManager, $q) {
+        function ListViewModel(colorService, context, viewModelFactory, urlManager, focusManager, $q) {
             var _this = this;
             _super.call(this);
             this.colorService = colorService;
-            this.contextService = contextService;
+            this.context = context;
             this.viewModelFactory = viewModelFactory;
             this.urlManager = urlManager;
             this.focusManager = focusManager;
@@ -389,21 +422,19 @@ var NakedObjects;
             };
             this.recreate = function (page, pageSize) {
                 return _this.routeData.objectId ?
-                    _this.contextService.getListFromObject(_this.routeData.paneId, _this.routeData, page, pageSize) :
-                    _this.contextService.getListFromMenu(_this.routeData.paneId, _this.routeData, page, pageSize);
+                    _this.context.getListFromObject(_this.routeData.paneId, _this.routeData, page, pageSize) :
+                    _this.context.getListFromMenu(_this.routeData.paneId, _this.routeData, page, pageSize);
             };
             this.pageOrRecreate = function (newPage, newPageSize, newState) {
                 _this.recreate(newPage, newPageSize).
                     then(function (list) {
-                    _this.routeData.state = newState || _this.routeData.state;
-                    _this.routeData.page = newPage;
-                    _this.routeData.pageSize = newPageSize;
+                    _this.urlManager.setListPaging(newPage, newPageSize, newState || _this.routeData.state, _this.onPaneId);
+                    _this.routeData = _this.urlManager.getRouteData().pane()[_this.onPaneId];
                     _this.reset(list, _this.routeData);
-                    _this.urlManager.setListPaging(newPage, newPageSize, _this.routeData.state, _this.onPaneId);
                 }).
                     catch(function (reject) {
                     var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
-                    _this.contextService.handleWrappedError(reject, null, function () { }, display);
+                    _this.context.handleWrappedError(reject, null, function () { }, display);
                 });
             };
             this.setPage = function (newPage, newState) {
@@ -424,7 +455,7 @@ var NakedObjects;
             this.doList = function () { return _this.urlManager.setListState(NakedObjects.CollectionViewState.List, _this.onPaneId); };
             this.doTable = function () { return _this.urlManager.setListState(NakedObjects.CollectionViewState.Table, _this.onPaneId); };
             this.reload = function () {
-                _this.contextService.clearCachedList(_this.onPaneId, _this.routeData.page, _this.routeData.pageSize);
+                _this.context.clearCachedList(_this.onPaneId, _this.routeData.page, _this.routeData.pageSize);
                 _this.setPage(_this.page, _this.state);
             };
             this.selectAll = function () { return _.each(_this.items, function (item, i) {
@@ -452,10 +483,13 @@ var NakedObjects;
             if (this.state !== routeData.state) {
                 this.state = routeData.state;
                 if (this.state === NakedObjects.CollectionViewState.Table && !this.hasTableData()) {
-                    this.recreate(this.page, this.pageSize)
-                        .then(function (list) {
+                    this.recreate(this.page, this.pageSize).
+                        then(function (list) {
                         _this.listRep = list;
                         _this.updateItems(list.value());
+                    }).
+                        catch(function (reject) {
+                        _this.context.handleWrappedError(reject, null, function () { }, function () { });
                     });
                 }
                 else {
@@ -486,13 +520,13 @@ var NakedObjects;
                 if (actionViewModel.invokableActionRep) {
                     return wrappedInvoke(getParms(actionViewModel.invokableActionRep), right);
                 }
-                return _this.contextService.getActionDetails(actionViewModel.actionRep)
+                return _this.context.getActionDetails(actionViewModel.actionRep)
                     .then(function (details) { return wrappedInvoke(getParms(details), right); });
             };
         };
         ListViewModel.prototype.collectionContributedInvokeDecorator = function (actionViewModel) {
             var _this = this;
-            var showDialog = function () { return _this.contextService.getInvokableAction(actionViewModel.actionRep).
+            var showDialog = function () { return _this.context.getInvokableAction(actionViewModel.actionRep).
                 then(function (ia) { return _.keys(ia.parameters()).length > 1; }); };
             actionViewModel.doInvoke = function () { };
             showDialog().
@@ -506,7 +540,7 @@ var NakedObjects;
                         then(function (result) { return _this.setMessage(result.shouldExpectResult() ? result.warningsOrMessages() || NakedObjects.noResultMessage : ""); }).
                         catch(function (reject) {
                         var display = function (em) { return _this.setMessage(em.invalidReason() || em.warningMessage); };
-                        _this.contextService.handleWrappedError(reject, null, function () { }, display);
+                        _this.context.handleWrappedError(reject, null, function () { }, display);
                     });
                 }; });
         };
@@ -528,7 +562,7 @@ var NakedObjects;
             this.updateItems(list.value());
             var actions = this.listRep.actionMembers();
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, routeData); });
-            this.actionsMap = createActionMenuMap(this.actions);
+            this.menuItems = createMenuItems(this.actions);
             _.forEach(this.actions, function (a) { return _this.decorate(a); });
             return this;
         };
@@ -735,7 +769,7 @@ var NakedObjects;
             this.props = routeData.interactionMode !== NakedObjects.InteractionMode.View ? routeData.props : {};
             var actions = _.values(this.domainObject.actionMembers());
             this.actions = _.map(actions, function (action) { return _this.viewModelFactory.actionViewModel(action, _this, _this.routeData); });
-            this.actionsMap = createActionMenuMap(this.actions);
+            this.menuItems = createMenuItems(this.actions);
             this.properties = _.map(this.domainObject.propertyMembers(), function (property, id) { return _this.viewModelFactory.propertyViewModel(property, id, _this.props[id], _this.onPaneId, _this.propertyMap); });
             this.collections = _.map(this.domainObject.collectionMembers(), function (collection) { return _this.viewModelFactory.collectionViewModel(collection, _this.routeData); });
             this.unsaved = routeData.interactionMode === NakedObjects.InteractionMode.Transient;
@@ -784,6 +818,13 @@ var NakedObjects;
         return DomainObjectViewModel;
     }(MessageViewModel));
     NakedObjects.DomainObjectViewModel = DomainObjectViewModel;
+    var ApplicationPropertiesViewModel = (function () {
+        function ApplicationPropertiesViewModel() {
+            this.clientVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
+        }
+        return ApplicationPropertiesViewModel;
+    }());
+    NakedObjects.ApplicationPropertiesViewModel = ApplicationPropertiesViewModel;
     var ToolBarViewModel = (function () {
         function ToolBarViewModel() {
         }

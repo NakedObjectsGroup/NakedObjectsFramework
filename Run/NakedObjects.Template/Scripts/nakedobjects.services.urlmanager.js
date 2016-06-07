@@ -582,6 +582,9 @@ var NakedObjects;
             var newPath = "/" + NakedObjects.ciceroPath + "/" + $location.path().split("/")[2];
             $location.path(newPath);
         };
+        helper.applicationProperties = function () {
+            $location.path("/" + NakedObjects.geminiPath + "/" + NakedObjects.applicationPropertiesPath);
+        };
         helper.currentpane = function () { return currentPaneId; };
         helper.singlePane = function (paneId) {
             if (paneId === void 0) { paneId = 1; }

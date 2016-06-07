@@ -69,7 +69,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NakedObjects.Facade, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NakedObjects.Facade.8.0.0-beta7\lib\net451\NakedObjects.Facade.dll</HintPath>
+      <HintPath>..\..\packages\NakedObjects.Facade.8.0.0-beta8\lib\net451\NakedObjects.Facade.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

@@ -58,7 +58,7 @@ var NakedObjects;
             linkViewModel.value = value.toString();
             linkViewModel.reference = value.toValueString();
             linkViewModel.choice = NakedObjects.ChoiceViewModel.create(value, "");
-            linkViewModel.canDropOn = function (targetType) { return context.isSubTypeOf(targetType, linkViewModel.domainType); };
+            linkViewModel.canDropOn = function (targetType) { return context.isSubTypeOf(linkViewModel.domainType, targetType); };
             linkViewModel.title = linkViewModel.title + dirtyMarker(context, linkRep.getOid());
         }
         var createChoiceViewModels = function (id, searchTerm, choices) {
@@ -577,9 +577,14 @@ var NakedObjects;
                         collectionViewModel.items = [];
                     }
                     else if (getDetails) {
-                        context.getCollectionDetails(collectionRep, state, resetting).then(function (details) {
+                        // TODO - there was a missing catch here make sure all top level promises have a catch !
+                        context.getCollectionDetails(collectionRep, state, resetting)
+                            .then(function (details) {
                             collectionViewModel.items = viewModelFactory.getItems(details.value(), state === NakedObjects.CollectionViewState.Table, routeData, collectionViewModel);
                             collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                        })
+                            .catch(function (reject) {
+                            context.handleWrappedError(reject, null, function () { }, function () { });
                         });
                     }
                     else {
@@ -612,7 +617,13 @@ var NakedObjects;
                     context.getListFromObject(routeData.paneId, routeData, routeData.page, routeData.pageSize) :
                     context.getListFromMenu(routeData.paneId, routeData, routeData.page, routeData.pageSize);
             };
-            collectionPlaceholderViewModel.reload = function () { return recreate().then(function () { return $route.reload(); }); };
+            collectionPlaceholderViewModel.reload = function () {
+                return recreate().
+                    then(function () { return $route.reload(); }).
+                    catch(function (reject) {
+                    context.handleWrappedError(reject, null, function () { }, function () { });
+                });
+            };
             return collectionPlaceholderViewModel;
         };
         viewModelFactory.servicesViewModel = function (servicesRep) {
@@ -633,7 +644,7 @@ var NakedObjects;
             serviceViewModel.serviceId = serviceRep.serviceId();
             serviceViewModel.title = serviceRep.title();
             serviceViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action, serviceViewModel, routeData); });
-            serviceViewModel.actionsMap = NakedObjects.createActionMenuMap(serviceViewModel.actions);
+            serviceViewModel.menuItems = NakedObjects.createMenuItems(serviceViewModel.actions);
             color.toColorNumberFromType(serviceRep.serviceId()).then(function (c) {
                 serviceViewModel.color = "" + NakedObjects.objectColor + c;
             });
@@ -646,7 +657,7 @@ var NakedObjects;
             var actions = menuRep.actionMembers();
             menuViewModel.title = menuRep.title();
             menuViewModel.actions = _.map(actions, function (action) { return viewModelFactory.actionViewModel(action, menuViewModel, routeData); });
-            menuViewModel.actionsMap = NakedObjects.createActionMenuMap(menuViewModel.actions);
+            menuViewModel.menuItems = NakedObjects.createMenuItems(menuViewModel.actions);
             return menuViewModel;
         };
         function selfLinkWithTitle(o) {
@@ -700,16 +711,25 @@ var NakedObjects;
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
                 tvm_1.logOff = function () {
-                    var config = {
-                        withCredentials: true,
-                        url: NakedObjects.logoffUrl,
-                        method: "POST",
-                        cache: false
-                    };
-                    $http(config).finally(function () {
-                        $rootScope.$broadcast(NakedObjects.geminiLogoffEvent);
-                        $timeout(function () { return window.location.href = NakedObjects.postLogoffUrl; });
+                    context.getUser()
+                        .then(function (u) {
+                        if (window.confirm(NakedObjects.logOffMessage(u.userName() || "Unknown"))) {
+                            var config = {
+                                withCredentials: true,
+                                url: NakedObjects.logoffUrl,
+                                method: "POST",
+                                cache: false
+                            };
+                            $http(config)
+                                .finally(function () {
+                                $rootScope.$broadcast(NakedObjects.geminiLogoffEvent);
+                                $timeout(function () { return window.location.href = NakedObjects.postLogoffUrl; });
+                            });
+                        }
                     });
+                };
+                tvm_1.applicationProperties = function () {
+                    urlManager.applicationProperties();
                 };
                 tvm_1.template = NakedObjects.appBarTemplate;
                 tvm_1.footerTemplate = NakedObjects.footerTemplate;

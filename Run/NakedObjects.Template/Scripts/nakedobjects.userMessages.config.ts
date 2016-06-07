@@ -30,8 +30,8 @@ module NakedObjects {
     export const unknownCollectionSize = "Unknown Size";
     export const emptyCollectionSize = "Empty";
     export const noItemsSelected = "Must select items for collection contributed action";
-    export const dropPrompt = "Drop here";
-    export const autoCompletePrompt = "(auto-complete)";
+    export const dropPrompt = "(drop here)";
+    export const autoCompletePrompt = "(auto-complete or drop)";
     export const concurrencyError = "Object has been updated by another user\n. Object has been reloaded.";
     export const loadingMessage = "Loading...";
 
@@ -39,4 +39,6 @@ module NakedObjects {
     export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => `Value is outside the range ${filter.filter(min) || "unlimited"} to ${filter.filter(max) || "unlimited"}`;
 
     export const pageMessage = (p : number, tp : number, c : number, tc : number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
+
+    export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 }

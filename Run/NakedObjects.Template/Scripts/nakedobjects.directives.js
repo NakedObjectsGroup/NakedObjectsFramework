@@ -5,6 +5,7 @@
 /// <reference path="typings/moment/moment.d.ts"/>
 var NakedObjects;
 (function (NakedObjects) {
+    var Link = NakedObjects.Models.Link;
     var Value = NakedObjects.Models.Value;
     var toDateString = NakedObjects.Models.toDateString;
     var EntryType = NakedObjects.Models.EntryType;
@@ -463,11 +464,12 @@ var NakedObjects;
             var vKeyCode = 86;
             var deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
-                event.preventDefault();
                 var droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 var droppableVm_2 = droppableScope.property || droppableScope.parameter;
                 var draggableVm_2 = $("div.footer div.currentcopy .reference").data(draggableVmKey);
                 if (draggableVm_2) {
+                    // only consume event if we are actually dropping on a field
+                    event.preventDefault();
                     droppableScope.$apply(function () { return droppableVm_2.drop(draggableVm_2); });
                 }
             }
@@ -504,6 +506,7 @@ var NakedObjects;
             }
         };
     });
+    // this is a very simple implementation unlikely to work with large files, no chunking etc   
     NakedObjects.app.directive("geminiFileupload", function () {
         return {
             restrict: "A",
@@ -514,9 +517,17 @@ var NakedObjects;
                     return;
                 }
                 element.bind("change", function () {
-                    var formData = new FormData();
-                    formData.append("file", element[0].files[0]);
-                    ngModel.$setViewValue(element[0].files[0]);
+                    var file = element[0].files[0];
+                    var fileReader = new FileReader();
+                    fileReader.onloadend = function () {
+                        var link = new Link({
+                            href: fileReader.result,
+                            type: file.type,
+                            title: file.name
+                        });
+                        ngModel.$setViewValue(link);
+                    };
+                    fileReader.readAsDataURL(file);
                 });
             }
         };

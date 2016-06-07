@@ -200,6 +200,7 @@
   <ItemGroup>
     <Content Include="Content\nakedobjects.css" />
     <Content Include="Content\partials\actions.html" />
+    <Content Include="Content\partials\applicationProperties.html" />
     <Content Include="Content\partials\blank.html" />
     <Content Include="Content\partials\cicero.html" />
     <Content Include="Content\partials\collectionList.html" />
@@ -222,6 +223,7 @@
     <Content Include="Content\partials\objectEdit.html" />
     <Content Include="Content\partials\objectView.html" />
     <Content Include="Content\partials\recent.html" />
+    <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\singleError.html" />
     <Content Include="Content\partials\singleHome.html" />
     <Content Include="Content\partials\singleList.html" />
@@ -265,6 +267,7 @@
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery.timepicker.css" />
     <Content Include="Content\themes\base\menu.css" />
     <Content Include="Content\themes\base\progressbar.css" />
     <Content Include="Content\themes\base\resizable.css" />
@@ -284,7 +287,6 @@
     <Content Include="images\summary.png" />
     <Content Include="images\table.png" />
     <Content Include="index.html" />
-    <Content Include="packages.config" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
@@ -292,14 +294,10 @@
     <Content Include="Scripts\angular-touch.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\angular.min.js.map" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="fonts\iconFont.woff" />
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.eot" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
@@ -309,6 +307,10 @@
     <Content Include="Scripts\lodash.core.min.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\nakedobjects.app.js" />
     <Content Include="Scripts\nakedobjects.cicerocommandfactory.js" />
     <Content Include="Scripts\nakedobjects.cicerocommands.js" />
@@ -327,6 +329,12 @@
     <Content Include="Scripts\nakedobjects.services.color.config.js" />
     <Content Include="Scripts\nakedobjects.services.color.config.js.map" />
     <Content Include="Scripts\nakedobjects.config.js.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\nakedobjects.services.color.js" />
     <Content Include="Scripts\nakedobjects.services.context.js" />
@@ -341,7 +349,6 @@
     <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js" />
     <Content Include="Scripts\nakedobjects.userMessages.config.js" />
     <Content Include="Scripts\nakedobjects.viewmodels.js" />
-    <Content Include="Scripts\nakedobjects.models.js.map" />
     <Content Include="Scripts\nakedobjects.viewmodels.js.map" />
     <Content Include="Scripts\nakedobjects.userMessages.config.js.map" />
     <Content Include="Scripts\nakedobjects.services.viewmodelfactory.js.map" />
@@ -359,6 +366,7 @@
     <Content Include="Scripts\nakedobjects.routedata.js.map" />
     <Content Include="Scripts\nakedobjects.rointerfaces.js.map" />
     <Content Include="Scripts\nakedobjects.rointerfaces.custom.js.map" />
+    <Content Include="Scripts\nakedobjects.models.js.map" />
     <Content Include="Scripts\nakedobjects.models.helpers.js.map" />
     <Content Include="Scripts\nakedobjects.exceptionhandler.js.map" />
     <Content Include="Scripts\nakedobjects.directives.js.map" />
@@ -376,12 +384,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Content\themes\base\jquery.timepicker.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BasicAuthenticationHandler.cs" />

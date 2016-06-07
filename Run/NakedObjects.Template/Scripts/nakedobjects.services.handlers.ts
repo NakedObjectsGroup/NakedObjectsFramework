@@ -15,7 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
-    import Link = NakedObjects.Models.Link;
+
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -29,6 +29,7 @@ module NakedObjects {
         handleListSearch($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleRecent($scope: INakedObjectsScope, routeData: PaneRouteData): void;
         handleAttachment(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
+        handleApplicationProperties(nakedObjectsScope: INakedObjectsScope, paneRouteData: PaneRouteData): void;
     }
 
     app.service("handlers",
@@ -36,7 +37,7 @@ module NakedObjects {
             $location: ng.ILocationService,
             $q: ng.IQService,
             $cacheFactory: ng.ICacheFactoryService,
-            $rootScope : ng.IRootScopeService,
+            $rootScope: ng.IRootScopeService,
             repLoader: IRepLoader,
             context: IContext,
             viewModelFactory: IViewModelFactory,
@@ -66,7 +67,7 @@ module NakedObjects {
                 new MenusViewModel(viewModelFactory)
             ];
 
-        
+
             function setVersionError(error: string) {
                 context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
                 urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
@@ -193,7 +194,7 @@ module NakedObjects {
                     perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                     perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                     perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
-                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);              
+                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);
                 }
             }
 
@@ -254,7 +255,7 @@ module NakedObjects {
             }
 
             function handleListActionsAndDialog($scope: INakedObjectsScope, routeData: PaneRouteData) {
-                
+
                 const newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 if ($scope.actionsTemplate !== newActionsTemplate) {
                     $scope.actionsTemplate = newActionsTemplate;
@@ -274,7 +275,7 @@ module NakedObjects {
             }
 
 
-            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
+            function handleListSearchChanged($scope: INakedObjectsScope, routeData: PaneRouteData) {
                 // only update templates if changed 
                 const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const listViewModel = $scope.collection;
@@ -479,5 +480,25 @@ module NakedObjects {
                         }
                     });
             }
+
+            handlers.handleApplicationProperties = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
+                context.clearWarnings();
+                context.clearMessages();
+
+                $scope.applicationPropertiesTemplate = applicationPropertiesTemplate;
+
+                const apvm = new ApplicationPropertiesViewModel();
+                $scope.applicationProperties = apvm;
+
+                context.getUser().then(u => apvm.user = u.wrapped());
+                context.getVersion().then(v => apvm.serverVersion = v.wrapped());
+
+                apvm.serverUrl = getAppPath();
+
+                apvm.clientVersion =  (NakedObjects as any)["version"] || "Failed to write version";
+
+            }
+
+
         });
 }

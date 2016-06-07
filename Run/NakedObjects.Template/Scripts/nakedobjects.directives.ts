@@ -5,9 +5,9 @@
 /// <reference path="typings/moment/moment.d.ts"/>
 
 module NakedObjects {
+    import Link = Models.Link;
     import Value = Models.Value;
     import toDateString = Models.toDateString;
-    import toTimeString = Models.toTimeString;
     import EntryType = Models.EntryType;
 
     interface ISelectObj {
@@ -155,7 +155,6 @@ module NakedObjects {
             }
         };
     });
-
 
     app.directive("geminiAutocomplete", (color: IColor): ng.IDirective => {
         return {
@@ -583,13 +582,15 @@ module NakedObjects {
             const vKeyCode = 86;
             const deleteKeyCode = 46;
             if (event.keyCode === vKeyCode && event.ctrlKey) {
-                event.preventDefault();
+             
 
                 const droppableScope = propertyScope().property ? propertyScope() : parameterScope();
                 const droppableVm: ValueViewModel = droppableScope.property || droppableScope.parameter;
                 const draggableVm = <IDraggableViewModel>($("div.footer div.currentcopy .reference").data(draggableVmKey) as any);
 
                 if (draggableVm) {
+                    // only consume event if we are actually dropping on a field
+                    event.preventDefault();
                     droppableScope.$apply(() => droppableVm.drop(draggableVm));
                 }
             }
@@ -631,7 +632,8 @@ module NakedObjects {
         };
     });
 
-    app.directive("geminiFileupload",  () => {
+    // this is a very simple implementation unlikely to work with large files, no chunking etc   
+    app.directive("geminiFileupload", () => {
         return {
             restrict: "A",
             scope: true,
@@ -643,15 +645,24 @@ module NakedObjects {
                 }
 
                 element.bind("change", () => {
-                    var formData = new FormData();
-                    formData.append("file", (element[0] as any).files[0]);
-                    ngModel.$setViewValue((element[0] as any).files[0]);
-                });
+                    const file = (element[0] as any).files[0] as File;
 
+                    const fileReader = new FileReader();
+                    fileReader.onloadend = () => {
+                        const link = new Link({
+                            href: fileReader.result,
+                            type: file.type,
+                            title: file.name
+                        } as RoInterfaces.ILink);
+
+                        ngModel.$setViewValue(link);
+                    };
+
+                    fileReader.readAsDataURL(file);
+                });
             }
         };
     });
-
 
     app.directive("geminiAttachment", ($compile : any, $window: ng.IWindowService): ng.IDirective => {
         return {

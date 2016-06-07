@@ -34,6 +34,7 @@ var NakedObjects;
         var splitAttachmentListTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentList.html";
         var splitAttachmentRecentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentRecent.html";
         var splitAttachmentAttachmentTemplate = NakedObjects.getSvrPath() + "Content/partials/splitAttachmentAttachment.html";
+        var singleApplicationPropertiesTemplate = NakedObjects.getSvrPath() + "Content/partials/singleApplicationProperties.html";
         var singleErrorTemplate = NakedObjects.getSvrPath() + "Content/partials/singleError.html";
         $routeProvider.
             //Gemini2 Urls below:
@@ -187,6 +188,10 @@ var NakedObjects;
             controller: "BackgroundController",
             reloadOnSearch: false
         }).
+            when("/" + NakedObjects.geminiPath + "/" + NakedObjects.applicationPropertiesPath, {
+            templateUrl: singleApplicationPropertiesTemplate,
+            controller: "BackgroundController"
+        }).
             when("/" + NakedObjects.geminiPath + "/" + NakedObjects.errorPath, {
             templateUrl: singleErrorTemplate,
             controller: "ErrorController"
@@ -215,5 +220,9 @@ var NakedObjects;
     NakedObjects.app.run(function ($cacheFactory) {
         $cacheFactory("recentlyViewed");
     });
+})(NakedObjects || (NakedObjects = {}));
+var NakedObjects;
+(function (NakedObjects) {
+    NakedObjects.version = "8.0.0-beta7";
 })(NakedObjects || (NakedObjects = {}));
 //# sourceMappingURL=nakedobjects.app.js.map

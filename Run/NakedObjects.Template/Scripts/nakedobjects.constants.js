@@ -48,6 +48,7 @@ var NakedObjects;
     NakedObjects.recentTemplate = getSvrPath() + "Content/partials/recent.html";
     NakedObjects.attachmentTemplate = getSvrPath() + "Content/partials/attachment.html";
     NakedObjects.ciceroTemplate = getSvrPath() + "Content/partials/cicero.html";
+    NakedObjects.applicationPropertiesTemplate = getSvrPath() + "Content/partials/applicationProperties.html";
     // routing constants 
     NakedObjects.geminiPath = "gemini";
     NakedObjects.ciceroPath = "cicero";
@@ -57,6 +58,7 @@ var NakedObjects;
     NakedObjects.errorPath = "error";
     NakedObjects.recentPath = "recent";
     NakedObjects.attachmentPath = "attachment";
+    NakedObjects.applicationPropertiesPath = "applicationProperties";
     //Restful Objects constants
     NakedObjects.roDomainType = "x-ro-domain-type";
     NakedObjects.roInvalidReason = "x-ro-invalidReason";

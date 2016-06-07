@@ -68,6 +68,12 @@ var NakedObjects;
         handlers.handleAttachment($scope, routeData.pane2);
         pane2Dereg = $scope.$on("$routeUpdate", function () { return handlers.handleAttachment($scope, urlManager.getRouteData().pane2); });
     });
+    NakedObjects.app.controller("ApplicationPropertiesController", function ($scope, handlers, urlManager) {
+        pane1Dereg();
+        pane2Dereg();
+        var routeData = urlManager.getRouteData();
+        handlers.handleApplicationProperties($scope, routeData.pane1);
+    });
     NakedObjects.app.controller("BackgroundController", function ($scope, handlers) {
         handlers.handleBackground($scope);
     });

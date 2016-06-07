@@ -43,21 +43,21 @@ module NakedObjects {
         getVersion: () => ng.IPromise<VersionRepresentation>;
         getMenus: () => ng.IPromise<MenusRepresentation>;
         getMenu: (menuId: string) => ng.IPromise<MenuRepresentation>;
-        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode : InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
+        getObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getListFromMenu: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
-        getListFromObject: (paneId: number, routeData : PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
+        getListFromObject: (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => angular.IPromise<ListRepresentation>;
 
         getActionDetails: (actionMember: ActionMember) => ng.IPromise<ActionRepresentation>;
-        getCollectionDetails: (collectionMember: CollectionMember, state : CollectionViewState, ignoreCache : boolean) => ng.IPromise<CollectionRepresentation>;
+        getCollectionDetails: (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache: boolean) => ng.IPromise<CollectionRepresentation>;
 
-        getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<InvokableActionMember | ActionRepresentation >;
+        getInvokableAction: (actionmember: ActionMember | ActionRepresentation | IInvokableAction) => ng.IPromise<InvokableActionMember | ActionRepresentation>;
 
         getError: () => ErrorWrapper;
         getPreviousUrl: () => string;
 
-        getIsDirty : (oid : ObjectIdWrapper) => boolean;
+        getIsDirty: (oid: ObjectIdWrapper) => boolean;
 
-        mustReload : (oid: ObjectIdWrapper) => boolean;
+        mustReload: (oid: ObjectIdWrapper) => boolean;
 
         //The object values are only needed on a transient object / editable view model
         autoComplete(field: IField, id: string, objectValues: () => _.Dictionary<Value>, searchTerm: string): ng.IPromise<_.Dictionary<Value>>;
@@ -95,18 +95,18 @@ module NakedObjects {
             displayMessages: (em: ErrorMap) => void,
             customClientHandler?: (ec: ClientErrorCode) => boolean): void;
 
-        getRecentlyViewed() : DomainObjectRepresentation[];
+        getRecentlyViewed(): DomainObjectRepresentation[];
 
         getFile: (object: DomainObjectRepresentation, url: string, mt: string) => angular.IPromise<Blob>;
 
-        setFile: (object: DomainObjectRepresentation, url: string, mt: string, file : Blob) => angular.IPromise<boolean>;
+        setFile: (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => angular.IPromise<boolean>;
 
-        clearCachedFile : (url : string) => void;
+        clearCachedFile: (url: string) => void;
     }
 
     interface IContextInternal extends IContext {
         getHome: () => ng.IPromise<HomePageRepresentation>;
-        getDomainObject: (paneId: number, oid : ObjectIdWrapper, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
+        getDomainObject: (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => ng.IPromise<DomainObjectRepresentation>;
         getServices: () => ng.IPromise<DomainServicesRepresentation>;
         getService: (paneId: number, type: string) => ng.IPromise<DomainObjectRepresentation>;
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
@@ -115,7 +115,7 @@ module NakedObjects {
     }
 
     enum DirtyState {
-        DirtyMustReload, 
+        DirtyMustReload,
         DirtyMayReload,
         Clean
     }
@@ -214,7 +214,7 @@ module NakedObjects {
         }
     }
 
-    app.service("context", function($q: ng.IQService,
+    app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
         focusManager: IFocusManager,
@@ -245,14 +245,14 @@ module NakedObjects {
         context.setFile = (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => repLoader.uploadFile(url, mt, file);
 
         context.clearCachedFile = (url: string) => repLoader.clearCache(url);
-    
+
         // exposed for test mocking
         context.getDomainObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode): ng.IPromise<DomainObjectRepresentation> => {
             const type = oid.domainType;
             const id = oid.instanceId;
 
             const dirtyState = dirtyList.getDirty(oid);
-            const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload)  && autoLoadDirty);
+            const forceReload = (dirtyState === DirtyState.DirtyMustReload) || ((dirtyState === DirtyState.DirtyMayReload) && autoLoadDirty);
 
             if (!forceReload && isSameObject(currentObjects[paneId], type, id)) {
                 return $q.when(currentObjects[paneId]);
@@ -320,12 +320,12 @@ module NakedObjects {
                 });
         };
 
-        context.getActionDetails = (actionMember: ActionMember) : ng.IPromise<ActionRepresentation> => {
+        context.getActionDetails = (actionMember: ActionMember): ng.IPromise<ActionRepresentation> => {
             const details = actionMember.getDetails();
             return repLoader.populate(details, true);
         };
 
-        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache : boolean): ng.IPromise<CollectionRepresentation> => {
+        context.getCollectionDetails = (collectionMember: CollectionMember, state: CollectionViewState, ignoreCache: boolean): ng.IPromise<CollectionRepresentation> => {
             const details = collectionMember.getDetails();
 
             if (state === CollectionViewState.Table) {
@@ -334,7 +334,7 @@ module NakedObjects {
             const parent = collectionMember.parent;
             const oid = parent.getOid();
             const isDirty = dirtyList.getDirty(oid) !== DirtyState.Clean;
-        
+
             return repLoader.populate(details, isDirty || ignoreCache);
         };
 
@@ -446,7 +446,7 @@ module NakedObjects {
                 });
         };
 
-        context.getObject = (paneId: number, oid : ObjectIdWrapper, interactionMode: InteractionMode) => {
+        context.getObject = (paneId: number, oid: ObjectIdWrapper, interactionMode: InteractionMode) => {
             return oid.isService ? context.getService(paneId, oid.domainType) : context.getDomainObject(paneId, oid, interactionMode);
         };
 
@@ -505,8 +505,8 @@ module NakedObjects {
         function getPagingParms(page: number, pageSize: number): _.Dictionary<Object> {
             return (page && pageSize) ? { "x-ro-page": page, "x-ro-pageSize": pageSize } : {};
         }
-       
-        context.getListFromMenu = (paneId: number, routeData : PaneRouteData, page?: number, pageSize?: number) => {
+
+        context.getListFromMenu = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
             const menuId = routeData.menuId;
             const actionId = routeData.actionId;
             const parms = routeData.actionParams;
@@ -523,7 +523,7 @@ module NakedObjects {
             return getList(paneId, promise, page, pageSize);
         };
 
-        context.getListFromObject = (paneId: number, routeData : PaneRouteData, page?: number, pageSize?: number) => {
+        context.getListFromObject = (paneId: number, routeData: PaneRouteData, page?: number, pageSize?: number) => {
             const objectId = routeData.objectId;
             const actionId = routeData.actionId;
             const parms = routeData.actionParams;
@@ -542,7 +542,7 @@ module NakedObjects {
             return getList(paneId, promise, page, pageSize);
         };
 
-        context.setObject = (paneId: number, co : DomainObjectRepresentation) => currentObjects[paneId] = co;
+        context.setObject = (paneId: number, co: DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
             const [, p1, p2] = currentObjects;
@@ -683,7 +683,7 @@ module NakedObjects {
                 }
             }
 
-            return () => {};
+            return () => { };
         }
 
         context.invokeAction = (action: IInvokableAction, paneId: number, parms: _.Dictionary<Value>) => {
@@ -791,22 +791,22 @@ module NakedObjects {
             onReload: (updatedObject: DomainObjectRepresentation) => void,
             displayMessages: (em: ErrorMap) => void) {
             switch (reject.httpErrorCode) {
-            case (HttpStatusCode.PreconditionFailed):
+                case (HttpStatusCode.PreconditionFailed):
 
-                if (toReload.isTransient()) {
+                    if (toReload.isTransient()) {
+                        urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
+                    } else {
+                        context.reloadObject(1, toReload).
+                            then((updatedObject: DomainObjectRepresentation) => {
+                                onReload(updatedObject);
+                            });
+                    }
+                    break;
+                case (HttpStatusCode.UnprocessableEntity):
+                    displayMessages(reject.error as ErrorMap);
+                    break;
+                default:
                     urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
-                } else {
-                    context.reloadObject(1, toReload).
-                        then((updatedObject: DomainObjectRepresentation) => {
-                            onReload(updatedObject);
-                        });
-                }
-                break;
-            case (HttpStatusCode.UnprocessableEntity):
-                displayMessages(reject.error as ErrorMap);
-                break;
-            default:
-                urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
             }
 
         }
@@ -830,15 +830,15 @@ module NakedObjects {
 
             context.setError(reject);
             switch (reject.category) {
-            case (ErrorCategory.HttpServerError):
-                handleHttpServerError(reject);
-                break;
-            case (ErrorCategory.HttpClientError):
-                handleHttpClientError(reject, toReload, onReload, displayMessages);
-                break;
-            case (ErrorCategory.ClientError):
-                handleClientError(reject, customClientHandler);
-                break;
+                case (ErrorCategory.HttpServerError):
+                    handleHttpServerError(reject);
+                    break;
+                case (ErrorCategory.HttpClientError):
+                    handleHttpClientError(reject, toReload, onReload, displayMessages);
+                    break;
+                case (ErrorCategory.ClientError):
+                    handleClientError(reject, customClientHandler);
+                    break;
             }
         };
 
@@ -846,7 +846,7 @@ module NakedObjects {
             recentcache.add(obj);
         }
 
-        context.getRecentlyViewed = () => recentcache.items();      
+        context.getRecentlyViewed = () => recentcache.items();
 
         function logoff() {
             for (let pane = 1; pane <= 2; pane++) {
