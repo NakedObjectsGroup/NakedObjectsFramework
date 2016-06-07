@@ -64,7 +64,7 @@ module NakedObjects {
     export const errorPath = "error";
     export const recentPath = "recent";
     export const attachmentPath = "attachment";
-    export const applicationPropertiesPath = "appplicationProperties";
+    export const applicationPropertiesPath = "applicationProperties";
 
     //Restful Objects constants
     export const roDomainType = "x-ro-domain-type";
