@@ -495,6 +495,8 @@ module NakedObjects {
 
                 apvm.serverUrl = getAppPath();
 
+                apvm.clientVersion =  (NakedObjects as any)["version"] || "Failed to write version";
+
             }
 
 
