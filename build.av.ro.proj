@@ -50,7 +50,7 @@
       <Output TaskParameter="Value" PropertyName="Version" />
     </XmlRead>
     
-    <WriteLinesToFile File="version.txt" Lines="$(Version)" Overwrite="true" />
+    <WriteLinesToFile File="$(ROPath)\NakedObjects.Rest.Snapshot\version.txt" Lines="$(Version)" Overwrite="true" />
     
   </Target>
 
