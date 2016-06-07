@@ -92,7 +92,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   //[TestClass]
+    //[TestClass] //Firefox Individual
     public class KeyboardNavigationTestsFirefox : KeyboardNavigationTests
     {
         [ClassInitialize]
@@ -142,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
     #region Mega tests
     public abstract class MegaKeyboardTestsRoot : KeyboardNavigationTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaKeyboardTest()
         {
             //base.SelectFooterIconsWithAccessKeys();

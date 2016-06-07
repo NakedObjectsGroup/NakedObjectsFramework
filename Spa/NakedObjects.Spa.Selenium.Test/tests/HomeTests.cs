@@ -267,7 +267,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class HomeTestsFirefox : HomeTests
     {
         [ClassInitialize]
@@ -343,7 +343,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CleanUpTest();
         }
 
-        [TestMethod]
+        [TestMethod] //Mega
         public virtual void MegaHomeTest()
         {
             WaitForSingleHome();

@@ -510,7 +510,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class DialogTestsFirefox : DialogTests
     {
         [ClassInitialize]
@@ -565,7 +565,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaDialogTestsRoot : DialogTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaDialogTest()
         {
             base.PasswordParam();

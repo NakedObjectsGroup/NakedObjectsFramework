@@ -12,7 +12,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     public abstract class NewTestFrameworkExample : NewTestFramework {
 
-        //[TestMethod, Ignore]
+        //[TestMethod]
         public virtual void Test1() {
             Home();
             Menu("Customers");

@@ -415,14 +415,13 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ZeroIntValues() { base.ZeroIntValues(); }
         [TestMethod]
         public override void AddingObjectToCollectionUpdatesTableView() { base.AddingObjectToCollectionUpdatesTableView(); }
-        [TestMethod, Ignore]
+        [TestMethod] //Unreliable on server
         public override void TimeSpanProperty() { base.TimeSpanProperty(); }
 
 
     }
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class ObjectViewTestsIe : ObjectViewTests
     {
         [ClassInitialize]
@@ -446,7 +445,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class ObjectViewTestsFirefox : ObjectViewTests
     {
         [ClassInitialize]
@@ -474,7 +473,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass, Ignore]
     public class ObjectViewTestsChrome : ObjectViewTests
     {
         [ClassInitialize]
@@ -501,7 +499,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaObjectViewTest()
         {
             base.ActionsAlreadyOpen();

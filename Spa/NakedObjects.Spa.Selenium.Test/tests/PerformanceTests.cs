@@ -36,7 +36,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     public abstract class PerformanceTests : PerformanceTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public override void RetrieveRandomEmployees() { base.RetrieveRandomEmployees(); }
 
     }

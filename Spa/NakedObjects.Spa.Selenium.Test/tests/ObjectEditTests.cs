@@ -354,7 +354,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   //[TestClass]
+    //[TestClass] //Firefox Individual
     public class ObjectEditPageTestsFirefox : ObjectEditTests
     {
         [ClassInitialize]
@@ -409,7 +409,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaObjectEditTest()
         {
             base.ObjectEditChangeScalar();

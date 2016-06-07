@@ -88,7 +88,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class ViewModelFirefox : ViewModelsTests
     {
         [ClassInitialize]
@@ -142,7 +142,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaViewModelTestsRoot : ViewModelTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaViewModelTest()
         {
             base.CreateVM();

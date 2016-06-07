@@ -319,7 +319,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class ListTestsFirefox : ListTests
     {
         [ClassInitialize]
@@ -373,7 +373,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaListTestsRoot : ListTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaListTest()
         {
             base.ActionReturnsListView();

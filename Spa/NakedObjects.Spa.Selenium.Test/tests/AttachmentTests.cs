@@ -85,7 +85,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class AttachmentTestsFirefox : AttachmentTests
     {
         [ClassInitialize]
@@ -140,7 +140,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaAttachmentTestsRoot : AttachmentTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaAttachmentTest()
         {
             base.ImageAsProperty();

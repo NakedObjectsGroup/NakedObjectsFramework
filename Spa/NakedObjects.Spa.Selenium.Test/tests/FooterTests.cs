@@ -174,7 +174,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class FooterIconTestsFirefox : FooterTests
     {
         [ClassInitialize]
@@ -229,7 +229,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaFooterTestsRoot : FooterTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaFooterTest()
         {
             base.Home();

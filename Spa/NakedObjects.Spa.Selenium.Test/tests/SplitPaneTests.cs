@@ -439,7 +439,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
 
-        [TestMethod]
+        [TestMethod] //Mega
         public virtual void MegaSplitPaneTest()
         {
             RightClickActionReturningObjectFromHomeSingle();

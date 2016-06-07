@@ -229,7 +229,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CleanUpTest();
         }
     }
-   //[TestClass]
+    //[TestClass] //Firefox Individual
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
         [ClassInitialize]
@@ -283,7 +283,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaTransientObjectTestsRoot : TransientObjectTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaTestTransientObjectTests()
         {
             base.CreateAndSaveTransientObject();

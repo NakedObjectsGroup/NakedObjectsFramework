@@ -325,7 +325,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class UrlTestsFirefox : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -369,7 +369,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #endregion
 
-    #region Running all tests in one go
     [TestClass]
     public class MegaUrlTestFirefox : UrlTestsRoot
     {
@@ -392,7 +391,7 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CleanUpTest();
         }
 
-        [TestMethod]
+        [TestMethod] //Mega
         public virtual void MegaUrlTest()
         {
             Home();
@@ -414,5 +413,4 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             SplitListList();
         }
     }
-    #endregion
 }

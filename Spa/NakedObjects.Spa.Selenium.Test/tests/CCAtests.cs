@@ -345,7 +345,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ListViewWithParmDialogNotOpen() { base.ListViewWithParmDialogNotOpen(); }
 
-        [TestMethod, Ignore] //Failing on server
+        [TestMethod] //Unreliable on server
         public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
 
         [TestMethod]
@@ -357,7 +357,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void EmptyParam() { base.EmptyParam(); }
 
 
-        [TestMethod, Ignore] //Too unreliable on server
+        [TestMethod] //Unreliable on server
         public override void ZeroParamAction() { base.ZeroParamAction(); }
 
         [TestMethod]

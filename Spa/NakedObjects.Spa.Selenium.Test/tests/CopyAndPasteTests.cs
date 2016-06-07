@@ -274,7 +274,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass]
+    //[TestClass] //Firefox Individual
     public class CopyAndPasteTestsFirefox : CopyAndPasteTests
     {
         [ClassInitialize]
@@ -328,7 +328,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaCopyAndPasteTestsRoot : CopyAndPasteTestsRoot
     {
-        [TestMethod]
+        [TestMethod] //Mega
         public void MegaCopyAndPasteTest()
         {
             base.CopyTitleOrPropertyIntoClipboard();
