@@ -242,7 +242,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CanClearADroppableReferenceField() { base.CanClearADroppableReferenceField(); }
         [TestMethod] 
         public override void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() { base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed(); }
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour()
         {
             base.IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour();
@@ -251,7 +251,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class CopyAndPasteTestsIe : CopyAndPasteTests
     {
         [ClassInitialize]
@@ -303,7 +302,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class CopyAndPasteTestsChrome : CopyAndPasteTests
     {
         [ClassInitialize]

@@ -14,7 +14,6 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-
     public abstract class TransientObjectTestsRoot : AWTest
     {
         public virtual void CreateAndSaveTransientObject()
@@ -208,8 +207,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CanInvokeActionOnASavedTransient() { base.CanInvokeActionOnASavedTransient(); }
     }
     #region browsers specific subclasses
-
-    //[TestClass, Ignore]
     public class TransientObjectTestsIe : TransientObjectTests
     {
         [ClassInitialize]
@@ -232,7 +229,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.CleanUpTest();
         }
     }
-
    //[TestClass]
     public class TransientObjectTestsFirefox : TransientObjectTests
     {
@@ -260,8 +256,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
-
-    //[TestClass, Ignore]
     public class TransientObjectTestsChrome : TransientObjectTests
     {
         [ClassInitialize]

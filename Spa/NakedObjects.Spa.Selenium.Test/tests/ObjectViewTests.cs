@@ -116,7 +116,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //If marked with ConcurrencyCheck, rendered as date time
             Assert.IsTrue(properties[23].Text.StartsWith("Modified Date:\r\n23 Apr 2008"));
-            Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //To ignore TimeZone difference
+            Assert.IsTrue(properties[23].Text.EndsWith(":00:00")); //Only check mm:ss to avoid TimeZone difference server vs. client
 
             //Currency properties formatted to 2 places & with default currency symbok (£)
             Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);

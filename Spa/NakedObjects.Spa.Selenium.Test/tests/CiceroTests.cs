@@ -1310,7 +1310,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region Individual tests - browser specific 
 
-    // [TestClass, Ignore]
     public class CiceroTestsIe : CiceroTests
     {
         [ClassInitialize]
@@ -1334,7 +1333,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   //[TestClass] //Comment out if MegaTest is commented in
+    //[TestClass] 
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1357,7 +1356,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class CiceroTestsChrome : CiceroTests
     {
         [ClassInitialize]

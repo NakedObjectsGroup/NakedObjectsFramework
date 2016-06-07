@@ -384,7 +384,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class CCAtestsIe : CCAtests
     {
         [ClassInitialize]
@@ -429,7 +428,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class CCAtestsChrome : CCAtests
     {
         [ClassInitialize]
@@ -458,49 +456,5 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    #endregion
-
-    #region Mega tests
-    public abstract class MegaCCATestsRoot : CCAtestsRoot
-    {
-        [TestMethod]
-        public void MegaCCATest()
-        {
-            base.ListViewWithParmDialogAlreadyOpen();
-            base.ListViewWithParmDialogNotOpen();
-            base.TableViewWithParmDialogAlreadyOpen();
-            base.TableViewWithParmDialogNotOpen();
-            base.DateParam();
-            base.TestSelectAll();
-            base.SelectAllTableView();
-            base.IfNoCCAs();
-            base.NoAllIfNoResults();
-            base.SelectionRetainedWhenNavigatingAwayAndBack();
-            base.SelectionClearedWhenPageChanged();
-        }
-    }
-
-    //[TestClass]
-    public class MegaCCATestsFirefox : MegaCCATestsRoot
-    {
-        [ClassInitialize]
-        public new static void InitialiseClass(TestContext context)
-        {
-            AWTest.InitialiseClass(context);
-        }
-
-        [TestInitialize]
-        public virtual void InitializeTest()
-        {
-            InitFirefoxDriver();
-            Url(BaseUrl);
-        }
-
-        [TestCleanup]
-        public virtual void CleanupTest()
-        {
-            base.CleanUpTest();
-        }
-    }
     #endregion
 }

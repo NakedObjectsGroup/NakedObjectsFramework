@@ -244,7 +244,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     #region browsers specific subclasses 
 
-    //    [TestClass, Ignore]
     public class HomeTestsIe : HomeTests
     {
         [ClassInitialize]
@@ -291,7 +290,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    // [TestClass, Ignore]
     public class HomeTestsChrome : HomeTests
     {
         [ClassInitialize]

@@ -15,10 +15,8 @@ using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-
     public abstract class ObjectEditTestsRoot : AWTest
     {
-
         public virtual void ObjectEditChangeScalar()
         {
             var rand = new Random();
@@ -333,7 +331,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class ObjectEditPageTestsIe : ObjectEditTests
     {
         [ClassInitialize]
@@ -385,7 +382,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class ObjectEditPageTestsChrome : ObjectEditTests
     {
         [ClassInitialize]

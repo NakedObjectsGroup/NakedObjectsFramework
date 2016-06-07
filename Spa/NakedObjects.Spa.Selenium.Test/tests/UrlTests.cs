@@ -306,7 +306,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region browsers specific subclasses 
 
-   // [TestClass, Ignore]
     public class UrlTestsIe : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {
@@ -344,8 +343,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
             base.CleanUpTest();
         }
     }
-
-   // [TestClass, Ignore]
     public class UrlTestsChrome : UrlTests {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context) {

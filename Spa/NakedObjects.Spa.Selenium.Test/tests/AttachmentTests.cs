@@ -62,7 +62,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class AttachmentTestsIe : AttachmentTests
     {
         [ClassInitialize]
@@ -114,7 +113,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class AttachmentTestsChrome : AttachmentTests
     {
         [ClassInitialize]

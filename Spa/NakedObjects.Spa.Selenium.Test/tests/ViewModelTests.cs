@@ -65,7 +65,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class ViewModelTestsIe : ViewModelsTests
     {
         [ClassInitialize]
@@ -116,8 +115,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ((IJavaScriptExecutor)br).ExecuteScript(script);
         }
     }
-
-    //[TestClass, Ignore]
     public class ViewModelTestsChrome : ViewModelsTests
     {
         [ClassInitialize]

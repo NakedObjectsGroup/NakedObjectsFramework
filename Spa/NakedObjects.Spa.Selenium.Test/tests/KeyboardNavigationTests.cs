@@ -72,7 +72,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
 
     #region browsers specific subclasses 
 
-       // [TestClass, Ignore]
     public class KeyboardNavigationTestsIe : KeyboardNavigationTests
     {
         [ClassInitialize]
@@ -113,7 +112,6 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         }
     }
 
-   // [TestClass, Ignore]
     public class KeyboardNavigationTestsChrome : KeyboardNavigationTests
     {
         [ClassInitialize]

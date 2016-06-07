@@ -6,9 +6,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 {
     public abstract class SplitPaneTestsRoot : AWTest
     {
-
         #region Actions that go from single to split panes
-
         public virtual void RightClickActionReturningObjectFromHomeSingle()
         {
             Url(CustomersMenuUrl);
@@ -22,7 +20,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Check that dialog is still open on the left:
             WaitForCss("#pane1 .dialog");
         }
-
         public virtual void RightClickActionReturningListFromHomeSingle()
         {
             Url(OrdersMenuUrl);
@@ -220,7 +217,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
 
         #endregion
-
     }
     public abstract class SplitPaneTests : SplitPaneTestsRoot
     {
@@ -341,8 +337,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     #region browser specific subclasses
-
-    //[TestClass, Ignore]
     public class SplitPaneTestsIe : SplitPaneTests
     {
         [ClassInitialize]
@@ -394,7 +388,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class SplitPaneTestsChrome : SplitPaneTests
     {
         [ClassInitialize]

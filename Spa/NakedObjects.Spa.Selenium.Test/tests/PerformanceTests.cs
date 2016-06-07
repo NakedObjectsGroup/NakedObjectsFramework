@@ -13,10 +13,8 @@ using System.Diagnostics;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
-
     public abstract class PerformanceTestsRoot : AWTest
     {
-
         public virtual void RetrieveRandomEmployees()
         {
             var stopWatch = new Stopwatch();
@@ -44,7 +42,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class PerformanceTestsIe : PerformanceTests
     {
         [ClassInitialize]
@@ -96,7 +93,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class PerformanceTestsChrome : PerformanceTests
     {
         [ClassInitialize]
@@ -120,5 +116,4 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     #endregion
-
 }

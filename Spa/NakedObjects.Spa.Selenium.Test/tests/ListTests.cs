@@ -297,7 +297,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    //[TestClass, Ignore]
     public class ListTestsIe : ListTests
     {
         [ClassInitialize]
@@ -342,7 +341,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class ListTestsChrome : ListTests
     {
         [ClassInitialize]
@@ -385,7 +383,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NavigateToItemFromListView();
             base.NavigateToItemFromTableView();
             base.Paging();
-            //base.PagingTableView(); //TODO: Ignored due to failing on server
+            //base.PagingTableView(); //Unreliable on server
             base.ListDoesNotRefreshWithoutReload();
             base.ReloadingListGetsUpdatedObject();
             base.EagerlyRenderTableViewFromAction();

@@ -21,7 +21,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
     /// </summary>
     public abstract class DialogTestsRoot : AWTest
     {
-
         public virtual void PasswordParam()
         {
             GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
@@ -424,7 +423,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ScalarChoicesParm() { base.ScalarChoicesParm(); }
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
-        [TestMethod, Ignore] //TODO: Pending fix
+        [TestMethod]
         public override void FieldsRetainedWhenTheyShouldbe() { base.FieldsRetainedWhenTheyShouldbe(); }
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
@@ -489,7 +488,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses
 
-    // [TestClass, Ignore]
     public class DialogTestsIe : DialogTests
     {
         [ClassInitialize]
@@ -534,7 +532,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    // [TestClass, Ignore]
     public class DialogTestsChrome : DialogTests
     {
         [ClassInitialize]

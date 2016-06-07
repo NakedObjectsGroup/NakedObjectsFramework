@@ -152,7 +152,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
     #region browsers specific subclasses 
 
-    // [TestClass, Ignore]
     public class FooterIconTestsIe : FooterTests
     {
         [ClassInitialize]
@@ -197,7 +196,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass, Ignore]
     public class FooterIconTestsChrome : FooterTests
     {
         [ClassInitialize]
