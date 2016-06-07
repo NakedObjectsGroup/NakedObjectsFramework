@@ -425,9 +425,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ObjectEditChangeDateTime();
             //base.ObjectEditChangeChoices();
             base.CanSetAndClearAnOptionalDropDown();
-            base.ObjectEditChangeConditionalChoices(); //TODO: pending bug fix
+            //base.ObjectEditChangeConditionalChoices(); //Unreliable on server
             base.ObjectEditPicksUpLatestServerVersion();
-            //base.CoValidationOnSavingChanges(); //Failing on server
+            //base.CoValidationOnSavingChanges(); //Unreliable on server
             base.ViewModelEditOpensInEditMode();
             base.MultiLineText(); 
         }
