@@ -26,7 +26,7 @@ module NakedObjects {
     import CollectionRepresentation = Models.CollectionRepresentation;
     import scalarValueType = RoInterfaces.scalarValueType;
     import dirtyMarker = Models.dirtyMarker;
-    import toTimeString = Models.toTimeString;  
+    import toTimeString = Models.toTimeString;
     import IVersionRepresentation = RoInterfaces.IVersionRepresentation;
     import IUserRepresentation = RoInterfaces.IUserRepresentation;
 
@@ -105,13 +105,13 @@ module NakedObjects {
         // if not root menu aggregate all actions with same name
         if (menu.name) {
             const actions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                                               !getMenuForLevel(a.menuPath, level + 1));
+                !getMenuForLevel(a.menuPath, level + 1));
             menu.actions = actions;
 
             //then collate submenus 
 
             const submenuActions = _.filter(avms, a => getMenuForLevel(a.menuPath, level) === menu.name &&
-                                                       getMenuForLevel(a.menuPath, level + 1));
+                getMenuForLevel(a.menuPath, level + 1));
             let menus = _
                 .chain(submenuActions)
                 .map(a => new MenuItemViewModel(getMenuForLevel(a.menuPath, level + 1), null, null))
@@ -123,7 +123,7 @@ module NakedObjects {
         }
         return menu;
     }
-  
+
     export function createMenuItems(avms: ActionViewModel[]) {
 
         // first create a top level menu for each action 
@@ -245,7 +245,7 @@ module NakedObjects {
     }
 
     export class MessageViewModel {
-        previousMessage : string = "";
+        previousMessage: string = "";
         message: string = "";
         clearMessage() {
             if (this.message === this.previousMessage) {
@@ -286,7 +286,7 @@ module NakedObjects {
         reference: string;
         choice: ChoiceViewModel;
         multiChoices: ChoiceViewModel[];
-        file : Link;
+        file: Link;
 
         returnType: string;
         title: string;
@@ -434,8 +434,8 @@ module NakedObjects {
     export class MenuItemViewModel {
 
         constructor(public name: string,
-                    public actions: ActionViewModel[],
-                    public menuItems: MenuItemViewModel[]) { }
+            public actions: ActionViewModel[],
+            public menuItems: MenuItemViewModel[]) { }
 
     }
 
@@ -445,8 +445,7 @@ module NakedObjects {
             private viewModelFactory: IViewModelFactory,
             private urlManager: IUrlManager,
             private focusManager: IFocusManager,
-            private $rootScope: ng.IRootScopeService,
-            private $timeout : ng.ITimeoutService) {
+            private $rootScope: ng.IRootScopeService) {
             super();
         }
 
@@ -464,11 +463,6 @@ module NakedObjects {
             this.resetMessage();
             this.id = actionViewModel.actionRep.actionId();
             return this;
-        }
-
-        refresh(routeData: PaneRouteData) {
-            const fields = routeData.dialogFields;
-            _.forEach(this.parameters, p => p.refresh(fields[p.id]));
         }
 
         private actionMember = () => this.actionViewModel.actionRep;
@@ -492,7 +486,7 @@ module NakedObjects {
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
-           // _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -504,13 +498,11 @@ module NakedObjects {
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
-                        // needs to be in $timeout to avoid previous async url change
-                        this.$timeout(() => this.doCancel());
+                        this.doCancel();
                     }
                     else if (!right) {
                         // going to new page close dialog (and do not replace url)
-                         // needs to be in $timeout to avoid previous async url change
-                        this.$timeout(() => this.doClose());
+                        this.doClose();
                     }
                     // else leave open if opening on other pane and dialog has result
 
@@ -519,13 +511,13 @@ module NakedObjects {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
                     const display = (em: ErrorMap) => this.viewModelFactory.handleErrorResponse(em, this, this.parameters);
                     this.context.handleWrappedError(reject,
-                                                    parent,
-                                                    () => {
-                                                        // this should just be called if concurrency
-                                                        this.doClose();
-                                                        this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
-                                                    },
-                                                    display);
+                        parent,
+                        () => {
+                            // this should just be called if concurrency
+                            this.doClose();
+                            this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
+                        },
+                        display);
                 });
 
         doClose = () => {
@@ -578,9 +570,9 @@ module NakedObjects {
 
         updateItems(value: Link[]) {
             this.items = this.viewModelFactory.getItems(value,
-                                                        this.state === CollectionViewState.Table,
-                                                        this.routeData,
-                                                        this);
+                this.state === CollectionViewState.Table,
+                this.routeData,
+                this);
 
             const totalCount = this.listRep.pagination().totalCount;
             this.allSelected = _.every(this.items, item => item.selected);
@@ -614,7 +606,7 @@ module NakedObjects {
             }
         }
 
-        collectionContributedActionDecorator(actionViewModel : ActionViewModel) {
+        collectionContributedActionDecorator(actionViewModel: ActionViewModel) {
             const wrappedInvoke = actionViewModel.executeInvoke;
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const selected = _.filter(this.items, i => i.selected);
@@ -688,7 +680,7 @@ module NakedObjects {
             this.page = this.listRep.pagination().page;
             this.pageSize = this.listRep.pagination().pageSize;
             this.numPages = this.listRep.pagination().numPages;
-            
+
             this.state = routeData.state;
             this.updateItems(list.value());
 
@@ -697,7 +689,7 @@ module NakedObjects {
             this.menuItems = createMenuItems(this.actions);
 
             _.forEach(this.actions, a => this.decorate(a));
-               
+
             return this;
         }
 
@@ -819,7 +811,7 @@ module NakedObjects {
         messages: string;
 
         collectionRep: CollectionMember | CollectionRepresentation;
-        refresh: (routeData: PaneRouteData, resetting : boolean) => void;
+        refresh: (routeData: PaneRouteData, resetting: boolean) => void;
     }
 
     export class ServicesViewModel {
@@ -872,7 +864,7 @@ module NakedObjects {
         returnType: string;
         value: scalarValueType | Date;
         formattedValue: string;
-        title : string;
+        title: string;
     }
 
     export class TableRowViewModel {
@@ -1173,7 +1165,7 @@ module NakedObjects {
         objectTemplate: string;
         collectionsTemplate: string;
         attachmentTemplate: string;
-        applicationPropertiesTemplate : string;
+        applicationPropertiesTemplate: string;
 
         menus: MenusViewModel;
         object: DomainObjectViewModel;

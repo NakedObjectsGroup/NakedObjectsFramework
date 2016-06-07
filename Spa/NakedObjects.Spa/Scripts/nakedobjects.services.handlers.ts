@@ -15,7 +15,7 @@ module NakedObjects {
     import Extensions = Models.Extensions;
     import ActionRepresentation = Models.ActionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
- 
+
 
     export interface IHandlers {
         handleBackground($scope: INakedObjectsScope): void;
@@ -37,15 +37,14 @@ module NakedObjects {
             $location: ng.ILocationService,
             $q: ng.IQService,
             $cacheFactory: ng.ICacheFactoryService,
-            $rootScope : ng.IRootScopeService,
+            $rootScope: ng.IRootScopeService,
             repLoader: IRepLoader,
             context: IContext,
             viewModelFactory: IViewModelFactory,
             color: IColor,
             navigation: INavigation,
             urlManager: IUrlManager,
-            focusManager: IFocusManager,
-            $timeout : ng.ITimeoutService) {
+            focusManager: IFocusManager) {
             const handlers = <IHandlers>this;
 
             const perPaneListViews = [,
@@ -59,8 +58,8 @@ module NakedObjects {
             ];
 
             const perPaneDialogViews = [,
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout),
-                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout)
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope),
+                new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope)
             ];
 
             const perPaneMenusViews = [,
@@ -68,7 +67,7 @@ module NakedObjects {
                 new MenusViewModel(viewModelFactory)
             ];
 
-        
+
             function setVersionError(error: string) {
                 context.setError(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.SoftwareError, error));
                 urlManager.setError(ErrorCategory.ClientError, ClientErrorCode.SoftwareError);
@@ -109,9 +108,12 @@ module NakedObjects {
                 dialogViewModel.reset(actionViewModel, routeData);
                 $scope.dialog = dialogViewModel;
 
-                urlManager.setLeaveDialogHandler(routeData.paneId, dialogViewModel.setParms);
+                deRegDialog[routeData.paneId].add($scope
+                    .$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
+                deRegDialog[routeData.paneId].add($scope
+                    .$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
 
-                dialogViewModel.deregister = () => urlManager.clearLeaveDialogHandler(routeData.paneId);
+                dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
             }
 
             let versionValidated = false;
@@ -191,8 +193,8 @@ module NakedObjects {
 
                     perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                     perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
-                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope, $timeout);
-                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);              
+                    perPaneDialogViews[pane] = new DialogViewModel(color, context, viewModelFactory, urlManager, focusManager, $rootScope);
+                    perPaneMenusViews[pane] = new MenusViewModel(viewModelFactory);
                 }
             }
 
@@ -220,9 +222,6 @@ module NakedObjects {
                     } else if (currentDialogId !== newDialogId) {
                         // dialog changed set new dialog only 
                         setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData, FocusTarget.SubAction);
-                    }
-                    else if (newDialogId && $scope.dialog) {
-                        $scope.dialog.refresh(routeData);
                     }
                 } else {
                     $scope.actionsTemplate = null;
@@ -256,7 +255,7 @@ module NakedObjects {
             }
 
             function handleListActionsAndDialog($scope: INakedObjectsScope, routeData: PaneRouteData) {
-                
+
                 const newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 if ($scope.actionsTemplate !== newActionsTemplate) {
                     $scope.actionsTemplate = newActionsTemplate;
@@ -276,7 +275,7 @@ module NakedObjects {
             }
 
 
-            function handleListSearchChanged($scope : INakedObjectsScope,  routeData : PaneRouteData) {
+            function handleListSearchChanged($scope: INakedObjectsScope, routeData: PaneRouteData) {
                 // only update templates if changed 
                 const newListTemplate = routeData.state === CollectionViewState.List ? listTemplate : listAsTableTemplate;
                 const listViewModel = $scope.collection;
@@ -389,8 +388,6 @@ module NakedObjects {
 
                 if (currentDialogId !== newDialogId) {
                     setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
-                } else if (newDialogId && $scope.dialog ) {
-                    $scope.dialog.refresh(routeData);
                 } else {
                     focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 }
@@ -487,13 +484,13 @@ module NakedObjects {
             handlers.handleApplicationProperties = ($scope: INakedObjectsScope, routeData: PaneRouteData) => {
                 context.clearWarnings();
                 context.clearMessages();
-           
+
                 $scope.applicationPropertiesTemplate = applicationPropertiesTemplate;
-                
+
                 const apvm = new ApplicationPropertiesViewModel();
                 $scope.applicationProperties = apvm;
 
-                context.getUser().then(u => apvm.user = u.wrapped() );
+                context.getUser().then(u => apvm.user = u.wrapped());
                 context.getVersion().then(v => apvm.serverVersion = v.wrapped());
 
                 apvm.serverUrl = getAppPath();
