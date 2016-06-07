@@ -40,5 +40,5 @@ module NakedObjects {
 
     export const pageMessage = (p : number, tp : number, c : number, tc : number) => `Page ${p} of ${tp}; viewing ${c} of ${tc} items`;
 
-    export const logOffMessage = (u: string) => `Plesae confirm logoff of user: ${u}`;
+    export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 }
