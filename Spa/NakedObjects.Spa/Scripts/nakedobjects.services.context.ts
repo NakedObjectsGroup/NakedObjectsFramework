@@ -33,7 +33,7 @@ module NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import UserRepresentation = Models.UserRepresentation;
-    import Parameter = Models.Parameter;
+ 
 
     export interface IContext {
 
@@ -108,7 +108,10 @@ module NakedObjects {
 
         getFieldValue: (dialogId: string, pid: string, paneId?: number) => Value;
 
-        getCurrentDialogValues: (dialogId?: string,  paneId? : number) => _.Dictionary<Value>;
+        clearDialog: (paneId?: number) => void;
+
+        getCurrentDialogValues: (dialogId?: string, paneId?: number) => _.Dictionary<Value>;
+
     }
 
     interface IContextInternal extends IContext {
@@ -119,6 +122,7 @@ module NakedObjects {
         setObject: (paneId: number, object: DomainObjectRepresentation) => void;
         setResult(action: IInvokableAction, result: ActionResultRepresentation, paneId: number, page: number, pageSize: number): void;
         setPreviousUrl: (url: string) => void;
+        
     }
 
     enum DirtyState {
@@ -224,7 +228,7 @@ module NakedObjects {
     class ParameterCache {
 
         private currentValues: _.Dictionary<Value>[] = [, {}, {}];
-        private currentDialogId: string[] = [];
+        private currentDialogId: string[] = [, "", ""];
 
         addValue(dialogId: string, parmId : string,  value: Value, paneId: number) {
             if (this.currentDialogId[paneId] !== dialogId) {
@@ -252,6 +256,24 @@ module NakedObjects {
 
             return this.currentValues[paneId];
         }
+
+        clearDialog(paneId: number) {
+            this.currentDialogId[paneId] = "";
+            this.currentValues[paneId] = {};
+        }
+
+        swap() {
+            const [, d1, d2] = this.currentDialogId;
+
+            this.currentDialogId[1] = d2;
+            this.currentDialogId[2] = d1;
+
+            const [, v1, v2] = this.currentValues;
+
+            this.currentValues[1] = v2;
+            this.currentValues[2] = v1;
+        }
+
     }
 
 
@@ -587,10 +609,12 @@ module NakedObjects {
         context.setObject = (paneId: number, co: DomainObjectRepresentation) => currentObjects[paneId] = co;
 
         context.swapCurrentObjects = () => {
+            parameterCache.swap();
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
         };
+
         let currentError: ErrorWrapper = null;
 
         context.getError = () => currentError;
@@ -921,6 +945,10 @@ module NakedObjects {
 
         context.getCurrentDialogValues = (dialogId: string = null, paneId = 1) => {
             return parameterCache.getValues(dialogId, paneId);
+        }
+
+        context.clearDialog = (paneId = 1) => {
+            parameterCache.clearDialog(paneId);
         }
 
     });

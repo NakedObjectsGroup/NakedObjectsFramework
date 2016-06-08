@@ -91,6 +91,13 @@ module NakedObjects {
             const deRegDialog = [, new DeReg(), new DeReg()];
             const deRegObject = [, new DeReg(), new DeReg()];
 
+            function clearDialog($scope : INakedObjectsScope, paneId : number) {
+                $scope.dialogTemplate = null;
+                $scope.dialog = null;
+                deRegDialog[paneId].deReg();
+            }
+
+
             function setDialog($scope: INakedObjectsScope,
                 action: ActionMember | ActionRepresentation | ActionViewModel,
                 routeData: PaneRouteData) {
@@ -160,11 +167,11 @@ module NakedObjects {
             }
 
             function setNewDialog($scope: INakedObjectsScope,
-                holder: MenuRepresentation | DomainObjectRepresentation | ListViewModel,
-                newDialogId: string,
-                routeData: PaneRouteData,
-                focusTarget: FocusTarget,
-                actionViewModel?: ActionViewModel) {
+                                  holder: MenuRepresentation | DomainObjectRepresentation | ListViewModel,
+                                  newDialogId: string,
+                                  routeData: PaneRouteData,
+                                  focusTarget: FocusTarget,
+                                  actionViewModel?: ActionViewModel) {
                 if (newDialogId) {
                     const action = holder.actionMember(routeData.dialogId);
                     context.getInvokableAction(action)
@@ -177,8 +184,7 @@ module NakedObjects {
                         });
                     return;
                 }
-                $scope.dialogTemplate = null;
-                $scope.dialog = null;
+                clearDialog($scope, routeData.paneId);      
                 focusManager.focusOn(focusTarget, 0, routeData.paneId);
             }
 
@@ -226,8 +232,7 @@ module NakedObjects {
                 } else {
                     $scope.actionsTemplate = null;
                     $scope.menu = null;
-                    $scope.dialogTemplate = null;
-                    $scope.dialog = null;
+                    clearDialog($scope, routeData.paneId);
                     focusManager.focusOn(FocusTarget.Menu, 0, routeData.paneId);
                 }
             };

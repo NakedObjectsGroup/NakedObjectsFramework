@@ -397,6 +397,8 @@ module NakedObjects {
                 (right?: boolean) => {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
+                    // clear any previous dialog 
+                    context.clearDialog(paneId);
                     urlManager.setDialog(actionRep.actionId(), paneId);
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
