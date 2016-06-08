@@ -397,6 +397,8 @@ module NakedObjects {
                 (right?: boolean) => {
                     focusManager.setCurrentPane(paneId);
                     focusManager.focusOverrideOff();
+                    // clear any previous dialog 
+                    context.clearDialog(paneId);
                     urlManager.setDialog(actionRep.actionId(), paneId);
                     focusManager.focusOn(FocusTarget.Dialog, 0, paneId); // in case dialog is already open
                 } :
@@ -1202,7 +1204,7 @@ module NakedObjects {
             const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
             const actionName = actionMember.extensions().friendlyName();
             output += `Action dialog: ${actionName}\n`;
-            _.forEach(routeData.dialogFields, (value, paramId) => {
+            _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
                 output += FriendlyNameForParam(actionMember, paramId) + ": ";
                 const param = actionMember.parameters()[paramId];
                 output += renderFieldValue(param, value, mask);
@@ -1218,7 +1220,7 @@ module NakedObjects {
         mask: IMask): string {
         const actionName = invokable.extensions().friendlyName();
         let output = `Action dialog: ${actionName}\n`;
-        _.forEach(routeData.dialogFields, (value, paramId) => {
+        _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
             output += FriendlyNameForParam(invokable, paramId) + ": ";
             const param = invokable.parameters()[paramId];
             output += renderFieldValue(param, value, mask);
