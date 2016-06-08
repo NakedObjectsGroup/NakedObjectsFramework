@@ -453,7 +453,7 @@ module NakedObjects {
             this.actionViewModel = actionViewModel;
             this.onPaneId = routeData.paneId;
 
-            const fields = routeData.dialogFields;
+            const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
 
             const parameters = _.pickBy(actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as _.Dictionary<Parameter>;
             this.parameters = _.map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
@@ -481,12 +481,13 @@ module NakedObjects {
         tooltip = () => tooltip(this, this.parameters);
 
         setParms = () =>
-            _.forEach(this.parameters, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
+            _.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -624,8 +625,7 @@ module NakedObjects {
                     const parms = _.values(action.parameters()) as Parameter[];
                     const contribParm = _.find(parms, p => p.isCollectionContributed());
                     const parmValue = new Value(_.map(selected, i => i.link));
-                    const collectionParmVm = this.viewModelFactory
-                        .parameterViewModel(contribParm, parmValue, this.onPaneId);
+                    const collectionParmVm = this.viewModelFactory.parameterViewModel(contribParm, parmValue, this.onPaneId);
 
                     const allpps = _.clone(pps);
                     allpps.push(collectionParmVm);

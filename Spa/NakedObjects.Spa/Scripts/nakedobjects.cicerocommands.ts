@@ -372,7 +372,7 @@ module NakedObjects {
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
                     let valuesFromRouteData = new Array<Value>();
                     if (field instanceof Parameter) {
-                        const rd = this.routeData().dialogFields[field.id()];
+                        const rd = this.context.getCurrentDialogValues()[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
                         const rd = this.routeData().props[field.id()];
@@ -526,7 +526,7 @@ module NakedObjects {
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
                     const pVal = this.valueForUrl(p.default(), p);
-                    this.urlManager.setFieldValue(action.actionId(), p, pVal);
+                    this.context.setFieldValue(action.actionId(), p.id(), pVal);
                 });
             });
         }
@@ -719,7 +719,7 @@ module NakedObjects {
                     case 1:
                         if (fieldEntry === "?") {
                             const p = params[0];
-                            const value = this.routeData().dialogFields[p.id()];
+                            const value = this.context.getCurrentDialogValues()[p.id()];
                             const s = this.renderFieldDetails(p, value);
                             this.clearInputAndSetMessage(s);
                         } else {
@@ -784,7 +784,7 @@ module NakedObjects {
         private setFieldValue(field: IField, value: Value): void {
             const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal);
+                this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
@@ -869,7 +869,7 @@ module NakedObjects {
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
-            const enteredFields = this.routeData().dialogFields;
+            const enteredFields = this.context.getCurrentDialogValues();
 
             // fromPairs definition is faulty
             const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
@@ -1116,7 +1116,7 @@ module NakedObjects {
                 if (this.isForm()) {
                     fieldMap = this.routeData().props; //Props passed in as pseudo-params to action
                 } else {
-                    fieldMap = this.routeData().dialogFields;
+                    fieldMap = this.context.getCurrentDialogValues();
                 }
                 this.context.invokeAction(action, 1, fieldMap)
                     .then((result: ActionResultRepresentation) => {

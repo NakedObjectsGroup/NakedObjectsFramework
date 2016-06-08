@@ -57,7 +57,10 @@ module NakedObjects {
         collections: _.Dictionary<CollectionViewState>;
         actionsOpen: string;
         actionId: string;
-        //Note that actionParams applies to executed actions. For dialogs see dialogFields
+        // Note that actionParams applies to executed actions. For dialogs see dialogFields
+        // we have both because of contributed actions where we have to distinguish the action parms that 
+        // created the current list and the the parms for the contributed action
+
         actionParams: _.Dictionary<Value>;
         state: CollectionViewState;
         props: _.Dictionary<Value>;
@@ -138,9 +141,9 @@ module NakedObjects {
 
                 this.assertMustBeNullInContext("menuId", "objectId");
 
-                this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");
-                this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
-                this.assertMustBeEmptyOutsideContext("objectId", "props");
+                //this.assertMustBeEmptyOutsideContext("dialogId", "dialogFields");
+                //this.assertMustBeEmptyOutsideContext("actionId", "actionParams");
+                //this.assertMustBeEmptyOutsideContext("objectId", "props");
             }
         }
     }

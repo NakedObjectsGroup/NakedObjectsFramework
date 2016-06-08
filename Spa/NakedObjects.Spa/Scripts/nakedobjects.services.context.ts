@@ -31,8 +31,9 @@ module NakedObjects {
     import CollectionMember = Models.CollectionMember;
     import CollectionRepresentation = Models.CollectionRepresentation;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
-    import InvokableActionMember = NakedObjects.Models.InvokableActionMember;
-    import UserRepresentation = NakedObjects.Models.UserRepresentation;
+    import InvokableActionMember = Models.InvokableActionMember;
+    import UserRepresentation = Models.UserRepresentation;
+    import Parameter = Models.Parameter;
 
     export interface IContext {
 
@@ -102,6 +103,12 @@ module NakedObjects {
         setFile: (object: DomainObjectRepresentation, url: string, mt: string, file: Blob) => angular.IPromise<boolean>;
 
         clearCachedFile: (url: string) => void;
+
+        setFieldValue: (dialogId: string, pid: string, pv: Value, paneId?: number) => void;
+
+        getFieldValue: (dialogId: string, pid: string, paneId?: number) => Value;
+
+        getCurrentDialogValues: (dialogId?: string,  paneId? : number) => _.Dictionary<Value>;
     }
 
     interface IContextInternal extends IContext {
@@ -214,6 +221,40 @@ module NakedObjects {
         }
     }
 
+    class ParameterCache {
+
+        private currentValues: _.Dictionary<Value>[] = [, {}, {}];
+        private currentDialogId: string[] = [];
+
+        addValue(dialogId: string, parmId : string,  value: Value, paneId: number) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            this.currentValues[paneId][parmId] = value;
+        }
+
+        getValue(dialogId: string, parmId: string, paneId: number) {
+            if (this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            return this.currentValues[paneId][parmId];
+        }
+
+        getValues(dialogId: string, paneId: number) {
+            if (dialogId && this.currentDialogId[paneId] !== dialogId) {
+                this.currentDialogId[paneId] = dialogId;
+                this.currentValues[paneId] = {};
+            }
+
+            return this.currentValues[paneId];
+        }
+    }
+
+
     app.service("context", function ($q: ng.IQService,
         repLoader: IRepLoader,
         urlManager: IUrlManager,
@@ -236,6 +277,7 @@ module NakedObjects {
         const recentcache = new RecentCache();
         const dirtyList = new DirtyList();
         const currentLists: _.Dictionary<{ list: ListRepresentation; added: number }> = {};
+        const parameterCache = new ParameterCache(); 
 
         context.getFile = (object: DomainObjectRepresentation, url: string, mt: string) => {
             const isDirty = context.getIsDirty(object.getOid());
@@ -867,6 +909,19 @@ module NakedObjects {
         }
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
+
+
+        context.setFieldValue = (dialogId: string, pid: string, pv: Value, paneId = 1) => {
+            parameterCache.addValue(dialogId, pid, pv, paneId);       
+        }
+
+        context.getFieldValue = (dialogId: string, pid: string, paneId = 1) => {
+           return parameterCache.getValue(dialogId, pid, paneId);
+        }
+
+        context.getCurrentDialogValues = (dialogId: string = null, paneId = 1) => {
+            return parameterCache.getValues(dialogId, paneId);
+        }
 
     });
 
