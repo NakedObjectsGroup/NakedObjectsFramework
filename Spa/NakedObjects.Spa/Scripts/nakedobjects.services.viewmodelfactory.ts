@@ -1147,6 +1147,41 @@ module NakedObjects {
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
 
+
+        function renderActionDialogIfOpen(
+            repWithActions: IHasActions,
+            routeData: PaneRouteData,
+            mask: IMask): string {
+            let output = "";
+            if (routeData.dialogId) {
+                const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
+                const actionName = actionMember.extensions().friendlyName();
+                output += `Action dialog: ${actionName}\n`;
+                _.forEach(context.getCurrentDialogValues(), (value, paramId) => {
+                    output += FriendlyNameForParam(actionMember, paramId) + ": ";
+                    const param = actionMember.parameters()[paramId];
+                    output += renderFieldValue(param, value, mask);
+                    output += "\n";
+                });
+            }
+            return output;
+        }
+
+        function renderActionDialog(
+            invokable: Models.IInvokableAction,
+            routeData: PaneRouteData,
+            mask: IMask): string {
+            const actionName = invokable.extensions().friendlyName();
+            let output = `Action dialog: ${actionName}\n`;
+            _.forEach(context.getCurrentDialogValues(), (value, paramId) => {
+                output += FriendlyNameForParam(invokable, paramId) + ": ";
+                const param = invokable.parameters()[paramId];
+                output += renderFieldValue(param, value, mask);
+                output += "\n";
+            });
+            return output;
+        }
+
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
@@ -1204,39 +1239,7 @@ module NakedObjects {
         }
     }
 
-    function renderActionDialogIfOpen(
-        repWithActions: IHasActions,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        let output = "";
-        if (routeData.dialogId) {
-            const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
-            const actionName = actionMember.extensions().friendlyName();
-            output += `Action dialog: ${actionName}\n`;
-            _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
-                output += FriendlyNameForParam(actionMember, paramId) + ": ";
-                const param = actionMember.parameters()[paramId];
-                output += renderFieldValue(param, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
-
-    function renderActionDialog(
-        invokable: Models.IInvokableAction,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        const actionName = invokable.extensions().friendlyName();
-        let output = `Action dialog: ${actionName}\n`;
-        _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
-            output += FriendlyNameForParam(invokable, paramId) + ": ";
-            const param = invokable.parameters()[paramId];
-            output += renderFieldValue(param, value, mask);
-            output += "\n";
-        });
-        return output;
-    }
+    
 
 
 }
