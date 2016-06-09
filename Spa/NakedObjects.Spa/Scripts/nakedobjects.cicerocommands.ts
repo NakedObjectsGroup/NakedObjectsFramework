@@ -570,7 +570,7 @@ module NakedObjects {
                 this.urlManager.setInteractionMode(InteractionMode.View);
             }
             if (this.isDialog()) {
-                this.urlManager.closeDialog();
+                this.urlManager.closeDialogReplaceHistory();
             }
         };
     }
@@ -1130,7 +1130,7 @@ module NakedObjects {
                         if (messages) {
                             _.forEach(messages, m => this.vm.alert += `\n${m}`);
                         }
-                        this.urlManager.closeDialog();
+                        this.urlManager.closeDialogReplaceHistory();
                     }).
                     catch((reject: ErrorWrapper) => {
 

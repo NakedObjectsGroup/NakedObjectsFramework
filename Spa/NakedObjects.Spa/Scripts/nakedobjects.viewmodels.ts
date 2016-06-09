@@ -497,7 +497,7 @@ module NakedObjects {
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
-        doInvoke = (right?: boolean) =>
+        doInvoke = (apply : boolean, right?: boolean) =>
             this.executeInvoke(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
@@ -505,12 +505,18 @@ module NakedObjects {
                     } else if (actionResult.resultType() === "void") {
                         // dialog staying on same page so treat as cancel 
                         // for url replacing purposes
-                        this.doCancel();
+                        this.doCloseReplaceHistory();
                     }
                     else if (!right) {
-                        // going to new page close dialog (and do not replace url)
-                        this.doClose();
+                        if (apply) {
+                            // going to new page close dialog and replace history
+                            this.doCloseKeepHistory();
+                        } else {
+                            // going to new page close dialog and replace history
+                            this.doCloseReplaceHistory();
+                        }
                     }
+                   
                     // else leave open if opening on other pane and dialog has result
 
                 }).
@@ -521,20 +527,20 @@ module NakedObjects {
                         parent,
                         () => {
                             // this should just be called if concurrency
-                            this.doClose();
+                            this.doCloseKeepHistory();
                             this.$rootScope.$broadcast(geminiDisplayErrorEvent, new ErrorMap({}, 0, concurrencyError));
                         },
                         display);
                 });
 
-        doClose = () => {
+        doCloseKeepHistory = () => {
             this.deregister();
-            this.urlManager.closeDialog(this.onPaneId);
+            this.urlManager.closeDialogKeepHistory(this.onPaneId);
         }
 
-        doCancel = () => {
+        doCloseReplaceHistory = () => {
             this.deregister();
-            this.urlManager.cancelDialog(this.onPaneId);
+            this.urlManager.closeDialogReplaceHistory(this.onPaneId);
         }
 
         clearMessages = () => {

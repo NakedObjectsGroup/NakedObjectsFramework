@@ -30,9 +30,9 @@ module NakedObjects {
         setMenu(menuId: string, paneId?: number): void;
         setDialog(dialogId: string, paneId?: number): void;
 
-        closeDialog(paneId?: number): void;
+        closeDialogKeepHistory(paneId?: number): void;
 
-        cancelDialog(paneId?: number): void;
+        closeDialogReplaceHistory(paneId?: number): void;
 
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
         setList(action: IAction, paneId?: number): void;
@@ -349,7 +349,7 @@ module NakedObjects {
             ToMenu,
             ToDialog,
             FromDialog,
-            CancelDialog,
+            FromDialogKeepHistory,
             ToObjectView,
             ToList,
             LeaveEdit,
@@ -395,11 +395,13 @@ module NakedObjects {
                     search = clearPane(search, paneId);
                     break;
                 case (Transition.FromDialog):
-                    replace = false;
-                // fall through
-                case (Transition.ToDialog):
-                case (Transition.CancelDialog):
                     search = clearFieldKeys(search, paneId);
+                    replace = true;
+                    break;
+                case (Transition.ToDialog):
+                case (Transition.FromDialogKeepHistory):
+                    search = clearFieldKeys(search, paneId);
+                    replace = false;
                     break;
                 case (Transition.ToObjectView):
                     replace = false;
@@ -487,12 +489,12 @@ module NakedObjects {
         }
 
 
-        helper.closeDialog = (paneId = 1) => {
-            closeOrCancelDialog(paneId, Transition.FromDialog);
+        helper.closeDialogKeepHistory = (paneId = 1) => {
+            closeOrCancelDialog(paneId, Transition.FromDialogKeepHistory);
         };
 
-        helper.cancelDialog = (paneId = 1) => {
-            closeOrCancelDialog(paneId, Transition.CancelDialog);
+        helper.closeDialogReplaceHistory = (paneId = 1) => {
+            closeOrCancelDialog(paneId, Transition.FromDialog);
         };
 
         helper.setObject = (resultObject: DomainObjectRepresentation, paneId = 1) => {
