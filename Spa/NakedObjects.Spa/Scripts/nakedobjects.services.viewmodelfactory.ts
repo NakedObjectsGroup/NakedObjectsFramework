@@ -908,31 +908,38 @@ module NakedObjects {
                 const tvm = new ToolBarViewModel();
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     urlManager.setHome(clickHandler.pane(1, right));
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.back();
                 };
                 tvm.goForward = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
                     $rootScope.$broadcast(geminiPaneSwapEvent);
+                    context.updateParms();
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
                 tvm.singlePane = (right?: boolean) => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
                 tvm.cicero = () => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
 
                 tvm.recent = (right?: boolean) => {
+                    context.updateParms();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
@@ -958,6 +965,7 @@ module NakedObjects {
                 };
 
                 tvm.applicationProperties = () => {
+                    context.updateParms();
                     urlManager.applicationProperties();
                 };
 
