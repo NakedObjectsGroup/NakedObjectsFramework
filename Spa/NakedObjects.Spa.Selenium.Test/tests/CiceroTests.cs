@@ -1333,7 +1333,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass] //Firefox Individual
+    //[TestClass] //Firefox Individual
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1421,7 +1421,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.ChainedCommands();
         }
     }
-    [TestClass]
+    [TestClass, Ignore]
     public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot
     {
         [ClassInitialize]
