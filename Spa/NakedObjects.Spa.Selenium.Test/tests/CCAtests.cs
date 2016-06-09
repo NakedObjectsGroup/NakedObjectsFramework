@@ -268,14 +268,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(0, checkboxes.Count(cb => cb.Displayed));
             //Check that actions menu is disabled and 
         }
-
-        public virtual void NoAllIfNoResults()
-        {
-            GeminiUrl("list?m1=CustomerRepository&pm1_firstName=%22%22&pm1_lastName=%22zz%22&a1=FindIndividualCustomerByName&pg1=1&ps1=20&s1=0");
-            Reload();
-            WaitForCss("#all").AssertIsInvisible();
-        }
-
         private void WaitForSelectedCheckboxes(int number)
         {
             wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox" && el.Selected) == number);
@@ -368,8 +360,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void IfNoCCAs() { base.IfNoCCAs(); }
-        [TestMethod]
-        public override void NoAllIfNoResults() { base.NoAllIfNoResults(); }
         [TestMethod]
         public override void SelectionRetainedWhenNavigatingAwayAndBack()
         {
