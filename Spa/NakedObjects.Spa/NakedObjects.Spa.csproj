@@ -130,6 +130,7 @@
     <Content Include="index.html" />
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.config.ts" />
