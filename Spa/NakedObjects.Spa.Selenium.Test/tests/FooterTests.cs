@@ -56,8 +56,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenSubMenu("Orders");
             OpenActionDialog("Create New Order");
             ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Object, cusTitle);
+            ClickBackButton();
             WaitForView(Pane.Single, PaneType.Object, orderTitle);
-
         }
         public virtual void Cicero()
         {
@@ -94,17 +95,17 @@ namespace NakedObjects.Web.UnitTests.Selenium
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000042");
-                Click(OKButton());
+            Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Healthy Activity Store, AW00000042");
-            ClickBackButton();
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00000359");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Mechanical Sports Center, AW00000359");
-            ClickBackButton();
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             ClearFieldThenType("#accountnumber1", "AW00022262");
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.Object, "Marcus Collins, AW00022262");
-            ClickBackButton();
+            GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
             GoToMenuFromHomePage("Products");
             Click(GetObjectAction("Find Product By Number"));
             ClearFieldThenType("#number1", "LJ-0192-S");
