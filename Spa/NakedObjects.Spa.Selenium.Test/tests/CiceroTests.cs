@@ -1333,7 +1333,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Firefox Individual
+    [TestClass] //Firefox Individual
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]

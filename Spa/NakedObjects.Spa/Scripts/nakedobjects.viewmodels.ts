@@ -579,7 +579,11 @@ module NakedObjects {
             this.allSelected = _.every(this.items, item => item.selected);
             const count = this.items.length;
             this.size = count;
-            this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+            if (count > 0) {
+                this.description = () => pageMessage(this.page, this.numPages, count, totalCount);
+            } else {
+                this.description = () => noItemsFound;
+            }
         }
 
         hasTableData = () => {
@@ -666,7 +670,6 @@ module NakedObjects {
             this.collectionContributedActionDecorator(actionViewModel);
             this.collectionContributedInvokeDecorator(actionViewModel);
         }
-
 
         reset(list: ListRepresentation, routeData: PaneRouteData) {
             this.listRep = list;
@@ -766,7 +769,7 @@ module NakedObjects {
             item.checkboxChange(i);
         });
 
-        description(): string { return this.size ? this.size.toString() : "" }
+        description(): string { return null; } 
 
         template: string;
 
@@ -788,9 +791,10 @@ module NakedObjects {
     export class CollectionViewModel {
 
         title: string;
-        size: string;
+        details: string;
         pluralName: string;
         color: string;
+        mayHaveItems: boolean;
         items: ItemViewModel[];
         header: string[];
         onPaneId: number;
@@ -802,7 +806,7 @@ module NakedObjects {
         doTable(): void { }
         doList(): void { }
 
-        description(): string { return this.size.toString() }
+        description(): string { return this.details.toString() }
 
         template: string;
 

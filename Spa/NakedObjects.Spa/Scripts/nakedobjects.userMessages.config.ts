@@ -29,6 +29,7 @@ module NakedObjects {
     export const unknownFileTitle = "UnknownFile";
     export const unknownCollectionSize = "";
     export const emptyCollectionSize = "Empty";
+    export const noItemsFound = "No items found";
     export const noItemsSelected = "Must select items for collection contributed action";
     export const dropPrompt = "(drop here)";
     export const autoCompletePrompt = "(auto-complete or drop)";

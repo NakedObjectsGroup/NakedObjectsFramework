@@ -31,6 +31,15 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Assert.AreEqual(20, br.FindElements(By.CssSelector(".collection table tbody tr td.checkbox")).Count);
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
+        public virtual void ActionReturnsEmptyList()
+        {
+            GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
+            ClearFieldThenType("#searchstring1", "zzz");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
+            WaitForTextEquals(".details", "No items found");
+
+        }
         public virtual void TableViewAttributeHonoured()
         {
             GeminiUrl("home");
@@ -229,7 +238,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection .summary .details")).Text
                 == "Page 1 of 1; viewing 11 of 11 items");
         }
-
         public virtual void ReloadingListGetsUpdatedObject()
         {
             Url(SpecialOffersMenuUrl);
@@ -257,7 +265,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ClearFieldThenType("#description1", "Volume Discount 11 to 14");
             SaveObject();
         }
-
         public virtual void EagerlyRenderTableViewFromAction()
         {
             GeminiUrl("home?m1=EmployeeRepository");
@@ -275,6 +282,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
     {
         [TestMethod]
         public override void ActionReturnsListView() { base.ActionReturnsListView(); }
+        [TestMethod]
+        public override void ActionReturnsEmptyList() { base.ActionReturnsEmptyList(); }
         [TestMethod]
         public override void TableViewAttributeHonoured() { base.TableViewAttributeHonoured(); }
         [TestMethod]
@@ -379,6 +388,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public void MegaListTest()
         {
             base.ActionReturnsListView();
+            base.ActionReturnsEmptyList();
             base.TableViewAttributeHonoured();
             base.TableViewCanIncludeCollectionSummaries();
             base.SwitchToTableViewAndBackToList();

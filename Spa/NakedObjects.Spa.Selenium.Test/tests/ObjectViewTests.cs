@@ -158,21 +158,16 @@ namespace NakedObjects.Web.UnitTests.Selenium
             //Test NotCounted collection
             GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
             WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
-
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("Unknown Size"));
-
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text== "Product - Order Info:");
             var iconList = WaitForCssNo(".collection .icon-list", 0);
             Click(iconList);
             WaitForCss("table");
             wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
-
-            //wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].Text == "Product - Order Info:\r\n1 Item");
-
             // cancel table view 
             Click(WaitForCss(".icon-summary"));
             WaitUntilGone(dr => dr.FindElement(By.CssSelector(".table")));
 
-            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("Unknown Size"));
+            wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         }
         public virtual void ClickOnLineItemWithCollectionAsList()
         {

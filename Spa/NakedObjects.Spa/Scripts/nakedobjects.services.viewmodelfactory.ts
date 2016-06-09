@@ -497,7 +497,7 @@ module NakedObjects {
             if (propertyRep instanceof CollectionMember) {
                 const size = propertyRep.size();
 
-                tableRowColumnViewModel.formattedValue = getCollectionCount(size);
+                tableRowColumnViewModel.formattedValue = getCollectionDetails(size);
                 tableRowColumnViewModel.value = "";
                 tableRowColumnViewModel.type = "scalar";
                 tableRowColumnViewModel.returnType = "string";
@@ -722,7 +722,7 @@ module NakedObjects {
             return items;
         };
 
-        function getCollectionCount(count: number) {
+        function getCollectionDetails(count: number) {
             if (count == null) {
                 return unknownCollectionSize;
             }
@@ -766,8 +766,10 @@ module NakedObjects {
 
                 if (resetting || state !== collectionViewModel.currentState) {
 
-                    collectionViewModel.size = getCollectionCount(size);
-
+                    if (size > 0 || size == null ) {
+                        collectionViewModel.mayHaveItems = true;
+                    }
+                    collectionViewModel.details = getCollectionDetails(size);
                     const getDetails = itemLinks == null || state === CollectionViewState.Table;
 
                     if (state === CollectionViewState.Summary) {
@@ -781,7 +783,7 @@ module NakedObjects {
                                     state === CollectionViewState.Table,
                                     routeData,
                                     collectionViewModel);
-                                collectionViewModel.size = getCollectionCount(collectionViewModel.items.length);
+                                collectionViewModel.details = getCollectionDetails(collectionViewModel.items.length);
                             })
                             .catch((reject: ErrorWrapper) => {
                                 context.handleWrappedError(reject, null, () => { }, () => { });
