@@ -175,6 +175,7 @@ module NakedObjects {
             itemViewModel.selected = selected;
 
             itemViewModel.checkboxChange = (index) => {
+                context.updateParms();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };

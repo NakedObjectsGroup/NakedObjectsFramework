@@ -655,6 +655,7 @@ module NakedObjects {
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
+                        this.context.clearDialog(this.onPaneId);
                         this.focusManager.focusOverrideOff();
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
@@ -758,9 +759,18 @@ module NakedObjects {
         private pageNextDisabled = this.laterDisabled;
         private pagePreviousDisabled = this.earlierDisabled;
 
-        doSummary = () => this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-        doList = () => this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-        doTable = () => this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        doSummary = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+        };
+        doList = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
+        };
+        doTable = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        };
 
         reload = () => {
             this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
