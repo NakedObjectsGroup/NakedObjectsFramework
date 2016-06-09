@@ -175,6 +175,7 @@ module NakedObjects {
             itemViewModel.selected = selected;
 
             itemViewModel.checkboxChange = (index) => {
+                context.updateParms();
                 urlManager.setListItem(index, itemViewModel.selected, paneId);
                 focusManager.focusOverrideOn(FocusTarget.CheckBox, index + 1, paneId);
             };
@@ -910,31 +911,38 @@ module NakedObjects {
                 const tvm = new ToolBarViewModel();
                 tvm.goHome = (right?: boolean) => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     urlManager.setHome(clickHandler.pane(1, right));
                 };
                 tvm.goBack = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.back();
                 };
                 tvm.goForward = () => {
                     focusManager.focusOverrideOff();
+                    context.updateParms();
                     navigation.forward();
                 };
                 tvm.swapPanes = () => {
                     $rootScope.$broadcast(geminiPaneSwapEvent);
+                    context.updateParms();
                     context.swapCurrentObjects();
                     urlManager.swapPanes();
                 };
                 tvm.singlePane = (right?: boolean) => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1, right));
                     focusManager.refresh(1);
                 };
                 tvm.cicero = () => {
+                    context.updateParms();
                     urlManager.singlePane(clickHandler.pane(1));
                     urlManager.cicero();
                 };
 
                 tvm.recent = (right?: boolean) => {
+                    context.updateParms();
                     focusManager.focusOverrideOff();
                     urlManager.setRecent(clickHandler.pane(1, right));
                 };
@@ -960,6 +968,7 @@ module NakedObjects {
                 };
 
                 tvm.applicationProperties = () => {
+                    context.updateParms();
                     urlManager.applicationProperties();
                 };
 
@@ -1140,6 +1149,41 @@ module NakedObjects {
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
 
+
+        function renderActionDialogIfOpen(
+            repWithActions: IHasActions,
+            routeData: PaneRouteData,
+            mask: IMask): string {
+            let output = "";
+            if (routeData.dialogId) {
+                const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
+                const actionName = actionMember.extensions().friendlyName();
+                output += `Action dialog: ${actionName}\n`;
+                _.forEach(context.getCurrentDialogValues(), (value, paramId) => {
+                    output += FriendlyNameForParam(actionMember, paramId) + ": ";
+                    const param = actionMember.parameters()[paramId];
+                    output += renderFieldValue(param, value, mask);
+                    output += "\n";
+                });
+            }
+            return output;
+        }
+
+        function renderActionDialog(
+            invokable: Models.IInvokableAction,
+            routeData: PaneRouteData,
+            mask: IMask): string {
+            const actionName = invokable.extensions().friendlyName();
+            let output = `Action dialog: ${actionName}\n`;
+            _.forEach(context.getCurrentDialogValues(), (value, paramId) => {
+                output += FriendlyNameForParam(invokable, paramId) + ": ";
+                const param = invokable.parameters()[paramId];
+                output += renderFieldValue(param, value, mask);
+                output += "\n";
+            });
+            return output;
+        }
+
     });
 
     //Returns collection Ids for any collections on an object that are currently in List or Table mode
@@ -1197,39 +1241,7 @@ module NakedObjects {
         }
     }
 
-    function renderActionDialogIfOpen(
-        repWithActions: IHasActions,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        let output = "";
-        if (routeData.dialogId) {
-            const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
-            const actionName = actionMember.extensions().friendlyName();
-            output += `Action dialog: ${actionName}\n`;
-            _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
-                output += FriendlyNameForParam(actionMember, paramId) + ": ";
-                const param = actionMember.parameters()[paramId];
-                output += renderFieldValue(param, value, mask);
-                output += "\n";
-            });
-        }
-        return output;
-    }
-
-    function renderActionDialog(
-        invokable: Models.IInvokableAction,
-        routeData: PaneRouteData,
-        mask: IMask): string {
-        const actionName = invokable.extensions().friendlyName();
-        let output = `Action dialog: ${actionName}\n`;
-        _.forEach(this.context.getCurrentDialogValues(), (value, paramId) => {
-            output += FriendlyNameForParam(invokable, paramId) + ": ";
-            const param = invokable.parameters()[paramId];
-            output += renderFieldValue(param, value, mask);
-            output += "\n";
-        });
-        return output;
-    }
+    
 
 
 }

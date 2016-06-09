@@ -465,6 +465,12 @@ module NakedObjects {
             return this;
         }
 
+        refresh() {
+            const fields = this.context.getCurrentDialogValues(this.actionMember().actionId(), this.onPaneId);
+            _.forEach(this.parameters, p => p.refresh(fields[p.id]));
+        }
+
+
         private actionMember = () => this.actionViewModel.actionRep;
         title: string;
         message: string;
@@ -480,14 +486,14 @@ module NakedObjects {
 
         tooltip = () => tooltip(this, this.parameters);
 
-        setParms = () =>
-            _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+        setParms = () => _.forEach(this.parameters, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
 
         private executeInvoke = (right?: boolean) => {
 
             const pps = this.parameters;
             _.forEach(pps, p => this.urlManager.setFieldValue(this.actionMember().actionId(), p.parameterRep, p.getValue(), this.onPaneId));
-            _.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+            //_.forEach(pps, p => this.context.setFieldValue(this.actionMember().actionId(), p.parameterRep.id(), p.getValue(), this.onPaneId));
+            this.context.updateParms();
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
@@ -653,6 +659,7 @@ module NakedObjects {
             showDialog().
                 then((show: boolean) => actionViewModel.doInvoke = show ?
                     (right?: boolean) => {
+                        this.context.clearDialog(this.onPaneId);
                         this.focusManager.focusOverrideOff();
                         this.urlManager.setDialog(actionViewModel.actionRep.actionId(), this.onPaneId);
                     } :
@@ -755,9 +762,18 @@ module NakedObjects {
         private pageNextDisabled = this.laterDisabled;
         private pagePreviousDisabled = this.earlierDisabled;
 
-        doSummary = () => this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-        doList = () => this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-        doTable = () => this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        doSummary = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId)
+        };
+        doList = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
+        };
+        doTable = () => {
+            this.context.updateParms();
+            this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
+        };
 
         reload = () => {
             this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);

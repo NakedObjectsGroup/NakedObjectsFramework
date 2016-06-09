@@ -6,6 +6,7 @@ Scripts/typings
 Scripts/*.js.map
 Scripts/*.js
 Scripts/*.d.ts
+Scripts/nakedobjects.version.ts
 Tests/specs/*.map
 Tests/specs/*.js
 Tests/specs/*.d.ts

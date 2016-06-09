@@ -88,20 +88,19 @@ module NakedObjects {
                 }
             }
 
-            const deRegDialog = [, new DeReg(), new DeReg()];
+            //const deRegDialog = [, new DeReg(), new DeReg()];
             const deRegObject = [, new DeReg(), new DeReg()];
 
             function clearDialog($scope : INakedObjectsScope, paneId : number) {
                 $scope.dialogTemplate = null;
                 $scope.dialog = null;
-                deRegDialog[paneId].deReg();
+                context.clearParmUpdater(paneId);
             }
-
 
             function setDialog($scope: INakedObjectsScope,
                 action: ActionMember | ActionRepresentation | ActionViewModel,
                 routeData: PaneRouteData) {
-                deRegDialog[routeData.paneId].deReg();
+                context.clearParmUpdater(routeData.paneId);
 
                 $scope.dialogTemplate = dialogTemplate;
                 const dialogViewModel = perPaneDialogViews[routeData.paneId];
@@ -115,12 +114,8 @@ module NakedObjects {
                 dialogViewModel.reset(actionViewModel, routeData);
                 $scope.dialog = dialogViewModel;
 
-                deRegDialog[routeData.paneId].add($scope
-                    .$on("$locationChangeStart", dialogViewModel.setParms) as () => void);
-                deRegDialog[routeData.paneId].add($scope
-                    .$watch(() => $location.search(), dialogViewModel.setParms, true) as () => void);
-
-                dialogViewModel.deregister = () => deRegDialog[routeData.paneId].deReg();
+                context.setParmUpdater(dialogViewModel.setParms, routeData.paneId);
+                dialogViewModel.deregister = () => context.clearParmUpdater(routeData.paneId);
             }
 
             let versionValidated = false;
@@ -189,13 +184,11 @@ module NakedObjects {
             }
 
 
+
+
             function logoff() {
                 for (let pane = 1; pane <= 2; pane++) {
-                    deRegDialog[pane].deReg();
-                    deRegObject[pane].deReg();
-
-                    deRegDialog[pane] = new DeReg();
-                    deRegObject[pane] = new DeReg();
+                    context.clearParmUpdater(pane);
 
                     perPaneListViews[pane] = new ListViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
                     perPaneObjectViews[pane] = new DomainObjectViewModel(color, context, viewModelFactory, urlManager, focusManager, $q);
@@ -228,6 +221,8 @@ module NakedObjects {
                     } else if (currentDialogId !== newDialogId) {
                         // dialog changed set new dialog only 
                         setNewDialog($scope, currentMenu.menuRep, newDialogId, routeData, FocusTarget.SubAction);
+                    } else if ($scope.dialog) {
+                        $scope.dialog.refresh();
                     }
                 } else {
                     $scope.actionsTemplate = null;
@@ -276,6 +271,8 @@ module NakedObjects {
                     const listViewModel = $scope.collection;
                     const actionViewModel = _.find(listViewModel.actions, a => a.actionRep.actionId() === newDialogId);
                     setNewDialog($scope, listViewModel, newDialogId, routeData, focusTarget, actionViewModel);
+                } else if ($scope.dialog) {
+                    $scope.dialog.refresh();
                 }
             }
 
@@ -394,6 +391,9 @@ module NakedObjects {
                 if (currentDialogId !== newDialogId) {
                     setNewDialog($scope, ovm.domainObject, newDialogId, routeData, focusTarget);
                 } else {
+                    if ($scope.dialog) {
+                        $scope.dialog.refresh();
+                    }
                     focusManager.focusOn(focusTarget, 0, routeData.paneId);
                 }
             };
