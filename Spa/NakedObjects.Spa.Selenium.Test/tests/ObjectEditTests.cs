@@ -412,20 +412,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaObjectEditTest()
         {
-            base.ObjectEditChangeScalar();
-            base.LocalValidationOfMandatoryFields();
-            base.LocalValidationOfMaxLength();
-            base.LocalValidationOfRegex();
-            base.LocalValidationOfRange();
-            base.ObjectEditChangeEnum();
-            base.ObjectEditChangeDateTime();
-            //base.ObjectEditChangeChoices();
-            base.CanSetAndClearAnOptionalDropDown();
-            //base.ObjectEditChangeConditionalChoices(); //Unreliable on server
-            base.ObjectEditPicksUpLatestServerVersion();
-            //base.CoValidationOnSavingChanges(); //Unreliable on server
-            base.ViewModelEditOpensInEditMode();
-            base.MultiLineText(); 
+            ObjectEditChangeScalar();
+            LocalValidationOfMandatoryFields();
+            LocalValidationOfMaxLength();
+            LocalValidationOfRegex();
+            LocalValidationOfRange();
+            ObjectEditChangeEnum();
+            ObjectEditChangeDateTime();
+            //ObjectEditChangeChoices();
+            CanSetAndClearAnOptionalDropDown();
+            //ObjectEditChangeConditionalChoices(); //Unreliable on server
+            ObjectEditPicksUpLatestServerVersion();
+            //CoValidationOnSavingChanges(); //Unreliable on server
+            ViewModelEditOpensInEditMode();
+            MultiLineText(); 
         }
     }
 

@@ -43,7 +43,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             CancelDialog();
             WaitUntilElementDoesNotExist(".dialog");
         }
-        public virtual void FieldsRetainedWhenTheyShouldbe()
+        public virtual void FieldsRetainedWhenNavigatingAwayAndBack()
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
             ClearFieldThenType("#firstname1", "arthur");
@@ -55,8 +55,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
             wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
             wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
-            
-            //2. Navigating away without cancelling then opening dialog again should not retain values
+        }
+        public virtual void ReopeningADialogThatWasntCancelledDoesNotRetainFields() { 
             ClickRecentButton();
             WaitForView(Pane.Single, PaneType.Recent);
             Click(HomeIcon());
@@ -352,7 +352,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
                 "Qty Into Stock + Qty Rejected must add up to Qty Received");
         }
         #endregion
-        public virtual void ParameterDescriptionRenderedAsPlacholder()
+        public virtual void ParameterDescriptionRenderedAsPlaceholder()
         {
             GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
             var name = WaitForCss("input#name1");
@@ -446,7 +446,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
         [TestMethod]
-        public override void FieldsRetainedWhenTheyShouldbe() { base.FieldsRetainedWhenTheyShouldbe(); }
+        public override void FieldsRetainedWhenNavigatingAwayAndBack() { base.FieldsRetainedWhenNavigatingAwayAndBack(); }
+        [TestMethod]
+        public override void ReopeningADialogThatWasntCancelledDoesNotRetainFields() { base.ReopeningADialogThatWasntCancelledDoesNotRetainFields(); }
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
         [TestMethod]
@@ -499,7 +501,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void CoValidationOfMultipleParameters() { base.CoValidationOfMultipleParameters(); }
         #endregion
         [TestMethod]
-        public override void ParameterDescriptionRenderedAsPlacholder() { base.ParameterDescriptionRenderedAsPlacholder(); }
+        public override void ParameterDescriptionRenderedAsPlaceholder() { base.ParameterDescriptionRenderedAsPlaceholder(); }
         [TestMethod]
         public override void NullableBooleanParams() { base.NullableBooleanParams(); }
         [TestMethod]
@@ -594,37 +596,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaDialogTest()
         {
-            base.PasswordParam();
-            base.ScalarChoicesParm();
-            base.TestCancelDialog();
-            base.FieldsRetainedWhenTheyShouldbe();
-            base.ScalarParmShowsDefaultValue();
-            base.DateTimeParmKeepsValue();
-            base.TimeSpanParm();
-            base.RefChoicesParmKeepsValue();
-            base.MultipleRefChoicesDefaults();
-            base.MultipleRefChoicesChangeDefaults();
-            base.ConditionalChoices();
-            base.ChoicesDefaults();
-            base.ChoicesOptional();
-            base.ChoicesChangeDefaults();
-            base.ConditionalChoicesDefaults();
-            base.ConditionalChoicesMultiple();
-            base.AutoCompleteParm();
-            base.AutoCompleteParmDefault();
-            base.ClearingAutoCompleteTextClearsUnderlyingReference();
-            base.AutoCompleteParmShowSingleItem();
-            base.AutoCompleteScalarField();
-            base.MandatoryParameterEnforced();
-            base.ValidateSingleValueParameter();
-            base.ValidateSingleRefParamFromChoices();
-            base.CoValidationOfMultipleParameters();
-            base.ParameterDescriptionRenderedAsPlacholder();
-            base.NullableBooleanParams();
-            base.WarningShownWithinDialogAndInFooter();
-            base.DefaultReferenceParamRendersCorrectly();
-            //base.QueryOnlyActionDialogPersists(); //TODO: Pending implementation
-            //base.PotentActionDialogDisappears();
+            PasswordParam();
+            ScalarChoicesParm();
+            TestCancelDialog();
+            FieldsRetainedWhenNavigatingAwayAndBack();
+            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            ScalarParmShowsDefaultValue();
+            DateTimeParmKeepsValue();
+            TimeSpanParm();
+            RefChoicesParmKeepsValue();
+            MultipleRefChoicesDefaults();
+            MultipleRefChoicesChangeDefaults();
+            ConditionalChoices();
+            ChoicesDefaults();
+            ChoicesOptional();
+            ChoicesChangeDefaults();
+            ConditionalChoicesDefaults();
+            ConditionalChoicesMultiple();
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
+            ClearingAutoCompleteTextClearsUnderlyingReference();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            MandatoryParameterEnforced();
+            ValidateSingleValueParameter();
+            ValidateSingleRefParamFromChoices();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
+            //QueryOnlyActionDialogPersists(); //TODO: Pending implementation
+            //PotentActionDialogDisappears();
         }
     }
 

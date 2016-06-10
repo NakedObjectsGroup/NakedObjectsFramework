@@ -286,19 +286,19 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaTestTransientObjectTests()
         {
-            base.CreateAndSaveTransientObject();
-            base.SaveAndClose();
-            base.MissingMandatoryFieldsNotified();
-            base.IndividualFieldValidation();
-            base.MultiFieldValidation();
-            base.PropertyDescriptionAndRequiredRenderedAsPlaceholder();
-            base.CancelTransientObject();
-            base.SwapPanesWithTransients();
-            base.BackAndForwardOverTransient();
-            base.RequestForExpiredTransient();
-            base.ConditionalChoicesOnTransient();
-            base.TransientWithHiddenNonOptionalFields();
-            base.CanInvokeActionOnASavedTransient();
+            CreateAndSaveTransientObject();
+            SaveAndClose();
+            MissingMandatoryFieldsNotified();
+            IndividualFieldValidation();
+            MultiFieldValidation();
+            PropertyDescriptionAndRequiredRenderedAsPlaceholder();
+            CancelTransientObject();
+            SwapPanesWithTransients();
+            BackAndForwardOverTransient();
+            RequestForExpiredTransient();
+            ConditionalChoicesOnTransient();
+            TransientWithHiddenNonOptionalFields();
+            CanInvokeActionOnASavedTransient();
         }
     }
     [TestClass]

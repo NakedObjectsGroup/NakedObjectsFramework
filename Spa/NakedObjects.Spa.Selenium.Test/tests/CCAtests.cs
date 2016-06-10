@@ -337,7 +337,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ListViewWithParmDialogNotOpen() { base.ListViewWithParmDialogNotOpen(); }
 
-        [TestMethod] //Unreliable on server
+        [TestMethod, Ignore] //Unreliable on server
         public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
 
         [TestMethod]

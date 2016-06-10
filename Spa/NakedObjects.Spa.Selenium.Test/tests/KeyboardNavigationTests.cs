@@ -145,10 +145,10 @@ namespace NakedObjects.Web.UnitTests.Selenium {
         [TestMethod] //Mega
         public void MegaKeyboardTest()
         {
-            //base.SelectFooterIconsWithAccessKeys();
-            //base.SelectObjectActionsWithAccessKey();
-            base.EnterEquivalentToLeftClick();
-            base.ShiftEnterEquivalentToRightClick();
+            //SelectFooterIconsWithAccessKeys(); TODO: Does not work on Firefox in test mode
+            //SelectObjectActionsWithAccessKey();  TODO: Does not work on Firefox in test mode
+            EnterEquivalentToLeftClick();
+            ShiftEnterEquivalentToRightClick();
         }
     }
 

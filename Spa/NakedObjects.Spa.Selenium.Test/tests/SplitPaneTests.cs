@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Threading;
+using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -217,6 +218,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
 
         #endregion
+
+        public virtual void ListInSplitPaneUpdatesWhenSearchParamsChange()
+        {
+            GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
+            ClearFieldThenType("#searchstring1", "a");
+            RightClick(OKButton());
+            WaitForView(Pane.Right, PaneType.List);
+            wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Adjustable Race");
+            ClearFieldThenType("#searchstring1", "b");
+            RightClick(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Hydration Pack - 70 oz.");
+        }
     }
     public abstract class SplitPaneTests : SplitPaneTestsRoot
     {
@@ -334,6 +347,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.FullPaneFromRight();
         }
         #endregion
+
+        [TestMethod]
+        public override void ListInSplitPaneUpdatesWhenSearchParamsChange() { base.ListInSplitPaneUpdatesWhenSearchParamsChange(); }
     }
 
     #region browser specific subclasses
@@ -360,7 +376,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-   // [TestClass]
+    [TestClass]
     public class SplitPaneTestsFirefox : SplitPaneTests
     {
         [ClassInitialize]
@@ -459,6 +475,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             SwapPanes();
             FullPaneFromLeft();
             FullPaneFromRight();
+            ListInSplitPaneUpdatesWhenSearchParamsChange();
         }
     }
     #endregion
