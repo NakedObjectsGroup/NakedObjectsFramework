@@ -1118,7 +1118,7 @@ module NakedObjects {
                 } else {
                     fieldMap = this.context.getCurrentDialogValues();
                 }
-                this.context.invokeAction(action, 1, fieldMap)
+                this.context.invokeAction(action, fieldMap)
                     .then((result: ActionResultRepresentation) => {
                         // todo handle case where result is empty - this is no longer handled 
                         // by reject below

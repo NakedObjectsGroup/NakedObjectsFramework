@@ -20,6 +20,7 @@ module NakedObjects {
     import IAction = Models.IInvokableAction;
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import propertyIdFromUrl = Models.propertyIdFromUrl;
+    import getOtherPane = Models.getOtherPane;
 
     export interface IUrlManager {
         getRouteData(): RouteData;
@@ -35,7 +36,7 @@ module NakedObjects {
         closeDialogReplaceHistory(paneId?: number): void;
 
         setObject(resultObject: DomainObjectRepresentation, paneId?: number): void;
-        setList(action: IAction, paneId?: number): void;
+        setList(action: IAction, fromPaneId? : number, paneId?: number): void;
         setProperty(propertyMember: PropertyMember, paneId?: number): void;
         setItem(link: Link, paneId?: number): void;
 
@@ -371,16 +372,28 @@ module NakedObjects {
             delete search[key];
         }
 
-        function setFieldsToParms(paneId: number, search: any) {
-            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${paneId}`) === 0);
-            const fields = _.pick(search, ids);
+        function setFieldsToParms(paneId: number, newValues: _.Dictionary<string>) {
+            
+            const ids = _.filter(_.keys(newValues), k => k.indexOf(`${akm.field}${paneId}`) === 0);
+            const fields = _.pick(newValues, ids);
             const parms = _.mapKeys(fields, (v: any, k: string) => k.replace(akm.field, akm.parm));
 
-            search = _.omit(search, ids);
-            search = _.merge(search, parms);
+            newValues = _.omit(newValues, ids) as _.Dictionary<string>;
+            newValues = _.merge(newValues, parms);
 
-            return search;
+            return newValues;
         }
+
+        function copyFieldsIntoValues(fromPaneId: number, toPaneId: number, newValues: _.Dictionary<string>) {
+            const search = getSearch();
+            const ids = _.filter(_.keys(search), k => k.indexOf(`${akm.field}${fromPaneId}`) === 0);
+            const fromPaneFields = _.pick(search, ids);
+            const toPaneFields = _.mapKeys(fromPaneFields, (v: any, k: string) => k.replace(`${akm.field}${fromPaneId}`, `${akm.field}${toPaneId}`));
+          
+            newValues = _.merge(newValues, toPaneFields);
+            return newValues;
+        }
+
 
         function handleTransition(paneId: number, search: any, transition: Transition) {
 
@@ -410,7 +423,6 @@ module NakedObjects {
                     setId(akm.interactionMode + paneId, InteractionMode[InteractionMode.View], search);
                     break;
                 case (Transition.ToList):
-                    search = setFieldsToParms(paneId, search);
                     replace = setupPaneNumberAndTypes(paneId, listPath);
                     clearId(akm.menu + paneId, search);
                     clearId(akm.object + paneId, search);
@@ -504,30 +516,36 @@ module NakedObjects {
             executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
         };
 
-        helper.setList = (actionMember: IAction, paneId = 1) => {
-            const newValues = {} as _.Dictionary<string>;
+        helper.setList = (actionMember: IAction, fromPaneId = 1, toPaneId = 1) => {
+            let newValues = {} as _.Dictionary<string>;
             const parent = actionMember.parent;
 
             if (parent instanceof DomainObjectRepresentation) {
-                newValues[`${akm.object}${paneId}`] = parent.id();
+                newValues[`${akm.object}${toPaneId}`] = parent.id();
             }
 
             if (parent instanceof MenuRepresentation) {
-                newValues[`${akm.menu}${paneId}`] = parent.menuId();
+                newValues[`${akm.menu}${toPaneId}`] = parent.menuId();
             }
 
-            newValues[`${akm.action}${paneId}`] = actionMember.actionId();
-            newValues[`${akm.page}${paneId}`] = "1";
-            newValues[`${akm.pageSize}${paneId}`] = defaultPageSize.toString();
-            newValues[`${akm.selected}${paneId}`] = "0";
+            newValues[`${akm.action}${toPaneId}`] = actionMember.actionId();
+            newValues[`${akm.page}${toPaneId}`] = "1";
+            newValues[`${akm.pageSize}${toPaneId}`] = defaultPageSize.toString();
+            newValues[`${akm.selected}${toPaneId}`] = "0";
 
             const newState = actionMember.extensions().renderEagerly() ?
                 CollectionViewState[CollectionViewState.Table] :
                 CollectionViewState[CollectionViewState.List];
 
-            newValues[`${akm.collection}${paneId}`] = newState;
+            newValues[`${akm.collection}${toPaneId}`] = newState;
 
-            executeTransition(newValues, paneId, Transition.ToList, () => true);
+            // This will also swap the panes of the field values if we are 
+            // right clicking into the other pane.
+          
+            newValues = copyFieldsIntoValues(fromPaneId, toPaneId, newValues);
+            newValues = setFieldsToParms(toPaneId, newValues);
+
+            executeTransition(newValues, toPaneId, Transition.ToList, () => true);
         };
 
         helper.setProperty = (propertyMember: PropertyMember, paneId = 1) => {
@@ -760,7 +778,7 @@ module NakedObjects {
             const [, mode, oldPane1, oldPane2 = homePath] = segments;
             const newPath = `/${mode}/${oldPane2}/${oldPane1}`;
             const search = swapSearchIds(getSearch());
-            currentPaneId = currentPaneId === 1 ? 2 : 1;
+            currentPaneId = getOtherPane(currentPaneId);
 
             $location.path(newPath).search(search);
         };
@@ -782,7 +800,7 @@ module NakedObjects {
             if (!singlePane()) {
 
                 const paneToKeepId = paneId;
-                const paneToRemoveId = paneToKeepId === 1 ? 2 : 1;
+                const paneToRemoveId = getOtherPane(paneToKeepId);
 
                 const path = $location.path();
                 const segments = path.split("/");

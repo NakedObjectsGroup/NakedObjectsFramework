@@ -3,6 +3,7 @@
 /// <reference path="nakedobjects.app.ts" />
 
 module NakedObjects {
+    import getOtherPane = Models.getOtherPane;
 
     export interface IClickHandler {
         pane(currentPane: number, right?: boolean): number;
@@ -16,8 +17,7 @@ module NakedObjects {
         }
 
         function sameOtherClickHandler(currentPane: number, right = false): number {
-            const otherPane = currentPane === 1 ? 2 : 1;
-            return right ? otherPane : currentPane;
+            return right ? getOtherPane(currentPane) : currentPane;
         }
 
         clickHandler.pane = sameOtherClickHandler;
