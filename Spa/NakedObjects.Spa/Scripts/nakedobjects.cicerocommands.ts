@@ -544,6 +544,7 @@ module NakedObjects {
         }
 
         private openActionDialog(action: ActionMember) {
+            this.context.clearDialog();
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
