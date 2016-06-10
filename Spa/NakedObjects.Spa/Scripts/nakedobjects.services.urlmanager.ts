@@ -735,6 +735,7 @@ module NakedObjects {
 
             return _.reduce(ss, (r, n) => r + keySeparator + n, "");
         };
+
         helper.popUrlState = (paneId = 1) => {
             currentPaneId = paneId;
 
