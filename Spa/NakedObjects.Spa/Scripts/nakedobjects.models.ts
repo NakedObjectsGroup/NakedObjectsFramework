@@ -60,6 +60,10 @@ module NakedObjects.Models {
         return object && object instanceof Object && "value" in object;
     }
 
+    export function isIInvokableAction(object: any): object is IInvokableAction {
+        return object && "parameters" in object && "extensions" in object;
+    }
+
     function getId(prop: PropertyRepresentation | PropertyMember) {
         if (prop instanceof PropertyRepresentation) {
             return prop.instanceId();

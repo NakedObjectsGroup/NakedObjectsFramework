@@ -30,6 +30,19 @@ module NakedObjects {
     import ObjectIdWrapper = Models.ObjectIdWrapper;
     import InvokableActionMember = Models.InvokableActionMember;
     import IInvokableAction = Models.IInvokableAction;
+    import isIInvokableAction = Models.isIInvokableAction;
+
+    export function getParametersAndCurrentValue(action: ActionMember | IInvokableAction, context: IContext): _.Dictionary<Value> {
+
+        if (isIInvokableAction(action)) {
+            const parms = action.parameters();
+            const values = context.getCurrentDialogValues(action.actionId());
+
+            return _.mapValues(parms, p => values[p.id()]);
+        }
+        return {};
+    }
+
 
     export abstract class Command {
 
@@ -363,6 +376,8 @@ module NakedObjects {
             return msg;
         }
 
+       
+
         protected valueForUrl(val: Value, field: IField): Value {
             if (val.isNull()) return val;
             const fieldEntryType = field.entryType();
@@ -372,7 +387,7 @@ module NakedObjects {
                 if (fieldEntryType === EntryType.MultipleChoices || field.isCollectionContributed()) {
                     let valuesFromRouteData = new Array<Value>();
                     if (field instanceof Parameter) {
-                        const rd = this.context.getCurrentDialogValues()[field.id()];
+                        const rd = getParametersAndCurrentValue(field.parent, this.context)[field.id()];
                         if (rd) valuesFromRouteData = rd.list(); //TODO: what if only one?
                     } else if (field instanceof PropertyMember) {
                         const rd = this.routeData().props[field.id()];
@@ -719,7 +734,7 @@ module NakedObjects {
                     case 1:
                         if (fieldEntry === "?") {
                             const p = params[0];
-                            const value = this.context.getCurrentDialogValues()[p.id()];
+                            const value = getParametersAndCurrentValue(p.parent, this.context)[p.id()];
                             const s = this.renderFieldDetails(p, value);
                             this.clearInputAndSetMessage(s);
                         } else {
@@ -869,7 +884,10 @@ module NakedObjects {
 
         private handleConditionalChoices(field: IField, fieldEntry: string): void {
             //TODO: need to cover both dialog fields and editable properties!
-            const enteredFields = this.context.getCurrentDialogValues();
+
+            const enteredFields = field instanceof Parameter
+                ? getParametersAndCurrentValue(field.parent, this.context)
+                : {} as _.Dictionary<Value>;
 
             // fromPairs definition is faulty
             const args = (<any>_).fromPairs(_.map(field.promptLink().arguments(), (v: any, key : string) => [key, new Value(v.value)])) as _.Dictionary<Value>;
@@ -1116,7 +1134,7 @@ module NakedObjects {
                 if (this.isForm()) {
                     fieldMap = this.routeData().props; //Props passed in as pseudo-params to action
                 } else {
-                    fieldMap = this.context.getCurrentDialogValues();
+                    fieldMap = getParametersAndCurrentValue(action, this.context);
                 }
                 this.context.invokeAction(action, fieldMap)
                     .then((result: ActionResultRepresentation) => {
