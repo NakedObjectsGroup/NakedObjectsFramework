@@ -651,20 +651,25 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Result from Find Individual Customer By Name:\r\nPage 1 of 8 containing 20 of");
 
             //Menu action with missing mandatory params
-            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22a%22&f1_lastName=%22%22");
-            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: empty");
+            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
+            WaitForOutputContaining("Last Name: empty");
             EnterCommand("ok");
             WaitForOutput("Please complete or correct these fields:\r\nLast Name: required");
 
             //Menu action with invalid entry
-            CiceroUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%2212345%22");
-            WaitForOutput("Customers menu\r\nAction dialog: Find Customer By Account Number\r\nAccount Number: 12345");
+            CiceroUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
+            WaitForOutputContaining("Action dialog: Find Customer By Account Number");
+            EnterCommand("enter num,12345");
+            WaitForOutputContaining("Account Number: 12345");
             EnterCommand("ok");
             WaitForOutput("Please complete or correct these fields:\r\nAccount Number: 12345 Account number must start with AW");
 
             //Menu action with select param
-            CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategory&f1_subCategory=%7B%22href%22%3A%22http%3A%2F%2Flocalhost%3A61546%2Fobjects%2F___1.ProductSubcategory%2F10%22%2C%22title%22%3A%22Forks%22%7D");
-            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Forks");
+            CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategory");
+            //&f1_subCategory=%7B%22href%22%3A%22http%3A%2F%2Flocalhost%3A61546%2Fobjects%2F___1.ProductSubcategory%2F10%22%2C%22title%22%3A%22Forks%22%7D");
+            WaitForOutputContaining("Action dialog: List Products By Sub Category");
+            EnterCommand("enter sub,forks");
+            WaitForOutputContaining("Sub Category: Forks");
             EnterCommand("ok");
             WaitForOutputStarting("Result from List Products By Sub Category:\r\n3 items");
 
@@ -675,9 +680,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutput("Sorry, an application error has occurred. Foo");
 
             //Co-validation error
-            CiceroUrl("object?o1=___1.Vendor--1668&as1=open&d1=ListPurchaseOrders&f1_fromDate=%222016-01-06T00%3A00%3A00.000Z%22&f1_toDate=%222016-01-05T00%3A00%3A00.000Z%22");
-            WaitForOutputStarting("Vendor: Touring Equipment Center\r\n"+
-                "Action dialog: List Purchase Orders");
+            CiceroUrl("object?o1=___1.Vendor--1668&as1=open&d1=ListPurchaseOrders");
+            WaitForOutputContaining("Action dialog: List Purchase Orders");
+            EnterCommand("enter from, 6 Jan 2016");
+            WaitForOutputContaining("From Date: 6 Jan 2016");
+            EnterCommand("enter to date, 3 Jan 2016"); ;
+            WaitForOutputContaining("To Date: 3 Jan 2016");
             EnterCommand("ok");
             WaitForOutput("To Date cannot be before From Date");
 
@@ -1394,7 +1402,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     #region Mega tests
     public abstract class MegaCiceroTestsRoot : CiceroTestRoot
     {
-        [TestMethod] //Mega
+        [TestMethod, Ignore] //Mega
         public void MegaCiceroTests()
         {
             Action();
@@ -1402,7 +1410,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Cancel();
             Clipboard();
             Edit();
-            Enter();
+            Enter(); 
             Gemini();
             Goto();
             Help();
@@ -1418,9 +1426,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
             UnrecognisedCommand();
             UpAndDownArrow();
             ScenarioEditAndSave();
-            ScenarioMultiSelect();
+            ScenarioMultiSelect(); 
             ScenarioTransientObject();
-            ScenarioUsingClipboard();
+            ScenarioUsingClipboard(); 
             ScenarioTestEditableVM();
             ChainedCommands();
         }
