@@ -387,7 +387,7 @@ module NakedObjects {
             actionViewModel.executeInvoke = (pps: ParameterViewModel[], right?: boolean) => {
                 const parmMap = _.zipObject(_.map(pps, p => p.id), _.map(pps, p => p.getValue())) as _.Dictionary<Value>;
                 _.forEach(pps, p => urlManager.setParameterValue(actionRep.actionId(), p.parameterRep, p.getValue(), paneId));
-                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, clickHandler.pane(paneId, right), parmMap));
+                return context.getInvokableAction(actionViewModel.actionRep).then(details => context.invokeAction(details, parmMap, paneId, clickHandler.pane(paneId, right)));
             };
 
             // form actions should never show dialogs
