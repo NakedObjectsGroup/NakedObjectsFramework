@@ -226,9 +226,32 @@ namespace NakedObjects.Web.UnitTests.Selenium
             RightClick(OKButton());
             WaitForView(Pane.Right, PaneType.List);
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Adjustable Race");
-            ClearFieldThenType("#searchstring1", "b");
+            ClearFieldThenType("#searchstring1", "z");
             RightClick(OKButton());
             wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Hydration Pack - 70 oz.");
+        }
+
+        public virtual void TwoListsCanBothBeReloaded()
+        {
+            GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
+            ClearFieldThenType("#searchstring1", "x");
+            RightClick(OKButton());
+            WaitForView(Pane.Right, PaneType.List);
+            wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "External Lock Washer 1");
+            ClearFieldThenType("#searchstring1", "n");
+            Click(OKButton());
+            wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "All-Purpose Bike Stand");
+            Reload(Pane.Left);
+            Reload(Pane.Right);
+
+            //Try a reload from a new Url with params
+            GeminiUrl("list/list?m2=ProductRepository&a2=FindProductByName&pg2=1&ps2=20&s2=0&c2=List&pm2_searchString=%22f%22&m1=ProductRepository&a1=FindProductByName&pg1=1&ps1=20&s1=0&c1=List&pm1_searchString=%22y%22");
+            WaitForView(Pane.Left, PaneType.List);
+            WaitForView(Pane.Right, PaneType.List);
+            Reload(Pane.Left);
+            wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "Chain Stays");
+            Reload(Pane.Right);
+            wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
         }
     }
     public abstract class SplitPaneTests : SplitPaneTestsRoot
@@ -350,6 +373,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         [TestMethod]
         public override void ListInSplitPaneUpdatesWhenSearchParamsChange() { base.ListInSplitPaneUpdatesWhenSearchParamsChange(); }
+        [TestMethod]
+        public override void TwoListsCanBothBeReloaded() { base.TwoListsCanBothBeReloaded(); }
     }
 
     #region browser specific subclasses
@@ -476,6 +501,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             FullPaneFromLeft();
             FullPaneFromRight();
             ListInSplitPaneUpdatesWhenSearchParamsChange();
+            TwoListsCanBothBeReloaded();
         }
     }
     #endregion
