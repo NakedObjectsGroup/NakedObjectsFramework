@@ -283,7 +283,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
             //Todo: test selections
             CiceroUrl("home?m1=ProductRepository&d1=ListProductsBySubCategory");
-            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category");
+            WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Mountain Bikes");
             EnterCommand("enter cat, hand");
             WaitForOutput("Products menu\r\nAction dialog: List Products By Sub Category\r\nSub Category: Handlebars");
             EnterCommand("enter cat, xx");
@@ -641,8 +641,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of ");
 
             //Menu action with params
-            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName&f1_firstName=%22a%22&f1_lastName=%22b%22");
-            WaitForOutput("Customers menu\r\nAction dialog: Find Individual Customer By Name\r\nFirst Name: a\r\nLast Name: b");
+            CiceroUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
+            WaitForOutputContaining("Action dialog:");
+            EnterCommand("enter first,a");
+            WaitForOutputContaining("First Name: a");
+            EnterCommand("enter last,b");
+            WaitForOutputContaining("Last Name: b");
             EnterCommand("ok");
             WaitForOutputStarting("Result from Find Individual Customer By Name:\r\nPage 1 of 8 containing 20 of");
 

@@ -366,7 +366,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     //These tests are  unreliable when run on the server
-    [TestMethod, Ignore]
+    [TestClass, Ignore]
     public class CCAtestsClientFirefox : CCAtestsRoot
     {
         #region Initialize

@@ -37,12 +37,16 @@ module NakedObjects {
         if (isIInvokableAction(action)) {
             const parms = action.parameters();
             const values = context.getCurrentDialogValues(action.actionId());
-
-            return _.mapValues(parms, p => values[p.id()]);
+            return _.mapValues(parms, p => {
+                const value = values[p.id()];
+                if (value === undefined) {
+                    return p.default();
+                }
+                return value;
+            });
         }
         return {};
     }
-
 
     export abstract class Command {
 
@@ -376,8 +380,6 @@ module NakedObjects {
             return msg;
         }
 
-       
-
         protected valueForUrl(val: Value, field: IField): Value {
             if (val.isNull()) return val;
             const fieldEntryType = field.entryType();
@@ -456,6 +458,11 @@ module NakedObjects {
             } else {
                 valuesFromRouteData.push(valToAdd);
             }
+        }
+
+        protected setFieldValueInContextAndUrl(field: Parameter, urlVal: Value) {
+            this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
+            this.urlManager.setFieldValue(this.routeData().dialogId, field, urlVal); //TODO: do this everywhere, combine into one method
         }
     }
 
@@ -541,7 +548,7 @@ module NakedObjects {
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
                     const pVal = this.valueForUrl(p.default(), p);
-                    this.context.setFieldValue(action.actionId(), p.id(), pVal);
+                    this.setFieldValueInContextAndUrl(p, pVal);
                 });
             });
         }
@@ -799,7 +806,7 @@ module NakedObjects {
         private setFieldValue(field: IField, value: Value): void {
             const urlVal = this.valueForUrl(value, field);
             if (field instanceof Parameter) {
-                this.context.setFieldValue(this.routeData().dialogId, field.id(), urlVal);
+                this.setFieldValueInContextAndUrl(field, urlVal);
             } else if (field instanceof PropertyMember) {
                 const parent = field.parent;
                 if (parent instanceof DomainObjectRepresentation) {
@@ -898,7 +905,11 @@ module NakedObjects {
                 .then((choices: _.Dictionary<Value>) => {
                     const matches = this.findMatchingChoicesForRef(choices, fieldEntry);
                     this.switchOnMatches(field, fieldEntry, matches);
-                });
+                }).catch(
+                reject => {
+                    
+                }
+            );
         }
 
         private renderFieldDetails(field: IField, value: Value): string {
