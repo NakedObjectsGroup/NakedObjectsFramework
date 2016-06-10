@@ -124,7 +124,7 @@ module NakedObjects {
 
         setFieldValue: (dialogId: string, pid: string, pv: Value, paneId?: number) => void;
 
-        getFieldValue: (dialogId: string, pid: string, paneId?: number) => Value;
+       
 
         clearDialog: (paneId?: number) => void;
 
@@ -557,6 +557,7 @@ module NakedObjects {
             const entry = currentLists[index];
             return entry ? entry.list : null;
         };
+
         context.clearCachedList = (paneId: number, page: number, pageSize: number) => {
             const index = urlManager.getListCacheIndex(paneId, page, pageSize);
             delete currentLists[index];
@@ -651,6 +652,8 @@ module NakedObjects {
             const [, p1, p2] = currentObjects;
             currentObjects[1] = p2;
             currentObjects[2] = p1;
+
+
         };
 
         let currentError: ErrorWrapper = null;
@@ -971,10 +974,6 @@ module NakedObjects {
 
         context.setFieldValue = (dialogId: string, pid: string, pv: Value, paneId = 1) => {
             parameterCache.addValue(dialogId, pid, pv, paneId);       
-        }
-
-        context.getFieldValue = (dialogId: string, pid: string, paneId = 1) => {
-           return parameterCache.getValue(dialogId, pid, paneId);
         }
 
         context.getCurrentDialogValues = (dialogId: string = null, paneId = 1) => {

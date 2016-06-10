@@ -44,7 +44,8 @@ module NakedObjects {
             color: IColor,
             navigation: INavigation,
             urlManager: IUrlManager,
-            focusManager: IFocusManager) {
+            focusManager: IFocusManager,
+            template : ITemplate) {
             const handlers = <IHandlers>this;
 
             const perPaneListViews = [,
@@ -350,17 +351,15 @@ module NakedObjects {
 
                 const ovm = $scope.object;
 
-                let newObjectTemplate: string;
                 let newActionsTemplate: string;
 
+                const newObjectTemplate = template.getTemplateName(ovm.domainType, routeData.interactionMode);
+
                 if (routeData.interactionMode === InteractionMode.Form) {
-                    newObjectTemplate = formTemplate;
                     newActionsTemplate = formActionsTemplate;
                 } else if (routeData.interactionMode === InteractionMode.View) {
-                    newObjectTemplate = objectViewTemplate;
                     newActionsTemplate = routeData.actionsOpen ? actionsTemplate : nullTemplate;
                 } else {
-                    newObjectTemplate = objectEditTemplate;
                     newActionsTemplate = nullTemplate;
                 }
 

@@ -24,6 +24,7 @@
   <ItemGroup>
     <Content Include="Content\partials\attachment.html" />
     <Content Include="Content\partials\applicationProperties.html" />
+    <Content Include="Content\partials\customObjectView.html" />
     <Content Include="Content\partials\singleApplicationProperties.html" />
     <Content Include="Content\partials\formActions.html" />
     <Content Include="Content\partials\collectionList.html" />
@@ -130,6 +131,8 @@
     <Content Include="index.html" />
     <None Include="Scripts\nakedobjects.config.ts.pp" />
     <None Include="Scripts\nakedobjects.services.color.config.ts.pp" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.template.config.ts" />
+    <TypeScriptCompile Include="Scripts\nakedobjects.services.template.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.version.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.color.ts" />
     <TypeScriptCompile Include="Scripts\nakedobjects.services.mask.config.ts" />

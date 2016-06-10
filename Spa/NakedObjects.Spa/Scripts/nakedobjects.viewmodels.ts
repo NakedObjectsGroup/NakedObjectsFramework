@@ -497,7 +497,7 @@ module NakedObjects {
             return this.actionViewModel.executeInvoke(pps, right);
         };
 
-        doInvoke = (apply : boolean, right?: boolean) =>
+        doInvoke = (right?: boolean) =>
             this.executeInvoke(right).
                 then((actionResult: ActionResultRepresentation) => {
                     if (actionResult.shouldExpectResult()) {
@@ -507,18 +507,15 @@ module NakedObjects {
                         // for url replacing purposes
                         this.doCloseReplaceHistory();
                     }
-                    else if (!right) {
-                        if (apply) {
-                            // going to new page close dialog and replace history
-                            this.doCloseKeepHistory();
-                        } else {
-                            // going to new page close dialog and replace history
-                            this.doCloseReplaceHistory();
-                        }
+                    else if (!this.isQueryOnly) {
+                        // not query only - always close
+                        this.doCloseReplaceHistory();
                     }
-                   
-                    // else leave open if opening on other pane and dialog has result
-
+                    else if (!right) {
+                        // query only going to new page close dialog and keep history
+                        this.doCloseKeepHistory();
+                    }
+                    // else query only going to other tab leave dialog open
                 }).
                 catch((reject: ErrorWrapper) => {
                     const parent = this.actionMember().parent instanceof DomainObjectRepresentation ? this.actionMember().parent as DomainObjectRepresentation : null;
