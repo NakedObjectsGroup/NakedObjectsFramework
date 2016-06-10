@@ -130,7 +130,6 @@ module NakedObjects {
 
         getCurrentDialogValues: (dialogId?: string, paneId?: number) => _.Dictionary<Value>;
 
-
         setParmUpdater: (updater: () => void, paneId?: number) => void;
         clearParmUpdater : (paneId?: number) => void;
 

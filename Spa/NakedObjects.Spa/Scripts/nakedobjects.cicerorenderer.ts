@@ -108,7 +108,7 @@ module NakedObjects {
                 const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
                 const actionName = actionMember.extensions().friendlyName();
                 output += `Action dialog: ${actionName}. `;
-                _.forEach(this.context.getCurrentDialogValues(), (value, key) => {
+                _.forEach(getParametersAndCurrentValue(actionMember, context), (value, key) => {
                     output += FriendlyNameForParam(actionMember, key) + ": ";
                     output += value.toString() || "empty";
                     output += ", ";
