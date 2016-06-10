@@ -401,7 +401,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    [TestClass]
+    //[TestClass] //Firefox Individual
     public class SplitPaneTestsFirefox : SplitPaneTests
     {
         [ClassInitialize]

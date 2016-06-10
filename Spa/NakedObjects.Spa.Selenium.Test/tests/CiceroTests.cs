@@ -1421,7 +1421,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             ChainedCommands();
         }
     }
-    [TestClass, Ignore]
+    [TestClass]
     public class MegaCiceroTestsFirefox : MegaCiceroTestsRoot
     {
         [ClassInitialize]

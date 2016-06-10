@@ -328,7 +328,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         #endregion
     }
 
-    public abstract class CCAtests : CCAtestsRoot
+    public abstract class CCAtestsServer : CCAtestsRoot
     {
 
         [TestMethod]
@@ -337,9 +337,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod]
         public override void ListViewWithParmDialogNotOpen() { base.ListViewWithParmDialogNotOpen(); }
 
-        [TestMethod, Ignore] //Unreliable on server
-        public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
-
         [TestMethod]
         public override void TableViewWithParmDialogNotOpen() { base.TableViewWithParmDialogNotOpen(); }
 
@@ -347,10 +344,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void DateParam() { base.DateParam(); }
         [TestMethod]
         public override void EmptyParam() { base.EmptyParam(); }
-
-
-        [TestMethod] //Unreliable on server
-        public override void ZeroParamAction() { base.ZeroParamAction(); }
 
         [TestMethod]
         public override void TestSelectAll() { base.TestSelectAll(); }
@@ -372,9 +365,41 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
+    //These tests are  unreliable when run on the server
+    [TestMethod, Ignore]
+    public class CCAtestsClientFirefox : CCAtestsRoot
+    {
+        #region Initialize
+        [ClassInitialize]
+        public new static void InitialiseClass(TestContext context)
+        {
+            AWTest.InitialiseClass(context);
+        }
+
+        [TestInitialize]
+        public virtual void InitializeTest()
+        {
+            InitFirefoxDriver();
+        }
+
+        [TestCleanup]
+        public virtual void CleanupTest()
+        {
+            base.CleanUpTest();
+        }
+        #endregion
+
+        [TestMethod] 
+        public override void TableViewWithParmDialogAlreadyOpen() { base.TableViewWithParmDialogAlreadyOpen(); }
+
+        [TestMethod] 
+        public override void ZeroParamAction() { base.ZeroParamAction(); }
+
+    }
+
     #region browsers specific subclasses
 
-    public class CCAtestsIe : CCAtests
+    public class CCAtestsIe : CCAtestsServer
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -397,7 +422,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
     }
 
     [TestClass]
-    public class CCAtestsFirefox : CCAtests
+    public class CCAtestsFirefox : CCAtestsServer
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
@@ -418,7 +443,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    public class CCAtestsChrome : CCAtests
+    public class CCAtestsChrome : CCAtestsServer
     {
         [ClassInitialize]
         public new static void InitialiseClass(TestContext context)
