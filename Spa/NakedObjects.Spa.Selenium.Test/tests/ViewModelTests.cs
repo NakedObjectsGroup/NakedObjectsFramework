@@ -145,9 +145,9 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaViewModelTest()
         {
-            base.CreateVM();
-            base.CreateEditableVM();
-            base.CreateSwitchableVM();
+            CreateVM();
+            CreateEditableVM();
+            CreateSwitchableVM();
         }
     }
     [TestClass]

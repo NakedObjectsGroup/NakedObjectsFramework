@@ -143,10 +143,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaAttachmentTest()
         {
-            base.ImageAsProperty();
-            base.EmptyImageProperty();
-            base.ClickOnImage();
-            base.RightClickOnImage();
+            ImageAsProperty();
+            EmptyImageProperty();
+            ClickOnImage();
+            RightClickOnImage();
         }
     }
     [TestClass]

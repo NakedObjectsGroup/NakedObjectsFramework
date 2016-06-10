@@ -1333,7 +1333,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         }
     }
 
-    //[TestClass] //Firefox Individual
+    [TestClass] //Firefox Individual
     public class CiceroTestsFirefox : CiceroTests
     {
         [ClassInitialize]
@@ -1393,32 +1393,32 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaCiceroTests()
         {
-            base.Action();
-            base.BackAndForward();
-            base.Cancel();
-            base.Clipboard();
-            base.Edit();
-            base.Enter();
-            base.Gemini();
-            base.Goto();
-            base.Help();
-            base.Menu();
-            base.OK();
-            base.Page();
-            base.Property();
-            base.Root();
-            base.Save();
-            base.Show();
-            base.Where();
-            base.SpaceBarAutoComplete();
-            base.UnrecognisedCommand();
-            base.UpAndDownArrow();
-            base.ScenarioEditAndSave();
-            base.ScenarioMultiSelect();
-            base.ScenarioTransientObject();
-            base.ScenarioUsingClipboard();
-            base.ScenarioTestEditableVM();
-            base.ChainedCommands();
+            Action();
+            BackAndForward();
+            Cancel();
+            Clipboard();
+            Edit();
+            Enter();
+            Gemini();
+            Goto();
+            Help();
+            Menu();
+            OK();
+            Page();
+            Property();
+            Root();
+            Save();
+            Show();
+            Where();
+            SpaceBarAutoComplete();
+            UnrecognisedCommand();
+            UpAndDownArrow();
+            ScenarioEditAndSave();
+            ScenarioMultiSelect();
+            ScenarioTransientObject();
+            ScenarioUsingClipboard();
+            ScenarioTestEditableVM();
+            ChainedCommands();
         }
     }
     [TestClass, Ignore]

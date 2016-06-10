@@ -596,38 +596,38 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaDialogTest()
         {
-            base.PasswordParam();
-            base.ScalarChoicesParm();
-            base.TestCancelDialog();
-            base.FieldsRetainedWhenNavigatingAwayAndBack();
-            base.ReopeningADialogThatWasntCancelledDoesNotRetainFields();
-            base.ScalarParmShowsDefaultValue();
-            base.DateTimeParmKeepsValue();
-            base.TimeSpanParm();
-            base.RefChoicesParmKeepsValue();
-            base.MultipleRefChoicesDefaults();
-            base.MultipleRefChoicesChangeDefaults();
-            base.ConditionalChoices();
-            base.ChoicesDefaults();
-            base.ChoicesOptional();
-            base.ChoicesChangeDefaults();
-            base.ConditionalChoicesDefaults();
-            base.ConditionalChoicesMultiple();
-            base.AutoCompleteParm();
-            base.AutoCompleteParmDefault();
-            base.ClearingAutoCompleteTextClearsUnderlyingReference();
-            base.AutoCompleteParmShowSingleItem();
-            base.AutoCompleteScalarField();
-            base.MandatoryParameterEnforced();
-            base.ValidateSingleValueParameter();
-            base.ValidateSingleRefParamFromChoices();
-            base.CoValidationOfMultipleParameters();
-            base.ParameterDescriptionRenderedAsPlaceholder();
-            base.NullableBooleanParams();
-            base.WarningShownWithinDialogAndInFooter();
-            base.DefaultReferenceParamRendersCorrectly();
-            //base.QueryOnlyActionDialogPersists(); //TODO: Pending implementation
-            //base.PotentActionDialogDisappears();
+            PasswordParam();
+            ScalarChoicesParm();
+            TestCancelDialog();
+            FieldsRetainedWhenNavigatingAwayAndBack();
+            ReopeningADialogThatWasntCancelledDoesNotRetainFields();
+            ScalarParmShowsDefaultValue();
+            DateTimeParmKeepsValue();
+            TimeSpanParm();
+            RefChoicesParmKeepsValue();
+            MultipleRefChoicesDefaults();
+            MultipleRefChoicesChangeDefaults();
+            ConditionalChoices();
+            ChoicesDefaults();
+            ChoicesOptional();
+            ChoicesChangeDefaults();
+            ConditionalChoicesDefaults();
+            ConditionalChoicesMultiple();
+            AutoCompleteParm();
+            AutoCompleteParmDefault();
+            ClearingAutoCompleteTextClearsUnderlyingReference();
+            AutoCompleteParmShowSingleItem();
+            AutoCompleteScalarField();
+            MandatoryParameterEnforced();
+            ValidateSingleValueParameter();
+            ValidateSingleRefParamFromChoices();
+            CoValidationOfMultipleParameters();
+            ParameterDescriptionRenderedAsPlaceholder();
+            NullableBooleanParams();
+            WarningShownWithinDialogAndInFooter();
+            DefaultReferenceParamRendersCorrectly();
+            //QueryOnlyActionDialogPersists(); //TODO: Pending implementation
+            //PotentActionDialogDisappears();
         }
     }
 

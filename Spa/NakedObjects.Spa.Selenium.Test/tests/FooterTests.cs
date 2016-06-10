@@ -233,12 +233,12 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaFooterTest()
         {
-            base.Home();
-            base.BackAndForward();
-            base.Cicero();
-            base.WarningsAndInfo();
-            base.RecentObjects();
-            base.ApplicationProperties();
+            Home();
+            BackAndForward();
+            Cicero();
+            WarningsAndInfo();
+            RecentObjects();
+            ApplicationProperties();
         }
     }
 

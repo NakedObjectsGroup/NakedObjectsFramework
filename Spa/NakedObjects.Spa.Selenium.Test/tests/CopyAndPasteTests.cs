@@ -331,18 +331,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaCopyAndPasteTest()
         {
-            base.CopyTitleOrPropertyIntoClipboard();
-            base.CopyListItemIntoClipboard();
-            base.PasteIntoReferenceField();
-            base.PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
-            base.PasteIntoDialog();
-            base.PasteAnImplementationOfAnInterface();
-            base.PasteIntoAutoCompleteField();
-            base.DroppableReferenceFieldWithoutAutoComplete();
-            base.CannotPasteWrongTypeIntoReferenceField();
-            //base.CanClearADroppableReferenceField(); Works locally, but not on server
-            base.DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
-            //base.IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); Works OK locally, but not on server
+            CopyTitleOrPropertyIntoClipboard();
+            CopyListItemIntoClipboard();
+            PasteIntoReferenceField();
+            PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu();
+            PasteIntoDialog();
+            PasteAnImplementationOfAnInterface();
+            PasteIntoAutoCompleteField();
+            DroppableReferenceFieldWithoutAutoComplete();
+            CannotPasteWrongTypeIntoReferenceField();
+            //CanClearADroppableReferenceField(); TODO: Works locally, but not on server
+            DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed();
+            //IfNoObjectInClipboardCtrlVRevertsToBrowserBehaviour(); TODO: Works locally, but not on server
         }
     }
     [TestClass]

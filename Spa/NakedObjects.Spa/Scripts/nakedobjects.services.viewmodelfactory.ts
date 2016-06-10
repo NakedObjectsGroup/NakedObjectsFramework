@@ -1175,7 +1175,7 @@ module NakedObjects {
             mask: IMask): string {
             const actionName = invokable.extensions().friendlyName();
             let output = `Action dialog: ${actionName}\n`;
-            _.forEach(context.getCurrentDialogValues(), (value, paramId) => {
+            _.forEach(context.getCurrentDialogValues(actionName), (value, paramId) => {
                 output += FriendlyNameForParam(invokable, paramId) + ": ";
                 const param = invokable.parameters()[paramId];
                 output += renderFieldValue(param, value, mask);

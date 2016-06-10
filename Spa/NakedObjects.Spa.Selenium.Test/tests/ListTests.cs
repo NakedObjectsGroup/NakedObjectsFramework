@@ -387,18 +387,18 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaListTest()
         {
-            base.ActionReturnsListView();
-            base.ActionReturnsEmptyList();
-            base.TableViewAttributeHonoured();
-            base.TableViewCanIncludeCollectionSummaries();
-            base.SwitchToTableViewAndBackToList();
-            base.NavigateToItemFromListView();
-            base.NavigateToItemFromTableView();
-            base.Paging();
-            //base.PagingTableView(); //Unreliable on server
-            base.ListDoesNotRefreshWithoutReload();
-            base.ReloadingListGetsUpdatedObject();
-            base.EagerlyRenderTableViewFromAction();
+            ActionReturnsListView();
+            ActionReturnsEmptyList();
+            TableViewAttributeHonoured();
+            TableViewCanIncludeCollectionSummaries();
+            SwitchToTableViewAndBackToList();
+            NavigateToItemFromListView();
+            NavigateToItemFromTableView();
+            Paging();
+            //PagingTableView(); //TODO: Unreliable on server
+            ListDoesNotRefreshWithoutReload();
+            ReloadingListGetsUpdatedObject();
+            EagerlyRenderTableViewFromAction();
         }
     }
     [TestClass]

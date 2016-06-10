@@ -493,33 +493,33 @@ namespace NakedObjects.Web.UnitTests.Selenium
         [TestMethod] //Mega
         public void MegaObjectViewTest()
         {
-            base.ActionsAlreadyOpen();
-            base.OpenActionsMenuNotAlreadyOpen();
-            base.OpenAndCloseSubMenusTo2Levels();
-            base.Properties();
-            base.Collections();
-            base.CollectionEagerlyRendered();
-            base.DateAndCurrencyProperties();
-            base.TableViewHonouredOnCollection();
-            base.ClickReferenceProperty();
-            base.OpenCollectionAsList();
-            base.NotCountedCollection();
-            base.ClickOnLineItemWithCollectionAsList();
-            base.ClickOnLineItemWithCollectionAsTable();
-            base.DialogAction();
-            base.DialogActionOk();
-            base.ObjectAction();
-            base.CollectionAction();
-            base.DescriptionRenderedAsTooltip();
-            base.DisabledAction();
-            base.ActionsMenuDisabledOnObjectWithNoActions();
-            base.QueryOnlyActionDoesNotReloadAutomatically();
-            base.PotentActionDoesReloadAutomatically();
-            base.NonNavigableReferenceProperty();
-            base.Colours();
-            base.ZeroIntValues();
-            base.AddingObjectToCollectionUpdatesTableView();
-            base.TimeSpanProperty();
+            ActionsAlreadyOpen();
+            OpenActionsMenuNotAlreadyOpen();
+            OpenAndCloseSubMenusTo2Levels();
+            Properties();
+            Collections();
+            CollectionEagerlyRendered();
+            DateAndCurrencyProperties();
+            TableViewHonouredOnCollection();
+            ClickReferenceProperty();
+            OpenCollectionAsList();
+            NotCountedCollection();
+            ClickOnLineItemWithCollectionAsList();
+            ClickOnLineItemWithCollectionAsTable();
+            DialogAction();
+            DialogActionOk();
+            ObjectAction();
+            CollectionAction();
+            DescriptionRenderedAsTooltip();
+            DisabledAction();
+            ActionsMenuDisabledOnObjectWithNoActions();
+            QueryOnlyActionDoesNotReloadAutomatically();
+            PotentActionDoesReloadAutomatically();
+            NonNavigableReferenceProperty();
+            Colours();
+            ZeroIntValues();
+            AddingObjectToCollectionUpdatesTableView();
+            TimeSpanProperty();
         }
     }
     [TestClass]
