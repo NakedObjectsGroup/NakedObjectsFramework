@@ -414,6 +414,28 @@ namespace NakedObjects.Web.UnitTests.Selenium
             OpenActionDialog("Create Letter");
             wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).Text.StartsWith("Zeiter Weg 9922"));
         }
+
+        public virtual void QueryOnlyActionDialogPersists()
+        {
+            //To test:
+            //Query only action OK, left click & go back, right click & remains open
+            GeminiUrl("home?m1=ProductRepository");
+            OpenActionDialog("Find Product By Name");
+            ClearFieldThenType("#searchstring1", "a");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
+            ClickBackButton();
+            WaitForView(Pane.Single, PaneType.Home);
+           var field = WaitForCss("#searchstring1");
+            Assert.AreEqual("a", field.GetAttribute("value"));
+
+        }
+
+        public virtual void PotentActionDialogDisappears()
+        {
+            Assert.Fail(); //To be written
+            //Action that is not query only, left click & go back, right click & it closed.
+        }
     }
     public abstract class DialogTests : DialogTestsRoot
     {
@@ -423,7 +445,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void ScalarChoicesParm() { base.ScalarChoicesParm(); }
         [TestMethod]
         public override void TestCancelDialog() { base.TestCancelDialog(); }
-        [TestMethod, Ignore] //Pending fix
+        [TestMethod]
         public override void FieldsRetainedWhenTheyShouldbe() { base.FieldsRetainedWhenTheyShouldbe(); }
         [TestMethod]
         public override void ScalarParmShowsDefaultValue() { base.ScalarParmShowsDefaultValue(); }
@@ -484,6 +506,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void WarningShownWithinDialogAndInFooter() { base.WarningShownWithinDialogAndInFooter(); }
         [TestMethod]
         public override void DefaultReferenceParamRendersCorrectly() { base.DefaultReferenceParamRendersCorrectly(); }
+        [TestMethod, Ignore] //Pending implementation
+        public override void QueryOnlyActionDialogPersists() { base.QueryOnlyActionDialogPersists(); }
+        [TestMethod, Ignore] //Pending implementation
+        public override void PotentActionDialogDisappears() { base.PotentActionDialogDisappears(); }
     }
 
     #region browsers specific subclasses
@@ -571,7 +597,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.PasswordParam();
             base.ScalarChoicesParm();
             base.TestCancelDialog();
-            //base.FieldsRetainedWhenTheyShouldbe(); //TODO: pending fix
+            base.FieldsRetainedWhenTheyShouldbe();
             base.ScalarParmShowsDefaultValue();
             base.DateTimeParmKeepsValue();
             base.TimeSpanParm();
@@ -597,6 +623,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             base.NullableBooleanParams();
             base.WarningShownWithinDialogAndInFooter();
             base.DefaultReferenceParamRendersCorrectly();
+            //base.QueryOnlyActionDialogPersists(); //TODO: Pending implementation
+            //base.PotentActionDialogDisappears();
         }
     }
 

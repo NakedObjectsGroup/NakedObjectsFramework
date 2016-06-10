@@ -29,7 +29,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             }
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
-            Assert.IsTrue(time <115000, string.Format("Elapsed time was {0} milliseconds",time));
+            Assert.IsTrue(time < 130000, string.Format("Elapsed time was {0} milliseconds",time));
         }
 
     }
