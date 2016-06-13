@@ -428,13 +428,24 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
            var field = WaitForCss("#searchstring1");
             Assert.AreEqual("a", field.GetAttribute("value"));
+            ClearFieldThenType("#searchstring1", "b");
+            RightClick(OKButton());
+            WaitForView(Pane.Right, PaneType.List, "Find Product By Name");
+            WaitForView(Pane.Left, PaneType.Home);
+            field = WaitForCss("#searchstring1");
+            Assert.AreEqual("b", field.GetAttribute("value"));
 
         }
 
-        public virtual void PotentActionDialogDisappears()
+        public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered()
         {
-            Assert.Fail(); //To be written
-            //Action that is not query only, left click & go back, right click & it closed.
+            GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
+            OpenActionDialog("Add Multi Line Comment");
+            ClearFieldThenType("#comment1", "foo");
+            Click(OKButton());
+            WaitUntilElementDoesNotExist(".dialog");
+            OpenActionDialog("Add Multi Line Comment");
+            Assert.AreEqual("", WaitForCss("#comment1").GetAttribute("value"));
         }
     }
     public abstract class DialogTests : DialogTestsRoot
@@ -508,10 +519,10 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void WarningShownWithinDialogAndInFooter() { base.WarningShownWithinDialogAndInFooter(); }
         [TestMethod]
         public override void DefaultReferenceParamRendersCorrectly() { base.DefaultReferenceParamRendersCorrectly(); }
-        [TestMethod, Ignore] //Pending implementation
+        [TestMethod]
         public override void QueryOnlyActionDialogPersists() { base.QueryOnlyActionDialogPersists(); }
-        [TestMethod, Ignore] //Pending implementation
-        public override void PotentActionDialogDisappears() { base.PotentActionDialogDisappears(); }
+        [TestMethod] 
+        public override void PotentActionDialogDisappearsAndFieldsNotRemembered() { base.PotentActionDialogDisappearsAndFieldsNotRemembered(); }
     }
 
     #region browsers specific subclasses
@@ -626,8 +637,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
             NullableBooleanParams();
             WarningShownWithinDialogAndInFooter();
             DefaultReferenceParamRendersCorrectly();
-            //QueryOnlyActionDialogPersists(); //TODO: Pending implementation
-            //PotentActionDialogDisappears();
+            QueryOnlyActionDialogPersists();
+            PotentActionDialogDisappearsAndFieldsNotRemembered();
         }
     }
 

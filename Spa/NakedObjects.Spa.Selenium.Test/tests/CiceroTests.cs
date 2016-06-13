@@ -1311,7 +1311,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void UpAndDownArrow() { base.UpAndDownArrow(); }
         [TestMethod]
         public override void ScenarioEditAndSave() { base.ScenarioEditAndSave(); }
-        [TestMethod, Ignore] //TODO: Temp ignore, failing on both client and server
+        [TestMethod]
         public override void ScenarioMultiSelect() { base.ScenarioMultiSelect(); }
         [TestMethod]
         public override void ScenarioTransientObject() { base.ScenarioTransientObject(); }
