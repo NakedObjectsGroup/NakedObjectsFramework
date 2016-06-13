@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace NakedObjects.Web.UnitTests.Selenium
 {
@@ -1120,6 +1121,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("action List Products By Sub Categories");
             WaitForOutputContaining("Action dialog: List Products By Sub Categories");
             WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes");
+            Thread.Sleep(200);
             EnterCommand("enter sub, handlebars");
             WaitForOutputContaining("Sub Categories: -Mountain Bikes-Touring Bikes-Handlebars");
             EnterCommand("enter sub, touring bikes");
@@ -1135,6 +1137,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             EnterCommand("action Find By Product Lines And Classes");
             WaitForOutputContaining("Product Line: M,S,");
             WaitForOutputContaining("Product Class: H,");
+            Thread.Sleep(200);
             EnterCommand("enter line, r");
             WaitForOutputContaining("Product Line: M,S,R");
             EnterCommand("enter line, m");
@@ -1413,7 +1416,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             Cancel();
             Clipboard();
             Edit();
-            Enter(); 
+            Enter();
             Gemini();
             Goto();
             Help();
