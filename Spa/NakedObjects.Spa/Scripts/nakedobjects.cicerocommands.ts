@@ -547,7 +547,7 @@ module NakedObjects {
             this.urlManager.setDialog(action.actionId());
             this.context.getInvokableAction(action).then((invokable: Models.IInvokableAction) => {
                 _.forEach(invokable.parameters(), (p) => {
-                    const pVal = this.valueForUrl(p.default(), p);
+                    const pVal = p.default();
                     this.setFieldValueInContextAndUrl(p, pVal);
                 });
             });
