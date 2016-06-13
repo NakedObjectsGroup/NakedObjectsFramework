@@ -58,8 +58,6 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public virtual void Properties()
         {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
-            wait.Until(dr => dr.FindElement(By.CssSelector(".object")));
-            wait.Until(dr => dr.FindElement(By.CssSelector(".view")).Displayed == true);
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
 
             ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));

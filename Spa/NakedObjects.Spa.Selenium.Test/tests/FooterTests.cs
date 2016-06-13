@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace NakedObjects.Web.UnitTests.Selenium
@@ -128,6 +129,20 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
             WaitForView(Pane.Single, PaneType.Properties, "Application Properties");
+            wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
+            ReadOnlyCollection<IWebElement> properties = br.FindElements(By.CssSelector(".property"));
+            Assert.IsTrue(properties[0].Text.StartsWith("User Name:"));
+            Assert.IsTrue(properties[1].Text.StartsWith("Server Url: http:"));
+            Assert.IsTrue(properties[2].Text.StartsWith("Server version: 8.0.0"));
+            Assert.IsTrue(properties[3].Text.StartsWith("Client version: 8.0.0"));
+        }
+
+        public virtual void LogOff()
+        {
+            GeminiUrl("home");
+            ClickLogOffButton();
+            IAlert alert = br.SwitchTo().Alert();
+            Assert.IsTrue(alert.Text.StartsWith("Please confirm logoff of user:"));
         }
     }
     public abstract class FooterTests : FooterTestsRoot
@@ -149,6 +164,8 @@ namespace NakedObjects.Web.UnitTests.Selenium
         public override void RecentObjects() { base.RecentObjects(); }
         [TestMethod]
         public override void ApplicationProperties() { base.ApplicationProperties(); }
+        [TestMethod]
+        public override void LogOff() { base.LogOff(); }
     }
 
     #region browsers specific subclasses 
@@ -239,6 +256,7 @@ namespace NakedObjects.Web.UnitTests.Selenium
             WarningsAndInfo();
             RecentObjects();
             ApplicationProperties();
+            LogOff();
         }
     }
 

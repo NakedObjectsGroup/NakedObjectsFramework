@@ -496,21 +496,26 @@ namespace NakedObjects.Web.UnitTests.Selenium
 
         protected void ClickBackButton()
         {
-            Click(br.FindElement(By.CssSelector(".icon-back")));
+            Click(WaitForCss(".icon-back"));
         }
 
         protected void ClickForwardButton()
         {
-            Click(br.FindElement(By.CssSelector(".icon-forward")));
+            Click(WaitForCss(".icon-forward"));
         }
         protected void ClickRecentButton()
         {
-            Click(br.FindElement(By.CssSelector(".icon-recent")));
+            Click(WaitForCss(".icon-recent"));
         }
         protected void ClickPropertiesButton()
         {
-            Click(br.FindElement(By.CssSelector(".icon-properties")));
+            Click(WaitForCss(".icon-properties"));
         }
+        protected void ClickLogOffButton()
+        {
+            Click(WaitForCss(".icon-logoff"));
+        }
+
         #endregion
 
         #region Object Actions
