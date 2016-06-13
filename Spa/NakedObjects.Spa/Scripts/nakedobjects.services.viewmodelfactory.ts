@@ -287,8 +287,10 @@ module NakedObjects {
 
                     if (fieldEntryType === EntryType.Choices) {
                         parmViewModel.choice = _.find(parmViewModel.choices, c => c.match(choiceToSet));
-                    } else {
-                        parmViewModel.choice = choiceToSet;
+                    } else {                    
+                        if (!parmViewModel.choice || parmViewModel.choice.getValue().toValueString() !== choiceToSet.getValue().toValueString()) {
+                            parmViewModel.choice = choiceToSet;
+                        } 
                     }
                 }
 
