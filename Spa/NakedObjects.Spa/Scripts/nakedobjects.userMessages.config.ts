@@ -44,6 +44,8 @@ module NakedObjects {
     export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}`;
 
     //Cicero commands and Help text
+
+    export const welcomeMessage = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
     export const basicHelp = "Cicero is a user interface purpose-designed to work with an audio screen-reader.\n" +
         "The display has only two fields: a read-only output field, and a single input field.\n" +
         "The input field always has the focus.\n" +

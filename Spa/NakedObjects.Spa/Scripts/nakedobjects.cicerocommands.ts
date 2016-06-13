@@ -121,8 +121,7 @@ module NakedObjects {
         }
 
         //argNo starts from 0.
-        //If argument does not parse correctly, message will be passed to UI
-        //and command aborted.
+        //If argument does not parse correctly, message will be passed to UI and command aborted.
         protected argumentAsString(argString: string, argNo: number, optional: boolean = false, toLower: boolean = true): string {
             if (!argString) return undefined;
             if (!optional && argString.split(",").length < argNo + 1) {

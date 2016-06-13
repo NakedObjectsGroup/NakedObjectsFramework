@@ -1032,7 +1032,7 @@ module NakedObjects {
                                 });
                         } else {
                             cvm.clearInput();
-                            cvm.output = "Welcome to Cicero. Type 'help' and the Enter key for more information.";
+                            cvm.output = welcomeMessage;
                         }
                     }
                 };
@@ -1149,25 +1149,6 @@ module NakedObjects {
 
         $rootScope.$on(geminiLogoffEvent, () => logoff());
 
-
-        function renderActionDialogIfOpen(
-            repWithActions: IHasActions,
-            routeData: PaneRouteData,
-            mask: IMask): string {
-            let output = "";
-            if (routeData.dialogId) {
-                const actionMember = repWithActions.actionMember(routeData.dialogId) as InvokableActionMember;
-                const actionName = actionMember.extensions().friendlyName();
-                output += `Action dialog: ${actionName}\n`;
-                _.forEach(getParametersAndCurrentValue(actionMember, this.context), (value, paramId) => {
-                    output += FriendlyNameForParam(actionMember, paramId) + ": ";
-                    const param = actionMember.parameters()[paramId];
-                    output += renderFieldValue(param, value, mask);
-                    output += "\n";
-                });
-            }
-            return output;
-        }
 
         function renderActionDialog(
             invokable: Models.IInvokableAction,
