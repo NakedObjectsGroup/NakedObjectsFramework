@@ -303,7 +303,7 @@ module NakedObjects {
                         _.forEach(cvms, cvm => {
 
                             const opt = $("<option></option>");
-                            opt.val(cvm.value);
+                            opt.val(cvm.getValue().toValueString());
                             opt.text(cvm.name);
 
                             element.append(opt);
@@ -312,10 +312,10 @@ module NakedObjects {
                         currentOptions = cvms;
 
                         if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
-                            const vals = _.map(viewModel.multiChoices, c => c.value);
+                            const vals = _.map(viewModel.multiChoices, c => c.getValue().toValueString());
                             $(element).val(vals);
                         } else if (viewModel.choice) {
-                            $(element).val(viewModel.choice.value);
+                            $(element).val(viewModel.choice.getValue().toValueString());
                         }
                         else {
                             $(element).val("");
@@ -334,6 +334,13 @@ module NakedObjects {
                     });
                 }
 
+                function wrapReferences(val: string) : string | RoInterfaces.ILink {
+                    if (viewModel.type === "ref") {
+                        return { href: val };
+                    }
+                    return val;
+                }
+
                 function optionChanged() {
 
                     if (viewModel.entryType === EntryType.MultipleConditionalChoices) {
@@ -341,14 +348,14 @@ module NakedObjects {
                         const kvps = [] as any[];
 
                         options.each((n, e) => kvps.push({ key: $(e).text(), value: $(e).val() }));
-                        const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(o.value), viewModel.id, o.key));
+                        const cvms = _.map(kvps, o => ChoiceViewModel.create(new Value(wrapReferences(o.value)), viewModel.id, o.key));
                         viewModel.multiChoices = cvms;
 
                     } else {
                         const option = $(element).find("option:selected");
                         const val = option.val();
                         const key = option.text();
-                        const cvm = ChoiceViewModel.create(new Value(val), viewModel.id, key);
+                        const cvm = ChoiceViewModel.create(new Value(wrapReferences(val)), viewModel.id, key);
                         viewModel.choice = cvm;
                         scope.$apply(() => {
                             ngModel.$parsers.push(() => cvm);
@@ -790,7 +797,7 @@ module NakedObjects {
                 let val: string;
 
                 if (viewValue instanceof ChoiceViewModel) {
-                    val = viewValue.value;
+                    val = viewValue.getValue().toValueString();
                 }
                 else if (viewValue instanceof Array) {
                     if (viewValue.length) {
